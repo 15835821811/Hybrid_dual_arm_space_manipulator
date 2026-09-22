@@ -1,0 +1,186 @@
+{
+  "contract_version": "v6_lite_visualization_6",
+  "source_contract_version": "v6_lite_6",
+  "source_metrics": "v6_lite/output/v6_lite_metrics.json",
+  "source_metrics_sha256": "29db3f8b7f6f741761dd372ea2e13e46428c839ec86d5d50e4425029fc084a15",
+  "video": {
+    "scenario_id": "v6_lite_scenario_00",
+    "source_trace": "v6_lite/output/traces/v6_lite_scenario_00.npz",
+    "source_trace_sha256": "6cdecf3027202066d84f32735cc34a0dc52e8aaabbb1c2de04c7d1ea130a77e2",
+    "fps": 30.0,
+    "width": 640,
+    "height": 480,
+    "frame_count": 811,
+    "duration_s": 26.999999999995914,
+    "camera_lookat_m": [
+      0.9636622714686667,
+      -0.18602262827370863,
+      -0.07883776112438161
+    ],
+    "camera_distance_m": 2.4756825591802967,
+    "views": [
+      "overview",
+      "front",
+      "side",
+      "top",
+      "iso"
+    ],
+    "coordinate_frames": {
+      "axis_color_order": [
+        "x_red",
+        "y_green",
+        "z_blue"
+      ],
+      "target_axis_length_m": 0.16,
+      "end_effector_axis_length_m": 0.1,
+      "waypoint_axis_length_m": 0.055,
+      "waypoint_labels_rendered": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7"
+      ],
+      "waypoint_label_view": "front",
+      "continuum_end_effector_body_name": "link_30",
+      "continuum_end_effector_local_offset_body_m": [
+        0.0475,
+        0.0,
+        0.0
+      ],
+      "continuum_end_effector_position_source": "trace_body_origin_plus_rotated_local_offset",
+      "base_initial_axis_length_m": 0.145,
+      "base_current_axis_length_m": 0.115,
+      "target_style": "long_translucent_arrows",
+      "end_effector_style": "short_opaque_arrows",
+      "frames_rendered": [
+        "rigid_grasp_target",
+        "rigid_end_effector",
+        "continuum_irregular_target",
+        "continuum_end_effector",
+        "free_base_initial_pose",
+        "free_base_current_pose",
+        "continuum_waypoint_frames_W1_to_W7"
+      ]
+    },
+    "overlay_metrics": [
+      "rigid_position_error_mm",
+      "continuum_position_error_mm",
+      "rigid_orientation_error_deg",
+      "continuum_orientation_error_deg",
+      "base_translation_drift_mm",
+      "base_attitude_drift_deg",
+      "online_whole_body_clearance_mm",
+      "dense_discrete_continuum_target_minimum_clearance_mm"
+    ],
+    "marker_legend": {
+      "rigid_target": "yellow sphere",
+      "rigid_tip": "blue sphere",
+      "continuum_target": "green sphere",
+      "continuum_tip": "cyan sphere",
+      "workspace_obstacles": "orange translucent spheres"
+    }
+  },
+  "safety_clearance_plot": {
+    "path": "v6_lite/visualization/output/safety_clearance_summary.png",
+    "quantities": [
+      "whole_body_minimum_clearance_m",
+      "continuum_target_minimum_clearance_m"
+    ],
+    "time_scope": "dense_discrete_replay_over_each_complete_run",
+    "scenario_ids": [
+      "v6_lite_scenario_00",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_04"
+    ],
+    "whole_body_minimum_clearance_m": [
+      0.014999303571839187,
+      0.01499902194675926,
+      0.014999014890241217,
+      0.014995557285447571,
+      0.014999768841365833
+    ],
+    "continuum_target_minimum_clearance_m": [
+      0.02506245682267757,
+      0.02501749965402498,
+      0.02501027301349599,
+      0.02500552636238258,
+      0.02499513161755822
+    ],
+    "verification_gate_m": 0.005,
+    "continuum_target_qp_nominal_margin_m": 0.025,
+    "rigid_target_qp_nominal_margin_m": 0.005
+  },
+  "base_pose_drift_gif": {
+    "path": "v6_lite/visualization/output/base_pose_drift.gif",
+    "fps": 5,
+    "frame_count": 136,
+    "duration_s": 27.2,
+    "quantities": [
+      "base_translation_drift_mm",
+      "base_attitude_drift_deg"
+    ],
+    "scenario_count": 5
+  },
+  "artifacts": [
+    {
+      "path": "v6_lite/visualization/output/error_curves.png",
+      "sha256": "3cb1260b8d829eae421bda6a6fcec6d4c1ff69380fd14c22cdd93edf86b1e99c",
+      "bytes": 761664
+    },
+    {
+      "path": "v6_lite/visualization/output/tracking_paths_3d.png",
+      "sha256": "3c9a18a3d11107977d2277f3a4c4384faa0ac9e1511e50382aa4f5fd5b987f2c",
+      "bytes": 544180
+    },
+    {
+      "path": "v6_lite/visualization/output/safety_clearance_summary.png",
+      "sha256": "abea2a58dc8907d487df307043cc05e8b8e1dad32ca384e72ff72ab0b6546871",
+      "bytes": 160586
+    },
+    {
+      "path": "v6_lite/visualization/output/base_pose_drift.gif",
+      "sha256": "a3e36202479801501193e320e756a1b5456add2fd12f43e5c9d8d19929eecc8a",
+      "bytes": 1769974
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_five_view_preview.png",
+      "sha256": "d5635a4aa5caff5c9954827483fe9d0d763d1577d864f10b701c8d3bf3b663f6",
+      "bytes": 389790
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_overview.mp4",
+      "sha256": "35ba014ba492b95237d41a11c6194bf50be0aafd9af2c638ed5db759f297e1ed",
+      "bytes": 517930
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_front.mp4",
+      "sha256": "065040ed0f1a5c80e2c34a800a1233123340660ec6cb355af4da732ee2b5c19b",
+      "bytes": 695049
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_side.mp4",
+      "sha256": "22b36657dfff4246c5b308846d5b042888bda3a64eac31c18a6f643fc7917bd8",
+      "bytes": 522239
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_top.mp4",
+      "sha256": "d427e5af551bf079d3d4ebd5471b10d8c7fad3144b25145234cca0b1aa41fbbc",
+      "bytes": 635693
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_iso.mp4",
+      "sha256": "816a3cb254d6ef6d1621170246b2148b9711045356b8da8ca7c5ba8972a1ae3b",
+      "bytes": 438680
+    },
+    {
+      "path": "v6_lite/visualization/output/videos/v6_lite_scenario_00_five_view_grid.mp4",
+      "sha256": "8e59f2fa614c5681e5495a5940817b5f3fded99f4ae52ba15408397561644f15",
+      "bytes": 2389693
+    }
+  ]
+}
