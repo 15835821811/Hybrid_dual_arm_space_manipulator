@@ -1,0 +1,128 @@
+{
+  "audit_version": "v6.1-a.audit.1",
+  "model_contract_sha256": "d153b4e9306e59bf34c42787ebda37c4abaab10f2188676f9ae9d5978b4b73c3",
+  "passed": true,
+  "checks": {
+    "target_case_count_at_least_10000": true,
+    "all_required_target_case_types_present": true,
+    "capsule_false_safe_count_is_zero": true,
+    "pcc_tube_false_safe_count_is_zero": true,
+    "capsule_is_conservative_when_separated": true,
+    "formal_moving_target_trace_false_safe_count_is_zero": true,
+    "pcc_gradient_matches_finite_difference": true,
+    "capsule_gradient_matches_finite_difference": true
+  },
+  "safety_gate_m": 0.005,
+  "target_case_count": 10000,
+  "target_case_categories": {
+    "face": 1667,
+    "edge": 1667,
+    "corner": 1667,
+    "rotated": 1667,
+    "mid_arm": 1666,
+    "penetration": 1666
+  },
+  "unsafe_case_count_by_category": {
+    "face": 1100,
+    "edge": 678,
+    "corner": 539,
+    "rotated": 783,
+    "mid_arm": 1150,
+    "penetration": 1666
+  },
+  "query_truncation": {
+    "query_distance_max_m": 0.5,
+    "truncated_case_count": 0,
+    "rule": "a value at distmax is marked truncated and is never described as an exact clearance"
+  },
+  "false_safe": {
+    "definition": "proxy >= 5 mm while enveloped MuJoCo geometry < 5 mm",
+    "capsule_count": 0,
+    "pcc_tube_count": 0,
+    "finite_random_zero_is_only_regression_evidence": true
+  },
+  "distance_m": {
+    "mujoco_geometry": {
+      "count": 10000,
+      "minimum": -0.22314101865055871,
+      "mean": -0.03504614606860201,
+      "rms": 0.11616219767450632,
+      "p50": -0.01796146444787655,
+      "p95": 0.1306077270758286,
+      "p99": 0.1600862670829639,
+      "maximum": 0.17812980347267493
+    },
+    "capsule_proxy": {
+      "count": 10000,
+      "minimum": -0.21610670780719485,
+      "mean": -0.03494972082678349,
+      "rms": 0.11547588426232158,
+      "p50": -0.01936223297493747,
+      "p95": 0.12966040811961876,
+      "p99": 0.15905842873629375,
+      "maximum": 0.17772016480974412
+    },
+    "pcc_tube_proxy": {
+      "count": 10000,
+      "minimum": -0.2902619417558096,
+      "mean": -0.10184713711026279,
+      "rms": 0.14811273335290992,
+      "p50": -0.08921143276944661,
+      "p95": 0.06177416293911825,
+      "p99": 0.0951053581515245,
+      "maximum": 0.12725424048540218
+    },
+    "capsule_minus_geometry": {
+      "count": 10000,
+      "minimum": -0.016012693903664974,
+      "mean": 9.642524181852214e-05,
+      "rms": 0.0039472560526479785,
+      "p50": -0.00013462263208046873,
+      "p95": 0.007445929788118771,
+      "p99": 0.010841162010558309,
+      "maximum": 0.013355532853792013
+    },
+    "pcc_minus_geometry": {
+      "count": 10000,
+      "minimum": -0.10506672571832582,
+      "mean": -0.06680099104166078,
+      "rms": 0.0683086083192328,
+      "p50": -0.06556073744579506,
+      "p95": -0.04652245377853544,
+      "p99": -0.03771249677325646,
+      "maximum": -0.030194009204489003
+    }
+  },
+  "gradient_audit": {
+    "finite_difference_step_rad": 1e-06,
+    "candidate_case_count": 32,
+    "pcc_stable_nearest_feature_case_count": 32,
+    "capsule_stable_nearest_feature_case_count": 32,
+    "pcc_gradient_absolute_error": {
+      "count": 32,
+      "minimum": 0.0,
+      "mean": 7.399178962740516e-11,
+      "rms": 9.247739179257462e-11,
+      "p50": 6.544398356567172e-11,
+      "p95": 1.6730514751372991e-10,
+      "p99": 1.9504127587305354e-10,
+      "maximum": 1.9868785436361058e-10
+    },
+    "capsule_gradient_absolute_error": {
+      "count": 32,
+      "minimum": 3.960733650776316e-12,
+      "mean": 1.855216552751068e-10,
+      "rms": 2.496888042161319e-10,
+      "p50": 1.2596399617814669e-10,
+      "p95": 5.668923733215259e-10,
+      "p99": 5.85293100652251e-10,
+      "maximum": 5.910848477341801e-10
+    },
+    "nonsmooth_nearest_feature_switches_excluded": true
+  },
+  "formal_moving_target_trace_shadow": {
+    "sample_count": 275,
+    "pcc_false_safe_count": 0
+  },
+  "claim_boundary": "Shadow-only comparison. The PCC/capsule values do not alter the V6 QP or torque command. Zero false-safe cases are finite regression evidence, not a full-state safety certificate."
+}

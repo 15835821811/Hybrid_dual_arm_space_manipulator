@@ -424,3 +424,19 @@ python -m unittest v6_lite.visualization.test_visualizations -v
 - 相对学习规划器、Diffusion 方法或其他控制器的性能优越性。
 
 因此，最准确的定位是：**V6-lite 是一个可审计、学习无关、反作用感知、带整机距离 barrier 的确定性双臂速度-QP/力矩闭环基线，而不是 Diffusion 轨迹规划器。**
+
+## 13. V6.1-A 影子臂形与几何链
+
+V6.1-A 在上述在线架构旁增加只读影子链，不修改第 4–7 节的 QP、反作用映射、速度斜坡或力矩计算：
+
+```text
+(q_c, T_b, s) ──→ 5 段 PCC p,R,Jp,JR ──→ PCC 管体—卫星 OBB 净空
+      │
+      └────────→ 60 关节 URDF 离散 FK ──→ 61 胶囊 + 安装座原几何
+                                                │
+MuJoCo 62 个 continuum_target collision geoms ─┴→ 三方距离/梯度/漏报对照
+```
+
+正式 V6.1-A 报告覆盖 10,000 个臂形构型和 10,000 个目标相对位姿。离散 FK 对 MuJoCo 最大位置/姿态误差为 `4.920180e-15 m` / `1.154239e-7 rad`；胶囊和 PCC 管体的有限测试假安全计数均为 0。PCC 对离散链的全臂位置差 p95/最大值为 `43.040812/55.390652 mm`，该模型差异已计入标定包络并独立报告，不能与 PCC 导数误差混为一谈。
+
+实现与结果入口为 `continuum_model_spec.py`、`continuum_shape_model.py`、`shape_clearance.py`、`audit_v6_1a.py` 及 `output/v6_1a/`。更完整的责任归属、半径和证据边界见 `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md`。把该净空约束接入控制属于 V6.1-B。
