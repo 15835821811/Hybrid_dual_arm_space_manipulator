@@ -372,6 +372,8 @@ tau_a = M_ab qddot_b + M_aa qddot_a* + bias_a - passive_a
 | `videos/v6_lite_scenario_00_iso.mp4` | 同上 | 等轴测视角 |
 | `videos/v6_lite_scenario_00_five_view_grid.mp4` | H.264，1920×960，30 FPS，811 帧 | 五视角 3×2 拼接，第六格为空白 |
 | `videos/v6_lite_scenario_00_five_view_preview.png` | 1920×960 | 五视角组合视频中点预览帧 |
+| `visualization/continuum_focus_output/videos/v6_lite_scenario_00_continuum_focus.mp4` | H.264，960×720，30 FPS，811 帧 | 连续体一侧专用视角；刚性臂以 0.10 透明度保留为背景语境 |
+| `visualization/continuum_focus_output/videos/v6_lite_scenario_00_continuum_focus_preview.png` | 960×720 | 连续体一侧专用视频预览帧 |
 
 视频每帧显示：
 
@@ -386,8 +388,9 @@ tau_a = M_ab qddot_b + M_aa qddot_a* + bias_a - passive_a
 
 | 文件 | 作用 |
 | --- | --- |
-| `visualization/output/visualization_manifest.json` | 声明 10 个可视化实体产物、源 metrics/trace、分辨率、FPS、视角、坐标系、叠加指标与 SHA-256 |
-| `visualization/output/visualization_validation.json` | 18 项零信任式可视化检查：hash、解码、GIF 动画、五视角差异、H.264 编码、运动性、组合预览一致性等 |
+| `visualization/output/visualization_manifest.json` | 声明 11 个标准可视化实体产物、源 metrics/trace、分辨率、FPS、视角、坐标系、叠加指标与 SHA-256 |
+| `visualization/output/visualization_validation.json` | 22 项零信任式可视化检查：hash、解码、GIF 动画、五视角差异、H.264 编码、运动性、组合预览一致性等 |
+| `visualization/continuum_focus_output/continuum_focus_manifest.json` | 单独声明连续体一侧视频的源 metrics/trace、相机、分辨率、帧率、时长与 SHA-256；同目录预览图为便捷浏览快照 |
 
 ## 11. 验收与复现入口
 

@@ -47,6 +47,8 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 
 已验证环境为 Python 3.9.18、MuJoCo 3.3.2、NumPy 1.21.6、SciPy 1.11.2、Matplotlib 3.8.0、Pillow 10.2.0。核心运行与验证不依赖 PyTorch。
 
+`requirements.txt` 固定为生成当前证据时的精确版本；其中 MuJoCo 版本会参与运行合同身份哈希，不应在复验现有 trace 时自动升级。
+
 ```bash
 python -m venv .venv
 # Windows: .venv\Scripts\activate
@@ -96,4 +98,4 @@ python -m v6_lite.visualization.generate_visualizations \
 - [V6-lite 完整逻辑架构](v6_lite/V6_LITE_LOGIC_ARCHITECTURE.md)
 - [PCC 几何距离与安全约束推导](docs/DERIVATION_PACKAGE.md)
 - [V6-lite 模块说明](v6_lite/README.md)
-
+- [机器人模型资产来源与发布状态](ASSET_PROVENANCE.md)
