@@ -1,0 +1,191 @@
+{
+  "audit_version": "v6.1-b.audit.1",
+  "passed": true,
+  "checks": {
+    "configuration_count_at_least_10000": true,
+    "jacobian_case_count_at_least_1000": true,
+    "position_jacobian_relative_error_below_5_percent": true,
+    "distance_gradient_relative_error_below_5_percent": true,
+    "pcc_false_safe_count_is_zero": true,
+    "capsule_false_safe_count_is_zero": true,
+    "single_qp_online_control_passes": true
+  },
+  "seed": 20260924,
+  "configuration_count": 10000,
+  "jacobian_case_count": 1000,
+  "model_contract_sha256": "53200e23085ff1bbced456e947e3c09ff63d500e98561451bd07f34bd48e41ab",
+  "online_pcc_configuration": {
+    "coarse_samples_per_segment": 5,
+    "active_segment_count": 1,
+    "refinement_max_iterations": 5
+  },
+  "position_jacobian": {
+    "case_count": 1000,
+    "coordinate_checks": 10000,
+    "finite_difference_step_rad": 1e-06,
+    "relative_error": {
+      "count": 1000,
+      "minimum": 7.763361486000526e-11,
+      "mean": 5.073708989886019e-08,
+      "rms": 1.1044973774275783e-06,
+      "p50": 2.0258242236907408e-10,
+      "p95": 3.743386270179877e-09,
+      "p99": 3.84883684957292e-08,
+      "maximum": 2.9027991700933234e-05
+    },
+    "absolute_error": {
+      "count": 1000,
+      "minimum": 1.3008327215656683e-11,
+      "mean": 1.6481515697979055e-10,
+      "rms": 1.9966061566931977e-10,
+      "p50": 1.402467019043427e-10,
+      "p95": 3.5956202851728417e-10,
+      "p99": 4.2530747599473465e-10,
+      "maximum": 1.4576620652532326e-09
+    },
+    "threshold_relative": 0.05,
+    "passed": true
+  },
+  "distance_gradient": {
+    "attempt_count": 111,
+    "stable_smooth_case_count": 64,
+    "excluded_feature_switch_count": 0,
+    "finite_difference_step_rad": 1e-06,
+    "relative_error": {
+      "count": 64,
+      "minimum": 5.924757168671212e-11,
+      "mean": 0.0001846389577979984,
+      "rms": 0.0006650564008560107,
+      "p50": 2.4332209649787114e-05,
+      "p95": 0.00039335905444728026,
+      "p99": 0.003360847381527762,
+      "maximum": 0.004418652734259151
+    },
+    "threshold_relative": 0.05,
+    "nonsmooth_collision_and_feature_switches_excluded": true,
+    "passed": true
+  },
+  "false_safe": {
+    "case_count": 10000,
+    "categories": {
+      "face": 1667,
+      "edge": 1667,
+      "corner": 1667,
+      "rotated": 1667,
+      "mid_arm": 1666,
+      "penetration": 1666
+    },
+    "unsafe_case_count_by_category": {
+      "face": 1116,
+      "edge": 720,
+      "corner": 551,
+      "rotated": 816,
+      "mid_arm": 1172,
+      "penetration": 1666
+    },
+    "safety_gate_m": 0.005,
+    "pcc_count": 0,
+    "capsule_count": 0,
+    "definition": "proxy >= 5 mm while enveloped MuJoCo geometry < 5 mm",
+    "distance_m": {
+      "pcc": {
+        "count": 10000,
+        "minimum": -0.2896016313530359,
+        "mean": -0.10356647051405364,
+        "rms": 0.1491780055362506,
+        "p50": -0.09184808974399658,
+        "p95": 0.06250222966797055,
+        "p99": 0.09643967956827493,
+        "maximum": 0.12584545502041355
+      },
+      "capsule": {
+        "count": 10000,
+        "minimum": -0.21610670780719485,
+        "mean": -0.036472258360926615,
+        "rms": 0.11564087396952648,
+        "p50": -0.02150511505339752,
+        "p95": 0.130427447103518,
+        "p99": 0.15936693760582427,
+        "maximum": 0.17940129611519012
+      },
+      "mujoco": {
+        "count": 10000,
+        "minimum": -0.22322717643112655,
+        "mean": -0.03666429851107533,
+        "rms": 0.1164155186343392,
+        "p50": -0.020750418893868264,
+        "p95": 0.13125473597260529,
+        "p99": 0.16097463718985144,
+        "maximum": 0.17955843969229202
+      },
+      "pcc_minus_mujoco": {
+        "count": 10000,
+        "minimum": -0.10605375750554741,
+        "mean": -0.06690217200297834,
+        "rms": 0.06841828622224091,
+        "p50": -0.0660083843698748,
+        "p95": -0.04608359944746485,
+        "p99": -0.038553148505046174,
+        "maximum": -0.027156188142229268
+      },
+      "capsule_minus_mujoco": {
+        "count": 10000,
+        "minimum": -0.016036278651910322,
+        "mean": 0.00019204015014871444,
+        "rms": 0.003928047930295709,
+        "p50": -0.000125244522924544,
+        "p95": 0.0074588179493778614,
+        "p99": 0.010901202756759397,
+        "maximum": 0.013882893886860745
+      }
+    },
+    "pcc_query_latency_ms": {
+      "count": 10000,
+      "minimum": 1.7558999999991443,
+      "mean": 2.6958265399999988,
+      "rms": 2.7423310255663815,
+      "p50": 2.6973999999988507,
+      "p95": 3.3899050000020026,
+      "p99": 3.647128000001985,
+      "maximum": 11.003500000001054
+    },
+    "passed": true
+  },
+  "online_qp_ab": {
+    "sample_count": 200,
+    "success_count": 200,
+    "qp_failure_count": 0,
+    "task_full_latency_ms": {
+      "count": 200,
+      "minimum": 8.75839999999073,
+      "mean": 11.705018999999766,
+      "rms": 12.370580651004126,
+      "p50": 9.497599999995998,
+      "p95": 19.598989999993677,
+      "p99": 25.485653000001065,
+      "maximum": 30.7383000000101
+    },
+    "shape_clearance_latency_ms": {
+      "count": 200,
+      "minimum": 4.041999999998325,
+      "mean": 4.255628500000128,
+      "rms": 4.258478367451333,
+      "p50": 4.242400000002533,
+      "p95": 4.452115000003687,
+      "p99": 4.534595999987793,
+      "maximum": 5.523499999995352
+    },
+    "pcc_constraint_active_count": 200,
+    "pcc_constraint_binding_count": 199,
+    "capsule_constraint_active_count": 0,
+    "pcc_avoidance_intervention_max": 0.051341831789212936,
+    "enabled_minus_baseline_command_norm": 0.23087364162569463,
+    "mujoco_continuum_target_clearance_m": 0.08399999931272804,
+    "comparison_sample_count": 200,
+    "diagnostic_latency_p95_below_20_ms": true,
+    "latency_gate_source": "diagnostic only; the formal <20 ms gate uses the 6,750-tick five-scenario torque closed loop in regression_report.json",
+    "passed": true
+  },
+  "claim_boundary": "Finite seeded regression evidence over q_c in [-1,1]^10 and six target-pose categories; not a global continuous-time certificate.",
+  "elapsed_wall_time_s": 76.5530443
+}

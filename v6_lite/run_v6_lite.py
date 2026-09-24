@@ -19,7 +19,7 @@ import math
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 import mujoco
 import numpy as np
@@ -42,7 +42,7 @@ from v6_lite.irregular_waypoints import (
     IrregularWaypointTarget,
     build_original_irregular_target,
 )
-
+from v6_lite.pcc_monitor import PCCMonitor
 
 CONTRACT_VERSION = "v6_lite_6"
 TARGET_SATELLITE_COLLISION_POLICY = (
@@ -457,6 +457,11 @@ def run_scenario(
     qvel_write_count_after_initialization = 0
 
     qp = HierarchicalVelocityQP(spec, model, verifier.pairs, qp_config)
+    pcc_monitor = (
+        PCCMonitor(scenario_id=scenario.scenario_id)
+        if qp_config.enable_pcc_cbf or qp_config.enable_capsule_cbf
+        else None
+    )
     task_stride = int(round(run_config.task_period_s / run_config.physics_period_s))
     physics_steps = int(round(run_config.duration_s / run_config.physics_period_s))
     rigid_body_id = _body_id(model, spec.rigid_tip_body_name)
@@ -516,6 +521,20 @@ def run_scenario(
         "rigid_angular_velocity_residual": [],
         "continuum_angular_velocity_residual": [],
         "solver_status": [],
+        "pcc_clearance": [],
+        "capsule_clearance": [],
+        "mujoco_continuum_target_clearance": [],
+        "pcc_active_clearance": [],
+        "capsule_active_clearance": [],
+        "pcc_binding_clearance": [],
+        "capsule_binding_clearance": [],
+        "pcc_avoidance_intervention": [],
+        "pcc_mujoco_distance_error": [],
+        "pcc_mujoco_gradient_error": [],
+        "capsule_mujoco_gradient_error": [],
+        "pcc_closest_segment_id": [],
+        "pcc_closest_arclength": [],
+        "shape_clearance_latency": [],
     }
     task_qpos_trace: list[np.ndarray] = []
     initial_momentum = _robot_momentum(model, data, base_body_id)
@@ -589,6 +608,46 @@ def run_scenario(
                 result.continuum_angular_velocity_residual_rad_s
             )
             task_log["solver_status"].append(result.solver_status)
+            task_log["pcc_clearance"].append(result.pcc_clearance_m)
+            task_log["capsule_clearance"].append(result.capsule_clearance_m)
+            task_log["mujoco_continuum_target_clearance"].append(
+                result.mujoco_continuum_target_clearance_m
+            )
+            task_log["pcc_active_clearance"].append(
+                result.pcc_constraint_active_count
+            )
+            task_log["capsule_active_clearance"].append(
+                result.capsule_constraint_active_count
+            )
+            task_log["pcc_binding_clearance"].append(
+                result.pcc_binding_constraint_count
+            )
+            task_log["capsule_binding_clearance"].append(
+                result.capsule_binding_constraint_count
+            )
+            task_log["pcc_avoidance_intervention"].append(
+                result.pcc_avoidance_intervention
+            )
+            task_log["pcc_mujoco_distance_error"].append(
+                result.pcc_mujoco_distance_error_m
+            )
+            task_log["pcc_mujoco_gradient_error"].append(
+                result.pcc_mujoco_gradient_error_norm
+            )
+            task_log["capsule_mujoco_gradient_error"].append(
+                result.capsule_mujoco_gradient_error_norm
+            )
+            task_log["pcc_closest_segment_id"].append(
+                result.pcc_closest_segment_id
+            )
+            task_log["pcc_closest_arclength"].append(
+                result.pcc_closest_arclength_m
+            )
+            task_log["shape_clearance_latency"].append(
+                result.shape_clearance_latency_s
+            )
+            if pcc_monitor is not None:
+                pcc_monitor.record(current_time, result)
 
         interpolation = float(segment_step + 1) / float(task_stride)
         reference_dq = (
@@ -741,6 +800,17 @@ def run_scenario(
     qp_failure_count = int(np.sum(~task_arrays["success"].astype(bool)))
     binding_count = int(np.sum(task_arrays["binding_clearance"]))
     intervention_max = float(np.max(task_arrays["avoidance_intervention"]))
+    pcc_active_count = int(np.sum(task_arrays["pcc_active_clearance"]))
+    pcc_binding_count = int(np.sum(task_arrays["pcc_binding_clearance"]))
+    capsule_active_count = int(
+        np.sum(task_arrays["capsule_active_clearance"])
+    )
+    capsule_binding_count = int(
+        np.sum(task_arrays["capsule_binding_clearance"])
+    )
+    pcc_intervention_max = float(
+        np.max(task_arrays["pcc_avoidance_intervention"])
+    )
     momentum = arrays["robot_momentum"]
     momentum_drift = float(
         np.max(np.linalg.norm(momentum - initial_momentum[None, :], axis=1))
@@ -801,6 +871,11 @@ def run_scenario(
         initial_qpos=initial_qpos,
         initial_qvel=initial_qvel,
     )
+    monitor_payload = None
+    if pcc_monitor is not None:
+        monitor_payload = pcc_monitor.write(
+            trace_dir.parent / "pcc_monitor" / scenario.scenario_id
+        )
     return {
         "scenario": scenario.to_dict(),
         "passed": bool(all(checks.values())),
@@ -861,6 +936,11 @@ def run_scenario(
                 "minimum_online_queried_clearance_m": float(
                     np.min(task_arrays["minimum_queried_clearance"])
                 ),
+                "pcc_constraint_active_count": pcc_active_count,
+                "pcc_constraint_binding_count": pcc_binding_count,
+                "capsule_constraint_active_count": capsule_active_count,
+                "capsule_constraint_binding_count": capsule_binding_count,
+                "pcc_avoidance_intervention_max": pcc_intervention_max,
             },
             "rates_and_latency": {
                 "physics_hz": 1.0 / float(model.opt.timestep),
@@ -876,6 +956,12 @@ def run_scenario(
                 ),
                 "qp_solver_latency_p95_ms": float(
                     1e3 * np.percentile(task_arrays["solver_latency"], 95.0)
+                ),
+                "shape_clearance_latency_p95_ms": float(
+                    1e3
+                    * np.percentile(
+                        task_arrays["shape_clearance_latency"], 95.0
+                    )
                 ),
                 "torque_latency_p95_ms": 1e3 * torque_latency_p95,
                 "qp_failure_count": qp_failure_count,
@@ -934,6 +1020,9 @@ def run_scenario(
             "contact_response_enabled": False,
             "model_based_inverse_dynamics_used": True,
             "second_online_optimizer_used": False,
+            "pcc_cbf_enabled": qp_config.enable_pcc_cbf,
+            "capsule_cbf_enabled": qp_config.enable_capsule_cbf,
+            "legacy_mujoco_collision_cbf_retained": True,
             "qpos_write_count_after_initialization": qpos_write_count_after_initialization,
             "qvel_write_count_after_initialization": qvel_write_count_after_initialization,
             "collision_scope": (
@@ -944,6 +1033,7 @@ def run_scenario(
             "target_contact_exemption": "collision_0072_and_collision_0073_only",
             "continuous_time_collision_certified": False,
         },
+        "pcc_monitor": monitor_payload,
         "trace": {
             "path": trace_path.as_posix(),
             "sha256": _sha256(trace_path),
@@ -1068,6 +1158,9 @@ def run_suite(
             "free_floating_base": True,
             "reaction_aware_jacobians": True,
             "moving_target_time_varying_clearance_barrier": True,
+            "pcc_shape_clearance_cbf_enabled": qp_config.enable_pcc_cbf,
+            "discrete_capsule_cbf_enabled": qp_config.enable_capsule_cbf,
+            "legacy_mujoco_collision_cbf_retained": True,
             "target_contact_exemption": "collision_0072_and_collision_0073_only",
             "learning_module": None,
         },
@@ -1103,8 +1196,34 @@ def run_suite(
                 item["metrics"]["avoidance"]["binding_constraint_total"]
                 for item in scenario_results
             ),
+            "pcc_constraint_active_count": sum(
+                item["metrics"]["avoidance"]["pcc_constraint_active_count"]
+                for item in scenario_results
+            ),
+            "pcc_constraint_binding_count": sum(
+                item["metrics"]["avoidance"]["pcc_constraint_binding_count"]
+                for item in scenario_results
+            ),
+            "capsule_constraint_active_count": sum(
+                item["metrics"]["avoidance"]["capsule_constraint_active_count"]
+                for item in scenario_results
+            ),
+            "capsule_constraint_binding_count": sum(
+                item["metrics"]["avoidance"]["capsule_constraint_binding_count"]
+                for item in scenario_results
+            ),
+            "pcc_avoidance_intervention_max": max(
+                item["metrics"]["avoidance"]["pcc_avoidance_intervention_max"]
+                for item in scenario_results
+            ),
             "task_full_latency_p95_ms_max": max(
                 item["metrics"]["rates_and_latency"]["task_full_latency_p95_ms"]
+                for item in scenario_results
+            ),
+            "shape_clearance_latency_p95_ms_max": max(
+                item["metrics"]["rates_and_latency"][
+                    "shape_clearance_latency_p95_ms"
+                ]
                 for item in scenario_results
             ),
             "torque_latency_p95_ms_max": max(
@@ -1149,6 +1268,16 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=20260801)
     parser.add_argument("--duration", type=float, default=27.0)
     parser.add_argument("--verification-subdivisions", type=int, default=4)
+    parser.add_argument(
+        "--enable-pcc-cbf",
+        action="store_true",
+        help="enable the V6.1-B finite-radius PCC clearance CBF",
+    )
+    parser.add_argument(
+        "--enable-capsule-cbf",
+        action="store_true",
+        help="enable the V6.1-B actual-chain capsule clearance CBF",
+    )
     return parser
 
 
@@ -1160,7 +1289,14 @@ def main() -> None:
         duration_s=args.duration,
         verification_subdivisions=args.verification_subdivisions,
     )
-    result = run_suite(config, HierarchicalQPConfig(), args.output_dir)
+    result = run_suite(
+        config,
+        HierarchicalQPConfig(
+            enable_pcc_cbf=args.enable_pcc_cbf,
+            enable_capsule_cbf=args.enable_capsule_cbf,
+        ),
+        args.output_dir,
+    )
     print(
         json.dumps(
             {

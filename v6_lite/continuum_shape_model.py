@@ -9,9 +9,9 @@ silently treated as numerical error.
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 import mujoco
 import numpy as np
@@ -97,7 +97,14 @@ def transform_from_free_qpos(free_qpos: np.ndarray) -> np.ndarray:
 
 
 @dataclass(frozen=True)
-class ShapeEvaluation:
+class ContinuumPoint:
+    """PCC pose and differential kinematics at one material arclength.
+
+    ``segment_index`` is zero based.  The compatibility names ``position``
+    and ``rotation`` are retained for V6.1-A; the explicit world-frame names
+    below form the V6.1-B online geometry contract.
+    """
+
     arclength_m: float
     segment_index: int
     segment_arclength_m: float
@@ -105,6 +112,30 @@ class ShapeEvaluation:
     rotation: np.ndarray
     position_jacobian: np.ndarray
     rotation_jacobian: np.ndarray
+
+    @property
+    def position_world(self) -> np.ndarray:
+        return self.position
+
+    @property
+    def rotation_world(self) -> np.ndarray:
+        return self.rotation
+
+    @property
+    def tangent_world(self) -> np.ndarray:
+        return self.rotation[:, 0].copy()
+
+    @property
+    def segment_id(self) -> int:
+        return self.segment_index
+
+    @property
+    def arc_length(self) -> float:
+        return self.arclength_m
+
+
+# Backward-compatible public name used by the frozen V6.1-A audit.
+ShapeEvaluation = ContinuumPoint
 
 
 @dataclass(frozen=True)
@@ -209,7 +240,7 @@ class ContinuumShapeModel:
         arclength: float,
         *,
         with_jacobians: bool = True,
-    ) -> ShapeEvaluation:
+    ) -> ContinuumPoint:
         configuration = np.asarray(planner_configuration, dtype=np.float64)
         if configuration.shape != (CONTINUUM_PLANNER_DOF,) or np.any(
             ~np.isfinite(configuration)
@@ -251,7 +282,7 @@ class ContinuumShapeModel:
                 rotation_jacobian[:, coordinate] = vee(
                     derivative[:3, :3] @ rotation.T
                 )
-        return ShapeEvaluation(
+        return ContinuumPoint(
             arclength_m=float(arclength),
             segment_index=segment_index,
             segment_arclength_m=local_arclength,
@@ -278,6 +309,68 @@ class ContinuumShapeModel:
             )
             for arclength in arclengths
         )
+
+    def batch_query(
+        self,
+        planner_configuration: np.ndarray,
+        base_transform: np.ndarray,
+        arclengths: Iterable[float],
+        *,
+        with_jacobians: bool = False,
+    ) -> tuple[ContinuumPoint, ...]:
+        """Evaluate a deterministic batch of material points.
+
+        The return order exactly follows ``arclengths``.  Keeping each result
+        as a typed object avoids losing its section ownership at boundaries.
+        """
+
+        if with_jacobians:
+            return self.sample(
+                planner_configuration,
+                base_transform,
+                arclengths,
+                with_jacobians=True,
+            )
+        configuration = np.asarray(planner_configuration, dtype=np.float64)
+        if configuration.shape != (CONTINUUM_PLANNER_DOF,) or np.any(
+            ~np.isfinite(configuration)
+        ):
+            raise ValueError("PCC configuration must be finite with shape (10,)")
+        base = validate_transform(base_transform)
+        requested = [float(value) for value in arclengths]
+        prefixes = [base @ self.spec.base_to_shape_start]
+        for segment_index, length in enumerate(self.spec.segment_lengths_m):
+            prefixes.append(
+                prefixes[-1]
+                @ self._section_transform(
+                    configuration[2 * segment_index : 2 * segment_index + 2],
+                    float(length),
+                    float(length),
+                    self.spec.pcc_bending_map,
+                )
+            )
+        results: list[ContinuumPoint] = []
+        for arclength in requested:
+            segment_index, local_arclength = self._segment_location(arclength)
+            local = self._section_transform(
+                configuration[2 * segment_index : 2 * segment_index + 2],
+                float(self.spec.segment_lengths_m[segment_index]),
+                local_arclength,
+                self.spec.pcc_bending_map,
+            )
+            transform = prefixes[segment_index] @ local
+            results.append(
+                ContinuumPoint(
+                    arclength_m=arclength,
+                    segment_index=segment_index,
+                    segment_arclength_m=local_arclength,
+                    position=transform[:3, 3].copy(),
+                    rotation=transform[:3, :3].copy(),
+                    position_jacobian=np.zeros((3, 10), dtype=np.float64),
+                    rotation_jacobian=np.zeros((3, 10), dtype=np.float64),
+                )
+            )
+        return tuple(results)
 
 
 class DiscreteContinuumKinematics:

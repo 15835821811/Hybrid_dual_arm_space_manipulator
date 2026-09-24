@@ -8,14 +8,14 @@ this module is connected to the V6 control command path.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass
-from typing import Any, Sequence
+from typing import Any
 
 import mujoco
 import numpy as np
 
 from v6_lite.continuum_model_spec import (
-    CONTINUUM_ACTUATED_DOF,
     ContinuumModelSpec,
     default_continuum_model_spec,
 )
@@ -350,6 +350,11 @@ def build_continuum_capsule_envelopes(
         and (
             int(model.geom_contype[geom_id])
             or int(model.geom_conaffinity[geom_id])
+            # V6-lite disables contact response before constructing the
+            # controller.  Collision geometry identity must survive that
+            # runtime flag change, so retain explicitly named collision
+            # assets even when both masks have been cleared.
+            or _geom_name(model, geom_id).startswith("collision_")
         )
     ]
     capsules: list[CapsuleEnvelope] = []
@@ -457,7 +462,47 @@ def minimum_capsule_clearance(
     box: OrientedBox,
     *,
     spec: ContinuumModelSpec | None = None,
+    compute_planner_gradient: bool = True,
 ) -> ClearanceResult:
+    if not envelopes.capsules:
+        raise ValueError("capsule envelope set is empty")
+    # The OBB signed-distance field is 1-Lipschitz.  A capsule with axis
+    # midpoint ``m`` and axis half-length ``l`` therefore obeys
+    #
+    #   d(capsule, OBB) >= sd_OBB(m) - l - radius.
+    #
+    # Sort by that cheap certified lower bound and stop once the remaining
+    # bounds cannot beat the best exact segment/OBB query.  This preserves the
+    # exact minimum while avoiding dozens of Python-level piecewise-quadratic
+    # segment queries in a typical 50 Hz control tick.
+    lower_bounds = np.zeros(len(envelopes.capsules), dtype=np.float64)
+    for index, capsule in enumerate(envelopes.capsules):
+        body_rotation = np.asarray(data.xmat[capsule.body_id]).reshape(3, 3)
+        body_position = np.asarray(data.xpos[capsule.body_id])
+        local_midpoint = 0.5 * (capsule.local_start + capsule.local_end)
+        midpoint = body_position + body_rotation @ local_midpoint
+        lower_bounds[index] = (
+            point_obb_signed_distance(midpoint, box).signed_distance_m
+            - 0.5 * capsule.axis_length_m
+            - capsule.radius_m
+        )
+    order = np.argsort(lower_bounds)
+    minimum_index = int(order[0])
+    minimum = capsule_clearance_to_obb(
+        model, data, envelopes.capsules[minimum_index], box
+    )
+    for raw_index in order[1:]:
+        index = int(raw_index)
+        if lower_bounds[index] > minimum.signed_distance_m + 1e-12:
+            break
+        candidate = capsule_clearance_to_obb(
+            model, data, envelopes.capsules[index], box
+        )
+        if candidate.signed_distance_m < minimum.signed_distance_m:
+            minimum = candidate
+            minimum_index = index
+    if not compute_planner_gradient:
+        return minimum
     contract = default_continuum_model_spec() if spec is None else spec
     dof_ids = []
     for joint_name in contract.low_level_joint_names:
@@ -467,16 +512,6 @@ def minimum_capsule_clearance(
         if joint_id < 0:
             raise ValueError(f"missing continuum joint {joint_name!r}")
         dof_ids.append(int(model.jnt_dofadr[joint_id]))
-    values = [
-        capsule_clearance_to_obb(
-            model,
-            data,
-            capsule,
-            box,
-        )
-        for capsule in envelopes.capsules
-    ]
-    minimum_index = int(np.argmin([item.signed_distance_m for item in values]))
     return capsule_clearance_to_obb(
         model,
         data,

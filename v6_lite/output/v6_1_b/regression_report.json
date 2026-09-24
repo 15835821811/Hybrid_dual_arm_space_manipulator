@@ -1,0 +1,59 @@
+{
+  "contract_version": "v6.1-b.regression.1",
+  "passed": true,
+  "checks": {
+    "formal_pcc_audit_passes": true,
+    "baseline_suite_passes": true,
+    "baseline_independent_validation_is_26_of_26": true,
+    "baseline_qp_failure_count_is_zero": true,
+    "enabled_suite_passes": true,
+    "enabled_independent_validation_is_26_of_26": true,
+    "enabled_qp_failure_count_is_zero": true,
+    "enabled_task_latency_p95_below_20_ms": true,
+    "pcc_constraint_activates": true,
+    "pcc_changes_the_command": true,
+    "enabled_real_mujoco_clearance_above_5_mm": true,
+    "five_scenario_monitor_is_complete": true
+  },
+  "baseline": {
+    "mode": "enable_pcc_cbf=False, enable_capsule_cbf=False",
+    "scenario_count": 5,
+    "validation_checks": "26/26",
+    "qp_failure_count": 0,
+    "task_full_latency_p95_ms": 14.99930499121546,
+    "continuum_target_500hz_minimum_clearance_m": 0.024960121185098876
+  },
+  "enabled_control": {
+    "mode": "enable_pcc_cbf=True, enable_capsule_cbf=True",
+    "scenario_count": 5,
+    "validation_checks": "26/26",
+    "qp_failure_count": 0,
+    "task_full_latency_p95_ms": 18.089304945897307,
+    "shape_clearance_latency_p95_ms": 5.336664943024516,
+    "pcc_constraint_active_count": 3718,
+    "pcc_constraint_binding_count": 202,
+    "capsule_constraint_active_count": 579,
+    "capsule_constraint_binding_count": 0,
+    "pcc_avoidance_intervention_max": 0.04945911991101722,
+    "continuum_target_500hz_minimum_clearance_m": 0.07852971607392621
+  },
+  "ab_interpretation": "The default-off run preserves the frozen V6-lite acceptance behavior. The enabled run enters the same single 50 Hz QP and 500 Hz torque loop, activates PCC constraints, changes the command, and remains clear under independent MuJoCo replay.",
+  "artifacts": {
+    "pcc_audit": "pcc_audit.json",
+    "clearance_compare": "clearance_compare.json",
+    "regression_report": "regression_report.json",
+    "plots": [
+      "plots/distance_comparison.png",
+      "plots/gradient_comparison.png",
+      "plots/minimum_clearance_comparison.png"
+    ]
+  },
+  "local_reproduction_sources": {
+    "versioned": false,
+    "reason": "raw A/B traces are reproducible and total about 275 MB",
+    "baseline_metrics": "baseline_root/output/v6_lite_metrics.json",
+    "baseline_validation": "baseline_root/output/validation.json",
+    "enabled_metrics": "enabled_root/output/v6_lite_metrics.json",
+    "enabled_validation": "enabled_root/output/validation.json"
+  }
+}

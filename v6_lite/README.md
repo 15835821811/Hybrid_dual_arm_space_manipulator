@@ -31,13 +31,26 @@ V6-lite 是一个单独目录内的最小闭环实现。它不加载训练集、
 - 500 Hz 执行层对相邻 QP 速度指令做 20 ms 线性斜坡，再用质量矩阵消去未驱动基座加速度，形成临界阻尼的模型补偿力矩。该层没有第二个优化器。
 - 每个 20 ms 任务周期只调用一次 QP；若求解失败只允许安全停止，不调用 oracle。是否出现失败或安全停止由当前合同的正式五场景结果与独立验证决定。
 
-## V6.1-A 只读臂形与几何审计
+## V6.1-A 臂形与几何审计
 
 V6.1-A 在冻结 `v6_lite_6` 控制路径的前提下新增：版本化连续体模型合同、URDF 一致的 60 关节离散 FK、5 段解析 PCC 任意弧长 `p,R,Jp,JR`、61 个实际几何胶囊与安装座原几何兜底、移动卫星 OBB 净空，以及 PCC/胶囊/MuJoCo 三方影子对照。
 
 正式审计使用 10,000 个构型（含直态、单轴、双轴、段间反向弯曲、边界和冻结随机样本）以及 10,000 个目标相对位姿（盒面、盒棱、盒角、旋转、中段擦碰和主动穿透）。全部报告通过；胶囊和 PCC 管体在该有限集合上的假安全计数均为 0。PCC 全臂位置近似误差 p95/最大值为 43.040812/55.390652 mm，说明它不能未经膨胀就替代实际几何。
 
-这些模块没有被 QP 或力矩运行路径导入。在线安全责任仍属于原 MuJoCo 几何 CBF；V6.1-A 的零漏报是有限回归证据，不是全状态域或连续时间证书。完整说明见 `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md`。
+在冻结的 `v6.1-a` 分支中，这些模块不进入 QP 或力矩运行路径；该阶段的零漏报是有限回归证据，不是全状态域或连续时间证书。完整说明见 `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md`。
+
+## V6.1-B PCC/胶囊 CBF（默认关闭）
+
+V6.1-B 把任意弧长 PCC 管体净空和实际离散链胶囊净空加入原 17 维单一 QP。受控距离 Jacobian同时包含前 10 维内部形变和所有 17 维动作引起的自由基座反作用；目标卫星平移/旋转仍作为外生距离漂移。原 2,927 对 MuJoCo 几何 CBF 全部保留。
+
+使用 `--enable-pcc-cbf --enable-capsule-cbf` 启用；不传参数即为 V6-lite 基线。当前正式 A/B 结果为：
+
+| 模式 | 独立验证 | QP 失败 | 50 Hz 全链 p95 最差值 | 连续体—卫星 500 Hz 最小间隙 |
+| --- | ---: | ---: | ---: | ---: |
+| 默认关闭 | 26/26 | 0 | 14.999305 ms | 24.960121 mm |
+| PCC+胶囊启用 | 26/26 | 0 | 18.089305 ms | 78.529716 mm |
+
+启用版 PCC 约束激活 3,718 次、绑定 202 次，最大避障干预 0.049459；10,000 个臂形/卫星相对位姿审计中 PCC 与胶囊假安全均为 0。详见 `docs/V6_1B_PCC_CBF_INTEGRATION.md` 和 `output/v6_1_b/`。
 
 ## 固定验收门槛
 
@@ -66,6 +79,10 @@ python -m v6_lite.validate_v6_lite
 python -m unittest v6_lite.test_v6_lite v6_lite.test_target_collision_policy -v
 python -m v6_lite.audit_v6_1a
 python -m unittest v6_lite.test_continuum_shape_model v6_lite.test_shape_clearance v6_lite.test_v6_1a_artifacts -v
+python -m v6_lite.audit_v6_1_b
+python -m v6_lite.run_v6_lite --output-dir v6_lite/output/v6_1_b/enabled_root/output --enable-pcc-cbf --enable-capsule-cbf
+python -m v6_lite.finalize_v6_1_b
+python -m unittest v6_lite.test_v6_1_b -v
 ```
 
 权威结果是 `output/v6_lite_metrics.json`；`output/validation.json` 从保存的力矩序列重放全部 MuJoCo 步，重新计算末端位置、末端姿态和基座漂移。碰撞审计包含两条互补路径：对 50 Hz `task_qpos` 做 4 倍构型细分的整机离散验证，以及对包括初始状态在内的全部原生 500 Hz 重放状态逐一扫描 62 个 `continuum_target` pair。验证器还重算 pair 数量与策略 SHA-256，检查目标漂移/白名单元数据；`output/artifact_manifest.json` 绑定指标和 trace。

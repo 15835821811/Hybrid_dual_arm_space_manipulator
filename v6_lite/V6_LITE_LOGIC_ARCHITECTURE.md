@@ -1,6 +1,6 @@
 # V6-lite 全逻辑架构、建模、控制与输入输出说明
 
-> 代码与静态合同审计日期：2026-09-21  
+> 代码与静态合同审计日期：2026-09-24
 > 当前运行合同：`v6_lite_6`  
 > 本文只描述仓库中已经实现并有代码/产物支持的功能。
 
@@ -439,4 +439,23 @@ MuJoCo 62 个 continuum_target collision geoms ─┴→ 三方距离/梯度/漏
 
 正式 V6.1-A 报告覆盖 10,000 个臂形构型和 10,000 个目标相对位姿。离散 FK 对 MuJoCo 最大位置/姿态误差为 `4.920180e-15 m` / `1.154239e-7 rad`；胶囊和 PCC 管体的有限测试假安全计数均为 0。PCC 对离散链的全臂位置差 p95/最大值为 `43.040812/55.390652 mm`，该模型差异已计入标定包络并独立报告，不能与 PCC 导数误差混为一谈。
 
-实现与结果入口为 `continuum_model_spec.py`、`continuum_shape_model.py`、`shape_clearance.py`、`audit_v6_1a.py` 及 `output/v6_1a/`。更完整的责任归属、半径和证据边界见 `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md`。把该净空约束接入控制属于 V6.1-B。
+实现与结果入口为 `continuum_model_spec.py`、`continuum_shape_model.py`、`shape_clearance.py`、`audit_v6_1a.py` 及 `output/v6_1a/`。更完整的责任归属、半径和证据边界见 `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md`。
+
+## 14. V6.1-B 可选 PCC/胶囊 CBF 控制扩展
+
+V6.1-B 保持本文件第 1–12 节的 V6-lite 基线结构，并在同一个 50 Hz QP 中追加两类默认关闭的臂形安全行：
+
+1. `PCCClearanceEvaluator` 对 5 段 PCC 管体和移动卫星 OBB 做粗搜索与候选段局部细化，返回最近段、弧长、点、法向、半径、净空及 10 维内部形变梯度。
+2. `minimum_capsule_clearance` 对实际 60 关节离散链的 61 个有限半径胶囊求精确最近距离；1-Lipschitz 宽相位只剔除不可能成为最小值的候选，不改变精确结果。
+3. PCC 受控梯度为 `nᵀJ_base-point G + [nᵀJp(s*),0_1×7]`；胶囊梯度为 `nᵀJ_arm-point G`。
+4. 移动卫星平移和旋转形成 `d_dot_T=-nᵀJ_target-point qvel_T^exo`，并进入 `A qdot >= -γ(d-d_safe)-d_dot_T`。
+5. `_build_all_clearance_constraints()` 合并原 MuJoCo、PCC 和胶囊行；原 MuJoCo CBF 从未删除。
+6. `PCCMonitor` 每个任务 tick 记录 `d_pcc/d_capsule/d_mujoco`、距离/梯度误差、激活/绑定计数、干预量、最近段/弧长和几何时延。
+
+启用开关为：
+
+```powershell
+python -m v6_lite.run_v6_lite --enable-pcc-cbf --enable-capsule-cbf
+```
+
+默认关闭与双约束启用的五场景都通过独立 `26/26` 验证，QP 失败均为 0；启用版 50 Hz 全链 p95 最差值为 `18.089305 ms`，PCC 激活/绑定为 `3718/202`，原生 500 Hz 连续体—目标卫星最小 MuJoCo 间隙为 `78.529716 mm`。完整公式、A/B 数值和证据边界见 `docs/V6_1B_PCC_CBF_INTEGRATION.md`。
