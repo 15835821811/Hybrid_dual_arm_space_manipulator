@@ -52,6 +52,8 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | `v6_lite/output/` | 正式指标、5 个完整 trace、验证报告和哈希清单 |
 | `v6_lite/visualization/output/` | 六面板误差图、三维路径图、基座漂移 GIF、五个单视角视频、组合视频及预览图 |
 | `v6_lite/visualization/continuum_focus_output/` | 连续体一侧专用视频、预览图及 manifest |
+| `v6_lite/visualization/output_v6_1_b/` | V6.1-B 启用版新生成的全套图、GIF、五视角视频、预览图和 22/22 校验 |
+| `v6_lite/visualization/continuum_focus_output_v6_1_b/` | V6.1-B 连续体单侧视频及预览图 |
 | `docs/DERIVATION_PACKAGE.md` | PCC 臂形曲线、臂体—卫星距离、时变 CBF 推导和相关文献 |
 | `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md` | V6.1-A 实现、正式数值、产物和证据边界 |
 | `docs/V6_1B_PCC_CBF_INTEGRATION.md` | V6.1-B 几何、广义距离 Jacobian、CBF、A/B 与正式结果 |
@@ -96,6 +98,17 @@ python -m unittest v6_lite.test_v6_1_b -v
 完整五场景运行会重新生成约 140 MB 的 trace，并进行密集距离计算，因此耗时明显高于单元测试。仓库已经包含当前正式 trace，可直接运行独立验证。
 
 ## 可视化
+
+V6.1-B 启用版最新可视化使用 `v6_lite/output/v6_1_b/enabled_root/output/` 中的正式五场景 trace；目录 `visualization/output/` 保留 V6-lite 稳定版的旧图和视频。完整的 V6.1-B 图与视频清单见 [visualization_manifest.json](v6_lite/visualization/output_v6_1_b/visualization_manifest.json)，独立校验为 [22/22](v6_lite/visualization/output_v6_1_b/visualization_validation.json)。
+
+![V6.1-B 六面板误差总图](v6_lite/visualization/output_v6_1_b/error_curves.png)
+
+![V6.1-B 双臂三维路径图](v6_lite/visualization/output_v6_1_b/tracking_paths_3d.png)
+
+- [V6.1-B 五视角组合视频](v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_five_view_grid.mp4)
+- [V6.1-B 连续体单侧视频](v6_lite/visualization/continuum_focus_output_v6_1_b/videos/v6_lite_scenario_00_continuum_focus.mp4)
+
+以下命令重建 V6-lite 稳定版可视化：
 
 ```bash
 python -m v6_lite.visualization.generate_visualizations

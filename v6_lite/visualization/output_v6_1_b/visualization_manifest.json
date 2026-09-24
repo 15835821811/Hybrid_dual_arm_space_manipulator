@@ -1,0 +1,186 @@
+{
+  "contract_version": "v6_lite_visualization_6",
+  "source_contract_version": "v6_lite_6",
+  "source_metrics": "v6_lite/output/v6_1_b/enabled_root/output/v6_lite_metrics.json",
+  "source_metrics_sha256": "52e063e3fd37d42ef602465395abc7b53ea6855e9b10329310f8b2b46f57e337",
+  "video": {
+    "scenario_id": "v6_lite_scenario_00",
+    "source_trace": "v6_lite/output/v6_1_b/enabled_root/output/traces/v6_lite_scenario_00.npz",
+    "source_trace_sha256": "816e5f25e165b80c7588d968ffe4ca5c86c3c2c8174197be2269822b679a0e97",
+    "fps": 30.0,
+    "width": 640,
+    "height": 480,
+    "frame_count": 811,
+    "duration_s": 26.999999999995914,
+    "camera_lookat_m": [
+      0.9636744407419962,
+      -0.1860229148862994,
+      -0.11266143145581137
+    ],
+    "camera_distance_m": 2.480143542510559,
+    "views": [
+      "overview",
+      "front",
+      "side",
+      "top",
+      "iso"
+    ],
+    "coordinate_frames": {
+      "axis_color_order": [
+        "x_red",
+        "y_green",
+        "z_blue"
+      ],
+      "target_axis_length_m": 0.16,
+      "end_effector_axis_length_m": 0.1,
+      "waypoint_axis_length_m": 0.055,
+      "waypoint_labels_rendered": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7"
+      ],
+      "waypoint_label_view": "front",
+      "continuum_end_effector_body_name": "link_30",
+      "continuum_end_effector_local_offset_body_m": [
+        0.0475,
+        0.0,
+        0.0
+      ],
+      "continuum_end_effector_position_source": "trace_body_origin_plus_rotated_local_offset",
+      "base_initial_axis_length_m": 0.145,
+      "base_current_axis_length_m": 0.115,
+      "target_style": "long_translucent_arrows",
+      "end_effector_style": "short_opaque_arrows",
+      "frames_rendered": [
+        "rigid_grasp_target",
+        "rigid_end_effector",
+        "continuum_irregular_target",
+        "continuum_end_effector",
+        "free_base_initial_pose",
+        "free_base_current_pose",
+        "continuum_waypoint_frames_W1_to_W7"
+      ]
+    },
+    "overlay_metrics": [
+      "rigid_position_error_mm",
+      "continuum_position_error_mm",
+      "rigid_orientation_error_deg",
+      "continuum_orientation_error_deg",
+      "base_translation_drift_mm",
+      "base_attitude_drift_deg",
+      "online_whole_body_clearance_mm",
+      "dense_discrete_continuum_target_minimum_clearance_mm"
+    ],
+    "marker_legend": {
+      "rigid_target": "yellow sphere",
+      "rigid_tip": "blue sphere",
+      "continuum_target": "green sphere",
+      "continuum_tip": "cyan sphere",
+      "workspace_obstacles": "orange translucent spheres"
+    }
+  },
+  "safety_clearance_plot": {
+    "path": "v6_lite/visualization/output_v6_1_b/safety_clearance_summary.png",
+    "quantities": [
+      "whole_body_minimum_clearance_m",
+      "continuum_target_minimum_clearance_m"
+    ],
+    "time_scope": "dense_discrete_replay_over_each_complete_run",
+    "scenario_ids": [
+      "v6_lite_scenario_00",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_04"
+    ],
+    "whole_body_minimum_clearance_m": [
+      0.014999743743077797,
+      0.01500012559494784,
+      0.014999899535380825,
+      0.014997746887558628,
+      0.015000083758661555
+    ],
+    "continuum_target_minimum_clearance_m": [
+      0.07881186659875537,
+      0.0787317679552773,
+      0.07868350041406628,
+      0.07852984989820093,
+      0.07865451067883919
+    ],
+    "verification_gate_m": 0.005,
+    "continuum_target_qp_nominal_margin_m": 0.025,
+    "rigid_target_qp_nominal_margin_m": 0.005
+  },
+  "base_pose_drift_gif": {
+    "path": "v6_lite/visualization/output_v6_1_b/base_pose_drift.gif",
+    "fps": 5,
+    "frame_count": 136,
+    "duration_s": 27.2,
+    "quantities": [
+      "base_translation_drift_mm",
+      "base_attitude_drift_deg"
+    ],
+    "scenario_count": 5
+  },
+  "artifacts": [
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/error_curves.png",
+      "sha256": "3c6c442a81ceac701fd62862743d6edded1675cdb94fca25792ae2e6affede95",
+      "bytes": 809915
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/tracking_paths_3d.png",
+      "sha256": "2a9d90ce729f13b7ed0adfc760ed31281769315ded32d5cc60625b3e1a25b8b8",
+      "bytes": 544768
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/safety_clearance_summary.png",
+      "sha256": "d1c9c85221194f3799bc4d7bd8727b2f92cd656dced797e2accc781ea80bfce9",
+      "bytes": 164433
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/base_pose_drift.gif",
+      "sha256": "40e5496487c50b97dcdfa84834010a7654a5e62b03e64f815d9d94e4f2288536",
+      "bytes": 1680362
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_five_view_preview.png",
+      "sha256": "488677e482e3f92ecf5449d1328156028fdc48f38e1928e1c2eca22354c6de3c",
+      "bytes": 384171
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_overview.mp4",
+      "sha256": "4830ca0aab3d475033f902e6380bb55b64d42f682c3780ef0a8f4b58fd6a39c6",
+      "bytes": 543114
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_front.mp4",
+      "sha256": "ebf820cecb4dd597eef06a30e12f8ef1c365f77a5425c716d14b4074041f8b4d",
+      "bytes": 726736
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_side.mp4",
+      "sha256": "0f315f1c5753181e317eb1a896227725aa27b667edfb0933e606efaa1756ff3b",
+      "bytes": 553817
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_top.mp4",
+      "sha256": "3a9a0126e33469626b4b4fccc75d11386d4a07ecb8ed895e3f623f7ddbd732fb",
+      "bytes": 660430
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_iso.mp4",
+      "sha256": "1f0903424862c45421ee8008c44dc31bcf547fe88791922c29a4e63ce09bcb37",
+      "bytes": 459671
+    },
+    {
+      "path": "v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_five_view_grid.mp4",
+      "sha256": "63faa6cf07d1774f894daaf404fc070027d3b3f1af0763fc3c7a88590d587487",
+      "bytes": 2507197
+    }
+  ]
+}

@@ -188,7 +188,7 @@ def plot_clearance_summary(
         axis.legend(frameon=False, loc="best")
         axis.set_ylim(
             0.0,
-            max(float(np.max(values_mm)), verification_gate_mm) * 1.22 + 1.0,
+            max(float(np.max(values_mm)), verification_gate_mm) * 1.4 + 1.0,
         )
     axes[1].axhline(
         continuum_qp_margin_mm,
@@ -207,7 +207,7 @@ def plot_clearance_summary(
             verification_gate_mm,
             continuum_qp_margin_mm,
         )
-        * 1.22
+        * 1.4
         + 1.0,
     )
     axes[1].legend(frameon=False, loc="best")

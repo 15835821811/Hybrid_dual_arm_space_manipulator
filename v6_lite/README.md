@@ -93,6 +93,10 @@ python -m unittest v6_lite.test_v6_1_b -v
 
 ## 跟踪可视化与五视角视频
 
+V6.1-B 启用版的最新整套可视化位于 `visualization/output_v6_1_b/`，连续体单侧视频位于 `visualization/continuum_focus_output_v6_1_b/`。它们从本次启用版的五场景 trace 生成，图像、五个视角视频、组合视频共 11 个清单产物，并通过 22/22 项可视化校验。`visualization/output/` 与 `visualization/continuum_focus_output/` 保留此前 V6-lite 稳定版产物。
+
+V6.1-B 的 PCC、胶囊、MuJoCo 距离与梯度对照另见 `output/v6_1_b/plots/`，对应 `pcc_audit.json`、`clearance_compare.json` 和 `regression_report.json`。
+
 ```powershell
 python -m v6_lite.visualization.generate_visualizations
 python -m v6_lite.visualization.validate_visualizations
