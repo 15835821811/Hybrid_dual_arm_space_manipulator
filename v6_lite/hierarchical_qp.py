@@ -36,6 +36,7 @@ from v6_lite.continuum_shape_model import (
     transform_from_free_qpos,
 )
 from v6_lite.pcc_clearance import PCCClearanceEvaluator
+from v6_lite.execution_ramp import ramp_mean_weights
 from v6_lite.safety_contract import ActionValidation, validate_action
 from v6_lite.shape_clearance import (
     CapsuleEnvelopeSet,
@@ -89,6 +90,7 @@ class HierarchicalQPConfig:
     feasibility_tolerance: float = 1e-4
     clearance_rate_tolerance_m_s: float = 1e-4
     velocity_tolerance_rad_s: float = 1e-4
+    lookahead_model_margin_m_s: float = 0.005
     admm_rho: float = 50.0
     admm_sigma: float = 1e-6
     admm_relaxation: float = 1.8
@@ -126,6 +128,7 @@ class HierarchicalQPConfig:
             self.feasibility_tolerance,
             self.clearance_rate_tolerance_m_s,
             self.velocity_tolerance_rad_s,
+            self.lookahead_model_margin_m_s,
             self.admm_rho,
             self.admm_sigma,
             self.admm_relaxation,
@@ -167,6 +170,16 @@ class HierarchicalQPResult:
     planner_velocity: np.ndarray | None
     solver_candidate: np.ndarray
     action_validation: ActionValidation
+    clearance_matrix: np.ndarray
+    clearance_lower: np.ndarray
+    clearance_sources: tuple[str, ...]
+    velocity_lower: np.ndarray
+    velocity_upper: np.ndarray
+    clearance_distance_m: np.ndarray
+    clearance_target_drift_m_s: np.ndarray
+    clearance_barrier_gain_s_inv: np.ndarray
+    lookahead_matrix: np.ndarray
+    lookahead_lower: np.ndarray
     # Legacy diagnostics below evaluate solver_candidate. A rejected candidate
     # is never substituted with a zero command or reported as executed.
     success: bool
@@ -186,6 +199,8 @@ class HierarchicalQPResult:
     minimum_queried_clearance_m: float
     active_clearance_constraint_count: int
     binding_clearance_constraint_count: int
+    instantaneous_binding_constraint_count: int
+    lookahead_binding_constraint_count: int
     minimum_constraint_slack: float
     unconstrained_to_command_norm: float
     reaction_momentum_residual_norm: float
@@ -221,6 +236,9 @@ class _ClearanceConstraintSet:
     matrix: np.ndarray
     lower: np.ndarray
     sources: tuple[str, ...]
+    distances_m: np.ndarray
+    target_drifts_m_s: np.ndarray
+    barrier_gains_s_inv: np.ndarray
     minimum_clearance_m: float
     degenerate_gradient_count: int
     mujoco_continuum_target_distance_m: float
@@ -501,6 +519,9 @@ class HierarchicalVelocityQP:
         rows: list[np.ndarray] = []
         lowers: list[float] = []
         sources: list[str] = []
+        distances: list[float] = []
+        drifts: list[float] = []
+        gains: list[float] = []
         minimum = float("inf")
         degenerate = 0
         target_minimum = float("inf")
@@ -571,6 +592,9 @@ class HierarchicalVelocityQP:
                 @ target_exogenous_qvel
             )
             rows.append(np.asarray(distance_gradient, dtype=np.float64))
+            distances.append(distance)
+            drifts.append(target_distance_rate)
+            gains.append(cfg.clearance_barrier_gain)
             sources.append(
                 f"mujoco:{pair.pair_class}:{pair.geom_a_name}:{pair.geom_b_name}"
             )
@@ -598,6 +622,9 @@ class HierarchicalVelocityQP:
             matrix=matrix,
             lower=np.asarray(lowers, dtype=np.float64),
             sources=tuple(sources),
+            distances_m=np.asarray(distances, dtype=np.float64),
+            target_drifts_m_s=np.asarray(drifts, dtype=np.float64),
+            barrier_gains_s_inv=np.asarray(gains, dtype=np.float64),
             minimum_clearance_m=float(minimum),
             degenerate_gradient_count=int(degenerate),
             mujoco_continuum_target_distance_m=float(target_minimum),
@@ -751,6 +778,9 @@ class HierarchicalVelocityQP:
         rows = [row.copy() for row in mujoco_block.matrix]
         lowers = mujoco_block.lower.tolist()
         sources = list(mujoco_block.sources)
+        distances = mujoco_block.distances_m.tolist()
+        drifts = mujoco_block.target_drifts_m_s.tolist()
+        gains = mujoco_block.barrier_gains_s_inv.tolist()
         minimum = mujoco_block.minimum_clearance_m
         pcc: _ShapeClearanceKinematics | None = None
         capsule: _ShapeClearanceKinematics | None = None
@@ -766,6 +796,9 @@ class HierarchicalVelocityQP:
                     - pcc.target_distance_rate_m_s
                 )
                 sources.append(pcc.source_name)
+                distances.append(pcc.distance_m)
+                drifts.append(pcc.target_distance_rate_m_s)
+                gains.append(self.config.pcc_clearance_barrier_gain)
         if self.config.enable_capsule_cbf:
             capsule = self._capsule_clearance_kinematics(data, generalized_map)
             minimum = min(minimum, capsule.distance_m)
@@ -780,6 +813,9 @@ class HierarchicalVelocityQP:
                     - capsule.target_distance_rate_m_s
                 )
                 sources.append(capsule.source_name)
+                distances.append(capsule.distance_m)
+                drifts.append(capsule.target_distance_rate_m_s)
+                gains.append(self.config.capsule_clearance_barrier_gain)
         shape_latency = time.perf_counter() - shape_started
         matrix = (
             np.vstack(rows)
@@ -790,6 +826,9 @@ class HierarchicalVelocityQP:
             matrix=matrix,
             lower=np.asarray(lowers, dtype=np.float64),
             sources=tuple(sources),
+            distances_m=np.asarray(distances, dtype=np.float64),
+            target_drifts_m_s=np.asarray(drifts, dtype=np.float64),
+            barrier_gains_s_inv=np.asarray(gains, dtype=np.float64),
             minimum_clearance_m=float(minimum),
             degenerate_gradient_count=(
                 mujoco_block.degenerate_gradient_count
@@ -1096,12 +1135,31 @@ class HierarchicalVelocityQP:
         def gradient(value: np.ndarray) -> np.ndarray:
             return hessian @ value + linear
 
-        matrix = np.vstack([clearance_matrix, np.eye(17)])
-        constraint_lower = np.concatenate([clearance_lower, lower])
+        start_velocity = (
+            self.previous_velocity if ramp_start_velocity is None
+            else np.asarray(ramp_start_velocity, dtype=np.float64)
+        )
+        old_weight, new_weight = ramp_mean_weights()
+        gain_dt = clearance_block.barrier_gains_s_inv * cfg.task_period_s
+        # Frozen-row prediction over the exact ten reference velocities. The
+        # original clearance rows remain unchanged in this same 17-D QP.
+        lookahead_matrix = clearance_matrix * (1.0 + gain_dt * new_weight)[:, None]
+        lookahead_lower = (
+            clearance_lower
+            - gain_dt * (
+                old_weight * (clearance_matrix @ start_velocity)
+                + clearance_block.target_drifts_m_s
+            )
+            + cfg.lookahead_model_margin_m_s
+        )
+        matrix = np.vstack([clearance_matrix, lookahead_matrix, np.eye(17)])
+        constraint_lower = np.concatenate([clearance_lower, lookahead_lower, lower])
         constraint_upper = np.concatenate(
-            [np.full(clearance_lower.shape, np.inf), upper]
+            [np.full(clearance_lower.shape, np.inf),
+             np.full(lookahead_lower.shape, np.inf), upper]
         )
         constraint_keys = [str(source) for source in clearance_sources]
+        constraint_keys.extend(f"lookahead:{source}" for source in clearance_sources)
         constraint_keys.extend(f"planner_velocity_bound:{index}" for index in range(17))
         initial_dual = np.asarray(
             [self._previous_constraint_dual.get(key, 0.0) for key in constraint_keys],
@@ -1133,14 +1191,19 @@ class HierarchicalVelocityQP:
             capsule_binding = 0
         bound_slack = float(min(np.min(candidate - lower), np.min(upper - candidate)))
         minimum_slack = min(minimum_slack, bound_slack)
+        lookahead_slacks = lookahead_matrix @ candidate - lookahead_lower
+        lookahead_binding = int(np.sum(lookahead_slacks <= 2e-5))
+        instantaneous_binding = binding
+        binding += lookahead_binding
         validation = validate_action(
             candidate=candidate,
             solver_feasible=success,
             solver_status=solver_status,
-            start_velocity=(self.previous_velocity if ramp_start_velocity is None
-                            else np.asarray(ramp_start_velocity, dtype=np.float64)),
+            start_velocity=start_velocity,
             clearance_matrix=clearance_matrix,
             clearance_lower=clearance_lower,
+            lookahead_matrix=lookahead_matrix,
+            lookahead_lower=lookahead_lower,
             velocity_lower=lower,
             velocity_upper=upper,
             now_s=float(data.time),
@@ -1209,6 +1272,16 @@ class HierarchicalVelocityQP:
             planner_velocity=validation.selected_command,
             solver_candidate=candidate.copy(),
             action_validation=validation,
+            clearance_matrix=clearance_matrix.copy(),
+            clearance_lower=clearance_lower.copy(),
+            clearance_sources=tuple(str(source) for source in clearance_sources),
+            velocity_lower=lower.copy(),
+            velocity_upper=upper.copy(),
+            clearance_distance_m=clearance_block.distances_m.copy(),
+            clearance_target_drift_m_s=clearance_block.target_drifts_m_s.copy(),
+            clearance_barrier_gain_s_inv=clearance_block.barrier_gains_s_inv.copy(),
+            lookahead_matrix=lookahead_matrix.copy(),
+            lookahead_lower=lookahead_lower.copy(),
             success=success,
             solver_status=solver_status,
             solver_iterations=int(solver_iterations),
@@ -1241,6 +1314,8 @@ class HierarchicalVelocityQP:
             minimum_queried_clearance_m=float(minimum_clearance),
             active_clearance_constraint_count=int(clearance_matrix.shape[0]),
             binding_clearance_constraint_count=binding,
+            instantaneous_binding_constraint_count=instantaneous_binding,
+            lookahead_binding_constraint_count=lookahead_binding,
             minimum_constraint_slack=minimum_slack,
             unconstrained_to_command_norm=(
                 float(np.linalg.norm(validation.selected_command - unconstrained))

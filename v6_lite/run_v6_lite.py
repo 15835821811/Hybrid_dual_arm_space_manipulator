@@ -17,6 +17,7 @@ import hashlib
 import json
 import math
 import time
+from collections import deque
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -43,13 +44,22 @@ from v6_lite.irregular_waypoints import (
     build_original_irregular_target,
 )
 from v6_lite.pcc_monitor import PCCMonitor
+from v6_lite.execution_ramp import advance_reference
 from v6_lite.safety_contract import ActionValidation, FailureReason, command_is_current
 
-CONTRACT_VERSION = "v6_2_a_safety_contract"
+CONTRACT_VERSION = "v6_2_a1_ramp_aware_qp"
 
 
 class UncertifiedExecutionError(RuntimeError):
     """No currently validated command is available for the next servo step."""
+
+
+@dataclass(frozen=True)
+class ServoDiagnostics:
+    acceleration_unclipped_max_rad_s2: float
+    acceleration_clip_count: int
+    torque_unclipped_max_nm: float
+    torque_saturation_count: int
 TARGET_SATELLITE_COLLISION_POLICY = (
     "continuum_base_and_noncontact_rigid_geometries_in_hard_clearance_gate;"
     "rigid_terminal_contact_geometries_explicitly_exempt_for_commanded_surface_grasp"
@@ -153,6 +163,86 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _config_sha256(run_config: V6LiteRunConfig, qp_config: HierarchicalQPConfig) -> str:
+    payload = json.dumps(
+        {"run": asdict(run_config), "qp": asdict(qp_config)},
+        sort_keys=True, separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _constraint_snapshot(
+    result: Any, data: mujoco.MjData, reference_q: np.ndarray,
+    old_command: np.ndarray,
+) -> dict[str, Any]:
+    matrix = result.clearance_matrix
+    lower = result.clearance_lower
+    candidate = result.solver_candidate
+    return {
+        "time_s": float(data.time),
+        "qpos": np.asarray(data.qpos).tolist(),
+        "qvel": np.asarray(data.qvel).tolist(),
+        "ctrl_before_solve": np.asarray(data.ctrl).tolist(),
+        "reference_q_state": reference_q.tolist(),
+        "old_command": old_command.tolist(),
+        "solver_candidate": candidate.tolist(),
+        "selected_command": (
+            result.planner_velocity.tolist() if result.planner_velocity is not None else None
+        ),
+        "solver_status": result.solver_status,
+        "execution_mode": result.action_validation.mode.value,
+        "failure_reason": result.action_validation.failure_reason.value,
+        "velocity_lower": result.velocity_lower.tolist(),
+        "velocity_upper": result.velocity_upper.tolist(),
+        "rows": [
+            {
+                "source": source,
+                "gradient_m_per_rad": matrix[index].tolist(),
+                "lower_m_s": float(lower[index]),
+                "distance_m": float(result.clearance_distance_m[index]),
+                "target_drift_m_s": float(result.clearance_target_drift_m_s[index]),
+                "barrier_gain_s_inv": float(result.clearance_barrier_gain_s_inv[index]),
+                "old_command_residual_m_s": float(matrix[index] @ old_command - lower[index]),
+                "candidate_residual_m_s": float(matrix[index] @ candidate - lower[index]),
+                "lookahead_gradient_m_per_rad": result.lookahead_matrix[index].tolist(),
+                "lookahead_lower_m_s": float(result.lookahead_lower[index]),
+                "lookahead_candidate_residual_m_s": float(
+                    result.lookahead_matrix[index] @ candidate - result.lookahead_lower[index]
+                ),
+            }
+            for index, source in enumerate(result.clearance_sources)
+        ],
+    }
+
+
+def _cross_cycle_report(snapshots: list[dict[str, Any]]) -> dict[str, Any]:
+    current = snapshots[-1]
+    if not current["rows"]:
+        return {"dominant_source": None, "reason": "no_active_clearance_rows"}
+    row = min(current["rows"], key=lambda item: item["old_command_residual_m_s"])
+    previous = snapshots[-2] if len(snapshots) >= 2 else None
+    previous_row = (
+        next((item for item in previous["rows"] if item["source"] == row["source"]), None)
+        if previous is not None else None
+    )
+    return {
+        "dominant_source": row["source"],
+        "current_old_command_residual_m_s": row["old_command_residual_m_s"],
+        "current_candidate_residual_m_s": row["candidate_residual_m_s"],
+        "same_source_previous_cycle": previous_row is not None,
+        "previous_candidate_residual_m_s": (
+            previous_row["candidate_residual_m_s"] if previous_row else None
+        ),
+        "residual_change_m_s": (
+            row["old_command_residual_m_s"] - previous_row["candidate_residual_m_s"]
+            if previous_row else None
+        ),
+        "lower_change_m_s": (
+            row["lower_m_s"] - previous_row["lower_m_s"] if previous_row else None
+        ),
+    }
 
 
 def _json_ready(value: Any) -> Any:
@@ -259,7 +349,7 @@ def _model_based_servo_torque(
     reference_dq: np.ndarray,
     feedforward_ddq: np.ndarray,
     full_mass: np.ndarray,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, ServoDiagnostics]:
     """Inverse-dynamics arm torque with a critically damped joint servo.
 
     The six unactuated spacecraft accelerations are eliminated from the full
@@ -285,6 +375,7 @@ def _model_based_servo_torque(
     acceleration_limit = np.concatenate(
         [np.full(60, 45.0), np.full(7, 70.0)]
     )
+    unclipped_arm_acceleration = desired_arm_acceleration.copy()
     desired_arm_acceleration = np.clip(
         desired_arm_acceleration, -acceleration_limit, acceleration_limit
     )
@@ -306,7 +397,15 @@ def _model_based_servo_torque(
         - np.asarray(data.qfrc_passive)[dof_ids]
     )
     torque = np.clip(required_arm_force, -spec.torque_limits, spec.torque_limits)
-    return torque, desired_arm_acceleration
+    diagnostics = ServoDiagnostics(
+        acceleration_unclipped_max_rad_s2=float(np.max(np.abs(unclipped_arm_acceleration))),
+        acceleration_clip_count=int(np.count_nonzero(
+            desired_arm_acceleration != unclipped_arm_acceleration
+        )),
+        torque_unclipped_max_nm=float(np.max(np.abs(required_arm_force))),
+        torque_saturation_count=int(np.count_nonzero(torque != required_arm_force)),
+    )
+    return torque, desired_arm_acceleration, diagnostics
 
 
 def _home_kinematics(
@@ -478,6 +577,8 @@ def run_scenario(
     command_velocity = np.zeros(17, dtype=np.float64)
     active_validation: ActionValidation | None = None
     segment_step = 0
+    recent_snapshots: deque[dict[str, Any]] = deque(maxlen=3)
+    scenario_wall_start = time.perf_counter()
     full_mass = np.zeros((model.nv, model.nv), dtype=np.float64)
 
     log: dict[str, list[Any]] = {
@@ -501,6 +602,16 @@ def run_scenario(
         "command_velocity": [],
         "reference_q": [],
         "reference_velocity": [],
+        "measured_planner_q_before_servo": [],
+        "measured_velocity_before_servo": [],
+        "reference_velocity_error_norm_rad_s": [],
+        "reference_joint_limit_clip_count": [],
+        "reference_measured_window_clip_count": [],
+        "acceleration_clip_count": [],
+        "acceleration_unclipped_max_rad_s2": [],
+        "torque_saturation_count": [],
+        "torque_unclipped_max_nm": [],
+        "wall_time_since_start_s": [],
         "feedforward_acceleration": [],
         "desired_arm_acceleration": [],
         "torque": [],
@@ -511,12 +622,15 @@ def run_scenario(
     }
     task_log: dict[str, list[Any]] = {
         "time": [],
+        "wall_time_since_start_s": [],
         "full_latency": [],
         "solver_latency": [],
         "success": [],
         "iterations": [],
         "active_clearance": [],
         "binding_clearance": [],
+        "instantaneous_binding_clearance": [],
+        "lookahead_binding_clearance": [],
         "minimum_queried_clearance": [],
         "minimum_constraint_slack": [],
         "avoidance_intervention": [],
@@ -537,6 +651,7 @@ def run_scenario(
         "selected_velocity_min_slack_rad_s": [],
         "ramp_clearance_min_slack_m_s": [],
         "ramp_velocity_min_slack_rad_s": [],
+        "lookahead_min_slack_m_s": [],
         "state_age_s": [],
         "target_age_s": [],
         "certificate_expiry_s": [],
@@ -593,17 +708,29 @@ def run_scenario(
                 target_timestamp_s=current_time,
                 ramp_start_velocity=command_velocity,
             )
+            recent_snapshots.append(
+                _constraint_snapshot(result, data, reference_q_state, command_velocity)
+            )
             segment_start_velocity = command_velocity.copy()
             active_validation = result.action_validation
             segment_step = 0
             task_qpos_trace.append(np.asarray(data.qpos).copy())
             task_log["time"].append(current_time)
+            task_log["wall_time_since_start_s"].append(
+                time.perf_counter() - scenario_wall_start
+            )
             task_log["full_latency"].append(result.full_latency_s)
             task_log["solver_latency"].append(result.solver_latency_s)
             task_log["success"].append(result.success)
             task_log["iterations"].append(result.solver_iterations)
             task_log["active_clearance"].append(result.active_clearance_constraint_count)
             task_log["binding_clearance"].append(result.binding_clearance_constraint_count)
+            task_log["instantaneous_binding_clearance"].append(
+                result.instantaneous_binding_constraint_count
+            )
+            task_log["lookahead_binding_clearance"].append(
+                result.lookahead_binding_constraint_count
+            )
             task_log["minimum_queried_clearance"].append(
                 result.minimum_queried_clearance_m
             )
@@ -655,6 +782,9 @@ def run_scenario(
             task_log["ramp_velocity_min_slack_rad_s"].append(
                 active_validation.ramp_velocity_min_slack_rad_s
             )
+            task_log["lookahead_min_slack_m_s"].append(
+                active_validation.lookahead_min_slack_m_s
+            )
             task_log["state_age_s"].append(active_validation.state_age_s)
             task_log["target_age_s"].append(active_validation.target_age_s)
             task_log["certificate_expiry_s"].append(active_validation.expires_at_s)
@@ -701,6 +831,35 @@ def run_scenario(
 
             if result.planner_velocity is None:
                 trace_dir.mkdir(parents=True, exist_ok=True)
+                partial_path = trace_dir / f"{scenario.scenario_id}_partial_trace.npz"
+                np.savez_compressed(
+                    partial_path,
+                    **{key: np.asarray(value) for key, value in log.items()},
+                    **{f"task_{key}": np.asarray(value) for key, value in task_log.items()},
+                    task_qpos=np.asarray(task_qpos_trace),
+                    initial_qpos=initial_qpos,
+                    initial_qvel=initial_qvel,
+                    failure_time_s=np.asarray(current_time),
+                )
+                snapshot_path = trace_dir / f"{scenario.scenario_id}_counterexample.json"
+                _write_json(snapshot_path, {
+                    "evidence_type": "complete_cross_cycle_failure_snapshot",
+                    "contract_version": CONTRACT_VERSION,
+                    "scenario_id": scenario.scenario_id,
+                    "model_runtime_contract_sha256": spec.runtime_contract_sha256(),
+                    "model_source_bundle_sha256": spec.source_bundle_sha256(),
+                    "configuration_sha256": _config_sha256(run_config, qp_config),
+                    "run_config": asdict(run_config),
+                    "qp_config": asdict(qp_config),
+                    "planning_snapshots": list(recent_snapshots),
+                    "cross_cycle_report": _cross_cycle_report(list(recent_snapshots)),
+                    "partial_trace": {
+                        "path": partial_path.as_posix(),
+                        "sha256": _sha256(partial_path),
+                        "physics_steps_saved": len(log["time"]),
+                    },
+                    "next_servo_step_executed": False,
+                })
                 _write_json(trace_dir / f"{scenario.scenario_id}_execution_failure.json", {
                     "contract_version": CONTRACT_VERSION,
                     "scenario_id": scenario.scenario_id,
@@ -713,8 +872,11 @@ def run_scenario(
                     "candidate_velocity_min_slack_rad_s": active_validation.candidate_velocity_min_slack_rad_s,
                     "ramp_clearance_min_slack_m_s": active_validation.ramp_clearance_min_slack_m_s,
                     "ramp_velocity_min_slack_rad_s": active_validation.ramp_velocity_min_slack_rad_s,
+                    "lookahead_min_slack_m_s": active_validation.lookahead_min_slack_m_s,
                     "last_requested_command": command_velocity.tolist(),
                     "next_servo_step_executed": False,
+                    "counterexample_snapshot": snapshot_path.as_posix(),
+                    "partial_trace": partial_path.as_posix(),
                 })
                 raise UncertifiedExecutionError(
                     f"{scenario.scenario_id} at {current_time:.3f}s: "
@@ -728,29 +890,28 @@ def run_scenario(
                 f"{FailureReason.EXPIRED_COMMAND.value}; no servo step executed"
             )
 
-        interpolation = float(segment_step + 1) / float(task_stride)
-        reference_dq = (
-            segment_start_velocity
-            + interpolation * (command_velocity - segment_start_velocity)
-        )
-        feedforward_ddq = (
-            command_velocity - segment_start_velocity
-        ) / run_config.task_period_s
         measured_low_q = np.asarray(data.qpos[qpos_ids], dtype=np.float64).copy()
         measured_planner_q = spec.decode_position(measured_low_q)
-        reference_q_state = np.clip(
-            reference_q_state + reference_dq * run_config.physics_period_s,
+        measured_planner_dq = spec.decode_velocity(
+            np.asarray(data.qvel[dof_ids], dtype=np.float64)
+        )
+        reference_step = advance_reference(
+            reference_q_state,
+            segment_start_velocity,
+            command_velocity,
+            segment_step + 1,
+            measured_planner_q,
             spec.planner_lower,
             spec.planner_upper,
+            physics_period_s=run_config.physics_period_s,
+            task_period_s=run_config.task_period_s,
         )
-        reference_q_state = np.clip(
-            reference_q_state,
-            measured_planner_q - 0.012,
-            measured_planner_q + 0.012,
-        )
-        reference_q = reference_q_state
+        reference_q_state = reference_step.position
+        reference_q = reference_step.position
+        reference_dq = reference_step.velocity
+        feedforward_ddq = reference_step.feedforward_acceleration
         torque_started = time.perf_counter()
-        torque, desired_arm_acceleration = _model_based_servo_torque(
+        torque, desired_arm_acceleration, servo_diagnostics = _model_based_servo_torque(
             model,
             data,
             spec,
@@ -835,6 +996,24 @@ def run_scenario(
         log["command_velocity"].append(command_velocity.copy())
         log["reference_q"].append(reference_q.copy())
         log["reference_velocity"].append(reference_dq.copy())
+        log["measured_planner_q_before_servo"].append(measured_planner_q.copy())
+        log["measured_velocity_before_servo"].append(measured_planner_dq.copy())
+        log["reference_velocity_error_norm_rad_s"].append(
+            float(np.linalg.norm(reference_dq - measured_planner_dq))
+        )
+        log["reference_joint_limit_clip_count"].append(
+            reference_step.joint_limit_clip_count
+        )
+        log["reference_measured_window_clip_count"].append(
+            reference_step.measured_window_clip_count
+        )
+        log["acceleration_clip_count"].append(servo_diagnostics.acceleration_clip_count)
+        log["acceleration_unclipped_max_rad_s2"].append(
+            servo_diagnostics.acceleration_unclipped_max_rad_s2
+        )
+        log["torque_saturation_count"].append(servo_diagnostics.torque_saturation_count)
+        log["torque_unclipped_max_nm"].append(servo_diagnostics.torque_unclipped_max_nm)
+        log["wall_time_since_start_s"].append(time.perf_counter() - scenario_wall_start)
         log["feedforward_acceleration"].append(feedforward_ddq.copy())
         log["desired_arm_acceleration"].append(
             desired_arm_acceleration.copy()
@@ -1008,6 +1187,12 @@ def run_scenario(
             "whole_body_clearance": whole_body_report.to_dict(),
             "avoidance": {
                 "binding_constraint_total": binding_count,
+                "instantaneous_binding_constraint_total": int(np.sum(
+                    task_arrays["instantaneous_binding_clearance"]
+                )),
+                "lookahead_binding_constraint_total": int(np.sum(
+                    task_arrays["lookahead_binding_clearance"]
+                )),
                 "active_constraint_max": int(
                     np.max(task_arrays["active_clearance"])
                 ),
@@ -1105,10 +1290,13 @@ def run_scenario(
             "oracle_joint_target_used": False,
             "uncertified_command_executed": False,
             "action_validation_scope": (
-                "current_linearized_qp_rows_and_commanded_velocity_ramp_only"
+                "current_linearized_qp_rows_ten_step_ramp_and_frozen_row_next_start"
             ),
             "clearance_rate_tolerance_m_s": qp_config.clearance_rate_tolerance_m_s,
             "velocity_tolerance_rad_s": qp_config.velocity_tolerance_rad_s,
+            "lookahead_model_margin_m_s": qp_config.lookahead_model_margin_m_s,
+            "lookahead_margin_evidence": "empirical_two_frozen_cross_cycle_diagnostics_not_formal_bound",
+            "lookahead_margin_domain": "V6.2-A.1 seeded MuJoCo scenarios with current model and 20 ms task period",
             "contact_response_enabled": False,
             "model_based_inverse_dynamics_used": True,
             "second_online_optimizer_used": False,
@@ -1355,7 +1543,7 @@ def run_suite(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=Path("v6_lite/output/v6_2_a"))
+    parser.add_argument("--output-dir", type=Path, default=Path("v6_lite/output/v6_2_a1/enabled_root/output"))
     parser.add_argument("--scenario-count", type=int, default=5)
     parser.add_argument("--seed", type=int, default=20260801)
     parser.add_argument("--duration", type=float, default=27.0)

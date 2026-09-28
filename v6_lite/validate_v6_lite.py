@@ -18,6 +18,7 @@ from model_test.whole_body_verifier_v5 import (
     WorkspaceSphere,
 )
 from v6_lite.hierarchical_qp import joint_addresses, rotation_error_angle_rad
+from v6_lite.execution_ramp import advance_reference
 from v6_lite.irregular_waypoints import build_original_irregular_target
 from v6_lite.run_v6_lite import (
     CONTRACT_VERSION,
@@ -323,7 +324,7 @@ def validate_delivery(
     report_path: Path | None = None,
 ) -> dict[str, Any]:
     """Actually replay saved torques through MuJoCo and recompute 26 checks."""
-    output_dir = root / "output" / "v6_2_a" if output_dir is None else output_dir
+    output_dir = root / "output" / "v6_2_a1" / "enabled_root" / "output" if output_dir is None else output_dir
     metrics_path = output_dir / "v6_lite_metrics.json"
     manifest_path = output_dir / "artifact_manifest.json"
     metrics = _load_json(metrics_path)
@@ -567,24 +568,6 @@ def validate_delivery(
             and reported["rates_and_latency"]["torque_update_count"]
             == trace["torque"].shape[0]
         )
-        if expected_contract == CONTRACT_VERSION:
-            single_qp_ok &= (
-                np.array_equal(
-                    trace["task_selected_command"], trace["command_velocity"][::10]
-                )
-                and bool(np.all(trace["task_failure_reason"] == "none"))
-                and bool(np.all(np.isin(
-                    trace["task_execution_mode"], ["TRACK", "CAUTION"]
-                )))
-                and bool(np.all(
-                    trace["task_ramp_clearance_min_slack_m_s"]
-                    >= -item["execution_contract"]["clearance_rate_tolerance_m_s"]
-                ))
-                and bool(np.all(
-                    trace["task_ramp_velocity_min_slack_rad_s"]
-                    >= -item["execution_contract"]["velocity_tolerance_rad_s"]
-                ))
-            )
         avoidance_ok &= (
             int(np.sum(trace["task_binding_clearance"])) > 0
             and float(np.max(trace["task_avoidance_intervention"])) > 1e-5
@@ -831,6 +814,135 @@ def validate_delivery(
     return result
 
 
+def validate_execution_contract(output_dir: Path) -> dict[str, Any]:
+    """Check the new ramp/selection trace independently of the old 26 checks."""
+    metrics = _load_json(output_dir / "v6_lite_metrics.json")
+    spec = default_v6_lite_robot_spec()
+    checks: dict[str, bool] = {
+        "new_contract_version": metrics.get("contract_version") == CONTRACT_VERSION,
+        "five_scenarios": len(metrics.get("scenarios", [])) == 5,
+        "selected_endpoint_equals_servo_command": True,
+        "no_uncertified_execution": True,
+        "current_ramp_rows_feasible": True,
+        "predicted_next_start_rows_feasible": True,
+        "shared_ten_step_reference_exact": True,
+        "reference_measured_error_recorded": True,
+        "clip_and_saturation_diagnostics_recorded": True,
+        "sim_and_wall_clock_separate": True,
+        "trace_hashes_match": True,
+    }
+    per_scenario: list[dict[str, Any]] = []
+    for item in metrics.get("scenarios", []):
+        path = Path(item["trace"]["path"])
+        checks["trace_hashes_match"] &= path.is_file() and _sha256(path) == item["trace"]["sha256"]
+        with np.load(path, allow_pickle=False) as trace:
+            selected = trace["task_selected_command"]
+            command = trace["command_velocity"]
+            count = command.shape[0]
+            checks["selected_endpoint_equals_servo_command"] &= (
+                count == 10 * selected.shape[0]
+                and np.array_equal(selected, command[::10])
+            )
+            checks["no_uncertified_execution"] &= (
+                bool(np.all(trace["task_failure_reason"] == "none"))
+                and bool(np.all(np.isin(trace["task_execution_mode"], ["TRACK", "CAUTION"])))
+            )
+            contract = item["execution_contract"]
+            checks["current_ramp_rows_feasible"] &= bool(np.all(
+                trace["task_ramp_clearance_min_slack_m_s"]
+                >= -contract["clearance_rate_tolerance_m_s"]
+            )) and bool(np.all(
+                trace["task_ramp_velocity_min_slack_rad_s"]
+                >= -contract["velocity_tolerance_rad_s"]
+            ))
+            checks["predicted_next_start_rows_feasible"] &= bool(np.all(
+                trace["task_lookahead_min_slack_m_s"]
+                >= -contract["clearance_rate_tolerance_m_s"]
+            ))
+            position = spec.planner_zero.copy()
+            measured_positions = trace["measured_planner_q_before_servo"]
+            saved_reference_positions = trace["reference_q"]
+            saved_reference_velocities = trace["reference_velocity"]
+            saved_feedforward_accelerations = trace["feedforward_acceleration"]
+            max_position_error = 0.0
+            max_velocity_error = 0.0
+            max_acceleration_error = 0.0
+            for index in range(count):
+                task_index, within = divmod(index, 10)
+                start = np.zeros(17) if task_index == 0 else selected[task_index - 1]
+                step = advance_reference(
+                    position, start, selected[task_index], within + 1,
+                    measured_positions[index],
+                    spec.planner_lower, spec.planner_upper,
+                )
+                position = step.position
+                max_position_error = max(max_position_error, float(np.max(np.abs(
+                    position - saved_reference_positions[index]
+                ))))
+                max_velocity_error = max(max_velocity_error, float(np.max(np.abs(
+                    step.velocity - saved_reference_velocities[index]
+                ))))
+                max_acceleration_error = max(max_acceleration_error, float(np.max(np.abs(
+                    step.feedforward_acceleration - saved_feedforward_accelerations[index]
+                ))))
+            checks["shared_ten_step_reference_exact"] &= (
+                max(max_position_error, max_velocity_error, max_acceleration_error) <= 1e-12
+            )
+            recorded_error = trace["reference_velocity_error_norm_rad_s"]
+            recomputed_error = np.linalg.norm(
+                saved_reference_velocities - trace["measured_velocity_before_servo"], axis=1
+            )
+            checks["reference_measured_error_recorded"] &= bool(np.allclose(
+                recorded_error, recomputed_error, rtol=0.0, atol=1e-12
+            ))
+            checks["clip_and_saturation_diagnostics_recorded"] &= all(
+                key in trace and trace[key].shape == (count,) and np.all(trace[key] >= 0)
+                for key in (
+                    "reference_joint_limit_clip_count",
+                    "reference_measured_window_clip_count",
+                    "acceleration_clip_count", "torque_saturation_count",
+                )
+            )
+            checks["sim_and_wall_clock_separate"] &= (
+                np.all(np.diff(trace["time"]) > 0)
+                and np.all(np.diff(trace["wall_time_since_start_s"]) >= 0)
+                and trace["time"].shape == trace["wall_time_since_start_s"].shape
+            )
+            per_scenario.append({
+                "scenario_id": item["scenario"]["scenario_id"],
+                "physics_steps": count,
+                "task_ticks": selected.shape[0],
+                "minimum_ramp_residual_m_s": float(np.min(
+                    trace["task_ramp_clearance_min_slack_m_s"]
+                )),
+                "minimum_next_start_residual_m_s": float(np.min(
+                    trace["task_lookahead_min_slack_m_s"]
+                )),
+                "maximum_reference_measured_velocity_error_rad_s": float(np.max(recorded_error)),
+                "reference_joint_limit_clip_count": int(np.sum(trace["reference_joint_limit_clip_count"])),
+                "reference_measured_window_clip_count": int(np.sum(trace["reference_measured_window_clip_count"])),
+                "acceleration_clip_count": int(np.sum(trace["acceleration_clip_count"])),
+                "torque_saturation_count": int(np.sum(trace["torque_saturation_count"])),
+                "reference_model_error_max": max(
+                    max_position_error, max_velocity_error, max_acceleration_error
+                ),
+            })
+    failures = [name for name, passed in checks.items() if not passed]
+    result = {
+        "contract_version": CONTRACT_VERSION,
+        "evidence_type": "independent_execution_contract_trace_validation",
+        "passed": not failures,
+        "passed_count": int(sum(checks.values())),
+        "total_count": len(checks),
+        "checks": checks,
+        "failures": failures,
+        "scenarios": per_scenario,
+    }
+    path = output_dir / "execution_validation.json"
+    path.write_text(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
+    return result
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("v6_lite"))
@@ -845,6 +957,13 @@ def main() -> None:
     result = validate_delivery(
         args.root, args.output_dir, args.expected_contract, args.report_path
     )
+    execution_result = None
+    if args.expected_contract == CONTRACT_VERSION:
+        output_dir = (
+            args.output_dir if args.output_dir is not None
+            else args.root / "output" / "v6_2_a1" / "enabled_root" / "output"
+        )
+        execution_result = validate_execution_contract(output_dir)
     print(
         json.dumps(
             {
@@ -852,12 +971,19 @@ def main() -> None:
                 "checks": f"{result['passed_count']}/{result['total_count']}",
                 "failures": result["failures"],
                 "recomputed_aggregate": result["recomputed_aggregate"],
+                "execution_contract_checks": (
+                    f"{execution_result['passed_count']}/{execution_result['total_count']}"
+                    if execution_result is not None else "not_applicable_to_historical_contract"
+                ),
+                "execution_contract_passed": (
+                    execution_result["passed"] if execution_result is not None else None
+                ),
             },
             ensure_ascii=False,
             indent=2,
         )
     )
-    if not result["passed"]:
+    if not result["passed"] or (execution_result is not None and not execution_result["passed"]):
         raise SystemExit(1)
 
 

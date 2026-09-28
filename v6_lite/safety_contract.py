@@ -11,6 +11,8 @@ from enum import Enum
 
 import numpy as np
 
+from v6_lite.execution_ramp import ramp_velocity
+
 
 class ExecutionMode(str, Enum):
     TRACK = "TRACK"
@@ -30,6 +32,7 @@ class FailureReason(str, Enum):
     SOLVER_FAILURE = "solver_failure"
     CANDIDATE_VIOLATION = "candidate_violation"
     RAMP_VIOLATION = "ramp_violation"
+    LOOKAHEAD_VIOLATION = "lookahead_violation"
 
 
 @dataclass(frozen=True)
@@ -43,12 +46,13 @@ class ActionValidation:
     selected_velocity_min_slack_rad_s: float
     ramp_clearance_min_slack_m_s: float
     ramp_velocity_min_slack_rad_s: float
+    lookahead_min_slack_m_s: float
     state_age_s: float
     target_age_s: float
     expires_at_s: float
     candidate_valid: bool
     ramp_valid: bool
-    scope: str = "current_linearized_qp_rows_and_commanded_velocity_ramp_only"
+    scope: str = "current_linearized_qp_rows_ten_step_ramp_and_frozen_row_next_start"
 
 
 def _slacks(
@@ -86,6 +90,8 @@ def validate_action(
     clearance_rate_tolerance_m_s: float,
     velocity_tolerance_rad_s: float,
     caution_clearance_slack_m_s: float = 1e-3,
+    lookahead_matrix: np.ndarray | None = None,
+    lookahead_lower: np.ndarray | None = None,
 ) -> ActionValidation:
     """Check a candidate and both ends of its affine 20 ms velocity ramp.
 
@@ -98,11 +104,24 @@ def validate_action(
     candidate_clearance, candidate_bounds = _slacks(
         candidate, clearance_matrix, clearance_lower, velocity_lower, velocity_upper
     )
-    start_clearance, start_bounds = _slacks(
-        start_velocity, clearance_matrix, clearance_lower, velocity_lower, velocity_upper
-    )
-    ramp_clearance = min(candidate_clearance, start_clearance)
-    ramp_bounds = min(candidate_bounds, start_bounds)
+    ramp_slacks = [
+        _slacks(
+            ramp_velocity(start_velocity, candidate, step),
+            clearance_matrix, clearance_lower, velocity_lower, velocity_upper,
+        )
+        for step in range(11)
+    ]
+    ramp_clearance = min(value[0] for value in ramp_slacks)
+    ramp_bounds = min(value[1] for value in ramp_slacks)
+    if lookahead_matrix is None:
+        lookahead_slack = float("inf")
+    else:
+        if lookahead_lower is None:
+            raise ValueError("lookahead lower bound is required with matrix")
+        lookahead_slack = (
+            float(np.min(lookahead_matrix @ candidate - lookahead_lower))
+            if lookahead_lower.size else float("inf")
+        )
     candidate_valid = (candidate_clearance >= -clearance_rate_tolerance_m_s
                        and candidate_bounds >= -velocity_tolerance_rad_s)
     ramp_valid = (ramp_clearance >= -clearance_rate_tolerance_m_s
@@ -126,6 +145,8 @@ def validate_action(
         reason = FailureReason.CANDIDATE_VIOLATION
     elif not ramp_valid:
         reason = FailureReason.RAMP_VIOLATION
+    elif lookahead_slack < -clearance_rate_tolerance_m_s:
+        reason = FailureReason.LOOKAHEAD_VIOLATION
     else:
         reason = FailureReason.NONE
     selected = candidate.copy() if reason is FailureReason.NONE else None
@@ -142,6 +163,7 @@ def validate_action(
         selected_velocity_min_slack_rad_s=candidate_bounds if selected is not None else float("nan"),
         ramp_clearance_min_slack_m_s=ramp_clearance,
         ramp_velocity_min_slack_rad_s=ramp_bounds,
+        lookahead_min_slack_m_s=lookahead_slack,
         state_age_s=state_age, target_age_s=target_age, expires_at_s=expires,
         candidate_valid=candidate_valid, ramp_valid=ramp_valid,
     )
