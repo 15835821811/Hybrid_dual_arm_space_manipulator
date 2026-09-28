@@ -316,16 +316,22 @@ def _replay_trace(
     }
 
 
-def validate_delivery(root: Path = Path("v6_lite")) -> dict[str, Any]:
-    output_dir = root / "output"
+def validate_delivery(
+    root: Path = Path("v6_lite"),
+    output_dir: Path | None = None,
+    expected_contract: str = CONTRACT_VERSION,
+    report_path: Path | None = None,
+) -> dict[str, Any]:
+    """Actually replay saved torques through MuJoCo and recompute 26 checks."""
+    output_dir = root / "output" / "v6_2_a" if output_dir is None else output_dir
     metrics_path = output_dir / "v6_lite_metrics.json"
     manifest_path = output_dir / "artifact_manifest.json"
     metrics = _load_json(metrics_path)
     manifest = _load_json(manifest_path)
     checks: dict[str, bool] = {}
     checks["contract_version"] = (
-        metrics.get("contract_version") == CONTRACT_VERSION
-        and manifest.get("contract_version") == CONTRACT_VERSION
+        metrics.get("contract_version") == expected_contract
+        and manifest.get("contract_version") == expected_contract
     )
     checks["authoritative_metrics_hash"] = (
         manifest["metrics"]["sha256"] == _sha256(metrics_path)
@@ -561,6 +567,24 @@ def validate_delivery(root: Path = Path("v6_lite")) -> dict[str, Any]:
             and reported["rates_and_latency"]["torque_update_count"]
             == trace["torque"].shape[0]
         )
+        if expected_contract == CONTRACT_VERSION:
+            single_qp_ok &= (
+                np.array_equal(
+                    trace["task_selected_command"], trace["command_velocity"][::10]
+                )
+                and bool(np.all(trace["task_failure_reason"] == "none"))
+                and bool(np.all(np.isin(
+                    trace["task_execution_mode"], ["TRACK", "CAUTION"]
+                )))
+                and bool(np.all(
+                    trace["task_ramp_clearance_min_slack_m_s"]
+                    >= -item["execution_contract"]["clearance_rate_tolerance_m_s"]
+                ))
+                and bool(np.all(
+                    trace["task_ramp_velocity_min_slack_rad_s"]
+                    >= -item["execution_contract"]["velocity_tolerance_rad_s"]
+                ))
+            )
         avoidance_ok &= (
             int(np.sum(trace["task_binding_clearance"])) > 0
             and float(np.max(trace["task_avoidance_intervention"])) > 1e-5
@@ -568,7 +592,10 @@ def validate_delivery(root: Path = Path("v6_lite")) -> dict[str, Any]:
         dynamic_only_ok &= (
             item["execution_contract"]["qpos_write_count_after_initialization"] == 0
             and item["execution_contract"]["qvel_write_count_after_initialization"] == 0
-            and not item["execution_contract"]["safe_stop_used"]
+            and not item["execution_contract"].get("safe_stop_used", False)
+            and not item["execution_contract"].get(
+                "uncertified_command_executed", False
+            )
         )
         collision_scope_ok &= (
             not item["execution_contract"]["continuous_time_collision_certified"]
@@ -758,7 +785,8 @@ def validate_delivery(root: Path = Path("v6_lite")) -> dict[str, Any]:
     )
     failures = [name for name, passed in checks.items() if not passed]
     result = {
-        "contract_version": CONTRACT_VERSION,
+        "contract_version": expected_contract,
+        "evidence_type": "native_mujoco_torque_replay",
         "passed": not failures,
         "passed_count": int(sum(checks.values())),
         "total_count": len(checks),
@@ -796,7 +824,8 @@ def validate_delivery(root: Path = Path("v6_lite")) -> dict[str, Any]:
         },
         "native_replays": replay_reports,
     }
-    output_path = output_dir / "validation.json"
+    output_path = output_dir / "validation.json" if report_path is None else report_path
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(result, handle, ensure_ascii=False, indent=2, allow_nan=False)
     return result
@@ -805,12 +834,17 @@ def validate_delivery(root: Path = Path("v6_lite")) -> dict[str, Any]:
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("v6_lite"))
+    parser.add_argument("--output-dir", type=Path, default=None)
+    parser.add_argument("--expected-contract", default=CONTRACT_VERSION)
+    parser.add_argument("--report-path", type=Path, default=None)
     return parser
 
 
 def main() -> None:
     args = _parser().parse_args()
-    result = validate_delivery(args.root)
+    result = validate_delivery(
+        args.root, args.output_dir, args.expected_contract, args.report_path
+    )
     print(
         json.dumps(
             {

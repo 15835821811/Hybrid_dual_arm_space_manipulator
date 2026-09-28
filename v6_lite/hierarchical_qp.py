@@ -36,6 +36,7 @@ from v6_lite.continuum_shape_model import (
     transform_from_free_qpos,
 )
 from v6_lite.pcc_clearance import PCCClearanceEvaluator
+from v6_lite.safety_contract import ActionValidation, validate_action
 from v6_lite.shape_clearance import (
     CapsuleEnvelopeSet,
     build_continuum_capsule_envelopes,
@@ -86,6 +87,8 @@ class HierarchicalQPConfig:
     qp_max_iterations: int = 1200
     qp_ftol: float = 5e-5
     feasibility_tolerance: float = 1e-4
+    clearance_rate_tolerance_m_s: float = 1e-4
+    velocity_tolerance_rad_s: float = 1e-4
     admm_rho: float = 50.0
     admm_sigma: float = 1e-6
     admm_relaxation: float = 1.8
@@ -121,6 +124,8 @@ class HierarchicalQPConfig:
             self.capsule_clearance_barrier_gain,
             self.qp_ftol,
             self.feasibility_tolerance,
+            self.clearance_rate_tolerance_m_s,
+            self.velocity_tolerance_rad_s,
             self.admm_rho,
             self.admm_sigma,
             self.admm_relaxation,
@@ -159,7 +164,11 @@ class HierarchicalQPConfig:
 
 @dataclass(frozen=True)
 class HierarchicalQPResult:
-    planner_velocity: np.ndarray
+    planner_velocity: np.ndarray | None
+    solver_candidate: np.ndarray
+    action_validation: ActionValidation
+    # Legacy diagnostics below evaluate solver_candidate. A rejected candidate
+    # is never substituted with a zero command or reported as executed.
     success: bool
     solver_status: str
     solver_iterations: int
@@ -947,8 +956,6 @@ class HierarchicalVelocityQP:
                 break
         feasibility = np.minimum(product - lower, upper - product)
         feasible = bool(float(np.min(feasibility)) >= -cfg.feasibility_tolerance)
-        if feasible and status != "solved":
-            status = "solved_inaccurate"
         return value, feasible, status, iteration, dual
 
     def solve(
@@ -963,6 +970,9 @@ class HierarchicalVelocityQP:
         continuum_target_velocity: np.ndarray,
         continuum_target_rotation: np.ndarray,
         continuum_target_angular_velocity: np.ndarray,
+        state_timestamp_s: float | None = None,
+        target_timestamp_s: float | None = None,
+        ramp_start_velocity: np.ndarray | None = None,
     ) -> HierarchicalQPResult:
         started = time.perf_counter()
         mujoco.mj_forward(self.model, data)
@@ -1123,17 +1133,34 @@ class HierarchicalVelocityQP:
             capsule_binding = 0
         bound_slack = float(min(np.min(candidate - lower), np.min(upper - candidate)))
         minimum_slack = min(minimum_slack, bound_slack)
-        success = bool(success and minimum_slack >= -cfg.feasibility_tolerance)
+        validation = validate_action(
+            candidate=candidate,
+            solver_feasible=success,
+            solver_status=solver_status,
+            start_velocity=(self.previous_velocity if ramp_start_velocity is None
+                            else np.asarray(ramp_start_velocity, dtype=np.float64)),
+            clearance_matrix=clearance_matrix,
+            clearance_lower=clearance_lower,
+            velocity_lower=lower,
+            velocity_upper=upper,
+            now_s=float(data.time),
+            state_timestamp_s=(float(data.time) if state_timestamp_s is None
+                               else state_timestamp_s),
+            target_timestamp_s=(float(data.time) if target_timestamp_s is None
+                                else target_timestamp_s),
+            max_input_age_s=cfg.task_period_s,
+            command_period_s=cfg.task_period_s,
+            clearance_rate_tolerance_m_s=cfg.clearance_rate_tolerance_m_s,
+            velocity_tolerance_rad_s=cfg.velocity_tolerance_rad_s,
+        )
+        success = validation.selected_command is not None
         if not success:
-            # Safe stop is not another optimizer or an oracle plan.  The full
-            # delivery gate requires this branch never to be used.
-            candidate = np.zeros(17, dtype=np.float64)
             self._previous_constraint_dual.clear()
         else:
             self._previous_constraint_dual = {
                 key: float(value) for key, value in zip(constraint_keys, dual)
             }
-        self.previous_velocity = candidate.copy()
+            self.previous_velocity = validation.selected_command.copy()
         self.solve_count += 1
         full_latency = time.perf_counter() - started
         pcc_distance = (
@@ -1179,7 +1206,9 @@ class HierarchicalVelocityQP:
         else:
             capsule_gradient_error = float("nan")
         return HierarchicalQPResult(
-            planner_velocity=candidate,
+            planner_velocity=validation.selected_command,
+            solver_candidate=candidate.copy(),
+            action_validation=validation,
             success=success,
             solver_status=solver_status,
             solver_iterations=int(solver_iterations),
@@ -1213,7 +1242,10 @@ class HierarchicalVelocityQP:
             active_clearance_constraint_count=int(clearance_matrix.shape[0]),
             binding_clearance_constraint_count=binding,
             minimum_constraint_slack=minimum_slack,
-            unconstrained_to_command_norm=float(np.linalg.norm(candidate - unconstrained)),
+            unconstrained_to_command_norm=(
+                float(np.linalg.norm(validation.selected_command - unconstrained))
+                if validation.selected_command is not None else float("nan")
+            ),
             reaction_momentum_residual_norm=momentum_residual,
             degenerate_clearance_gradient_count=int(degenerate),
             pcc_clearance_m=pcc_distance,

@@ -98,14 +98,13 @@ class V61AArtifactTests(unittest.TestCase):
             self.assertEqual(len(payload), artifact["bytes"])
             self.assertEqual(hashlib.sha256(payload).hexdigest(), artifact["sha256"])
 
-    def test_v61a_does_not_modify_the_frozen_v6_control_sources(self) -> None:
+    def test_v61a_records_frozen_v6_control_source_hashes(self) -> None:
         self.assertEqual(
             self.shape["controller_source_sha256"],
             FROZEN_V6_CONTROL_SOURCE_SHA256,
         )
-        for relative_path, expected_hash in FROZEN_V6_CONTROL_SOURCE_SHA256.items():
-            payload = (REPOSITORY_ROOT / relative_path).read_bytes()
-            self.assertEqual(hashlib.sha256(payload).hexdigest(), expected_hash)
+        # Live source equality was a v6.1-a *branch* freeze gate. Later
+        # controller versions are checked by their own tests and replay.
 
 
 if __name__ == "__main__":

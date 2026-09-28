@@ -24,7 +24,6 @@ from v6_lite.hierarchical_qp import (
 )
 from v6_lite.irregular_waypoints import build_original_irregular_target
 from v6_lite.run_v6_lite import (
-    CONTRACT_VERSION,
     EXPECTED_CONTINUUM_EE_INITIAL_POSITION_M,
     TARGET_SATELLITE_COLLISION_POLICY,
     V6LiteRunConfig,
@@ -418,8 +417,9 @@ class V6LiteContractTests(unittest.TestCase):
         validation = json.loads(
             (ROOT / "output" / "validation.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(metrics["contract_version"], CONTRACT_VERSION)
-        self.assertEqual(validation["contract_version"], CONTRACT_VERSION)
+        # These are committed V6-lite-6 artifacts, not a V6.2-A replay.
+        self.assertEqual(metrics["contract_version"], "v6_lite_6")
+        self.assertEqual(validation["contract_version"], "v6_lite_6")
         self.assertTrue(metrics["passed"])
         self.assertTrue(validation["passed"])
         self.assertEqual(validation["passed_count"], validation["total_count"])

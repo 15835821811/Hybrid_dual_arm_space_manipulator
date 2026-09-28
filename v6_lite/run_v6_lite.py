@@ -43,8 +43,13 @@ from v6_lite.irregular_waypoints import (
     build_original_irregular_target,
 )
 from v6_lite.pcc_monitor import PCCMonitor
+from v6_lite.safety_contract import ActionValidation, FailureReason, command_is_current
 
-CONTRACT_VERSION = "v6_lite_6"
+CONTRACT_VERSION = "v6_2_a_safety_contract"
+
+
+class UncertifiedExecutionError(RuntimeError):
+    """No currently validated command is available for the next servo step."""
 TARGET_SATELLITE_COLLISION_POLICY = (
     "continuum_base_and_noncontact_rigid_geometries_in_hard_clearance_gate;"
     "rigid_terminal_contact_geometries_explicitly_exempt_for_commanded_surface_grasp"
@@ -471,6 +476,7 @@ def run_scenario(
     reference_q_state = spec.planner_zero.copy()
     segment_start_velocity = np.zeros(17, dtype=np.float64)
     command_velocity = np.zeros(17, dtype=np.float64)
+    active_validation: ActionValidation | None = None
     segment_step = 0
     full_mass = np.zeros((model.nv, model.nv), dtype=np.float64)
 
@@ -521,6 +527,19 @@ def run_scenario(
         "rigid_angular_velocity_residual": [],
         "continuum_angular_velocity_residual": [],
         "solver_status": [],
+        "solver_candidate": [],
+        "selected_command": [],
+        "execution_mode": [],
+        "failure_reason": [],
+        "candidate_clearance_min_slack_m_s": [],
+        "candidate_velocity_min_slack_rad_s": [],
+        "selected_clearance_min_slack_m_s": [],
+        "selected_velocity_min_slack_rad_s": [],
+        "ramp_clearance_min_slack_m_s": [],
+        "ramp_velocity_min_slack_rad_s": [],
+        "state_age_s": [],
+        "target_age_s": [],
+        "certificate_expiry_s": [],
         "pcc_clearance": [],
         "capsule_clearance": [],
         "mujoco_continuum_target_clearance": [],
@@ -570,9 +589,12 @@ def run_scenario(
                 continuum_target_velocity=continuum_target_velocity,
                 continuum_target_rotation=scenario.continuum_target_rotation_world,
                 continuum_target_angular_velocity=np.zeros(3, dtype=np.float64),
+                state_timestamp_s=current_time,
+                target_timestamp_s=current_time,
+                ramp_start_velocity=command_velocity,
             )
             segment_start_velocity = command_velocity.copy()
-            command_velocity = result.planner_velocity.copy()
+            active_validation = result.action_validation
             segment_step = 0
             task_qpos_trace.append(np.asarray(data.qpos).copy())
             task_log["time"].append(current_time)
@@ -608,6 +630,34 @@ def run_scenario(
                 result.continuum_angular_velocity_residual_rad_s
             )
             task_log["solver_status"].append(result.solver_status)
+            task_log["solver_candidate"].append(result.solver_candidate.copy())
+            task_log["selected_command"].append(
+                result.planner_velocity.copy() if result.planner_velocity is not None
+                else np.full(17, np.nan)
+            )
+            task_log["execution_mode"].append(active_validation.mode.value)
+            task_log["failure_reason"].append(active_validation.failure_reason.value)
+            task_log["candidate_clearance_min_slack_m_s"].append(
+                active_validation.candidate_clearance_min_slack_m_s
+            )
+            task_log["candidate_velocity_min_slack_rad_s"].append(
+                active_validation.candidate_velocity_min_slack_rad_s
+            )
+            task_log["selected_clearance_min_slack_m_s"].append(
+                active_validation.selected_clearance_min_slack_m_s
+            )
+            task_log["selected_velocity_min_slack_rad_s"].append(
+                active_validation.selected_velocity_min_slack_rad_s
+            )
+            task_log["ramp_clearance_min_slack_m_s"].append(
+                active_validation.ramp_clearance_min_slack_m_s
+            )
+            task_log["ramp_velocity_min_slack_rad_s"].append(
+                active_validation.ramp_velocity_min_slack_rad_s
+            )
+            task_log["state_age_s"].append(active_validation.state_age_s)
+            task_log["target_age_s"].append(active_validation.target_age_s)
+            task_log["certificate_expiry_s"].append(active_validation.expires_at_s)
             task_log["pcc_clearance"].append(result.pcc_clearance_m)
             task_log["capsule_clearance"].append(result.capsule_clearance_m)
             task_log["mujoco_continuum_target_clearance"].append(
@@ -648,6 +698,35 @@ def run_scenario(
             )
             if pcc_monitor is not None:
                 pcc_monitor.record(current_time, result)
+
+            if result.planner_velocity is None:
+                trace_dir.mkdir(parents=True, exist_ok=True)
+                _write_json(trace_dir / f"{scenario.scenario_id}_execution_failure.json", {
+                    "contract_version": CONTRACT_VERSION,
+                    "scenario_id": scenario.scenario_id,
+                    "time_s": current_time,
+                    "execution_mode": active_validation.mode.value,
+                    "failure_reason": active_validation.failure_reason.value,
+                    "solver_status": result.solver_status,
+                    "solver_candidate": result.solver_candidate.tolist(),
+                    "candidate_clearance_min_slack_m_s": active_validation.candidate_clearance_min_slack_m_s,
+                    "candidate_velocity_min_slack_rad_s": active_validation.candidate_velocity_min_slack_rad_s,
+                    "ramp_clearance_min_slack_m_s": active_validation.ramp_clearance_min_slack_m_s,
+                    "ramp_velocity_min_slack_rad_s": active_validation.ramp_velocity_min_slack_rad_s,
+                    "last_requested_command": command_velocity.tolist(),
+                    "next_servo_step_executed": False,
+                })
+                raise UncertifiedExecutionError(
+                    f"{scenario.scenario_id} at {current_time:.3f}s: "
+                    f"{active_validation.failure_reason.value}; no servo step executed"
+                )
+            command_velocity = result.planner_velocity.copy()
+
+        if active_validation is None or not command_is_current(active_validation, current_time):
+            raise UncertifiedExecutionError(
+                f"{scenario.scenario_id} at {current_time:.3f}s: "
+                f"{FailureReason.EXPIRED_COMMAND.value}; no servo step executed"
+            )
 
         interpolation = float(segment_step + 1) / float(task_stride)
         reference_dq = (
@@ -969,6 +1048,14 @@ def run_scenario(
                     str(status): int(np.sum(task_arrays["solver_status"] == status))
                     for status in sorted(set(task_arrays["solver_status"].tolist()))
                 },
+                "execution_mode_counts": {
+                    str(mode): int(np.sum(task_arrays["execution_mode"] == mode))
+                    for mode in sorted(set(task_arrays["execution_mode"].tolist()))
+                },
+                "failure_reason_counts": {
+                    str(reason): int(np.sum(task_arrays["failure_reason"] == reason))
+                    for reason in sorted(set(task_arrays["failure_reason"].tolist()))
+                },
                 "qp_call_count": int(qp.solve_count),
                 "torque_update_count": physics_steps,
             },
@@ -1016,7 +1103,12 @@ def run_scenario(
             "candidate_sampling_used": False,
             "trajectory_projection_used": False,
             "oracle_joint_target_used": False,
-            "safe_stop_used": qp_failure_count > 0,
+            "uncertified_command_executed": False,
+            "action_validation_scope": (
+                "current_linearized_qp_rows_and_commanded_velocity_ramp_only"
+            ),
+            "clearance_rate_tolerance_m_s": qp_config.clearance_rate_tolerance_m_s,
+            "velocity_tolerance_rad_s": qp_config.velocity_tolerance_rad_s,
             "contact_response_enabled": False,
             "model_based_inverse_dynamics_used": True,
             "second_online_optimizer_used": False,
@@ -1263,7 +1355,7 @@ def run_suite(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=Path("v6_lite/output"))
+    parser.add_argument("--output-dir", type=Path, default=Path("v6_lite/output/v6_2_a"))
     parser.add_argument("--scenario-count", type=int, default=5)
     parser.add_argument("--seed", type=int, default=20260801)
     parser.add_argument("--duration", type=float, default=27.0)
