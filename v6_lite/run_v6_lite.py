@@ -885,6 +885,47 @@ def run_scenario(
             command_velocity = result.planner_velocity.copy()
 
         if active_validation is None or not command_is_current(active_validation, current_time):
+            trace_dir.mkdir(parents=True, exist_ok=True)
+            partial_path = trace_dir / f"{scenario.scenario_id}_partial_trace.npz"
+            np.savez_compressed(
+                partial_path,
+                **{key: np.asarray(value) for key, value in log.items()},
+                **{f"task_{key}": np.asarray(value) for key, value in task_log.items()},
+                task_qpos=np.asarray(task_qpos_trace),
+                initial_qpos=initial_qpos,
+                initial_qvel=initial_qvel,
+                failure_time_s=np.asarray(current_time),
+            )
+            snapshot_path = trace_dir / f"{scenario.scenario_id}_counterexample.json"
+            _write_json(snapshot_path, {
+                "evidence_type": "complete_cross_cycle_failure_snapshot",
+                "contract_version": CONTRACT_VERSION,
+                "scenario_id": scenario.scenario_id,
+                "model_runtime_contract_sha256": spec.runtime_contract_sha256(),
+                "model_source_bundle_sha256": spec.source_bundle_sha256(),
+                "configuration_sha256": _config_sha256(run_config, qp_config),
+                "run_config": asdict(run_config),
+                "qp_config": asdict(qp_config),
+                "planning_snapshots": list(recent_snapshots),
+                "cross_cycle_report": _cross_cycle_report(list(recent_snapshots)),
+                "partial_trace": {
+                    "path": partial_path.as_posix(),
+                    "sha256": _sha256(partial_path),
+                    "physics_steps_saved": len(log["time"]),
+                },
+                "next_servo_step_executed": False,
+            })
+            _write_json(trace_dir / f"{scenario.scenario_id}_execution_failure.json", {
+                "contract_version": CONTRACT_VERSION,
+                "scenario_id": scenario.scenario_id,
+                "time_s": current_time,
+                "execution_mode": "UNCERTIFIED",
+                "failure_reason": FailureReason.EXPIRED_COMMAND.value,
+                "last_requested_command": command_velocity.tolist(),
+                "next_servo_step_executed": False,
+                "counterexample_snapshot": snapshot_path.as_posix(),
+                "partial_trace": partial_path.as_posix(),
+            })
             raise UncertifiedExecutionError(
                 f"{scenario.scenario_id} at {current_time:.3f}s: "
                 f"{FailureReason.EXPIRED_COMMAND.value}; no servo step executed"

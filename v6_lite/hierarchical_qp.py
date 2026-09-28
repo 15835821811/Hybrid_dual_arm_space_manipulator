@@ -944,7 +944,8 @@ class HierarchicalVelocityQP:
         cfg = self.config
         rho = cfg.admm_rho
         sigma = cfg.admm_sigma
-        system = hessian + sigma * np.eye(17) + rho * (matrix.T @ matrix)
+        gram = matrix.T @ matrix
+        system = hessian + sigma * np.eye(17) + rho * gram
         factor = cho_factor(system, lower=True, check_finite=False)
         value = np.asarray(initial, dtype=np.float64).copy()
         product = matrix @ value
@@ -993,6 +994,21 @@ class HierarchicalVelocityQP:
             ):
                 status = "solved"
                 break
+            # A fixed penalty can make the 17-D ADMM step arbitrarily slow
+            # when the active set changes. Balance the two stopping residuals
+            # inside this same QP solve; the unscaled dual stays unchanged.
+            if iteration % 100 == 0 and iteration < cfg.qp_max_iterations:
+                primal_ratio = primal_residual / (cfg.qp_ftol * primal_scale)
+                dual_ratio = dual_residual / (5.0 * cfg.qp_ftol * dual_scale)
+                next_rho = rho
+                if dual_ratio > 3.0 * primal_ratio:
+                    next_rho = max(rho / 5.0, 0.1)
+                elif primal_ratio > 3.0 * dual_ratio:
+                    next_rho = min(rho * 5.0, 500.0)
+                if next_rho != rho:
+                    rho = next_rho
+                    system = hessian + sigma * np.eye(17) + rho * gram
+                    factor = cho_factor(system, lower=True, check_finite=False)
         feasibility = np.minimum(product - lower, upper - product)
         feasible = bool(float(np.min(feasibility)) >= -cfg.feasibility_tolerance)
         return value, feasible, status, iteration, dual

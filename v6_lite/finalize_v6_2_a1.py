@@ -26,6 +26,11 @@ def _sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _normalized_source_sha(path: Path) -> str:
+    source = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(source).hexdigest()
+
+
 def _entry(path: Path, evidence_type: str) -> dict:
     return {
         "path": path.relative_to(ROOT).as_posix(),
@@ -76,17 +81,25 @@ def build() -> dict:
     frozen_trace = EVIDENCE_ROOT / "frozen_failure" / "traces" / "v6_lite_scenario_00_partial_trace.npz"
     margin_json = EVIDENCE_ROOT / "lookahead_margin_diagnostic" / "baseline_scenario_00_9p32s.json"
     margin_trace = EVIDENCE_ROOT / "lookahead_margin_diagnostic" / "baseline_scenario_00_partial_trace.npz"
+    solver_json = EVIDENCE_ROOT / "solver_diagnostic" / "baseline_scenario_01_15s.json"
+    solver_trace = EVIDENCE_ROOT / "solver_diagnostic" / "baseline_scenario_01_partial_trace.npz"
+    timing_note_path = EVIDENCE_ROOT / "timing_diagnostic" / "enabled_first_trial.json"
     short_trace = EVIDENCE_ROOT / "short_enabled" / "traces" / "v6_lite_scenario_00.npz"
-    required = [frozen_json, frozen_trace, margin_json, margin_trace, short_trace]
+    required = [frozen_json, frozen_trace, margin_json, margin_trace,
+                solver_json, solver_trace, timing_note_path, short_trace]
     if any(not path.is_file() for path in required):
         missing = [str(path) for path in required if not path.is_file()]
         raise FileNotFoundError(f"missing required local evidence: {missing}")
     frozen = _load(frozen_json)
     margin_diagnostic = _load(margin_json)
+    solver_diagnostic = _load(solver_json)
+    timing_note = _load(timing_note_path)
     if frozen["partial_trace"]["sha256"] != _sha(frozen_trace):
         raise ValueError("frozen failure snapshot and partial trace do not match")
     if margin_diagnostic["partial_trace"]["sha256"] != _sha(margin_trace):
         raise ValueError("second failure snapshot and partial trace do not match")
+    if solver_diagnostic["partial_trace"]["sha256"] != _sha(solver_trace):
+        raise ValueError("solver failure snapshot and partial trace do not match")
     short = _short_summary(short_trace)
     short_path = EVIDENCE_ROOT / "short_enabled" / "short_validation.json"
     short_path.write_text(json.dumps(short, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
@@ -95,6 +108,9 @@ def build() -> dict:
         _entry(frozen_trace, "frozen_partial_native_trace"),
         _entry(margin_json, "frozen_baseline_margin_failure_snapshot"),
         _entry(margin_trace, "frozen_baseline_margin_partial_native_trace"),
+        _entry(solver_json, "frozen_baseline_solver_failure_snapshot"),
+        _entry(solver_trace, "frozen_baseline_solver_partial_native_trace"),
+        _entry(timing_note_path, "observed_unpreserved_wall_clock_trial"),
         _entry(short_trace, "new_two_second_native_closed_loop_trace"),
         _entry(short_path, "new_two_second_trace_validation"),
     ]
@@ -116,6 +132,11 @@ def build() -> dict:
         replay = _load(paths["original_26_replay"])
         execution = _load(paths["execution_contract_validation"])
         manifest = _load(paths["run_manifest"])
+        if (
+            manifest.get("contract_version") != "v6_2_a1_ramp_aware_qp"
+            or manifest["metrics"]["sha256"] != _sha(paths["metrics"])
+        ):
+            raise ValueError(f"run manifest and metrics do not match: {name}")
         config_bytes = json.dumps(
             {"run": metrics["run_config"], "qp": metrics["qp_config"]},
             sort_keys=True, separators=(",", ":"), allow_nan=False,
@@ -163,8 +184,10 @@ def build() -> dict:
         "model_runtime_contract_sha256": frozen["model_runtime_contract_sha256"],
         "frozen_configuration_sha256": frozen["configuration_sha256"],
         "margin_diagnostic_configuration_sha256": margin_diagnostic["configuration_sha256"],
-        "code_sha256": {
-            relative: _sha(ROOT / relative)
+        "solver_diagnostic_configuration_sha256": solver_diagnostic["configuration_sha256"],
+        "prior_timing_trial": timing_note,
+        "code_normalized_lf_sha256": {
+            relative: _normalized_source_sha(ROOT / relative)
             for relative in (
                 "v6_lite/hierarchical_qp.py", "v6_lite/execution_ramp.py",
                 "v6_lite/safety_contract.py", "v6_lite/run_v6_lite.py",
@@ -179,11 +202,12 @@ def build() -> dict:
     }
     manifest_path = EVIDENCE_ROOT / "evidence_manifest.json"
     manifest_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
-    _render_markdown(report, frozen, margin_diagnostic)
+    _render_markdown(report, frozen, margin_diagnostic, solver_diagnostic)
     return report
 
 
-def _render_markdown(report: dict, frozen: dict, margin_diagnostic: dict) -> None:
+def _render_markdown(report: dict, frozen: dict, margin_diagnostic: dict,
+                     solver_diagnostic: dict) -> None:
     root_cause = frozen["cross_cycle_report"]
     row_action_change = (
         root_cause["residual_change_m_s"] + root_cause["lower_change_m_s"]
@@ -214,6 +238,10 @@ def _render_markdown(report: dict, frozen: dict, margin_diagnostic: dict) -> Non
         f"首次关闭组在 `9.320 s` 另一次正确拒绝：`{second_root['dominant_source']}`；",
         f"跨周期残差变化 `{second_root['residual_change_m_s']:.6g} m/s`，",
         f"其中几何梯度作用变化 `{second_gradient_change:+.6g} m/s`。",
+        f"关闭组场景 01 在 `{solver_diagnostic['planning_snapshots'][-1]['time_s']:.3f} s` "
+        "曾达到 ADMM 迭代上限并拒绝下发；冻结候选的线性约束仍可行。",
+        "在同一 QP 求解中按残差调整罚参数后，该冻结状态通过；",
+        "此诊断不替代完整闭环与独立重放。",
         "",
         "## 新增前瞻裕度",
         "",
@@ -235,6 +263,9 @@ def _render_markdown(report: dict, frozen: dict, margin_diagnostic: dict) -> Non
         "原有 26 项的门槛与检查名称保持；其中“避障已介入”统计的是",
         "当前 QP 全部安全行的绑定次数。报告另列瞬时行与前瞻行分项，",
         "避免把提前避障误写成旧瞬时行绑定。",
+        f"一次先前的开启组场景 02 运行得到全链 p95 "
+        f"`{report['prior_timing_trial']['observed_task_full_latency_p95_ms']:.3f} ms`，"
+        "超过原 20 ms 门槛；该次 trace 被完整重跑覆盖，只有非独立可重放的观察记录。",
         "",
         "| 模式 | 运行 | 原 26 项 MuJoCo 力矩重放 | 新执行合同验证 | 瞬时/前瞻绑定 | 状态 |",
         "| --- | --- | --- | --- | ---: | --- |",
@@ -255,6 +286,9 @@ def _render_markdown(report: dict, frozen: dict, margin_diagnostic: dict) -> Non
         "本阶段验证的是有限 MuJoCo 场景、冻结行的离散前瞻及保存力矩的真实重放；",
         "不构成采样间连续时间碰撞证明。未通过的项目按 manifest 保留，",
         "不能用历史产物或仿真中止替代。",
+        "完整原始 trace 保存在本地运行目录，manifest 提供相对路径和 SHA-256；",
+        "Git 分支保存可审阅的报告与反例证据，原始完整 trace 未上传到 Git 历史。",
+        "manifest 中的源码哈希先将行尾规范化为 LF，避免不同系统检出时改变身份。",
         "",
     ]
     (ROOT / "docs" / "V6_2A1_RAMP_AWARE_EVIDENCE.md").write_text(

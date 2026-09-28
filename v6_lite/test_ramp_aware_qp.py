@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
-from v6_lite.hierarchical_qp import HierarchicalQPConfig
+from v6_lite.hierarchical_qp import HierarchicalQPConfig, HierarchicalVelocityQP
 from v6_lite.execution_ramp import advance_reference, ramp_mean_weights, ramp_velocity
 from v6_lite.safety_contract import FailureReason, validate_action
 
@@ -21,6 +21,25 @@ FROZEN = (
 
 
 class RampAwareTests(unittest.TestCase):
+    def test_admm_adjusts_penalty_for_slow_interior_convergence(self):
+        qp = object.__new__(HierarchicalVelocityQP)
+        qp.config = HierarchicalQPConfig()
+        hessian = np.diag([0.02] + [1.0] * 16)
+        linear = np.zeros(17)
+        linear[0] = -0.002
+        candidate, feasible, status, iterations, _dual = qp._solve_qp_admm(
+            hessian,
+            linear,
+            np.eye(17),
+            np.full(17, -1.0),
+            np.full(17, 1.0),
+            np.zeros(17),
+        )
+        self.assertTrue(feasible)
+        self.assertEqual(status, "solved")
+        self.assertLess(iterations, qp.config.qp_max_iterations)
+        self.assertAlmostEqual(candidate[0], 0.1, delta=0.013)
+
     def test_ten_reference_steps_match_legacy_interpolation_and_clips(self):
         rng = np.random.default_rng(824)
         start = rng.normal(0, 0.2, 17)
