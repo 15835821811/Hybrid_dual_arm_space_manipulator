@@ -1,8 +1,8 @@
 {
   "schema": "v6_2_b2_native_replay_interval_shadow_v1",
   "source_sha256": {
-    "v6_lite/pcc_interval_cbf.py": "f62c696de2eb6b3e2b419038075240e68e7d2882cded98d18df9331b4131c063",
-    "v6_lite/continuum_shape_model.py": "7fb58b84cc092d446508e37786ad9220ff91aacc145b9e80d7f1d904bbe0adf3",
+    "v6_lite/pcc_interval_cbf.py": "befb7cf61aebadb17b3b138fb6c6baf88a5d04fd51656ef88fdb5f010738c61d",
+    "v6_lite/continuum_shape_model.py": "e5648cd5958dd7e8f5e3a3760db8f83a04143d278ea71e7fe2c63ed06a84d5e3",
     "v6_lite/pcc_persistent_interval_query.py": "f649d9627eec1bd10205dcf72c2dbea2d0ca2877a1c8a68f06d5008da11df649",
     "v6_lite/b2_shadow_feasibility.py": "2f1a9d526af06c14ae5f6c2e37f9b823f7a0552c6bb41b629d4c3eee642efee1",
     "v6_lite/recompute_execution_constraints.py": "8c5c6d9490ce090bc45af9831d530b3b7ba0eeacbb87d715d79819a53521b4c8",
@@ -63,7 +63,7 @@
       "sample_count": 135,
       "counts": {
         "empty_candidate_velocity_box": 0,
-        "paired_replacement_estimate_over_20ms": 8,
+        "paired_replacement_estimate_over_20ms": 5,
         "ramp_box_newly_selected": 0,
         "ramp_box_newly_excluded": 185,
         "PROXY_CLEARANCE_AT_LEAST_GATE": 76,
@@ -95,27 +95,27 @@
         },
         "query_time_ms": {
           "count": 135,
-          "min": 6.958900019526482,
-          "p50": 9.62849985808134,
-          "p95": 10.63912995159626,
-          "p99": 11.316057918593286,
-          "max": 11.566999834030867
+          "min": 6.573200225830078,
+          "p50": 8.37939977645874,
+          "p95": 9.15298005566001,
+          "p99": 9.486602023243904,
+          "max": 10.101700201630592
         },
         "branch_query_time_ms": {
           "count": 135,
-          "min": 4.670700058341026,
-          "p50": 5.104499869048595,
-          "p95": 5.948390159755945,
-          "p99": 6.51639999821782,
-          "max": 6.663700100034475
+          "min": 4.302500281482935,
+          "p50": 4.839200060814619,
+          "p95": 5.473759770393372,
+          "p99": 5.851662140339612,
+          "max": 6.656999699771404
         },
         "interval_assembly_time_ms": {
           "count": 135,
-          "min": 1.0911999270319939,
-          "p50": 3.3833999186754227,
-          "p95": 3.643540106713772,
-          "p99": 3.859377829357981,
-          "max": 3.9518997073173523
+          "min": 1.037099864333868,
+          "p50": 2.372200135141611,
+          "p95": 2.612780127674341,
+          "p99": 2.7541261352598667,
+          "max": 2.7981996536254883
         },
         "point_evaluations": {
           "count": 135,
@@ -215,11 +215,11 @@
         },
         "paired_replacement_estimate_ms": {
           "count": 135,
-          "min": 12.054200284183025,
-          "p50": 14.955900143831968,
-          "p95": 20.43188977986574,
-          "p99": 23.981408299878236,
-          "max": 33.39059976860881
+          "min": 11.54230022802949,
+          "p50": 13.626900035887957,
+          "p95": 19.06705964356661,
+          "p99": 22.63020614162087,
+          "max": 32.29660028591752
         },
         "next_h_prediction_abs_error_m": {
           "count": 1783,
@@ -245,19 +245,19 @@
         },
         "frozen_original_assembly_ms": {
           "count": 135,
-          "min": 4.463099874556065,
-          "p50": 5.057499743998051,
-          "p95": 5.430140113458037,
-          "p99": 5.899780197069048,
-          "max": 6.138700060546398
+          "min": 4.469800274819136,
+          "p50": 4.975699819624424,
+          "p95": 5.382829811424017,
+          "p99": 5.753685776144265,
+          "max": 6.041700020432472
         },
         "frozen_lp_ms": {
           "count": 135,
-          "min": 0.3583999350667,
-          "p50": 0.5256002768874168,
-          "p95": 0.6086898967623711,
-          "p99": 0.7672078721225258,
-          "max": 1.1546998284757137
+          "min": 0.3494000993669033,
+          "p50": 0.5195001140236855,
+          "p95": 0.6330700125545262,
+          "p99": 0.8279199060052632,
+          "max": 1.3573002070188522
         },
         "frozen_row_count": {
           "count": 135,
@@ -277,7 +277,7 @@
           "minimum_h_m": -0.006153615796219713,
           "actual_mujoco_distance_m": 0.08305973170003438,
           "subspace_residual_linf_rad": 1.2244837678532239e-08,
-          "query_time_ms": 9.608800057321787,
+          "query_time_ms": 8.142400067299604,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -291,7 +291,7 @@
           "minimum_h_m": -0.007273149760421628,
           "actual_mujoco_distance_m": 0.0905361290477448,
           "subspace_residual_linf_rad": 9.670975784081826e-09,
-          "query_time_ms": 9.768300224095583,
+          "query_time_ms": 8.37939977645874,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -305,7 +305,7 @@
           "minimum_h_m": -0.008566800494675297,
           "actual_mujoco_distance_m": 0.07975178594825491,
           "subspace_residual_linf_rad": 2.4512353842889856e-08,
-          "query_time_ms": 9.324399754405022,
+          "query_time_ms": 8.230400271713734,
           "point_evaluations": 49,
           "jacobian_evaluations": 16,
           "selected_interval_count": 14,
@@ -319,7 +319,7 @@
           "minimum_h_m": -0.002594857097113833,
           "actual_mujoco_distance_m": 0.08167527012442743,
           "subspace_residual_linf_rad": 1.006042758822101e-08,
-          "query_time_ms": 10.739699937403202,
+          "query_time_ms": 8.993200026452541,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -333,7 +333,7 @@
           "minimum_h_m": -0.0070840085129693885,
           "actual_mujoco_distance_m": 0.08047746447707144,
           "subspace_residual_linf_rad": 8.722919830894682e-09,
-          "query_time_ms": 9.585999883711338,
+          "query_time_ms": 8.131199982017279,
           "point_evaluations": 49,
           "jacobian_evaluations": 16,
           "selected_interval_count": 14,
@@ -347,7 +347,7 @@
           "minimum_h_m": -0.004436915952655048,
           "actual_mujoco_distance_m": 0.09410123364904614,
           "subspace_residual_linf_rad": 1.769626464982743e-08,
-          "query_time_ms": 10.22149994969368,
+          "query_time_ms": 8.538300171494484,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -361,7 +361,7 @@
           "minimum_h_m": -0.0022879062017751545,
           "actual_mujoco_distance_m": 0.0916018503325485,
           "subspace_residual_linf_rad": 6.1206396409496655e-09,
-          "query_time_ms": 9.359399788081646,
+          "query_time_ms": 8.19589989259839,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -375,7 +375,7 @@
           "minimum_h_m": -0.004374544384428674,
           "actual_mujoco_distance_m": 0.08640171835143443,
           "subspace_residual_linf_rad": 1.3580452346007021e-08,
-          "query_time_ms": 10.01069974154234,
+          "query_time_ms": 8.36540013551712,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -389,7 +389,7 @@
           "minimum_h_m": -0.011706941036817613,
           "actual_mujoco_distance_m": 0.07883015757792018,
           "subspace_residual_linf_rad": 9.56268259022508e-11,
-          "query_time_ms": 9.718999732285738,
+          "query_time_ms": 8.735999930649996,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -421,7 +421,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 1.1546998284757137
+            "lp_time_ms": 1.3573002070188522
           }
         },
         {
@@ -447,7 +447,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_00",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5471999756991863
+            "lp_time_ms": 0.5336999893188477
           }
         },
         {
@@ -473,7 +473,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0071:v5_workspace_sphere_000_rigid_path_00",
             "row_count": 38,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5439999513328075
+            "lp_time_ms": 0.6271000020205975
           }
         },
         {
@@ -499,7 +499,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 13,
-            "lp_time_ms": 0.591999851167202
+            "lp_time_ms": 0.574599951505661
           }
         },
         {
@@ -525,7 +525,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.6260997615754604
+            "lp_time_ms": 0.6046001799404621
           }
         },
         {
@@ -551,7 +551,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5291998386383057
+            "lp_time_ms": 0.5675000138580799
           }
         },
         {
@@ -577,7 +577,7 @@
             "worst_start_source": "pcc_interval:2:0110",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5629998631775379
+            "lp_time_ms": 0.5755000747740269
           }
         },
         {
@@ -603,7 +603,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 64,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39639975875616074
+            "lp_time_ms": 0.4002000205218792
           }
         },
         {
@@ -629,7 +629,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 65,
             "interval_row_count": 16,
-            "lp_time_ms": 0.3692000173032284
+            "lp_time_ms": 0.3902004100382328
           }
         },
         {
@@ -655,7 +655,7 @@
             "worst_start_source": "pcc_interval:3:0",
             "row_count": 68,
             "interval_row_count": 16,
-            "lp_time_ms": 0.40769996121525764
+            "lp_time_ms": 0.394199974834919
           }
         },
         {
@@ -681,7 +681,7 @@
             "worst_start_source": "pcc_interval:3:00",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.45450031757354736
+            "lp_time_ms": 0.4055001772940159
           }
         },
         {
@@ -707,7 +707,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.514499843120575
+            "lp_time_ms": 0.4112003371119499
           }
         },
         {
@@ -733,7 +733,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.394399743527174
+            "lp_time_ms": 0.3931000828742981
           }
         },
         {
@@ -759,7 +759,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4245997406542301
+            "lp_time_ms": 0.4202001728117466
           }
         },
         {
@@ -785,7 +785,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4030996933579445
+            "lp_time_ms": 0.3877999261021614
           }
         },
         {
@@ -811,7 +811,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 71,
             "interval_row_count": 17,
-            "lp_time_ms": 0.386000145226717
+            "lp_time_ms": 0.41670026257634163
           }
         },
         {
@@ -837,7 +837,7 @@
             "worst_start_source": "pcc_interval:3:1010",
             "row_count": 65,
             "interval_row_count": 17,
-            "lp_time_ms": 0.37560006603598595
+            "lp_time_ms": 0.38950005546212196
           }
         },
         {
@@ -863,7 +863,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6431997753679752
+            "lp_time_ms": 0.5965996533632278
           }
         },
         {
@@ -889,7 +889,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5577998235821724
+            "lp_time_ms": 0.5458001978695393
           }
         },
         {
@@ -915,7 +915,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5783000960946083
+            "lp_time_ms": 0.5280999466776848
           }
         },
         {
@@ -941,7 +941,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5504000000655651
+            "lp_time_ms": 0.5445997230708599
           }
         },
         {
@@ -967,7 +967,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5399999208748341
+            "lp_time_ms": 0.6033000536262989
           }
         },
         {
@@ -993,7 +993,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5616000853478909
+            "lp_time_ms": 0.5574999377131462
           }
         },
         {
@@ -1019,7 +1019,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5493001081049442
+            "lp_time_ms": 0.5450001917779446
           }
         },
         {
@@ -1045,7 +1045,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5728998221457005
+            "lp_time_ms": 0.5449000746011734
           }
         },
         {
@@ -1071,7 +1071,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5801999941468239
+            "lp_time_ms": 0.556199811398983
           }
         },
         {
@@ -1097,7 +1097,7 @@
             "worst_start_source": "pcc_interval:2:001",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5452996119856834
+            "lp_time_ms": 0.5894000642001629
           }
         },
         {
@@ -1123,7 +1123,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4618000239133835
+            "lp_time_ms": 0.4789000377058983
           }
         },
         {
@@ -1149,7 +1149,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_01",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5139000713825226
+            "lp_time_ms": 0.49400003626942635
           }
         },
         {
@@ -1175,7 +1175,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_01",
             "row_count": 38,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4954999312758446
+            "lp_time_ms": 0.501600094139576
           }
         },
         {
@@ -1201,7 +1201,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 13,
-            "lp_time_ms": 0.5677002482116222
+            "lp_time_ms": 0.6034001708030701
           }
         },
         {
@@ -1227,7 +1227,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5960999988019466
+            "lp_time_ms": 0.6245998665690422
           }
         },
         {
@@ -1253,7 +1253,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5645998753607273
+            "lp_time_ms": 0.5473000928759575
           }
         },
         {
@@ -1279,7 +1279,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5630999803543091
+            "lp_time_ms": 0.5628997460007668
           }
         },
         {
@@ -1305,7 +1305,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.579100102186203
+            "lp_time_ms": 0.5828998982906342
           }
         },
         {
@@ -1331,7 +1331,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5630999803543091
+            "lp_time_ms": 0.5689999088644981
           }
         },
         {
@@ -1357,7 +1357,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.41380012407898903
+            "lp_time_ms": 0.375999603420496
           }
         },
         {
@@ -1383,7 +1383,7 @@
             "worst_start_source": "pcc_interval:2:1000",
             "row_count": 62,
             "interval_row_count": 16,
-            "lp_time_ms": 0.41009997949004173
+            "lp_time_ms": 0.43010013177990913
           }
         },
         {
@@ -1409,7 +1409,7 @@
             "worst_start_source": "pcc_interval:2:00",
             "row_count": 67,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39880024269223213
+            "lp_time_ms": 0.3995997831225395
           }
         },
         {
@@ -1435,7 +1435,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 70,
             "interval_row_count": 16,
-            "lp_time_ms": 0.40499959141016006
+            "lp_time_ms": 0.46740006655454636
           }
         },
         {
@@ -1461,7 +1461,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 72,
             "interval_row_count": 16,
-            "lp_time_ms": 0.4000002518296242
+            "lp_time_ms": 0.42929966002702713
           }
         },
         {
@@ -1487,7 +1487,7 @@
             "worst_start_source": "pcc_interval:2:011",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.43489970266819
+            "lp_time_ms": 0.5080001428723335
           }
         },
         {
@@ -1513,7 +1513,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 76,
             "interval_row_count": 17,
-            "lp_time_ms": 0.42450008913874626
+            "lp_time_ms": 0.42980024591088295
           }
         },
         {
@@ -1539,7 +1539,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4205000586807728
+            "lp_time_ms": 0.40079979225993156
           }
         },
         {
@@ -1565,7 +1565,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.39719976484775543
+            "lp_time_ms": 0.3992002457380295
           }
         },
         {
@@ -1591,7 +1591,7 @@
             "worst_start_source": "pcc_interval:3:010",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3806999884545803
+            "lp_time_ms": 0.3738999366760254
           }
         },
         {
@@ -1617,7 +1617,7 @@
             "worst_start_source": "pcc_interval:3:010",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3583999350667
+            "lp_time_ms": 0.35819970071315765
           }
         },
         {
@@ -1643,7 +1643,7 @@
             "worst_start_source": "pcc_interval:3:000",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3782999701797962
+            "lp_time_ms": 0.3784000873565674
           }
         },
         {
@@ -1669,7 +1669,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5766996182501316
+            "lp_time_ms": 0.5677002482116222
           }
         },
         {
@@ -1695,7 +1695,7 @@
             "worst_start_source": "pcc_interval:2:010",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5595996044576168
+            "lp_time_ms": 0.6198999471962452
           }
         },
         {
@@ -1721,7 +1721,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5587995983660221
+            "lp_time_ms": 0.5437000654637814
           }
         },
         {
@@ -1747,7 +1747,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 50,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5810000002384186
+            "lp_time_ms": 0.653399620205164
           }
         },
         {
@@ -1773,7 +1773,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 50,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5457000806927681
+            "lp_time_ms": 0.5373000167310238
           }
         },
         {
@@ -1799,7 +1799,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 50,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5381000228226185
+            "lp_time_ms": 0.5951998755335808
           }
         },
         {
@@ -1825,7 +1825,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.47770002856850624
+            "lp_time_ms": 0.5493001081049442
           }
         },
         {
@@ -1851,7 +1851,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_02",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5256002768874168
+            "lp_time_ms": 0.501799862831831
           }
         },
         {
@@ -1877,7 +1877,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
             "row_count": 49,
             "interval_row_count": 11,
-            "lp_time_ms": 0.5765999667346478
+            "lp_time_ms": 0.5632000975310802
           }
         },
         {
@@ -1903,7 +1903,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5864002741873264
+            "lp_time_ms": 0.6078002043068409
           }
         },
         {
@@ -1929,7 +1929,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5900999531149864
+            "lp_time_ms": 0.580300111323595
           }
         },
         {
@@ -1955,7 +1955,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5856999196112156
+            "lp_time_ms": 0.7969001308083534
           }
         },
         {
@@ -1981,7 +1981,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5542002618312836
+            "lp_time_ms": 0.550499651581049
           }
         },
         {
@@ -2007,7 +2007,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 53,
             "interval_row_count": 14,
-            "lp_time_ms": 0.3664996474981308
+            "lp_time_ms": 0.3494000993669033
           }
         },
         {
@@ -2033,7 +2033,7 @@
             "worst_start_source": "pcc_interval:2:000",
             "row_count": 56,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3982996568083763
+            "lp_time_ms": 0.39739999920129776
           }
         },
         {
@@ -2059,7 +2059,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 61,
             "interval_row_count": 16,
-            "lp_time_ms": 0.4064999520778656
+            "lp_time_ms": 0.4111998714506626
           }
         },
         {
@@ -2085,7 +2085,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 67,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5254996940493584
+            "lp_time_ms": 0.40870020166039467
           }
         },
         {
@@ -2111,7 +2111,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.43640006333589554
+            "lp_time_ms": 0.45629963278770447
           }
         },
         {
@@ -2137,7 +2137,7 @@
             "worst_start_source": "pcc_interval:2:00",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.42660022154450417
+            "lp_time_ms": 0.40529994294047356
           }
         },
         {
@@ -2163,7 +2163,7 @@
             "worst_start_source": "pcc_interval:3:01",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.40240027010440826
+            "lp_time_ms": 0.38790004327893257
           }
         },
         {
@@ -2189,7 +2189,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.42930012568831444
+            "lp_time_ms": 0.39850035682320595
           }
         },
         {
@@ -2215,7 +2215,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 64,
             "interval_row_count": 17,
-            "lp_time_ms": 0.39739999920129776
+            "lp_time_ms": 0.3971001133322716
           }
         },
         {
@@ -2241,7 +2241,7 @@
             "worst_start_source": "pcc_interval:3:10100",
             "row_count": 62,
             "interval_row_count": 17,
-            "lp_time_ms": 0.40030013769865036
+            "lp_time_ms": 0.3891000524163246
           }
         },
         {
@@ -2267,7 +2267,7 @@
             "worst_start_source": "pcc_interval:1:root",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5641002207994461
+            "lp_time_ms": 0.5696001462638378
           }
         },
         {
@@ -2293,7 +2293,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.708600040525198
+            "lp_time_ms": 0.5593998357653618
           }
         },
         {
@@ -2319,7 +2319,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5381000228226185
+            "lp_time_ms": 0.555800274014473
           }
         },
         {
@@ -2345,7 +2345,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5339998751878738
+            "lp_time_ms": 0.5489997565746307
           }
         },
         {
@@ -2371,7 +2371,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 45,
             "interval_row_count": 9,
-            "lp_time_ms": 0.5474002100527287
+            "lp_time_ms": 0.6186999380588531
           }
         },
         {
@@ -2397,7 +2397,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 39,
             "interval_row_count": 3,
-            "lp_time_ms": 0.4977998323738575
+            "lp_time_ms": 0.4964997060596943
           }
         },
         {
@@ -2423,7 +2423,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 45,
             "interval_row_count": 9,
-            "lp_time_ms": 0.5703996866941452
+            "lp_time_ms": 0.5119000561535358
           }
         },
         {
@@ -2449,7 +2449,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 49,
             "interval_row_count": 13,
-            "lp_time_ms": 0.5883998237550259
+            "lp_time_ms": 0.5385000258684158
           }
         },
         {
@@ -2475,7 +2475,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 48,
             "interval_row_count": 12,
-            "lp_time_ms": 0.554999802261591
+            "lp_time_ms": 0.552899669855833
           }
         },
         {
@@ -2501,7 +2501,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 50,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5717002786695957
+            "lp_time_ms": 0.5814000032842159
           }
         },
         {
@@ -2527,7 +2527,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.47209998592734337
+            "lp_time_ms": 0.46769995242357254
           }
         },
         {
@@ -2553,7 +2553,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5176002159714699
+            "lp_time_ms": 0.5411002784967422
           }
         },
         {
@@ -2579,7 +2579,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 49,
             "interval_row_count": 11,
-            "lp_time_ms": 0.5536996759474277
+            "lp_time_ms": 0.582799781113863
           }
         },
         {
@@ -2605,7 +2605,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5702003836631775
+            "lp_time_ms": 0.6216000765562057
           }
         },
         {
@@ -2631,7 +2631,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5709999240934849
+            "lp_time_ms": 0.575600191950798
           }
         },
         {
@@ -2657,7 +2657,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.6063999608159065
+            "lp_time_ms": 0.6073997355997562
           }
         },
         {
@@ -2683,7 +2683,7 @@
             "worst_start_source": "pcc_interval:2:0110",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.37739984691143036
+            "lp_time_ms": 0.3625000827014446
           }
         },
         {
@@ -2709,7 +2709,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 60,
             "interval_row_count": 16,
-            "lp_time_ms": 0.4023001529276371
+            "lp_time_ms": 0.43429993093013763
           }
         },
         {
@@ -2735,7 +2735,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 61,
             "interval_row_count": 16,
-            "lp_time_ms": 0.38079963997006416
+            "lp_time_ms": 0.40270015597343445
           }
         },
         {
@@ -2761,7 +2761,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 67,
             "interval_row_count": 16,
-            "lp_time_ms": 0.3961999900639057
+            "lp_time_ms": 0.41530001908540726
           }
         },
         {
@@ -2787,7 +2787,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.40819961577653885
+            "lp_time_ms": 0.4167999140918255
           }
         },
         {
@@ -2813,7 +2813,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.39900001138448715
+            "lp_time_ms": 0.4120999947190285
           }
         },
         {
@@ -2839,7 +2839,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4004999063909054
+            "lp_time_ms": 0.40590018033981323
           }
         },
         {
@@ -2865,7 +2865,7 @@
             "worst_start_source": "pcc_interval:3:011",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3991001285612583
+            "lp_time_ms": 0.40269969031214714
           }
         },
         {
@@ -2891,7 +2891,7 @@
             "worst_start_source": "pcc_interval:3:1010",
             "row_count": 66,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3736000508069992
+            "lp_time_ms": 0.4026000387966633
           }
         },
         {
@@ -2917,7 +2917,7 @@
             "worst_start_source": "pcc_interval:3:1010",
             "row_count": 64,
             "interval_row_count": 17,
-            "lp_time_ms": 0.38449978455901146
+            "lp_time_ms": 0.38980040699243546
           }
         },
         {
@@ -2943,7 +2943,7 @@
             "worst_start_source": "pcc_interval:3:1011",
             "row_count": 56,
             "interval_row_count": 17,
-            "lp_time_ms": 0.7973997853696346
+            "lp_time_ms": 0.8438997901976109
           }
         },
         {
@@ -2969,7 +2969,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5486002191901207
+            "lp_time_ms": 0.5463999696075916
           }
         },
         {
@@ -2995,7 +2995,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6095999851822853
+            "lp_time_ms": 0.5634999834001064
           }
         },
         {
@@ -3021,7 +3021,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5633002147078514
+            "lp_time_ms": 0.5704001523554325
           }
         },
         {
@@ -3047,7 +3047,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 49,
             "interval_row_count": 13,
-            "lp_time_ms": 0.5435999482870102
+            "lp_time_ms": 0.5716001614928246
           }
         },
         {
@@ -3073,7 +3073,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.605899840593338
+            "lp_time_ms": 0.4996000789105892
           }
         },
         {
@@ -3099,7 +3099,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4998999647796154
+            "lp_time_ms": 0.49270037561655045
           }
         },
         {
@@ -3125,7 +3125,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5096001550555229
+            "lp_time_ms": 0.5087000317871571
           }
         },
         {
@@ -3151,7 +3151,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5207001231610775
+            "lp_time_ms": 0.49129966646432877
           }
         },
         {
@@ -3177,7 +3177,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4909997805953026
+            "lp_time_ms": 0.5038999952375889
           }
         },
         {
@@ -3203,7 +3203,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 37,
             "interval_row_count": 1,
-            "lp_time_ms": 0.529400072991848
+            "lp_time_ms": 0.5446001887321472
           }
         },
         {
@@ -3229,7 +3229,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4806998185813427
+            "lp_time_ms": 0.4711998626589775
           }
         },
         {
@@ -3255,7 +3255,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_04",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5429997108876705
+            "lp_time_ms": 0.5195001140236855
           }
         },
         {
@@ -3281,7 +3281,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
             "row_count": 41,
             "interval_row_count": 3,
-            "lp_time_ms": 0.5232999101281166
+            "lp_time_ms": 0.6001000292599201
           }
         },
         {
@@ -3307,7 +3307,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.6676004268229008
+            "lp_time_ms": 0.6547998636960983
           }
         },
         {
@@ -3333,7 +3333,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5429997108876705
+            "lp_time_ms": 0.6657997146248817
           }
         },
         {
@@ -3359,7 +3359,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5624997429549694
+            "lp_time_ms": 0.5455999635159969
           }
         },
         {
@@ -3385,7 +3385,7 @@
             "worst_start_source": "pcc_interval:2:000",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5675000138580799
+            "lp_time_ms": 0.5375002510845661
           }
         },
         {
@@ -3411,7 +3411,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 60,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39190007373690605
+            "lp_time_ms": 0.39349962025880814
           }
         },
         {
@@ -3437,7 +3437,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 64,
             "interval_row_count": 16,
-            "lp_time_ms": 0.40349969640374184
+            "lp_time_ms": 0.42109983041882515
           }
         },
         {
@@ -3463,7 +3463,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 65,
             "interval_row_count": 16,
-            "lp_time_ms": 0.38370024412870407
+            "lp_time_ms": 0.4031001590192318
           }
         },
         {
@@ -3489,7 +3489,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 69,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39079971611499786
+            "lp_time_ms": 0.3922996111214161
           }
         },
         {
@@ -3515,7 +3515,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4062000662088394
+            "lp_time_ms": 0.46449992805719376
           }
         },
         {
@@ -3541,7 +3541,7 @@
             "worst_start_source": "pcc_interval:2:011",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.42709987610578537
+            "lp_time_ms": 0.4213000647723675
           }
         },
         {
@@ -3567,7 +3567,7 @@
             "worst_start_source": "pcc_interval:3:1",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.40240027010440826
+            "lp_time_ms": 0.3954996354877949
           }
         },
         {
@@ -3593,7 +3593,7 @@
             "worst_start_source": "pcc_interval:3:100",
             "row_count": 77,
             "interval_row_count": 17,
-            "lp_time_ms": 0.46060001477599144
+            "lp_time_ms": 0.44529978185892105
           }
         },
         {
@@ -3619,7 +3619,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.41949981823563576
+            "lp_time_ms": 0.4012999124825001
           }
         },
         {
@@ -3645,7 +3645,7 @@
             "worst_start_source": "pcc_interval:3:1001",
             "row_count": 68,
             "interval_row_count": 17,
-            "lp_time_ms": 0.38219988346099854
+            "lp_time_ms": 0.37220027297735214
           }
         },
         {
@@ -3671,7 +3671,7 @@
             "worst_start_source": "pcc_interval:3:00",
             "row_count": 61,
             "interval_row_count": 17,
-            "lp_time_ms": 0.422800425440073
+            "lp_time_ms": 0.386199913918972
           }
         },
         {
@@ -3697,7 +3697,7 @@
             "worst_start_source": "pcc_interval:2:00",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5789999850094318
+            "lp_time_ms": 0.5741999484598637
           }
         },
         {
@@ -3723,7 +3723,7 @@
             "worst_start_source": "pcc_interval:3:100",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5823001265525818
+            "lp_time_ms": 0.5858000367879868
           }
         },
         {
@@ -3749,7 +3749,7 @@
             "worst_start_source": "pcc_interval:3:011",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5645998753607273
+            "lp_time_ms": 0.5791997537016869
           }
         },
         {
@@ -3775,7 +3775,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5708001554012299
+            "lp_time_ms": 0.5621002055704594
           }
         },
         {
@@ -3801,7 +3801,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5355002358555794
+            "lp_time_ms": 0.5524000152945518
           }
         },
         {
@@ -3827,7 +3827,7 @@
             "worst_start_source": "pcc_interval:2:001",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.566200353205204
+            "lp_time_ms": 0.5667000077664852
           }
         },
         {
@@ -3853,7 +3853,7 @@
             "worst_start_source": "pcc_interval:2:100",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.6082998588681221
+            "lp_time_ms": 0.5274997092783451
           }
         },
         {
@@ -3879,7 +3879,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5518002435564995
+            "lp_time_ms": 0.6470000371336937
           }
         },
         {
@@ -3905,7 +3905,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 55,
             "interval_row_count": 16,
-            "lp_time_ms": 0.3760000690817833
+            "lp_time_ms": 0.3867000341415405
           }
         }
       ]
@@ -3962,7 +3962,7 @@
       "sample_count": 135,
       "counts": {
         "empty_candidate_velocity_box": 0,
-        "paired_replacement_estimate_over_20ms": 12,
+        "paired_replacement_estimate_over_20ms": 10,
         "ramp_box_newly_selected": 0,
         "ramp_box_newly_excluded": 205,
         "PROXY_CLEARANCE_AT_LEAST_GATE": 99,
@@ -3993,27 +3993,27 @@
         },
         "query_time_ms": {
           "count": 135,
-          "min": 7.035300135612488,
-          "p50": 9.225400164723396,
-          "p95": 10.564569989219308,
-          "p99": 10.69775608368218,
-          "max": 11.16969995200634
+          "min": 6.773300003260374,
+          "p50": 8.014400023967028,
+          "p95": 9.17505999095738,
+          "p99": 9.828203981742261,
+          "max": 10.711300186812878
         },
         "branch_query_time_ms": {
           "count": 135,
-          "min": 4.5090001076459885,
-          "p50": 5.2247000858187675,
-          "p95": 6.087710056453943,
-          "p99": 6.567561952397227,
-          "max": 7.321400102227926
+          "min": 4.415899980813265,
+          "p50": 4.93270019069314,
+          "p95": 5.6172501761466265,
+          "p99": 6.613913942128418,
+          "max": 7.127400022000074
         },
         "interval_assembly_time_ms": {
           "count": 135,
-          "min": 1.0763001628220081,
-          "p50": 3.130400087684393,
-          "p95": 3.6118898075073957,
-          "p99": 3.6894460767507553,
-          "max": 3.824499901384115
+          "min": 1.0041003115475178,
+          "p50": 2.2199000231921673,
+          "p95": 2.605419885367155,
+          "p99": 2.841957993805408,
+          "max": 3.0037001706659794
         },
         "point_evaluations": {
           "count": 135,
@@ -4113,11 +4113,11 @@
         },
         "paired_replacement_estimate_ms": {
           "count": 135,
-          "min": 11.80840004235506,
-          "p50": 14.660500455647707,
-          "p95": 22.257409803569317,
-          "p99": 27.297259746119373,
-          "max": 33.19650003686547
+          "min": 11.614300310611725,
+          "p50": 13.446200173348188,
+          "p95": 21.34253974072635,
+          "p99": 26.816847687587135,
+          "max": 31.649500597268343
         },
         "next_h_prediction_abs_error_m": {
           "count": 1188,
@@ -4143,19 +4143,19 @@
         },
         "frozen_original_assembly_ms": {
           "count": 135,
-          "min": 4.6398998238146305,
-          "p50": 5.023899953812361,
-          "p95": 5.430749757215381,
-          "p99": 5.628068093210459,
-          "max": 5.710999947041273
+          "min": 4.464200232177973,
+          "p50": 4.941099788993597,
+          "p95": 5.417389888316393,
+          "p99": 6.1924700904637575,
+          "max": 9.90269985049963
         },
         "frozen_lp_ms": {
           "count": 135,
-          "min": 0.3560003824532032,
-          "p50": 0.5220999009907246,
-          "p95": 0.6475700065493584,
-          "p99": 0.7050260156393051,
-          "max": 0.7381998002529144
+          "min": 0.3529000096023083,
+          "p50": 0.5291001871228218,
+          "p95": 0.6988698616623878,
+          "p99": 0.8589780237525702,
+          "max": 0.9107999503612518
         },
         "frozen_row_count": {
           "count": 135,
@@ -4175,7 +4175,7 @@
           "minimum_h_m": -0.008612611091811117,
           "actual_mujoco_distance_m": 0.07940882924304472,
           "subspace_residual_linf_rad": 1.2419305555309845e-07,
-          "query_time_ms": 9.731300175189972,
+          "query_time_ms": 8.44680005684495,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -4189,7 +4189,7 @@
           "minimum_h_m": -0.004680886621272567,
           "actual_mujoco_distance_m": 0.08368313704224332,
           "subspace_residual_linf_rad": 1.6641930236649394e-08,
-          "query_time_ms": 9.61379986256361,
+          "query_time_ms": 8.581799920648336,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -4203,7 +4203,7 @@
           "minimum_h_m": -0.01212533242605806,
           "actual_mujoco_distance_m": 0.0798693167079741,
           "subspace_residual_linf_rad": 6.449892311043148e-08,
-          "query_time_ms": 9.758099913597107,
+          "query_time_ms": 8.163399994373322,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -4217,7 +4217,7 @@
           "minimum_h_m": -0.014551892496729567,
           "actual_mujoco_distance_m": 0.08061704015062007,
           "subspace_residual_linf_rad": 9.626802681406144e-09,
-          "query_time_ms": 9.958300273865461,
+          "query_time_ms": 8.657500147819519,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4231,7 +4231,7 @@
           "minimum_h_m": -0.007454221614841671,
           "actual_mujoco_distance_m": 0.0902038715156749,
           "subspace_residual_linf_rad": 2.2266057053688115e-08,
-          "query_time_ms": 10.662700049579144,
+          "query_time_ms": 8.489000145345926,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4245,7 +4245,7 @@
           "minimum_h_m": -1.3994082857623352e-05,
           "actual_mujoco_distance_m": 0.0976330202387988,
           "subspace_residual_linf_rad": 1.2412794715699338e-08,
-          "query_time_ms": 10.519200004637241,
+          "query_time_ms": 9.325300343334675,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4259,7 +4259,7 @@
           "minimum_h_m": -0.00971331296074816,
           "actual_mujoco_distance_m": 0.08693143593802256,
           "subspace_residual_linf_rad": 9.764877972298809e-09,
-          "query_time_ms": 10.35179989412427,
+          "query_time_ms": 9.077300317585468,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4273,7 +4273,7 @@
           "minimum_h_m": -0.002639127816414562,
           "actual_mujoco_distance_m": 0.08446365358649874,
           "subspace_residual_linf_rad": 9.887709881330892e-09,
-          "query_time_ms": 10.409200098365545,
+          "query_time_ms": 8.734300266951323,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4287,7 +4287,7 @@
           "minimum_h_m": -0.00628187967451883,
           "actual_mujoco_distance_m": 0.0829339093347744,
           "subspace_residual_linf_rad": 1.2310288181188733e-08,
-          "query_time_ms": 9.566700085997581,
+          "query_time_ms": 8.428100030869246,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -4301,7 +4301,7 @@
           "minimum_h_m": -0.013929012611912355,
           "actual_mujoco_distance_m": 0.07949081636182924,
           "subspace_residual_linf_rad": 4.2959264634316596e-08,
-          "query_time_ms": 9.861699771136045,
+          "query_time_ms": 8.250500075519085,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -4315,7 +4315,7 @@
           "minimum_h_m": -0.010588264412806647,
           "actual_mujoco_distance_m": 0.08463586411596932,
           "subspace_residual_linf_rad": 1.0176689761720592e-08,
-          "query_time_ms": 9.494599886238575,
+          "query_time_ms": 8.546500001102686,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -4329,7 +4329,7 @@
           "minimum_h_m": -0.012926035475224359,
           "actual_mujoco_distance_m": 0.08416865362632604,
           "subspace_residual_linf_rad": 1.6010472614347293e-08,
-          "query_time_ms": 10.162100195884705,
+          "query_time_ms": 8.91699967905879,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4343,7 +4343,7 @@
           "minimum_h_m": -0.0016460511838685336,
           "actual_mujoco_distance_m": 0.09374642336532553,
           "subspace_residual_linf_rad": 3.7366756997642137e-08,
-          "query_time_ms": 10.676899924874306,
+          "query_time_ms": 10.086399968713522,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -4357,7 +4357,7 @@
           "minimum_h_m": -0.008129343986819148,
           "actual_mujoco_distance_m": 0.08019010186229673,
           "subspace_residual_linf_rad": 1.4791008563425144e-07,
-          "query_time_ms": 9.433700237423182,
+          "query_time_ms": 8.900200016796589,
           "point_evaluations": 49,
           "jacobian_evaluations": 16,
           "selected_interval_count": 14,
@@ -4371,7 +4371,7 @@
           "minimum_h_m": -0.0063155537934442806,
           "actual_mujoco_distance_m": 0.0821181791450643,
           "subspace_residual_linf_rad": 7.236997612292129e-09,
-          "query_time_ms": 9.339800104498863,
+          "query_time_ms": 8.027900010347366,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -4385,7 +4385,7 @@
           "minimum_h_m": -0.006854761764171206,
           "actual_mujoco_distance_m": 0.08139850160860022,
           "subspace_residual_linf_rad": 1.4896969234567958e-08,
-          "query_time_ms": 9.979600086808205,
+          "query_time_ms": 8.287300355732441,
           "point_evaluations": 49,
           "jacobian_evaluations": 17,
           "selected_interval_count": 15,
@@ -4399,7 +4399,7 @@
           "minimum_h_m": -0.013890610979185477,
           "actual_mujoco_distance_m": 0.07940172980950344,
           "subspace_residual_linf_rad": 2.8797332013354854e-08,
-          "query_time_ms": 9.57089988514781,
+          "query_time_ms": 8.372099604457617,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -4413,7 +4413,7 @@
           "minimum_h_m": -0.011374645643318134,
           "actual_mujoco_distance_m": 0.08369262677176202,
           "subspace_residual_linf_rad": 1.3774337188215968e-08,
-          "query_time_ms": 9.877000004053116,
+          "query_time_ms": 8.535999804735184,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4427,7 +4427,7 @@
           "minimum_h_m": -0.001512613280007079,
           "actual_mujoco_distance_m": 0.09599478822227525,
           "subspace_residual_linf_rad": 7.001208862655872e-09,
-          "query_time_ms": 10.310700163245201,
+          "query_time_ms": 8.766800165176392,
           "point_evaluations": 49,
           "jacobian_evaluations": 18,
           "selected_interval_count": 16,
@@ -4441,7 +4441,7 @@
           "minimum_h_m": -0.00724207676850706,
           "actual_mujoco_distance_m": 0.08499915472626106,
           "subspace_residual_linf_rad": 3.30944230006458e-08,
-          "query_time_ms": 10.432800278067589,
+          "query_time_ms": 9.327000007033348,
           "point_evaluations": 49,
           "jacobian_evaluations": 19,
           "selected_interval_count": 17,
@@ -4473,7 +4473,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.47559989616274834
+            "lp_time_ms": 0.4744003526866436
           }
         },
         {
@@ -4499,7 +4499,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_00",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5382997915148735
+            "lp_time_ms": 0.7843002676963806
           }
         },
         {
@@ -4525,7 +4525,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0071:v5_workspace_sphere_000_rigid_path_00",
             "row_count": 38,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5540000274777412
+            "lp_time_ms": 0.6121997721493244
           }
         },
         {
@@ -4551,7 +4551,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 13,
-            "lp_time_ms": 0.5624000914394855
+            "lp_time_ms": 0.5893995985388756
           }
         },
         {
@@ -4577,7 +4577,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5558999255299568
+            "lp_time_ms": 0.6188000552356243
           }
         },
         {
@@ -4603,7 +4603,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5508000031113625
+            "lp_time_ms": 0.616100151091814
           }
         },
         {
@@ -4629,7 +4629,7 @@
             "worst_start_source": "pcc_interval:2:0110",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5750004202127457
+            "lp_time_ms": 0.5736001767218113
           }
         },
         {
@@ -4655,7 +4655,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 57,
             "interval_row_count": 16,
-            "lp_time_ms": 0.4286002367734909
+            "lp_time_ms": 0.39319973438978195
           }
         },
         {
@@ -4681,7 +4681,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 54,
             "interval_row_count": 16,
-            "lp_time_ms": 0.6033000536262989
+            "lp_time_ms": 0.5859001539647579
           }
         },
         {
@@ -4707,7 +4707,7 @@
             "worst_start_source": "pcc_interval:2:001",
             "row_count": 56,
             "interval_row_count": 16,
-            "lp_time_ms": 0.3754999488592148
+            "lp_time_ms": 0.364100094884634
           }
         },
         {
@@ -4733,7 +4733,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 55,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3762999549508095
+            "lp_time_ms": 0.4479996860027313
           }
         },
         {
@@ -4759,7 +4759,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6337999366223812
+            "lp_time_ms": 0.5630999803543091
           }
         },
         {
@@ -4785,7 +4785,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5876999348402023
+            "lp_time_ms": 0.5646003410220146
           }
         },
         {
@@ -4811,7 +4811,7 @@
             "worst_start_source": "pcc_interval:3:100",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.38189999759197235
+            "lp_time_ms": 0.3700000233948231
           }
         },
         {
@@ -4837,7 +4837,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6420002318918705
+            "lp_time_ms": 0.5720001645386219
           }
         },
         {
@@ -4863,7 +4863,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5927998572587967
+            "lp_time_ms": 0.5773999728262424
           }
         },
         {
@@ -4889,7 +4889,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5473000928759575
+            "lp_time_ms": 0.6283000111579895
           }
         },
         {
@@ -4915,7 +4915,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 44,
             "interval_row_count": 8,
-            "lp_time_ms": 0.5110995844006538
+            "lp_time_ms": 0.520399771630764
           }
         },
         {
@@ -4941,7 +4941,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5010999739170074
+            "lp_time_ms": 0.5271001718938351
           }
         },
         {
@@ -4967,7 +4967,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.506100244820118
+            "lp_time_ms": 0.4882998764514923
           }
         },
         {
@@ -4993,7 +4993,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49220025539398193
+            "lp_time_ms": 0.49429992213845253
           }
         },
         {
@@ -5019,7 +5019,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4883999936282635
+            "lp_time_ms": 0.49240002408623695
           }
         },
         {
@@ -5045,7 +5045,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5014003254473209
+            "lp_time_ms": 0.5094003863632679
           }
         },
         {
@@ -5071,7 +5071,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49240002408623695
+            "lp_time_ms": 0.5159000866115093
           }
         },
         {
@@ -5097,7 +5097,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.6313999183475971
+            "lp_time_ms": 0.5008000880479813
           }
         },
         {
@@ -5123,7 +5123,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4942002706229687
+            "lp_time_ms": 0.51099993288517
           }
         },
         {
@@ -5149,7 +5149,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.48339972272515297
+            "lp_time_ms": 0.5425000563263893
           }
         },
         {
@@ -5175,7 +5175,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.46370038762688637
+            "lp_time_ms": 0.4718001000583172
           }
         },
         {
@@ -5201,7 +5201,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_01",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5038999952375889
+            "lp_time_ms": 0.5624000914394855
           }
         },
         {
@@ -5227,7 +5227,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_01",
             "row_count": 38,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5508996546268463
+            "lp_time_ms": 0.5645002238452435
           }
         },
         {
@@ -5253,7 +5253,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 13,
-            "lp_time_ms": 0.5812998861074448
+            "lp_time_ms": 0.6217998452484608
           }
         },
         {
@@ -5279,7 +5279,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.583800021559
+            "lp_time_ms": 0.6994996219873428
           }
         },
         {
@@ -5305,7 +5305,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.583999790251255
+            "lp_time_ms": 0.5677002482116222
           }
         },
         {
@@ -5331,7 +5331,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5837003700435162
+            "lp_time_ms": 0.5586999468505383
           }
         },
         {
@@ -5357,7 +5357,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5596000701189041
+            "lp_time_ms": 0.5648001097142696
           }
         },
         {
@@ -5383,7 +5383,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.6037997081875801
+            "lp_time_ms": 0.5576000548899174
           }
         },
         {
@@ -5409,7 +5409,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.36269985139369965
+            "lp_time_ms": 0.35949982702732086
           }
         },
         {
@@ -5435,7 +5435,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 54,
             "interval_row_count": 15,
-            "lp_time_ms": 0.4759998992085457
+            "lp_time_ms": 0.3829002380371094
           }
         },
         {
@@ -5461,7 +5461,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.36090007051825523
+            "lp_time_ms": 0.35299966111779213
           }
         },
         {
@@ -5487,7 +5487,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5630999803543091
+            "lp_time_ms": 0.5737999454140663
           }
         },
         {
@@ -5513,7 +5513,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.547999981790781
+            "lp_time_ms": 0.5749999545514584
           }
         },
         {
@@ -5539,7 +5539,7 @@
             "worst_start_source": "pcc_interval:3:1",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.36589987576007843
+            "lp_time_ms": 0.3573000431060791
           }
         },
         {
@@ -5565,7 +5565,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5519995465874672
+            "lp_time_ms": 0.614900141954422
           }
         },
         {
@@ -5591,7 +5591,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5484996363520622
+            "lp_time_ms": 0.5541001446545124
           }
         },
         {
@@ -5617,7 +5617,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.6944001652300358
+            "lp_time_ms": 0.5405000410974026
           }
         },
         {
@@ -5643,7 +5643,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 47,
             "interval_row_count": 10,
-            "lp_time_ms": 0.5549001507461071
+            "lp_time_ms": 0.5644001066684723
           }
         },
         {
@@ -5669,7 +5669,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 39,
             "interval_row_count": 2,
-            "lp_time_ms": 0.6029997020959854
+            "lp_time_ms": 0.5281995981931686
           }
         },
         {
@@ -5695,7 +5695,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5141999572515488
+            "lp_time_ms": 0.536599662154913
           }
         },
         {
@@ -5721,7 +5721,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4961998201906681
+            "lp_time_ms": 0.4915003664791584
           }
         },
         {
@@ -5747,7 +5747,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5149003118276596
+            "lp_time_ms": 0.5731997080147266
           }
         },
         {
@@ -5773,7 +5773,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.502800103276968
+            "lp_time_ms": 0.4851999692618847
           }
         },
         {
@@ -5799,7 +5799,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5049002356827259
+            "lp_time_ms": 0.5112998187541962
           }
         },
         {
@@ -5825,7 +5825,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4765000194311142
+            "lp_time_ms": 0.566400121897459
           }
         },
         {
@@ -5851,7 +5851,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4872996360063553
+            "lp_time_ms": 0.5263001658022404
           }
         },
         {
@@ -5877,7 +5877,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4620002582669258
+            "lp_time_ms": 0.4636002704501152
           }
         },
         {
@@ -5903,7 +5903,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_02",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5220999009907246
+            "lp_time_ms": 0.4941001534461975
           }
         },
         {
@@ -5929,7 +5929,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
             "row_count": 49,
             "interval_row_count": 11,
-            "lp_time_ms": 0.573399942368269
+            "lp_time_ms": 0.8502001874148846
           }
         },
         {
@@ -5955,7 +5955,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.6039999425411224
+            "lp_time_ms": 0.5859001539647579
           }
         },
         {
@@ -5981,7 +5981,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5504000000655651
+            "lp_time_ms": 0.5446001887321472
           }
         },
         {
@@ -6007,7 +6007,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5630999803543091
+            "lp_time_ms": 0.5568000487983227
           }
         },
         {
@@ -6033,7 +6033,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5494998767971992
+            "lp_time_ms": 0.5554999224841595
           }
         },
         {
@@ -6059,7 +6059,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.3560003824532032
+            "lp_time_ms": 0.35869982093572617
           }
         },
         {
@@ -6085,7 +6085,7 @@
             "worst_start_source": "pcc_interval:1:1",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3915000706911087
+            "lp_time_ms": 0.3529000096023083
           }
         },
         {
@@ -6111,7 +6111,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3606998361647129
+            "lp_time_ms": 0.36079995334148407
           }
         },
         {
@@ -6137,7 +6137,7 @@
             "worst_start_source": "pcc_interval:1:root",
             "row_count": 56,
             "interval_row_count": 16,
-            "lp_time_ms": 0.3899000585079193
+            "lp_time_ms": 0.41290000081062317
           }
         },
         {
@@ -6163,7 +6163,7 @@
             "worst_start_source": "pcc_interval:3:01",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.41009997949004173
+            "lp_time_ms": 0.39739999920129776
           }
         },
         {
@@ -6189,7 +6189,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.596300233155489
+            "lp_time_ms": 0.5924999713897705
           }
         },
         {
@@ -6215,7 +6215,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.6221001967787743
+            "lp_time_ms": 0.5830000154674053
           }
         },
         {
@@ -6241,7 +6241,7 @@
             "worst_start_source": "pcc_interval:3:0111",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5726004019379616
+            "lp_time_ms": 0.5620000883936882
           }
         },
         {
@@ -6267,7 +6267,7 @@
             "worst_start_source": "pcc_interval:3:011",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5693002603948116
+            "lp_time_ms": 0.6106002256274223
           }
         },
         {
@@ -6293,7 +6293,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5477997474372387
+            "lp_time_ms": 0.7197000086307526
           }
         },
         {
@@ -6319,7 +6319,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6928001530468464
+            "lp_time_ms": 0.5728001706302166
           }
         },
         {
@@ -6345,7 +6345,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5337996408343315
+            "lp_time_ms": 0.5018999800086021
           }
         },
         {
@@ -6371,7 +6371,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5068997852504253
+            "lp_time_ms": 0.5303998477756977
           }
         },
         {
@@ -6397,7 +6397,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.48819975927472115
+            "lp_time_ms": 0.4867999814450741
           }
         },
         {
@@ -6423,7 +6423,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5013998597860336
+            "lp_time_ms": 0.49450015649199486
           }
         },
         {
@@ -6449,7 +6449,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4874998703598976
+            "lp_time_ms": 0.5018999800086021
           }
         },
         {
@@ -6475,7 +6475,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5037998780608177
+            "lp_time_ms": 0.49690017476677895
           }
         },
         {
@@ -6501,7 +6501,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.493600033223629
+            "lp_time_ms": 0.5005002021789551
           }
         },
         {
@@ -6527,7 +6527,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5028997547924519
+            "lp_time_ms": 0.4867999814450741
           }
         },
         {
@@ -6553,7 +6553,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5181999877095222
+            "lp_time_ms": 0.48399996012449265
           }
         },
         {
@@ -6579,7 +6579,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.46240026131272316
+            "lp_time_ms": 0.5173999816179276
           }
         },
         {
@@ -6605,7 +6605,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5756998434662819
+            "lp_time_ms": 0.5314997397363186
           }
         },
         {
@@ -6631,7 +6631,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 49,
             "interval_row_count": 11,
-            "lp_time_ms": 0.5703000351786613
+            "lp_time_ms": 0.7833000272512436
           }
         },
         {
@@ -6657,7 +6657,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5628000944852829
+            "lp_time_ms": 0.5967002362012863
           }
         },
         {
@@ -6683,7 +6683,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5302000790834427
+            "lp_time_ms": 0.5745002999901772
           }
         },
         {
@@ -6709,7 +6709,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5858000367879868
+            "lp_time_ms": 0.6375000812113285
           }
         },
         {
@@ -6735,7 +6735,7 @@
             "worst_start_source": "pcc_interval:2:0110",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.362900085747242
+            "lp_time_ms": 0.36239996552467346
           }
         },
         {
@@ -6761,7 +6761,7 @@
             "worst_start_source": "pcc_interval:2:0110",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6087003275752068
+            "lp_time_ms": 0.56089973077178
           }
         },
         {
@@ -6787,7 +6787,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6055999547243118
+            "lp_time_ms": 0.5866996943950653
           }
         },
         {
@@ -6813,7 +6813,7 @@
             "worst_start_source": "pcc_interval:2:001",
             "row_count": 56,
             "interval_row_count": 16,
-            "lp_time_ms": 0.38930028676986694
+            "lp_time_ms": 0.39299996569752693
           }
         },
         {
@@ -6839,7 +6839,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.45870011672377586
+            "lp_time_ms": 0.37219980731606483
           }
         },
         {
@@ -6865,7 +6865,7 @@
             "worst_start_source": "pcc_interval:2:100",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6027999334037304
+            "lp_time_ms": 0.6226003170013428
           }
         },
         {
@@ -6891,7 +6891,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6488999351859093
+            "lp_time_ms": 0.9107999503612518
           }
         },
         {
@@ -6917,7 +6917,7 @@
             "worst_start_source": "pcc_interval:3:11",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.7381998002529144
+            "lp_time_ms": 0.6777001544833183
           }
         },
         {
@@ -6943,7 +6943,7 @@
             "worst_start_source": "pcc_interval:3:111",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.7104999385774136
+            "lp_time_ms": 0.6985999643802643
           }
         },
         {
@@ -6969,7 +6969,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5943998694419861
+            "lp_time_ms": 0.5840999074280262
           }
         },
         {
@@ -6995,7 +6995,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5802996456623077
+            "lp_time_ms": 0.8634999394416809
           }
         },
         {
@@ -7021,7 +7021,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5323998630046844
+            "lp_time_ms": 0.5080997943878174
           }
         },
         {
@@ -7047,7 +7047,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4996997304260731
+            "lp_time_ms": 0.488900113850832
           }
         },
         {
@@ -7073,7 +7073,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49740029498934746
+            "lp_time_ms": 0.48869987949728966
           }
         },
         {
@@ -7099,7 +7099,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5289996042847633
+            "lp_time_ms": 0.5298000760376453
           }
         },
         {
@@ -7125,7 +7125,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5048001185059547
+            "lp_time_ms": 0.5095996893942356
           }
         },
         {
@@ -7151,7 +7151,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49979984760284424
+            "lp_time_ms": 0.4862002097070217
           }
         },
         {
@@ -7177,7 +7177,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5029002204537392
+            "lp_time_ms": 0.48559997230768204
           }
         },
         {
@@ -7203,7 +7203,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4883999936282635
+            "lp_time_ms": 0.4882998764514923
           }
         },
         {
@@ -7229,7 +7229,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.48639997839927673
+            "lp_time_ms": 0.512399710714817
           }
         },
         {
@@ -7255,7 +7255,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4928000271320343
+            "lp_time_ms": 0.49510039389133453
           }
         },
         {
@@ -7281,7 +7281,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4424997605383396
+            "lp_time_ms": 0.4754997789859772
           }
         },
         {
@@ -7307,7 +7307,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_04",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.501799862831831
+            "lp_time_ms": 0.5139000713825226
           }
         },
         {
@@ -7333,7 +7333,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
             "row_count": 41,
             "interval_row_count": 3,
-            "lp_time_ms": 0.5060001276433468
+            "lp_time_ms": 0.5910000763833523
           }
         },
         {
@@ -7359,7 +7359,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.578299630433321
+            "lp_time_ms": 0.6129997782409191
           }
         },
         {
@@ -7385,7 +7385,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.6470000371336937
+            "lp_time_ms": 0.5561001598834991
           }
         },
         {
@@ -7411,7 +7411,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5602003075182438
+            "lp_time_ms": 0.5486998707056046
           }
         },
         {
@@ -7437,7 +7437,7 @@
             "worst_start_source": "pcc_interval:2:000",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5696997977793217
+            "lp_time_ms": 0.5291001871228218
           }
         },
         {
@@ -7463,7 +7463,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 54,
             "interval_row_count": 15,
-            "lp_time_ms": 0.38109999150037766
+            "lp_time_ms": 0.41639991104602814
           }
         },
         {
@@ -7489,7 +7489,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3670998848974705
+            "lp_time_ms": 0.38109999150037766
           }
         },
         {
@@ -7515,7 +7515,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 54,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3679003566503525
+            "lp_time_ms": 0.3634002059698105
           }
         },
         {
@@ -7541,7 +7541,7 @@
             "worst_start_source": "pcc_interval:2:001",
             "row_count": 56,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39009982720017433
+            "lp_time_ms": 0.40449993684887886
           }
         },
         {
@@ -7567,7 +7567,7 @@
             "worst_start_source": "pcc_interval:3:1",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3650002181529999
+            "lp_time_ms": 0.35879993811249733
           }
         },
         {
@@ -7593,7 +7593,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6555002182722092
+            "lp_time_ms": 0.5886000581085682
           }
         },
         {
@@ -7619,7 +7619,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3709997981786728
+            "lp_time_ms": 0.36159995943307877
           }
         },
         {
@@ -7645,7 +7645,7 @@
             "worst_start_source": "pcc_interval:3:1001",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.65990025177598
+            "lp_time_ms": 0.6148000247776508
           }
         },
         {
@@ -7671,7 +7671,7 @@
             "worst_start_source": "pcc_interval:3:1100",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5728001706302166
+            "lp_time_ms": 0.5956999957561493
           }
         },
         {
@@ -7697,7 +7697,7 @@
             "worst_start_source": "pcc_interval:3:111",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.556199811398983
+            "lp_time_ms": 0.5812002345919609
           }
         },
         {
@@ -7723,7 +7723,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5597998388111591
+            "lp_time_ms": 0.5585001781582832
           }
         },
         {
@@ -7749,7 +7749,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 44,
             "interval_row_count": 8,
-            "lp_time_ms": 0.5475999787449837
+            "lp_time_ms": 0.6026998162269592
           }
         },
         {
@@ -7775,7 +7775,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 42,
             "interval_row_count": 6,
-            "lp_time_ms": 0.5244999192655087
+            "lp_time_ms": 0.5377000197768211
           }
         },
         {
@@ -7801,7 +7801,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5151997320353985
+            "lp_time_ms": 0.49580028280615807
           }
         },
         {
@@ -7827,7 +7827,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5252999253571033
+            "lp_time_ms": 0.48980023711919785
           }
         },
         {
@@ -7853,7 +7853,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.48709986731410027
+            "lp_time_ms": 0.493600033223629
           }
         },
         {
@@ -7879,7 +7879,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4887999966740608
+            "lp_time_ms": 0.5037002265453339
           }
         },
         {
@@ -7905,7 +7905,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4862002097070217
+            "lp_time_ms": 0.4874998703598976
           }
         },
         {
@@ -7931,7 +7931,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5459999665617943
+            "lp_time_ms": 0.5089002661406994
           }
         },
         {
@@ -7957,7 +7957,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.48869987949728966
+            "lp_time_ms": 0.5045002326369286
           }
         }
       ]

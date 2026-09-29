@@ -347,11 +347,14 @@ class ContinuumShapeModel:
         arclengths: Iterable[float],
         *,
         with_jacobians: bool = False,
+        with_rotation_jacobians: bool = True,
     ) -> tuple[ContinuumPoint, ...]:
         """Evaluate a deterministic batch of material points.
 
         The return order exactly follows ``arclengths``.  Keeping each result
         as a typed object avoids losing its section ownership at boundaries.
+        With ``with_rotation_jacobians=False``, position derivatives are still
+        evaluated but the unused rotation-derivative output is zero.
         """
 
         configuration = np.asarray(planner_configuration, dtype=np.float64)
@@ -363,7 +366,7 @@ class ContinuumShapeModel:
         requested = [float(value) for value in arclengths]
         prefixes = [base @ self.spec.base_to_shape_start]
         prefix_derivatives = (
-            [[np.zeros((4, 4), dtype=np.float64) for _ in range(10)]]
+            [[]]
             if with_jacobians else []
         )
         for segment_index, length in enumerate(self.spec.segment_lengths_m):
@@ -376,8 +379,8 @@ class ContinuumShapeModel:
                 local_d0, local_d1 = self._section_derivatives(
                     bending, float(length), float(length), self.spec.pcc_bending_map,
                 )
-                derivatives[2 * segment_index] += prefixes[-1] @ local_d0
-                derivatives[2 * segment_index + 1] += prefixes[-1] @ local_d1
+                derivatives.extend((prefixes[-1] @ local_d0,
+                                    prefixes[-1] @ local_d1))
                 prefix_derivatives.append(derivatives)
             prefixes.append(prefixes[-1] @ full)
         results: list[ContinuumPoint] = []
@@ -402,14 +405,15 @@ class ContinuumShapeModel:
                     local_arclength,
                     self.spec.pcc_bending_map,
                 )
-                derivatives[2 * segment_index] += prefixes[segment_index] @ local_d0
-                derivatives[2 * segment_index + 1] += prefixes[segment_index] @ local_d1
-                rotation = transform[:3, :3]
+                derivatives.extend((prefixes[segment_index] @ local_d0,
+                                    prefixes[segment_index] @ local_d1))
+                rotation = transform[:3, :3] if with_rotation_jacobians else None
                 for coordinate, derivative in enumerate(derivatives):
                     position_jacobian[:, coordinate] = derivative[:3, 3]
-                    rotation_jacobian[:, coordinate] = vee(
-                        derivative[:3, :3] @ rotation.T
-                    )
+                    if with_rotation_jacobians:
+                        rotation_jacobian[:, coordinate] = vee(
+                            derivative[:3, :3] @ rotation.T
+                        )
             results.append(
                 ContinuumPoint(
                     arclength_m=arclength,

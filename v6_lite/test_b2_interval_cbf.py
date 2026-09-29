@@ -84,7 +84,11 @@ class IntervalCBFTests(unittest.TestCase):
                           for i in range(5) for fraction in (0.2, 0.5, 0.8)]
             batch = shape.batch_query(q, np.eye(4), arclengths,
                                       with_jacobians=True)
-            for s, result in zip(arclengths, batch):
+            position_only = shape.batch_query(
+                q, np.eye(4), arclengths, with_jacobians=True,
+                with_rotation_jacobians=False,
+            )
+            for s, result, limited in zip(arclengths, batch, position_only):
                 scalar = shape.evaluate(q, np.eye(4), s, with_jacobians=True)
                 np.testing.assert_allclose(result.position_world, scalar.position_world,
                                            atol=1e-12, rtol=0.0)
@@ -94,6 +98,12 @@ class IntervalCBFTests(unittest.TestCase):
                 np.testing.assert_allclose(result.rotation_jacobian,
                                            scalar.rotation_jacobian,
                                            atol=1e-10, rtol=0.0)
+                np.testing.assert_allclose(limited.position_world,
+                                           result.position_world, atol=1e-12, rtol=0.0)
+                np.testing.assert_allclose(limited.position_jacobian,
+                                           result.position_jacobian, atol=1e-10, rtol=0.0)
+                np.testing.assert_array_equal(limited.rotation_jacobian,
+                                              np.zeros((3, 10)))
 
     def test_fixed_function_and_shape_gradient_match_same_midpoint(self) -> None:
         data = self._state()

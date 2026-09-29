@@ -335,6 +335,7 @@ class FixedIntervalCBFEvaluator:
                 q, base_transform,
                 [midpoint_by_id[item.interval_id] for item in selected],
                 with_jacobians=True,
+                with_rotation_jacobians=False,
             )
             cached.update({item.interval_id: point for item, point in zip(selected, sampled)})
         for interval in ordered_intervals:
@@ -382,15 +383,22 @@ class FixedIntervalCBFEvaluator:
                     mujoco_jac_count += 2
                 (base_origin, base_linear_map, base_angular_map,
                  target_origin, target_linear_rate, target_angular_rate) = origin_rates
-                base_lever_normal = np.cross(point - base_origin, normal)
+                nx, ny, nz = normal
+                bx, by, bz = point - base_origin
+                base_lever_normal = np.asarray(
+                    [by * nz - bz * ny, bz * nx - bx * nz, bx * ny - by * nx],
+                    dtype=np.float64,
+                )
                 generalized_gradient = np.asarray(
                     normal @ base_linear_map
                     + base_lever_normal @ base_angular_map,
                     dtype=np.float64,
                 )
                 generalized_gradient[:10] += shape_gradient
-                target_lever_normal = np.cross(
-                    signed.box_point - target_origin, normal
+                tx, ty, tz = signed.box_point - target_origin
+                target_lever_normal = np.asarray(
+                    [ty * nz - tz * ny, tz * nx - tx * nz, tx * ny - ty * nx],
+                    dtype=np.float64,
                 )
                 drift = float(-normal @ target_linear_rate
                               - target_lever_normal @ target_angular_rate)
