@@ -27,6 +27,10 @@ class WeightedQPProbeTests(unittest.TestCase):
         self.assertTrue(report["passed_as_read_only_integrity"])
         self.assertEqual(report["probe_ticks"], [50, 100, 150])
         self.assertEqual(report["point_budget"], 63)
+        self.assertEqual(report["residual_bound_scope"],
+                         "analytic_URDF_discrete_backbone_actual_vs_projected_only")
+        self.assertEqual(report["residual_bound_sampled_material_points_per_state"],
+                         31)
         self.assertEqual(len(report["records"]), 30)
         self.assertEqual(len(report["native_replay_checks"]), 10)
         self.assertTrue(all(item["max_state_error"] <= 1e-8
@@ -65,6 +69,11 @@ class WeightedQPProbeTests(unittest.TestCase):
                                  "OUTSIDE_DECLARED_SHAPE_SUBSPACE")
                 self.assertGreater(item["subspace_residual_linf_rad"],
                                    report["shape_subspace_membership_tolerance_rad"])
+                self.assertGreater(item["discrete_backbone_residual_upper_m"], 0.0)
+                self.assertLessEqual(
+                    item["sampled_discrete_backbone_residual_max_m"],
+                    item["discrete_backbone_residual_upper_m"] + 2e-12,
+                )
                 self.assertEqual(item["floating_point_certification"],
                                  "NOT_FORMALLY_CERTIFIED")
                 self.assertGreater(item["selected_interval_count"], 0)

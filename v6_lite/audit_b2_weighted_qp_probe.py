@@ -22,7 +22,10 @@ from model_test.whole_body_verifier_v5 import (
     WholeBodyCollisionVerifier, WholeBodyVerificationConfig,
 )
 from v6_lite.b2_shadow_feasibility import combined_rows, ramp_velocity_abs_bound
-from v6_lite.continuum_shape_model import transform_from_free_qpos
+from v6_lite.continuum_model_spec import default_continuum_model_spec
+from v6_lite.continuum_shape_model import (
+    DiscreteContinuumKinematics, transform_from_free_qpos,
+)
 from v6_lite.hierarchical_qp import HierarchicalQPConfig, HierarchicalVelocityQP
 from v6_lite.pcc_interval_cbf import (
     SHAPE_SUBSPACE_MEMBERSHIP_TOL_RAD, FixedIntervalCBFEvaluator,
@@ -30,6 +33,7 @@ from v6_lite.pcc_interval_cbf import (
 )
 from v6_lite.pcc_persistent_interval_query import PersistentIntervalDecisionQuery
 from v6_lite.recompute_execution_constraints import ReplayConstraintBuilder, _obstacles
+from v6_lite.pcc_subspace_residual_bound import DiscreteBackboneResidualBound
 from v6_lite.run_v6_lite import (
     V6LiteRunConfig, _body_pose_and_twist, build_scenarios,
     default_v6_lite_robot_spec,
@@ -123,6 +127,10 @@ def _row_parity(result, original, batch, selected_ids, cfg) -> dict:
 def run(output_dir: Path, a1_root: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=False)
     robot = default_v6_lite_robot_spec()
+    shape_spec = default_continuum_model_spec(robot)
+    residual_bound = DiscreteBackboneResidualBound.from_spec(shape_spec)
+    discrete = DiscreteContinuumKinematics(shape_spec)
+    diagnostic_arclengths = np.linspace(0.0, shape_spec.total_length_m, 31)
     records = []
     native_checks = []
     inputs = {}
@@ -244,6 +252,25 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                         original_rows = independent.build(data)
                         parity = _row_parity(result, original_rows, qp.last_batch,
                                              selected_ids, cfg)
+                        actual_low_level = np.asarray(
+                            data.qpos[evaluator.qpos_ids[:60]], dtype=np.float64)
+                        projected_low_level = (
+                            shape_spec.planner_to_actuated
+                            @ projection.planner_configuration
+                        )
+                        residual_upper = residual_bound.position_difference_upper_m(
+                            projection.orthogonal_residual)
+                        actual_frames = discrete.body_transforms(actual_low_level, base)
+                        projected_frames = discrete.body_transforms(
+                            projected_low_level, base)
+                        sampled_residual = max(
+                            float(np.linalg.norm(
+                                discrete.evaluate(actual_low_level, base, float(s),
+                                                  transforms=actual_frames).position
+                                - discrete.evaluate(projected_low_level, base, float(s),
+                                                    transforms=projected_frames).position
+                            )) for s in diagnostic_arclengths
+                        )
                         geometry_components_ms = (
                             decision.elapsed_ms
                             + qp.last_batch.total_query_time_ms
@@ -282,6 +309,8 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                                 qp.last_batch.floating_point_certification,
                             "subspace_residual_linf_rad":
                                 qp.last_batch.subspace_residual_linf_rad,
+                            "discrete_backbone_residual_upper_m": residual_upper,
+                            "sampled_discrete_backbone_residual_max_m": sampled_residual,
                             "proxy_safe": proxy_safe,
                             "query_budget_ok": query_budget_ok,
                             "envelope_supported": envelope_supported,
@@ -315,12 +344,15 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                  and all(item["row_parity"][key] <= 1e-7
                          for item in records for key in (
                              "matrix_max_abs_error", "lower_max_abs_error",
-                             "drift_max_abs_error", "gain_max_abs_error")))
+                             "drift_max_abs_error", "gain_max_abs_error"))
+                 and all(item["sampled_discrete_backbone_residual_max_m"]
+                         <= item["discrete_backbone_residual_upper_m"] + 2e-12
+                         for item in records))
     sources = {name: _sha(Path("v6_lite") / name) for name in (
         "audit_b2_weighted_qp_probe.py", "hierarchical_qp.py",
         "pcc_interval_cbf.py", "continuum_shape_model.py",
         "recompute_execution_constraints.py", "b2_shadow_feasibility.py",
-        "safety_contract.py",
+        "safety_contract.py", "pcc_subspace_residual_bound.py",
     )}
     summary = {}
     for mode in ("baseline", "enabled"):
@@ -337,6 +369,8 @@ def run(output_dir: Path, a1_root: Path) -> dict:
             "failure_reasons": dict(Counter(item["failure_reason"] for item in own)),
             "subspace_residual_linf_rad": _summary(
                 [item["subspace_residual_linf_rad"] for item in own]),
+            "discrete_backbone_residual_upper_m": _summary(
+                [item["discrete_backbone_residual_upper_m"] for item in own]),
             "interval_assembly_ms": _summary(
                 [item["interval_assembly_ms"] for item in own]),
             "qp_full_ms": _summary([item["qp_full_ms"] for item in own]),
@@ -355,6 +389,13 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         "point_budget": POINT_BUDGET,
         "shape_subspace_membership_tolerance_rad":
             SHAPE_SUBSPACE_MEMBERSHIP_TOL_RAD,
+        "residual_bound_scope":
+            "analytic_URDF_discrete_backbone_actual_vs_projected_only",
+        "residual_bound_numerical_certification":
+            residual_bound.numerical_certification,
+        "residual_bound_urdf_sha256": residual_bound.source_urdf_sha256,
+        "residual_bound_sampled_material_points_per_state":
+            len(diagnostic_arclengths),
         "passed_as_read_only_integrity": integrity,
         "source_sha256": sources,
         "input_refined_start_sha256": _sha(
@@ -391,6 +432,8 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         "", "所有失败、候选、行对照及耗时保存在 JSON。探针只覆盖历史轨迹的"
         "早期冻结状态，且每次清空求解器对偶热启动。QP 候选通过验证"
         "不等于代理包络得到真实链支持；严格子空间判据保持原值。"
+        "另有解析界约束实际与投影的 URDF 离散骨架位移，并以每状态 31 点复核；"
+        "此界不建立 PCC 到投影离散链的包络，也不覆盖物理碰撞几何。"
         "本探针也不改变后续旧轨迹上已观察到的代理低于门槛、"
         "起点违规和持久查询未知，也不构成第 3 阶段接入许可。", "",
     ]

@@ -398,6 +398,10 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"两组残差 p95 分别为 "
         f"{probe['summary']['baseline']['subspace_residual_linf_rad']['p95']:.2e}、"
         f"{probe['summary']['enabled']['subspace_residual_linf_rad']['p95']:.2e} rad。"
+        "实际与投影 URDF 离散骨架的解析位移上界 p95 分别为 "
+        f"{probe['summary']['baseline']['discrete_backbone_residual_upper_m']['p95']:.2e}、"
+        f"{probe['summary']['enabled']['discrete_backbone_residual_upper_m']['p95']:.2e} m；"
+        "该只读诊断没有建立 PCC 到投影离散链的包络，也不覆盖物理碰撞几何。"
         "所测耗时尾部和后续旧轨迹反例也仍存在。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
