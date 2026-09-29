@@ -321,6 +321,20 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("prepared_full_trace", manifest["sources"])
         self.assertIn("root_rescue_frontier", manifest["sources"])
         self.assertIn("full_root255_census", manifest["sources"])
+        for name in ("prepared_500hz_envelope", "prepared_private_query",
+                     "admm_solver_trial", "optimized_private_recompute",
+                     "optimized_private_five_scene", "prepared_screened_scene00"):
+            self.assertIn(name, manifest["sources"])
+        optimized = json.loads((base / "optimized_private_400_summary" /
+            "optimized_private_five_scene_summary.json").read_text(encoding="utf-8"))
+        self.assertEqual(optimized["scene_count"], 5)
+        self.assertEqual(optimized["independent_interval_rows"], 5257)
+        self.assertEqual(optimized["independent_recompute_failure_count"], 0)
+        self.assertEqual(optimized["p95_over_20ms_scenes"],
+                         [f"v6_lite_scenario_{i:02d}" for i in (2, 3, 4)])
+        self.assertTrue(all(not any(item["exact_trace_parity"].values())
+                            for item in optimized["scenes"]))
+        self.assertFalse(optimized["stage3_admission"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()

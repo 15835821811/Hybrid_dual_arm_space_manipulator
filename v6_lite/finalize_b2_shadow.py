@@ -124,6 +124,74 @@ def finalize(root: Path, output_dir: Path) -> dict:
     cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, private_qp_full, servo_origin, discrete_first_tick, discrete_private, discrete_recompute, screened_scene, paired_discrete_qp, screened_parity, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
+    sources.update({
+        "prepared_500hz_envelope": root / "prepared_envelope_500hz" /
+            "prepared_envelope_summary.json",
+        "prepared_private_query": root / "prepared_private_query_2005" /
+            "prepared_private_query_summary.json",
+        "admm_solver_trial": root / "admm_solver_trial_2000" /
+            "admm_solver_trial_summary.json",
+        "optimized_private_recompute": root / "optimized_private_recompute_400" /
+            "private_recompute_summary.json",
+        "optimized_private_five_scene": root / "optimized_private_400_summary" /
+            "optimized_private_five_scene_summary.json",
+        "prepared_screened_scene00": root / "prepared_screened_private_rollout_400" /
+            "scene_00" / "private_rollout_summary.json",
+    })
+    optimized = json.loads(sources["optimized_private_five_scene"].read_text(
+        encoding="utf-8"))
+    optimized_dir = root / "optimized_private_400_summary"
+    optimized_manifest = json.loads((optimized_dir /
+        "optimized_private_five_scene_manifest.json").read_text(encoding="utf-8"))
+    prepared_screened = json.loads(sources["prepared_screened_scene00"].read_text(
+        encoding="utf-8"))
+    prepared_screened_dir = root / "prepared_screened_private_rollout_400" / "scene_00"
+    prepared_screened_manifest = json.loads((prepared_screened_dir /
+        "private_rollout_manifest.json").read_text(encoding="utf-8"))
+    for label, filename in {
+        "summary": "private_rollout_summary.json",
+        "records": "private_rollout_records.jsonl",
+        "trace": "private_rollout_trace.npz",
+        "document": "PRIVATE_ROLLOUT.md",
+    }.items():
+        if prepared_screened_manifest[f"{label}_sha256"] != _sha(
+                prepared_screened_dir / filename):
+            raise ValueError(f"prepared screened {label} hash changed")
+    for name, digest in prepared_screened["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"prepared screened source changed: {name}")
+    if (optimized_manifest["summary_sha256"]
+            != _sha(sources["optimized_private_five_scene"])
+            or optimized_manifest["document_sha256"]
+            != _sha(optimized_dir / "OPTIMIZED_PRIVATE_FIVE_SCENE.md")
+            or optimized["generator_source_sha256"]
+            != _source_sha(Path("v6_lite/finalize_b2_optimized_private.py"))
+            or optimized["prepared_envelope_summary_sha256"]
+            != _sha(sources["prepared_500hz_envelope"])
+            or optimized["prepared_query_summary_sha256"]
+            != _sha(sources["prepared_private_query"])
+            or optimized["admm_solver_trial_summary_sha256"]
+            != _sha(sources["admm_solver_trial"])
+            or optimized["independent_recompute_summary_sha256"]
+            != _sha(sources["optimized_private_recompute"])
+            or optimized["scene_count"] != 5
+            or optimized["ticks_per_scene"] != 400
+            or optimized["checked_500hz_states"] != 20005
+            or optimized["checked_task_states"] != 2005
+            or optimized["independent_interval_rows"] != 5257
+            or optimized["independent_recompute_failure_count"]
+            or len(optimized["p95_over_20ms_scenes"]) != 3
+            or optimized["production_online_controller_changed"]
+            or optimized["stage3_admission"]
+            or optimized["full_cycle_20ms_acceptance"]
+            or optimized["continuous_time_certified"]):
+        raise ValueError("optimized private diagnostic hashes or gate changed")
+    if (prepared_screened["scenario_id"] != "v6_lite_scenario_00"
+            or prepared_screened["executed_ticks"] != 400
+            or prepared_screened["private_preflight_plus_qp_timing"]["p95_ms"] <= 20.0
+            or prepared_screened["production_online_controller_changed"]
+            or prepared_screened["stage3_admission"]):
+        raise ValueError("prepared screened timing failure changed")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -1138,8 +1206,10 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "## 20 ms 门槛的来源", "",
         "旧 A.1 两组已发布配置均固定 50 Hz 规划周期 (`task_period_s=0.02`)，"
         "500 Hz MuJoCo/力矩周期 (`physics_period_s=0.002`)，"
-        "即每个规划命令对应共享十步斜坡。原任务控制全链 p95 时延"
-        "验收阈值也设为 0.02 s；B.2 沿用它作为周期预算，"
+        "即每个规划命令对应共享十步斜坡。原任务控制器 `QP.solve` 内部"
+        "记录的 `full_latency` p95 验收阈值设为 0.02 s；"
+        "B.2 沿用 20 ms 作为周期预算，但新预检＋QP 诊断覆盖额外的区间"
+        "查询和包络核对，计时范围与旧指标不同，不能直接比较速度提升。"
         "没有从 CBF 数学性质推得这个数值。只读查询或查询加 QP 探针"
         "不是全链计时；即使全链 p95 达标，也不构成每周期无超时的硬实时证明。",
         "", "## A.1 原生力矩重放上的只读几何", "",
@@ -1711,6 +1781,31 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "这仍共享 MuJoCo/PCC 模型，没有独立物理测量或连续时间认证。"
         "该私有控制链的预检＋QP p95 全部超过 20 ms，"
         "且未完成完整周期和生产在线故障注入；第三阶段门禁继续关闭。", "",
+        "## 批量查询与等价 ADMM 的私有五场景结果", "",
+        "在补偿伺服、原安全行及 17 维加权 QP 不变的条件下，"
+        "私有路径试验批量点查询、保守球界筛选及 ADMM 乘积复用。"
+        "与上述五场景补偿轨迹逐项比较，67 路力矩、位置与任务速度差均为零；"
+        f"独立重放 {optimized['checked_task_states']} 个任务状态、"
+        f"{optimized['independent_interval_rows']} 条区间行，不一致 "
+        f"{optimized['independent_recompute_failure_count']}。", "",
+        "| 场景 | 私有预检＋QP p95 ms | p99 ms | 最大 ms | 超 20 ms 周期 |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for item in optimized["scenes"]:
+        timing = item["preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['scenario_id'][-2:]} | {timing['p95_ms']:.3f} | "
+            f"{timing['p99_ms']:.3f} | {timing['max_ms']:.3f} | "
+            f"{timing['over_20ms_count']} |"
+        )
+    lines += [
+        "", f"p95 超过 20 ms：{', '.join(optimized['p95_over_20ms_scenes'])}。"
+        "这是单轮 Windows 私有闭环计时，不能把不同运行之间的全部时延变化"
+        "归因于优化。此前仅批量点和球界筛选的场景 00 独立运行 p95 为 "
+        f"{prepared_screened['private_preflight_plus_qp_timing']['p95_ms']:.3f} ms，"
+        "也保留为超预算实测。仪器化全 QP 试验每输入多次求解，其总时延无效；"
+        "独立 ABBA 的求解器计时与五场景轨迹见各自哈希绑定报告。"
+        "尚未完成预先声明的重复全链计时或正式在线接入，门禁继续关闭。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"
