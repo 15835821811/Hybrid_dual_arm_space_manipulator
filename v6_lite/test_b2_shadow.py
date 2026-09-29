@@ -210,6 +210,49 @@ class B2ShadowTests(unittest.TestCase):
                 self.assertLess(entry["cold_lower_m"], .005)
                 self.assertGreaterEqual(entry["cold_upper_m"], .005)
 
+    def test_repartition_handoff_replays_and_checks_new_rows(self) -> None:
+        base = Path(__file__).parent / "output" / "v6_2_b2"
+        source_path = base / "repartition_counterfactual" / "repartition_counterfactual.json"
+        source = json.loads(source_path.read_text(encoding="utf-8"))
+        report = json.loads((base / "repartition_handoff"
+                             / "repartition_handoff.json").read_text(encoding="utf-8"))
+        self.assertEqual(report["input_repartition"]["sha256"],
+                         hashlib.sha256(source_path.read_bytes()).hexdigest())
+        self.assertFalse(report["online_control_changed"])
+        self.assertFalse(report["repartition_admitted_online"])
+        self.assertEqual(len(report["native_replay_checks"]), 10)
+        self.assertTrue(all(item["max_state_error"] <= 1e-8
+                            for item in report["native_replay_checks"]))
+        for path, digest in report["source_sha256"].items():
+            self.assertEqual(hashlib.sha256(Path(path).read_bytes()).hexdigest(), digest)
+        expected = {(item["mode"], item["scenario_id"], item["tick"]): item
+                    for item in source["entries"] if item["tick"] % 50 == 0}
+        self.assertEqual(len(expected), len(report["records"]))
+        for record in report["records"]:
+            key = (record["mode"], record["scenario_id"], record["tick"])
+            self.assertIn(key, expected)
+            self.assertEqual(record["input_qpos_sha256"],
+                             expected[key]["input_qpos_sha256"])
+            self.assertEqual(record["cold_status"], expected[key]["cold_status"])
+            self.assertEqual(record["excluded_reached_activation_next_tick"], 0)
+            self.assertIsNotNone(record["next_h_error_max_m"])
+            if record["cold_status"] == "PROXY_CLEARANCE_AT_LEAST_GATE":
+                self.assertTrue(record["static_all_intervals_safe"])
+        for mode in ("baseline", "enabled"):
+            own = [item for item in report["records"] if item["mode"] == mode]
+            summary = report["modes"][mode]
+            self.assertEqual(len(own), summary["sample_count"])
+            safe = [item for item in own
+                    if item["cold_status"] == "PROXY_CLEARANCE_AT_LEAST_GATE"]
+            self.assertEqual(len(safe),
+                             summary["cold_status"]["PROXY_CLEARANCE_AT_LEAST_GATE"])
+            self.assertEqual(len(safe),
+                             summary["safe_repartition_executable_candidate_count"]
+                             + summary["safe_repartition_not_executable_count"]
+                             + summary["safe_repartition_unknown_feasibility_count"])
+        self.assertGreater(report["modes"]["enabled"][
+            "safe_repartition_not_executable_count"], 0)
+
     def test_stage2_manifest_preserves_failed_admission_gate(self) -> None:
         base = Path(__file__).parent / "output" / "v6_2_b2"
         manifest = json.loads((base / "stage2_summary" / "stage2_manifest.json").read_text(
@@ -219,6 +262,7 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("budget_frontier", manifest["sources"])
         self.assertIn("refined_start", manifest["sources"])
         self.assertIn("repartition_counterfactual", manifest["sources"])
+        self.assertIn("repartition_handoff", manifest["sources"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()

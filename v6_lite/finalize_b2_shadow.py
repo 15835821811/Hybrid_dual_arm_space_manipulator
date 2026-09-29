@@ -27,10 +27,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "budget_frontier": root / "budget_frontier" / "budget_frontier.json",
         "refined_start": root / "refined_start" / "refined_start_report.json",
         "repartition_counterfactual": root / "repartition_counterfactual" / "repartition_counterfactual.json",
+        "repartition_handoff": root / "repartition_handoff" / "repartition_handoff.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -53,6 +54,17 @@ def finalize(root: Path, output_dir: Path) -> dict:
         if (counts.get("warm_UNKNOWN_CROSSES_GATE", 0) != expected
                 or counts.get("task_ticks", 0) != expected_ticks):
             raise ValueError(f"repartition counterfactual warm count changed: {mode}")
+    if handoff["input_repartition"]["sha256"] != _sha(sources["repartition_counterfactual"]):
+        raise ValueError("repartition handoff is not tied to the current counterfactual")
+    if (handoff["repartition_admitted_online"]
+            or len(handoff["native_replay_checks"]) != 10
+            or any(item["max_state_error"] > 1e-8
+                   for item in handoff["native_replay_checks"])):
+        raise ValueError("repartition handoff native replay integrity failed")
+    for mode in ("baseline", "enabled"):
+        expected_samples = warm["modes"][mode]["counts"].get("UNKNOWN_CROSSES_GATE", 0)
+        if handoff["modes"][mode]["sample_count"] != expected_samples:
+            raise ValueError(f"repartition handoff sampled count changed: {mode}")
     if (len(refined["native_replay_checks"]) != 10
             or any(x["max_state_error"] > 1e-8
                    for x in refined["native_replay_checks"])):
@@ -109,6 +121,25 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "重分区能解释部分持久未知，但会改变区间安全函数集合。"
         "这项额外耗时不能与热查询并列当作新模式全链计时；"
         "分区切换后的斜坡起点、必要约束和预算仍须单独验证。", "",
+        "对持久未知的抽样 tick，又以 500 Hz 旧力矩原生重放，从根分区重建区间行，"
+        "加入独立 MuJoCo／胶囊行，按原速度盒与十步斜坡做冻结 LP。", "",
+        "| 模式 | 抽样未知 | 根分区确定安全 | 安全且旧起点可执行 | 安全但旧起点不可执行 | Jacobian 超预算 | 下一 tick 漏选激活 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = handoff["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['sample_count']} | "
+            f"{item['cold_status'].get('PROXY_CLEARANCE_AT_LEAST_GATE', 0)} | "
+            f"{item['safe_repartition_executable_candidate_count']} | "
+            f"{item['safe_repartition_not_executable_count']} | "
+            f"{item['jacobian_budget_exceeded']} | "
+            f"{item['excluded_reached_activation_next_tick']} |"
+        )
+    lines += [
+        "", "根分区代理安全只完成几何判定；旧斜坡起点仍可能不合格，"
+        "且此计算时间不含独立原约束装配、LP 或新控制器全链。"
+        "这个有限旧轨迹审计不能批准在线重分区或证明新控制轨迹可行。", "",
         "区间激活筛选从现有速度、加速度和关节限位得到候选盒，"
         "并将十步斜坡起点速度纳入逐轴绝对上界；"
         "空盒退回全局速度上界并单独使门禁失败。"
