@@ -1,0 +1,562 @@
+{
+  "schema": "v6_2_b2_full_old_torque_envelope_v1",
+  "scope": "all_500hz_states_of_ten_historical_A1_native_torque_replays",
+  "servo_steps_per_task": 10,
+  "source_hash_newline_policy": "LF_NORMALIZED",
+  "source_sha256": {
+    "audit_b2_full_torque_envelope.py": "a5db2ff97bd870af213948b9178c4cb980dea9c63e73962f4655d6e893bc4713",
+    "pcc_state_local_envelope.py": "417fa67fba86eb9c01dd397946c93508ad3caadb1a84224112df28c991a503b7",
+    "pcc_clearance.py": "98a9de1cb1372cead2293797aaa9c5962372de97b33993d7d514bef4a5b4609d",
+    "shape_clearance.py": "814cc8b3bd3df03e7063c172efaa11358494d1a7cd918f0a886cf72c9b72aa48",
+    "continuum_model_spec.py": "472a4cb47f4725bc3bba4ddc382a24a9a36c65eb8d2dd1f58578fd132e46995a",
+    "continuum_shape_model.py": "c0ed8108ebfbd0d9fdc7c628bc5be9fb691cb625ddf37d69d90a8d286abe9c6e",
+    "recompute_execution_constraints.py": "8c5c6d9490ce090bc45af9831d530b3b7ba0eeacbb87d715d79819a53521b4c8"
+  },
+  "input_full_sweep_summary_sha256": "3acef573cb98ce4c3d8dd76e69fd1ccc097f5ad0bca202a2167fc4f94d9922a6",
+  "input_full_sweep_states_sha256": "8cccaf507f12f93590d071ebd96e74afc8133a13b28ee27d5f00909a38badec2",
+  "input_selected_summary_sha256": "28f70f0b8b0eccc5d25d86e8d3a1ebe82bbfadf7ef6ebb9fe7a22c9e67463ae2",
+  "input_selected_states_sha256": "16f196cc7418ffcc51a5a1e1bc21e57c865e359011e76c671a420bbce71db63c",
+  "numerical_certification": "NOT_FORMALLY_CERTIFIED",
+  "continuous_time_certified": false,
+  "new_interval_mode_executed": false,
+  "inputs": {
+    "baseline": {
+      "metrics_path": "v6_lite/output/v6_2_a1/baseline_root/output/v6_lite_metrics.json",
+      "metrics_sha256": "48ad83822d632464032d7bf82fb3f32e6e636a6e3843d6fecc1d9caaf93b2c58",
+      "traces": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_00.npz",
+          "sha256": "9f91b5cdf8f028c971b00243867dd5840c058df8629740f025859ae0e4d37836"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_01.npz",
+          "sha256": "58bb492d756cb8ea5284b6bfbc4331ff6df6c06d93d3e7d2b93d1518f847df41"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_02.npz",
+          "sha256": "3d3d3d84aba14f7c2bddb8c0c9f8cce57bac02692abad599465c7d6da9535893"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_03.npz",
+          "sha256": "63b1af1dd11965d8ce0e9ee0c49890430f3bfdb592f72ae26b9233f372de5798"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_04.npz",
+          "sha256": "9abb83de5c9997d34115c57c2b6f7d58a4a97ee735221880e960bbfd5d3f9838"
+        }
+      ]
+    },
+    "enabled": {
+      "metrics_path": "v6_lite/output/v6_2_a1/enabled_root/output/v6_lite_metrics.json",
+      "metrics_sha256": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416",
+      "traces": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_00.npz",
+          "sha256": "85b69932b2167280f116996a8724921651cf227edcb996e1a3830b315f143ae4"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_01.npz",
+          "sha256": "66b7cecef9ff30ddbafba2250d9ad980c63fa4494f2ef604c9853fc647b8e0b2"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_02.npz",
+          "sha256": "0b39ce169a2e2c108bea471c7198cd038a98ec69168f4ce668d937bc66ef5616"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_03.npz",
+          "sha256": "036963a73d3504c5988ad20ac6258e72b0e6ab86d8351b6714dee658b14658aa"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_04.npz",
+          "sha256": "89907376ed824ef55890ed36b62962971187e4f29227106ef76336b9b865ddb0"
+        }
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_00",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.021914392245625233,
+        "p50": 0.02399812232848838,
+        "p95": 0.03295314461399435,
+        "p99": 0.035815238495426956,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "baseline",
+        "scenario_id": "v6_lite_scenario_00",
+        "physics_step": 8990,
+        "time_s": 17.980000000000913,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.021914392245625233,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.4433719311711677e-08,
+        "check_ms_excluding_mj_forward": 2.9253000393509865
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 2.0225636304660455e-08,
+        "p95": 8.715959379408666e-08,
+        "p99": 8.261651189551793e-07,
+        "max": 1.0847982179311433e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.7263998053967953,
+        "p50": 2.846300136297941,
+        "p95": 3.342399839311838,
+        "p99": 3.6662998609244823,
+        "max": 7.610099855810404
+      }
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_01",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.020718567975092424,
+        "p50": 0.025706588898944248,
+        "p95": 0.033005835397235346,
+        "p99": 0.035816770997891205,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "baseline",
+        "scenario_id": "v6_lite_scenario_01",
+        "physics_step": 8889,
+        "time_s": 17.778000000001025,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.020718567975092424,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.130510713682643e-08,
+        "check_ms_excluding_mj_forward": 2.8336001560091972
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.4247491601435125e-08,
+        "p95": 7.353001582610652e-08,
+        "p99": 8.157526227435714e-07,
+        "max": 1.0442586260428488e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.6550996117293835,
+        "p50": 2.855400089174509,
+        "p95": 3.4350999630987644,
+        "p99": 4.023099783807993,
+        "max": 11.58630009740591
+      }
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_02",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.021566140390199766,
+        "p50": 0.025039921291608244,
+        "p95": 0.03271429467238585,
+        "p99": 0.035802493557603114,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "baseline",
+        "scenario_id": "v6_lite_scenario_02",
+        "physics_step": 9405,
+        "time_s": 18.810000000000453,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.021566140390199766,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.105640092842087e-09,
+        "check_ms_excluding_mj_forward": 2.8390996158123016
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.8809693094756774e-08,
+        "p95": 8.963296672589993e-08,
+        "p99": 8.236068104383251e-07,
+        "max": 1.0422305260111842e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.665699925273657,
+        "p50": 2.857899758964777,
+        "p95": 3.4153000451624393,
+        "p99": 4.063899628818035,
+        "max": 10.089099872857332
+      }
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_03",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.02198451065688717,
+        "p50": 0.024725462052069963,
+        "p95": 0.032671615564223024,
+        "p99": 0.035821369028170603,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "baseline",
+        "scenario_id": "v6_lite_scenario_03",
+        "physics_step": 7078,
+        "time_s": 14.156000000001397,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.02198451065688717,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.057800234812196e-08,
+        "check_ms_excluding_mj_forward": 2.820699941366911
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.8833745195345752e-08,
+        "p95": 9.430510808546011e-08,
+        "p99": 8.069734869498024e-07,
+        "max": 1.0556531477379574e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.679400146007538,
+        "p50": 2.864600159227848,
+        "p95": 3.401000052690506,
+        "p99": 3.91440000385046,
+        "max": 17.017699778079987
+      }
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_04",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.022065118749513793,
+        "p50": 0.024069496647976633,
+        "p95": 0.03303405998822371,
+        "p99": 0.03584327357085589,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "baseline",
+        "scenario_id": "v6_lite_scenario_04",
+        "physics_step": 7357,
+        "time_s": 14.714000000001583,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.022065118749513793,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 3.20311467250263e-08,
+        "check_ms_excluding_mj_forward": 3.5382001660764217
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.7060557647163854e-08,
+        "p95": 1.0589483163785107e-07,
+        "p99": 7.783349348679247e-07,
+        "max": 1.0483511902682936e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.692699898034334,
+        "p50": 2.8781001456081867,
+        "p95": 3.3948002383112907,
+        "p99": 4.185500089079142,
+        "max": 10.035200044512749
+      }
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_00",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.023127857604428335,
+        "p50": 0.025020709938711576,
+        "p95": 0.03295314461399435,
+        "p99": 0.035815238495426956,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "enabled",
+        "scenario_id": "v6_lite_scenario_00",
+        "physics_step": 9321,
+        "time_s": 18.642000000000547,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.023127857604428335,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.0864318654723046e-08,
+        "check_ms_excluding_mj_forward": 2.850799821317196
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.8448220543212934e-08,
+        "p95": 1.218893850626207e-07,
+        "p99": 9.106567846958735e-07,
+        "max": 1.0847982179311433e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.673699986189604,
+        "p50": 2.8560999780893326,
+        "p95": 3.363099880516529,
+        "p99": 3.904299810528755,
+        "max": 9.28420014679432
+      }
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_01",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.022465490807223987,
+        "p50": 0.02563741789358185,
+        "p95": 0.033005835397235346,
+        "p99": 0.035816770997891205,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "enabled",
+        "scenario_id": "v6_lite_scenario_01",
+        "physics_step": 9574,
+        "time_s": 19.148000000000266,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.022465490807223987,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.8377083155506355e-08,
+        "check_ms_excluding_mj_forward": 2.8500999324023724
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.8788003874892212e-08,
+        "p95": 5.946123876610088e-08,
+        "p99": 8.157526227435714e-07,
+        "max": 1.0442586260428488e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.678799908608198,
+        "p50": 2.8595998883247375,
+        "p95": 3.4419000148773193,
+        "p99": 4.06270008534193,
+        "max": 10.602400172501802
+      }
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_02",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.023254467286412325,
+        "p50": 0.025318128013067695,
+        "p95": 0.03271429467238585,
+        "p99": 0.035802493557603114,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "enabled",
+        "scenario_id": "v6_lite_scenario_02",
+        "physics_step": 9521,
+        "time_s": 19.042000000000325,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.023254467286412325,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 2.4879914427289318e-08,
+        "check_ms_excluding_mj_forward": 2.8514997102320194
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.950815825653635e-08,
+        "p95": 6.629564162487851e-08,
+        "p99": 8.236068104383251e-07,
+        "max": 1.0422305260111842e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.682900056242943,
+        "p50": 2.8791003860533237,
+        "p95": 3.574599977582693,
+        "p99": 4.26889955997467,
+        "max": 15.10960003361106
+      }
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_03",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.022904494728284187,
+        "p50": 0.025423094426928576,
+        "p95": 0.032671615564223024,
+        "p99": 0.035821369028170603,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "enabled",
+        "scenario_id": "v6_lite_scenario_03",
+        "physics_step": 13500,
+        "time_s": 26.999999999995914,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.022904494728284187,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 1.957591450052476e-10,
+        "check_ms_excluding_mj_forward": 2.881800290197134
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 2.0843996972885748e-08,
+        "p95": 6.015580152063382e-08,
+        "p99": 8.069734869498024e-07,
+        "max": 1.0556531477379574e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.671599853783846,
+        "p50": 2.852899953722954,
+        "p95": 3.450700081884861,
+        "p99": 3.867700230330229,
+        "max": 8.841599803417921
+      }
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_04",
+      "torque_steps": 13500,
+      "checked_states": 13501,
+      "native_replay_max_state_error": 1.0658141036401503e-14,
+      "status_counts": {
+        "COVERED_AT_THIS_STATE": 13501
+      },
+      "minimum_margin_m": {
+        "count": 13501,
+        "min": 0.02287255285087985,
+        "p50": 0.024649727311011803,
+        "p95": 0.03303405998822371,
+        "p99": 0.03584327357085589,
+        "max": 0.03607961677951957
+      },
+      "worst_state": {
+        "mode": "enabled",
+        "scenario_id": "v6_lite_scenario_04",
+        "physics_step": 11315,
+        "time_s": 22.629999999998336,
+        "status": "COVERED_AT_THIS_STATE",
+        "minimum_margin_m": 0.02287255285087985,
+        "worst_geom_name": "collision_0015",
+        "subspace_residual_linf_rad": 1.6635167774965015e-08,
+        "check_ms_excluding_mj_forward": 2.79630022123456
+      },
+      "subspace_residual_linf_rad": {
+        "count": 13501,
+        "min": 0.0,
+        "p50": 1.9007690428562984e-08,
+        "p95": 9.91122142687882e-08,
+        "p99": 7.783349348679247e-07,
+        "max": 1.0483511902682936e-06
+      },
+      "check_ms_excluding_mj_forward": {
+        "count": 13501,
+        "min": 2.6782997883856297,
+        "p50": 2.8522000648081303,
+        "p95": 3.405699972063303,
+        "p99": 3.8411999121308327,
+        "max": 8.67060013115406
+      }
+    }
+  ],
+  "modes": {
+    "baseline": {
+      "scene_count": 5,
+      "torque_steps": 67500,
+      "checked_states": 67505,
+      "covered_states": 67505,
+      "minimum_margin_m": 0.020718567975092424,
+      "maximum_native_replay_error": 1.0658141036401503e-14
+    },
+    "enabled": {
+      "scene_count": 5,
+      "torque_steps": 67500,
+      "checked_states": 67505,
+      "covered_states": 67505,
+      "minimum_margin_m": 0.022465490807223987,
+      "maximum_native_replay_error": 1.0658141036401503e-14
+    }
+  },
+  "cross_checks": {
+    "saved_task_states": 13500,
+    "selected_microstates": 220
+  },
+  "state_records_sha256": "36859a4f983b5fc03a7c0f15d6623b365077e935079f3881634e16bc2f076c03",
+  "failure_records_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -297,6 +297,7 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("initial_qp_probe_failure", manifest["sources"])
         self.assertIn("full_state_envelope", manifest["sources"])
         self.assertIn("microstep_envelope", manifest["sources"])
+        self.assertIn("full_torque_envelope", manifest["sources"])
         self.assertIn("batched_point_trial", manifest["sources"])
         self.assertIn("prepared_cold_trial", manifest["sources"])
         self.assertIn("prepared_full_trace", manifest["sources"])

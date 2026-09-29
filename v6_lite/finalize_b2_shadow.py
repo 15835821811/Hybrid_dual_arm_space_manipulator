@@ -94,6 +94,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "initial_qp_probe_failure": root / "qp_probe_initial255_failures" / "attempt1.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
+        "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
         "batched_point_trial": root / "batched_query_trial" / "batched_query_summary.json",
         "prepared_cold_trial": root / "prepared_query_trial" / "prepared_query_summary.json",
         "prepared_full_trace": root / "prepared_full_trace" / "prepared_full_trace_summary.json",
@@ -102,7 +103,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, sweep, micro, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -258,6 +259,44 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or _sha(micro_dir / "microstep_envelope_failures.jsonl")
             != micro["failure_records_sha256"]):
         raise ValueError("microstep envelope records changed")
+    if (full_torque["input_full_sweep_summary_sha256"]
+            != _sha(sources["full_state_envelope"])
+            or full_torque["input_full_sweep_states_sha256"]
+            != sweep["state_records_sha256"]
+            or full_torque["input_selected_summary_sha256"]
+            != _sha(sources["microstep_envelope"])
+            or full_torque["input_selected_states_sha256"]
+            != micro["state_records_sha256"]
+            or full_torque["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or full_torque["new_interval_mode_executed"]
+            or full_torque["continuous_time_certified"]
+            or full_torque["cross_checks"] != {
+                "saved_task_states": 13500, "selected_microstates": 220,
+            }
+            or len(full_torque["scenes"]) != 10):
+        raise ValueError("full old-torque envelope provenance failed")
+    for name, digest in full_torque["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"full old-torque source changed: {name}")
+    for item in full_torque["inputs"].values():
+        if (_sha(Path(item["metrics_path"])) != item["metrics_sha256"]
+                or len(item["traces"]) != 5):
+            raise ValueError("full old-torque metrics changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("full old-torque trace changed")
+    full_torque_dir = root / "full_torque_envelope"
+    full_torque_outputs = {
+        "summary": "full_torque_envelope_summary.json",
+        "states": "full_torque_envelope_states.jsonl",
+        "failures": "full_torque_envelope_failures.jsonl",
+        "document": "FULL_TORQUE_ENVELOPE.md",
+    }
+    full_torque_manifest = json.loads((full_torque_dir / "full_torque_envelope_manifest.json")
+                                      .read_text(encoding="utf-8"))
+    for name, filename in full_torque_outputs.items():
+        if full_torque_manifest[f"{name}_sha256"] != _sha(full_torque_dir / filename):
+            raise ValueError(f"full old-torque {name} hash changed")
     trials = (
         (batched, root / "batched_query_trial", {
             "summary": "batched_query_summary.json",
@@ -455,8 +494,17 @@ def finalize(root: Path, output_dir: Path) -> dict:
         and micro["modes"][mode]["covered_microstate_count"] == 110
         for mode in ("baseline", "enabled")
     )
+    full_torque_ready = all(
+        full_torque["modes"][mode]["scene_count"] == 5
+        and full_torque["modes"][mode]["torque_steps"] == 67500
+        and full_torque["modes"][mode]["checked_states"] == 67505
+        and full_torque["modes"][mode]["covered_states"] == 67505
+        and full_torque["modes"][mode]["maximum_native_replay_error"] <= 1e-8
+        for mode in ("baseline", "enabled")
+    )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
               or not probe_ready or not sweep_ready or not micro_ready
+              or not full_torque_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
@@ -808,6 +856,26 @@ def finalize(root: Path, output_dir: Path) -> dict:
     lines += [
         "", "所选 20 个窗口不能代表全部 13,500 个斜坡；500 Hz 离散观察"
         "不证明两次观测之间、连续时间或新区间闭环安全。", "",
+        "## 旧 A.1 全轨迹每个物理步的实际胶囊包络", "",
+        "对原两组五场景的全部力矩按 MuJoCo 原生重放，在每个 500 Hz 物理步"
+        "起点和最终端点检查实际胶囊与原 PCC 管。全部 13,500 个保存规划状态"
+        "和先前 220 个选定斜坡状态逐状态交叉核对；逐步记录和失败快照保存在"
+        "独立的不可覆盖审计目录。", "",
+        "| 模式 | 力矩步 | 500 Hz 检查状态 | 当前状态包含 | 最小余量 mm | 最大重放误差 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = full_torque["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['torque_steps']} | {item['checked_states']} | "
+            f"{item['covered_states']} | {1000*item['minimum_margin_m']:.3f} | "
+            f"{item['maximum_native_replay_error']:.2e} |"
+        )
+    lines += [
+        "", "这是历史旧控制轨迹的离散时刻几何证据，仍不能推断相邻 2 ms"
+        "状态之间的连续时间包含，也不能替代新区间模式的五场景闭环和独立重放。"
+        "包络检查耗时不含 MuJoCo 正运动学、区间查询、Jacobian、QP 和执行，"
+        "不能作为 20 ms 全链验收。", "",
         "## 只读查询计算复用试验", "",
         "首次批量点模型试验在 30 个冻结状态上没有获得稳定提速，"
         "因此未用于控制或正式影子结果。随后将同一状态的五段完整变换仅计算一次，"
