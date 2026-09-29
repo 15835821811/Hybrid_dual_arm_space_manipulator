@@ -137,6 +137,10 @@ def finalize(root: Path, output_dir: Path) -> dict:
             "optimized_private_five_scene_summary.json",
         "prepared_screened_scene00": root / "prepared_screened_private_rollout_400" /
             "scene_00" / "private_rollout_summary.json",
+        "optimized_private_repeat_protocol": root / "optimized_private_repeats_3x5" /
+            "repeat_protocol.json",
+        "optimized_private_repeats": root / "optimized_private_repeats_3x5" /
+            "repeat_summary.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -192,6 +196,80 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or prepared_screened["production_online_controller_changed"]
             or prepared_screened["stage3_admission"]):
         raise ValueError("prepared screened timing failure changed")
+    repeat_dir = root / "optimized_private_repeats_3x5"
+    repeat_protocol = json.loads(sources["optimized_private_repeat_protocol"].read_text(
+        encoding="utf-8"))
+    repeat = json.loads(sources["optimized_private_repeats"].read_text(
+        encoding="utf-8"))
+    repeat_manifest = json.loads((repeat_dir / "repeat_manifest.json").read_text(
+        encoding="utf-8"))
+    if (repeat_manifest["protocol_sha256"]
+            != _sha(sources["optimized_private_repeat_protocol"])
+            or repeat_manifest["summary_sha256"]
+            != _sha(sources["optimized_private_repeats"])
+            or repeat_manifest["document_sha256"]
+            != _sha(repeat_dir / "REPEAT_TIMING.md")
+            or repeat["protocol_sha256"]
+            != _sha(sources["optimized_private_repeat_protocol"])
+            or repeat_protocol["round_scene_order"] != [
+                [f"v6_lite_scenario_{i:02d}" for i in order]
+                for order in ((0, 1, 2, 3, 4), (4, 3, 2, 1, 0),
+                              (0, 1, 2, 3, 4))]
+            or repeat_protocol["ticks_per_scene"] != 400
+            or repeat_protocol["diagnostic_budget_ms"] != 20.0
+            or repeat["run_count"] != 15
+            or repeat["round_count"] != 3
+            or repeat["scene_count"] != 5
+            or repeat["p95_over_20ms_run_count"] != 13
+            or repeat["status"] != "PRIVATE_REPEAT_TIMING_GATE_NOT_MET"
+            or repeat["production_online_controller_changed"]
+            or repeat["stage3_admission"]
+            or repeat["full_cycle_20ms_acceptance"]
+            or repeat["continuous_time_certified"]):
+        raise ValueError("optimized repeat timing protocol or summary changed")
+    for name, digest in repeat_protocol["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"optimized repeat timing source changed: {name}")
+    expected_runs = [(round_number, scene_id)
+                     for round_number, order in enumerate(
+                         repeat_protocol["round_scene_order"], start=1)
+                     for scene_id in order]
+    if ([(item["round"], item["scenario_id"]) for item in repeat["runs"]]
+            != expected_runs):
+        raise ValueError("optimized repeat scene order changed")
+    for item in repeat["runs"]:
+        scene_index = int(item["scenario_id"][-2:])
+        folder = repeat_dir / f"round_{item['round']:02d}" / f"scene_{scene_index:02d}"
+        summary_path = folder / "private_rollout_summary.json"
+        manifest_path = folder / "private_rollout_manifest.json"
+        trace_path = folder / "private_rollout_trace.npz"
+        records_path = folder / "private_rollout_records.jsonl"
+        document_path = folder / "PRIVATE_ROLLOUT.md"
+        baseline_trace = (root / "discrete_private_rollout_400" /
+                          f"scene_{scene_index:02d}" / "private_rollout_trace.npz")
+        if (item["summary_sha256"] != _sha(summary_path)
+                or item["manifest_sha256"] != _sha(manifest_path)
+                or item["trace_sha256"] != _sha(trace_path)
+                or item["baseline_trace_sha256"] != _sha(baseline_trace)
+                or item["trace_sha256"] != item["baseline_trace_sha256"]):
+            raise ValueError(f"optimized repeat run changed: {folder}")
+        run_summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        run_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (run_summary["private_preflight_plus_qp_timing"]
+                != item["preflight_plus_qp_timing"]
+                or run_manifest["summary_sha256"] != _sha(summary_path)
+                or run_manifest["trace_sha256"] != _sha(trace_path)
+                or run_manifest["records_sha256"] != _sha(records_path)
+                or run_manifest["document_sha256"] != _sha(document_path)
+                or run_summary["records_sha256"] != _sha(records_path)
+                or run_summary["stage3_admission"]):
+            raise ValueError(f"optimized repeat records changed: {folder}")
+    if repeat["p95_over_20ms_runs"] != [
+            {"round": item["round"], "scenario_id": item["scenario_id"],
+             "p95_ms": item["preflight_plus_qp_timing"]["p95_ms"]}
+            for item in repeat["runs"]
+            if item["preflight_plus_qp_timing"]["p95_ms"] > 20.0]:
+        raise ValueError("optimized repeat timing failure list changed")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -1805,7 +1883,27 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"{prepared_screened['private_preflight_plus_qp_timing']['p95_ms']:.3f} ms，"
         "也保留为超预算实测。仪器化全 QP 试验每输入多次求解，其总时延无效；"
         "独立 ABBA 的求解器计时与五场景轨迹见各自哈希绑定报告。"
-        "尚未完成预先声明的重复全链计时或正式在线接入，门禁继续关闭。", "",
+        "尚未完成正式全链计时或在线接入，门禁继续关闭。", "",
+        "### 预声明三轮私有计时", "",
+        "固定三轮各五场景、每场景 400 周期，第二轮逆序。"
+        f"15 个场景轮次中 {repeat['p95_over_20ms_run_count']} 个 p95 "
+        "超 20 ms；全部力矩轨迹哈希与独立重放的基线完全相同。"
+        "这是私有预检＋QP 范围，不是正式任务全链。", "",
+        "| 轮次 | 场景 | p95 ms | p99 ms | 最大 ms | 超 20 ms 周期 | 最长连续超时 |",
+        "| ---: | --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for item in repeat["runs"]:
+        timing = item["preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['round']} | {item['scenario_id'][-2:]} | "
+            f"{timing['p95_ms']:.3f} | {timing['p99_ms']:.3f} | "
+            f"{timing['max_ms']:.3f} | {timing['over_20ms_count']} | "
+            f"{timing['longest_over_20ms_run']} |"
+        )
+    lines += [
+        "", "重复结果包含通过和失败轮次；同一轨迹的 Windows 计时波动"
+        "不能作为控制器等价性或硬实时保证。现有三轮诊断明确未达到"
+        "预声明的全轮次 p95 门槛。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"

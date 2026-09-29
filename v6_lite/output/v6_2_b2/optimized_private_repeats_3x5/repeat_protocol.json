@@ -1,0 +1,47 @@
+{
+  "schema": "v6_2_b2_optimized_private_repeat_protocol_v1",
+  "round_scene_order": [
+    [
+      "v6_lite_scenario_00",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_04"
+    ],
+    [
+      "v6_lite_scenario_04",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_00"
+    ],
+    [
+      "v6_lite_scenario_00",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_04"
+    ]
+  ],
+  "ticks_per_scene": 400,
+  "timing_scope": "private_preflight_plus_qp_only",
+  "metric": "per_scene_per_round_numpy_p95_ms",
+  "diagnostic_budget_ms": 20.0,
+  "gate_rule": "all_15_per_scene_round_p95_values_at_most_20ms",
+  "also_report": [
+    "p99_ms",
+    "max_ms",
+    "over_20ms_count",
+    "longest_over_20ms_run"
+  ],
+  "failed_runs_retained": true,
+  "production_online_controller_changed": false,
+  "full_cycle_20ms_acceptance": false,
+  "continuous_time_certified": false,
+  "source_sha256": {
+    "audit_b2_optimized_repeat_timing.py": "021b2762ae8c6eb26c3a9fb2c7a3e4c935b26cfc7cc1f8c8f4cee0f5d8b50edd",
+    "audit_b2_optimized_private_rollout.py": "42dcdd4f2dc7bf13aa872d7de85b2d73ca64e49f403829f85c24e7a59f151fde",
+    "audit_b2_prepared_screened_private_rollout.py": "9bf057e9cdc4384c41b698e4c69d6e202482d9f4880313b8b08d5c9883b2c4f5",
+    "b2_optimized_admm.py": "c1d6ce71939a967844a8e7dfc8244fcc9465883cb58657f7b9244169ddd16b5d"
+  }
+}

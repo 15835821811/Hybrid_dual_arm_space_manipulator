@@ -323,7 +323,8 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("full_root255_census", manifest["sources"])
         for name in ("prepared_500hz_envelope", "prepared_private_query",
                      "admm_solver_trial", "optimized_private_recompute",
-                     "optimized_private_five_scene", "prepared_screened_scene00"):
+                     "optimized_private_five_scene", "prepared_screened_scene00",
+                     "optimized_private_repeat_protocol", "optimized_private_repeats"):
             self.assertIn(name, manifest["sources"])
         optimized = json.loads((base / "optimized_private_400_summary" /
             "optimized_private_five_scene_summary.json").read_text(encoding="utf-8"))
@@ -335,6 +336,12 @@ class B2ShadowTests(unittest.TestCase):
         self.assertTrue(all(not any(item["exact_trace_parity"].values())
                             for item in optimized["scenes"]))
         self.assertFalse(optimized["stage3_admission"])
+        repeat = json.loads((base / "optimized_private_repeats_3x5" /
+            "repeat_summary.json").read_text(encoding="utf-8"))
+        self.assertEqual(repeat["run_count"], 15)
+        self.assertEqual(repeat["p95_over_20ms_run_count"], 13)
+        self.assertEqual(repeat["status"], "PRIVATE_REPEAT_TIMING_GATE_NOT_MET")
+        self.assertFalse(repeat["stage3_admission"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()
