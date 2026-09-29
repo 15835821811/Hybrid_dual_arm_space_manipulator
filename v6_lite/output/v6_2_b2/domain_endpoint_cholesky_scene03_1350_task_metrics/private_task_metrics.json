@@ -1,0 +1,85 @@
+{
+  "schema": "v6_2_b2_private_original_task_metrics_v1",
+  "scenario_id": "v6_lite_scenario_03",
+  "servo_states_evaluated": 13500,
+  "metric": {
+    "rigid_final_error_m": 2.765017675463977e-06,
+    "rigid_steady_rmse_m": 4.381695076939504e-06,
+    "continuum_active_path_rmse_m": 0.00010811529068901918,
+    "rigid_orientation_full_max_deg": 0.033816912969034475,
+    "continuum_orientation_full_max_deg": 0.024871825151097784
+  },
+  "original_thresholds": {
+    "rigid_final_error_m": 0.0001,
+    "rigid_steady_rmse_m": 0.00015,
+    "continuum_active_path_rmse_m": 0.00018,
+    "rigid_orientation_full_max_deg": 0.25,
+    "continuum_orientation_full_max_deg": 0.25
+  },
+  "checks": {
+    "rigid_final_error_m": true,
+    "rigid_steady_rmse_m": true,
+    "continuum_active_path_rmse_m": true,
+    "rigid_orientation_full_max_deg": true,
+    "continuum_orientation_full_max_deg": true,
+    "whole_body_dense_discrete_clearance": true,
+    "continuum_target_dense_discrete_clearance": true
+  },
+  "task_tracking_thresholds_passed": true,
+  "original_task_and_clearance_thresholds_passed": true,
+  "whole_body_clearance": {
+    "feasible": true,
+    "minimum_clearance": 0.014996316290347192,
+    "minimum_by_class": {
+      "base_obstacle": 0.6832083180395973,
+      "arm_obstacle": 0.025623998806220474,
+      "arm_base": 0.05151714785011933,
+      "base_target": 0.5619423511839216,
+      "continuum_self": 0.037678974570244,
+      "arm_arm": 0.626739617754734,
+      "continuum_target": 0.17525291804579982,
+      "rigid_self": 0.09368908485034123,
+      "rigid_target": 0.014996316290347192
+    },
+    "minimum_pair": {
+      "pair_class": "rigid_target",
+      "geom_a": "collision_0071",
+      "geom_b": "target_satellite_collision",
+      "body_a": "wrist_link",
+      "body_b": "target_satellite",
+      "state_index": 1192,
+      "source_interval_phase": 298.0,
+      "signed_distance_m": 0.014996316290347192,
+      "fromto": [
+        1.1877247075956847,
+        -0.18241546083431018,
+        0.08590745855409931,
+        1.1875925919794097,
+        -0.19741062577989937,
+        0.0857767833895061
+      ]
+    },
+    "violation_count": 0,
+    "checked_state_count": 5401,
+    "supplied_sample_count": 1351,
+    "adaptive_subdivisions": 4,
+    "pair_count": 2927,
+    "query_count": 15808727,
+    "truncated_query_count": 0,
+    "time_scope": "dense_discrete_with_configuration_space_subdivision",
+    "continuous_time_certified": false,
+    "uses_mj_geom_distance": true,
+    "uses_contact_list": false,
+    "nativeccd_claimed": false,
+    "pair_policy_sha256": "f0c317c73b8a07faacdf720fff726da54ac1e089188973ecc7a25f7777f05c49"
+  },
+  "whole_body_clearance_evaluated_here": true,
+  "original_26_11_acceptance_completed": false,
+  "production_online_admitted": false,
+  "source_sha256": "b17b89112c6f978e6b73862ac09a74ec4a8491e3b810e9c168faf4162acd7883",
+  "inputs_sha256": {
+    "private_summary": "7d24e314f6da4dadb06c2d5605defdbb195236184066f2d395682d0bf951c7a9",
+    "private_trace": "120430e0b89d699e8b433330ea19c9cc957dfea140ef9f08abc175c1e991e301",
+    "a1_metrics": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416"
+  }
+}

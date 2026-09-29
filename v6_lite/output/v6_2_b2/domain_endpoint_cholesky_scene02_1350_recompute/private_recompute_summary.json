@@ -1,0 +1,56 @@
+{
+  "schema": "v6_2_b2_private_torque_interval_recompute_v1",
+  "scope": "private_trace_native_torque_replay_and_separate_interval_start_recompute",
+  "input_layout": "direct_single_scene",
+  "scenes": [
+    "v6_lite_scenario_02"
+  ],
+  "task_ticks_per_scene": 1350,
+  "torque_steps_per_scene": 13500,
+  "checked_task_states": 1351,
+  "checked_interval_rows": 2572,
+  "failure_count": 0,
+  "maximum_native_state_error": 0.0,
+  "maximum_query_error_m": 2.220446049250313e-16,
+  "maximum_start_slack_error_m_s": 0.0,
+  "pass_recompute": true,
+  "independent_strict_online_domain_all_executed_ticks": true,
+  "all_500hz_states_on_declared_shape_subspace": true,
+  "maximum_500hz_subspace_residual_linf_rad": 5.551115123125783e-17,
+  "torque_limit_violation_count": 0,
+  "torque_at_limit_step_count": 0,
+  "new_mode_online_admitted": false,
+  "full_cycle_20ms_acceptance": false,
+  "continuous_time_certified": false,
+  "shared_model_geometry_with_private_controller": true,
+  "source_hash_newline_policy": "LF_NORMALIZED",
+  "source_sha256": {
+    "audit_b2_private_recompute.py": "6682e9b65121fe386f5ad2ff2cdc91b397daf77fa436bd950a81e241b563a31e",
+    "pcc_interval_cbf.py": "befb7cf61aebadb17b3b138fb6c6baf88a5d04fd51656ef88fdb5f010738c61d",
+    "pcc_persistent_interval_query.py": "f649d9627eec1bd10205dcf72c2dbea2d0ca2877a1c8a68f06d5008da11df649",
+    "recompute_execution_constraints.py": "8c5c6d9490ce090bc45af9831d530b3b7ba0eeacbb87d715d79819a53521b4c8",
+    "b2_shadow_feasibility.py": "2f1a9d526af06c14ae5f6c2e37f9b823f7a0552c6bb41b629d4c3eee642efee1"
+  },
+  "input_metrics_sha256": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416",
+  "inputs": [
+    {
+      "scenario_id": "v6_lite_scenario_02",
+      "summary_path": "v6_lite/output/v6_2_b2/domain_endpoint_cholesky_scene02_1350/private_rollout_summary.json",
+      "summary_sha256": "6aaf88ea9d29c72cd9714dd7b49e8e60ed8ce884a6b949c6b7cc3c471e7ccaf6",
+      "trace_sha256": "ac6c56d0a185e66818257da3918b5da68898f8f0416e0e7e612a17070dbe5848",
+      "records_sha256": "2d81c6295dbc31a99adfe933287f433063362f56c851e762ba4e6857afb1f316",
+      "claimed_strict_online_domain_all_executed_ticks": true,
+      "max_state_error": 0.0,
+      "max_query_error_m": 2.220446049250313e-16,
+      "max_start_slack_error_m_s": 0.0,
+      "max_500hz_subspace_residual_linf_rad": 5.551115123125783e-17,
+      "first_500hz_step_outside_strict_subspace": null,
+      "torque_limit_violation_count": 0,
+      "torque_at_limit_step_count": 0,
+      "independent_strict_online_domain_all_executed_ticks": true
+    }
+  ],
+  "checks_sha256": "2cfcd356236dc3dc828df8f1cdad068820dd32851bb0d40491aa2ebf1eaa6688",
+  "interval_rows_sha256": "f75de8b6caaec44b9b9f838e0950ee1d5de80244f022934d560ae41fce1f8d7e",
+  "failures_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

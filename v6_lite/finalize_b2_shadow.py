@@ -165,6 +165,12 @@ def finalize(root: Path, output_dir: Path) -> dict:
             "private_rollout_summary.json",
         "strict_domain_replay": root / "strict_domain_replay_scene01_900" /
             "strict_domain_replay.json",
+        "domain_endpoint_private_five": root / "domain_endpoint_private_five_gate" /
+            "domain_private_five_summary.json",
+        "domain_endpoint_private_five_visual": root /
+            "domain_endpoint_private_five_gate" / "b2-domain-private-five.png",
+        "domain_endpoint_private_five_visual_meta": root /
+            "domain_endpoint_private_five_gate" / "b2-domain-private-five.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -580,6 +586,45 @@ def finalize(root: Path, output_dir: Path) -> dict:
                     "failure": "private_rollout_failure.json"}[name]
         if _sha(strict_dir / filename) != digest:
             raise ValueError(f"strict replay input changed: {name}")
+    domain_five_dir = root / "domain_endpoint_private_five_gate"
+    domain_five = json.loads(sources["domain_endpoint_private_five"].read_text(
+        encoding="utf-8"))
+    domain_five_manifest = json.loads((domain_five_dir /
+        "domain_private_five_manifest.json").read_text(encoding="utf-8"))
+    if (domain_five_manifest["summary_sha256"]
+            != _sha(sources["domain_endpoint_private_five"])
+            or domain_five_manifest["document_sha256"]
+            != _sha(domain_five_dir / "DOMAIN_PRIVATE_FIVE.md")
+            or domain_five_manifest["failures_sha256"]
+            != _sha(domain_five_dir / "domain_private_five_failures.jsonl")
+            or domain_five["generator_source_sha256"] != _source_sha(
+                Path("v6_lite/finalize_b2_domain_private_five.py"))
+            or domain_five["private_diagnostic_status"]
+            != "PASS_PRIVATE_FIVE_WITH_LIMITS"
+            or domain_five["stage2_online_gate_status"] != "GATE_NOT_MET"
+            or domain_five["scene_count"] != 5
+            or domain_five["executed_task_ticks"] != 6750
+            or domain_five["independent_recomputed_task_states"] != 6755
+            or domain_five["independent_recomputed_interval_rows"] != 12350
+            or domain_five["independent_checked_2ms_states"] != 67505
+            or domain_five["failure_count"] != 0
+            or domain_five["preflight_plus_qp_over_20ms_tick_count"] != 6
+            or domain_five["stage3_admission"]
+            or domain_five["full_cycle_20ms_acceptance"]):
+        raise ValueError("new private five evidence or scope changed")
+    for name, entry in domain_five_manifest["sources"].items():
+        if _sha(Path(entry["path"])) != entry["sha256"]:
+            raise ValueError(f"new private five source changed: {name}")
+    domain_visual_meta = json.loads(sources[
+        "domain_endpoint_private_five_visual_meta"].read_text(encoding="utf-8"))
+    if (domain_visual_meta["image_sha256"] != _sha(sources[
+            "domain_endpoint_private_five_visual"])
+            or domain_visual_meta["summary_sha256"]
+            != _sha(sources["domain_endpoint_private_five"])
+            or domain_visual_meta["manifest_sha256"] != _sha(
+                domain_five_dir / "domain_private_five_manifest.json")
+            or domain_visual_meta["stage2_online_gate_status"] != "GATE_NOT_MET"):
+        raise ValueError("new private five visualization changed")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -2350,6 +2395,35 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "这证明了私有试验中拒绝发生在下一伺服步前；该轨迹提前停止，"
         "仍不能替代五场景完整新模式验收。十步预测本身尚未计入"
         "预检＋QP 时延，也没有真实在线截止期限证据。", "",
+        "### 同一 QP 的工作域端点约束：五场景新私有闭环", "",
+        "旧私有轨迹的 scene_01 越界反例促使在同一个 17 维 QP 中增加"
+        "冻结十步斜坡的形状工作域端点行；原速度盒、碰撞行和安全裕度"
+        "未放宽。执行前仍预测 11 个 2 ms MuJoCo 状态，任何域外状态"
+        "都拒绝提交整段候选。新变体完整运行五场景各 1,350 周期。", "",
+        "| 场景 | 独立区间行 | 最小工作域余量 rad | 整机最小净空 m | 路径 RMSE m | 预检＋QP p95 / 最大 ms | 超 20 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for item in domain_five["scenes"]:
+        timing = item["preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['scenario_id'][-2:]} | {item['recomputed_interval_rows']} | "
+            f"{item['minimum_work_domain_margin_rad']:.6g} | "
+            f"{item['whole_body_minimum_clearance_m']:.6g} | "
+            f"{item['continuum_path_rmse_m']:.6g} | "
+            f"{timing['p95_ms']:.3f} / {timing['max_ms']:.3f} | "
+            f"{timing['over_20ms_count']} |")
+    lines += [
+        "", f"五场景独立原生重放 {domain_five['independent_recomputed_task_states']} "
+        f"个任务状态、重算 {domain_five['independent_recomputed_interval_rows']} "
+        f"条区间行，并扫描 {domain_five['independent_checked_2ms_states']} "
+        "个实际微状态；原任务跟踪与整机净空阈值均通过。"
+        "冻结预算在保存状态上未超限。"
+        f"预检＋QP 共 {domain_five['preflight_plus_qp_over_20ms_tick_count']} "
+        "个单周期超过 20 ms，且未计十步预测预检或完整在线调度。"
+        "这是新私有分支的模型内闭环证据；生产在线开关、原 26/11 项"
+        "正式新模式验收和全链时限仍未完成，阶段门禁继续关闭。", "",
+        "[五场景工作域、路径误差和时延图]"
+        "(../domain_endpoint_private_five_gate/b2-domain-private-five.png)", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"
