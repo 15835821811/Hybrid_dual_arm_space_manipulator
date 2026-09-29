@@ -1,0 +1,49 @@
+{
+  "schema": "v6_2_b2_cholesky_private_repeat_protocol_v1",
+  "round_scene_order": [
+    [
+      "v6_lite_scenario_00",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_04"
+    ],
+    [
+      "v6_lite_scenario_04",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_00"
+    ],
+    [
+      "v6_lite_scenario_00",
+      "v6_lite_scenario_01",
+      "v6_lite_scenario_02",
+      "v6_lite_scenario_03",
+      "v6_lite_scenario_04"
+    ]
+  ],
+  "ticks_per_scene": 400,
+  "timing_scope": "private_preflight_plus_qp_only",
+  "unconstrained_diagnostic_solve_variant": "cholesky_same_17d_spd_weighted_hessian",
+  "metric": "per_scene_per_round_numpy_p95_ms",
+  "diagnostic_budget_ms": 20.0,
+  "gate_rule": "all_15_per_scene_round_p95_values_at_most_20ms",
+  "also_report": [
+    "p99_ms",
+    "max_ms",
+    "over_20ms_count",
+    "longest_over_20ms_run"
+  ],
+  "failed_runs_retained": true,
+  "production_online_controller_changed": false,
+  "full_cycle_20ms_acceptance": false,
+  "continuous_time_certified": false,
+  "source_sha256": {
+    "audit_b2_cholesky_repeat_timing.py": "f9f780315968b65668d6d90a53c012ccbebd63d982a8d3461a04420d8be83741",
+    "audit_b2_cholesky_private_rollout.py": "93726ae35a23f269d0843f62a8b2eab7b913409047b4770007bb7089a8bd5be5",
+    "b2_cholesky_unconstrained.py": "ae0fe75a3ae92c1dcf2db50aed07f6dfecb42d902469539231dfd7bfd0609bf1",
+    "audit_b2_prepared_screened_private_rollout.py": "9bf057e9cdc4384c41b698e4c69d6e202482d9f4880313b8b08d5c9883b2c4f5",
+    "b2_optimized_admm.py": "c1d6ce71939a967844a8e7dfc8244fcc9465883cb58657f7b9244169ddd16b5d"
+  }
+}

@@ -141,6 +141,16 @@ def finalize(root: Path, output_dir: Path) -> dict:
             "repeat_protocol.json",
         "optimized_private_repeats": root / "optimized_private_repeats_3x5" /
             "repeat_summary.json",
+        "qp_phase_probe": root / "qp_phase_probe_scene02_400" /
+            "qp_phase_summary.json",
+        "cholesky_private_recompute": root / "cholesky_private_recompute_400" /
+            "private_recompute_summary.json",
+        "cholesky_repeat_protocol": root / "cholesky_private_repeats_3x5" /
+            "repeat_protocol.json",
+        "cholesky_repeat_summary": root / "cholesky_private_repeats_3x5" /
+            "repeat_summary.json",
+        "cholesky_private_five_scene": root / "cholesky_private_400_summary" /
+            "cholesky_private_five_scene_summary.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -270,6 +280,101 @@ def finalize(root: Path, output_dir: Path) -> dict:
             for item in repeat["runs"]
             if item["preflight_plus_qp_timing"]["p95_ms"] > 20.0]:
         raise ValueError("optimized repeat timing failure list changed")
+    cholesky = json.loads(sources["cholesky_private_five_scene"].read_text(
+        encoding="utf-8"))
+    qp_phase = json.loads(sources["qp_phase_probe"].read_text(
+        encoding="utf-8"))
+    cholesky_dir = root / "cholesky_private_400_summary"
+    cholesky_manifest = json.loads((cholesky_dir /
+        "cholesky_private_five_scene_manifest.json").read_text(encoding="utf-8"))
+    if (cholesky_manifest["summary_sha256"]
+            != _sha(sources["cholesky_private_five_scene"])
+            or cholesky_manifest["document_sha256"]
+            != _sha(cholesky_dir / "CHOLESKY_PRIVATE_FIVE_SCENE.md")
+            or cholesky["generator_source_sha256"]
+            != _source_sha(Path("v6_lite/finalize_b2_cholesky_private.py"))
+            or cholesky["phase_probe_summary_sha256"]
+            != _sha(sources["qp_phase_probe"])
+            or cholesky["independent_recompute_summary_sha256"]
+            != _sha(sources["cholesky_private_recompute"])
+            or cholesky["repeat_protocol_sha256"]
+            != _sha(sources["cholesky_repeat_protocol"])
+            or cholesky["repeat_summary_sha256"]
+            != _sha(sources["cholesky_repeat_summary"])
+            or cholesky["status"]
+            != "PRIVATE_400_TICK_TIMING_DIAGNOSTIC_PASS_NOT_ONLINE"
+            or cholesky["scene_count"] != 5
+            or cholesky["repeat_run_count"] != 15
+            or cholesky["repeat_p95_over_20ms_count"]
+            or cholesky["repeat_over_20ms_cycle_count"] != 4
+            or cholesky["independent_task_states"] != 2005
+            or cholesky["independent_interval_rows"] != 5257
+            or cholesky["independent_failure_count"]
+            or cholesky["production_online_controller_changed"]
+            or cholesky["stage3_admission"]
+            or cholesky["full_cycle_20ms_acceptance"]
+            or cholesky["continuous_time_certified"]):
+        raise ValueError("cholesky private evidence or scope changed")
+    if (qp_phase["scenario_id"] != "v6_lite_scenario_02"
+            or qp_phase["ticks"] != 400
+            or qp_phase["dense_solve_call_counts"] != [2]
+            or qp_phase["production_online_controller_changed"]
+            or qp_phase["stage3_admission"]):
+        raise ValueError("QP phase timing diagnostic changed")
+    cholesky_repeat = json.loads(sources["cholesky_repeat_summary"].read_text(
+        encoding="utf-8"))
+    cholesky_protocol = json.loads(sources["cholesky_repeat_protocol"].read_text(
+        encoding="utf-8"))
+    cholesky_repeat_dir = root / "cholesky_private_repeats_3x5"
+    cholesky_repeat_manifest = json.loads((cholesky_repeat_dir /
+        "repeat_manifest.json").read_text(encoding="utf-8"))
+    if (cholesky_repeat_manifest["protocol_sha256"]
+            != _sha(sources["cholesky_repeat_protocol"])
+            or cholesky_repeat_manifest["summary_sha256"]
+            != _sha(sources["cholesky_repeat_summary"])
+            or cholesky_repeat_manifest["document_sha256"]
+            != _sha(cholesky_repeat_dir / "REPEAT_TIMING.md")
+            or cholesky_repeat["protocol_sha256"]
+            != _sha(sources["cholesky_repeat_protocol"])
+            or cholesky_protocol["ticks_per_scene"] != 400
+            or cholesky_protocol["diagnostic_budget_ms"] != 20.0
+            or cholesky_repeat["p95_over_20ms_run_count"]
+            or cholesky_repeat["cholesky_unconstrained_fallback_count"]
+            or cholesky_repeat["run_count"] != 15):
+        raise ValueError("cholesky repeat provenance changed")
+    for name, digest in cholesky_protocol["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"cholesky repeat source changed: {name}")
+    for scene_index, item in enumerate(cholesky["scenes"]):
+        folder = root / "cholesky_private_rollout_400" / f"scene_{scene_index:02d}"
+        trace = folder / "private_rollout_trace.npz"
+        baseline_trace = (root / "discrete_private_rollout_400" /
+                          f"scene_{scene_index:02d}" / "private_rollout_trace.npz")
+        if (item["summary_sha256"] != _sha(folder / "private_rollout_summary.json")
+                or item["manifest_sha256"]
+                != _sha(folder / "private_rollout_manifest.json")
+                or item["trace_sha256"] != _sha(trace)
+                or item["baseline_trace_sha256"] != _sha(baseline_trace)
+                or item["trace_sha256"] != item["baseline_trace_sha256"]
+                or any(item["exact_trace_parity"].values())
+                or item["preflight_plus_qp_timing"]["p95_ms"] > 20.0):
+            raise ValueError(f"cholesky first-round scene changed: {scene_index}")
+    if (len(cholesky_repeat["runs"]) != 15
+            or any(item["preflight_plus_qp_timing"]["p95_ms"] > 20.0
+                   for item in cholesky_repeat["runs"])):
+        raise ValueError("cholesky repeat p95 result changed")
+    for item in cholesky_repeat["runs"]:
+        scene_index = int(item["scenario_id"][-2:])
+        folder = (cholesky_repeat_dir / f"round_{item['round']:02d}" /
+                  f"scene_{scene_index:02d}")
+        trace = folder / "private_rollout_trace.npz"
+        if (item["summary_sha256"] != _sha(folder / "private_rollout_summary.json")
+                or item["manifest_sha256"]
+                != _sha(folder / "private_rollout_manifest.json")
+                or item["trace_sha256"] != _sha(trace)
+                or item["trace_sha256"]
+                != cholesky["scenes"][scene_index]["trace_sha256"]):
+            raise ValueError(f"cholesky repeat raw run changed: {folder}")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -1904,6 +2009,34 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "重复结果包含通过和失败轮次；同一轨迹的 Windows 计时波动"
         "不能作为控制器等价性或硬实时保证。现有三轮诊断明确未达到"
         "预声明的全轮次 p95 门槛。", "",
+        "## 17 维正定诊断解的私有 Cholesky 复用", "",
+        "单次场景 02 阶段计时显示，原 `np.linalg.solve` 的 17×17 "
+        f"调用 p95 为 {qp_phase['phase_statistics']['dense_solve_ms']['p95_ms']:.3f} ms；"
+        "原 6×6 反作用求解、碰撞行与 ADMM 分别计时。"
+        "私有分支仅将正定加权 Hessian 的无约束诊断解换为 Cholesky，"
+        "不改变候选优化问题或安全约束。", "",
+        "| 场景 | 首轮预检＋QP p95 ms | p99 ms | 最大 ms | 超 20 ms 周期 |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for item in cholesky["scenes"]:
+        timing = item["preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['scenario_id'][-2:]} | {timing['p95_ms']:.3f} | "
+            f"{timing['p99_ms']:.3f} | {timing['max_ms']:.3f} | "
+            f"{timing['over_20ms_count']} |"
+        )
+    lines += [
+        "", f"预声明三轮共 {cholesky['repeat_run_count']} 个场景轮次，"
+        f"p95 超 20 ms 为 {cholesky['repeat_p95_over_20ms_count']}；"
+        f"总超周期 {cholesky['repeat_over_20ms_cycle_count']}，"
+        f"最大单周期 {cholesky['repeat_maximum_preflight_plus_qp_ms']:.3f} ms。"
+        f"独立重放 {cholesky['independent_task_states']} 个任务状态、"
+        f"{cholesky['independent_interval_rows']} 条区间行，"
+        f"不一致 {cholesky['independent_failure_count']}；"
+        "五场景轨迹哈希与原补偿基线完全相同。", "",
+        "因此 400 周期私有预检＋QP 重复时延诊断通过，但不是完整任务周期"
+        "或硬实时证明。旧影子门禁、完整五场景新闭环、原 26/11 项新 trace "
+        "与故障注入仍未全部验收；阶段二总门禁保持关闭。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"

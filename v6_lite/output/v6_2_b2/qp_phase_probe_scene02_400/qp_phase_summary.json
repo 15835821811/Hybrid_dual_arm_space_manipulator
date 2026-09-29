@@ -1,0 +1,79 @@
+{
+  "schema": "v6_2_b2_private_qp_phase_probe_v1",
+  "status": "PRIVATE_TIMING_DIAGNOSTIC_NOT_ONLINE",
+  "scenario_id": "v6_lite_scenario_02",
+  "ticks": 400,
+  "baseline_trace_sha256": "d563d53c143324286e82f54b121675114421db2bf3ea30073c4406eb7240e969",
+  "probe_trace_sha256": "d563d53c143324286e82f54b121675114421db2bf3ea30073c4406eb7240e969",
+  "private_rollout_summary_sha256": "f025b53202597d36fe4e82f3a57355d2b4971f1057f90d821daf752e553bcd5d",
+  "source_sha256": {
+    "audit_b2_qp_phase_probe.py": "2719f11fabf8f575381bd21f888ab633ba32907b5602aaf66830b92ff13de9a7",
+    "b2_optimized_admm.py": "c1d6ce71939a967844a8e7dfc8244fcc9465883cb58657f7b9244169ddd16b5d"
+  },
+  "phase_statistics": {
+    "external_preflight_ms": {
+      "count": 400,
+      "p50_ms": 2.846300136297941,
+      "p95_ms": 3.080440149642527,
+      "p99_ms": 3.2360970694571725,
+      "max_ms": 6.412799470126629
+    },
+    "reaction_map_ms": {
+      "count": 400,
+      "p50_ms": 0.13450020924210548,
+      "p95_ms": 0.16801534220576286,
+      "p99_ms": 0.20096278283745045,
+      "max_ms": 0.7251999340951443
+    },
+    "clearance_assembly_ms": {
+      "count": 400,
+      "p50_ms": 3.4279501996934414,
+      "p95_ms": 3.657940123230218,
+      "p99_ms": 3.8881106907501817,
+      "max_ms": 8.31210007891059
+    },
+    "admm_ms": {
+      "count": 400,
+      "p50_ms": 0.28220005333423615,
+      "p95_ms": 2.4342201184481382,
+      "p99_ms": 4.364539100788526,
+      "max_ms": 6.775800138711929
+    },
+    "dense_solve_ms": {
+      "count": 400,
+      "p50_ms": 5.287549924105406,
+      "p95_ms": 18.162100063636892,
+      "p99_ms": 22.091113217175007,
+      "max_ms": 33.75389985740185
+    },
+    "other_qp_ms": {
+      "count": 400,
+      "p50_ms": 0.5173000972718,
+      "p95_ms": 0.612764898687601,
+      "p99_ms": 0.6903505604714155,
+      "max_ms": 0.832599587738514
+    },
+    "qp_full_ms": {
+      "count": 400,
+      "p50_ms": 10.429200017824769,
+      "p95_ms": 23.248690296895802,
+      "p99_ms": 26.496114027686406,
+      "max_ms": 39.20909995213151
+    },
+    "preflight_plus_qp_ms": {
+      "count": 400,
+      "p50_ms": 13.286099769175053,
+      "p95_ms": 26.097424933686842,
+      "p99_ms": 29.413040364161123,
+      "max_ms": 42.04569989815354
+    }
+  },
+  "dense_solve_call_counts": [
+    2
+  ],
+  "records_sha256": "fa574051822d1459756e1a8819e465f966651bfd5ec360f3d23786a0c94562db",
+  "production_online_controller_changed": false,
+  "stage3_admission": false,
+  "full_cycle_20ms_acceptance": false,
+  "continuous_time_certified": false
+}

@@ -324,7 +324,10 @@ class B2ShadowTests(unittest.TestCase):
         for name in ("prepared_500hz_envelope", "prepared_private_query",
                      "admm_solver_trial", "optimized_private_recompute",
                      "optimized_private_five_scene", "prepared_screened_scene00",
-                     "optimized_private_repeat_protocol", "optimized_private_repeats"):
+                     "optimized_private_repeat_protocol", "optimized_private_repeats",
+                     "qp_phase_probe", "cholesky_private_recompute",
+                     "cholesky_repeat_protocol", "cholesky_repeat_summary",
+                     "cholesky_private_five_scene"):
             self.assertIn(name, manifest["sources"])
         optimized = json.loads((base / "optimized_private_400_summary" /
             "optimized_private_five_scene_summary.json").read_text(encoding="utf-8"))
@@ -342,6 +345,17 @@ class B2ShadowTests(unittest.TestCase):
         self.assertEqual(repeat["p95_over_20ms_run_count"], 13)
         self.assertEqual(repeat["status"], "PRIVATE_REPEAT_TIMING_GATE_NOT_MET")
         self.assertFalse(repeat["stage3_admission"])
+        cholesky = json.loads((base / "cholesky_private_400_summary" /
+            "cholesky_private_five_scene_summary.json").read_text(encoding="utf-8"))
+        self.assertEqual(cholesky["scene_count"], 5)
+        self.assertEqual(cholesky["repeat_run_count"], 15)
+        self.assertEqual(cholesky["repeat_p95_over_20ms_count"], 0)
+        self.assertEqual(cholesky["repeat_over_20ms_cycle_count"], 4)
+        self.assertEqual(cholesky["independent_interval_rows"], 5257)
+        self.assertEqual(cholesky["independent_failure_count"], 0)
+        self.assertTrue(all(not any(item["exact_trace_parity"].values())
+                            for item in cholesky["scenes"]))
+        self.assertFalse(cholesky["stage3_admission"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()
