@@ -1,0 +1,13 @@
+{
+  "schema": "v6_2_b2_candidate_prediction_attempt_failure_v1",
+  "status": "SCRIPT_ERROR_AFTER_TWO_COMPLETED_PROBES",
+  "exception": "IndexError: index 151 is out of bounds for axis 0 with size 151",
+  "cause": "The script sliced task_qpos through tick 150, then attempted to compare the tick-150 candidate endpoint with task_qpos[151].",
+  "correction": "Read the saved task_qpos through tick 151; rerun in a new immutable output directory.",
+  "completed_probe_count": 2,
+  "partial_row_count": 5,
+  "partial_rows_sha256": "cb3dc4e7ebba5d75298e278b402971796183309b93d45d05ef850fe92f7f2b0a",
+  "partial_failure_rows_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "full_result_generated": false,
+  "new_interval_mode_executed": false
+}

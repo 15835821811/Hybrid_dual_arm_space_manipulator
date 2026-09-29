@@ -93,6 +93,8 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "initial_qp_probe": root / "qp_probe_initial255" / "weighted_qp_probe.json",
         "initial_qp_probe_failure": root / "qp_probe_initial255_failures" / "attempt1.json",
         "candidate_ramp_early": root / "candidate_ramp_early" / "candidate_ramp_summary.json",
+        "candidate_prediction": root / "candidate_prediction_early" / "candidate_prediction_summary.json",
+        "candidate_prediction_failure": root / "candidate_prediction_early_failures" / "attempt1.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -104,7 +106,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -245,6 +247,53 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or candidate_ramp["failure_records_sha256"]
             != _sha(candidate_dir / candidate_outputs["failures"])):
         raise ValueError("one-ramp candidate records changed")
+    if (candidate_prediction["input_probe_sha256"]
+            != _sha(sources["weighted_qp_probe"])
+            or candidate_prediction["input_candidate_ramp_sha256"]
+            != _sha(sources["candidate_ramp_early"])
+            or candidate_prediction["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or candidate_prediction["new_interval_mode_executed"]
+            or candidate_prediction["continuous_time_certified"]
+            or not candidate_prediction["margin_is_empirical_not_certified_bound"]
+            or candidate_prediction["probe_ticks"] != [50, 100, 150]
+            or len(candidate_prediction["cases"]) != 30):
+        raise ValueError("candidate fixed-partition prediction provenance failed")
+    for name, digest in candidate_prediction["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"candidate prediction source changed: {name}")
+    for item in candidate_prediction["inputs"].values():
+        if (_sha(Path(item["metrics_path"])) != item["metrics_sha256"]
+                or len(item["traces"]) != 5):
+            raise ValueError("candidate prediction metrics changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("candidate prediction trace changed")
+    prediction_dir = root / "candidate_prediction_early"
+    prediction_outputs = {
+        "summary": "candidate_prediction_summary.json",
+        "rows": "candidate_prediction_rows.jsonl",
+        "failures": "candidate_prediction_failures.jsonl",
+        "document": "CANDIDATE_PREDICTION.md",
+    }
+    prediction_manifest = json.loads((prediction_dir / "candidate_prediction_manifest.json")
+                                     .read_text(encoding="utf-8"))
+    for name, filename in prediction_outputs.items():
+        if prediction_manifest[f"{name}_sha256"] != _sha(prediction_dir / filename):
+            raise ValueError(f"candidate prediction {name} hash changed")
+    if (candidate_prediction["row_records_sha256"]
+            != _sha(prediction_dir / prediction_outputs["rows"])
+            or candidate_prediction["failure_records_sha256"]
+            != _sha(prediction_dir / prediction_outputs["failures"])):
+        raise ValueError("candidate prediction records changed")
+    partial_dir = root / "candidate_prediction_early_failures" / "attempt1_partial"
+    if (prediction_failure["status"] != "SCRIPT_ERROR_AFTER_TWO_COMPLETED_PROBES"
+            or prediction_failure["full_result_generated"]
+            or prediction_failure["partial_row_count"] != 5
+            or prediction_failure["partial_rows_sha256"]
+            != _sha(partial_dir / "candidate_prediction_rows.jsonl")
+            or prediction_failure["partial_failure_rows_sha256"]
+            != _sha(partial_dir / "candidate_prediction_failures.jsonl")):
+        raise ValueError("candidate prediction first-attempt failure changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -541,6 +590,13 @@ def finalize(root: Path, output_dir: Path) -> dict:
         and candidate_ramp["modes"][mode]["maximum_old_next_qpos_error"] <= 1e-8
         for mode in ("baseline", "enabled")
     )
+    candidate_prediction_ready = all(
+        candidate_prediction["modes"][mode]["case_count"] == 15
+        and candidate_prediction["modes"][mode]["selected_row_count"] == 50
+        and candidate_prediction["modes"][mode]["cbf_optimism_over_frozen_margin_count"] == 0
+        and candidate_prediction["modes"][mode]["realized_start_violation_count"] == 0
+        for mode in ("baseline", "enabled")
+    )
     full_torque_ready = all(
         full_torque["modes"][mode]["scene_count"] == 5
         and full_torque["modes"][mode]["torque_steps"] == 67500
@@ -551,7 +607,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
               or not probe_ready or not sweep_ready or not micro_ready
-              or not candidate_ramp_ready
+              or not candidate_ramp_ready or not candidate_prediction_ready
               or not full_torque_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
@@ -889,6 +945,28 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "全身几何采用原验证器有限插值检查，仍不是连续时间认证。"
         "这只是从历史状态出发的单周期反事实；不能覆盖新区间闭环累计误差、"
         "停止策略、完整五场景或 20 ms 全链时延。", "",
+        "## 候选分支的同区间前瞻误差", "",
+        "对同一 30 个私有候选分支，重建原只读 QP 的区间划分与筛选 ID，"
+        "在执行后一规划起点冻结相同 ID 重算 h、17 维广义梯度及目标漂移。"
+        "因此下表的误差来自同一材料区间函数的状态变化。首次运行因下一"
+        "qpos 数组切片少一项而报错；部分行和错误快照已单独保留，修复后"
+        "在新目录完整重跑。", "",
+        "| 模式 | 单周期分支 | 固定区间行 | h 最大预测高估 mm/s | CBF 起点松弛最大预测高估 mm/s | 超 5 mm/s 经验裕度 | 实际起点违例 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = candidate_prediction["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['case_count']} | {item['selected_row_count']} | "
+            f"{1000*item['h_optimism_rate_m_s']['max']:.3f} | "
+            f"{1000*item['cbf_start_slack_optimism_m_s']['max']:.4f} | "
+            f"{item['cbf_optimism_over_frozen_margin_count']} | "
+            f"{item['realized_start_violation_count']} |"
+        )
+    lines += [
+        "", "h 残差除以原 20 ms 周期转成速度单位；CBF 松弛残差还包含"
+        "广义梯度与目标漂移变化。这里 5 mm/s 仍是原经验配置，不是"
+        "通用或严格误差上界；30 个单周期样本不能推出连续闭环可靠性。", "",
         "## 全部保存规划状态的实际胶囊包络", "",
         "对旧 A.1 两组五场景全部保存的规划 qpos 直接执行 MuJoCo 正运动学，"
         "逐状态检查实际胶囊是否包含于原 PCC 管；所用 trace 与上述原生重放审计逐场景哈希一致。"

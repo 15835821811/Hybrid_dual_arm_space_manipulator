@@ -1,0 +1,487 @@
+{
+  "schema": "v6_2_b2_candidate_fixed_partition_prediction_v1",
+  "scope": "thirty_predeclared_private_candidate_ramps_same_interval_ids_both_ends",
+  "probe_ticks": [
+    50,
+    100,
+    150
+  ],
+  "servo_steps_per_task": 10,
+  "source_hash_newline_policy": "LF_NORMALIZED",
+  "source_sha256": {
+    "audit_b2_candidate_prediction.py": "bd1b1f9c0b9bd5ea5a4686916d7f9b16e0eebc252f2eced7c3da85d54e633155",
+    "audit_b2_candidate_ramp.py": "d367d50f18de6d61bf540d21a10502e8d4d084c720073e8331e00e3d5cc7e323",
+    "pcc_interval_cbf.py": "befb7cf61aebadb17b3b138fb6c6baf88a5d04fd51656ef88fdb5f010738c61d",
+    "pcc_persistent_interval_query.py": "f649d9627eec1bd10205dcf72c2dbea2d0ca2877a1c8a68f06d5008da11df649",
+    "execution_ramp.py": "3e328c16eefede5cf915196813f3bb3a4c667bbb7adcbba0c5b083c72fb7d024",
+    "run_v6_lite.py": "16106e7e1b0f24718126969f89da9dbaecb39595fc0e418c8390c4fda05a4727",
+    "recompute_execution_constraints.py": "8c5c6d9490ce090bc45af9831d530b3b7ba0eeacbb87d715d79819a53521b4c8"
+  },
+  "input_probe_sha256": "a957f0120173f0cfddf1fe28525054c9c2f02ec308d80741b62f132f2e8f97ee",
+  "input_candidate_ramp_sha256": "638d45a7e078e7b5f149825f5fdb14e1cf86b98dc043f90d22a702d5cd3864db",
+  "new_interval_mode_executed": false,
+  "continuous_time_certified": false,
+  "margin_is_empirical_not_certified_bound": true,
+  "inputs": {
+    "baseline": {
+      "metrics_path": "v6_lite/output/v6_2_a1/baseline_root/output/v6_lite_metrics.json",
+      "metrics_sha256": "48ad83822d632464032d7bf82fb3f32e6e636a6e3843d6fecc1d9caaf93b2c58",
+      "traces": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_00.npz",
+          "sha256": "9f91b5cdf8f028c971b00243867dd5840c058df8629740f025859ae0e4d37836"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_01.npz",
+          "sha256": "58bb492d756cb8ea5284b6bfbc4331ff6df6c06d93d3e7d2b93d1518f847df41"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_02.npz",
+          "sha256": "3d3d3d84aba14f7c2bddb8c0c9f8cce57bac02692abad599465c7d6da9535893"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_03.npz",
+          "sha256": "63b1af1dd11965d8ce0e9ee0c49890430f3bfdb592f72ae26b9233f372de5798"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "path": "v6_lite/output/v6_2_a1/baseline_root/output/traces/v6_lite_scenario_04.npz",
+          "sha256": "9abb83de5c9997d34115c57c2b6f7d58a4a97ee735221880e960bbfd5d3f9838"
+        }
+      ]
+    },
+    "enabled": {
+      "metrics_path": "v6_lite/output/v6_2_a1/enabled_root/output/v6_lite_metrics.json",
+      "metrics_sha256": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416",
+      "traces": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_00.npz",
+          "sha256": "85b69932b2167280f116996a8724921651cf227edcb996e1a3830b315f143ae4"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_01.npz",
+          "sha256": "66b7cecef9ff30ddbafba2250d9ad980c63fa4494f2ef604c9853fc647b8e0b2"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_02.npz",
+          "sha256": "0b39ce169a2e2c108bea471c7198cd038a98ec69168f4ce668d937bc66ef5616"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_03.npz",
+          "sha256": "036963a73d3504c5988ad20ac6258e72b0e6ab86d8351b6714dee658b14658aa"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "path": "v6_lite/output/v6_2_a1/enabled_root/output/traces/v6_lite_scenario_04.npz",
+          "sha256": "89907376ed824ef55890ed36b62962971187e4f29227106ef76336b9b865ddb0"
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_00",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00035099898737095403,
+      "maximum_cbf_slack_optimism_m_s": -4.376675447986811e-05,
+      "minimum_realized_start_slack_m_s": 0.4930544225034443
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_00",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.00011060979073010402,
+      "maximum_cbf_slack_optimism_m_s": -3.7853758349637445e-05,
+      "minimum_realized_start_slack_m_s": 0.3362238127199173
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_00",
+      "tick": 150,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -6.728079461441883e-05,
+      "maximum_cbf_slack_optimism_m_s": -3.938299207670304e-05,
+      "minimum_realized_start_slack_m_s": 0.005052024805623469
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_01",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00023535499753951639,
+      "maximum_cbf_slack_optimism_m_s": -2.139953978119724e-05,
+      "minimum_realized_start_slack_m_s": 0.41881821149386533
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_01",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.0001030077137392782,
+      "maximum_cbf_slack_optimism_m_s": -7.616545056765567e-05,
+      "minimum_realized_start_slack_m_s": 0.3111279454738113
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_01",
+      "tick": 150,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -2.70277946405606e-05,
+      "maximum_cbf_slack_optimism_m_s": -1.4229376497809643e-05,
+      "minimum_realized_start_slack_m_s": 0.0790955424762704
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_02",
+      "tick": 50,
+      "selected_interval_count": 2,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00032503044071346965,
+      "maximum_cbf_slack_optimism_m_s": 3.8400161898488605e-05,
+      "minimum_realized_start_slack_m_s": 0.36939601309200687
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_02",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.00014209377392528089,
+      "maximum_cbf_slack_optimism_m_s": -5.346370380576726e-05,
+      "minimum_realized_start_slack_m_s": 0.1919542001690366
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_02",
+      "tick": 150,
+      "selected_interval_count": 5,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -4.04951680278709e-05,
+      "maximum_cbf_slack_optimism_m_s": -3.0560213642324974e-05,
+      "minimum_realized_start_slack_m_s": 0.07281413997473346
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_03",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00023790581260632604,
+      "maximum_cbf_slack_optimism_m_s": -3.7515120252795686e-05,
+      "minimum_realized_start_slack_m_s": 0.36226980611737036
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_03",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.0001232472497322834,
+      "maximum_cbf_slack_optimism_m_s": -0.00012950904827341292,
+      "minimum_realized_start_slack_m_s": 0.17397159198335357
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_03",
+      "tick": 150,
+      "selected_interval_count": 6,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -7.012103096538935e-05,
+      "maximum_cbf_slack_optimism_m_s": -3.681341514782943e-05,
+      "minimum_realized_start_slack_m_s": 0.05446291341135089
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_04",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.000364366365670013,
+      "maximum_cbf_slack_optimism_m_s": -3.669710599041309e-05,
+      "minimum_realized_start_slack_m_s": 0.414174059221768
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_04",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.00012323756088880589,
+      "maximum_cbf_slack_optimism_m_s": -2.42177578040903e-05,
+      "minimum_realized_start_slack_m_s": 0.2398569924834148
+    },
+    {
+      "mode": "baseline",
+      "scenario_id": "v6_lite_scenario_04",
+      "tick": 150,
+      "selected_interval_count": 5,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -4.8532122155775514e-05,
+      "maximum_cbf_slack_optimism_m_s": -2.8919582302701363e-05,
+      "minimum_realized_start_slack_m_s": 0.03902297927927079
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_00",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00035099898737095403,
+      "maximum_cbf_slack_optimism_m_s": -4.376675447986811e-05,
+      "minimum_realized_start_slack_m_s": 0.4930544225034443
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_00",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.00011060979073010402,
+      "maximum_cbf_slack_optimism_m_s": -3.7853758349637445e-05,
+      "minimum_realized_start_slack_m_s": 0.3362238127199173
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_00",
+      "tick": 150,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -6.835824314030403e-05,
+      "maximum_cbf_slack_optimism_m_s": -4.0289208917299035e-05,
+      "minimum_realized_start_slack_m_s": 0.005053221560554263
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_01",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00023535499753951639,
+      "maximum_cbf_slack_optimism_m_s": -2.139953978119724e-05,
+      "minimum_realized_start_slack_m_s": 0.41881821149386533
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_01",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.0001030077137392782,
+      "maximum_cbf_slack_optimism_m_s": -7.616545056765567e-05,
+      "minimum_realized_start_slack_m_s": 0.3111279454738113
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_01",
+      "tick": 150,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -2.7773179353540733e-05,
+      "maximum_cbf_slack_optimism_m_s": -1.4342978436943099e-05,
+      "minimum_realized_start_slack_m_s": 0.0790795347015914
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_02",
+      "tick": 50,
+      "selected_interval_count": 2,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00032503044071346965,
+      "maximum_cbf_slack_optimism_m_s": 3.8400161898488605e-05,
+      "minimum_realized_start_slack_m_s": 0.36939601309200687
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_02",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.00014209377392528089,
+      "maximum_cbf_slack_optimism_m_s": -5.346370380576726e-05,
+      "minimum_realized_start_slack_m_s": 0.1919542001690366
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_02",
+      "tick": 150,
+      "selected_interval_count": 5,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -4.028924614450646e-05,
+      "maximum_cbf_slack_optimism_m_s": -3.0404949883877652e-05,
+      "minimum_realized_start_slack_m_s": 0.07228142587227734
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_03",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.00023790581260632604,
+      "maximum_cbf_slack_optimism_m_s": -3.7515120252795686e-05,
+      "minimum_realized_start_slack_m_s": 0.36226980611737036
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_03",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.0001232472497322834,
+      "maximum_cbf_slack_optimism_m_s": -0.00012950904827341292,
+      "minimum_realized_start_slack_m_s": 0.17397159198335357
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_03",
+      "tick": 150,
+      "selected_interval_count": 6,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -6.940366494394279e-05,
+      "maximum_cbf_slack_optimism_m_s": -3.668286662578124e-05,
+      "minimum_realized_start_slack_m_s": 0.05423453193924753
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_04",
+      "tick": 50,
+      "selected_interval_count": 1,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": 0.000364366365670013,
+      "maximum_cbf_slack_optimism_m_s": -3.669710599041309e-05,
+      "minimum_realized_start_slack_m_s": 0.414174059221768
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_04",
+      "tick": 100,
+      "selected_interval_count": 4,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -0.00012323756088880589,
+      "maximum_cbf_slack_optimism_m_s": -2.42177578040903e-05,
+      "minimum_realized_start_slack_m_s": 0.2398569924834148
+    },
+    {
+      "mode": "enabled",
+      "scenario_id": "v6_lite_scenario_04",
+      "tick": 150,
+      "selected_interval_count": 5,
+      "native_replay_max_state_error": 0.0,
+      "candidate_final_qpos_parity_error": 0.0,
+      "maximum_h_optimism_rate_m_s": -4.8273526912639975e-05,
+      "maximum_cbf_slack_optimism_m_s": -2.8786508422654067e-05,
+      "minimum_realized_start_slack_m_s": 0.03872495614705846
+    }
+  ],
+  "modes": {
+    "baseline": {
+      "case_count": 15,
+      "selected_row_count": 50,
+      "h_prediction_error_rate_m_s": {
+        "count": 50,
+        "min": -0.000364366365670013,
+        "p50": 7.913633105075327e-05,
+        "p95": 0.00025580013942550975,
+        "p99": 0.00029507472204398297,
+        "max": 0.00030065361496522947
+      },
+      "h_optimism_rate_m_s": {
+        "count": 50,
+        "min": 0.0,
+        "p50": 0.0,
+        "p95": 0.00028582435806525475,
+        "p99": 0.0003578163503034741,
+        "max": 0.000364366365670013
+      },
+      "cbf_start_slack_optimism_m_s": {
+        "count": 50,
+        "min": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 1.9584082568229114e-05,
+        "max": 3.8400161898488605e-05
+      },
+      "minimum_realized_start_slack_m_s": 0.005052024805623469,
+      "cbf_optimism_over_frozen_margin_count": 0,
+      "realized_start_violation_count": 0
+    },
+    "enabled": {
+      "case_count": 15,
+      "selected_row_count": 50,
+      "h_prediction_error_rate_m_s": {
+        "count": 50,
+        "min": -0.000364366365670013,
+        "p50": 7.83372519046286e-05,
+        "p95": 0.00025580013942550975,
+        "p99": 0.00029507472204398297,
+        "max": 0.00030065361496522947
+      },
+      "h_optimism_rate_m_s": {
+        "count": 50,
+        "min": 0.0,
+        "p50": 0.0,
+        "p95": 0.00028582435806525475,
+        "p99": 0.0003578163503034741,
+        "max": 0.000364366365670013
+      },
+      "cbf_start_slack_optimism_m_s": {
+        "count": 50,
+        "min": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 1.9584082568229114e-05,
+        "max": 3.8400161898488605e-05
+      },
+      "minimum_realized_start_slack_m_s": 0.005053221560554263,
+      "cbf_optimism_over_frozen_margin_count": 0,
+      "realized_start_violation_count": 0
+    }
+  },
+  "row_records_sha256": "684957f6dcc15f68b786c95e7f12ba72797bee1e58295e42e6382ed5e8b6d72e",
+  "failure_records_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
