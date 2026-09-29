@@ -156,6 +156,9 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "cholesky_full_scene03_recompute": root /
             "cholesky_private_full_scene03_recompute" /
             "private_recompute_summary.json",
+        "cholesky_full_scene03_budget": root /
+            "cholesky_private_full_scene03_budget" /
+            "unified_budget_summary.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -455,6 +458,44 @@ def finalize(root: Path, output_dir: Path) -> dict:
     for name, digest in full_recompute["source_sha256"].items():
         if _source_sha(Path("v6_lite") / name) != digest:
             raise ValueError(f"full-scene recompute source changed: {name}")
+    budget_dir = root / "cholesky_private_full_scene03_budget"
+    budget_audit = json.loads(sources["cholesky_full_scene03_budget"].read_text(
+        encoding="utf-8"))
+    budget_manifest = json.loads((budget_dir /
+        "unified_budget_manifest.json").read_text(encoding="utf-8"))
+    for label, filename in {
+        "summary": "unified_budget_summary.json",
+        "rows": "unified_budget_rows.jsonl",
+        "document": "UNIFIED_BUDGET.md",
+    }.items():
+        if budget_manifest[f"{label}_sha256"] != _sha(budget_dir / filename):
+            raise ValueError(f"full-scene unified budget {label} hash changed")
+    if (budget_audit["scenario_id"] != "v6_lite_scenario_03"
+            or budget_audit["task_ticks"] != 1350
+            or budget_audit["budget_protocol"] != "bounded_cold_shadow_default"
+            or budget_audit["frozen_shadow_budget"]
+            != cold["modes"]["enabled"]["budget"]
+            or budget_audit["budget_overrun_tick_count"] != 0
+            or budget_audit["parity_failure_count"] != 0
+            or budget_audit["query_budget_exhausted_count"] != 0
+            or not budget_audit["within_frozen_shadow_budget_on_saved_states"]
+            or budget_audit["inputs"]["private_summary_sha256"]
+            != _sha(sources["cholesky_full_scene03"])
+            or budget_audit["inputs"]["private_records_sha256"]
+            != full_scene["records_sha256"]
+            or budget_audit["inputs"]["private_trace_sha256"]
+            != full_scene["trace_sha256"]
+            or budget_audit["inputs"]["independent_recompute_sha256"]
+            != _sha(sources["cholesky_full_scene03_recompute"])
+            or budget_audit["action_time_budget_enforced_by_private_controller"]
+            or budget_audit["production_online_controller_changed"]
+            or budget_audit["stage3_admission"]
+            or budget_audit["full_control_time_evaluated"]
+            or budget_audit["continuous_time_certified"]):
+        raise ValueError("full-scene unified budget or scope changed")
+    for name, digest in budget_audit["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"full-scene budget source changed: {name}")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -2151,6 +2192,19 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "状态监控和实时调度。其余四个完整场景、正式生产切换、"
         "原 26/11 项新 trace 验收及故障注入仍未完成；"
         "阶段二接入门禁保持关闭。", "",
+        "同一条私有轨迹再按原冷影子预算独立复算 1,350 个保存规划状态。"
+        "每状态将分支查询点、全部区间中点重算、形状与 MuJoCo Jacobian、"
+        "局部细化及查询装配耗时纳入一张账；查询选择与保存记录逐项一致。"
+        f"点总量最大 {budget_audit['count_statistics']['total_point_evaluation_count']['max']:.0f} "
+        f"（冻结预算 {cold['modes']['enabled']['budget']['total_point_evaluations']}），"
+        f"Jacobian 最大 {budget_audit['count_statistics']['jacobian_evaluation_count']['max']:.0f} "
+        f"（预算 {cold['modes']['enabled']['budget']['jacobian_evaluations']}），"
+        f"查询与区间装配最大 {budget_audit['count_statistics']['query_and_interval_assembly_ms']['max']:.3f} ms；"
+        f"超限周期 {budget_audit['budget_overrun_tick_count']}，"
+        f"对照不一致 {budget_audit['parity_failure_count']}。"
+        "局部细化在该路径没有启用，因此实际计数为 0。"
+        "这属于保存状态的事后预算核对；私有执行器尚未把总预算"
+        "作为动作放行条件，也未测完整控制周期。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"
