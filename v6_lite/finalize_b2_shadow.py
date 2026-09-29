@@ -95,6 +95,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "candidate_ramp_early": root / "candidate_ramp_early" / "candidate_ramp_summary.json",
         "candidate_prediction": root / "candidate_prediction_early" / "candidate_prediction_summary.json",
         "candidate_prediction_failure": root / "candidate_prediction_early_failures" / "attempt1.json",
+        "repeated_qp_probe": root / "repeated_qp_probe_early" / "repeated_probe_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -106,7 +107,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -294,6 +295,44 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or prediction_failure["partial_failure_rows_sha256"]
             != _sha(partial_dir / "candidate_prediction_failures.jsonl")):
         raise ValueError("candidate prediction first-attempt failure changed")
+    if (repeated_qp["input_original_probe_sha256"]
+            != _sha(sources["weighted_qp_probe"])
+            or repeated_qp["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or repeated_qp["new_interval_mode_executed"]
+            or repeated_qp["full_control_cycle_measured"]
+            or repeated_qp["round_count"] != 5
+            or repeated_qp["complete_round_count"] != 5
+            or repeated_qp["probe_ticks"] != [50, 100, 150]
+            or repeated_qp["point_budget"] != 63
+            or repeated_qp["candidate_mismatch_count"] != 0):
+        raise ValueError("repeated read-only QP timing provenance failed")
+    for name, digest in repeated_qp["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"repeated QP probe source changed: {name}")
+    repeated_dir = root / "repeated_qp_probe_early"
+    repeated_outputs = {
+        "summary": "repeated_probe_summary.json",
+        "records": "repeated_probe_records.jsonl",
+        "document": "REPEATED_QP_PROBE.md",
+    }
+    repeated_manifest = json.loads((repeated_dir / "repeated_probe_manifest.json")
+                                   .read_text(encoding="utf-8"))
+    for name, filename in repeated_outputs.items():
+        if repeated_manifest[f"{name}_sha256"] != _sha(repeated_dir / filename):
+            raise ValueError(f"repeated QP probe {name} hash changed")
+    if repeated_qp["records_sha256"] != _sha(repeated_dir / repeated_outputs["records"]):
+        raise ValueError("repeated QP probe records changed")
+    for round_index, item in enumerate(repeated_qp["rounds"], 1):
+        if (item["round"] != round_index or item["status"] != "COMPLETE"
+                or item["candidate_mismatch_count"] != 0
+                or item["record_count"] != 30
+                or item["report_sha256"] != _sha(Path(item["report_path"]))):
+            raise ValueError("repeated QP probe round changed")
+        round_dir = Path(item["report_path"]).parent
+        if (item["document_sha256"] != _sha(round_dir / "WEIGHTED_QP_PROBE.md")
+                or item["manifest_sha256"]
+                != _sha(round_dir / "weighted_qp_probe_manifest.json")):
+            raise ValueError("repeated QP probe round outputs changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -597,6 +636,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         and candidate_prediction["modes"][mode]["realized_start_violation_count"] == 0
         for mode in ("baseline", "enabled")
     )
+    repeated_partial_budget_ready = all(
+        repeated_qp["modes"][mode]["record_count"] == 75
+        and repeated_qp["modes"][mode]["query_plus_qp_probe_ms"]["p95"] <= 20.0
+        for mode in ("baseline", "enabled")
+    )
     full_torque_ready = all(
         full_torque["modes"][mode]["scene_count"] == 5
         and full_torque["modes"][mode]["torque_steps"] == 67500
@@ -608,6 +652,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
               or not probe_ready or not sweep_ready or not micro_ready
               or not candidate_ramp_ready or not candidate_prediction_ready
+              or not repeated_partial_budget_ready
               or not full_torque_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
@@ -895,6 +940,28 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"{probe['summary']['baseline']['state_local_capsule_envelope_check_ms']['p95']:.3f}、"
         f"{probe['summary']['enabled']['state_local_capsule_envelope_check_ms']['p95']:.3f} ms。"
         "所测耗时尾部和后续旧轨迹反例也仍存在。", "",
+        "## 早期只读 QP 的五轮重复计时", "",
+        "在相同两组五场景 tick 50/100/150 冻结状态预先固定五轮，每轮重新原生重放"
+        "旧力矩状态、建立模型并清空 QP 对偶热启动。150 条候选命令及区间选择"
+        "与首次探针逐条一致；逐轮原始记录和哈希保留。", "",
+        "| 模式 | 记录 | 查询加 QP p95 / p99 / 最大 ms | 超 20 ms | 再加当前状态包络 p95 / 最大 ms |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = repeated_qp["modes"][mode]
+        partial = item["query_plus_qp_probe_ms"]
+        envelope = item["probe_plus_envelope_ms"]
+        lines.append(
+            f"| {mode} | {item['record_count']} | "
+            f"{partial['p95']:.3f} / {partial['p99']:.3f} / {partial['max']:.3f} | "
+            f"{partial['over_20ms_count']} | "
+            f"{envelope['p95']:.3f} / {envelope['max']:.3f} |"
+        )
+    lines += [
+        "", "两组的查询加 QP p95 均已超过既有 20 ms 周期。该探针只测部分链路；"
+        "没有计入全部状态采样、监控及 500 Hz 力矩计算和执行，"
+        "包络列也只是同冻结状态计时相加。它不能替代新区间模式真实全链计时，"
+        "超 20 ms 的只读探针记录也不能称为在线漏期。", "",
         "## 五场景初始状态的加权 QP 只读预检", "",
         "另在两组五场景的 tick 0 从根区间以最多 255 点查询，并将所需区间行"
         "送入原单个 17 维加权 QP；候选只经原动作验证，未驱动力矩伺服。"
