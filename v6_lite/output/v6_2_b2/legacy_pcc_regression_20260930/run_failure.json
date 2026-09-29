@@ -1,0 +1,60 @@
+{
+  "run_id": "legacy_pcc_regression_20260930",
+  "status": "FAILED",
+  "reason": "acceptance_gate_failed",
+  "summary": {
+    "aggregate_metrics": {
+      "scenario_count": 5,
+      "rigid_final_error_m_max": 3.191240950398519e-06,
+      "rigid_steady_rmse_m_max": 4.194808618422347e-06,
+      "continuum_irregular_path_rmse_m_max": 0.00015973040885105104,
+      "rigid_orientation_error_deg_max": 0.0420467391798367,
+      "continuum_orientation_error_deg_max": 0.021159998117969484,
+      "base_translation_drift_m_max": 0.008705406263445495,
+      "base_orientation_drift_deg_max": 3.810626230715381,
+      "whole_body_minimum_clearance_m": 0.014995571026546592,
+      "continuum_target_minimum_clearance_m": 0.07918956191204957,
+      "total_qp_failures": 0,
+      "total_binding_clearance_constraints": 1251,
+      "pcc_constraint_active_count": 3727,
+      "pcc_constraint_binding_count": 0,
+      "capsule_constraint_active_count": 519,
+      "capsule_constraint_binding_count": 0,
+      "pcc_avoidance_intervention_max": 0.041648851709361716,
+      "task_full_latency_p95_ms_max": 23.281054827384644,
+      "shape_clearance_latency_p95_ms_max": 4.0530948201194406,
+      "torque_latency_p95_ms_max": 0.37819985300302505
+    },
+    "summary_checks": {
+      "all_scenarios_pass": false,
+      "continuum_initial_position_is_1930_626_0_mm": true,
+      "all_rigid_grasp_metrics_pass": true,
+      "all_continuum_irregular_waypoint_metrics_pass": true,
+      "all_orientation_errors_pass": true,
+      "all_whole_body_clearances_pass": true,
+      "all_continuum_target_clearances_pass": true,
+      "all_runs_are_learning_free": true
+    },
+    "failed_scenarios": [
+      {
+        "scenario_id": "v6_lite_scenario_00",
+        "failed_checks": [
+          "task_controller_runs_within_50hz_p95"
+        ]
+      },
+      {
+        "scenario_id": "v6_lite_scenario_01",
+        "failed_checks": [
+          "task_controller_runs_within_50hz_p95"
+        ]
+      },
+      {
+        "scenario_id": "v6_lite_scenario_04",
+        "failed_checks": [
+          "task_controller_runs_within_50hz_p95"
+        ]
+      }
+    ]
+  },
+  "time_utc": "2026-09-29T17:52:59.082059+00:00"
+}
