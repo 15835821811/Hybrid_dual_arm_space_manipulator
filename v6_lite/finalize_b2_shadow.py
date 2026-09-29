@@ -161,6 +161,10 @@ def finalize(root: Path, output_dir: Path) -> dict:
             "unified_budget_summary.json",
         "full_private_five_gate": root / "full_private_five_gate" /
             "private_five_gate_summary.json",
+        "strict_domain_stop": root / "strict_cholesky_scene01_900" /
+            "private_rollout_summary.json",
+        "strict_domain_replay": root / "strict_domain_replay_scene01_900" /
+            "strict_domain_replay.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -531,6 +535,51 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 (f"v6_lite_scenario_{index:02d}", 63 if index == 1 else 0)
                 for index in range(5)]:
         raise ValueError("full private five domain counterexample changed")
+    strict_stop = json.loads(sources["strict_domain_stop"].read_text(
+        encoding="utf-8"))
+    strict_replay = json.loads(sources["strict_domain_replay"].read_text(
+        encoding="utf-8"))
+    strict_dir = root / "strict_cholesky_scene01_900"
+    strict_manifest = json.loads((strict_dir / "private_rollout_manifest.json")
+                                 .read_text(encoding="utf-8"))
+    if (strict_manifest["summary_sha256"] != _sha(sources["strict_domain_stop"])
+            or strict_manifest["trace_sha256"] != _sha(
+                strict_dir / "private_rollout_trace.npz")
+            or strict_manifest["records_sha256"] != _sha(
+                strict_dir / "private_rollout_records.jsonl")
+            or strict_stop["executed_ticks"] != 887
+            or strict_stop["attempted_ticks"] != 888
+            or strict_stop["first_preflight_domain_rejection_tick"] != 887
+            or strict_stop["stop_reason"]
+            != "RAMP_MICROSTATE_OUTSIDE_DECLARED_WORK_DOMAIN"
+            or not strict_stop["strict_gate_rejected_before_servo"]
+            or strict_stop["failure_record"]["selected_command"] is not None
+            or strict_stop["failure_record"]["next_servo_step_executed"] is not False
+            or strict_replay["executed_ticks"] != 887
+            or strict_replay["native_torque_steps"] != 8870
+            or strict_replay["checked_native_states"] != 8871
+            or strict_replay["native_replay_max_state_error"] > 1e-8
+            or strict_replay["minimum_executed_work_domain_margin_rad"] < 0
+            or strict_replay["first_rejected_candidate_tick"] != 887
+            or strict_replay["first_predicted_outside_servo_substep"] != 4
+            or not strict_replay["rejected_candidate_excluded_from_torque_trace"]
+            or strict_replay["independent_interval_rows_recomputed_here"]
+            or strict_replay["production_online_admitted"]):
+        raise ValueError("strict domain stop or independent replay changed")
+    for name, digest in strict_stop["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"strict domain source changed: {name}")
+    if strict_replay["source_sha256"] != _source_sha(
+            Path("v6_lite/audit_b2_strict_domain_replay.py")):
+        raise ValueError("strict domain replay source changed")
+    for name, digest in strict_replay["inputs_sha256"].items():
+        filename = {"summary": "private_rollout_summary.json",
+                    "manifest": "private_rollout_manifest.json",
+                    "records": "private_rollout_records.jsonl",
+                    "trace": "private_rollout_trace.npz",
+                    "failure": "private_rollout_failure.json"}[name]
+        if _sha(strict_dir / filename) != digest:
+            raise ValueError(f"strict replay input changed: {name}")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -2288,6 +2337,19 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "均不能替代声明域内的包络证据；这些周期在单独失败记录中逐项保存。"
         "因此五场景完整私有试验暴露了明确的在线准入阻断条件，"
         "阶段二总门禁仍为 GATE_NOT_MET。", "",
+        "### 声明工作域越界前的严格私有拒绝", "",
+        "在场景 01 的独立私有复跑中，原候选在 tick 887 的第 4 个 "
+        "2 ms 力矩微步将越出声明工作域；门禁在提交该周期的任何力矩前"
+        "将动作标为 UNCERTIFIED，记录失败原因并拒绝候选。"
+        f"保存轨迹只有 {strict_stop['executed_ticks']} 个已执行任务周期、"
+        f"{strict_replay['native_torque_steps']} 个力矩步。单独进程原生重放"
+        f" {strict_replay['checked_native_states']} 个状态，最大误差 "
+        f"{strict_replay['native_replay_max_state_error']:.3e}；执行状态距工作域"
+        f"边界最小 {strict_replay['minimum_executed_work_domain_margin_rad']:.6g} rad。"
+        "已执行力矩和 qpos 与先前完整诊断前缀逐值一致。"
+        "这证明了私有试验中拒绝发生在下一伺服步前；该轨迹提前停止，"
+        "仍不能替代五场景完整新模式验收。十步预测本身尚未计入"
+        "预检＋QP 时延，也没有真实在线截止期限证据。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"

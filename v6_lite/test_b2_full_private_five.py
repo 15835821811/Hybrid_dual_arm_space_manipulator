@@ -23,6 +23,44 @@ def _read(path: Path) -> dict:
 
 
 class FullPrivateFiveGateTests(unittest.TestCase):
+    def test_strict_domain_gate_rejects_before_next_torque_step(self) -> None:
+        strict_dir = ROOT / "strict_cholesky_scene01_900"
+        replay_dir = ROOT / "strict_domain_replay_scene01_900"
+        summary = _read(strict_dir / "private_rollout_summary.json")
+        manifest = _read(strict_dir / "private_rollout_manifest.json")
+        replay = _read(replay_dir / "strict_domain_replay.json")
+        trace_path = strict_dir / "private_rollout_trace.npz"
+        records_path = strict_dir / "private_rollout_records.jsonl"
+        self.assertEqual(manifest["summary_sha256"],
+                         _sha(strict_dir / "private_rollout_summary.json"))
+        self.assertEqual(manifest["records_sha256"], _sha(records_path))
+        self.assertEqual(manifest["trace_sha256"], _sha(trace_path))
+        self.assertEqual(summary["attempted_ticks"], 888)
+        self.assertEqual(summary["executed_ticks"], 887)
+        self.assertEqual(summary["first_preflight_domain_rejection_tick"], 887)
+        self.assertTrue(summary["strict_gate_rejected_before_servo"])
+        rejected = summary["failure_record"]
+        self.assertEqual(rejected["action_mode"], "UNCERTIFIED")
+        self.assertEqual(rejected["failure_reason"],
+                         "ramp_work_domain_unsupported")
+        self.assertIsNone(rejected["selected_command"])
+        self.assertFalse(rejected["next_servo_step_executed"])
+        self.assertEqual(rejected["ramp_domain_failures"][0]["servo_substep"], 4)
+        self.assertEqual(len(rejected["rejected_candidate_command"]), 17)
+        with np.load(trace_path, allow_pickle=False) as trace:
+            self.assertEqual(trace["torque"].shape, (8870, 67))
+            self.assertEqual(len(trace["qpos_states"]), 8871)
+            with np.load(ROOT / "cholesky_private_full_scene01_1350" /
+                         "private_rollout_trace.npz", allow_pickle=False) as old:
+                np.testing.assert_array_equal(trace["torque"],
+                                              old["torque"][:8870])
+                np.testing.assert_array_equal(trace["qpos_states"],
+                                              old["qpos_states"][:8871])
+        self.assertEqual(replay["native_replay_max_state_error"], 0.0)
+        self.assertGreater(replay["minimum_executed_work_domain_margin_rad"], 0)
+        self.assertTrue(replay["rejected_candidate_excluded_from_torque_trace"])
+        self.assertFalse(replay["production_online_admitted"])
+
     def test_domain_counterexample_is_bound_to_all_five_raw_traces(self) -> None:
         summary = _read(GATE / "private_five_gate_summary.json")
         manifest = _read(GATE / "private_five_gate_manifest.json")
