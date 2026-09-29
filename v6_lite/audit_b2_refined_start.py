@@ -22,7 +22,7 @@ from model_test.whole_body_verifier_v5 import (
     WholeBodyCollisionVerifier, WholeBodyVerificationConfig,
 )
 from v6_lite.b2_shadow_feasibility import (
-    combined_rows, solve_frozen_linear_feasibility, velocity_box,
+    combined_rows, ramp_velocity_abs_bound, solve_frozen_linear_feasibility,
 )
 from v6_lite.continuum_shape_model import transform_from_free_qpos
 from v6_lite.hierarchical_qp import HierarchicalQPConfig
@@ -180,20 +180,21 @@ def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
                                     f"qpos_error={float(np.max(np.abs(data.qpos - task_qpos[tick])))}"
                                 )
                             generalized_map = evaluator.reaction_map(data)
+                            old_velocity = np.zeros(17) if tick == 0 else selected[tick - 1]
+                            planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
+                            velocity_lower, velocity_upper, ramp_speed, box_valid = (
+                                ramp_velocity_abs_bound(robot, cfg, planner_q, old_velocity)
+                            )
                             selected_ids, reach = select_intervals_by_frozen_reach(
                                 decision.lower_by_interval_id, decision.partition,
                                 evaluator, data, cfg, generalized_map,
+                                velocity_abs_bound=ramp_speed,
                             )
                             batch = evaluator.evaluate_state(
                                 data, decision.partition, generalized_map=generalized_map,
                                 derivative_interval_ids=selected_ids,
                             )
                             interval_time_ms = (time.perf_counter() - started) * 1000.0
-                            old_velocity = np.zeros(17) if tick == 0 else selected[tick - 1]
-                            planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
-                            velocity_lower, velocity_upper = velocity_box(
-                                robot, cfg, planner_q, old_velocity,
-                            )
                             original = original_builder.build(data)
                             matrix, row_lower, drifts, gains, sources = combined_rows(
                                 original, batch, selected_ids, cfg,
@@ -213,6 +214,7 @@ def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
                                 "point_evaluations": point_total,
                                 "jacobian_evaluations": jac_total,
                                 "selected_interval_count": len(selected_ids),
+                                "candidate_velocity_box_valid": box_valid,
                                 "partition_leaf_count": len(decision.partition.leaves),
                                 "frozen_reach_max_m": max(reach.values()),
                                 "interval_query_and_assembly_ms": interval_time_ms,

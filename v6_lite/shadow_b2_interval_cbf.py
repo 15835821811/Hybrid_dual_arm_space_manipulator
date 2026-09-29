@@ -18,7 +18,7 @@ from model_test.whole_body_verifier_v5 import (
     WholeBodyCollisionVerifier, WholeBodyVerificationConfig,
 )
 from v6_lite.b2_shadow_feasibility import (
-    combined_rows, solve_frozen_linear_feasibility, velocity_box,
+    combined_rows, ramp_velocity_abs_bound, solve_frozen_linear_feasibility,
 )
 from v6_lite.continuum_shape_model import transform_from_free_qpos
 from v6_lite.execution_ramp import ramp_mean_weights
@@ -106,18 +106,25 @@ def select_intervals_by_frozen_reach(
     data: mujoco.MjData,
     cfg: HierarchicalQPConfig,
     generalized_map: np.ndarray,
+    *, velocity_abs_bound: np.ndarray | None = None,
 ) -> tuple[set[str], dict[str, float]]:
     """Conservative frozen-model screen, never a fixed top-k truncation.
 
     The shape term bounds the angular perturbation's integrated effect on a
     downstream material point. The base term bounds G's free-joint twist for
-    every planner rate inside its declared speed box. Target twist is held at
-    the measured value. This is a *one-cycle frozen-model screen*, not a
+    every planner rate inside its supplied absolute bound (or the global
+    speed box by default). Target twist is held at the measured value.
+    This is a *one-cycle frozen-model screen*, not a
     continuous-time or uncertain-dynamics certificate.
     """
     spec = evaluator.shape_spec
     lengths = spec.segment_lengths_m
-    speeds = cfg.velocity_limit_scale * evaluator.spec.planner_velocity_limits
+    speeds = (cfg.velocity_limit_scale * evaluator.spec.planner_velocity_limits
+              if velocity_abs_bound is None
+              else np.asarray(velocity_abs_bound, dtype=np.float64))
+    if (speeds.shape != (17,) or not np.all(np.isfinite(speeds))
+            or np.any(speeds < 0.0)):
+        raise ValueError("frozen reach needs finite nonnegative 17-D rate bounds")
     base_map = generalized_map[evaluator.base_dof_slice, :]
     radius_from_base = (float(np.linalg.norm(spec.base_to_shape_start[:3, 3]))
                         + spec.total_length_m)
@@ -188,6 +195,7 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
         "interval_assembly_time_ms", "point_evaluations",
         "jacobian_evaluations", "partition_size", "subspace_residual_linf_rad",
         "selected_interval_count", "excluded_interval_count", "frozen_reach_m",
+        "global_speed_selected_interval_count", "ramp_box_selection_delta",
         "historical_full_control_ms", "historical_shape_query_ms",
         "historical_qp_ms", "paired_replacement_estimate_ms",
         "next_h_prediction_abs_error_m", "next_start_residual_abs_error_m_s",
@@ -365,9 +373,19 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
                         lower_source = result
                         query_point_count = result.evaluation_count
                         local_count = result.local_refinement_evaluation_count
+                    previous = np.zeros(17) if tick == 0 else selected[tick - 1]
+                    planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
+                    velocity_lower, velocity_upper, ramp_speed, box_valid = (
+                        ramp_velocity_abs_bound(robot, cfg, planner_q, previous)
+                    )
+                    counts["empty_candidate_velocity_box"] += int(not box_valid)
                     generalized_map = evaluator.reaction_map(data)
+                    global_selected_ids, _ = select_intervals_by_frozen_reach(
+                        lower_source, partition, evaluator, data, cfg, generalized_map,
+                    )
                     selected_ids, reach_by_id = select_intervals_by_frozen_reach(
                         lower_source, partition, evaluator, data, cfg, generalized_map,
+                        velocity_abs_bound=ramp_speed,
                     )
                     batch = evaluator.evaluate_state(
                         data, partition, generalized_map=generalized_map,
@@ -405,6 +423,18 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
                     aggregates["jacobian_evaluations"].append(batch.jacobian_evaluation_count)
                     aggregates["partition_size"].append(len(partition.leaves))
                     aggregates["selected_interval_count"].append(len(selected_ids))
+                    aggregates["global_speed_selected_interval_count"].append(
+                        len(global_selected_ids)
+                    )
+                    aggregates["ramp_box_selection_delta"].append(
+                        len(selected_ids) - len(global_selected_ids)
+                    )
+                    counts["ramp_box_newly_selected"] += len(
+                        selected_ids - global_selected_ids
+                    )
+                    counts["ramp_box_newly_excluded"] += len(
+                        global_selected_ids - selected_ids
+                    )
                     aggregates["excluded_interval_count"].append(
                         len(partition.leaves) - len(selected_ids)
                     )
@@ -458,11 +488,6 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
                     original_rows = feasibility_builder.build(data)
                     aggregates["frozen_original_assembly_ms"].append(
                         (time.perf_counter() - feasibility_started) * 1000.0
-                    )
-                    previous = np.zeros(17) if tick == 0 else selected[tick - 1]
-                    planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
-                    velocity_lower, velocity_upper = velocity_box(
-                        robot, cfg, planner_q, previous,
                     )
                     try:
                         matrix, row_lower, drifts, gains, sources = combined_rows(
@@ -614,6 +639,9 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
             "no_required_derivative_unsupported": all(
                 x["counts"].get("derivative_unsupported", 0) == 0
                 for x in report["modes"].values()),
+            "no_empty_candidate_velocity_box": all(
+                x["counts"].get("empty_candidate_velocity_box", 0) == 0
+                for x in report["modes"].values()),
             "no_frozen_action_infeasibility": all(
                 x["counts"].get("frozen_executable_false", 0) == 0
                 for x in report["modes"].values()),
@@ -689,6 +717,10 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
         "区间拓扑在采样 tick 到下一 tick 的预测检查中冻结。实际形状子空间残差"
         "与几何包络状态分开报告。旧 trace 的起点违反新区间行，不能用一个新终点"
         "的线性可行性消除；本审计不能证明全域或连续时间安全。", "",
+        "区间激活筛选使用当前速度、加速度与关节限位形成的候选盒，并把十步斜坡"
+        "起点速度纳入逐轴绝对上界；若候选盒为空，则退回全局速度上界加起点速度，"
+        "同时记录空盒并使在线门禁失败。此筛选仍冻结基座反作用映射、目标漂移"
+        "和几何灵敏度，不构成跨周期或连续时间安全证明。", "",
     ]
     doc_path = output_dir / "SHADOW_AUDIT.md"
     with doc_path.open("x", encoding="utf-8", newline="\n") as stream:

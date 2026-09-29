@@ -10,9 +10,10 @@ from pathlib import Path
 import mujoco
 import numpy as np
 
+from v6_lite.b2_shadow_feasibility import ramp_velocity_abs_bound
 from v6_lite.hierarchical_qp import HierarchicalQPConfig
 from v6_lite.pcc_bounded_clearance import PCCBoundedClearanceEvaluator
-from v6_lite.pcc_interval_cbf import FixedIntervalCBFEvaluator
+from v6_lite.pcc_interval_cbf import FixedIntervalCBFEvaluator, IntervalPartition
 from v6_lite.run_v6_lite import default_v6_lite_robot_spec
 from v6_lite.shadow_b2_interval_cbf import (
     partition_from_bounded_result, select_intervals_by_frozen_reach,
@@ -41,9 +42,26 @@ class B2ShadowTests(unittest.TestCase):
         self.assertTrue(partition.coverage(evaluator.shape_spec.segment_lengths_m).coverage_complete)
         self.assertEqual(len(partition.leaves), result.interval_count)
         generalized_map = evaluator.reaction_map(data)
+        cfg = HierarchicalQPConfig()
         selected, reach = select_intervals_by_frozen_reach(
-            result, partition, evaluator, data, HierarchicalQPConfig(), generalized_map,
+            result, partition, evaluator, data, cfg, generalized_map,
         )
+        planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
+        lower, upper, ramp_speed, box_valid = ramp_velocity_abs_bound(
+            robot, cfg, planner_q, np.zeros(17),
+        )
+        self.assertTrue(box_valid)
+        self.assertTrue(np.all(lower <= upper))
+        self.assertTrue(np.all(ramp_speed <= cfg.velocity_limit_scale
+                               * robot.planner_velocity_limits + 1e-12))
+        tight_selected, tight_reach = select_intervals_by_frozen_reach(
+            result, partition, evaluator, data, cfg, generalized_map,
+            velocity_abs_bound=ramp_speed,
+        )
+        self.assertLessEqual(len(tight_selected), len(selected))
+        self.assertTrue(tight_selected <= selected)
+        self.assertTrue(all(tight_reach[key] <= reach[key] + 1e-12
+                            for key in reach))
         self.assertEqual(set(reach), {x.interval_id for x in partition.leaves})
         batch = evaluator.evaluate_state(
             data, partition, generalized_map=generalized_map,
@@ -56,6 +74,45 @@ class B2ShadowTests(unittest.TestCase):
             if row.interval_id not in selected:
                 self.assertGreater(row.distance_lower_bound_m,
                                    0.100 + reach[row.interval_id] - 1e-8)
+            if row.distance_lower_bound_m <= cfg.pcc_clearance_activation_m:
+                self.assertIn(row.interval_id, tight_selected)
+            if row.interval_id not in tight_selected:
+                self.assertGreater(row.distance_lower_bound_m,
+                                   cfg.pcc_clearance_activation_m
+                                   + tight_reach[row.interval_id] - 1e-8)
+
+    def test_ramp_rate_bound_covers_start_and_every_box_endpoint(self) -> None:
+        robot = default_v6_lite_robot_spec()
+        cfg = HierarchicalQPConfig()
+        q = 0.5 * (robot.planner_lower + robot.planner_upper)
+        start = 0.2 * cfg.velocity_limit_scale * robot.planner_velocity_limits
+        lower, upper, bound, valid = ramp_velocity_abs_bound(
+            robot, cfg, q, start,
+        )
+        self.assertTrue(valid)
+        self.assertTrue(np.all(bound >= np.abs(start)))
+        self.assertTrue(np.all(bound >= np.abs(lower)))
+        self.assertTrue(np.all(bound >= np.abs(upper)))
+        for weight in np.linspace(0.0, 1.0, 11):
+            for endpoint in (lower, upper):
+                self.assertTrue(np.all(np.abs((1.0 - weight) * start
+                                               + weight * endpoint) <= bound + 1e-12))
+        empty_lower, empty_upper, fallback, empty_valid = ramp_velocity_abs_bound(
+            robot, cfg, robot.planner_upper + 10.0, start,
+        )
+        self.assertFalse(empty_valid)
+        self.assertTrue(np.any(empty_lower > empty_upper))
+        self.assertTrue(np.all(fallback >= cfg.velocity_limit_scale
+                               * robot.planner_velocity_limits))
+        self.assertTrue(np.all(fallback >= np.abs(start)))
+        model = robot.compile_dynamic_model()
+        with self.assertRaises(ValueError):
+            select_intervals_by_frozen_reach(
+                {}, IntervalPartition.uniform(),
+                FixedIntervalCBFEvaluator(robot, model),
+                mujoco.MjData(model), cfg,
+                np.zeros((6, 17)), velocity_abs_bound=np.full(17, np.nan),
+            )
 
     def test_formal_holdout_artifacts_have_real_comparisons(self) -> None:
         base = Path(__file__).parent / "output" / "v6_2_b2"

@@ -4,9 +4,9 @@
     "v6_lite/pcc_interval_cbf.py": "59ddf2e84da307be814ee9b829c0c80c50c855538a059cd7d68392ab296dade7",
     "v6_lite/continuum_shape_model.py": "7fb58b84cc092d446508e37786ad9220ff91aacc145b9e80d7f1d904bbe0adf3",
     "v6_lite/pcc_persistent_interval_query.py": "f649d9627eec1bd10205dcf72c2dbea2d0ca2877a1c8a68f06d5008da11df649",
-    "v6_lite/b2_shadow_feasibility.py": "8b05170a08a46593f0c712fe4f41693bd044bba49e0677d31b067f132055e931",
+    "v6_lite/b2_shadow_feasibility.py": "2f1a9d526af06c14ae5f6c2e37f9b823f7a0552c6bb41b629d4c3eee642efee1",
     "v6_lite/recompute_execution_constraints.py": "8c5c6d9490ce090bc45af9831d530b3b7ba0eeacbb87d715d79819a53521b4c8",
-    "v6_lite/shadow_b2_interval_cbf.py": "4aaa101074431c3c359fcedc055f04eba28ba1f045ce68ace595574aea304085"
+    "v6_lite/shadow_b2_interval_cbf.py": "85c59bb62efe9ccbf13449dc8b22163b79b25a33e104200642717998c23654de"
   },
   "sample_plan": "all five scenarios in each A.1 mode; task ticks 0, stride, ...; evaluate next tick on frozen partition",
   "query_mode": "bounded_cold",
@@ -62,7 +62,10 @@
       ],
       "sample_count": 135,
       "counts": {
+        "empty_candidate_velocity_box": 0,
         "paired_replacement_estimate_over_20ms": 8,
+        "ramp_box_newly_selected": 0,
+        "ramp_box_newly_excluded": 185,
         "PROXY_CLEARANCE_AT_LEAST_GATE": 76,
         "budget_exhausted": 135,
         "unified_budget_exceeded": 0,
@@ -92,27 +95,27 @@
         },
         "query_time_ms": {
           "count": 135,
-          "min": 7.009199820458889,
-          "p50": 9.216300211846828,
-          "p95": 9.905199892818928,
-          "p99": 10.206999890506268,
-          "max": 10.59289975091815
+          "min": 6.981200072914362,
+          "p50": 9.401400107890368,
+          "p95": 10.29110997915268,
+          "p99": 10.695359874516726,
+          "max": 11.46680023521185
         },
         "branch_query_time_ms": {
           "count": 135,
-          "min": 4.5135002583265305,
-          "p50": 5.125099793076515,
-          "p95": 5.7310800999403,
-          "p99": 6.002559922635555,
-          "max": 6.159299984574318
+          "min": 4.666599910706282,
+          "p50": 5.154799669981003,
+          "p95": 5.7290497701615095,
+          "p99": 6.060089813545346,
+          "max": 7.080699782818556
         },
         "interval_assembly_time_ms": {
           "count": 135,
-          "min": 1.0900003835558891,
-          "p50": 3.11510032042861,
-          "p95": 3.413540171459317,
-          "p99": 3.612354034557938,
-          "max": 4.654500167816877
+          "min": 1.0821996256709099,
+          "p50": 3.071499988436699,
+          "p95": 3.399700252339244,
+          "p99": 3.8406600337475534,
+          "max": 4.045799840241671
         },
         "point_evaluations": {
           "count": 135,
@@ -125,7 +128,7 @@
         "jacobian_evaluations": {
           "count": 135,
           "min": 0.0,
-          "p50": 48.0,
+          "p50": 45.0,
           "p95": 51.0,
           "p99": 51.0,
           "max": 51.0
@@ -149,7 +152,7 @@
         "selected_interval_count": {
           "count": 135,
           "min": 0.0,
-          "p50": 16.0,
+          "p50": 15.0,
           "p95": 17.0,
           "p99": 17.0,
           "max": 17.0
@@ -157,18 +160,34 @@
         "excluded_interval_count": {
           "count": 135,
           "min": 1.0,
-          "p50": 2.0,
+          "p50": 3.0,
           "p95": 18.0,
           "p99": 18.0,
           "max": 18.0
         },
         "frozen_reach_m": {
           "count": 2430,
-          "min": 0.012446750632093944,
-          "p50": 0.03458688261714864,
-          "p95": 0.07980581842819891,
-          "p99": 0.08037295737819539,
-          "max": 0.08819482739496788
+          "min": 0.0013663111061129963,
+          "p50": 0.004798929222362323,
+          "p95": 0.010884323917511339,
+          "p99": 0.015625671477912186,
+          "max": 0.024389792766165274
+        },
+        "global_speed_selected_interval_count": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 16.0,
+          "p95": 17.0,
+          "p99": 17.0,
+          "max": 17.0
+        },
+        "ramp_box_selection_delta": {
+          "count": 135,
+          "min": -15.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
         },
         "historical_full_control_ms": {
           "count": 135,
@@ -196,26 +215,26 @@
         },
         "paired_replacement_estimate_ms": {
           "count": 135,
-          "min": 12.549999170005322,
-          "p50": 14.417499769479036,
-          "p95": 20.10567975230515,
-          "p99": 23.324806131422516,
-          "max": 32.92000014334917
+          "min": 11.70299993827939,
+          "p50": 14.69849981367588,
+          "p95": 20.276219584047794,
+          "p99": 23.90107217244804,
+          "max": 33.24180003255606
         },
         "next_h_prediction_abs_error_m": {
-          "count": 1968,
+          "count": 1783,
           "min": 8.012749005970043e-10,
-          "p50": 7.733388462435181e-07,
-          "p95": 4.2066493776284065e-06,
-          "p99": 1.3110324413615954e-05,
+          "p50": 7.709275696016205e-07,
+          "p95": 4.058361476257098e-06,
+          "p99": 1.4183260839527038e-05,
           "max": 3.9851318147779424e-05
         },
         "next_start_residual_abs_error_m_s": {
-          "count": 1968,
+          "count": 1783,
           "min": 1.8931383960474335e-09,
-          "p50": 1.744121926181702e-05,
-          "p95": 0.0003460077498345259,
-          "p99": 0.001533106624217144,
+          "p50": 1.7128507001085147e-05,
+          "p95": 0.00038052607412686785,
+          "p99": 0.0016065731440319314,
           "max": 0.004234459210137764
         },
         "warm_all_task_query_ms": {
@@ -226,24 +245,24 @@
         },
         "frozen_original_assembly_ms": {
           "count": 135,
-          "min": 4.672499839216471,
-          "p50": 5.0717000849545,
-          "p95": 5.431569926440716,
-          "p99": 5.561146084219217,
-          "max": 5.637700203806162
+          "min": 4.5242998749017715,
+          "p50": 5.053599830716848,
+          "p95": 5.463569890707731,
+          "p99": 6.293640071526167,
+          "max": 6.697800010442734
         },
         "frozen_lp_ms": {
           "count": 135,
-          "min": 0.3494000993669033,
-          "p50": 0.5454998463392258,
-          "p95": 0.6270698737353086,
-          "p99": 0.7547979336231944,
-          "max": 1.1511999182403088
+          "min": 0.3520003519952297,
+          "p50": 0.5219001322984695,
+          "p95": 0.6185397040098906,
+          "p99": 0.7475981488823887,
+          "max": 1.3800999149680138
         },
         "frozen_row_count": {
           "count": 135,
           "min": 33.0,
-          "p50": 53.0,
+          "p50": 52.0,
           "p95": 74.3,
           "p99": 75.66,
           "max": 77.0
@@ -258,7 +277,7 @@
           "minimum_h_m": -0.006153615796219713,
           "actual_mujoco_distance_m": 0.08305973170003438,
           "subspace_residual_linf_rad": 1.2244837678532239e-08,
-          "query_time_ms": 9.175499901175499,
+          "query_time_ms": 9.13760019466281,
           "point_evaluations": 49,
           "jacobian_evaluations": 45,
           "selected_interval_count": 15,
@@ -272,10 +291,10 @@
           "minimum_h_m": -0.007273149760421628,
           "actual_mujoco_distance_m": 0.0905361290477448,
           "subspace_residual_linf_rad": 9.670975784081826e-09,
-          "query_time_ms": 9.516000282019377,
+          "query_time_ms": 9.335699956864119,
           "point_evaluations": 49,
-          "jacobian_evaluations": 48,
-          "selected_interval_count": 16,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
           "unsupported_interval_ids": []
         },
         {
@@ -286,10 +305,10 @@
           "minimum_h_m": -0.008566800494675297,
           "actual_mujoco_distance_m": 0.07975178594825491,
           "subspace_residual_linf_rad": 2.4512353842889856e-08,
-          "query_time_ms": 8.853800129145384,
+          "query_time_ms": 9.17560001835227,
           "point_evaluations": 49,
-          "jacobian_evaluations": 45,
-          "selected_interval_count": 15,
+          "jacobian_evaluations": 42,
+          "selected_interval_count": 14,
           "unsupported_interval_ids": []
         },
         {
@@ -300,7 +319,7 @@
           "minimum_h_m": -0.002594857097113833,
           "actual_mujoco_distance_m": 0.08167527012442743,
           "subspace_residual_linf_rad": 1.006042758822101e-08,
-          "query_time_ms": 9.569500107318163,
+          "query_time_ms": 9.889899753034115,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -314,10 +333,10 @@
           "minimum_h_m": -0.0070840085129693885,
           "actual_mujoco_distance_m": 0.08047746447707144,
           "subspace_residual_linf_rad": 8.722919830894682e-09,
-          "query_time_ms": 8.983800187706947,
+          "query_time_ms": 9.184000082314014,
           "point_evaluations": 49,
-          "jacobian_evaluations": 45,
-          "selected_interval_count": 15,
+          "jacobian_evaluations": 42,
+          "selected_interval_count": 14,
           "unsupported_interval_ids": []
         },
         {
@@ -328,7 +347,7 @@
           "minimum_h_m": -0.004436915952655048,
           "actual_mujoco_distance_m": 0.09410123364904614,
           "subspace_residual_linf_rad": 1.769626464982743e-08,
-          "query_time_ms": 9.823100175708532,
+          "query_time_ms": 10.223499964922667,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -342,10 +361,10 @@
           "minimum_h_m": -0.0022879062017751545,
           "actual_mujoco_distance_m": 0.0916018503325485,
           "subspace_residual_linf_rad": 6.1206396409496655e-09,
-          "query_time_ms": 9.340799879282713,
+          "query_time_ms": 9.789899922907352,
           "point_evaluations": 49,
-          "jacobian_evaluations": 51,
-          "selected_interval_count": 17,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
           "unsupported_interval_ids": []
         },
         {
@@ -356,10 +375,10 @@
           "minimum_h_m": -0.004374544384428674,
           "actual_mujoco_distance_m": 0.08640171835143443,
           "subspace_residual_linf_rad": 1.3580452346007021e-08,
-          "query_time_ms": 9.372199885547161,
+          "query_time_ms": 9.619600139558315,
           "point_evaluations": 49,
-          "jacobian_evaluations": 51,
-          "selected_interval_count": 17,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
           "unsupported_interval_ids": []
         },
         {
@@ -370,10 +389,10 @@
           "minimum_h_m": -0.011706941036817613,
           "actual_mujoco_distance_m": 0.07883015757792018,
           "subspace_residual_linf_rad": 9.56268259022508e-11,
-          "query_time_ms": 9.186800103634596,
+          "query_time_ms": 9.325200226157904,
           "point_evaluations": 49,
-          "jacobian_evaluations": 51,
-          "selected_interval_count": 17,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
           "unsupported_interval_ids": []
         }
       ],
@@ -402,7 +421,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 1.1511999182403088
+            "lp_time_ms": 1.3800999149680138
           }
         },
         {
@@ -428,7 +447,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_00",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5671000108122826
+            "lp_time_ms": 0.5469000898301601
           }
         },
         {
@@ -452,9 +471,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.05784219970792145,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0071:v5_workspace_sphere_000_rigid_path_00",
-            "row_count": 49,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.6014001555740833
+            "row_count": 38,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5716998130083084
           }
         },
         {
@@ -478,9 +497,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.02320269720813964,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 14,
-            "lp_time_ms": 0.6487001664936543
+            "row_count": 51,
+            "interval_row_count": 13,
+            "lp_time_ms": 0.5748998373746872
           }
         },
         {
@@ -506,7 +525,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5447999574244022
+            "lp_time_ms": 0.5807001143693924
           }
         },
         {
@@ -532,7 +551,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5576000548899174
+            "lp_time_ms": 0.5480996333062649
           }
         },
         {
@@ -556,9 +575,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.029146080461090948,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:0110",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.578099861741066
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5518002435564995
           }
         },
         {
@@ -584,7 +603,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 64,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39690034464001656
+            "lp_time_ms": 0.40449993684887886
           }
         },
         {
@@ -608,9 +627,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0111",
-            "row_count": 66,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.40460005402565
+            "row_count": 65,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.47289999201893806
           }
         },
         {
@@ -634,9 +653,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:3:0",
-            "row_count": 69,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.4007001407444477
+            "row_count": 68,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.44710002839565277
           }
         },
         {
@@ -662,7 +681,7 @@
             "worst_start_source": "pcc_interval:3:00",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4064999520778656
+            "lp_time_ms": 0.4179002717137337
           }
         },
         {
@@ -688,7 +707,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4016999155282974
+            "lp_time_ms": 0.4233000800013542
           }
         },
         {
@@ -714,7 +733,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.38639968261122704
+            "lp_time_ms": 0.39590010419487953
           }
         },
         {
@@ -740,7 +759,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4072999581694603
+            "lp_time_ms": 0.4181000404059887
           }
         },
         {
@@ -766,7 +785,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3875000402331352
+            "lp_time_ms": 0.40900008752942085
           }
         },
         {
@@ -792,7 +811,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 71,
             "interval_row_count": 17,
-            "lp_time_ms": 0.39139995351433754
+            "lp_time_ms": 0.41450001299381256
           }
         },
         {
@@ -818,7 +837,7 @@
             "worst_start_source": "pcc_interval:3:1010",
             "row_count": 65,
             "interval_row_count": 17,
-            "lp_time_ms": 0.38009975105524063
+            "lp_time_ms": 0.37739984691143036
           }
         },
         {
@@ -844,7 +863,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.566200353205204
+            "lp_time_ms": 0.5740998312830925
           }
         },
         {
@@ -868,9 +887,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10347862457782404,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.557000283151865
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5564000457525253
           }
         },
         {
@@ -896,7 +915,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.561899971216917
+            "lp_time_ms": 0.5497001111507416
           }
         },
         {
@@ -922,7 +941,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5829003639519215
+            "lp_time_ms": 0.5756998434662819
           }
         },
         {
@@ -946,9 +965,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.1020499038938916,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.547800213098526
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.561899971216917
           }
         },
         {
@@ -972,9 +991,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10166123399849736,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.682000070810318
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5534999072551727
           }
         },
         {
@@ -998,9 +1017,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10093377907620796,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5521001294255257
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5442001856863499
           }
         },
         {
@@ -1026,7 +1045,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.588499940931797
+            "lp_time_ms": 0.5580000579357147
           }
         },
         {
@@ -1052,7 +1071,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5474998615682125
+            "lp_time_ms": 0.5455999635159969
           }
         },
         {
@@ -1078,7 +1097,7 @@
             "worst_start_source": "pcc_interval:2:001",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6130998954176903
+            "lp_time_ms": 0.5681999027729034
           }
         },
         {
@@ -1104,7 +1123,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4922999069094658
+            "lp_time_ms": 0.4866998642683029
           }
         },
         {
@@ -1130,7 +1149,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_01",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5095000378787518
+            "lp_time_ms": 0.5270997062325478
           }
         },
         {
@@ -1154,9 +1173,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.060704412674091046,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_01",
-            "row_count": 49,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.5672997795045376
+            "row_count": 38,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5067000165581703
           }
         },
         {
@@ -1180,9 +1199,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.08097198812367776,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 14,
-            "lp_time_ms": 0.6066001951694489
+            "row_count": 51,
+            "interval_row_count": 13,
+            "lp_time_ms": 0.5832999013364315
           }
         },
         {
@@ -1208,7 +1227,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5816998891532421
+            "lp_time_ms": 0.6176996976137161
           }
         },
         {
@@ -1234,7 +1253,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5454998463392258
+            "lp_time_ms": 0.5801999941468239
           }
         },
         {
@@ -1260,7 +1279,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5541997961699963
+            "lp_time_ms": 0.5428995937108994
           }
         },
         {
@@ -1284,9 +1303,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09812551450292602,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:0101",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5597001872956753
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5610999651253223
           }
         },
         {
@@ -1310,9 +1329,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.04807187084618906,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:0101",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5601001903414726
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5617998540401459
           }
         },
         {
@@ -1338,7 +1357,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.40460005402565
+            "lp_time_ms": 0.3765001893043518
           }
         },
         {
@@ -1364,7 +1383,7 @@
             "worst_start_source": "pcc_interval:2:1000",
             "row_count": 62,
             "interval_row_count": 16,
-            "lp_time_ms": 0.38870004937052727
+            "lp_time_ms": 0.3904001787304878
           }
         },
         {
@@ -1388,9 +1407,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:00",
-            "row_count": 68,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.40380004793405533
+            "row_count": 67,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.4106997512280941
           }
         },
         {
@@ -1414,9 +1433,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:111",
-            "row_count": 71,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.41270023211836815
+            "row_count": 70,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.42380020022392273
           }
         },
         {
@@ -1440,9 +1459,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:111",
-            "row_count": 73,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.40609994903206825
+            "row_count": 72,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.41639991104602814
           }
         },
         {
@@ -1468,7 +1487,7 @@
             "worst_start_source": "pcc_interval:2:011",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.40950020775198936
+            "lp_time_ms": 0.5004997365176678
           }
         },
         {
@@ -1494,7 +1513,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 76,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4118001088500023
+            "lp_time_ms": 0.435899943113327
           }
         },
         {
@@ -1520,7 +1539,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3909999504685402
+            "lp_time_ms": 0.3955001011490822
           }
         },
         {
@@ -1546,7 +1565,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4189000464975834
+            "lp_time_ms": 0.4053995944559574
           }
         },
         {
@@ -1572,7 +1591,7 @@
             "worst_start_source": "pcc_interval:3:010",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3627999685704708
+            "lp_time_ms": 0.37170015275478363
           }
         },
         {
@@ -1598,7 +1617,7 @@
             "worst_start_source": "pcc_interval:3:010",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3494000993669033
+            "lp_time_ms": 0.3520003519952297
           }
         },
         {
@@ -1622,9 +1641,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:3:000",
-            "row_count": 53,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.4138997755944729
+            "row_count": 52,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.3744000568985939
           }
         },
         {
@@ -1648,9 +1667,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.1026390262800482,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 53,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.55720005184412
+            "row_count": 52,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5634999834001064
           }
         },
         {
@@ -1674,9 +1693,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10240291706757894,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:010",
-            "row_count": 53,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5657998844981194
+            "row_count": 52,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5731000564992428
           }
         },
         {
@@ -1702,7 +1721,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5648001097142696
+            "lp_time_ms": 0.5433997139334679
           }
         },
         {
@@ -1726,9 +1745,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10087614888638037,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5993000231683254
+            "row_count": 50,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.574400182813406
           }
         },
         {
@@ -1754,7 +1773,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 50,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5441997200250626
+            "lp_time_ms": 0.5441000685095787
           }
         },
         {
@@ -1780,7 +1799,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 50,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5383002571761608
+            "lp_time_ms": 0.5705999210476875
           }
         },
         {
@@ -1806,7 +1825,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4766997881233692
+            "lp_time_ms": 0.47009997069835663
           }
         },
         {
@@ -1832,7 +1851,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_02",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.6284001283347607
+            "lp_time_ms": 0.5254996940493584
           }
         },
         {
@@ -1856,9 +1875,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10397073541021738,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
-            "row_count": 51,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.5924003198742867
+            "row_count": 49,
+            "interval_row_count": 11,
+            "lp_time_ms": 0.5824998952448368
           }
         },
         {
@@ -1884,7 +1903,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5974001251161098
+            "lp_time_ms": 0.6222003139555454
           }
         },
         {
@@ -1910,7 +1929,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5485997535288334
+            "lp_time_ms": 0.5745002999901772
           }
         },
         {
@@ -1936,7 +1955,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5966001190245152
+            "lp_time_ms": 0.5610999651253223
           }
         },
         {
@@ -1962,7 +1981,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5692001432180405
+            "lp_time_ms": 0.5620000883936882
           }
         },
         {
@@ -1986,9 +2005,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0101",
-            "row_count": 54,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.37449970841407776
+            "row_count": 53,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.3774999640882015
           }
         },
         {
@@ -2014,7 +2033,7 @@
             "worst_start_source": "pcc_interval:2:000",
             "row_count": 56,
             "interval_row_count": 15,
-            "lp_time_ms": 0.4063001833856106
+            "lp_time_ms": 0.39880024269223213
           }
         },
         {
@@ -2040,7 +2059,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 61,
             "interval_row_count": 16,
-            "lp_time_ms": 0.4002000205218792
+            "lp_time_ms": 0.41350023820996284
           }
         },
         {
@@ -2064,9 +2083,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0111",
-            "row_count": 68,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.39950013160705566
+            "row_count": 67,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.42269984260201454
           }
         },
         {
@@ -2092,7 +2111,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.42159995064139366
+            "lp_time_ms": 0.4976000636816025
           }
         },
         {
@@ -2118,7 +2137,7 @@
             "worst_start_source": "pcc_interval:2:00",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.418300274759531
+            "lp_time_ms": 0.44560013338923454
           }
         },
         {
@@ -2144,7 +2163,7 @@
             "worst_start_source": "pcc_interval:3:01",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3782999701797962
+            "lp_time_ms": 0.44769980013370514
           }
         },
         {
@@ -2170,7 +2189,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4193997010588646
+            "lp_time_ms": 0.4648999311029911
           }
         },
         {
@@ -2196,7 +2215,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 64,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3651999868452549
+            "lp_time_ms": 0.3949003294110298
           }
         },
         {
@@ -2222,7 +2241,7 @@
             "worst_start_source": "pcc_interval:3:10100",
             "row_count": 62,
             "interval_row_count": 17,
-            "lp_time_ms": 0.37880009040236473
+            "lp_time_ms": 0.38929982110857964
           }
         },
         {
@@ -2248,7 +2267,7 @@
             "worst_start_source": "pcc_interval:1:root",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5916999652981758
+            "lp_time_ms": 0.6913002580404282
           }
         },
         {
@@ -2272,9 +2291,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10111556987385903,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5566999316215515
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5673002451658249
           }
         },
         {
@@ -2298,9 +2317,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10144880939414767,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5646999925374985
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5835001356899738
           }
         },
         {
@@ -2324,9 +2343,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10158413845905592,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.6010998040437698
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5743000656366348
           }
         },
         {
@@ -2350,9 +2369,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10185025242041883,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.6257002241909504
+            "row_count": 45,
+            "interval_row_count": 9,
+            "lp_time_ms": 0.5491999909281731
           }
         },
         {
@@ -2376,9 +2395,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10202890008057067,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5679000169038773
+            "row_count": 39,
+            "interval_row_count": 3,
+            "lp_time_ms": 0.6204997189342976
           }
         },
         {
@@ -2402,9 +2421,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10215709566438004,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.573200173676014
+            "row_count": 45,
+            "interval_row_count": 9,
+            "lp_time_ms": 0.5217003636062145
           }
         },
         {
@@ -2428,9 +2447,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10212764613468679,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5691996775567532
+            "row_count": 49,
+            "interval_row_count": 13,
+            "lp_time_ms": 0.5391002632677555
           }
         },
         {
@@ -2454,9 +2473,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10214556857075195,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5521001294255257
+            "row_count": 48,
+            "interval_row_count": 12,
+            "lp_time_ms": 0.53060008212924
           }
         },
         {
@@ -2480,9 +2499,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10205610141308477,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5455999635159969
+            "row_count": 50,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5461000837385654
           }
         },
         {
@@ -2508,7 +2527,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4945998080074787
+            "lp_time_ms": 0.5009002052247524
           }
         },
         {
@@ -2534,7 +2553,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5116998217999935
+            "lp_time_ms": 0.5219001322984695
           }
         },
         {
@@ -2558,9 +2577,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.08440130627938294,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 51,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.6264997646212578
+            "row_count": 49,
+            "interval_row_count": 11,
+            "lp_time_ms": 0.5788998678326607
           }
         },
         {
@@ -2584,9 +2603,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.1007070675607038,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.574799720197916
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.6084996275603771
           }
         },
         {
@@ -2610,9 +2629,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09951380139241249,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5522002466022968
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.6002997979521751
           }
         },
         {
@@ -2636,9 +2655,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.08649421398287808,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5998001433908939
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5669998936355114
           }
         },
         {
@@ -2662,9 +2681,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0110",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.36800000816583633
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.3610001876950264
           }
         },
         {
@@ -2690,7 +2709,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 60,
             "interval_row_count": 16,
-            "lp_time_ms": 0.3994000144302845
+            "lp_time_ms": 0.39079971611499786
           }
         },
         {
@@ -2716,7 +2735,7 @@
             "worst_start_source": "pcc_interval:2:0111",
             "row_count": 61,
             "interval_row_count": 16,
-            "lp_time_ms": 0.38659991696476936
+            "lp_time_ms": 0.4060002975165844
           }
         },
         {
@@ -2740,9 +2759,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0111",
-            "row_count": 68,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.5055000074207783
+            "row_count": 67,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.4064999520778656
           }
         },
         {
@@ -2768,7 +2787,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4198998212814331
+            "lp_time_ms": 0.43839961290359497
           }
         },
         {
@@ -2794,7 +2813,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.45790011063218117
+            "lp_time_ms": 0.41480036452412605
           }
         },
         {
@@ -2820,7 +2839,7 @@
             "worst_start_source": "pcc_interval:2:111",
             "row_count": 74,
             "interval_row_count": 17,
-            "lp_time_ms": 0.42370008304715157
+            "lp_time_ms": 0.4396000877022743
           }
         },
         {
@@ -2846,7 +2865,7 @@
             "worst_start_source": "pcc_interval:3:011",
             "row_count": 75,
             "interval_row_count": 17,
-            "lp_time_ms": 0.44499989598989487
+            "lp_time_ms": 0.4588998854160309
           }
         },
         {
@@ -2872,7 +2891,7 @@
             "worst_start_source": "pcc_interval:3:1010",
             "row_count": 66,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3911997191607952
+            "lp_time_ms": 0.4067998379468918
           }
         },
         {
@@ -2898,7 +2917,7 @@
             "worst_start_source": "pcc_interval:3:1010",
             "row_count": 64,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3782999701797962
+            "lp_time_ms": 0.4116999916732311
           }
         },
         {
@@ -2924,7 +2943,7 @@
             "worst_start_source": "pcc_interval:3:1011",
             "row_count": 56,
             "interval_row_count": 17,
-            "lp_time_ms": 0.7922998629510403
+            "lp_time_ms": 0.7766000926494598
           }
         },
         {
@@ -2948,8 +2967,8 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01763038337551706,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 52,
-            "interval_row_count": 16,
+            "row_count": 51,
+            "interval_row_count": 15,
             "lp_time_ms": 0.5703000351786613
           }
         },
@@ -2976,7 +2995,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6010998040437698
+            "lp_time_ms": 0.6333999335765839
           }
         },
         {
@@ -3002,7 +3021,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 51,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5229003727436066
+            "lp_time_ms": 0.5582999438047409
           }
         },
         {
@@ -3026,9 +3045,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01715689650912778,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.544500071555376
+            "row_count": 49,
+            "interval_row_count": 13,
+            "lp_time_ms": 0.56050019338727
           }
         },
         {
@@ -3052,9 +3071,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01719840548019052,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 49,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.5366001278162003
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.4820004105567932
           }
         },
         {
@@ -3078,9 +3097,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.0172659444171903,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 49,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.5781999789178371
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.4875999875366688
           }
         },
         {
@@ -3104,9 +3123,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01735037465734737,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5638999864459038
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5000000819563866
           }
         },
         {
@@ -3130,9 +3149,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.017456963520577,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 49,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.5577001720666885
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.4993998445570469
           }
         },
         {
@@ -3156,9 +3175,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.016831504970292416,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 49,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.5477000959217548
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5123000591993332
           }
         },
         {
@@ -3182,9 +3201,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01697109462953937,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 49,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.566400121897459
+            "row_count": 37,
+            "interval_row_count": 1,
+            "lp_time_ms": 0.5012000910937786
           }
         },
         {
@@ -3210,7 +3229,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49139978364109993
+            "lp_time_ms": 0.4719998687505722
           }
         },
         {
@@ -3236,7 +3255,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_04",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5255001597106457
+            "lp_time_ms": 0.5215001292526722
           }
         },
         {
@@ -3260,9 +3279,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10486735336125576,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
-            "row_count": 49,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.6405999884009361
+            "row_count": 41,
+            "interval_row_count": 3,
+            "lp_time_ms": 0.5275001749396324
           }
         },
         {
@@ -3288,7 +3307,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5613998509943485
+            "lp_time_ms": 0.5683000199496746
           }
         },
         {
@@ -3312,9 +3331,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10084576641884319,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5699996836483479
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5576997064054012
           }
         },
         {
@@ -3338,9 +3357,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10066653645178342,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5672997795045376
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5650999955832958
           }
         },
         {
@@ -3364,9 +3383,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.0433032422425288,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:000",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5776998586952686
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5620997399091721
           }
         },
         {
@@ -3392,7 +3411,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 60,
             "interval_row_count": 16,
-            "lp_time_ms": 0.40479982271790504
+            "lp_time_ms": 0.42060017585754395
           }
         },
         {
@@ -3418,7 +3437,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 64,
             "interval_row_count": 16,
-            "lp_time_ms": 0.39800023660063744
+            "lp_time_ms": 0.40060002356767654
           }
         },
         {
@@ -3442,9 +3461,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0111",
-            "row_count": 66,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.3764997236430645
+            "row_count": 65,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.4163002595305443
           }
         },
         {
@@ -3468,9 +3487,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0111",
-            "row_count": 70,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.44269999489188194
+            "row_count": 69,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.41770003736019135
           }
         },
         {
@@ -3496,7 +3515,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4012999124825001
+            "lp_time_ms": 0.4242002032697201
           }
         },
         {
@@ -3522,7 +3541,7 @@
             "worst_start_source": "pcc_interval:2:011",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4317001439630985
+            "lp_time_ms": 0.49900030717253685
           }
         },
         {
@@ -3548,7 +3567,7 @@
             "worst_start_source": "pcc_interval:3:1",
             "row_count": 73,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3957003355026245
+            "lp_time_ms": 0.40450040251016617
           }
         },
         {
@@ -3574,7 +3593,7 @@
             "worst_start_source": "pcc_interval:3:100",
             "row_count": 77,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4317997954785824
+            "lp_time_ms": 0.4488998092710972
           }
         },
         {
@@ -3600,7 +3619,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 72,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3889002837240696
+            "lp_time_ms": 0.4115002229809761
           }
         },
         {
@@ -3626,7 +3645,7 @@
             "worst_start_source": "pcc_interval:3:1001",
             "row_count": 68,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3806999884545803
+            "lp_time_ms": 0.37789996713399887
           }
         },
         {
@@ -3652,7 +3671,7 @@
             "worst_start_source": "pcc_interval:3:00",
             "row_count": 61,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4149000160396099
+            "lp_time_ms": 0.39720023050904274
           }
         },
         {
@@ -3678,7 +3697,7 @@
             "worst_start_source": "pcc_interval:2:00",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6221998482942581
+            "lp_time_ms": 0.5899998359382153
           }
         },
         {
@@ -3704,7 +3723,7 @@
             "worst_start_source": "pcc_interval:3:100",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5842996761202812
+            "lp_time_ms": 0.5689999088644981
           }
         },
         {
@@ -3730,7 +3749,7 @@
             "worst_start_source": "pcc_interval:3:011",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5856999196112156
+            "lp_time_ms": 0.6697997450828552
           }
         },
         {
@@ -3756,7 +3775,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.6182999350130558
+            "lp_time_ms": 0.5707000382244587
           }
         },
         {
@@ -3782,7 +3801,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.579299870878458
+            "lp_time_ms": 0.5836999043822289
           }
         },
         {
@@ -3806,9 +3825,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10103720137523028,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:001",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.565399881452322
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5622999742627144
           }
         },
         {
@@ -3832,9 +3851,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.044390084462451906,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:100",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.5737999454140663
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5580997094511986
           }
         },
         {
@@ -3858,9 +3877,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.020322188044435495,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:101",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.6764000281691551
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.6054998375475407
           }
         },
         {
@@ -3884,9 +3903,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:101",
-            "row_count": 56,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.4712003283202648
+            "row_count": 55,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.37109991535544395
           }
         }
       ]
@@ -3942,7 +3961,10 @@
       ],
       "sample_count": 135,
       "counts": {
-        "paired_replacement_estimate_over_20ms": 13,
+        "empty_candidate_velocity_box": 0,
+        "paired_replacement_estimate_over_20ms": 12,
+        "ramp_box_newly_selected": 0,
+        "ramp_box_newly_excluded": 205,
         "PROXY_CLEARANCE_AT_LEAST_GATE": 99,
         "budget_exhausted": 135,
         "unified_budget_exceeded": 0,
@@ -3971,27 +3993,27 @@
         },
         "query_time_ms": {
           "count": 135,
-          "min": 6.775800138711929,
-          "p50": 8.862100075930357,
-          "p95": 10.161619959399104,
-          "p99": 10.423946212977171,
-          "max": 11.715699918568134
+          "min": 6.901999935507774,
+          "p50": 9.0358997695148,
+          "p95": 10.130070149898529,
+          "p99": 10.491598080843685,
+          "max": 11.04969996958971
         },
         "branch_query_time_ms": {
           "count": 135,
-          "min": 4.486300051212311,
-          "p50": 5.228299647569656,
-          "p95": 6.113720079883933,
-          "p99": 6.419685836881399,
-          "max": 7.204399909824133
+          "min": 4.586600232869387,
+          "p50": 5.245999898761511,
+          "p95": 5.909130023792386,
+          "p99": 6.206247806549072,
+          "max": 6.381799932569265
         },
         "interval_assembly_time_ms": {
           "count": 135,
-          "min": 1.052000094205141,
-          "p50": 2.9610004276037216,
-          "p95": 3.3262998331338167,
-          "p99": 3.464287994429469,
-          "max": 3.5279998555779457
+          "min": 1.053099986165762,
+          "p50": 2.8431001119315624,
+          "p95": 3.2476901076734066,
+          "p99": 3.636800181120634,
+          "max": 3.7653003819286823
         },
         "point_evaluations": {
           "count": 135,
@@ -4004,7 +4026,7 @@
         "jacobian_evaluations": {
           "count": 135,
           "min": 0.0,
-          "p50": 45.0,
+          "p50": 42.0,
           "p95": 51.0,
           "p99": 51.0,
           "max": 51.0
@@ -4028,7 +4050,7 @@
         "selected_interval_count": {
           "count": 135,
           "min": 0.0,
-          "p50": 15.0,
+          "p50": 14.0,
           "p95": 17.0,
           "p99": 17.0,
           "max": 17.0
@@ -4036,18 +4058,34 @@
         "excluded_interval_count": {
           "count": 135,
           "min": 1.0,
-          "p50": 3.0,
+          "p50": 4.0,
           "p95": 18.0,
           "p99": 18.0,
           "max": 18.0
         },
         "frozen_reach_m": {
           "count": 2430,
-          "min": 0.012417863512718149,
-          "p50": 0.036285624686667205,
-          "p95": 0.0798504998108806,
-          "p99": 0.08797735071501965,
-          "max": 0.08831994088869528
+          "min": 0.0013663111061129963,
+          "p50": 0.005425942866625321,
+          "p95": 0.01216597701922294,
+          "p99": 0.015531920033317997,
+          "max": 0.024389792766165274
+        },
+        "global_speed_selected_interval_count": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 15.0,
+          "p95": 17.0,
+          "p99": 17.0,
+          "max": 17.0
+        },
+        "ramp_box_selection_delta": {
+          "count": 135,
+          "min": -15.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
         },
         "historical_full_control_ms": {
           "count": 135,
@@ -4075,26 +4113,26 @@
         },
         "paired_replacement_estimate_ms": {
           "count": 135,
-          "min": 11.623100843280554,
-          "p50": 14.288600068539381,
-          "p95": 21.75671989098191,
-          "p99": 28.122565913945426,
-          "max": 32.41110034286976
+          "min": 11.989899445325136,
+          "p50": 14.372899662703276,
+          "p95": 21.91827963106334,
+          "p99": 27.18996185809373,
+          "max": 32.09340013563633
         },
         "next_h_prediction_abs_error_m": {
-          "count": 1393,
+          "count": 1188,
           "min": 8.878819554580808e-12,
-          "p50": 9.838674322332208e-07,
-          "p95": 5.34455812316106e-06,
-          "p99": 1.5950258046345886e-05,
+          "p50": 8.659378358828046e-07,
+          "p95": 5.994561165651166e-06,
+          "p99": 1.6456869071632015e-05,
           "max": 1.9771331466782865e-05
         },
         "next_start_residual_abs_error_m_s": {
-          "count": 1393,
+          "count": 1188,
           "min": 2.8555048880996026e-08,
-          "p50": 1.8501914155671928e-05,
-          "p95": 0.0005024702131413364,
-          "p99": 0.0014819615222318584,
+          "p50": 1.7420846149375155e-05,
+          "p95": 0.000556396645575134,
+          "p99": 0.0015256240080008918,
           "max": 0.0018313820089827099
         },
         "warm_all_task_query_ms": {
@@ -4105,26 +4143,26 @@
         },
         "frozen_original_assembly_ms": {
           "count": 135,
-          "min": 4.501699935644865,
-          "p50": 5.031800363212824,
-          "p95": 5.467120138928294,
-          "p99": 5.787591757252812,
-          "max": 6.599700078368187
+          "min": 4.557199776172638,
+          "p50": 5.0073000602424145,
+          "p95": 5.415389873087406,
+          "p99": 5.928835812956093,
+          "max": 6.948300171643496
         },
         "frozen_lp_ms": {
           "count": 135,
-          "min": 0.3533000126481056,
-          "p50": 0.5491999909281731,
-          "p95": 0.6514597218483686,
-          "p99": 0.6955460179597139,
-          "max": 0.8883001282811165
+          "min": 0.33929990604519844,
+          "p50": 0.5361000075936317,
+          "p95": 0.6397600285708904,
+          "p99": 0.7091221213340759,
+          "max": 0.7622996345162392
         },
         "frozen_row_count": {
           "count": 135,
           "min": 33.0,
-          "p50": 52.0,
-          "p95": 55.0,
-          "p99": 57.0,
+          "p50": 51.0,
+          "p95": 54.0,
+          "p99": 56.0,
           "max": 57.0
         }
       },
@@ -4137,7 +4175,7 @@
           "minimum_h_m": -0.008612611091811117,
           "actual_mujoco_distance_m": 0.07940882924304472,
           "subspace_residual_linf_rad": 1.2419305555309845e-07,
-          "query_time_ms": 8.784700185060501,
+          "query_time_ms": 9.409500285983086,
           "point_evaluations": 49,
           "jacobian_evaluations": 48,
           "selected_interval_count": 16,
@@ -4151,10 +4189,10 @@
           "minimum_h_m": -0.004680886621272567,
           "actual_mujoco_distance_m": 0.08368313704224332,
           "subspace_residual_linf_rad": 1.6641930236649394e-08,
-          "query_time_ms": 9.44649986922741,
+          "query_time_ms": 9.235399775207043,
           "point_evaluations": 49,
-          "jacobian_evaluations": 51,
-          "selected_interval_count": 17,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
           "unsupported_interval_ids": []
         },
         {
@@ -4165,10 +4203,10 @@
           "minimum_h_m": -0.01212533242605806,
           "actual_mujoco_distance_m": 0.0798693167079741,
           "subspace_residual_linf_rad": 6.449892311043148e-08,
-          "query_time_ms": 9.36669996008277,
+          "query_time_ms": 9.306199848651886,
           "point_evaluations": 49,
-          "jacobian_evaluations": 51,
-          "selected_interval_count": 17,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
           "unsupported_interval_ids": []
         },
         {
@@ -4179,7 +4217,7 @@
           "minimum_h_m": -0.014551892496729567,
           "actual_mujoco_distance_m": 0.08061704015062007,
           "subspace_residual_linf_rad": 9.626802681406144e-09,
-          "query_time_ms": 9.28090000525117,
+          "query_time_ms": 9.375500027090311,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4193,7 +4231,7 @@
           "minimum_h_m": -0.007454221614841671,
           "actual_mujoco_distance_m": 0.0902038715156749,
           "subspace_residual_linf_rad": 2.2266057053688115e-08,
-          "query_time_ms": 9.198000188916922,
+          "query_time_ms": 9.703900199383497,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4207,7 +4245,7 @@
           "minimum_h_m": -1.3994082857623352e-05,
           "actual_mujoco_distance_m": 0.0976330202387988,
           "subspace_residual_linf_rad": 1.2412794715699338e-08,
-          "query_time_ms": 9.025400038808584,
+          "query_time_ms": 9.846500121057034,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4221,7 +4259,7 @@
           "minimum_h_m": -0.00971331296074816,
           "actual_mujoco_distance_m": 0.08693143593802256,
           "subspace_residual_linf_rad": 9.764877972298809e-09,
-          "query_time_ms": 9.804300032556057,
+          "query_time_ms": 11.04969996958971,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4235,7 +4273,7 @@
           "minimum_h_m": -0.002639127816414562,
           "actual_mujoco_distance_m": 0.08446365358649874,
           "subspace_residual_linf_rad": 9.887709881330892e-09,
-          "query_time_ms": 9.549499955028296,
+          "query_time_ms": 10.054899845272303,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4249,7 +4287,7 @@
           "minimum_h_m": -0.00628187967451883,
           "actual_mujoco_distance_m": 0.0829339093347744,
           "subspace_residual_linf_rad": 1.2310288181188733e-08,
-          "query_time_ms": 8.845800068229437,
+          "query_time_ms": 9.900699835270643,
           "point_evaluations": 49,
           "jacobian_evaluations": 45,
           "selected_interval_count": 15,
@@ -4263,7 +4301,7 @@
           "minimum_h_m": -0.013929012611912355,
           "actual_mujoco_distance_m": 0.07949081636182924,
           "subspace_residual_linf_rad": 4.2959264634316596e-08,
-          "query_time_ms": 8.67380015552044,
+          "query_time_ms": 9.258999954909086,
           "point_evaluations": 49,
           "jacobian_evaluations": 45,
           "selected_interval_count": 15,
@@ -4277,10 +4315,10 @@
           "minimum_h_m": -0.010588264412806647,
           "actual_mujoco_distance_m": 0.08463586411596932,
           "subspace_residual_linf_rad": 1.0176689761720592e-08,
-          "query_time_ms": 8.85669980198145,
+          "query_time_ms": 9.13710007444024,
           "point_evaluations": 49,
-          "jacobian_evaluations": 48,
-          "selected_interval_count": 16,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
           "unsupported_interval_ids": []
         },
         {
@@ -4291,7 +4329,7 @@
           "minimum_h_m": -0.012926035475224359,
           "actual_mujoco_distance_m": 0.08416865362632604,
           "subspace_residual_linf_rad": 1.6010472614347293e-08,
-          "query_time_ms": 9.740300010889769,
+          "query_time_ms": 9.64369997382164,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4305,7 +4343,7 @@
           "minimum_h_m": -0.0016460511838685336,
           "actual_mujoco_distance_m": 0.09374642336532553,
           "subspace_residual_linf_rad": 3.7366756997642137e-08,
-          "query_time_ms": 9.686800185590982,
+          "query_time_ms": 9.670200292021036,
           "point_evaluations": 49,
           "jacobian_evaluations": 48,
           "selected_interval_count": 16,
@@ -4319,10 +4357,10 @@
           "minimum_h_m": -0.008129343986819148,
           "actual_mujoco_distance_m": 0.08019010186229673,
           "subspace_residual_linf_rad": 1.4791008563425144e-07,
-          "query_time_ms": 8.873699698597193,
+          "query_time_ms": 8.849400095641613,
           "point_evaluations": 49,
-          "jacobian_evaluations": 45,
-          "selected_interval_count": 15,
+          "jacobian_evaluations": 42,
+          "selected_interval_count": 14,
           "unsupported_interval_ids": []
         },
         {
@@ -4333,7 +4371,7 @@
           "minimum_h_m": -0.0063155537934442806,
           "actual_mujoco_distance_m": 0.0821181791450643,
           "subspace_residual_linf_rad": 7.236997612292129e-09,
-          "query_time_ms": 8.791400119662285,
+          "query_time_ms": 9.662199765443802,
           "point_evaluations": 49,
           "jacobian_evaluations": 45,
           "selected_interval_count": 15,
@@ -4347,7 +4385,7 @@
           "minimum_h_m": -0.006854761764171206,
           "actual_mujoco_distance_m": 0.08139850160860022,
           "subspace_residual_linf_rad": 1.4896969234567958e-08,
-          "query_time_ms": 8.862100075930357,
+          "query_time_ms": 9.273099713027477,
           "point_evaluations": 49,
           "jacobian_evaluations": 45,
           "selected_interval_count": 15,
@@ -4361,10 +4399,10 @@
           "minimum_h_m": -0.013890610979185477,
           "actual_mujoco_distance_m": 0.07940172980950344,
           "subspace_residual_linf_rad": 2.8797332013354854e-08,
-          "query_time_ms": 9.363500401377678,
+          "query_time_ms": 9.614099748432636,
           "point_evaluations": 49,
-          "jacobian_evaluations": 51,
-          "selected_interval_count": 17,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
           "unsupported_interval_ids": []
         },
         {
@@ -4375,7 +4413,7 @@
           "minimum_h_m": -0.011374645643318134,
           "actual_mujoco_distance_m": 0.08369262677176202,
           "subspace_residual_linf_rad": 1.3774337188215968e-08,
-          "query_time_ms": 9.060000069439411,
+          "query_time_ms": 9.53570008277893,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4389,7 +4427,7 @@
           "minimum_h_m": -0.001512613280007079,
           "actual_mujoco_distance_m": 0.09599478822227525,
           "subspace_residual_linf_rad": 7.001208862655872e-09,
-          "query_time_ms": 9.553699754178524,
+          "query_time_ms": 9.368699975311756,
           "point_evaluations": 49,
           "jacobian_evaluations": 48,
           "selected_interval_count": 16,
@@ -4403,7 +4441,7 @@
           "minimum_h_m": -0.00724207676850706,
           "actual_mujoco_distance_m": 0.08499915472626106,
           "subspace_residual_linf_rad": 3.30944230006458e-08,
-          "query_time_ms": 9.93760023266077,
+          "query_time_ms": 9.641199838370085,
           "point_evaluations": 49,
           "jacobian_evaluations": 51,
           "selected_interval_count": 17,
@@ -4435,7 +4473,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.47079985961318016
+            "lp_time_ms": 0.47060009092092514
           }
         },
         {
@@ -4461,7 +4499,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_00",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5279001779854298
+            "lp_time_ms": 0.5361000075936317
           }
         },
         {
@@ -4485,9 +4523,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.05784219970792145,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0071:v5_workspace_sphere_000_rigid_path_00",
-            "row_count": 49,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.577900093048811
+            "row_count": 38,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5366001278162003
           }
         },
         {
@@ -4511,9 +4549,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.023217480953769062,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 14,
-            "lp_time_ms": 0.5761999636888504
+            "row_count": 51,
+            "interval_row_count": 13,
+            "lp_time_ms": 0.5784998647868633
           }
         },
         {
@@ -4539,7 +4577,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5605998449027538
+            "lp_time_ms": 0.5776002071797848
           }
         },
         {
@@ -4565,7 +4603,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5574999377131462
+            "lp_time_ms": 0.5399002693593502
           }
         },
         {
@@ -4589,9 +4627,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.028287218979804248,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:0110",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.6074002012610435
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5657998844981194
           }
         },
         {
@@ -4617,7 +4655,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 57,
             "interval_row_count": 16,
-            "lp_time_ms": 0.40999986231327057
+            "lp_time_ms": 0.39350008592009544
           }
         },
         {
@@ -4641,9 +4679,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.015178106162963355,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:101",
-            "row_count": 55,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.6260001100599766
+            "row_count": 54,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5851001478731632
           }
         },
         {
@@ -4667,9 +4705,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:001",
-            "row_count": 57,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.37660030648112297
+            "row_count": 56,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.37170015275478363
           }
         },
         {
@@ -4695,7 +4733,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 55,
             "interval_row_count": 17,
-            "lp_time_ms": 0.4020002670586109
+            "lp_time_ms": 0.3670998848974705
           }
         },
         {
@@ -4721,7 +4759,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5804998800158501
+            "lp_time_ms": 0.5471999756991863
           }
         },
         {
@@ -4747,7 +4785,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5713002756237984
+            "lp_time_ms": 0.5639996379613876
           }
         },
         {
@@ -4773,7 +4811,7 @@
             "worst_start_source": "pcc_interval:3:100",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3610001876950264
+            "lp_time_ms": 0.37979986518621445
           }
         },
         {
@@ -4799,7 +4837,7 @@
             "worst_start_source": "pcc_interval:3:1000",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5708001554012299
+            "lp_time_ms": 0.5636001005768776
           }
         },
         {
@@ -4825,7 +4863,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.589500181376934
+            "lp_time_ms": 0.5496004596352577
           }
         },
         {
@@ -4849,9 +4887,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09932502937189076,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.5731997080147266
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5720998160541058
           }
         },
         {
@@ -4875,9 +4913,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09850770580356083,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5602999590337276
+            "row_count": 44,
+            "interval_row_count": 8,
+            "lp_time_ms": 0.5310997366905212
           }
         },
         {
@@ -4901,9 +4939,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09826605011442771,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 47,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.5757003091275692
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5250000394880772
           }
         },
         {
@@ -4927,9 +4965,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09823013614808995,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 47,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.5452004261314869
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5000000819563866
           }
         },
         {
@@ -4955,7 +4993,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4954999312758446
+            "lp_time_ms": 0.476200133562088
           }
         },
         {
@@ -4981,7 +5019,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5596000701189041
+            "lp_time_ms": 0.48980023711919785
           }
         },
         {
@@ -5007,7 +5045,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4826001822948456
+            "lp_time_ms": 0.48300018534064293
           }
         },
         {
@@ -5033,7 +5071,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.46009989455342293
+            "lp_time_ms": 0.49870042130351067
           }
         },
         {
@@ -5059,7 +5097,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5080001428723335
+            "lp_time_ms": 0.6621000356972218
           }
         },
         {
@@ -5085,7 +5123,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49240002408623695
+            "lp_time_ms": 0.5001001991331577
           }
         },
         {
@@ -5111,7 +5149,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.47980016097426414
+            "lp_time_ms": 0.4996000789105892
           }
         },
         {
@@ -5137,7 +5175,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5014003254473209
+            "lp_time_ms": 0.48029981553554535
           }
         },
         {
@@ -5163,7 +5201,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_01",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5390997976064682
+            "lp_time_ms": 0.5362001247704029
           }
         },
         {
@@ -5187,9 +5225,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.060704412674091046,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_01",
-            "row_count": 49,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.604500062763691
+            "row_count": 38,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.49189990386366844
           }
         },
         {
@@ -5213,9 +5251,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.08097289389178054,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 14,
-            "lp_time_ms": 0.6039002910256386
+            "row_count": 51,
+            "interval_row_count": 13,
+            "lp_time_ms": 0.6148000247776508
           }
         },
         {
@@ -5241,7 +5279,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5987999029457569
+            "lp_time_ms": 0.5684001371264458
           }
         },
         {
@@ -5267,7 +5305,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 15,
-            "lp_time_ms": 0.554999802261591
+            "lp_time_ms": 0.6550000980496407
           }
         },
         {
@@ -5293,7 +5331,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5425000563263893
+            "lp_time_ms": 0.6272997707128525
           }
         },
         {
@@ -5317,9 +5355,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09813828241538876,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:0101",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5636997520923615
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5502002313733101
           }
         },
         {
@@ -5343,9 +5381,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.047434161280132246,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:0101",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5654999986290932
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5549001507461071
           }
         },
         {
@@ -5371,7 +5409,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.37010014057159424
+            "lp_time_ms": 0.359599944204092
           }
         },
         {
@@ -5397,7 +5435,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 54,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3534001298248768
+            "lp_time_ms": 0.3633997403085232
           }
         },
         {
@@ -5421,9 +5459,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:110",
-            "row_count": 53,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.36270031705498695
+            "row_count": 52,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.34670019522309303
           }
         },
         {
@@ -5447,9 +5485,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.05904657741930987,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:110",
-            "row_count": 53,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.583800021559
+            "row_count": 52,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.6391000933945179
           }
         },
         {
@@ -5473,9 +5511,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.06401015331263686,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:101",
-            "row_count": 53,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5541001446545124
+            "row_count": 52,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5748998373746872
           }
         },
         {
@@ -5501,7 +5539,7 @@
             "worst_start_source": "pcc_interval:3:1",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3533000126481056
+            "lp_time_ms": 0.35879993811249733
           }
         },
         {
@@ -5527,7 +5565,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.574599951505661
+            "lp_time_ms": 0.5700001493096352
           }
         },
         {
@@ -5553,7 +5591,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5483999848365784
+            "lp_time_ms": 0.6548999808728695
           }
         },
         {
@@ -5579,7 +5617,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.56089973077178
+            "lp_time_ms": 0.5784002132713795
           }
         },
         {
@@ -5603,9 +5641,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09833501932271407,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5315002053976059
+            "row_count": 47,
+            "interval_row_count": 10,
+            "lp_time_ms": 0.5489997565746307
           }
         },
         {
@@ -5629,9 +5667,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09812888027100958,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 49,
-            "interval_row_count": 12,
-            "lp_time_ms": 0.5414001643657684
+            "row_count": 39,
+            "interval_row_count": 2,
+            "lp_time_ms": 0.5465997382998466
           }
         },
         {
@@ -5655,9 +5693,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09752623200475968,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 45,
-            "interval_row_count": 8,
-            "lp_time_ms": 0.8883001282811165
+            "row_count": 37,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.4724999889731407
           }
         },
         {
@@ -5683,7 +5721,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5100998096168041
+            "lp_time_ms": 0.5482998676598072
           }
         },
         {
@@ -5709,7 +5747,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4987996071577072
+            "lp_time_ms": 0.552500132471323
           }
         },
         {
@@ -5735,7 +5773,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4928000271320343
+            "lp_time_ms": 0.5267998203635216
           }
         },
         {
@@ -5761,7 +5799,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4980000667273998
+            "lp_time_ms": 0.58010034263134
           }
         },
         {
@@ -5787,7 +5825,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5868999287486076
+            "lp_time_ms": 0.48719998449087143
           }
         },
         {
@@ -5813,7 +5851,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4859999753534794
+            "lp_time_ms": 0.4882998764514923
           }
         },
         {
@@ -5839,7 +5877,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4782998003065586
+            "lp_time_ms": 0.4752003587782383
           }
         },
         {
@@ -5865,7 +5903,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_02",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5652997642755508
+            "lp_time_ms": 0.5033998750150204
           }
         },
         {
@@ -5889,9 +5927,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10397073541021738,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
-            "row_count": 51,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.5614999681711197
+            "row_count": 49,
+            "interval_row_count": 11,
+            "lp_time_ms": 0.5749999545514584
           }
         },
         {
@@ -5917,7 +5955,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 14,
-            "lp_time_ms": 0.5622999742627144
+            "lp_time_ms": 0.5654003471136093
           }
         },
         {
@@ -5943,7 +5981,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5946001037955284
+            "lp_time_ms": 0.5578999407589436
           }
         },
         {
@@ -5969,7 +6007,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5491999909281731
+            "lp_time_ms": 0.546999741345644
           }
         },
         {
@@ -5995,7 +6033,7 @@
             "worst_start_source": "pcc_interval:2:0100",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5884002894163132
+            "lp_time_ms": 0.5731997080147266
           }
         },
         {
@@ -6019,9 +6057,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0101",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.4004999063909054
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.33929990604519844
           }
         },
         {
@@ -6047,7 +6085,7 @@
             "worst_start_source": "pcc_interval:1:1",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3555002622306347
+            "lp_time_ms": 0.3904001787304878
           }
         },
         {
@@ -6073,7 +6111,7 @@
             "worst_start_source": "pcc_interval:2:11",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.3646998666226864
+            "lp_time_ms": 0.36090007051825523
           }
         },
         {
@@ -6097,9 +6135,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:1:root",
-            "row_count": 57,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.46239979565143585
+            "row_count": 56,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.39299996569752693
           }
         },
         {
@@ -6125,7 +6163,7 @@
             "worst_start_source": "pcc_interval:3:01",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.36930013447999954
+            "lp_time_ms": 0.37029990926384926
           }
         },
         {
@@ -6151,7 +6189,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 53,
             "interval_row_count": 16,
-            "lp_time_ms": 0.6034001708030701
+            "lp_time_ms": 0.5771000869572163
           }
         },
         {
@@ -6177,7 +6215,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 52,
             "interval_row_count": 16,
-            "lp_time_ms": 0.5823001265525818
+            "lp_time_ms": 0.5819001235067844
           }
         },
         {
@@ -6203,7 +6241,7 @@
             "worst_start_source": "pcc_interval:3:0111",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5621002055704594
+            "lp_time_ms": 0.6047002971172333
           }
         },
         {
@@ -6229,7 +6267,7 @@
             "worst_start_source": "pcc_interval:3:011",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.58010034263134
+            "lp_time_ms": 0.5616997368633747
           }
         },
         {
@@ -6255,7 +6293,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5291001871228218
+            "lp_time_ms": 0.5764001980423927
           }
         },
         {
@@ -6279,9 +6317,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09760190676516853,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5574002861976624
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5771000869572163
           }
         },
         {
@@ -6305,9 +6343,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09757580426042428,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 51,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.6094998680055141
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5309004336595535
           }
         },
         {
@@ -6331,9 +6369,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09751357979892615,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 47,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.6351000629365444
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.48580020666122437
           }
         },
         {
@@ -6357,9 +6395,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.0974608078957043,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 44,
-            "interval_row_count": 8,
-            "lp_time_ms": 0.5348999984562397
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.493600033223629
           }
         },
         {
@@ -6385,7 +6423,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5143997259438038
+            "lp_time_ms": 0.5252999253571033
           }
         },
         {
@@ -6411,7 +6449,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5047000013291836
+            "lp_time_ms": 0.4857000894844532
           }
         },
         {
@@ -6437,7 +6475,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.534099992364645
+            "lp_time_ms": 0.48419972881674767
           }
         },
         {
@@ -6463,7 +6501,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.58710016310215
+            "lp_time_ms": 0.48220017924904823
           }
         },
         {
@@ -6489,7 +6527,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5004000850021839
+            "lp_time_ms": 0.4875999875366688
           }
         },
         {
@@ -6515,7 +6553,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4875999875366688
+            "lp_time_ms": 0.5209003575146198
           }
         },
         {
@@ -6541,7 +6579,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4707002080976963
+            "lp_time_ms": 0.47009997069835663
           }
         },
         {
@@ -6567,7 +6605,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.565399881452322
+            "lp_time_ms": 0.5487999878823757
           }
         },
         {
@@ -6591,9 +6629,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.08440130627938294,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 51,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.6317999213933945
+            "row_count": 49,
+            "interval_row_count": 11,
+            "lp_time_ms": 0.5624000914394855
           }
         },
         {
@@ -6617,9 +6655,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10069831014679313,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5936003290116787
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.6062001921236515
           }
         },
         {
@@ -6643,9 +6681,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09948045471985244,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5534999072551727
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5530002526938915
           }
         },
         {
@@ -6669,9 +6707,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.08336424631401446,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5879001691937447
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5834000185132027
           }
         },
         {
@@ -6695,9 +6733,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:0110",
-            "row_count": 53,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.3951997496187687
+            "row_count": 52,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.3559999167919159
           }
         },
         {
@@ -6723,7 +6761,7 @@
             "worst_start_source": "pcc_interval:2:0110",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5971998907625675
+            "lp_time_ms": 0.5795001052320004
           }
         },
         {
@@ -6749,7 +6787,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.5852999165654182
+            "lp_time_ms": 0.5967998877167702
           }
         },
         {
@@ -6773,9 +6811,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:001",
-            "row_count": 57,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.3932998515665531
+            "row_count": 56,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.3893999382853508
           }
         },
         {
@@ -6801,7 +6839,7 @@
             "worst_start_source": "pcc_interval:2:110",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.521599780768156
+            "lp_time_ms": 0.3841998986899853
           }
         },
         {
@@ -6827,7 +6865,7 @@
             "worst_start_source": "pcc_interval:2:100",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6741001270711422
+            "lp_time_ms": 0.6383000873029232
           }
         },
         {
@@ -6853,7 +6891,7 @@
             "worst_start_source": "pcc_interval:3:001",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.610599759966135
+            "lp_time_ms": 0.71310019120574
           }
         },
         {
@@ -6879,7 +6917,7 @@
             "worst_start_source": "pcc_interval:3:11",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.69019990041852
+            "lp_time_ms": 0.7622996345162392
           }
         },
         {
@@ -6903,9 +6941,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": -0.00010000000000000286,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:3:111",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.6983000785112381
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.7013999857008457
           }
         },
         {
@@ -6929,9 +6967,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01787606636733068,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.5592997185885906
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5675000138580799
           }
         },
         {
@@ -6955,9 +6993,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.017799236888789375,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.588100403547287
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.6412998773157597
           }
         },
         {
@@ -6981,9 +7019,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.01692862961796556,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 49,
-            "interval_row_count": 13,
-            "lp_time_ms": 0.579299870878458
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5536000244319439
           }
         },
         {
@@ -7007,9 +7045,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.016604551417443485,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 43,
-            "interval_row_count": 7,
-            "lp_time_ms": 0.5473997443914413
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.4946999251842499
           }
         },
         {
@@ -7033,9 +7071,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.016609019356740678,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
-            "row_count": 44,
-            "interval_row_count": 8,
-            "lp_time_ms": 0.5097999237477779
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.49640005454421043
           }
         },
         {
@@ -7061,7 +7099,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5045998841524124
+            "lp_time_ms": 0.49210013821721077
           }
         },
         {
@@ -7087,7 +7125,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5006999708712101
+            "lp_time_ms": 0.4946999251842499
           }
         },
         {
@@ -7113,7 +7151,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5113002844154835
+            "lp_time_ms": 0.4986003041267395
           }
         },
         {
@@ -7139,7 +7177,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5025998689234257
+            "lp_time_ms": 0.5151000805199146
           }
         },
         {
@@ -7165,7 +7203,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5091000348329544
+            "lp_time_ms": 0.4902002401649952
           }
         },
         {
@@ -7191,7 +7229,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4925001412630081
+            "lp_time_ms": 0.49899984151124954
           }
         },
         {
@@ -7217,7 +7255,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_000_rigid_path_03",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5313996225595474
+            "lp_time_ms": 0.48610009253025055
           }
         },
         {
@@ -7243,7 +7281,7 @@
             "worst_start_source": "mujoco:continuum_self:collision_0059:collision_0063",
             "row_count": 33,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4810001701116562
+            "lp_time_ms": 0.4718001000583172
           }
         },
         {
@@ -7269,7 +7307,7 @@
             "worst_start_source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_000_rigid_path_04",
             "row_count": 37,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5704998038709164
+            "lp_time_ms": 0.493799801915884
           }
         },
         {
@@ -7293,9 +7331,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10486735336125576,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:continuum_self:collision_0035:collision_0039",
-            "row_count": 49,
-            "interval_row_count": 11,
-            "lp_time_ms": 0.5470002070069313
+            "row_count": 41,
+            "interval_row_count": 3,
+            "lp_time_ms": 0.5405996926128864
           }
         },
         {
@@ -7321,7 +7359,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 51,
             "interval_row_count": 14,
-            "lp_time_ms": 0.579299870878458
+            "lp_time_ms": 0.5729999393224716
           }
         },
         {
@@ -7345,9 +7383,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10082630531546649,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.595499761402607
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5677002482116222
           }
         },
         {
@@ -7371,9 +7409,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.10063234982143196,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.5627996288239956
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5646999925374985
           }
         },
         {
@@ -7397,9 +7435,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.04152441472635231,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:2:000",
-            "row_count": 52,
-            "interval_row_count": 15,
-            "lp_time_ms": 0.6474996916949749
+            "row_count": 51,
+            "interval_row_count": 14,
+            "lp_time_ms": 0.5928999744355679
           }
         },
         {
@@ -7425,7 +7463,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 54,
             "interval_row_count": 15,
-            "lp_time_ms": 0.6606997922062874
+            "lp_time_ms": 0.3887997008860111
           }
         },
         {
@@ -7451,7 +7489,7 @@
             "worst_start_source": "pcc_interval:2:0101",
             "row_count": 52,
             "interval_row_count": 15,
-            "lp_time_ms": 0.4111998714506626
+            "lp_time_ms": 0.36579975858330727
           }
         },
         {
@@ -7475,9 +7513,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:11",
-            "row_count": 55,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.3864997997879982
+            "row_count": 54,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.36789989098906517
           }
         },
         {
@@ -7501,9 +7539,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": null,
             "feasible_endpoint_velocity_min_slack_rad_s": null,
             "worst_start_source": "pcc_interval:2:001",
-            "row_count": 57,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.39950013160705566
+            "row_count": 56,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.4344000481069088
           }
         },
         {
@@ -7529,7 +7567,7 @@
             "worst_start_source": "pcc_interval:3:1",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3598998300731182
+            "lp_time_ms": 0.35639991983771324
           }
         },
         {
@@ -7555,7 +7593,7 @@
             "worst_start_source": "pcc_interval:2:101",
             "row_count": 54,
             "interval_row_count": 17,
-            "lp_time_ms": 0.6673997268080711
+            "lp_time_ms": 0.5922000855207443
           }
         },
         {
@@ -7581,7 +7619,7 @@
             "worst_start_source": "pcc_interval:3:10",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.3817998804152012
+            "lp_time_ms": 0.4262998700141907
           }
         },
         {
@@ -7607,7 +7645,7 @@
             "worst_start_source": "pcc_interval:3:1001",
             "row_count": 53,
             "interval_row_count": 17,
-            "lp_time_ms": 0.5858996883034706
+            "lp_time_ms": 0.571100041270256
           }
         },
         {
@@ -7631,9 +7669,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.06573622099954068,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:3:1100",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.575799960643053
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5810000002384186
           }
         },
         {
@@ -7657,9 +7695,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09717220564426773,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "pcc_interval:3:111",
-            "row_count": 53,
-            "interval_row_count": 17,
-            "lp_time_ms": 0.5608000792562962
+            "row_count": 52,
+            "interval_row_count": 16,
+            "lp_time_ms": 0.5780002102255821
           }
         },
         {
@@ -7683,9 +7721,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09782572363014812,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 52,
-            "interval_row_count": 16,
-            "lp_time_ms": 0.5495999939739704
+            "row_count": 51,
+            "interval_row_count": 15,
+            "lp_time_ms": 0.5634999834001064
           }
         },
         {
@@ -7709,9 +7747,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09857652059350396,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 50,
-            "interval_row_count": 14,
-            "lp_time_ms": 0.5883998237550259
+            "row_count": 44,
+            "interval_row_count": 8,
+            "lp_time_ms": 0.5612997338175774
           }
         },
         {
@@ -7735,9 +7773,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09865480081150009,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 50,
-            "interval_row_count": 14,
-            "lp_time_ms": 0.5411999300122261
+            "row_count": 42,
+            "interval_row_count": 6,
+            "lp_time_ms": 0.521400012075901
           }
         },
         {
@@ -7761,9 +7799,9 @@
             "feasible_endpoint_lookahead_min_slack_m_s": 0.09782703515914956,
             "feasible_endpoint_velocity_min_slack_rad_s": -0.00010000000000000286,
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
-            "row_count": 48,
-            "interval_row_count": 12,
-            "lp_time_ms": 0.5546002648770809
+            "row_count": 36,
+            "interval_row_count": 0,
+            "lp_time_ms": 0.5424004048109055
           }
         },
         {
@@ -7789,7 +7827,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5131000652909279
+            "lp_time_ms": 0.45770034193992615
           }
         },
         {
@@ -7815,7 +7853,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.49999961629509926
+            "lp_time_ms": 0.6156000308692455
           }
         },
         {
@@ -7841,7 +7879,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.6896001286804676
+            "lp_time_ms": 0.4898998886346817
           }
         },
         {
@@ -7867,7 +7905,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.5190996453166008
+            "lp_time_ms": 0.4859999753534794
           }
         },
         {
@@ -7893,7 +7931,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4920000210404396
+            "lp_time_ms": 0.4904000088572502
           }
         },
         {
@@ -7919,7 +7957,7 @@
             "worst_start_source": "mujoco:rigid_target:collision_0071:target_satellite_collision",
             "row_count": 36,
             "interval_row_count": 0,
-            "lp_time_ms": 0.4851999692618847
+            "lp_time_ms": 0.4873001016676426
           }
         }
       ]
@@ -7944,6 +7982,7 @@
       "no_query_budget_exhaustion": true,
       "no_excluded_interval_reached_activation_next_tick": true,
       "no_required_derivative_unsupported": true,
+      "no_empty_candidate_velocity_box": true,
       "no_frozen_action_infeasibility": false,
       "no_frozen_lp_unknown": true
     },

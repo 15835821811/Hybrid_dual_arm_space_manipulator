@@ -66,6 +66,31 @@ def velocity_box(spec: RobotModelSpecV5, config: HierarchicalQPConfig,
     return lower, upper
 
 
+def ramp_velocity_abs_bound(spec: RobotModelSpecV5,
+                            config: HierarchicalQPConfig,
+                            planner_q: np.ndarray,
+                            previous_velocity: np.ndarray,
+                            ) -> tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
+    """Bound every rate on the declared affine ramp to a planner-box endpoint.
+
+    An empty endpoint box cannot admit an action. In that case the shadow
+    screen uses the global speed limit and the recorded ramp start rather
+    than pretending that the empty box reduces the possible approach.
+    """
+    lower, upper = velocity_box(spec, config, planner_q, previous_velocity)
+    start = np.asarray(previous_velocity, dtype=np.float64)
+    global_speed = config.velocity_limit_scale * spec.planner_velocity_limits
+    if (not np.all(np.isfinite(lower)) or not np.all(np.isfinite(upper))
+            or not np.all(np.isfinite(start))):
+        raise ValueError("non-finite planner velocity box or ramp start")
+    box_valid = bool(np.all(lower <= upper))
+    if box_valid:
+        bound = np.maximum.reduce((np.abs(lower), np.abs(upper), np.abs(start)))
+    else:
+        bound = np.maximum(global_speed, np.abs(start))
+    return lower, upper, bound, box_valid
+
+
 def combined_rows(original: RecomputedRows, batch: IntervalSafetyBatch,
                   selected_ids: set[str], config: HierarchicalQPConfig,
                   ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray,

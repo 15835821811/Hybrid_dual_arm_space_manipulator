@@ -73,6 +73,26 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "排除区间在所测下一 tick 进入激活距离的计数为 0，但此有限重放结果不是一般动态保证。",
         "配对容量估计使用旧全链耗时减旧形状查询耗时再加影子查询耗时；"
         "它不是新模式实测，也不能单独证明 20 ms 全链 p95。", "",
+        "区间激活筛选从现有速度、加速度和关节限位得到候选盒，"
+        "并将十步斜坡起点速度纳入逐轴绝对上界；"
+        "空盒退回全局速度上界并单独使门禁失败。"
+        "以下计数仅比较两种冻结模型筛选，均未修改安全距离或真实执行动作。", "",
+        "| 查询 | 模式 | 比全局速度筛选少选区间 | 多选区间 | 空候选盒 | 排除区间下一 tick 激活 |",
+        "| --- | --- | ---: | ---: | ---: | ---: |",
+    ]
+    for query_name, report in (("cold", cold), ("persistent", warm)):
+        for mode in ("baseline", "enabled"):
+            counts = report["modes"][mode]["counts"]
+            lines.append(
+                f"| {query_name} | {mode} | "
+                f"{counts.get('ramp_box_newly_excluded', 0)} | "
+                f"{counts.get('ramp_box_newly_selected', 0)} | "
+                f"{counts.get('empty_candidate_velocity_box', 0)} | "
+                f"{counts.get('excluded_reached_activation_next_tick', 0)} |"
+            )
+    lines += [
+        "", "速度盒只约束声明的斜坡起点和候选终点；反作用映射、目标漂移"
+        "和几何灵敏度在筛选中仍冻结。零漏选是有限重放观察，不是跨周期证明。", "",
         "## 同一冻结行的动作可行性", "",
         "在抽样 A.1 状态上，独立重算 MuJoCo 和实际链胶囊行后加入必要的区间行；"
         "只读 LP 使用原 17 维速度盒、十步斜坡起点、原容差和冻结前瞻约束。"
