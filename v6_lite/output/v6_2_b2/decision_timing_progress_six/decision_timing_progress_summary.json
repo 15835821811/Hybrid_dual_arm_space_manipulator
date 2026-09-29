@@ -1,0 +1,139 @@
+{
+  "schema": "v6_2_b2_six_stage_private_decision_timing_v1",
+  "scenario_id": "v6_lite_scenario_01",
+  "task_ticks_per_stage": 1350,
+  "all_six_traces_sha256_equal": true,
+  "fixed_arc_all_2ms_capsule_results_exact": true,
+  "fixed_arc_checked_2ms_states": 13501,
+  "fixed_arc_capsules_per_state": 61,
+  "five_scene_private_diagnostic_status": "PASS_PRIVATE_FIVE_WITH_LIMITS",
+  "stage2_online_gate_status": "GATE_NOT_MET",
+  "stage3_admission": false,
+  "full_online_cycle_evaluated": false,
+  "p95_20ms_gate_met": false,
+  "performance_repeat_protocol_completed": false,
+  "production_online_controller_changed": false,
+  "continuous_time_certified": false,
+  "trials": [
+    {
+      "key": "original",
+      "label": "原始",
+      "task_ticks": 1350,
+      "p50_ms": 93.55714963749051,
+      "p95_ms": 97.22250974737108,
+      "p99_ms": 102.80852002557367,
+      "max_ms": 121.84949964284897,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "full_decision_timing_summary.json": "94d25ac591d6503d757cbba775f0459b56c8ebca554a45f58fad56b84eda8ef5",
+        "full_decision_timing_rows.jsonl": "b71309fd12758625cd8318df3a75f32d508af354932d59e92c8e26e13a5efca4",
+        "private_rollout_summary.json": "ecd8f3982d0c04221872cccdcedcf6fb3988d0e288e35bc504cba5c1d1a86f71",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "reused_builder",
+      "label": "常量复用",
+      "task_ticks": 1350,
+      "p50_ms": 40.564149618148804,
+      "p95_ms": 43.09337500017136,
+      "p99_ms": 46.396385803818696,
+      "max_ms": 94.86380033195019,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "35a0c512652522d5d8e2416c73e4a6f5eaef0d83a8ad9f3044ef0f52ea17d1d3",
+        "reused_next_start_timing_rows.jsonl": "0f17bf7e59543b5b306c42a2812acee3f8afeb0dace2d2c95142f2656d1df803",
+        "private_rollout_summary.json": "85084f60c336a59d36297fb34d66f6c11feeef50db6fceb986254c68dfd59c9f",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "vectorized_envelope",
+      "label": "包络批量",
+      "task_ticks": 1350,
+      "p50_ms": 30.036049662157893,
+      "p95_ms": 32.41792994085699,
+      "p99_ms": 34.9925546720624,
+      "max_ms": 85.08880017325282,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "228009be2ff80f91f2e8fbc3a9ed3f31f56460b0f94630ad1c0995159328f473",
+        "reused_next_start_timing_rows.jsonl": "93ca72683c2c18f13ff1108ffee11f50e034dfbb26472059b8acfb3fc8cf1c14",
+        "private_rollout_summary.json": "019df25186dd7aaff1825a7d0e83fc7c05a16b23d3c1773432c72f25720fe92b",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "fixed_arc_positions",
+      "label": "固定弧长",
+      "task_ticks": 1350,
+      "p50_ms": 26.176200481131673,
+      "p95_ms": 28.309820080175996,
+      "p99_ms": 30.249894876033064,
+      "max_ms": 83.01979955285788,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "fa0ef942ef70c3cdbd07add61e46e4f968f259c18eba9a33878215dfb0a417d7",
+        "reused_next_start_timing_rows.jsonl": "9c6c9df4d9e478e6a1b5f94c06fe13ea52db5560c59aa4fe5a83e5c9aa6a8f74",
+        "private_rollout_summary.json": "c7c8f371a55b5148ad7e5bd8bc321174894e9e3efb37a95240f948f8a1be3e47",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "screened_next_start",
+      "label": "保守筛选",
+      "task_ticks": 1350,
+      "p50_ms": 23.767199832946062,
+      "p95_ms": 25.9728551376611,
+      "p99_ms": 28.162464923225343,
+      "max_ms": 79.10169987007976,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "04fa2388cd02f4008e72de25cd54eb6ea258cdde263f6a793dcbf482b256d8fa",
+        "reused_next_start_timing_rows.jsonl": "07dd09acd310baab2359b79c53ff37364237b5db01dccbf288097f515de5ccea",
+        "private_rollout_summary.json": "c740173aab548cf2261e287201bd9106354a924d23a0aaaa147b1a4e38c9c915",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "prepared_torque",
+      "label": "前向复用",
+      "task_ticks": 1350,
+      "p50_ms": 22.333299973979592,
+      "p95_ms": 24.353769840672612,
+      "p99_ms": 26.333003090694547,
+      "max_ms": 78.88500019907951,
+      "over_20ms_count": 1349,
+      "longest_over_20ms_run": 1114,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "00a56fced36676b4e45854c450160c2361a783cb92e5099aaa94cf0ac9e989e1",
+        "reused_next_start_timing_rows.jsonl": "3b1eef92f4c02db7d309e66de70fde74fd9cc4675bbd110069e6ec73cf283138",
+        "private_rollout_summary.json": "cd139afc2337ca383800b90d17f96677c9e354805a0c1fcd07890ad26839ebf6",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    }
+  ],
+  "source_sha256": {
+    "finalize_b2_decision_timing_progress.py": "693bc25d96d66dac7aaa3ab79f8f74f4422184ad706d9b08f66f5bf84d29b709",
+    "finalize_b2_full_decision_timing.py": "c8490d5b43a00658e753c2faf212bd7b34fce818d5f652ac2d2d2a90121df9f7"
+  },
+  "additional_inputs_sha256": {
+    "fixed_arc_full_decision_summary.json": "bf92d82d67f0887c22456d3366c3311ace2308216130ad59790df2c7568243f2",
+    "screened_next_start_summary.json": "4ff716592a237da86a41f7849230f4616a43b878e77c0947f7ea2bd0701bf865",
+    "prepared_torque_timing_summary.json": "376058e013af51938c60048f5606d2e3cbedcd172f62239938a065a8d8d3e308",
+    "fixed_arc_all_state_summary.json": "49266d0cfefb3277db86411df056005295ceb9527c79e7764f4cd5a28427738c",
+    "domain_private_five_summary.json": "a00604ce1f1c8513ecf1af245872958a2bd77efb04a7de859c5340a6f5e2b25a"
+  },
+  "plot_sha256": "e15ed4568574364b92ef3ac0eabad4e5867007d5fa8639a2f94bbe0125d83d11"
+}
