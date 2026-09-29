@@ -103,6 +103,10 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "private_rollout_recompute": root / "private_recompute_400" / "private_recompute_summary.json",
         "private_qp_sphere_trial": root / "private_qp_sphere_trial" / "private_qp_sphere_summary.json",
         "private_qp_sphere_full": root / "private_qp_sphere_full" / "private_full_qp_sphere_summary.json",
+        "servo_subspace_origin": root / "servo_subspace_origin" / "servo_subspace_origin_summary.json",
+        "discrete_servo_first_tick": root / "discrete_servo_first_tick" / "discrete_servo_summary.json",
+        "discrete_private_five_scene": root / "discrete_private_400_summary" / "discrete_private_five_scene_summary.json",
+        "discrete_private_recompute": root / "discrete_private_recompute_400" / "private_recompute_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -114,7 +118,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, private_qp_full, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, private_qp_full, servo_origin, discrete_first_tick, discrete_private, discrete_recompute, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -648,6 +652,102 @@ def finalize(root: Path, output_dir: Path) -> dict:
         if private_qp_full[f"{label}_sha256"] != full_qp_manifest[
                 f"{label}_sha256"]:
             raise ValueError(f"private full-trace QP {label} summary changed")
+    if (private_recompute["all_500hz_states_on_declared_shape_subspace"]
+            or private_recompute[
+                "independent_strict_online_domain_all_executed_ticks"]
+            or private_recompute["torque_limit_violation_count"]
+            or not discrete_recompute["pass_recompute"]
+            or not discrete_recompute[
+                "independent_strict_online_domain_all_executed_ticks"]
+            or not discrete_recompute[
+                "all_500hz_states_on_declared_shape_subspace"]
+            or discrete_recompute["torque_limit_violation_count"]
+            or discrete_recompute["failure_count"]
+            or discrete_recompute["checked_task_states"] != 2005
+            or discrete_recompute["checked_interval_rows"] != 5257
+            or discrete_recompute["maximum_native_state_error"] > 1e-8
+            or discrete_recompute["maximum_500hz_subspace_residual_linf_rad"]
+            > 1e-10):
+        raise ValueError("original/compensated strict-domain replay changed")
+    if (servo_origin["record_count"] != 50
+            or any(scene["first_step_outside_1e_10_rad"] != 1
+                   or scene["torque_saturation_step_count"]
+                   or scene["acceleration_clip_step_count"]
+                   for scene in servo_origin["scenes"])
+            or servo_origin["maximum_saved_torque_error_nm"] != 0.0
+            or servo_origin["maximum_saved_qpos_error"] != 0.0
+            or discrete_first_tick["record_count"] != 50
+            or any(scene["maximum_position_residual_rad"] > 1e-10
+                   or scene["torque_saturation_step_count"]
+                   for scene in discrete_first_tick["scenes"])
+            or discrete_first_tick["online_controller_changed"]
+            or discrete_first_tick["stage3_admission"]
+            or discrete_first_tick["continuous_time_certified"]
+            or discrete_private["status"]
+            != "PRIVATE_DIAGNOSTIC_COMPLETE_NOT_ONLINE_ADMISSION"
+            or discrete_private["complete_400_tick_scene_count"] != 5
+            or discrete_private["checked_500hz_states"] != 20005
+            or discrete_private["maximum_500hz_subspace_residual_linf_rad"]
+            > 1e-10
+            or discrete_private["independent_interval_row_count"] != 5257
+            or discrete_private["independent_recompute_failure_count"]
+            or discrete_private["torque_limit_violation_count"]
+            or discrete_private["production_online_controller_changed"]
+            or discrete_private["stage3_admission"]
+            or discrete_private["full_cycle_20ms_acceptance"]
+            or discrete_private["continuous_time_certified"]):
+        raise ValueError("compensated private diagnostic provenance failed")
+    for source in (servo_origin, discrete_first_tick, discrete_recompute):
+        for name, digest in source["source_sha256"].items():
+            if _source_sha(Path("v6_lite") / name) != digest:
+                raise ValueError(f"compensated source changed: {name}")
+    for directory, manifest_name, names in (
+        (root / "servo_subspace_origin", "servo_subspace_origin_manifest.json",
+         {"summary": "servo_subspace_origin_summary.json",
+          "records": "servo_subspace_origin_records.jsonl"}),
+        (root / "discrete_servo_first_tick", "discrete_servo_manifest.json",
+         {"summary": "discrete_servo_summary.json",
+          "records": "discrete_servo_records.jsonl"}),
+        (root / "discrete_private_recompute_400",
+         "private_recompute_manifest.json",
+         {"summary": "private_recompute_summary.json",
+          "checks": "private_recompute_checks.jsonl",
+          "interval_rows": "private_recompute_interval_rows.jsonl",
+          "failures": "private_recompute_failures.jsonl",
+          "document": "PRIVATE_RECOMPUTE.md"}),
+        (root / "discrete_private_400_summary",
+         "discrete_private_five_scene_manifest.json",
+         {"summary": "discrete_private_five_scene_summary.json",
+          "document": "DISCRETE_PRIVATE_FIVE_SCENE.md"}),
+    ):
+        manifest = json.loads((directory / manifest_name).read_text(
+            encoding="utf-8"))
+        for label, filename in names.items():
+            if manifest[f"{label}_sha256"] != _sha(directory / filename):
+                raise ValueError(f"compensated {directory.name} {label} changed")
+    if (discrete_private["origin_summary_sha256"]
+            != _sha(sources["servo_subspace_origin"])
+            or discrete_private["first_tick_summary_sha256"]
+            != _sha(sources["discrete_servo_first_tick"])
+            or discrete_private["recompute_summary_sha256"]
+            != _sha(sources["discrete_private_recompute"])):
+        raise ValueError("compensated aggregate input hashes changed")
+    for index, item in enumerate(discrete_private["scenes"]):
+        folder = root / "discrete_private_rollout_400" / f"scene_{index:02d}"
+        if (item["scenario_id"] != f"v6_lite_scenario_{index:02d}"
+                or item["executed_ticks"] != 400
+                or item["maximum_subspace_residual_linf_rad"] > 1e-10
+                or item["minimum_ramp_envelope_margin_m"] <= 0.0
+                or item["minimum_next_start_slack_m_s"] < 0.0
+                or item["summary_sha256"]
+                != _sha(folder / "private_rollout_summary.json")
+                or item["records_sha256"]
+                != _sha(folder / "private_rollout_records.jsonl")
+                or item["trace_sha256"]
+                != _sha(folder / "private_rollout_trace.npz")
+                or item["manifest_sha256"]
+                != _sha(folder / "private_rollout_manifest.json")):
+            raise ValueError("compensated private scene changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1492,7 +1592,63 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"最大起点松弛差 "
         f"{private_recompute['maximum_start_slack_error_m_s']:.2e} m/s。"
         "重算仍共享声明的 MuJoCo/PCC 几何模型，不是独立物理测量。"
-        "严格子空间、全链时延、未测场景及连续时间证据缺口仍在。", "",
+        "原未补偿伺服在首个 2 ms 状态已偏离严格子空间；"
+        "全链时延、未测场景及连续时间证据缺口仍在。", "",
+        "## 隐式积分阻尼补偿的私有力矩分支", "",
+        "对原伺服前十个 500 Hz 步的逐步重放表明：五场景均在第一步离开"
+        "原 1e-10 rad 子空间判据，且没有加速度裁剪或力矩饱和。"
+        "原模型使用 `mjINT_IMPLICITFAST`，其速度更新包含有效惯量 "
+        "`M + dt·D`；当前模型所测关节阻尼为 0.05。"
+        "只在私有分支的 67 路伺服逆动力学中加入这一阻尼项，"
+        "保持原机器人映射、力矩上限、十步斜坡及 MuJoCo 积分器。"
+        "这不是对原 1e-10 判据的放宽。", "",
+        "| 场景 | 原伺服前十步最大残差 rad | 补偿后前十步最大残差 rad | "
+        "补偿最大力矩变化 Nm | 触限步 |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for original, modified in zip(servo_origin["scenes"],
+                                  discrete_first_tick["scenes"]):
+        lines.append(
+            f"| {original['scene_id'][-2:]} | "
+            f"{original['maximum_first_tick_position_residual_rad']:.2e} | "
+            f"{modified['maximum_position_residual_rad']:.2e} | "
+            f"{modified['maximum_torque_change_nm']:.6f} | "
+            f"{modified['torque_saturation_step_count']} |"
+        )
+    lines += [
+        "", "上表原列是前十步的最大残差，五场景首个伺服步均已超判据；"
+        "补偿列仅是同初态反事实，不能用它声称已完成新闭环。"
+        "MuJoCo 的有效惯量和积分方法说明见 "
+        "[官方文档](https://mujoco.readthedocs.io/en/latest/computation/)。", "",
+        "再从发布 A.1 的五个初态启动补偿后的私有区间 QP，"
+        "每一规划周期用新状态重新查询、装配、验证并执行命令。"
+        "所测新轨迹不是旧 trace 的后续引用。", "",
+        "| 场景 | 执行周期 | 最大规划边界子空间残差 rad | "
+        "最小 500 Hz 包络余量 mm | 最小下一起点松弛 mm/s | "
+        "预检＋QP p95 / 最大 ms | 超 20 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for item in discrete_private["scenes"]:
+        timing = item["preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['scenario_id'][-2:]} | {item['executed_ticks']} | "
+            f"{item['maximum_subspace_residual_linf_rad']:.2e} | "
+            f"{1000*item['minimum_ramp_envelope_margin_m']:.3f} | "
+            f"{1000*item['minimum_next_start_slack_m_s']:.3f} | "
+            f"{timing['p95_ms']:.3f} / {timing['max_ms']:.3f} | "
+            f"{timing['over_20ms_count']} |"
+        )
+    lines += [
+        "", f"独立原生力矩重放检查了 "
+        f"{discrete_private['checked_500hz_states']} 个 500 Hz 状态，"
+        f"最大严格子空间残差 "
+        f"{discrete_private['maximum_500hz_subspace_residual_linf_rad']:.2e} rad；"
+        f"重算 {discrete_private['independent_interval_row_count']} 条区间行，"
+        f"不一致 {discrete_private['independent_recompute_failure_count']}，"
+        f"原力矩上限违例 {discrete_private['torque_limit_violation_count']}。"
+        "这仍共享 MuJoCo/PCC 模型，没有独立物理测量或连续时间认证。"
+        "该私有控制链的预检＋QP p95 全部超过 20 ms，"
+        "且未完成完整周期和生产在线故障注入；第三阶段门禁继续关闭。", "",
         "## 候选分支的同区间前瞻误差", "",
         "对同一 30 个私有候选分支，重建原只读 QP 的区间划分与筛选 ID，"
         "在执行后一规划起点冻结相同 ID 重算 h、17 维广义梯度及目标漂移。"

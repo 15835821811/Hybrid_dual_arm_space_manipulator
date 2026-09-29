@@ -83,7 +83,9 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
                        "summary_path": report_path.as_posix(),
                        "summary_sha256": _sha(report_path),
                        "trace_sha256": _sha(trace_path),
-                       "records_sha256": _sha(records_path)})
+                       "records_sha256": _sha(records_path),
+                       "claimed_strict_online_domain_all_executed_ticks":
+                           report["strict_online_domain_all_executed_ticks"]})
         verifier = WholeBodyCollisionVerifier(
             robot, _obstacles(saved["scenario"]), WholeBodyVerificationConfig(
                 minimum_clearance=run_cfg.whole_body_minimum_clearance_m,
@@ -118,9 +120,26 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         max_state_error = 0.0
         max_query_error = 0.0
         max_start_error = 0.0
+        max_microstep_subspace_residual = 0.0
+        first_microstep_outside_strict_subspace = None
+        torque_limit_violation_count = int(np.count_nonzero(
+            np.abs(torques) > robot.torque_limits[None, :] + 1e-10))
+        torque_at_limit_step_count = int(np.count_nonzero(np.any(
+            np.abs(torques) >= robot.torque_limits[None, :] - 1e-9,
+            axis=1)))
+        if torque_limit_violation_count:
+            raise ValueError(f"{scene} saved torque exceeded original limits")
         for step in range(TICKS * STEPS + 1):
             max_state_error = max(max_state_error, float(np.max(np.abs(
                 data.qpos - expected_qpos[step]))))
+            actual_projection = evaluator.shape_spec.project_actual_configuration(
+                data.qpos[evaluator.qpos_ids[:60]])
+            microstep_residual = actual_projection.residual_linf_rad
+            max_microstep_subspace_residual = max(
+                max_microstep_subspace_residual, microstep_residual)
+            if (first_microstep_outside_strict_subspace is None
+                    and microstep_residual > 1e-10):
+                first_microstep_outside_strict_subspace = step
             if step % STEPS == 0:
                 tick = step // STEPS
                 max_state_error = max(max_state_error, float(np.max(np.abs(
@@ -223,6 +242,8 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
                          "state_error": max_state_error,
                          "strict_subspace_status":
                              batch.geometry_domain_status,
+                         "subspace_residual_linf_rad":
+                             batch.subspace_residual_linf_rad,
                          "actual_envelope_status": current_envelope.status,
                          "errors": errors}
                 checks.append(check)
@@ -250,6 +271,22 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         inputs[-1]["max_state_error"] = max_state_error
         inputs[-1]["max_query_error_m"] = max_query_error
         inputs[-1]["max_start_slack_error_m_s"] = max_start_error
+        inputs[-1]["max_500hz_subspace_residual_linf_rad"] = (
+            max_microstep_subspace_residual)
+        inputs[-1]["first_500hz_step_outside_strict_subspace"] = (
+            first_microstep_outside_strict_subspace)
+        inputs[-1]["torque_limit_violation_count"] = torque_limit_violation_count
+        inputs[-1]["torque_at_limit_step_count"] = torque_at_limit_step_count
+        independent_strict = all(
+            item["strict_subspace_status"]
+            == "INSIDE_DECLARED_WORK_DOMAIN;ON_DECLARED_SHAPE_SUBSPACE"
+            for item in checks if item["scenario_id"] == scene
+            and item["tick"] < TICKS)
+        inputs[-1]["independent_strict_online_domain_all_executed_ticks"] = (
+            independent_strict)
+        if independent_strict != report["strict_online_domain_all_executed_ticks"]:
+            failures.append({"scenario_id": scene,
+                             "error": "STRICT_DOMAIN_CLAIM_DISAGREES_WITH_REPLAY"})
     paths = {"checks": output_dir / "private_recompute_checks.jsonl",
              "interval_rows": output_dir / "private_recompute_interval_rows.jsonl",
              "failures": output_dir / "private_recompute_failures.jsonl"}
@@ -275,6 +312,18 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
             item["max_start_slack_error_m_s"] for item in inputs),
         "pass_recompute": not failures and all(
             item["max_state_error"] <= 1e-8 for item in inputs),
+        "independent_strict_online_domain_all_executed_ticks": all(
+            item["independent_strict_online_domain_all_executed_ticks"]
+            for item in inputs),
+        "all_500hz_states_on_declared_shape_subspace": all(
+            item["first_500hz_step_outside_strict_subspace"] is None
+            for item in inputs),
+        "maximum_500hz_subspace_residual_linf_rad": max(
+            item["max_500hz_subspace_residual_linf_rad"] for item in inputs),
+        "torque_limit_violation_count": sum(
+            item["torque_limit_violation_count"] for item in inputs),
+        "torque_at_limit_step_count": sum(
+            item["torque_at_limit_step_count"] for item in inputs),
         "new_mode_online_admitted": False,
         "full_cycle_20ms_acceptance": False,
         "continuous_time_certified": False,
@@ -305,9 +354,17 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         f"{report['maximum_native_state_error']:.3e}；最大代理查询差 "
         f"{report['maximum_query_error_m']:.3e} m；最大起点松弛差 "
         f"{report['maximum_start_slack_error_m_s']:.3e} m/s。", "",
+        f"重放的 20,005 个 500 Hz 状态中，严格子空间判据全满足："
+        f"{report['all_500hz_states_on_declared_shape_subspace']}；"
+        f"最大残差 {report['maximum_500hz_subspace_residual_linf_rad']:.3e} rad。"
+        f"原力矩上限违例 {report['torque_limit_violation_count']}，"
+        f"触及上限的力矩步 {report['torque_at_limit_step_count']}。", "",
         "仍共享声明的 MuJoCo 与 PCC 几何实现，属于独立运行的模型内重算，"
-        "不是独立物理测量。私有运行越过了严格子空间接入条件，"
-        "因此不作为 stage 3 在线验收或连续时间证明。", "",
+        "不是独立物理测量。"
+        + ("所测规划执行状态满足严格子空间判据；"
+           if report["independent_strict_online_domain_all_executed_ticks"]
+           else "所测规划执行状态越过了严格子空间判据；")
+        + "本重算仍不构成 stage 3 在线验收或连续时间证明。", "",
     ]
     document_path = output_dir / "PRIVATE_RECOMPUTE.md"
     document_path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
