@@ -95,10 +95,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "batched_point_trial": root / "batched_query_trial" / "batched_query_summary.json",
         "prepared_cold_trial": root / "prepared_query_trial" / "prepared_query_summary.json",
         "prepared_full_trace": root / "prepared_full_trace" / "prepared_full_trace_summary.json",
+        "root_rescue_frontier": root / "root_rescue_frontier" / "root_rescue_summary.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro, batched, prepared_cold, prepared_full = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro, batched, prepared_cold, prepared_full, root_rescue = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -264,6 +265,54 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 != warm["modes"][mode]["counts"]["warm_all_task_unknown"]
                 or item["maximum_parity_error_m"] > 1e-12):
             raise ValueError("full saved-state prepared query parity failed")
+    rescue_dir = root / "root_rescue_frontier"
+    if (root_rescue["input_repartition_counterfactual_sha256"]
+            != _sha(sources["repartition_counterfactual"])
+            or root_rescue["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or root_rescue["online_control_changed"]
+            or root_rescue["new_interval_mode_executed"]
+            or root_rescue["budgets"] != [127, 255]
+            or root_rescue["max_leaves"] != 256):
+        raise ValueError("root rescue frontier provenance or scope failed")
+    for name, digest in root_rescue["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"root rescue source changed: {name}")
+    for mode in ("baseline", "enabled"):
+        item = root_rescue["inputs"][mode]
+        if (_sha(Path(item["metrics_path"])) != item["metrics_sha256"]
+                or len(item["traces"]) != 5):
+            raise ValueError("root rescue five-scenario input changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("root rescue trace changed")
+        result = root_rescue["modes"][mode]
+        counts = result["counts"]
+        frozen = repartition["modes"][mode]["counts"]["cold_UNKNOWN_CROSSES_GATE"]
+        if (counts["frozen_states"] != frozen
+                or result["maximum_parity_error_m"] > 1e-12):
+            raise ValueError("root rescue parity or frozen population failed")
+        for budget in root_rescue["budgets"]:
+            prefix = str(budget)
+            classified = sum(counts.get(f"{prefix}_{status}", 0) for status in (
+                "PROXY_CLEARANCE_AT_LEAST_GATE", "PROXY_CLEARANCE_BELOW_GATE",
+                "UNKNOWN_CROSSES_GATE"))
+            if (classified != frozen
+                    or result["budgets"][prefix]["prepared_query_ms"]["count"]
+                    != frozen):
+                raise ValueError("root rescue status totals changed")
+    rescue_outputs = {
+        "summary": "root_rescue_summary.json",
+        "states": "root_rescue_states.jsonl",
+        "failures": "root_rescue_failures.jsonl",
+        "document": "ROOT_RESCUE_FRONTIER.md",
+    }
+    rescue_manifest = json.loads((rescue_dir / "root_rescue_manifest.json").read_text(
+        encoding="utf-8"))
+    for name, filename in rescue_outputs.items():
+        if rescue_manifest[f"{name}_sha256"] != _sha(rescue_dir / filename):
+            raise ValueError(f"root rescue {name} hash changed")
+    if (rescue_dir / rescue_outputs["failures"]).stat().st_size != 0:
+        raise ValueError("root rescue parity failures present")
     gate = warm["online_admission_gate"]
     blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
@@ -610,6 +659,31 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "该改进降低了计算时间，没有消除未知或旧起点违例；"
         "也未计入 MuJoCo 正运动学、广义 Jacobian、原约束、QP 和力矩执行。"
         "没有新区间模式全链 20 ms 验收或连续时间认证。", "",
+        "## 根区间未知状态的预算敏感性", "",
+        "针对 64 点根区间重查询后仍未知的 998 个冻结 A.1 状态，"
+        "分别以 127 和 255 点预算从五段根区间独立重查。"
+        "下表仅统计这些冻结状态；每个查询均与参考实现逐状态核对分区和判定。", "",
+        "| 模式 | 冻结未知 | 点预算 | 确定安全 | 确定低于门槛 | 仍未知 | 前缀复用查询 p95 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = root_rescue["modes"][mode]
+        counts = item["counts"]
+        for budget in root_rescue["budgets"]:
+            prefix = str(budget)
+            lines.append(
+                f"| {mode} | {counts['frozen_states']} | {budget} | "
+                f"{counts.get(prefix + '_PROXY_CLEARANCE_AT_LEAST_GATE', 0)} | "
+                f"{counts.get(prefix + '_PROXY_CLEARANCE_BELOW_GATE', 0)} | "
+                f"{counts.get(prefix + '_UNKNOWN_CROSSES_GATE', 0)} | "
+                f"{item['budgets'][prefix]['prepared_query_ms']['p95']:.3f} |"
+            )
+    lines += [
+        "", "255 点预算使 enabled 组这 874 个冻结未知状态全部判为安全，"
+        "baseline 组仍有 17 个未知。该结果仅说明预算敏感性；"
+        "不覆盖其他已确定低于门槛的状态、旧速度起点违例或全任务动态演化。"
+        "查询耗时不含 MuJoCo 正运动学、广义 Jacobian、原约束、QP 与力矩伺服；"
+        "较大预算尚未进入在线控制，不能由此宣称 20 ms 全链通过。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"
