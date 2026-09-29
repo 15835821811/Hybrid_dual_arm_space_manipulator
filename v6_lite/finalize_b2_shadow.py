@@ -101,6 +101,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "weighted_qp_sphere_trial": root / "qp_sphere_trial" / "qp_sphere_summary.json",
         "private_five_scene_rollout": root / "private_rollout_400_summary" / "private_five_scene_summary.json",
         "private_rollout_recompute": root / "private_recompute_400" / "private_recompute_summary.json",
+        "private_qp_sphere_trial": root / "private_qp_sphere_trial" / "private_qp_sphere_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -112,7 +113,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -546,6 +547,58 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 != _sha(Path(item["summary_path"]).parent /
                         "private_rollout_records.jsonl")):
             raise ValueError("private recomputation input changed")
+    if (private_qp_sphere["schema"] != "v6_2_b2_private_qp_sphere_abba_v1"
+            or private_qp_sphere["scope"]
+            != "read_only_QP_on_private_torque_replayed_frozen_states"
+            or private_qp_sphere["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or private_qp_sphere["groups_predeclared"] != [
+                {"name": "a1", "method": "reference"},
+                {"name": "b1", "method": "sphere_screen"},
+                {"name": "b2", "method": "sphere_screen"},
+                {"name": "a2", "method": "reference"},
+            ]
+            or private_qp_sphere["ticks_per_scene"] != [1, 50, 100, 200, 300, 399]
+            or private_qp_sphere["point_budget"] != 255
+            or private_qp_sphere["record_count"] != 120
+            or private_qp_sphere["failure_count"] != 0
+            or private_qp_sphere["online_controller_changed"]
+            or private_qp_sphere["private_servo_commanded_by_trial"]
+            or private_qp_sphere["strict_online_domain_accepted"]
+            or private_qp_sphere["full_cycle_timing_measured"]):
+        raise ValueError("private QP sphere trial protocol changed")
+    for name, digest in private_qp_sphere["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"private QP sphere trial source changed: {name}")
+    if private_qp_sphere["input_metrics_sha256"] != _sha(
+            Path("v6_lite/output/v6_2_a1/enabled_root/output/v6_lite_metrics.json")):
+        raise ValueError("private QP sphere trial A.1 input changed")
+    private_qp_dir = root / "private_qp_sphere_trial"
+    private_qp_manifest = json.loads((private_qp_dir / "private_qp_sphere_manifest.json")
+                                     .read_text(encoding="utf-8"))
+    for label, filename in (("summary", "private_qp_sphere_summary.json"),
+                            ("records", "private_qp_sphere_records.jsonl"),
+                            ("failures", "private_qp_sphere_failures.jsonl"),
+                            ("document", "PRIVATE_QP_SPHERE.md")):
+        if private_qp_manifest[f"{label}_sha256"] != _sha(private_qp_dir / filename):
+            raise ValueError(f"private QP sphere {label} changed")
+    for label in ("records", "failures"):
+        if private_qp_sphere[f"{label}_sha256"] != private_qp_manifest[f"{label}_sha256"]:
+            raise ValueError(f"private QP sphere {label} summary changed")
+    for index in range(5):
+        scene_id = f"v6_lite_scenario_{index:02d}"
+        folder = root / "private_rollout_400" / f"scene_{index:02d}"
+        for label, filename in (("summary", "private_rollout_summary.json"),
+                                ("records", "private_rollout_records.jsonl"),
+                                ("trace", "private_rollout_trace.npz")):
+            if private_qp_sphere["inputs"][scene_id][f"{label}_sha256"] != _sha(
+                    folder / filename):
+                raise ValueError(f"private QP sphere input changed: {scene_id} {label}")
+    if (len(private_qp_sphere["groups"]) != 4
+            or any(group["record_count"] != 30 or group["mismatch_count"] != 0
+                   for group in private_qp_sphere["groups"])
+            or any(private_qp_sphere["summary"][method]["record_count"] != 60
+                   for method in ("reference", "sphere_screen"))):
+        raise ValueError("private QP sphere group comparison changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1323,6 +1376,31 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "五组从第 1 周期起均超出原严格形状子空间判据，且预检＋QP p95 "
         "都超过 20 ms；即使所测 500 Hz 胶囊在 PCC 管内，"
         "也不能把这些私有动作称为获准在线执行。", "",
+        "## 私有轨迹冻结状态的原 QP 包围球筛选", "",
+        "从上述五条私有力矩轨迹各取 tick 1/50/100/200/300/399，"
+        "按全对→筛选→筛选→全对重建同一 17 维加权 QP。"
+        "每个冻结状态清空对偶热启动；对比候选、执行选择、动作状态和全部约束行。"
+        "本试验只读状态，没有将候选发往力矩伺服。", "",
+        "| 方法 | 记录 | 预检＋QP p95 / p99 / 最大 ms | 超 20 ms | "
+        "原 MuJoCo 对处理 p95 ms | 精确对查询 p95 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for method in ("reference", "sphere_screen"):
+        item = private_qp_sphere["summary"][method]
+        timing = item["preflight_plus_qp_ms"]
+        lines.append(
+            f"| {method} | {item['record_count']} | "
+            f"{timing['p95']:.3f} / {timing['p99']:.3f} / "
+            f"{timing['max']:.3f} | {timing['over_20ms_count']} | "
+            f"{item['mujoco_pair_block_ms']['p95']:.3f} | "
+            f"{item['exact_pair_calls']['p95']:.1f} |"
+        )
+    lines += [
+        "", f"120 条只读记录的候选和约束行不一致 "
+        f"{private_qp_sphere['failure_count']}。"
+        "筛选降低了所测 MuJoCo 精确查询数，但预检＋QP 的 p99 和最大值"
+        "仍超过 20 ms；它也未计独立重算、十步力矩和在线调度。"
+        "该局部计时不能代替完整周期验收，严格子空间门禁仍不满足。", "",
         "## 私有力矩轨迹的单独重放与区间重算", "",
         "另启程序从保存的私有初态和 67 路力矩逐步重放，"
         "不调用 QP 求解，也不复用控制分支的区间批次；每个规划边界"

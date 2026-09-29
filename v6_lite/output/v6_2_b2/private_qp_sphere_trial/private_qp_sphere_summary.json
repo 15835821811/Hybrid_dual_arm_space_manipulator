@@ -1,0 +1,222 @@
+{
+  "schema": "v6_2_b2_private_qp_sphere_abba_v1",
+  "scope": "read_only_QP_on_private_torque_replayed_frozen_states",
+  "groups_predeclared": [
+    {
+      "name": "a1",
+      "method": "reference"
+    },
+    {
+      "name": "b1",
+      "method": "sphere_screen"
+    },
+    {
+      "name": "b2",
+      "method": "sphere_screen"
+    },
+    {
+      "name": "a2",
+      "method": "reference"
+    }
+  ],
+  "ticks_per_scene": [
+    1,
+    50,
+    100,
+    200,
+    300,
+    399
+  ],
+  "point_budget": 255,
+  "input_metrics_sha256": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416",
+  "inputs": {
+    "v6_lite_scenario_00": {
+      "trace_sha256": "0f1f081878ffebb728a3a946edb967a3ee65bd6ac3c95b23c13b275b427f656f",
+      "records_sha256": "a9741b993cbde87452b7104e003166dc598a89f74ad3da0dd903e18eebaf59e9",
+      "summary_sha256": "538260767b5266d702b36274e402e351eaccd9cb6c9ceb4b2c42df189bced4e1"
+    },
+    "v6_lite_scenario_01": {
+      "trace_sha256": "b4b3f13f3f731dbf3cdbd001408397961ea600d5dd69b4f09133ea045a6baf57",
+      "records_sha256": "aef8ee3fe4a06bf933e8c8de253f5bef92466e33f1c69fad360d0c6cf16cec6d",
+      "summary_sha256": "b07d2b000ea07a843888fbea4ff60e2336788cc6848b231b79db427c2d3abe68"
+    },
+    "v6_lite_scenario_02": {
+      "trace_sha256": "9937c02b4b3bf2504b9727b214de7c05984ec53da672978838395594a73e9175",
+      "records_sha256": "0e9b39a0356753a860ea4700e452c18f7f15a7be904810a2f335299eadf68497",
+      "summary_sha256": "165d78516bc65274adbf1ce14a9471682c6a7b7541c26dca997bb3956fc4c796"
+    },
+    "v6_lite_scenario_03": {
+      "trace_sha256": "5f368229a85712afb1ae4bf67e26dd900c3c1e83f23d695d7849ed404638539f",
+      "records_sha256": "965b7aeca04a2e0771ab2f8e916c0b9bf41ebd420d9668edaf953f1b8d795a5c",
+      "summary_sha256": "32be5b3f2617c22055b7d410a99169a30578c23f65f4af21405adf9d587aed25"
+    },
+    "v6_lite_scenario_04": {
+      "trace_sha256": "3ab9124bf07852705bd5a4765434b18f26d75390c743dc2aa9ccecb232e1d41b",
+      "records_sha256": "b793d1aee58e2b5ad07e186dfc150b0387fd3cdc034d227e8745a3c8cc3ae499",
+      "summary_sha256": "12ed57ede859fab9a4822a841f036dbef1c1b8d2f9b896f7f3daf61d87e55764"
+    }
+  },
+  "source_hash_newline_policy": "LF_NORMALIZED",
+  "source_sha256": {
+    "audit_b2_private_qp_sphere.py": "f57ec1624f594438b80be4ec83767316edd6f824cedd1c734da21cf2a9db8da3",
+    "audit_b2_weighted_qp_sphere_trial.py": "0bb6c1500401c600a6d4c0e05cb8ad6a666909d0af429ea24566a861eb70fca0",
+    "audit_b2_weighted_qp_probe.py": "ff28fb5fbf797127d86e5307e59886b08e0765679e0e6fb10d1bd1ddc2cc8437",
+    "hierarchical_qp.py": "1e2ae02348fadb231827a720b0cdfb1b0fd3aa8393f068d766c7145b91087a65",
+    "pcc_interval_cbf.py": "befb7cf61aebadb17b3b138fb6c6baf88a5d04fd51656ef88fdb5f010738c61d",
+    "safety_contract.py": "40d0e0ff22bba254d0fdce932632053724df57277546b5aac07431683357d4c0"
+  },
+  "online_controller_changed": false,
+  "private_servo_commanded_by_trial": false,
+  "strict_online_domain_accepted": false,
+  "full_cycle_timing_measured": false,
+  "groups": [
+    {
+      "name": "a1",
+      "method": "reference",
+      "record_count": 30,
+      "mismatch_count": 0
+    },
+    {
+      "name": "b1",
+      "method": "sphere_screen",
+      "record_count": 30,
+      "mismatch_count": 0
+    },
+    {
+      "name": "b2",
+      "method": "sphere_screen",
+      "record_count": 30,
+      "mismatch_count": 0
+    },
+    {
+      "name": "a2",
+      "method": "reference",
+      "record_count": 30,
+      "mismatch_count": 0
+    }
+  ],
+  "summary": {
+    "reference": {
+      "record_count": 60,
+      "preflight_plus_qp_ms": {
+        "count": 60,
+        "p50": 14.461750164628029,
+        "p95": 17.43446991313249,
+        "p99": 20.085295825265334,
+        "max": 22.45449973270297,
+        "over_20ms_count": 1
+      },
+      "qp_full_ms": {
+        "count": 60,
+        "p50": 10.149299865588546,
+        "p95": 12.600770290009676,
+        "p99": 15.748843038454636,
+        "max": 18.434700090438128,
+        "over_20ms_count": 0
+      },
+      "qp_solver_ms": {
+        "count": 60,
+        "p50": 1.0376500431448221,
+        "p95": 3.9535450283437963,
+        "p99": 4.906391911208627,
+        "max": 5.314199719578028,
+        "over_20ms_count": 0
+      },
+      "mujoco_pair_block_ms": {
+        "count": 60,
+        "p50": 4.4240502174943686,
+        "p95": 5.094450246542692,
+        "p99": 5.9531120676547244,
+        "max": 6.651199888437986,
+        "over_20ms_count": 0
+      },
+      "shape_block_ms": {
+        "count": 60,
+        "p50": 1.3692500069737434,
+        "p95": 1.8173650838434696,
+        "p99": 2.048713774420319,
+        "max": 2.352799754589796,
+        "over_20ms_count": 0
+      },
+      "query_ms": {
+        "count": 60,
+        "p50": 0.4497501067817211,
+        "p95": 0.5011247470974922,
+        "p99": 0.5330619635060428,
+        "max": 0.5438001826405525,
+        "over_20ms_count": 0
+      },
+      "exact_pair_calls": {
+        "count": 60,
+        "p50": 2927.0,
+        "p95": 2927.0,
+        "p99": 2927.0,
+        "max": 2927.0,
+        "over_20ms_count": 60
+      }
+    },
+    "sphere_screen": {
+      "record_count": 60,
+      "preflight_plus_qp_ms": {
+        "count": 60,
+        "p50": 11.384850135073066,
+        "p95": 16.275809938088052,
+        "p99": 21.86703403480349,
+        "max": 25.287500116974115,
+        "over_20ms_count": 1
+      },
+      "qp_full_ms": {
+        "count": 60,
+        "p50": 7.044400088489056,
+        "p95": 12.201399938203389,
+        "p99": 16.743909092619994,
+        "max": 20.157000049948692,
+        "over_20ms_count": 1
+      },
+      "qp_solver_ms": {
+        "count": 60,
+        "p50": 1.3186000287532806,
+        "p95": 4.096769983880222,
+        "p99": 5.041541024111209,
+        "max": 5.525399930775166,
+        "over_20ms_count": 0
+      },
+      "mujoco_pair_block_ms": {
+        "count": 60,
+        "p50": 1.2511499226093292,
+        "p95": 1.5158501919358967,
+        "p99": 2.3292802786454527,
+        "max": 2.8473003767430782,
+        "over_20ms_count": 0
+      },
+      "shape_block_ms": {
+        "count": 60,
+        "p50": 1.348900143057108,
+        "p95": 1.8025549361482258,
+        "p99": 3.622681908309454,
+        "max": 4.643499851226807,
+        "over_20ms_count": 0
+      },
+      "query_ms": {
+        "count": 60,
+        "p50": 0.45795016922056675,
+        "p95": 0.5253100302070379,
+        "p99": 0.6274171033874149,
+        "max": 0.7298998534679413,
+        "over_20ms_count": 0
+      },
+      "exact_pair_calls": {
+        "count": 60,
+        "p50": 226.0,
+        "p95": 230.0,
+        "p99": 230.0,
+        "max": 230.0,
+        "over_20ms_count": 60
+      }
+    }
+  },
+  "record_count": 120,
+  "failure_count": 0,
+  "records_sha256": "fd65690806f8184a82b502bf7f9b9db05a257282964105213c7fb0c3c7c43a5d",
+  "failures_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
