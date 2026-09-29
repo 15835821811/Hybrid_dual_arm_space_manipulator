@@ -1,0 +1,85 @@
+{
+  "schema": "v6_2_b2_online_evidence_report_v1",
+  "stage3_functional_five_scenes_complete": true,
+  "original_20ms_gate_met": false,
+  "functional_performance_waiver_used": true,
+  "new_mode_original_scenario_checks_fail_only_latency": true,
+  "new_mode_native_replay": {
+    "passed_count": 24,
+    "total_count": 26,
+    "failures": [
+      "reported_summary_passed",
+      "measured_rate_deadlines"
+    ]
+  },
+  "new_mode_execution_contract": {
+    "passed_count": 11,
+    "total_count": 11,
+    "passed": true
+  },
+  "new_mode_interval_recompute": {
+    "task_state_checks": 6755,
+    "interval_rows_recomputed": 12350,
+    "failure_count": 0
+  },
+  "new_mode_failure_injection_passed": 4,
+  "legacy_native_replay": {
+    "passed_count": 24,
+    "total_count": 26,
+    "failures": [
+      "reported_summary_passed",
+      "measured_rate_deadlines"
+    ]
+  },
+  "legacy_execution_contract": {
+    "passed_count": 11,
+    "total_count": 11
+  },
+  "metrics": {
+    "legacy_qp_p95_max_ms": 23.281054827384644,
+    "first_new_qp_p95_max_ms": 30.81637497525662,
+    "optimized_new_full_control_p95_max_ms": 22.98745031002909,
+    "repeat_full_control_p95_ms": [
+      24.406539811752737,
+      24.50794992037118,
+      25.020475150085986
+    ],
+    "new_rigid_final_error_m_max": 2.76057621035103e-06,
+    "new_continuum_path_rmse_m_max": 0.0001723770949381677,
+    "new_whole_body_minimum_clearance_m": 0.014996316290347192,
+    "new_qp_failures": 0
+  },
+  "configuration_changes": {
+    "qp": [
+      "enable_pcc_cbf"
+    ],
+    "run": [
+      "pcc_mode"
+    ]
+  },
+  "input_sha256": {
+    "old_metrics": "331a8fb4bce64c2fa196bd1dfe4bd4e0cb22091428f43f093f7244133dd4f634",
+    "old_native_validation": "40e6bdf8263925b4a244d02d7e70a73d3df8c23b8bd59e96556414d4c31e352d",
+    "old_execution_validation": "212b7df6ad3132c32eb63effb706b9488b0a961248e30774b31446826c268b08",
+    "new_metrics": "b5332723270a062bba9f99dcd0bf1eae63655208f2cd028d7a08a9956b16e7b1",
+    "new_native_validation": "30f4127cfb790b1d06c76296bb94bcf33d36b757276f6ad1a0415462016f95b5",
+    "new_execution_validation": "51a4c2390d78b92084d7a3711539638b0d79008bf1d65e99d0f65940b795c46f",
+    "unoptimized_metrics": "c2e244778d3c73bac44f3a2b5b59136ea580f095c4b86d8e71171ab890f69a8c",
+    "interval_recompute": "b9fb7a764567c4d93ad4675d99ba3030f1ede201a96321207d0550b485404979",
+    "failure_injection": "9a6c32a21e7f283f4d7df1248990d0a78e3a09c506dc6536fd430235193dd37c",
+    "repeated_timing": "f7b23f5061ee7c1986d5f829c08c5936ffddc14ee28684a676f7dcd8761b1484",
+    "online_visual": "9dc90e95c25fdf3010ca65461e4cb4e7be08ebf63b5ec73216b1e8c2ddd7560b",
+    "aabb_negative": "6e95e3696ddad2bc64063130483ce58038d1808b758e79643ff67a2c1b257c57",
+    "qp_breakdown": "6731ae2d445fdec029be9ee800d77aab8e0bb970fb4c50c9d202424f78fbb65c"
+  },
+  "new_trace_sha256": {
+    "v6_lite_scenario_00": "c38385e2b4915ba642e4d46b16341e2d3e756d92299d55c346af19fe548eea1f",
+    "v6_lite_scenario_01": "e674ab5c8b2bdf9b2c7bfb97b95e73d3653a45ff9c3acb88953cdd470bd49a3f",
+    "v6_lite_scenario_02": "bdedbe07c5de8f9e4e5335d9a32c7aca53dbe31a59ec62080967321edb37b67b",
+    "v6_lite_scenario_03": "60bc27403a1725931acf41180392a6cd4854c95fb12558ef8148d53c2c43cc11",
+    "v6_lite_scenario_04": "b1c967c527bef6269d03f46a5da7d7448c9894dbb51470004eb41b0d1d5f3e4e"
+  },
+  "figure_sha256": "63cec55e450546e47b8f81ffe8418bb10b65dc7679e1a23e416621ae15b9be20",
+  "historical_a1_artifact_reused_as_new_replay": false,
+  "continuous_time_certified": false
+}

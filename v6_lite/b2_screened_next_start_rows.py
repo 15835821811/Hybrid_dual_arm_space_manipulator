@@ -13,7 +13,7 @@ from dataclasses import replace
 import mujoco
 import numpy as np
 
-from v6_lite.audit_b2_mujoco_sphere_screen import SPHERE_SCREEN_PAD_M
+SPHERE_SCREEN_PAD_M = 1e-6
 from v6_lite.b2_reused_next_start import ReusedNextStart
 from v6_lite.recompute_execution_constraints import ReplayConstraintBuilder
 

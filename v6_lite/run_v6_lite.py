@@ -101,8 +101,11 @@ class V6LiteRunConfig:
     task_latency_p95_threshold_s: float = 0.020
     torque_latency_p95_threshold_s: float = 0.002
     steady_window_s: float = 1.5
+    pcc_mode: str = "legacy_pcc"
 
     def validate(self) -> None:
+        if self.pcc_mode not in ("legacy_pcc", "bounded_interval_pcc"):
+            raise ValueError("unsupported PCC control mode")
         if self.scenario_count < 3:
             raise ValueError("at least three independently seeded scenarios are required")
         if self.duration_s <= self.steady_window_s:
@@ -561,7 +564,24 @@ def run_scenario(
     qpos_write_count_after_initialization = 0
     qvel_write_count_after_initialization = 0
 
-    qp = HierarchicalVelocityQP(spec, model, verifier.pairs, qp_config)
+    interval_admission = None
+    interval_next_start_checker = None
+    if run_config.pcc_mode == "bounded_interval_pcc":
+        if qp_config.enable_pcc_cbf or not qp_config.enable_capsule_cbf:
+            raise ValueError("bounded interval PCC requires legacy PCC off and capsule CBF on")
+        from v6_lite.b2_interval_online_optimized import (
+            OptimizedBoundedIntervalAdmission,
+            OptimizedBoundedIntervalVelocityQP,
+        )
+        from v6_lite.pcc_interval_cbf import FixedIntervalCBFEvaluator
+        evaluator = FixedIntervalCBFEvaluator(spec, model)
+        qp = OptimizedBoundedIntervalVelocityQP(
+            spec, model, verifier.pairs, qp_config, evaluator=evaluator)
+        interval_admission = OptimizedBoundedIntervalAdmission(spec, model, qp)
+        from v6_lite.b2_screened_next_start_rows import ScreenedNextStart
+        interval_next_start_checker = ScreenedNextStart()
+    else:
+        qp = HierarchicalVelocityQP(spec, model, verifier.pairs, qp_config)
     pcc_monitor = (
         PCCMonitor(scenario_id=scenario.scenario_id)
         if qp_config.enable_pcc_cbf or qp_config.enable_capsule_cbf
@@ -672,12 +692,73 @@ def run_scenario(
         "shape_clearance_latency": [],
     }
     task_qpos_trace: list[np.ndarray] = []
+    if interval_admission is not None:
+        task_log.update({
+            "interval_preflight_latency_s": [],
+            "interval_qp_only_latency_s": [],
+            "interval_preview_latency_s": [],
+            "interval_branch_latency_s": [],
+            "interval_next_start_latency_s": [],
+            "interval_full_control_latency_s": [],
+            "interval_point_evaluations": [],
+            "interval_selected_rows": [],
+            "interval_proxy_lower_m": [],
+            "interval_current_envelope_margin_m": [],
+            "interval_ramp_minimum_envelope_margin_m": [],
+            "interval_realized_next_start_minimum_slack_m_s": [],
+        })
+    approved_branch = None
+
+    def reject_interval(reason: str, diagnostic: dict[str, Any]) -> None:
+        failure_dir = trace_dir.parent / "failures"
+        failure_dir.mkdir(parents=True, exist_ok=True)
+        partial_path = failure_dir / f"{scenario.scenario_id}_interval_partial_trace.npz"
+        np.savez_compressed(
+            partial_path,
+            **{key: np.asarray(value) for key, value in log.items()},
+            **{f"task_{key}": np.asarray(value) for key, value in task_log.items()},
+            task_qpos=np.asarray(task_qpos_trace),
+            initial_qpos=initial_qpos,
+            initial_qvel=initial_qvel,
+            failure_time_s=np.asarray(float(data.time)),
+        )
+        _write_json(failure_dir / f"{scenario.scenario_id}_interval_failure.json", {
+            "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+            "pcc_mode": run_config.pcc_mode,
+            "scenario_id": scenario.scenario_id,
+            "time_s": float(data.time),
+            "failure_reason": reason,
+            "diagnostic": diagnostic,
+            "next_servo_step_executed": False,
+            "partial_trace": {"path": partial_path.as_posix(),
+                              "sha256": _sha256(partial_path)},
+        })
+        raise UncertifiedExecutionError(
+            f"{scenario.scenario_id} at {data.time:.3f}s: {reason}; "
+            "no further servo step executed")
     initial_momentum = _robot_momentum(model, data, base_body_id)
 
     for physics_step in range(physics_steps):
         current_time = float(data.time)
         if physics_step % task_stride == 0:
+            task_tick_started = time.perf_counter()
             mujoco.mj_forward(model, data)
+            interval_diagnostic = None
+            if interval_admission is not None:
+                from v6_lite.b2_interval_online import IntervalPreflightFailure
+                interval_started = time.perf_counter()
+                try:
+                    interval_diagnostic = interval_admission.prepare(
+                        data, command_velocity)
+                except IntervalPreflightFailure as error:
+                    reject_interval(error.reason, error.diagnostic)
+                except Exception as error:
+                    reject_interval("INTERVAL_PREFLIGHT_EXCEPTION", {
+                        "exception_type": type(error).__name__,
+                        "exception": str(error),
+                    })
+                interval_diagnostic["preflight_latency_s"] = (
+                    time.perf_counter() - interval_started)
             (
                 rigid_target,
                 rigid_target_velocity,
@@ -695,8 +776,9 @@ def run_scenario(
             continuum_target, continuum_target_velocity = scenario.continuum_target.sample(
                 current_time
             )
-            result = qp.solve(
-                data,
+            try:
+                result = qp.solve(
+                    data,
                 rigid_target_position=rigid_target,
                 rigid_target_velocity=rigid_target_velocity,
                 rigid_target_rotation=rigid_target_rotation,
@@ -707,8 +789,94 @@ def run_scenario(
                 continuum_target_angular_velocity=np.zeros(3, dtype=np.float64),
                 state_timestamp_s=current_time,
                 target_timestamp_s=current_time,
-                ramp_start_velocity=command_velocity,
-            )
+                    ramp_start_velocity=command_velocity,
+                )
+            except Exception as error:
+                if interval_admission is None:
+                    raise
+                reject_interval("INTERVAL_QP_EXCEPTION", {
+                    "exception_type": type(error).__name__,
+                    "exception": str(error),
+                    "preflight": interval_diagnostic,
+                })
+            if interval_admission is not None:
+                # The QP queries temporary geometry states. Refresh the
+                # execution data before matching its ten-step preview.
+                mujoco.mj_forward(model, data)
+                interval_diagnostic.update({
+                    "solver_status": result.solver_status,
+                    "solver_candidate": result.solver_candidate.tolist(),
+                    "validated_command": (
+                        result.planner_velocity.tolist()
+                        if result.planner_velocity is not None else None),
+                    "execution_mode": result.action_validation.mode.value,
+                    "action_failure_reason": (
+                        result.action_validation.failure_reason.value),
+                    "candidate_valid": result.action_validation.candidate_valid,
+                    "ramp_valid": result.action_validation.ramp_valid,
+                })
+            if interval_admission is not None and result.planner_velocity is not None:
+                # Simulate the exact requested ten-step torque ramp before its
+                # first servo step. A failed realized envelope or next-start
+                # check blocks execution, including a nominally valid QP.
+                from v6_lite.b2_interval_runtime import preview_ramp
+                preview_started = time.perf_counter()
+                try:
+                    approved_branch, preview_next = preview_ramp(
+                        model, spec, interval_admission.evaluator,
+                        interval_admission.envelope,
+                        data.qpos.copy(), data.qvel.copy(), float(data.time),
+                        reference_q_state.copy(), command_velocity.copy(),
+                        result.planner_velocity.copy(),
+                        physics_period_s=run_config.physics_period_s,
+                        task_period_s=run_config.task_period_s,
+                    )
+                    branch_finished = time.perf_counter()
+                    next_start = interval_next_start_checker(
+                        model, spec, verifier, qp_config,
+                        interval_admission.evaluator, preview_next,
+                        result.planner_velocity)
+                except Exception as error:
+                    reject_interval("INTERVAL_RAMP_PREVIEW_EXCEPTION", {
+                        "exception_type": type(error).__name__,
+                        "exception": str(error),
+                        "preflight": interval_diagnostic,
+                    })
+                covered = all(item["status"] == "COVERED_AT_THIS_STATE"
+                              for item in approved_branch["coverage"])
+                interval_diagnostic["ramp_minimum_envelope_margin_m"] = min(
+                    item["minimum_margin_m"]
+                    for item in approved_branch["coverage"])
+                interval_diagnostic["preview_latency_s"] = (
+                    time.perf_counter() - preview_started)
+                interval_diagnostic["branch_latency_s"] = (
+                    branch_finished - preview_started)
+                interval_diagnostic["next_start_latency_s"] = (
+                    time.perf_counter() - branch_finished)
+                interval_diagnostic["realized_next_start"] = next_start
+                if not covered:
+                    reject_interval("RAMP_MICROSTATE_NOT_ENVELOPED",
+                                    interval_diagnostic)
+                from v6_lite.pcc_interval_cbf import SHAPE_SUBSPACE_MEMBERSHIP_TOL_RAD
+                domain = interval_admission.evaluator.shape_spec
+                for microstate in approved_branch["coverage"]:
+                    shape_q = np.asarray(microstate["shape_q"])
+                    if (microstate["subspace_residual_linf_rad"]
+                            > SHAPE_SUBSPACE_MEMBERSHIP_TOL_RAD
+                            or np.any(shape_q < domain.work_domain_lower_rad)
+                            or np.any(shape_q > domain.work_domain_upper_rad)):
+                        reject_interval("RAMP_MICROSTATE_OUTSIDE_DECLARED_DOMAIN", {
+                            **interval_diagnostic,
+                            "failed_microstate": microstate,
+                        })
+                if (next_start["proxy_status"]
+                        != "PROXY_CLEARANCE_AT_LEAST_GATE"
+                        or next_start["frozen_rows_status"]
+                        != "START_ROWS_SATISFIED"):
+                    reject_interval("REALIZED_NEXT_START_UNSUPPORTED",
+                                    interval_diagnostic)
+            interval_full_control_latency_s = (
+                time.perf_counter() - task_tick_started)
             recent_snapshots.append(
                 _constraint_snapshot(result, data, reference_q_state, command_velocity)
             )
@@ -720,8 +888,36 @@ def run_scenario(
             task_log["wall_time_since_start_s"].append(
                 time.perf_counter() - scenario_wall_start
             )
-            task_log["full_latency"].append(result.full_latency_s)
+            task_log["full_latency"].append(
+                interval_full_control_latency_s if interval_admission is not None
+                else result.full_latency_s)
             task_log["solver_latency"].append(result.solver_latency_s)
+            if interval_diagnostic is not None:
+                task_log["interval_qp_only_latency_s"].append(
+                    result.full_latency_s)
+                task_log["interval_preview_latency_s"].append(
+                    interval_diagnostic.get("preview_latency_s", np.nan))
+                task_log["interval_branch_latency_s"].append(
+                    interval_diagnostic.get("branch_latency_s", np.nan))
+                task_log["interval_next_start_latency_s"].append(
+                    interval_diagnostic.get("next_start_latency_s", np.nan))
+                task_log["interval_full_control_latency_s"].append(
+                    interval_full_control_latency_s)
+                task_log["interval_preflight_latency_s"].append(
+                    interval_diagnostic["preflight_latency_s"])
+                task_log["interval_point_evaluations"].append(
+                    interval_diagnostic["point_evaluations"])
+                task_log["interval_selected_rows"].append(
+                    interval_diagnostic["selected_interval_count"])
+                task_log["interval_proxy_lower_m"].append(
+                    interval_diagnostic["proxy_lower_m"])
+                task_log["interval_current_envelope_margin_m"].append(
+                    interval_diagnostic["current_envelope_margin_m"])
+                task_log["interval_ramp_minimum_envelope_margin_m"].append(
+                    interval_diagnostic.get("ramp_minimum_envelope_margin_m", np.nan))
+                task_log["interval_realized_next_start_minimum_slack_m_s"].append(
+                    interval_diagnostic.get("realized_next_start", {}).get(
+                        "minimum_start_slack_m_s", np.nan))
             task_log["success"].append(result.success)
             task_log["iterations"].append(result.solver_iterations)
             task_log["active_clearance"].append(result.active_clearance_constraint_count)
@@ -955,22 +1151,37 @@ def run_scenario(
         reference_dq = reference_step.velocity
         feedforward_ddq = reference_step.feedforward_acceleration
         torque_started = time.perf_counter()
-        torque, desired_arm_acceleration, servo_diagnostics = _model_based_servo_torque(
-            model,
-            data,
-            spec,
-            qpos_ids,
-            dof_ids,
-            base_dof_slice,
-            reference_q,
-            reference_dq,
-            feedforward_ddq,
-            full_mass,
-        )
+        if interval_admission is None:
+            torque, desired_arm_acceleration, servo_diagnostics = _model_based_servo_torque(
+                model, data, spec, qpos_ids, dof_ids, base_dof_slice,
+                reference_q, reference_dq, feedforward_ddq, full_mass,
+            )
+        else:
+            from v6_lite.b2_interval_runtime import compensated_torque
+            torque, desired_arm_acceleration, compensated = compensated_torque(
+                model, data, spec, qpos_ids, dof_ids, base_dof_slice,
+                reference_q, reference_dq, feedforward_ddq, full_mass,
+            )
+            servo_diagnostics = ServoDiagnostics(
+                acceleration_unclipped_max_rad_s2=compensated[
+                    "acceleration_unclipped_max_rad_s2"],
+                acceleration_clip_count=compensated["acceleration_clip_count"],
+                torque_unclipped_max_nm=compensated["required_torque_abs_max_nm"],
+                torque_saturation_count=compensated[
+                    "compensated_torque_saturation_count"],
+            )
         data.ctrl[:] = torque
         torque_latency = time.perf_counter() - torque_started
         mujoco.mj_step(model, data)
         segment_step += 1
+        if approved_branch is not None:
+            preview_error = float(np.max(np.abs(
+                data.qpos - approved_branch["qpos_states"][segment_step])))
+            if preview_error > 1e-9:
+                reject_interval("RAMP_PREVIEW_REALIZATION_MISMATCH", {
+                    "servo_substep": segment_step,
+                    "qpos_linf_error": preview_error,
+                })
 
         (
             rigid_target,
@@ -1634,6 +1845,11 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="enable the V6.1-B actual-chain capsule clearance CBF",
     )
+    parser.add_argument(
+        "--pcc-mode", choices=("legacy_pcc", "bounded_interval_pcc"),
+        default="legacy_pcc",
+        help="select the PCC backend before starting the run",
+    )
     return parser
 
 
@@ -1650,6 +1866,7 @@ def main() -> None:
         seed=args.seed,
         duration_s=args.duration,
         verification_subdivisions=args.verification_subdivisions,
+        pcc_mode=args.pcc_mode,
     )
     result = run_suite(
         config,

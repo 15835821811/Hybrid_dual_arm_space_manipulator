@@ -59,6 +59,8 @@ def _compensated_torque(model, data, robot, qpos_ids, dof_ids, base_dof,
         "compensated_torque_saturation_count": int(np.count_nonzero(
             command != required)),
         "acceleration_clip_count": original_diagnostics.acceleration_clip_count,
+        "acceleration_unclipped_max_rad_s2": (
+            original_diagnostics.acceleration_unclipped_max_rad_s2),
         "torque_change_linf_nm": float(np.max(np.abs(command - original))),
         "required_torque_abs_max_nm": float(np.max(np.abs(required))),
     }

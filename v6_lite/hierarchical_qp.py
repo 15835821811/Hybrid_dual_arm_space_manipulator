@@ -1013,6 +1013,11 @@ class HierarchicalVelocityQP:
         feasible = bool(float(np.min(feasibility)) >= -cfg.feasibility_tolerance)
         return value, feasible, status, iteration, dual
 
+    def _unconstrained_solve(self, hessian: np.ndarray,
+                             linear: np.ndarray) -> np.ndarray:
+        """Diagnostic unconstrained point; the constrained QP is unchanged."""
+        return np.linalg.solve(hessian, linear)
+
     def solve(
         self,
         data: mujoco.MjData,
@@ -1120,7 +1125,7 @@ class HierarchicalVelocityQP:
         degenerate = clearance_block.degenerate_gradient_count
         clearance_sources = np.asarray(clearance_block.sources, dtype=object)
         lower, upper = self._velocity_bounds(planner_q)
-        unconstrained = np.clip(-np.linalg.solve(hessian, linear), lower, upper)
+        unconstrained = np.clip(-self._unconstrained_solve(hessian, linear), lower, upper)
         initial = np.clip(self.previous_velocity, lower, upper)
 
         pcc_row_mask = np.asarray(

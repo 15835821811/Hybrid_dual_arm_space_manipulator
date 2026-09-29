@@ -2,6 +2,17 @@
 
 > 历史五场景产物合同：`v6_lite_6`（2026-09-21）。当前开发分支运行合同：`v6_2_a_safety_contract`。
 
+## V6.2-B.2 开关式区间 PCC
+
+`--pcc-mode legacy_pcc` 为默认旧 PCC 后端；`--pcc-mode bounded_interval_pcc` 在同一个 17 维加权速度 QP 中使用固定弧长区间的下界、广义梯度和前瞻行。两种模式均保留原 MuJoCo pair、实际链胶囊约束、67 路力矩伺服、0.45/0.55 十步斜坡和执行前拒绝。新区间模式在每个规划边界重新检查覆盖、代理工作域、实际链包络、当前命令及斜坡预演；不可判定或预演失败时记录原因并阻断下一次力矩步。
+
+```powershell
+.venv\Scripts\python.exe -m v6_lite.run_v6_lite --pcc-mode bounded_interval_pcc --enable-capsule-cbf --output-dir v6_lite/output/v6_2_b2/my_online_run
+.venv\Scripts\python.exe -m v6_lite.validate_v6_lite --root v6_lite --output-dir v6_lite/output/v6_2_b2/my_online_run
+```
+
+完整五场景、真实力矩重放、独立区间行重算、故障注入和自动生成的性能图见 [B.2 在线证据](../docs/V6_2_B2_ONLINE_EVIDENCE.md)。原 20 ms 全控制 p95 门槛仍适用；当前新模式仅在明确标注的功能接入条件下验收，性能未达标。区间代理与真实机器人全域安全不能等同，也没有连续时间安全证明。
+
 ## V6.2-A 执行安全合同
 
 当前分支保留原 17 维加权速度 QP、67 路力矩伺服、目标外生漂移和全部原 MuJoCo 碰撞 pair。求解器候选速度和实际选中的命令分开记录；QP 不可行、迭代耗尽、输入过期或当前线性化约束/速度斜坡检查失败时，`selected_command` 为空、状态为 `UNCERTIFIED`，运行在下一次力矩更新前中止并写出失败事件。零速度、上一周期命令和高初始速度下的停止动作都不会自动获得安全身份。
