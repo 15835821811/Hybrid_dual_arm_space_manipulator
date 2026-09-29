@@ -102,6 +102,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "private_five_scene_rollout": root / "private_rollout_400_summary" / "private_five_scene_summary.json",
         "private_rollout_recompute": root / "private_recompute_400" / "private_recompute_summary.json",
         "private_qp_sphere_trial": root / "private_qp_sphere_trial" / "private_qp_sphere_summary.json",
+        "private_qp_sphere_full": root / "private_qp_sphere_full" / "private_full_qp_sphere_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -113,7 +114,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, private_qp_full, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -599,6 +600,54 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or any(private_qp_sphere["summary"][method]["record_count"] != 60
                    for method in ("reference", "sphere_screen"))):
         raise ValueError("private QP sphere group comparison changed")
+    if (private_qp_full["schema"] != "v6_2_b2_private_full_qp_sphere_v1"
+            or private_qp_full["scope"] != "read_only_all_saved_private_planning_states"
+            or private_qp_full["max_ticks_per_scene"] != 400
+            or private_qp_full["scene_count"] != 5
+            or private_qp_full["point_budget"] != 255
+            or private_qp_full["record_count"] != 4000
+            or private_qp_full["failure_count"] != 0
+            or private_qp_full["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or private_qp_full["production_online_controller_changed"]
+            or private_qp_full["private_servo_commanded_by_trial"]
+            or private_qp_full["full_cycle_timing_measured"]
+            or private_qp_full["strict_online_domain_accepted"]):
+        raise ValueError("private full-trace QP sphere protocol changed")
+    for name, digest in private_qp_full["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"private full-trace QP source changed: {name}")
+    if private_qp_full["input_metrics_sha256"] != private_qp_sphere[
+            "input_metrics_sha256"]:
+        raise ValueError("private full-trace QP A.1 input changed")
+    if (private_qp_full["method_order_by_scene"] != {
+            f"v6_lite_scenario_{index:02d}":
+            (["reference", "sphere_screen"] if index % 2 == 0
+             else ["sphere_screen", "reference"])
+            for index in range(5)}):
+        raise ValueError("private full-trace method order changed")
+    for index in range(5):
+        scene_id = f"v6_lite_scenario_{index:02d}"
+        if private_qp_full["input_private_hashes"][scene_id] != private_qp_sphere[
+                "inputs"][scene_id]:
+            raise ValueError(f"private full-trace QP input changed: {scene_id}")
+    for method in ("reference", "sphere_screen"):
+        item = private_qp_full["summary"][method]
+        if (item["preflight_plus_qp_ms"]["count"] != 2000
+                or item["saved_command_max_error"]["max"] > 1e-8):
+            raise ValueError(f"private full-trace QP result changed: {method}")
+    full_qp_dir = root / "private_qp_sphere_full"
+    full_qp_manifest = json.loads((full_qp_dir /
+                                   "private_full_qp_sphere_manifest.json")
+                                  .read_text(encoding="utf-8"))
+    for label, filename in (("summary", "private_full_qp_sphere_summary.json"),
+                            ("records", "private_full_qp_sphere_records.jsonl"),
+                            ("failures", "private_full_qp_sphere_failures.jsonl")):
+        if full_qp_manifest[f"{label}_sha256"] != _sha(full_qp_dir / filename):
+            raise ValueError(f"private full-trace QP {label} changed")
+    for label in ("records", "failures"):
+        if private_qp_full[f"{label}_sha256"] != full_qp_manifest[
+                f"{label}_sha256"]:
+            raise ValueError(f"private full-trace QP {label} summary changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1398,9 +1447,38 @@ def finalize(root: Path, output_dir: Path) -> dict:
     lines += [
         "", f"120 条只读记录的候选和约束行不一致 "
         f"{private_qp_sphere['failure_count']}。"
-        "筛选降低了所测 MuJoCo 精确查询数，但预检＋QP 的 p99 和最大值"
+        "此抽样计时从 `mj_forward` 之后开始；筛选降低了所测 MuJoCo 精确查询数，"
+        "但预检＋QP 的 p99 和最大值"
         "仍超过 20 ms；它也未计独立重算、十步力矩和在线调度。"
         "该局部计时不能代替完整周期验收，严格子空间门禁仍不满足。", "",
+        "## 五条私有轨迹全部规划状态的 QP 筛选复算", "",
+        "将上述抽样扩展到每条私有轨迹的全部 400 个已保存规划状态。"
+        "参考与筛选方法各保持自己的连续对偶热启动；方法先后按场景交替，"
+        "候选与真实已执行私有命令逐状态比较。计时从 `mj_forward` 之前开始，"
+        "覆盖该次正运动学、当前包络、根区间查询及 QP；"
+        "不含独立约束重算、力矩伺服或在线调度。这仍是冻结状态的只读复算，"
+        "没有重新执行筛选候选，也没有测完整控制周期。", "",
+        "| 方法 | 冻结状态 | 预检＋QP p95 / p99 / 最大 ms | 超 20 ms | "
+        "原 MuJoCo 对处理 p95 ms | 精确对查询 p95 | 对已执行命令最大差 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for method in ("reference", "sphere_screen"):
+        item = private_qp_full["summary"][method]
+        timing = item["preflight_plus_qp_ms"]
+        lines.append(
+            f"| {method} | {timing['count']} | "
+            f"{timing['p95']:.3f} / {timing['p99']:.3f} / "
+            f"{timing['max']:.3f} | {timing['over_20ms_count']} | "
+            f"{item['mujoco_pair_block_ms']['p95']:.3f} | "
+            f"{item['exact_pair_calls']['p95']:.1f} | "
+            f"{item['saved_command_max_error']['max']:.2e} |"
+        )
+    lines += [
+        "", f"全量 {private_qp_full['record_count']} 条复算记录，"
+        f"逐状态候选、约束行哈希、动作状态和保存命令不一致 "
+        f"{private_qp_full['failure_count']}。"
+        "筛选组的局部 p95 低于 20 ms，但 p99、最大值和超周期计数表明尾部仍越过"
+        "规划周期；缺少完整周期计时，新执行路径的严格子空间条件也未成立。", "",
         "## 私有力矩轨迹的单独重放与区间重算", "",
         "另启程序从保存的私有初态和 67 路力矩逐步重放，"
         "不调用 QP 求解，也不复用控制分支的区间批次；每个规划边界"
