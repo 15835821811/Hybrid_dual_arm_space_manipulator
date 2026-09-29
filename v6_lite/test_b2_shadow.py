@@ -128,6 +128,46 @@ class B2ShadowTests(unittest.TestCase):
         self.assertEqual(heldout["counts"]["checked_count"], 1024)
         self.assertTrue(heldout["passed"])
 
+    def test_refined_start_terms_reconstruct_saved_pcc_violation(self) -> None:
+        path = (Path(__file__).parent / "output" / "v6_2_b2"
+                / "refined_start" / "refined_start_report.json")
+        report = json.loads(path.read_text(encoding="utf-8"))
+        for record in report["records"]:
+            terms = record["worst_interval_start_terms"]
+            if terms is None:
+                continue
+            self.assertEqual(terms["interval_id"],
+                             record["feasibility"]["worst_start_source"])
+            self.assertAlmostEqual(
+                terms["point_signed_distance_m"] - terms["tube_radius_m"]
+                - terms["coverage_term_m"] - terms["numerical_pad_m"]
+                - terms["safe_distance_m"], terms["h_m"], places=10,
+            )
+            self.assertAlmostEqual(
+                terms["shape_rate_m_s"] + terms["base_reaction_rate_m_s"]
+                + terms["target_drift_m_s"] + terms["barrier_rate_m_s"],
+                terms["start_residual_m_s"], places=10,
+            )
+            self.assertAlmostEqual(
+                terms["start_residual_m_s"],
+                record["feasibility"]["start_clearance_min_slack_m_s"],
+                places=9,
+            )
+        for mode in ("baseline", "enabled"):
+            bad = [record for record in report["records"]
+                   if record["mode"] == mode
+                   and record["feasibility"]["status"] == "START_CLEARANCE_VIOLATION"]
+            self.assertEqual(
+                sum(record["worst_interval_start_terms"]["h_m"] >= 0
+                    for record in bad),
+                report["modes"][mode]["start_violations_with_positive_interval_h"],
+            )
+            self.assertEqual(
+                sum(record["worst_interval_start_terms"]["h_m"] < 0
+                    for record in bad),
+                report["modes"][mode]["start_violations_with_negative_interval_h"],
+            )
+
     def test_stage2_manifest_preserves_failed_admission_gate(self) -> None:
         base = Path(__file__).parent / "output" / "v6_2_b2"
         manifest = json.loads((base / "stage2_summary" / "stage2_manifest.json").read_text(
@@ -171,6 +211,8 @@ class B2ShadowTests(unittest.TestCase):
         refined = json.loads((base / "refined_start" / "refined_start_report.json").read_text(
             encoding="utf-8"
         ))
+        for source, digest in refined["source_sha256"].items():
+            self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(), digest)
         self.assertEqual(refined["input_frontier"]["sha256"], hashlib.sha256(
             frontier_path.read_bytes()
         ).hexdigest())

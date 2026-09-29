@@ -145,6 +145,39 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "代理低于门槛不是实际链碰撞；细分后区间函数与梯度必须重新计算，"
         "且分区切换还可能产生新的起点违例。逐状态预算、失败原因及运行耗时均保留在"
         "预算阶梯和细分起点 JSON 中。", "",
+        "最差 PCC 起点行进一步拆为静态区间 h、形变速度、基座反作用、目标漂移"
+        "和屏障项，各项和须重组为保存的起点残差：", "",
+        "| 模式 | 细分后起点违反且最差区间 h >= 0 | 细分后起点违反且最差区间 h < 0 |",
+        "| --- | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        ref = refined["modes"][mode]
+        lines.append(
+            f"| {mode} | {ref['start_violations_with_positive_interval_h']} | "
+            f"{ref['start_violations_with_negative_interval_h']} |"
+        )
+    enabled_bad_terms = [
+        item["worst_interval_start_terms"] for item in refined["records"]
+        if item["mode"] == "enabled"
+        and item["feasibility"]["status"] == "START_CLEARANCE_VIOLATION"
+        and item["worst_interval_start_terms"] is not None
+    ]
+    if enabled_bad_terms:
+        def mean_rate_mm_s(name: str) -> float:
+            return (1000.0 * sum(item[name] for item in enabled_bad_terms)
+                    / len(enabled_bad_terms))
+
+        lines.append(
+            f"启用组这 {len(enabled_bad_terms)} 条最差行的平均形变速率 "
+            f"{mean_rate_mm_s('shape_rate_m_s'):.2f} mm/s、基座反作用 "
+            f"{mean_rate_mm_s('base_reaction_rate_m_s'):.2f} mm/s、目标漂移 "
+            f"{mean_rate_mm_s('target_drift_m_s'):.2f} mm/s、屏障项 "
+            f"{mean_rate_mm_s('barrier_rate_m_s'):.2f} mm/s。"
+        )
+    lines += [
+        "", "启用组静态下界仍达到 5 mm 门槛的起点也可能因旧动作的相对逼近速率"
+        "违反新区间 CBF；进一步提高静态查询预算本身不能使这些旧斜坡起点合格。"
+        "这不证明新区间模式一定无法找到不同轨迹，也不批准在当前门禁下接入。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"

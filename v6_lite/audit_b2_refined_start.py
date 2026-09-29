@@ -26,7 +26,9 @@ from v6_lite.b2_shadow_feasibility import (
 )
 from v6_lite.continuum_shape_model import transform_from_free_qpos
 from v6_lite.hierarchical_qp import HierarchicalQPConfig
-from v6_lite.pcc_interval_cbf import FixedIntervalCBFEvaluator, IntervalPartition
+from v6_lite.pcc_interval_cbf import (
+    FixedIntervalCBFEvaluator, IntervalPartition, IntervalSafetyBatch,
+)
 from v6_lite.pcc_persistent_interval_query import PersistentIntervalDecisionQuery
 from v6_lite.recompute_execution_constraints import ReplayConstraintBuilder, _obstacles
 from v6_lite.run_v6_lite import default_v6_lite_robot_spec
@@ -59,6 +61,43 @@ def _summary(values: list[float]) -> dict:
              "p95": float(np.quantile(array, .95)),
              "p99": float(np.quantile(array, .99)), "max": float(np.max(array))}
             if values else {"count": 0})
+
+
+def _worst_interval_start_terms(batch: IntervalSafetyBatch,
+                                source: str | None,
+                                start_velocity: np.ndarray,
+                                barrier_gain: float,
+                                expected_slack: float | None) -> dict | None:
+    """Decompose the violated frozen interval row without changing its test."""
+    if source is None or not source.startswith("pcc_interval:"):
+        return None
+    rows = [row for row in batch.rows if row.interval_id == source]
+    if len(rows) != 1 or rows[0].derivative_status != "SUPPORTED":
+        raise ValueError(f"worst PCC row is missing or unsupported: {source}")
+    row = rows[0]
+    shape_rate = float(row.shape_gradient @ start_velocity[:10])
+    total_planner_rate = float(row.generalized_gradient @ start_velocity)
+    reaction_rate = total_planner_rate - shape_rate
+    target_rate = float(row.target_drift_m_s)
+    barrier_rate = float(barrier_gain * row.h_m)
+    residual = total_planner_rate + target_rate + barrier_rate
+    if expected_slack is None or abs(residual - expected_slack) > 1e-9:
+        raise ValueError(f"PCC start decomposition disagrees with frozen row: {source}")
+    return {
+        "interval_id": source,
+        "point_signed_distance_m": row.point_signed_distance_m,
+        "tube_radius_m": row.tube_radius_m,
+        "coverage_term_m": row.coverage_term_m,
+        "numerical_pad_m": row.numerical_pad_m,
+        "safe_distance_m": row.safe_distance_m,
+        "h_m": row.h_m,
+        "shape_rate_m_s": shape_rate,
+        "base_reaction_rate_m_s": reaction_rate,
+        "target_drift_m_s": target_rate,
+        "barrier_rate_m_s": barrier_rate,
+        "start_residual_m_s": residual,
+        "static_clearance_status": ("BELOW_GATE" if row.h_m < 0.0 else "AT_LEAST_GATE"),
+    }
 
 
 def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
@@ -205,6 +244,11 @@ def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
                                 interval_row_count=len(selected_ids),
                                 historical_endpoint=selected[tick],
                             )
+                            worst_terms = _worst_interval_start_terms(
+                                batch, feasibility.worst_start_source, old_velocity,
+                                cfg.pcc_clearance_barrier_gain,
+                                feasibility.start_clearance_min_slack_m_s,
+                            )
                             point_total = decision.point_evaluation_count + batch.point_evaluation_count
                             jac_total = batch.jacobian_evaluation_count
                             records.append({
@@ -222,6 +266,7 @@ def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
                                 "within_existing_96_jacobian_budget": jac_total <= 96,
                                 "within_20ms_interval_budget": interval_time_ms <= 20.0,
                                 "feasibility": feasibility.to_dict(),
+                                "worst_interval_start_terms": worst_terms,
                             })
                     data.ctrl[:] = control
                     mujoco.mj_step(model, data)
@@ -276,6 +321,18 @@ def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
                     x["partition_leaf_count"] for x in own
                 ]),
                 "proxy_status": dict(Counter(x["proxy_status"] for x in own)),
+                "start_violations_with_positive_interval_h": sum(
+                    x["feasibility"]["status"] == "START_CLEARANCE_VIOLATION"
+                    and x["worst_interval_start_terms"] is not None
+                    and x["worst_interval_start_terms"]["h_m"] >= 0.0
+                    for x in own
+                ),
+                "start_violations_with_negative_interval_h": sum(
+                    x["feasibility"]["status"] == "START_CLEARANCE_VIOLATION"
+                    and x["worst_interval_start_terms"] is not None
+                    and x["worst_interval_start_terms"]["h_m"] < 0.0
+                    for x in own
+                ),
             }
         report = {
             "schema": "v6_2_b2_native_replay_refined_start_diagnostic_v1",
@@ -318,6 +375,19 @@ def run(output_dir: Path, *, frontier_path: Path = DEFAULT_FRONTIER,
                 f"{item['interval_20ms_exceeded']} |"
             )
         lines += [
+            "", "| 模式 | 最差区间静态 h >= 0 但起点违反 | 最差区间静态 h < 0 且起点违反 |",
+            "| --- | ---: | ---: |",
+        ]
+        for mode in ("baseline", "enabled"):
+            item = summary[mode]
+            lines.append(
+                f"| {mode} | {item['start_violations_with_positive_interval_h']} | "
+                f"{item['start_violations_with_negative_interval_h']} |"
+            )
+        lines += [
+            "", "静态 h >= 0 仍可能因旧斜坡起点的形变、反作用基座和目标相对速度"
+            "使 CBF 速率残差低于原容差；JSON 对每条最差 PCC 行保留各项及重组校验。"
+            "这属于旧动作轨迹的冻结代理行诊断，不代表实际链已经碰撞。", "",
             "", "线性 LP 仅诊断冻结行是否有可行终点；历史斜坡起点不通过时，"
             "终点可行不能批准动作。区间计算耗时不含独立 MuJoCo/胶囊重算或 LP，"
             "更不等于新控制器全链耗时。代理低于门槛不等于实际链碰撞。"
