@@ -50,7 +50,13 @@ def _source_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
-def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
+def run(root: Path, a1_root: Path, output_dir: Path, *,
+        scenes: tuple[str, ...] = SCENES, ticks: int = TICKS,
+        direct_single_scene: bool = False) -> dict:
+    if (not scenes or len(set(scenes)) != len(scenes)
+            or any(scene not in SCENES for scene in scenes)
+            or ticks <= 0 or (direct_single_scene and len(scenes) != 1)):
+        raise ValueError("invalid private replay selection")
     output_dir.mkdir(parents=True, exist_ok=False)
     robot = default_v6_lite_robot_spec()
     metrics_path = a1_root / "enabled_root/output/v6_lite_metrics.json"
@@ -64,20 +70,21 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
     interval_rows = []
     failures = []
     inputs = []
-    for index, scene in enumerate(SCENES):
+    for scene in scenes:
         saved = scene_data[scene]
-        folder = root / f"scene_{index:02d}"
+        folder = (root if direct_single_scene else
+                  root / f"scene_{int(scene.rsplit('_', 1)[1]):02d}")
         report_path = folder / "private_rollout_summary.json"
         report = json.loads(report_path.read_text(encoding="utf-8"))
         trace_path = folder / "private_rollout_trace.npz"
         records_path = folder / "private_rollout_records.jsonl"
         records = [json.loads(line) for line in records_path.read_text(
             encoding="utf-8").splitlines()]
-        if (report["scenario_id"] != scene or report["executed_ticks"] != TICKS
+        if (report["scenario_id"] != scene or report["executed_ticks"] != ticks
                 or report["stop_reason"] != "HORIZON_COMPLETE"
                 or report["trace_sha256"] != _sha(trace_path)
                 or report["records_sha256"] != _sha(records_path)
-                or len(records) != TICKS):
+                or len(records) != ticks):
             raise ValueError(f"{scene} private trace protocol changed")
         inputs.append({"scenario_id": scene,
                        "summary_path": report_path.as_posix(),
@@ -110,9 +117,9 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
             torques = trace["torque"].copy()
             expected_qpos = trace["qpos_states"].copy()
             expected_task_qvel = trace["task_qvel_states"].copy()
-        if (torques.shape != (TICKS * STEPS, 67)
-                or expected_qpos.shape[0] != TICKS * STEPS + 1
-                or expected_task_qvel.shape[0] != TICKS + 1):
+        if (torques.shape != (ticks * STEPS, 67)
+                or expected_qpos.shape[0] != ticks * STEPS + 1
+                or expected_task_qvel.shape[0] != ticks + 1):
             raise ValueError(f"{scene} trace dimensions changed")
         data.qpos[:] = initial_qpos
         data.qvel[:] = initial_qvel
@@ -129,7 +136,7 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
             axis=1)))
         if torque_limit_violation_count:
             raise ValueError(f"{scene} saved torque exceeded original limits")
-        for step in range(TICKS * STEPS + 1):
+        for step in range(ticks * STEPS + 1):
             max_state_error = max(max_state_error, float(np.max(np.abs(
                 data.qpos - expected_qpos[step]))))
             actual_projection = evaluator.shape_spec.project_actual_configuration(
@@ -184,7 +191,7 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
                                if worst_index is not None else None)
                 start_source = (sources[worst_index]
                                 if worst_index is not None else None)
-                reference = records[tick] if tick < TICKS else None
+                reference = records[tick] if tick < ticks else None
                 prior = (records[tick - 1]["realized_next_start"]
                          if tick else None)
                 query_error = 0.0
@@ -261,11 +268,11 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
                             "target_drift_m_s": row.target_drift_m_s,
                             "derivative_status": row.derivative_status,
                         })
-            if step < TICKS * STEPS:
+            if step < ticks * STEPS:
                 data.ctrl[:] = torques[step]
                 mujoco.mj_step(model, data)
         print(f"[b2-private-recompute] {scene}: "
-              f"{TICKS + 1} task states, "
+              f"{ticks + 1} task states, "
               f"{sum(item['scenario_id'] == scene for item in failures)} mismatches",
               flush=True)
         inputs[-1]["max_state_error"] = max_state_error
@@ -281,7 +288,7 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
             item["strict_subspace_status"]
             == "INSIDE_DECLARED_WORK_DOMAIN;ON_DECLARED_SHAPE_SUBSPACE"
             for item in checks if item["scenario_id"] == scene
-            and item["tick"] < TICKS)
+            and item["tick"] < ticks)
         inputs[-1]["independent_strict_online_domain_all_executed_ticks"] = (
             independent_strict)
         if independent_strict != report["strict_online_domain_all_executed_ticks"]:
@@ -301,8 +308,10 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
     report = {
         "schema": "v6_2_b2_private_torque_interval_recompute_v1",
         "scope": "private_trace_native_torque_replay_and_separate_interval_start_recompute",
-        "scenes": list(SCENES), "task_ticks_per_scene": TICKS,
-        "torque_steps_per_scene": TICKS * STEPS,
+        "input_layout": ("direct_single_scene" if direct_single_scene
+                         else "scene_subdirectories"),
+        "scenes": list(scenes), "task_ticks_per_scene": ticks,
+        "torque_steps_per_scene": ticks * STEPS,
         "checked_task_states": len(checks),
         "checked_interval_rows": len(interval_rows),
         "failure_count": len(failures),
@@ -345,7 +354,7 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         stream.write("\n")
     lines = [
         "# B.2 私有力矩轨迹的单独重放与区间重算", "",
-        f"五场景各 {TICKS * STEPS} 个原生力矩步，从私有 trace 保存的初态"
+        f"{len(scenes)} 个场景各 {ticks * STEPS} 个原生力矩步，从私有 trace 保存的初态"
         "重新执行 MuJoCo；每个规划边界重新做根区间查询、固定区间 17 维"
         "梯度及目标漂移、原 MuJoCo／胶囊约束和当前起点残差。"
         "本程序不调用 QP 求解，也不复用控制分支的区间批次。", "",
@@ -354,7 +363,8 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         f"{report['maximum_native_state_error']:.3e}；最大代理查询差 "
         f"{report['maximum_query_error_m']:.3e} m；最大起点松弛差 "
         f"{report['maximum_start_slack_error_m_s']:.3e} m/s。", "",
-        f"重放的 20,005 个 500 Hz 状态中，严格子空间判据全满足："
+        f"重放的 {len(scenes) * (ticks * STEPS + 1):,} 个 500 Hz 状态中，"
+        "严格子空间判据全满足："
         f"{report['all_500hz_states_on_declared_shape_subspace']}；"
         f"最大残差 {report['maximum_500hz_subspace_residual_linf_rad']:.3e} rad。"
         f"原力矩上限违例 {report['torque_limit_violation_count']}，"
@@ -387,8 +397,13 @@ def main() -> None:
     parser.add_argument("--a1-root", type=Path, default=Path(
         "v6_lite/output/v6_2_a1"))
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--single-scene-id", choices=SCENES)
+    parser.add_argument("--ticks", type=int, default=TICKS)
     args = parser.parse_args()
-    report = run(args.root, args.a1_root, args.output_dir)
+    report = run(args.root, args.a1_root, args.output_dir,
+                 scenes=((args.single_scene_id,) if args.single_scene_id else SCENES),
+                 ticks=args.ticks,
+                 direct_single_scene=args.single_scene_id is not None)
     print(json.dumps({key: report[key] for key in (
         "checked_task_states", "checked_interval_rows", "failure_count",
         "maximum_native_state_error", "maximum_start_slack_error_m_s",

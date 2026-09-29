@@ -151,6 +151,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
             "repeat_summary.json",
         "cholesky_private_five_scene": root / "cholesky_private_400_summary" /
             "cholesky_private_five_scene_summary.json",
+        "cholesky_full_scene03": root / "cholesky_private_full_scene03_1350" /
+            "private_rollout_summary.json",
+        "cholesky_full_scene03_recompute": root /
+            "cholesky_private_full_scene03_recompute" /
+            "private_recompute_summary.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -375,6 +380,81 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 or item["trace_sha256"]
                 != cholesky["scenes"][scene_index]["trace_sha256"]):
             raise ValueError(f"cholesky repeat raw run changed: {folder}")
+    full_scene_dir = root / "cholesky_private_full_scene03_1350"
+    full_scene = json.loads(sources["cholesky_full_scene03"].read_text(
+        encoding="utf-8"))
+    full_scene_manifest = json.loads((full_scene_dir /
+        "private_rollout_manifest.json").read_text(encoding="utf-8"))
+    for label, filename in {
+        "summary": "private_rollout_summary.json",
+        "records": "private_rollout_records.jsonl",
+        "trace": "private_rollout_trace.npz",
+        "document": "PRIVATE_ROLLOUT.md",
+    }.items():
+        if full_scene_manifest[f"{label}_sha256"] != _sha(full_scene_dir / filename):
+            raise ValueError(f"full-scene private {label} hash changed")
+    full_scene_timing = full_scene["private_preflight_plus_qp_timing"]
+    if (full_scene_manifest["failure_sha256"] is not None
+            or full_scene["scenario_id"] != "v6_lite_scenario_03"
+            or full_scene["predeclared_horizon_ticks"] != 1350
+            or full_scene["attempted_ticks"] != 1350
+            or full_scene["executed_ticks"] != 1350
+            or full_scene["stop_reason"] != "HORIZON_COMPLETE"
+            or full_scene["trace_sha256"] != full_scene_manifest["trace_sha256"]
+            or full_scene["records_sha256"] != full_scene_manifest["records_sha256"]
+            or full_scene["cholesky_unconstrained_call_count"] != 1350
+            or full_scene["cholesky_unconstrained_fallback_count"] != 0
+            or not full_scene["strict_online_domain_all_executed_ticks"]
+            or full_scene_timing["count"] != 1350
+            or full_scene_timing["p95_ms"] > 20.0
+            or full_scene["production_online_controller_changed"]
+            or full_scene["stage3_admission"]
+            or full_scene["full_cycle_20ms_acceptance"]
+            or full_scene["continuous_time_certified"]):
+        raise ValueError("full-scene private scope or timing changed")
+    for name, digest in full_scene["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"full-scene private source changed: {name}")
+    full_recompute_dir = root / "cholesky_private_full_scene03_recompute"
+    full_recompute = json.loads(sources["cholesky_full_scene03_recompute"].read_text(
+        encoding="utf-8"))
+    full_recompute_manifest = json.loads((full_recompute_dir /
+        "private_recompute_manifest.json").read_text(encoding="utf-8"))
+    for label, filename in {
+        "summary": "private_recompute_summary.json",
+        "checks": "private_recompute_checks.jsonl",
+        "interval_rows": "private_recompute_interval_rows.jsonl",
+        "failures": "private_recompute_failures.jsonl",
+        "document": "PRIVATE_RECOMPUTE.md",
+    }.items():
+        if full_recompute_manifest[f"{label}_sha256"] != _sha(
+                full_recompute_dir / filename):
+            raise ValueError(f"full-scene recompute {label} hash changed")
+    if (full_recompute["input_layout"] != "direct_single_scene"
+            or full_recompute["scenes"] != ["v6_lite_scenario_03"]
+            or full_recompute["task_ticks_per_scene"] != 1350
+            or full_recompute["torque_steps_per_scene"] != 13500
+            or full_recompute["checked_task_states"] != 1351
+            or full_recompute["checked_interval_rows"] != 2371
+            or full_recompute["failure_count"] != 0
+            or not full_recompute["pass_recompute"]
+            or not full_recompute["independent_strict_online_domain_all_executed_ticks"]
+            or not full_recompute["all_500hz_states_on_declared_shape_subspace"]
+            or full_recompute["torque_limit_violation_count"] != 0
+            or full_recompute["inputs"][0]["summary_sha256"]
+            != _sha(sources["cholesky_full_scene03"])
+            or full_recompute["inputs"][0]["trace_sha256"]
+            != full_scene["trace_sha256"]
+            or full_recompute["inputs"][0]["records_sha256"]
+            != full_scene["records_sha256"]
+            or full_recompute["new_mode_online_admitted"]
+            or full_recompute["full_cycle_20ms_acceptance"]
+            or full_recompute["continuous_time_certified"]
+            or (full_recompute_dir / "private_recompute_failures.jsonl").stat().st_size):
+        raise ValueError("full-scene private recompute or scope changed")
+    for name, digest in full_recompute["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"full-scene recompute source changed: {name}")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -2041,6 +2121,36 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "因此 400 周期私有预检＋QP 重复时延诊断通过，但不是完整任务周期"
         "或硬实时证明。旧影子门禁、完整五场景新闭环、原 26/11 项新 trace "
         "与故障注入仍未全部验收；阶段二总门禁保持关闭。", "",
+        "### 单场景完整 27 s 私有诊断", "",
+        "从已发布启用组场景 03 的初态开始，将同一私有 Cholesky 诊断"
+        "延长至预声明的 1,350 个规划周期；旧轨迹此后只作为差异对照。"
+        "另启进程从保存的 67 路力矩原生重放并重算固定区间行。", "",
+        "| 指标 | 结果 |", "| --- | ---: |",
+        f"| 执行 / 预声明周期 | {full_scene['executed_ticks']} / "
+        f"{full_scene['predeclared_horizon_ticks']} |",
+        f"| 预检＋QP p95 / p99 / 最大 ms | {full_scene_timing['p95_ms']:.3f} / "
+        f"{full_scene_timing['p99_ms']:.3f} / {full_scene_timing['max_ms']:.3f} |",
+        f"| 超 20 ms 周期 / 最长连续次数 | "
+        f"{full_scene_timing['over_20ms_count']} / "
+        f"{full_scene_timing['longest_over_20ms_run']} |",
+        f"| 独立重放规划状态 / 区间行 / 不一致 | "
+        f"{full_recompute['checked_task_states']} / "
+        f"{full_recompute['checked_interval_rows']} / "
+        f"{full_recompute['failure_count']} |",
+        f"| 最小下一起点松弛 mm/s | "
+        f"{1000 * full_scene['minimum_realized_next_start_slack_m_s']:.3f} |",
+        f"| 最小原生 500 Hz 包络余量 mm | "
+        f"{1000 * full_scene['minimum_ramp_envelope_margin_m']:.3f} |",
+        f"| 17 维诊断解回退 / 力矩上限违例 | "
+        f"{full_scene['cholesky_unconstrained_fallback_count']} / "
+        f"{full_recompute['torque_limit_violation_count']} |",
+        "", "这次单场景长时轨迹满足所测代理、起点、离散包络和严格"
+        "形状子空间条件；独立重放最大状态误差为 "
+        f"{full_recompute['maximum_native_state_error']:.1e}。"
+        "计时仅含私有预检＋QP，不含独立重算、十步力矩伺服、"
+        "状态监控和实时调度。其余四个完整场景、正式生产切换、"
+        "原 26/11 项新 trace 验收及故障注入仍未完成；"
+        "阶段二接入门禁保持关闭。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"
