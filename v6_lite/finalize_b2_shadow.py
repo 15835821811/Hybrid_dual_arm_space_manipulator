@@ -96,10 +96,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "prepared_cold_trial": root / "prepared_query_trial" / "prepared_query_summary.json",
         "prepared_full_trace": root / "prepared_full_trace" / "prepared_full_trace_summary.json",
         "root_rescue_frontier": root / "root_rescue_frontier" / "root_rescue_summary.json",
+        "full_root255_census": root / "full_root255_census" / "full_root255_summary.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro, batched, prepared_cold, prepared_full, root_rescue = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -328,6 +329,54 @@ def finalize(root: Path, output_dir: Path) -> dict:
             raise ValueError(f"root rescue {name} hash changed")
     if (rescue_dir / rescue_outputs["failures"]).stat().st_size != 0:
         raise ValueError("root rescue parity failures present")
+    full_root_dir = root / "full_root255_census"
+    if (full_root["input_warm_shadow_sha256"] != _sha(sources["warm_shadow"])
+            or full_root["input_root_rescue_summary_sha256"]
+            != _sha(sources["root_rescue_frontier"])
+            or full_root["input_root_rescue_states_sha256"]
+            != _sha(rescue_dir / "root_rescue_states.jsonl")
+            or full_root["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or full_root["point_budget"] != 255
+            or full_root["max_leaves"] != 256
+            or full_root["online_control_changed"]
+            or full_root["new_interval_mode_executed"]):
+        raise ValueError("full root-255 census provenance or scope failed")
+    for name, digest in full_root["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"full root-255 source changed: {name}")
+    for mode in ("baseline", "enabled"):
+        item = full_root["inputs"][mode]
+        if (_sha(Path(item["metrics_path"])) != item["metrics_sha256"]
+                or len(item["traces"]) != 5):
+            raise ValueError("full root-255 five-scenario input changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("full root-255 trace changed")
+        result = full_root["modes"][mode]
+        counts = result["counts"]
+        classified = sum(counts.get(status, 0) for status in (
+            "PROXY_CLEARANCE_AT_LEAST_GATE", "PROXY_CLEARANCE_BELOW_GATE",
+            "UNKNOWN_CROSSES_GATE"))
+        if (counts["task_states"] != 6750
+                or classified != counts["task_states"]
+                or counts["root_rescue_matches"]
+                != root_rescue["modes"][mode]["counts"]["frozen_states"]
+                or counts.get("parity_failures", 0)
+                or result["maximum_parity_error_m"] > 1e-12):
+            raise ValueError("full root-255 census parity or population failed")
+    full_outputs = {
+        "summary": "full_root255_summary.json",
+        "states": "full_root255_states.jsonl",
+        "failures": "full_root255_failures.jsonl",
+        "document": "FULL_ROOT255_CENSUS.md",
+    }
+    full_manifest = json.loads((full_root_dir / "full_root255_manifest.json").read_text(
+        encoding="utf-8"))
+    for name, filename in full_outputs.items():
+        if full_manifest[f"{name}_sha256"] != _sha(full_root_dir / filename):
+            raise ValueError(f"full root-255 {name} hash changed")
+    if (full_root_dir / full_outputs["failures"]).stat().st_size != 0:
+        raise ValueError("full root-255 parity failures present")
     gate = warm["online_admission_gate"]
     blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
@@ -721,6 +770,32 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "不覆盖其他已确定低于门槛的状态、旧速度起点违例或全任务动态演化。"
         "查询耗时不含 MuJoCo 正运动学、广义 Jacobian、原约束、QP 与力矩伺服；"
         "较大预算尚未进入在线控制，不能由此宣称 20 ms 全链通过。", "",
+        "## 全部保存状态的 255 点根区间查询", "",
+        "为避免只看先前未知状态带来的选择偏差，对两组五场景全部 13,500 个"
+        "保存规划状态分别从五段根区间重新查询；每状态参考实现与前缀复用实现"
+        "逐项比较，先前 998 个未知状态还与独立预算阶梯交叉核对。", "",
+        "| 模式 | 状态 | 代理安全 | 代理低于 5 mm | 未知 | 预算耗尽 | 分区/判定不一致 | 参考查询 p95 ms | 前缀复用 p95 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = full_root["modes"][mode]
+        counts = item["counts"]
+        lines.append(
+            f"| {mode} | {counts['task_states']} | "
+            f"{counts.get('PROXY_CLEARANCE_AT_LEAST_GATE', 0)} | "
+            f"{counts.get('PROXY_CLEARANCE_BELOW_GATE', 0)} | "
+            f"{counts.get('UNKNOWN_CROSSES_GATE', 0)} | "
+            f"{counts['budget_exhausted']} | "
+            f"{counts.get('parity_failures', 0)} | "
+            f"{item['reference_query_ms']['p95']:.3f} | "
+            f"{item['prepared_query_ms']['p95']:.3f} |"
+        )
+    lines += [
+        "", "enabled 旧轨迹的保存状态在此高预算根区间诊断中全部确定代理安全；"
+        "baseline 则有大量确定低于门槛的旧状态，继续增加查询预算无法使同一"
+        "状态的真实代理净空变大。代理分类不等于 MuJoCo 实际碰撞。"
+        "这些是冷查询计时，不含 MuJoCo 正运动学、广义 Jacobian、原约束、"
+        "QP 和力矩执行；也没有解决旧速度起点违例或证明新模式全链 20 ms。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"

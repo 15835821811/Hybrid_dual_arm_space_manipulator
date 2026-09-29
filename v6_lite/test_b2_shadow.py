@@ -299,6 +299,7 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("prepared_cold_trial", manifest["sources"])
         self.assertIn("prepared_full_trace", manifest["sources"])
         self.assertIn("root_rescue_frontier", manifest["sources"])
+        self.assertIn("full_root255_census", manifest["sources"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()
