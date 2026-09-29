@@ -293,6 +293,8 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("repartition_counterfactual", manifest["sources"])
         self.assertIn("repartition_handoff", manifest["sources"])
         self.assertIn("weighted_qp_probe", manifest["sources"])
+        self.assertIn("initial_qp_probe", manifest["sources"])
+        self.assertIn("initial_qp_probe_failure", manifest["sources"])
         self.assertIn("full_state_envelope", manifest["sources"])
         self.assertIn("microstep_envelope", manifest["sources"])
         self.assertIn("batched_point_trial", manifest["sources"])

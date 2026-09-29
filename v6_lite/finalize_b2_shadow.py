@@ -90,6 +90,8 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "repartition_counterfactual": root / "repartition_counterfactual" / "repartition_counterfactual.json",
         "repartition_handoff": root / "repartition_handoff" / "repartition_handoff.json",
         "weighted_qp_probe": root / "qp_probe_early" / "weighted_qp_probe.json",
+        "initial_qp_probe": root / "qp_probe_initial255" / "weighted_qp_probe.json",
+        "initial_qp_probe_failure": root / "qp_probe_initial255_failures" / "attempt1.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "batched_point_trial": root / "batched_query_trial" / "batched_query_summary.json",
@@ -100,7 +102,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, sweep, micro, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -157,6 +159,54 @@ def finalize(root: Path, output_dir: Path) -> dict:
         for trace in item["traces"]:
             if _sha(Path(trace["path"])) != trace["sha256"]:
                 raise ValueError("weighted QP probe trace changed")
+    if (not initial_probe["passed_as_read_only_integrity"]
+            or initial_probe["online_control_changed"]
+            or initial_probe["new_mode_closed_loop_acceptance"]
+            or initial_probe["probe_ticks"] != [0]
+            or initial_probe["probe_protocol"] != "initial_preflight"
+            or initial_probe["point_budget"] != 255
+            or initial_probe["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or initial_probe["input_refined_start_sha256"]
+            != _sha(sources["refined_start"])
+            or len(initial_probe["native_replay_checks"]) != 10
+            or any(item["max_state_error"] > 1e-8
+                   for item in initial_probe["native_replay_checks"])
+            or len(initial_probe["records"]) != 10
+            or initial_probe["source_sha256"] != probe["source_sha256"]):
+        raise ValueError("initial weighted QP probe integrity or scope failed")
+    for item in initial_probe["inputs"].values():
+        if (_sha(Path(item["metrics_path"])) != item["metrics_sha256"]
+                or len(item["traces"]) != 5):
+            raise ValueError("initial weighted QP five-scenario metrics changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("initial weighted QP trace changed")
+    for mode in ("baseline", "enabled"):
+        item = initial_probe["summary"][mode]
+        if (item["probe_count"] != 5
+                or item["query_budget_ok_count"] != 5
+                or item["proxy_safe_count"] != 5
+                or item["envelope_supported_count"] != 5
+                or item["validated_command_count"] != 5
+                or item["admission_preconditions_met_count"] != 5):
+            raise ValueError("initial QP preflight did not retain five validated starts")
+        rows = [row for row in initial_probe["records"] if row["mode"] == mode]
+        if (len(rows) != 5 or len({row["scenario_id"] for row in rows}) != 5
+                or any(row["tick"] != 0 or row["selected_interval_count"] != 0
+                       or row["query_points"] != 5
+                       or row["selected_command"] is None for row in rows)):
+            raise ValueError("initial QP records changed")
+    initial_dir = root / "qp_probe_initial255"
+    initial_manifest = json.loads((initial_dir / "weighted_qp_probe_manifest.json")
+                                  .read_text(encoding="utf-8"))
+    if (initial_manifest["report_sha256"] != _sha(sources["initial_qp_probe"])
+            or initial_manifest["document_sha256"]
+            != _sha(initial_dir / "WEIGHTED_QP_PROBE.md")):
+        raise ValueError("initial weighted QP output hash changed")
+    if (initial_failure["status"] != "SCRIPT_ERROR_BEFORE_QP_SOLVE"
+            or initial_failure["exception"] != "TypeError: 'float' object is not iterable"
+            or initial_failure["failure_output_file_count"] != 0):
+        raise ValueError("initial probe first-attempt failure record changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -270,6 +320,12 @@ def finalize(root: Path, output_dir: Path) -> dict:
     for mode in ("baseline", "enabled"):
         metrics_path = Path(probe["inputs"][mode]["metrics_path"])
         metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+        run_config = metrics["run_config"]
+        if (run_config["task_period_s"] != .02
+                or run_config["physics_period_s"] != .002
+                or run_config["task_latency_p95_threshold_s"] != .02
+                or metrics["qp_config"]["task_period_s"] != .02):
+            raise ValueError("A.1 task cadence or latency threshold changed")
         prediction_margins[mode] = metrics["qp_config"]["lookahead_model_margin_m_s"]
         if prediction_margins[mode] != .005:
             raise ValueError("original lookahead margin changed")
@@ -405,6 +461,13 @@ def finalize(root: Path, output_dir: Path) -> dict:
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
         f"当前门禁：**{status}**。因此本证据不作为新区间模式的五场景闭环验收。",
+        "", "## 20 ms 门槛的来源", "",
+        "旧 A.1 两组已发布配置均固定 50 Hz 规划周期 (`task_period_s=0.02`)，"
+        "500 Hz MuJoCo/力矩周期 (`physics_period_s=0.002`)，"
+        "即每个规划命令对应共享十步斜坡。原任务控制全链 p95 时延"
+        "验收阈值也设为 0.02 s；B.2 沿用它作为周期预算，"
+        "没有从 CBF 数学性质推得这个数值。只读查询或查询加 QP 探针"
+        "不是全链计时；即使全链 p95 达标，也不构成每周期无超时的硬实时证明。",
         "", "## A.1 原生力矩重放上的只读几何", "",
         "两组旧控制 trace 均按 500 Hz 力矩原生重放；每个规划边界先调用 `mj_forward`"
         " 更新空间几何量，再与保存的 50 Hz 状态及哈希核对。"
@@ -680,6 +743,32 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"{probe['summary']['baseline']['state_local_capsule_envelope_check_ms']['p95']:.3f}、"
         f"{probe['summary']['enabled']['state_local_capsule_envelope_check_ms']['p95']:.3f} ms。"
         "所测耗时尾部和后续旧轨迹反例也仍存在。", "",
+        "## 五场景初始状态的加权 QP 只读预检", "",
+        "另在两组五场景的 tick 0 从根区间以最多 255 点查询，并将所需区间行"
+        "送入原单个 17 维加权 QP；候选只经原动作验证，未驱动力矩伺服。"
+        "本次 10 个初始状态都只用五个根中点完成静态判定，冻结可达筛选"
+        "不要求任何 PCC 导数行，仍保留原 MuJoCo 和胶囊行。"
+        "首次试运行因只读 QP 包装器在空区间行集合上调用 `min` 而在求解前报错；"
+        "失败快照已保存，修复后重新生成下表。", "",
+        "| 模式 | 初始状态 | 代理安全 | 包络证据支持 | 验证出命令 | 接入前提合格 | 查询加 QP 探针 p95 / 最大 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = initial_probe["summary"][mode]
+        lines.append(
+            f"| {mode} | {item['probe_count']} | {item['proxy_safe_count']} | "
+            f"{item['envelope_supported_count']} | "
+            f"{item['validated_command_count']} | "
+            f"{item['admission_preconditions_met_count']} | "
+            f"{item['query_plus_qp_probe_ms']['p95']:.3f} / "
+            f"{item['query_plus_qp_probe_ms']['max']:.3f} |"
+        )
+    lines += [
+        "", "初始预检说明原求解器能够在当前冻结起点生成并验证候选；"
+        "空区间行并不意味着取消完整覆盖或未来的区间约束。"
+        "这些计时不含状态包络检查和连续执行；enabled 的所测尾部还超过"
+        "20 ms，故不能当作全链性能通过。后续状态的子空间残差、"
+        "旧速度起点违例和预算未知仍阻止在线门禁。", "",
         "## 全部保存规划状态的实际胶囊包络", "",
         "对旧 A.1 两组五场景全部保存的规划 qpos 直接执行 MuJoCo 正运动学，"
         "逐状态检查实际胶囊是否包含于原 PCC 管；所用 trace 与上述原生重放审计逐场景哈希一致。"

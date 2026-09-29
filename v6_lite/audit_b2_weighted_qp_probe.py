@@ -104,9 +104,10 @@ class _ReadOnlyIntervalQP(HierarchicalVelocityQP):
                 [row.target_drift_m_s for row in rows]))),
             barrier_gains_s_inv=np.concatenate((original.barrier_gains_s_inv,
                                                  np.full(len(rows), gain))),
-            minimum_clearance_m=min(
-                original.minimum_clearance_m,
-                *(row.distance_lower_bound_m for row in rows),
+            minimum_clearance_m=(
+                min(original.minimum_clearance_m,
+                    *(row.distance_lower_bound_m for row in rows))
+                if rows else original.minimum_clearance_m
             ),
         )
 
@@ -133,7 +134,12 @@ def _row_parity(result, original, batch, selected_ids, cfg) -> dict:
             "drift_max_abs_error": drift_error, "gain_max_abs_error": gain_error}
 
 
-def run(output_dir: Path, a1_root: Path) -> dict:
+def run(output_dir: Path, a1_root: Path, *,
+        probe_ticks: tuple[int, ...] = PROBE_TICKS,
+        point_budget: int = POINT_BUDGET) -> dict:
+    if (not probe_ticks or tuple(sorted(set(probe_ticks))) != probe_ticks
+            or probe_ticks[0] < 0 or point_budget < 5):
+        raise ValueError("probe ticks and point budget must be predeclared and valid")
     output_dir.mkdir(parents=True, exist_ok=False)
     robot = default_v6_lite_robot_spec()
     shape_spec = default_continuum_model_spec(robot)
@@ -191,7 +197,7 @@ def run(output_dir: Path, a1_root: Path) -> dict:
             with np.load(trace_path, allow_pickle=False) as trace:
                 initial_qpos = trace["initial_qpos"].copy()
                 initial_qvel = trace["initial_qvel"].copy()
-                torque = trace["torque"][:PROBE_TICKS[-1] * 10 + 1].copy()
+                torque = trace["torque"][:probe_ticks[-1] * 10 + 1].copy()
                 selected = trace["task_selected_command"].copy()
                 task_qpos = trace["task_qpos"].copy()
                 task_time = trace["task_time"].copy()
@@ -209,7 +215,7 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                         float(np.max(np.abs(data.qpos - task_qpos[tick]))),
                         abs(float(data.time - task_time[tick])),
                     )
-                    if tick in PROBE_TICKS:
+                    if tick in probe_ticks:
                         started = time.perf_counter()
                         projection = evaluator.shape_spec.project_actual_configuration(
                             data.qpos[evaluator.qpos_ids[:60]])
@@ -219,7 +225,7 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                         decision = query.evaluate(
                             projection.planner_configuration, base, box,
                             IntervalPartition.uniform(),
-                            max_point_evaluations=POINT_BUDGET,
+                            max_point_evaluations=point_budget,
                         )
                         previous = np.zeros(17) if tick == 0 else selected[tick - 1]
                         planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
@@ -360,8 +366,9 @@ def run(output_dir: Path, a1_root: Path) -> dict:
             native_checks.append({"mode": mode, "scenario_id": scenario_id,
                                   "trace_sha256": trace_sha,
                                   "max_state_error": max_state_error})
-            print(f"[b2-qp-probe] {mode} {scenario_id}: 3 frozen states")
-    expected = 2 * 5 * len(PROBE_TICKS)
+            print(f"[b2-qp-probe] {mode} {scenario_id}: "
+                  f"{len(probe_ticks)} frozen states")
+    expected = 2 * 5 * len(probe_ticks)
     if len(records) != expected or len(native_checks) != 10:
         raise ValueError("the predeclared QP probe matrix is incomplete")
     integrity = (all(item["max_state_error"] <= 1e-8 for item in native_checks)
@@ -419,10 +426,12 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         "scope": "read_only_early_historical_states_no_new_execution",
         "online_control_changed": False,
         "new_mode_closed_loop_acceptance": False,
-        "probe_ticks": list(PROBE_TICKS),
+        "probe_ticks": list(probe_ticks),
+        "probe_protocol": ("initial_preflight" if probe_ticks == (0,)
+                           else "frozen_historical_states"),
         "solver_dual_reused_between_probes": False,
-        "ramp_start_source": "historical_previous_selected_command",
-        "point_budget": POINT_BUDGET,
+        "ramp_start_source": "zero_at_tick0_else_historical_previous_selected_command",
+        "point_budget": point_budget,
         "shape_subspace_membership_tolerance_rad":
             SHAPE_SUBSPACE_MEMBERSHIP_TOL_RAD,
         "residual_bound_scope":
@@ -456,7 +465,8 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         stream.write("\n")
     lines = [
         "# B.2 早期冻结状态：原 17 维加权 QP 只读探针", "",
-        "旧 trace 原生 500 Hz 力矩重放至固定的规划 tick 50/100/150；"
+        "旧 trace 原生 500 Hz 力矩重放至固定的规划 tick "
+        f"{'/'.join(str(tick) for tick in probe_ticks)}；"
         "在这些状态上构造根分区的区间 PCC 行，与原 MuJoCo 和胶囊行一起交给"
         "原加权 QP 求解与执行验证。候选和验证结果仅记录，不执行。", "",
         f"重放及独立逐行一致性：{'通过' if integrity else '未通过'}。"
@@ -482,8 +492,10 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         "另对每个冻结状态的实际 MuJoCo 胶囊轴做全轴覆盖上界审计，"
         "记录现有 PCC 管半径余量；安装块仍由原 MuJoCo 行覆盖。"
         "这只证明所测时刻的几何包含，不证明下一时刻或整个十步斜坡。"
-        f"baseline 覆盖 {summary['baseline']['state_local_capsule_covered_count']}/15，"
-        f"enabled 覆盖 {summary['enabled']['state_local_capsule_covered_count']}/15；"
+        f"baseline 覆盖 {summary['baseline']['state_local_capsule_covered_count']}"
+        f"/{5 * len(probe_ticks)}，"
+        f"enabled 覆盖 {summary['enabled']['state_local_capsule_covered_count']}"
+        f"/{5 * len(probe_ticks)}；"
         f"最小余量分别为 "
         f"{summary['baseline']['state_local_capsule_envelope_min_margin_m']['min']:.3f}、"
         f"{summary['enabled']['state_local_capsule_envelope_min_margin_m']['min']:.3f} m。"
@@ -510,8 +522,13 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--a1-root", type=Path,
                         default=Path("v6_lite/output/v6_2_a1"))
+    parser.add_argument("--probe-ticks", type=int, nargs="+",
+                        default=list(PROBE_TICKS))
+    parser.add_argument("--point-budget", type=int, default=POINT_BUDGET)
     args = parser.parse_args()
-    report = run(args.output_dir, args.a1_root)
+    report = run(args.output_dir, args.a1_root,
+                 probe_ticks=tuple(args.probe_ticks),
+                 point_budget=args.point_budget)
     print(json.dumps({"passed_as_read_only_integrity": report[
         "passed_as_read_only_integrity"], "summary": report["summary"]}, indent=2))
     if not report["passed_as_read_only_integrity"]:

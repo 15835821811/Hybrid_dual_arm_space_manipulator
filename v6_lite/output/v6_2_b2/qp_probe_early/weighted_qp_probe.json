@@ -8,8 +8,9 @@
     100,
     150
   ],
+  "probe_protocol": "frozen_historical_states",
   "solver_dual_reused_between_probes": false,
-  "ramp_start_source": "historical_previous_selected_command",
+  "ramp_start_source": "zero_at_tick0_else_historical_previous_selected_command",
   "point_budget": 63,
   "shape_subspace_membership_tolerance_rad": 1e-10,
   "residual_bound_scope": "analytic_URDF_discrete_backbone_actual_vs_projected_only",
@@ -27,7 +28,7 @@
   "source_urdf_sha256": "f3dce0c02374fa64ba6bee1a1985ddb9d0d5736c6d3a719b3722bf71c3046b86",
   "passed_as_read_only_integrity": true,
   "source_sha256": {
-    "audit_b2_weighted_qp_probe.py": "d97cb0bec4d98443226664f75916b64682a15ecaabd56621306694b9b112949a",
+    "audit_b2_weighted_qp_probe.py": "ff28fb5fbf797127d86e5307e59886b08e0765679e0e6fb10d1bd1ddc2cc8437",
     "hierarchical_qp.py": "1e2ae02348fadb231827a720b0cdfb1b0fd3aa8393f068d766c7145b91087a65",
     "pcc_interval_cbf.py": "befb7cf61aebadb17b3b138fb6c6baf88a5d04fd51656ef88fdb5f010738c61d",
     "continuum_shape_model.py": "c0ed8108ebfbd0d9fdc7c628bc5be9fb691cb625ddf37d69d90a8d286abe9c6e",
@@ -196,43 +197,43 @@
       },
       "state_local_capsule_envelope_check_ms": {
         "count": 15,
-        "min": 2.7924999594688416,
-        "p50": 3.006699960678816,
-        "p95": 3.6075399722903967,
-        "p99": 3.6774282436817884,
-        "max": 3.6949003115296364
+        "min": 3.0129002407193184,
+        "p50": 3.050699830055237,
+        "p95": 3.4693103283643723,
+        "p99": 3.504982143640518,
+        "max": 3.5139000974595547
       },
       "interval_assembly_ms": {
         "count": 15,
-        "min": 0.928499735891819,
-        "p50": 1.1181998997926712,
-        "p95": 1.326099829748273,
-        "p99": 1.3820999953895807,
-        "max": 1.3961000367999077
+        "min": 1.0011997073888779,
+        "p50": 1.1799000203609467,
+        "p95": 1.492310175672173,
+        "p99": 1.7094220686703918,
+        "max": 1.7637000419199467
       },
       "qp_full_ms": {
         "count": 15,
-        "min": 7.383299991488457,
-        "p50": 10.33290009945631,
-        "p95": 17.223799787461754,
-        "p99": 18.928999863564968,
-        "max": 19.35529988259077
+        "min": 7.803699932992458,
+        "p50": 10.445499792695045,
+        "p95": 23.08374000713229,
+        "p99": 25.032428111881014,
+        "max": 25.5196001380682
       },
       "qp_solver_ms": {
         "count": 15,
-        "min": 0.33040018752217293,
-        "p50": 2.513099927455187,
-        "p95": 3.3968400210142136,
-        "p99": 3.4482477605342865,
-        "max": 3.4610996954143047
+        "min": 0.3217998892068863,
+        "p50": 2.764900214970112,
+        "p95": 3.707820223644376,
+        "p99": 3.8189242873340845,
+        "max": 3.8467003032565117
       },
       "query_plus_qp_probe_ms": {
         "count": 15,
-        "min": 8.926699869334698,
-        "p50": 11.615199968218803,
-        "p95": 18.758320016786453,
-        "p99": 20.045984303578734,
-        "max": 20.367900375276804
+        "min": 9.36349993571639,
+        "p50": 11.56730018556118,
+        "p95": 24.272520141676065,
+        "p99": 26.211464041844007,
+        "max": 26.696200016885996
       }
     },
     "enabled": {
@@ -272,43 +273,43 @@
       },
       "state_local_capsule_envelope_check_ms": {
         "count": 15,
-        "min": 2.800499554723501,
-        "p50": 2.8814999386668205,
-        "p95": 3.353050164878368,
-        "p99": 3.6417302116751666,
-        "max": 3.7139002233743668
+        "min": 3.0029998160898685,
+        "p50": 3.0425996519625187,
+        "p95": 3.095589904114604,
+        "p99": 3.105837916955352,
+        "max": 3.108399920165539
       },
       "interval_assembly_ms": {
         "count": 15,
-        "min": 0.9127999655902386,
-        "p50": 1.1273999698460102,
-        "p95": 1.47354993969202,
-        "p99": 1.7179903015494344,
-        "max": 1.7791003920137882
+        "min": 0.9527998045086861,
+        "p50": 1.1753998696804047,
+        "p95": 1.3918402139097452,
+        "p99": 1.3922879565507174,
+        "max": 1.3923998922109604
       },
       "qp_full_ms": {
         "count": 15,
-        "min": 7.819399703294039,
-        "p50": 10.200799908488989,
-        "p95": 17.870610253885385,
-        "p99": 20.597642222419378,
-        "max": 21.27940021455288
+        "min": 7.756699807941914,
+        "p50": 10.461000259965658,
+        "p95": 26.339560095220797,
+        "p99": 29.241032022982832,
+        "max": 29.966400004923344
       },
       "qp_solver_ms": {
         "count": 15,
-        "min": 0.30479999259114265,
-        "p50": 2.544200047850609,
-        "p95": 3.3766899257898326,
-        "p99": 3.5498982667922974,
-        "max": 3.5932003520429134
+        "min": 0.3301999531686306,
+        "p50": 2.776599954813719,
+        "p95": 3.603369975462556,
+        "p99": 3.6318739969283342,
+        "max": 3.639000002294779
       },
       "query_plus_qp_probe_ms": {
         "count": 15,
-        "min": 9.121800307184458,
-        "p50": 11.320800054818392,
-        "p95": 19.257100252434604,
-        "p99": 22.32310025952756,
-        "max": 23.089600261300802
+        "min": 9.201799985021353,
+        "p50": 11.63449976593256,
+        "p95": 27.516720071434968,
+        "p99": 30.614863932132717,
+        "max": 31.389399897307158
       }
     }
   },
@@ -328,7 +329,7 @@
       "sampled_discrete_backbone_residual_max_m": 6.770759416478827e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03367906407168482,
-      "state_local_capsule_envelope_check_ms": 3.6949003115296364,
+      "state_local_capsule_envelope_check_ms": 3.100300207734108,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -948,7 +949,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.4505996368825436,
+      "geometry_components_ms": 1.5339003875851631,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -1000,10 +1001,10 @@
         -0.22479343322829518,
         0.042202549037283765
       ],
-      "interval_assembly_ms": 0.9741000831127167,
-      "qp_full_ms": 10.999300051480532,
-      "qp_solver_ms": 3.4610996954143047,
-      "query_plus_qp_probe_ms": 12.17330014333129
+      "interval_assembly_ms": 1.0266001336276531,
+      "qp_full_ms": 25.5196001380682,
+      "qp_solver_ms": 3.6285999231040478,
+      "query_plus_qp_probe_ms": 26.696200016885996
     },
     {
       "mode": "baseline",
@@ -1020,7 +1021,7 @@
       "sampled_discrete_backbone_residual_max_m": 3.641612514512515e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.031586322764339266,
-      "state_local_capsule_envelope_check_ms": 3.570099826902151,
+      "state_local_capsule_envelope_check_ms": 3.050699830055237,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -1640,7 +1641,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.8777004443109035,
+      "geometry_components_ms": 1.9056997261941433,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -1692,10 +1693,10 @@
         0.0691787107014336,
         -0.10504928493644827
       ],
-      "interval_assembly_ms": 1.1219000443816185,
-      "qp_full_ms": 7.441699970513582,
-      "qp_solver_ms": 0.4227999597787857,
-      "query_plus_qp_probe_ms": 9.061399847269058
+      "interval_assembly_ms": 1.1799000203609467,
+      "qp_full_ms": 8.112899959087372,
+      "qp_solver_ms": 0.4537999629974365,
+      "query_plus_qp_probe_ms": 9.470900055021048
     },
     {
       "mode": "baseline",
@@ -1712,7 +1713,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.355562108216447e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.028723947088161415,
-      "state_local_capsule_envelope_check_ms": 2.9198997654020786,
+      "state_local_capsule_envelope_check_ms": 3.038099966943264,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -2332,7 +2333,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.783799845725298,
+      "geometry_components_ms": 1.8933992832899094,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -2384,10 +2385,10 @@
         -0.0026280391561720627,
         -0.062326572302525626
       ],
-      "interval_assembly_ms": 1.1181998997926712,
-      "qp_full_ms": 9.115000255405903,
-      "qp_solver_ms": 2.1933000534772873,
-      "query_plus_qp_probe_ms": 10.314099956303835
+      "interval_assembly_ms": 1.1795996688306332,
+      "qp_full_ms": 9.715199936181307,
+      "qp_solver_ms": 2.6145996525883675,
+      "query_plus_qp_probe_ms": 10.96890028566122
     },
     {
       "mode": "baseline",
@@ -2404,7 +2405,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.0353174066105e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.033654414549447294,
-      "state_local_capsule_envelope_check_ms": 3.1232996843755245,
+      "state_local_capsule_envelope_check_ms": 3.45020042732358,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -3024,7 +3025,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.37709965929389,
+      "geometry_components_ms": 1.6526998952031136,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -3076,10 +3077,10 @@
         0.052030699914921215,
         0.04212823986012186
       ],
-      "interval_assembly_ms": 0.9419997222721577,
-      "qp_full_ms": 10.747499763965607,
-      "qp_solver_ms": 3.228900022804737,
-      "query_plus_qp_probe_ms": 11.827100068330765
+      "interval_assembly_ms": 1.11109996214509,
+      "qp_full_ms": 11.971000116318464,
+      "qp_solver_ms": 3.8467003032565117,
+      "query_plus_qp_probe_ms": 13.21770017966628
     },
     {
       "mode": "baseline",
@@ -3096,7 +3097,7 @@
       "sampled_discrete_backbone_residual_max_m": 3.2480787747368966e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03177372496220098,
-      "state_local_capsule_envelope_check_ms": 3.01510002464056,
+      "state_local_capsule_envelope_check_ms": 3.4481999464333057,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -3716,7 +3717,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.1265000104904175,
+      "geometry_components_ms": 2.1490007638931274,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -3768,10 +3769,10 @@
         -0.07296707656383175,
         0.2851508359880624
       ],
-      "interval_assembly_ms": 1.183799933642149,
-      "qp_full_ms": 10.661699809134007,
-      "qp_solver_ms": 2.513099927455187,
-      "query_plus_qp_probe_ms": 12.282200157642365
+      "interval_assembly_ms": 1.3392004184424877,
+      "qp_full_ms": 11.255000252276659,
+      "qp_solver_ms": 3.1793001107871532,
+      "query_plus_qp_probe_ms": 12.719899881631136
     },
     {
       "mode": "baseline",
@@ -3788,7 +3789,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.1105265230053124e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.029457372041568806,
-      "state_local_capsule_envelope_check_ms": 2.8464999049901962,
+      "state_local_capsule_envelope_check_ms": 3.5139000974595547,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -4408,7 +4409,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.7628995701670647,
+      "geometry_components_ms": 2.135100308805704,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -4460,10 +4461,10 @@
         0.015168342593472339,
         0.06171823620516618
       ],
-      "interval_assembly_ms": 1.0946998372673988,
-      "qp_full_ms": 9.83159989118576,
-      "qp_solver_ms": 3.0360999517142773,
-      "query_plus_qp_probe_ms": 11.141099967062473
+      "interval_assembly_ms": 1.3121003285050392,
+      "qp_full_ms": 11.478099972009659,
+      "qp_solver_ms": 3.5261004231870174,
+      "query_plus_qp_probe_ms": 13.001800049096346
     },
     {
       "mode": "baseline",
@@ -4480,7 +4481,7 @@
       "sampled_discrete_backbone_residual_max_m": 6.463956099686419e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03353599108011606,
-      "state_local_capsule_envelope_check_ms": 3.2664001919329166,
+      "state_local_capsule_envelope_check_ms": 3.0501000583171844,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -5100,7 +5101,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.40699977055192,
+      "geometry_components_ms": 1.5598000027239323,
       "row_parity": {
         "source_count": 39,
         "matrix_max_abs_error": 0.0,
@@ -5152,10 +5153,10 @@
         -0.22339354212136278,
         0.04007049473970271
       ],
-      "interval_assembly_ms": 0.9662001393735409,
-      "qp_full_ms": 19.35529988259077,
-      "qp_solver_ms": 3.3693001605570316,
-      "query_plus_qp_probe_ms": 20.367900375276804
+      "interval_assembly_ms": 1.0295999236404896,
+      "qp_full_ms": 10.445499792695045,
+      "qp_solver_ms": 3.5137999802827835,
+      "query_plus_qp_probe_ms": 11.56730018556118
     },
     {
       "mode": "baseline",
@@ -5172,7 +5173,7 @@
       "sampled_discrete_backbone_residual_max_m": 4.023449146688067e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03101884464387831,
-      "state_local_capsule_envelope_check_ms": 3.1829001381993294,
+      "state_local_capsule_envelope_check_ms": 3.0433000065386295,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -5792,7 +5793,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.8070000223815441,
+      "geometry_components_ms": 1.9650999456644058,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -5844,10 +5845,10 @@
         0.0700014180331859,
         -0.10657984710566279
       ],
-      "interval_assembly_ms": 1.1315001174807549,
-      "qp_full_ms": 7.747200317680836,
-      "qp_solver_ms": 0.4246002063155174,
-      "query_plus_qp_probe_ms": 9.122500196099281
+      "interval_assembly_ms": 1.2606997042894363,
+      "qp_full_ms": 8.062999695539474,
+      "qp_solver_ms": 0.4683998413383961,
+      "query_plus_qp_probe_ms": 9.36349993571639
     },
     {
       "mode": "baseline",
@@ -5864,7 +5865,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.6062394655424882e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.027747618631075645,
-      "state_local_capsule_envelope_check_ms": 2.8467001393437386,
+      "state_local_capsule_envelope_check_ms": 3.0129002407193184,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -6484,7 +6485,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.786099910736084,
+      "geometry_components_ms": 2.7181999757885933,
       "row_parity": {
         "source_count": 43,
         "matrix_max_abs_error": 0.0,
@@ -6536,10 +6537,10 @@
         -0.006460021225929271,
         -0.07765161028924057
       ],
-      "interval_assembly_ms": 1.3961000367999077,
-      "qp_full_ms": 11.586400214582682,
-      "qp_solver_ms": 0.33040018752217293,
-      "query_plus_qp_probe_ms": 13.586600311100483
+      "interval_assembly_ms": 1.7637000419199467,
+      "qp_full_ms": 8.940199855715036,
+      "qp_solver_ms": 0.3217998892068863,
+      "query_plus_qp_probe_ms": 10.514500085264444
     },
     {
       "mode": "baseline",
@@ -6556,7 +6557,7 @@
       "sampled_discrete_backbone_residual_max_m": 4.374592641807318e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03349365148545446,
-      "state_local_capsule_envelope_check_ms": 2.7924999594688416,
+      "state_local_capsule_envelope_check_ms": 3.124699927866459,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -7176,7 +7177,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.395499799400568,
+      "geometry_components_ms": 1.4535998925566673,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -7228,10 +7229,10 @@
         0.02399762144465216,
         0.044010974752943036
       ],
-      "interval_assembly_ms": 0.9550000540912151,
-      "qp_full_ms": 10.611199773848057,
-      "qp_solver_ms": 3.1880000606179237,
-      "query_plus_qp_probe_ms": 11.615199968218803
+      "interval_assembly_ms": 1.0011997073888779,
+      "qp_full_ms": 12.690200004726648,
+      "qp_solver_ms": 3.560599870979786,
+      "query_plus_qp_probe_ms": 13.813999947160482
     },
     {
       "mode": "baseline",
@@ -7248,7 +7249,7 @@
       "sampled_discrete_backbone_residual_max_m": 3.019556637604517e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.030754815233345036,
-      "state_local_capsule_envelope_check_ms": 3.2929996959865093,
+      "state_local_capsule_envelope_check_ms": 3.156299702823162,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -7868,7 +7869,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.9028005190193653,
+      "geometry_components_ms": 1.9324002787470818,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -7920,10 +7921,10 @@
         -0.02792519321301706,
         0.3060903795430473
       ],
-      "interval_assembly_ms": 1.2417002581059933,
-      "qp_full_ms": 9.916699957102537,
-      "qp_solver_ms": 2.53169983625412,
-      "query_plus_qp_probe_ms": 11.153100058436394
+      "interval_assembly_ms": 1.2272000312805176,
+      "qp_full_ms": 10.946499649435282,
+      "qp_solver_ms": 2.764900214970112,
+      "query_plus_qp_probe_ms": 12.294900137931108
     },
     {
       "mode": "baseline",
@@ -7940,7 +7941,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.6301764230540283e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.02709661348373952,
-      "state_local_capsule_envelope_check_ms": 2.8492999263107777,
+      "state_local_capsule_envelope_check_ms": 3.0430001206696033,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -8560,7 +8561,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.4186996743083,
+      "geometry_components_ms": 2.721900586038828,
       "row_parity": {
         "source_count": 44,
         "matrix_max_abs_error": 0.0,
@@ -8612,10 +8613,10 @@
         0.013191706664874285,
         0.03957562964014206
       ],
-      "interval_assembly_ms": 1.296099741011858,
-      "qp_full_ms": 16.31029974669218,
-      "qp_solver_ms": 0.4050000570714474,
-      "query_plus_qp_probe_ms": 18.068499863147736
+      "interval_assembly_ms": 1.3760002329945564,
+      "qp_full_ms": 7.803699932992458,
+      "qp_solver_ms": 0.37740031257271767,
+      "query_plus_qp_probe_ms": 9.719100315123796
     },
     {
       "mode": "baseline",
@@ -8632,7 +8633,7 @@
       "sampled_discrete_backbone_residual_max_m": 5.3358092021626316e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03372196685143725,
-      "state_local_capsule_envelope_check_ms": 2.8607002459466457,
+      "state_local_capsule_envelope_check_ms": 3.295999951660633,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -9252,7 +9253,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.4953995123505592,
+      "geometry_components_ms": 1.4605000615119934,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -9304,10 +9305,10 @@
         -0.22141560315055753,
         0.04029147683753361
       ],
-      "interval_assembly_ms": 0.928499735891819,
-      "qp_full_ms": 10.33290009945631,
-      "qp_solver_ms": 3.366400022059679,
-      "query_plus_qp_probe_ms": 11.63119962438941
+      "interval_assembly_ms": 1.001299824565649,
+      "qp_full_ms": 22.039799951016903,
+      "qp_solver_ms": 3.648300189524889,
+      "query_plus_qp_probe_ms": 23.233800195157528
     },
     {
       "mode": "baseline",
@@ -9324,7 +9325,7 @@
       "sampled_discrete_backbone_residual_max_m": 4.255072763490705e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.031682283946669644,
-      "state_local_capsule_envelope_check_ms": 3.006699960678816,
+      "state_local_capsule_envelope_check_ms": 3.0479999259114265,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -9944,7 +9945,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.04399973154068,
+      "geometry_components_ms": 2.0568999461829662,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -9996,10 +9997,10 @@
         0.06449315905921629,
         -0.06544688114549882
       ],
-      "interval_assembly_ms": 1.1093998327851295,
-      "qp_full_ms": 7.383299991488457,
-      "qp_solver_ms": 0.41380012407898903,
-      "query_plus_qp_probe_ms": 8.926699869334698
+      "interval_assembly_ms": 1.1574001982808113,
+      "qp_full_ms": 8.859599940478802,
+      "qp_solver_ms": 0.4381001926958561,
+      "query_plus_qp_probe_ms": 10.39479998871684
     },
     {
       "mode": "baseline",
@@ -10016,7 +10017,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.2199234841843396e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.028917443142487696,
-      "state_local_capsule_envelope_check_ms": 2.818500157445669,
+      "state_local_capsule_envelope_check_ms": 3.0327998101711273,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -10636,7 +10637,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.1156002767384052,
+      "geometry_components_ms": 2.2176001220941544,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -10688,10 +10689,10 @@
         -0.00263061581093718,
         -0.044923925968964065
       ],
-      "interval_assembly_ms": 1.1823000386357307,
-      "qp_full_ms": 9.697199799120426,
-      "qp_solver_ms": 0.4953998140990734,
-      "query_plus_qp_probe_ms": 11.26040006056428
+      "interval_assembly_ms": 1.2735999189317226,
+      "qp_full_ms": 7.916899863630533,
+      "qp_solver_ms": 0.40800031274557114,
+      "query_plus_qp_probe_ms": 9.488900192081928
     },
     {
       "mode": "enabled",
@@ -10708,7 +10709,7 @@
       "sampled_discrete_backbone_residual_max_m": 6.770759416478827e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03367906407168482,
-      "state_local_capsule_envelope_check_ms": 2.8520002961158752,
+      "state_local_capsule_envelope_check_ms": 3.058899659663439,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -11328,7 +11329,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.397500280290842,
+      "geometry_components_ms": 1.451900228857994,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -11380,10 +11381,10 @@
         -0.22479343322829518,
         0.042202549037283765
       ],
-      "interval_assembly_ms": 0.9197001345455647,
-      "qp_full_ms": 14.590700156986713,
-      "qp_solver_ms": 3.185700159519911,
-      "query_plus_qp_probe_ms": 15.705999918282032
+      "interval_assembly_ms": 0.9612999856472015,
+      "qp_full_ms": 10.906599927693605,
+      "qp_solver_ms": 3.487600013613701,
+      "query_plus_qp_probe_ms": 12.058900203555822
     },
     {
       "mode": "enabled",
@@ -11400,7 +11401,7 @@
       "sampled_discrete_backbone_residual_max_m": 3.641612514512515e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.031586322764339266,
-      "state_local_capsule_envelope_check_ms": 2.8814999386668205,
+      "state_local_capsule_envelope_check_ms": 3.0029998160898685,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -12020,7 +12021,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.8083998002111912,
+      "geometry_components_ms": 1.863500103354454,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -12072,10 +12073,10 @@
         0.0691787107014336,
         -0.10504928493644827
       ],
-      "interval_assembly_ms": 1.1273999698460102,
-      "qp_full_ms": 7.819399703294039,
-      "qp_solver_ms": 0.4159999080002308,
-      "query_plus_qp_probe_ms": 9.121800307184458
+      "interval_assembly_ms": 1.1624000035226345,
+      "qp_full_ms": 9.908199775964022,
+      "qp_solver_ms": 0.4779999144375324,
+      "query_plus_qp_probe_ms": 11.299599893391132
     },
     {
       "mode": "enabled",
@@ -12092,7 +12093,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.3596506977841206e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.02872436567960337,
-      "state_local_capsule_envelope_check_ms": 2.9150000773370266,
+      "state_local_capsule_envelope_check_ms": 3.036899957805872,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -12712,7 +12713,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.8075997941195965,
+      "geometry_components_ms": 1.899300143122673,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -12764,10 +12765,10 @@
         -0.002616487805983059,
         -0.062107732056951734
       ],
-      "interval_assembly_ms": 1.1347997933626175,
-      "qp_full_ms": 9.638499934226274,
-      "qp_solver_ms": 2.3912996985018253,
-      "query_plus_qp_probe_ms": 10.956599842756987
+      "interval_assembly_ms": 1.1824998073279858,
+      "qp_full_ms": 9.88309970125556,
+      "qp_solver_ms": 2.776599954813719,
+      "query_plus_qp_probe_ms": 11.19789993390441
     },
     {
       "mode": "enabled",
@@ -12784,7 +12785,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.0353174066105e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.033654414549447294,
-      "state_local_capsule_envelope_check_ms": 2.834899816662073,
+      "state_local_capsule_envelope_check_ms": 3.0792998149991035,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -13404,7 +13405,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.3553998433053493,
+      "geometry_components_ms": 1.4621997252106667,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -13456,10 +13457,10 @@
         0.052030699914921215,
         0.04212823986012186
       ],
-      "interval_assembly_ms": 0.9127999655902386,
-      "qp_full_ms": 10.063400026410818,
-      "qp_solver_ms": 3.1876997090876102,
-      "query_plus_qp_probe_ms": 11.100400239229202
+      "interval_assembly_ms": 0.9912000969052315,
+      "qp_full_ms": 10.957800317555666,
+      "qp_solver_ms": 3.550599794834852,
+      "query_plus_qp_probe_ms": 12.222299817949533
     },
     {
       "mode": "enabled",
@@ -13476,7 +13477,7 @@
       "sampled_discrete_backbone_residual_max_m": 3.2480787747368966e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03177372496220098,
-      "state_local_capsule_envelope_check_ms": 3.7139002233743668,
+      "state_local_capsule_envelope_check_ms": 3.0697002075612545,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -14096,7 +14097,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.7814002931118011,
+      "geometry_components_ms": 2.017499413341284,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -14148,10 +14149,10 @@
         -0.07296707656383175,
         0.2851508359880624
       ],
-      "interval_assembly_ms": 1.0963003151118755,
-      "qp_full_ms": 16.409700270742178,
-      "qp_solver_ms": 2.544200047850609,
-      "query_plus_qp_probe_ms": 17.614600248634815
+      "interval_assembly_ms": 1.207099761813879,
+      "qp_full_ms": 10.167400352656841,
+      "qp_solver_ms": 2.772399690002203,
+      "query_plus_qp_probe_ms": 11.541899759322405
     },
     {
       "mode": "enabled",
@@ -14168,7 +14169,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.1140269637532737e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.029457362198340005,
-      "state_local_capsule_envelope_check_ms": 3.072699997574091,
+      "state_local_capsule_envelope_check_ms": 3.090099897235632,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -14788,7 +14789,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.7796996980905533,
+      "geometry_components_ms": 1.9448003731667995,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -14840,10 +14841,10 @@
         0.01517264751506256,
         0.061732704339574736
       ],
-      "interval_assembly_ms": 1.1177998967468739,
-      "qp_full_ms": 9.90269985049963,
-      "qp_solver_ms": 2.855499740689993,
-      "query_plus_qp_probe_ms": 11.188799981027842
+      "interval_assembly_ms": 1.2221001088619232,
+      "qp_full_ms": 10.67429967224598,
+      "qp_solver_ms": 3.3717998303472996,
+      "query_plus_qp_probe_ms": 11.975999921560287
     },
     {
       "mode": "enabled",
@@ -14860,7 +14861,7 @@
       "sampled_discrete_backbone_residual_max_m": 6.463956099686419e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03353599108011606,
-      "state_local_capsule_envelope_check_ms": 2.800499554723501,
+      "state_local_capsule_envelope_check_ms": 3.0425996519625187,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -15480,7 +15481,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.031399868428707,
+      "geometry_components_ms": 1.4694002456963062,
       "row_parity": {
         "source_count": 39,
         "matrix_max_abs_error": 0.0,
@@ -15532,10 +15533,10 @@
         -0.22339354212136278,
         0.04007049473970271
       ],
-      "interval_assembly_ms": 0.9881001897156239,
-      "qp_full_ms": 21.27940021455288,
-      "qp_solver_ms": 3.5932003520429134,
-      "query_plus_qp_probe_ms": 23.089600261300802
+      "interval_assembly_ms": 1.0057003237307072,
+      "qp_full_ms": 10.484800208359957,
+      "qp_solver_ms": 3.5880999639630318,
+      "query_plus_qp_probe_ms": 11.684600263834
     },
     {
       "mode": "enabled",
@@ -15552,7 +15553,7 @@
       "sampled_discrete_backbone_residual_max_m": 4.023449146688067e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03101884464387831,
-      "state_local_capsule_envelope_check_ms": 2.970900386571884,
+      "state_local_capsule_envelope_check_ms": 3.0180998146533966,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -16172,7 +16173,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.9037998281419277,
+      "geometry_components_ms": 1.8852995708584785,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -16224,10 +16225,10 @@
         0.0700014180331859,
         -0.10657984710566279
       ],
-      "interval_assembly_ms": 1.1359001509845257,
-      "qp_full_ms": 8.084800094366074,
-      "qp_solver_ms": 0.44659990817308426,
-      "query_plus_qp_probe_ms": 9.497799910604954
+      "interval_assembly_ms": 1.1678999289870262,
+      "qp_full_ms": 11.579999700188637,
+      "qp_solver_ms": 0.5911001935601234,
+      "query_plus_qp_probe_ms": 12.961500324308872
     },
     {
       "mode": "enabled",
@@ -16244,7 +16245,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.5778993854630336e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.027749379972164416,
-      "state_local_capsule_envelope_check_ms": 2.868399955332279,
+      "state_local_capsule_envelope_check_ms": 3.0152001418173313,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -16864,7 +16865,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.1969000808894634,
+      "geometry_components_ms": 2.3475997149944305,
       "row_parity": {
         "source_count": 43,
         "matrix_max_abs_error": 0.0,
@@ -16916,10 +16917,10 @@
         -0.006381882613347858,
         -0.07652300299104758
       ],
-      "interval_assembly_ms": 1.2019001878798008,
-      "qp_full_ms": 12.196999974548817,
-      "qp_solver_ms": 0.30479999259114265,
-      "query_plus_qp_probe_ms": 13.862099964171648
+      "interval_assembly_ms": 1.3923998922109604,
+      "qp_full_ms": 7.851400412619114,
+      "qp_solver_ms": 0.3301999531686306,
+      "query_plus_qp_probe_ms": 9.363400284200907
     },
     {
       "mode": "enabled",
@@ -16936,7 +16937,7 @@
       "sampled_discrete_backbone_residual_max_m": 4.374592641807318e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03349365148545446,
-      "state_local_capsule_envelope_check_ms": 3.198400139808655,
+      "state_local_capsule_envelope_check_ms": 3.108399920165539,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -17556,7 +17557,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.4045997522771358,
+      "geometry_components_ms": 1.4124000445008278,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -17608,10 +17609,10 @@
         0.02399762144465216,
         0.044010974752943036
       ],
-      "interval_assembly_ms": 0.9731999598443508,
-      "qp_full_ms": 10.200799908488989,
-      "qp_solver_ms": 3.2548997551202774,
-      "query_plus_qp_probe_ms": 11.320800054818392
+      "interval_assembly_ms": 0.9527998045086861,
+      "qp_full_ms": 10.461000259965658,
+      "qp_solver_ms": 3.431299701333046,
+      "query_plus_qp_probe_ms": 11.63449976593256
     },
     {
       "mode": "enabled",
@@ -17628,7 +17629,7 @@
       "sampled_discrete_backbone_residual_max_m": 3.019556637604517e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.030754815233345036,
-      "state_local_capsule_envelope_check_ms": 2.808100078254938,
+      "state_local_capsule_envelope_check_ms": 3.033299930393696,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -18248,7 +18249,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.8251999281346798,
+      "geometry_components_ms": 1.9752997905015945,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -18300,10 +18301,10 @@
         -0.02792519321301706,
         0.3060903795430473
       ],
-      "interval_assembly_ms": 1.1483998969197273,
-      "qp_full_ms": 13.213799800723791,
-      "qp_solver_ms": 2.9186001047492027,
-      "query_plus_qp_probe_ms": 14.520399738103151
+      "interval_assembly_ms": 1.1753998696804047,
+      "qp_full_ms": 29.966400004923344,
+      "qp_solver_ms": 2.8014001436531544,
+      "query_plus_qp_probe_ms": 31.389399897307158
     },
     {
       "mode": "enabled",
@@ -18320,7 +18321,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.64054412867469e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.027098816473495393,
-      "state_local_capsule_envelope_check_ms": 2.9680998995900154,
+      "state_local_capsule_envelope_check_ms": 3.0522001907229424,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -18940,7 +18941,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.4542994797229767,
+      "geometry_components_ms": 2.558200154453516,
       "row_parity": {
         "source_count": 44,
         "matrix_max_abs_error": 0.0,
@@ -18992,10 +18993,10 @@
         0.012815874568877502,
         0.03848344202576042
       ],
-      "interval_assembly_ms": 1.3425997458398342,
-      "qp_full_ms": 8.509899955242872,
-      "qp_solver_ms": 0.34900009632110596,
-      "query_plus_qp_probe_ms": 10.246300138533115
+      "interval_assembly_ms": 1.3846000656485558,
+      "qp_full_ms": 8.399400394409895,
+      "qp_solver_ms": 0.38800016045570374,
+      "query_plus_qp_probe_ms": 10.137700010091066
     },
     {
       "mode": "enabled",
@@ -19012,7 +19013,7 @@
       "sampled_discrete_backbone_residual_max_m": 5.3358092021626316e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.03372196685143725,
-      "state_local_capsule_envelope_check_ms": 3.092799801379442,
+      "state_local_capsule_envelope_check_ms": 3.014900255948305,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -19632,7 +19633,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.3770000077784061,
+      "geometry_components_ms": 1.474199816584587,
       "row_parity": {
         "source_count": 38,
         "matrix_max_abs_error": 0.0,
@@ -19684,10 +19685,10 @@
         -0.22141560315055753,
         0.04029147683753361
       ],
-      "interval_assembly_ms": 0.9353002533316612,
-      "qp_full_ms": 14.978199731558561,
-      "qp_solver_ms": 3.2838997431099415,
-      "query_plus_qp_probe_ms": 16.049199737608433
+      "interval_assembly_ms": 1.0099001228809357,
+      "qp_full_ms": 24.785200133919716,
+      "qp_solver_ms": 3.639000002294779,
+      "query_plus_qp_probe_ms": 25.857000146061182
     },
     {
       "mode": "enabled",
@@ -19704,7 +19705,7 @@
       "sampled_discrete_backbone_residual_max_m": 4.255072763490705e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.031682283946669644,
-      "state_local_capsule_envelope_check_ms": 2.8273998759686947,
+      "state_local_capsule_envelope_check_ms": 3.0525997281074524,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -20324,7 +20325,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 1.8164003267884254,
+      "geometry_components_ms": 1.9671004265546799,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -20376,10 +20377,10 @@
         0.06449315905921629,
         -0.06544688114549882
       ],
-      "interval_assembly_ms": 1.1303001083433628,
-      "qp_full_ms": 12.46120035648346,
-      "qp_solver_ms": 0.4398999735713005,
-      "query_plus_qp_probe_ms": 13.695599976927042
+      "interval_assembly_ms": 1.25070009380579,
+      "qp_full_ms": 7.844399660825729,
+      "qp_solver_ms": 0.45710010454058647,
+      "query_plus_qp_probe_ms": 9.201799985021353
     },
     {
       "mode": "enabled",
@@ -20396,7 +20397,7 @@
       "sampled_discrete_backbone_residual_max_m": 2.2218530018394877e-08,
       "state_local_capsule_envelope_status": "COVERED_AT_THIS_STATE",
       "state_local_capsule_envelope_min_margin_m": 0.028918729792731086,
-      "state_local_capsule_envelope_check_ms": 2.873800229281187,
+      "state_local_capsule_envelope_check_ms": 3.0076000839471817,
       "state_local_fallback_geom_names": [
         "collision_0003"
       ],
@@ -21016,7 +21017,7 @@
       "query_budget_ok": true,
       "envelope_supported": false,
       "admission_preconditions_met": false,
-      "geometry_components_ms": 2.680500503629446,
+      "geometry_components_ms": 2.3541003465652466,
       "row_parity": {
         "source_count": 42,
         "matrix_max_abs_error": 0.0,
@@ -21068,10 +21069,10 @@
         -0.002496401581514351,
         -0.04372036001949517
       ],
-      "interval_assembly_ms": 1.7791003920137882,
-      "qp_full_ms": 8.056700229644775,
-      "qp_solver_ms": 0.3819996491074562,
-      "query_plus_qp_probe_ms": 9.580899961292744
+      "interval_assembly_ms": 1.391600351780653,
+      "qp_full_ms": 7.756699807941914,
+      "qp_solver_ms": 0.3951997496187687,
+      "query_plus_qp_probe_ms": 9.28430026397109
     }
   ]
 }
