@@ -59,6 +59,37 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "排除区间在所测下一 tick 进入激活距离的计数为 0，但此有限重放结果不是一般动态保证。",
         "配对容量估计使用旧全链耗时减旧形状查询耗时再加影子查询耗时；"
         "它不是新模式实测，也不能单独证明 20 ms 全链 p95。", "",
+        "## 同一冻结行的动作可行性", "",
+        "在抽样 A.1 状态上，独立重算 MuJoCo 和实际链胶囊行后加入必要的区间行；"
+        "只读 LP 使用原 17 维速度盒、十步斜坡起点、原容差和冻结前瞻约束。"
+        "LP 可行仅表示存在终点，不表示历史斜坡起点或任何实际命令通过。", "",
+        "| 模式 | 冷查询起点违反 | 持久查询起点违反 | 持久查询无可行终点 | 持久查询历史动作被拒 |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        c = cold["modes"][mode]["counts"]
+        w = warm["modes"][mode]["counts"]
+        lines.append(
+            f"| {mode} | {c.get('frozen_START_CLEARANCE_VIOLATION', 0) + c.get('frozen_START_VELOCITY_VIOLATION', 0)} | "
+            f"{w.get('frozen_START_CLEARANCE_VIOLATION', 0) + w.get('frozen_START_VELOCITY_VIOLATION', 0)} | "
+            f"{w.get('frozen_NO_FEASIBLE_ENDPOINT', 0)} | "
+            f"{w.get('historical_endpoint_rejected_by_new_rows', 0)} |"
+        )
+    failures = [
+        record for report in (cold, warm) for mode in ("baseline", "enabled")
+        for record in report["modes"][mode]["frozen_feasibility_records"]
+        if record["feasibility"]["status"].startswith("START_")
+    ]
+    if failures and all(
+        record["feasibility"].get("worst_start_source", "").startswith("pcc_interval:")
+        for record in failures
+    ):
+        lines.append(
+            "四组所列起点反例的最差行均来自 PCC 区间；该代理残差不能解释为实际链碰撞。"
+        )
+    lines += [
+        "", "逐状态失败、区间 ID、起点残差和 LP 结果保留在两份影子 JSON 中。"
+        "这些是旧轨迹的反例，不可引用为新控制器已经失败或已完成闭环。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"

@@ -92,6 +92,12 @@ class B2ShadowTests(unittest.TestCase):
             for source, digest in report["source_sha256"].items():
                 self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(), digest)
         self.assertEqual(warm["online_admission_gate"]["status"], "NOT_MET")
+        self.assertFalse(warm["online_admission_gate"]["shadow_conditions"][
+            "no_frozen_action_infeasibility"])
+        for mode in ("baseline", "enabled"):
+            item = warm["modes"][mode]
+            self.assertEqual(len(item["frozen_feasibility_records"]), item["sample_count"])
+            self.assertGreater(item["counts"].get("frozen_executable_false", 0), 0)
         self.assertGreater(warm["modes"]["enabled"]["counts"][
             "warm_all_task_unknown"], 0)
 

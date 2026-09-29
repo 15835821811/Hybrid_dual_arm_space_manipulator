@@ -8,7 +8,7 @@ import json
 import math
 import time
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import mujoco
@@ -16,6 +16,9 @@ import numpy as np
 
 from model_test.whole_body_verifier_v5 import (
     WholeBodyCollisionVerifier, WholeBodyVerificationConfig,
+)
+from v6_lite.b2_shadow_feasibility import (
+    combined_rows, solve_frozen_linear_feasibility, velocity_box,
 )
 from v6_lite.continuum_shape_model import transform_from_free_qpos
 from v6_lite.execution_ramp import ramp_mean_weights
@@ -28,7 +31,7 @@ from v6_lite.pcc_interval_cbf import (
     FixedIntervalCBFEvaluator, IntervalPartition, MaterialInterval,
 )
 from v6_lite.pcc_persistent_interval_query import PersistentIntervalDecisionQuery
-from v6_lite.recompute_execution_constraints import _obstacles
+from v6_lite.recompute_execution_constraints import ReplayConstraintBuilder, _obstacles
 from v6_lite.run_v6_lite import default_v6_lite_robot_spec
 from v6_lite.shape_clearance import (
     ShapeClearanceShadow, minimum_mujoco_geom_clearance,
@@ -189,10 +192,12 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
         "historical_qp_ms", "paired_replacement_estimate_ms",
         "next_h_prediction_abs_error_m", "next_start_residual_abs_error_m_s",
         "warm_all_task_query_ms", "warm_all_task_partition_size",
+        "frozen_original_assembly_ms", "frozen_lp_ms", "frozen_row_count",
     )}
     counts: Counter[str] = Counter()
     examples: list[dict] = []
     warm_unknown_examples: list[dict] = []
+    feasibility_records: list[dict] = []
     scenario_reports = []
     for scenario_result in metrics["scenarios"]:
         verifier = WholeBodyCollisionVerifier(
@@ -210,6 +215,10 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
         model.geom_conaffinity[:] = 0
         data = mujoco.MjData(model)
         evaluator = FixedIntervalCBFEvaluator(robot, model)
+        feasibility_builder = ReplayConstraintBuilder(
+            robot, model, verifier.pairs,
+            replace(cfg, enable_pcc_cbf=False, enable_capsule_cbf=True),
+        )
         bounded = PCCBoundedClearanceEvaluator(evaluator.shape_model)
         persistent = PersistentIntervalDecisionQuery(evaluator.shape_model)
         persistent_partition = IntervalPartition.uniform()
@@ -441,6 +450,54 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
                                 and x.derivative_status != "SUPPORTED"
                             ][:12],
                         })
+                    feasibility_started = time.perf_counter()
+                    original_rows = feasibility_builder.build(data)
+                    aggregates["frozen_original_assembly_ms"].append(
+                        (time.perf_counter() - feasibility_started) * 1000.0
+                    )
+                    previous = np.zeros(17) if tick == 0 else selected[tick - 1]
+                    planner_q = robot.low_level_to_planner @ data.qpos[evaluator.qpos_ids]
+                    velocity_lower, velocity_upper = velocity_box(
+                        robot, cfg, planner_q, previous,
+                    )
+                    try:
+                        matrix, row_lower, drifts, gains, sources = combined_rows(
+                            original_rows, batch, selected_ids, cfg,
+                        )
+                        feasibility = solve_frozen_linear_feasibility(
+                            matrix, row_lower, drifts, gains, sources,
+                            velocity_lower, velocity_upper, previous, cfg,
+                            interval_row_count=len(selected_ids),
+                            historical_endpoint=selected[tick],
+                        )
+                        feasibility_record = feasibility.to_dict()
+                        counts[f"frozen_{feasibility.status}"] += 1
+                        counts["frozen_executable_false"] += int(
+                            feasibility.executable_candidate_exists is False
+                        )
+                        counts["frozen_lp_unknown"] += int(
+                            feasibility.candidate_feasible is None
+                        )
+                        counts["historical_endpoint_rejected_by_new_rows"] += int(
+                            feasibility.historical_endpoint_accepted_by_frozen_rows is False
+                        )
+                        aggregates["frozen_lp_ms"].append(feasibility.lp_time_ms)
+                        aggregates["frozen_row_count"].append(feasibility.row_count)
+                    except ValueError as exc:
+                        feasibility_record = {
+                            "status": "UNKNOWN_REQUIRED_ROW",
+                            "reason": str(exc),
+                            "executable_candidate_exists": None,
+                        }
+                        counts["frozen_UNKNOWN_REQUIRED_ROW"] += 1
+                    feasibility_records.append({
+                        "scenario_id": scenario_result["scenario"]["scenario_id"],
+                        "tick": tick,
+                        "query_budget_acceptable": within_budget,
+                        "proxy_status": result.proxy_clearance_status,
+                        "subspace_residual_linf_rad": batch.subspace_residual_linf_rad,
+                        "feasibility": feasibility_record,
+                    })
                     if tick + 1 < len(selected):
                         old = np.zeros(17) if tick == 0 else selected[tick - 1]
                         endpoint = selected[tick]
@@ -485,6 +542,7 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
         "summaries": {name: _summary(values) for name, values in aggregates.items()},
         "examples": examples,
         "warm_unknown_examples": warm_unknown_examples,
+        "frozen_feasibility_records": feasibility_records,
     }
 
 
@@ -501,6 +559,8 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
             "v6_lite/pcc_interval_cbf.py": _sha(Path(__file__).with_name("pcc_interval_cbf.py")),
             "v6_lite/continuum_shape_model.py": _sha(Path(__file__).with_name("continuum_shape_model.py")),
             "v6_lite/pcc_persistent_interval_query.py": _sha(Path(__file__).with_name("pcc_persistent_interval_query.py")),
+            "v6_lite/b2_shadow_feasibility.py": _sha(Path(__file__).with_name("b2_shadow_feasibility.py")),
+            "v6_lite/recompute_execution_constraints.py": _sha(Path(__file__).with_name("recompute_execution_constraints.py")),
             "v6_lite/shadow_b2_interval_cbf.py": _sha(Path(__file__)),
         },
         "sample_plan": "all five scenarios in each A.1 mode; task ticks 0, stride, ...; evaluate next tick on frozen partition",
@@ -549,6 +609,13 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
             "no_required_derivative_unsupported": all(
                 x["counts"].get("derivative_unsupported", 0) == 0
                 for x in report["modes"].values()),
+            "no_frozen_action_infeasibility": all(
+                x["counts"].get("frozen_executable_false", 0) == 0
+                for x in report["modes"].values()),
+            "no_frozen_lp_unknown": all(
+                x["counts"].get("frozen_lp_unknown", 0) == 0
+                and x["counts"].get("frozen_UNKNOWN_REQUIRED_ROW", 0) == 0
+                for x in report["modes"].values()),
         },
         "paired_timing_is_estimate_not_new_execution": True,
     }
@@ -588,6 +655,25 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
                 f"{c.get('excluded_reached_activation_next_tick', 0)} |"
             )
     lines += [
+        "", "## 冻结行的只读可行性诊断", "",
+        "诊断从当前原生重放状态独立重算 MuJoCo 与实际链胶囊行，再加入所需区间行；"
+        "两组都启用胶囊行，以模拟新模式保留该约束。离线线性规划只判断在既有容差、"
+        "速度盒、十步斜坡起点和冻结前瞻行下是否存在终点，不是第二个在线 QP，"
+        "也不是新动作的执行证据。", "",
+        "| 模式 | 抽样状态 | 起点行违反 | 无可行终点 | LP 未知 | 历史终点不通过新区间行 | LP p95 (ms) |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode, item in report["modes"].items():
+        c = item["counts"]
+        lines.append(
+            f"| {mode} | {item['sample_count']} | "
+            f"{c.get('frozen_START_CLEARANCE_VIOLATION', 0) + c.get('frozen_START_VELOCITY_VIOLATION', 0)} | "
+            f"{c.get('frozen_NO_FEASIBLE_ENDPOINT', 0)} | "
+            f"{c.get('frozen_lp_unknown', 0) + c.get('frozen_UNKNOWN_REQUIRED_ROW', 0)} | "
+            f"{c.get('historical_endpoint_rejected_by_new_rows', 0)} | "
+            f"{item['summaries']['frozen_lp_ms'].get('p95', float('nan')):.3f} |"
+        )
+    lines += [
         "", "查询预算包含 B.1 分支点、局部优化点、区间中点和 Jacobian；"
         "此影子运行未启用局部优化。记录的墙钟查询时间不包含新 QP 求解，"
         "不能与 A.1 全链 p95 直接相减或作为新模式 20 ms 验收。"
@@ -595,7 +681,8 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
         "它是配对容量预警，不是真实新模式时延。",
         "", "历史 trace 的力矩按 500 Hz 原生重放，50 Hz 规划状态与保存状态逐点对比。"
         "区间拓扑在采样 tick 到下一 tick 的预测检查中冻结。实际形状子空间残差"
-        "与几何包络状态分开报告；本审计不能证明全域或连续时间安全。", "",
+        "与几何包络状态分开报告。旧 trace 的起点违反新区间行，不能用一个新终点"
+        "的线性可行性消除；本审计不能证明全域或连续时间安全。", "",
     ]
     doc_path = output_dir / "SHADOW_AUDIT.md"
     with doc_path.open("x", encoding="utf-8", newline="\n") as stream:
