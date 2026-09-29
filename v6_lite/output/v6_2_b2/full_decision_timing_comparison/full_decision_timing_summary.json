@@ -1,0 +1,81 @@
+{
+  "schema": "v6_2_b2_private_full_decision_timing_comparison_v1",
+  "scenario_id": "v6_lite_scenario_01",
+  "five_scene_private_diagnostic_status": "PASS_PRIVATE_FIVE_WITH_LIMITS",
+  "stage2_online_gate_status": "GATE_NOT_MET",
+  "stage3_admission": false,
+  "production_online_controller_changed": false,
+  "full_online_cycle_evaluated": false,
+  "component_sum_is_full_online_latency": false,
+  "p95_20ms_gate_met": false,
+  "continuous_time_certified": false,
+  "performance_repeat_protocol_completed": false,
+  "task_period_ms": 20.0,
+  "original_26_11_online_acceptance_replayed_here": false,
+  "original_26_11_historical_artifacts_referenced": true,
+  "trials": [
+    {
+      "key": "original",
+      "label": "原始分支",
+      "task_ticks": 1350,
+      "p50_ms": 93.55714963749051,
+      "p95_ms": 97.22250974737108,
+      "p99_ms": 102.80852002557367,
+      "max_ms": 121.84949964284897,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "full_decision_timing_summary.json": "94d25ac591d6503d757cbba775f0459b56c8ebca554a45f58fad56b84eda8ef5",
+        "full_decision_timing_rows.jsonl": "b71309fd12758625cd8318df3a75f32d508af354932d59e92c8e26e13a5efca4",
+        "private_rollout_summary.json": "ecd8f3982d0c04221872cccdcedcf6fb3988d0e288e35bc504cba5c1d1a86f71",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "reused_builder",
+      "label": "复用模型常量",
+      "task_ticks": 1350,
+      "p50_ms": 40.564149618148804,
+      "p95_ms": 43.09337500017136,
+      "p99_ms": 46.396385803818696,
+      "max_ms": 94.86380033195019,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "35a0c512652522d5d8e2416c73e4a6f5eaef0d83a8ad9f3044ef0f52ea17d1d3",
+        "reused_next_start_timing_rows.jsonl": "0f17bf7e59543b5b306c42a2812acee3f8afeb0dace2d2c95142f2656d1df803",
+        "private_rollout_summary.json": "85084f60c336a59d36297fb34d66f6c11feeef50db6fceb986254c68dfd59c9f",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    },
+    {
+      "key": "vectorized_envelope",
+      "label": "批量包络",
+      "task_ticks": 1350,
+      "p50_ms": 30.036049662157893,
+      "p95_ms": 32.41792994085699,
+      "p99_ms": 34.9925546720624,
+      "max_ms": 85.08880017325282,
+      "over_20ms_count": 1350,
+      "longest_over_20ms_run": 1350,
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90",
+      "input_sha256": {
+        "reused_next_start_timing_summary.json": "228009be2ff80f91f2e8fbc3a9ed3f31f56460b0f94630ad1c0995159328f473",
+        "reused_next_start_timing_rows.jsonl": "93ca72683c2c18f13ff1108ffee11f50e034dfbb26472059b8acfb3fc8cf1c14",
+        "private_rollout_summary.json": "019df25186dd7aaff1825a7d0e83fc7c05a16b23d3c1773432c72f25720fe92b",
+        "private_rollout_trace.npz": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+      }
+    }
+  ],
+  "source_sha256": {
+    "finalize_b2_full_decision_timing.py": "c8490d5b43a00658e753c2faf212bd7b34fce818d5f652ac2d2d2a90121df9f7",
+    "run_v6_lite.py": "16106e7e1b0f24718126969f89da9dbaecb39595fc0e418c8390c4fda05a4727"
+  },
+  "additional_inputs_sha256": {
+    "vectorized_full_decision_summary.json": "4b6185035548c38ef3a7368516074f1eac9c3a18904c4ca9a68b85813ac7a545",
+    "domain_private_five_summary.json": "a00604ce1f1c8513ecf1af245872958a2bd77efb04a7de859c5340a6f5e2b25a"
+  },
+  "plot_sha256": "e60e9f7a7e6ecefe6651c60299dd1e92db5b12c09b969a7427fc7ff590dea179"
+}
