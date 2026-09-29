@@ -16,6 +16,10 @@ def _sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _source_sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def _gate_blockers(frontier: dict, refined: dict) -> dict[str, dict]:
     """Separate witnessed proxy penetration from old-velocity CBF failures."""
 
@@ -135,8 +139,10 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or len(probe["records"]) != 30
             or probe["input_refined_start_sha256"] != _sha(sources["refined_start"])):
         raise ValueError("weighted QP probe integrity or scope failed")
+    if probe["source_hash_newline_policy"] != "LF_NORMALIZED":
+        raise ValueError("weighted QP probe source hash policy changed")
     for name, digest in probe["source_sha256"].items():
-        if _sha(Path("v6_lite") / name) != digest:
+        if _source_sha(Path("v6_lite") / name) != digest:
             raise ValueError(f"weighted QP probe source changed: {name}")
     for item in probe["inputs"].values():
         if _sha(Path(item["metrics_path"])) != item["metrics_sha256"]:
@@ -402,6 +408,16 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"{probe['summary']['baseline']['discrete_backbone_residual_upper_m']['p95']:.2e}、"
         f"{probe['summary']['enabled']['discrete_backbone_residual_upper_m']['p95']:.2e} m；"
         "该只读诊断没有建立 PCC 到投影离散链的包络，也不覆盖物理碰撞几何。"
+        "另以实际 MuJoCo 状态逐个检查胶囊是否包含于现有 PCC 管："
+        f"baseline {probe['summary']['baseline']['state_local_capsule_covered_count']}/15、"
+        f"enabled {probe['summary']['enabled']['state_local_capsule_covered_count']}/15，"
+        "最小半径余量分别为 "
+        f"{probe['summary']['baseline']['state_local_capsule_envelope_min_margin_m']['min']:.2e}、"
+        f"{probe['summary']['enabled']['state_local_capsule_envelope_min_margin_m']['min']:.2e} m。"
+        "该证据只覆盖冻结时刻的实际几何；未证明命令执行期间的包络保持。"
+        "检查耗时单列，未计入上表 QP 探针：两组 p95 分别为 "
+        f"{probe['summary']['baseline']['state_local_capsule_envelope_check_ms']['p95']:.3f}、"
+        f"{probe['summary']['enabled']['state_local_capsule_envelope_check_ms']['p95']:.3f} ms。"
         "所测耗时尾部和后续旧轨迹反例也仍存在。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："

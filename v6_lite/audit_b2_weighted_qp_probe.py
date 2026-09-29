@@ -12,7 +12,7 @@ import hashlib
 import json
 import time
 from collections import Counter
-from dataclasses import replace
+from dataclasses import asdict, replace
 from pathlib import Path
 
 import mujoco
@@ -34,6 +34,10 @@ from v6_lite.pcc_interval_cbf import (
 from v6_lite.pcc_persistent_interval_query import PersistentIntervalDecisionQuery
 from v6_lite.recompute_execution_constraints import ReplayConstraintBuilder, _obstacles
 from v6_lite.pcc_subspace_residual_bound import DiscreteBackboneResidualBound
+from v6_lite.pcc_state_local_envelope import (
+    ARITHMETIC_PAD_M, CAPSULE_AXIS_SAMPLES, PCC_SAMPLES_PER_SEGMENT,
+    StateLocalPCCEnvelopeAudit,
+)
 from v6_lite.run_v6_lite import (
     V6LiteRunConfig, _body_pose_and_twist, build_scenarios,
     default_v6_lite_robot_spec,
@@ -52,6 +56,11 @@ def _sha(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _source_sha(path: Path) -> str:
+    """Hash Python source with repository LF newlines across host platforms."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 class _ReadOnlyIntervalQP(HierarchicalVelocityQP):
@@ -162,6 +171,7 @@ def run(output_dir: Path, a1_root: Path) -> dict:
             model.geom_conaffinity[:] = 0
             data = mujoco.MjData(model)
             evaluator = FixedIntervalCBFEvaluator(robot, model)
+            local_envelope = StateLocalPCCEnvelopeAudit(model, shape_spec)
             no_legacy_pcc = replace(cfg, enable_pcc_cbf=False,
                                     enable_capsule_cbf=True)
             qp = _ReadOnlyIntervalQP(robot, model, verifier.pairs, no_legacy_pcc,
@@ -271,6 +281,11 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                                                     transforms=projected_frames).position
                             )) for s in diagnostic_arclengths
                         )
+                        coverage_started = time.perf_counter()
+                        state_coverage = local_envelope.evaluate(
+                            data, projection.planner_configuration, base,
+                        )
+                        state_coverage_ms = (time.perf_counter() - coverage_started) * 1000.0
                         geometry_components_ms = (
                             decision.elapsed_ms
                             + qp.last_batch.total_query_time_ms
@@ -311,6 +326,15 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                                 qp.last_batch.subspace_residual_linf_rad,
                             "discrete_backbone_residual_upper_m": residual_upper,
                             "sampled_discrete_backbone_residual_max_m": sampled_residual,
+                            "state_local_capsule_envelope_status": state_coverage.status,
+                            "state_local_capsule_envelope_min_margin_m":
+                                state_coverage.min_margin_m,
+                            "state_local_capsule_envelope_check_ms": state_coverage_ms,
+                            "state_local_fallback_geom_names":
+                                list(state_coverage.fallback_geom_names),
+                            "state_local_capsule_envelope_rows": [
+                                asdict(row) for row in state_coverage.capsules
+                            ],
                             "proxy_safe": proxy_safe,
                             "query_budget_ok": query_budget_ok,
                             "envelope_supported": envelope_supported,
@@ -347,12 +371,17 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                              "drift_max_abs_error", "gain_max_abs_error"))
                  and all(item["sampled_discrete_backbone_residual_max_m"]
                          <= item["discrete_backbone_residual_upper_m"] + 2e-12
-                         for item in records))
-    sources = {name: _sha(Path("v6_lite") / name) for name in (
+                         for item in records)
+                 and all(len(item["state_local_capsule_envelope_rows"]) == 61
+                         and item["state_local_fallback_geom_names"]
+                         == ["collision_0003"] for item in records))
+    sources = {name: _source_sha(Path("v6_lite") / name) for name in (
         "audit_b2_weighted_qp_probe.py", "hierarchical_qp.py",
         "pcc_interval_cbf.py", "continuum_shape_model.py",
         "recompute_execution_constraints.py", "b2_shadow_feasibility.py",
         "safety_contract.py", "pcc_subspace_residual_bound.py",
+        "pcc_state_local_envelope.py", "pcc_clearance.py",
+        "shape_clearance.py", "continuum_model_spec.py",
     )}
     summary = {}
     for mode in ("baseline", "enabled"):
@@ -371,6 +400,13 @@ def run(output_dir: Path, a1_root: Path) -> dict:
                 [item["subspace_residual_linf_rad"] for item in own]),
             "discrete_backbone_residual_upper_m": _summary(
                 [item["discrete_backbone_residual_upper_m"] for item in own]),
+            "state_local_capsule_covered_count": sum(
+                item["state_local_capsule_envelope_status"]
+                == "COVERED_AT_THIS_STATE" for item in own),
+            "state_local_capsule_envelope_min_margin_m": _summary(
+                [item["state_local_capsule_envelope_min_margin_m"] for item in own]),
+            "state_local_capsule_envelope_check_ms": _summary(
+                [item["state_local_capsule_envelope_check_ms"] for item in own]),
             "interval_assembly_ms": _summary(
                 [item["interval_assembly_ms"] for item in own]),
             "qp_full_ms": _summary([item["qp_full_ms"] for item in own]),
@@ -396,8 +432,17 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         "residual_bound_urdf_sha256": residual_bound.source_urdf_sha256,
         "residual_bound_sampled_material_points_per_state":
             len(diagnostic_arclengths),
+        "state_local_envelope_scope":
+            "actual_MuJoCo_continuum_capsules_inside_existing_PCC_tubes_at_frozen_state_only",
+        "state_local_envelope_pcc_points_per_segment": PCC_SAMPLES_PER_SEGMENT,
+        "state_local_envelope_axis_points_per_capsule": CAPSULE_AXIS_SAMPLES,
+        "state_local_envelope_arithmetic_pad_m": ARITHMETIC_PAD_M,
+        "state_local_envelope_fallback_geom_names": ["collision_0003"],
+        "state_local_envelope_numerical_certification": "NOT_FORMALLY_CERTIFIED",
+        "source_urdf_sha256": shape_spec.source_urdf_sha256,
         "passed_as_read_only_integrity": integrity,
         "source_sha256": sources,
+        "source_hash_newline_policy": "LF_NORMALIZED",
         "input_refined_start_sha256": _sha(
             Path("v6_lite/output/v6_2_b2/refined_start/refined_start_report.json")),
         "inputs": inputs,
@@ -434,6 +479,15 @@ def run(output_dir: Path, a1_root: Path) -> dict:
         "不等于代理包络得到真实链支持；严格子空间判据保持原值。"
         "另有解析界约束实际与投影的 URDF 离散骨架位移，并以每状态 31 点复核；"
         "此界不建立 PCC 到投影离散链的包络，也不覆盖物理碰撞几何。"
+        "另对每个冻结状态的实际 MuJoCo 胶囊轴做全轴覆盖上界审计，"
+        "记录现有 PCC 管半径余量；安装块仍由原 MuJoCo 行覆盖。"
+        "这只证明所测时刻的几何包含，不证明下一时刻或整个十步斜坡。"
+        f"baseline 覆盖 {summary['baseline']['state_local_capsule_covered_count']}/15，"
+        f"enabled 覆盖 {summary['enabled']['state_local_capsule_covered_count']}/15；"
+        f"最小余量分别为 "
+        f"{summary['baseline']['state_local_capsule_envelope_min_margin_m']['min']:.3f}、"
+        f"{summary['enabled']['state_local_capsule_envelope_min_margin_m']['min']:.3f} m。"
+        "该审计在上述 QP 探针计时之外单列。"
         "本探针也不改变后续旧轨迹上已观察到的代理低于门槛、"
         "起点违规和持久查询未知，也不构成第 3 阶段接入许可。", "",
     ]

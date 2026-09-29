@@ -31,6 +31,12 @@ class WeightedQPProbeTests(unittest.TestCase):
                          "analytic_URDF_discrete_backbone_actual_vs_projected_only")
         self.assertEqual(report["residual_bound_sampled_material_points_per_state"],
                          31)
+        self.assertEqual(report["state_local_envelope_scope"],
+                         "actual_MuJoCo_continuum_capsules_inside_existing_PCC_tubes_at_frozen_state_only")
+        self.assertEqual(report["state_local_envelope_pcc_points_per_segment"], 17)
+        self.assertEqual(report["state_local_envelope_axis_points_per_capsule"], 5)
+        self.assertEqual(report["state_local_envelope_fallback_geom_names"],
+                         ["collision_0003"])
         self.assertEqual(len(report["records"]), 30)
         self.assertEqual(len(report["native_replay_checks"]), 10)
         self.assertTrue(all(item["max_state_error"] <= 1e-8
@@ -38,9 +44,11 @@ class WeightedQPProbeTests(unittest.TestCase):
         self.assertEqual(report["input_refined_start_sha256"], hashlib.sha256(
             (root / "refined_start" / "refined_start_report.json").read_bytes()
         ).hexdigest())
+        self.assertEqual(report["source_hash_newline_policy"], "LF_NORMALIZED")
         for name, digest in report["source_sha256"].items():
             self.assertEqual(hashlib.sha256((Path(__file__).parent / name)
-                                            .read_bytes()).hexdigest(), digest)
+                                            .read_bytes().replace(b"\r\n", b"\n")
+                                            ).hexdigest(), digest)
         for item in report["inputs"].values():
             self.assertEqual(hashlib.sha256(Path(item["metrics_path"]).read_bytes())
                              .hexdigest(), item["metrics_sha256"])
@@ -57,6 +65,7 @@ class WeightedQPProbeTests(unittest.TestCase):
             self.assertEqual(report["summary"][mode]["envelope_supported_count"], 0)
             self.assertEqual(report["summary"][mode]["admission_preconditions_met_count"], 0)
             self.assertEqual(report["summary"][mode]["validated_command_count"], 15)
+            self.assertEqual(report["summary"][mode]["state_local_capsule_covered_count"], 15)
             for item in own:
                 self.assertTrue(item["query_budget_ok"])
                 self.assertTrue(item["proxy_safe"])
@@ -74,6 +83,17 @@ class WeightedQPProbeTests(unittest.TestCase):
                     item["sampled_discrete_backbone_residual_max_m"],
                     item["discrete_backbone_residual_upper_m"] + 2e-12,
                 )
+                self.assertEqual(item["state_local_capsule_envelope_status"],
+                                 "COVERED_AT_THIS_STATE")
+                self.assertGreater(item["state_local_capsule_envelope_min_margin_m"],
+                                   0.0)
+                self.assertEqual(len(item["state_local_capsule_envelope_rows"]), 61)
+                self.assertEqual(item["state_local_fallback_geom_names"],
+                                 ["collision_0003"])
+                for row in item["state_local_capsule_envelope_rows"]:
+                    self.assertGreaterEqual(row["margin_m"], 0.0)
+                    self.assertLessEqual(row["required_tube_radius_upper_m"],
+                                         row["declared_tube_radius_m"])
                 self.assertEqual(item["floating_point_certification"],
                                  "NOT_FORMALLY_CERTIFIED")
                 self.assertGreater(item["selected_interval_count"], 0)
