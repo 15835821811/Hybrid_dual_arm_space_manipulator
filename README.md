@@ -1,6 +1,6 @@
 # Hybrid Dual-Arm Space Manipulator — V6-lite
 
-这是 V6-lite 的独立、可复现实验仓库。它包含当前闭环所需的完整算法链、机器人模型、整机碰撞验证器、正式五场景 trace、验收结果以及最新可视化产物；同时包含 V6.1-A 的连续体臂形审计和 V6.1-B 的 PCC/胶囊 CBF 控制集成。
+这是 V6-lite 的独立实验仓库。当前可运行控制基线为 V6.2-A.1；在线使用一个 17 维加权速度 QP、共享的十步执行斜坡与 67 路力矩伺服。V6.2-B.1 在此基础上补充只读验证和离线几何审计，不改变闭环控制动作。仓库也保留 V6.1-A/B 的历史几何与控制证据。
 
 V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经网络权重、归一化器或 Diffusion 模块。核心链路为：
 
@@ -16,14 +16,15 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 
 ## 当前合同与结果
 
-- 合同版本：`v6_lite_6`
+- 当前合同版本：`v6_2_a1_ramp_aware_qp`；开发基点 `9bfd394`
 - 规划变量：10 维连续体形状坐标 + 7 维刚性臂关节
 - 执行变量：67 个直接力矩执行器
 - 在线安全：关节/速度/加速度约束、整机 signed-distance CBF、运动目标 6D 外生漂移补偿
 - 目标碰撞策略：连续体、基座及非接触刚性几何均纳入硬约束；仅两个明确命名的刚性末端抓捕几何豁免
-- 正式验证：5 个独立种子场景，`26/26` 检查通过，QP 失败 `0`
-- 连续体—目标卫星原生 500 Hz 最小间隙：`24.994694 mm`，低于 5 mm 状态 `0`，穿透状态 `0`
-- 整机 4×细分最小间隙：`14.995557 mm`
+- V6.2-A.1：关闭组和 PCC＋胶囊开启组各 5 场景；每组原 26 项真实 MuJoCo 力矩重放 `26/26`，新增执行合同 `11/11`，QP 失败 `0`
+- V6.2-A.1：两组最差全链规划 p95 分别为 `14.402 ms` 和 `18.162 ms`；完整运行 trace 保存在本地，哈希见 [A.1 manifest](v6_lite/output/v6_2_a1/evidence_manifest.json)
+- V6.2-B.1：另行从力矩重放状态重建几何行、目标漂移和自由基座反作用映射；原 `11/11` 报告保持原定义，新增报告单独给出
+- 历史 V6-lite 正式验证：5 场景 `26/26`，原生 500 Hz 连续体—目标最小间隙 `24.994694 mm`，整机 4×细分最小间隙 `14.995557 mm`
 - V6.1-A 影子审计：10,000 个臂形构型 + 10,000 个卫星相对几何案例，离散 FK、PCC 导数、包络覆盖与距离梯度全部通过，胶囊/PCC 假安全均为 `0`
 - V6.1-B：PCC/胶囊约束默认关闭；启用版真实五场景同样 `26/26`，QP 失败 `0`，PCC 激活 `3,718` 次、绑定 `202` 次，最差任务 p95 `18.089305 ms`
 - V6.1-B 启用版连续体—目标卫星原生 500 Hz 最小间隙：`78.529716 mm`，低于 5 mm/穿透状态均为 `0/0`
@@ -36,6 +37,9 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | --- | --- |
 | `v6_lite/hierarchical_qp.py` | 17 维反作用感知速度 QP、任务层级、时变 CBF 与硬约束 |
 | `v6_lite/run_v6_lite.py` | 50 Hz 规划 / 500 Hz 力矩闭环、五场景运行和指标输出 |
+| `v6_lite/run_evidence.py`、`v6_lite/run_matrix.py` | 唯一运行目录、起始元数据、失败保留及预声明的重复时延试验 |
+| `v6_lite/recompute_execution_constraints.py` | 从原生力矩重放状态独立重建瞬时、斜坡和前瞻约束残差 |
+| `v6_lite/bundle_evidence.py` | 原始 trace 打包、SHA-256 清单校验与不可覆盖导入 |
 | `v6_lite/irregular_waypoints.py` | 7 个不规则航点与分段 minimum-jerk 参考 |
 | `v6_lite/validate_v6_lite.py` | trace 独立重放、整机细分距离审计及 500 Hz 连续体—卫星专项检查 |
 | `v6_lite/continuum_model_spec.py` | 版本化的 5 段 PCC、30 模块离散链、10→60 映射与工作域合同 |
@@ -49,7 +53,8 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | `v6_lite/finalize_v6_1_b.py` | 汇总默认关闭/启用五场景 A/B、监控与回归报告 |
 | `model_test/` | 17→67 维模型合同、角度约定与共享整机碰撞验证器 |
 | `dual_arm_space_robot_2026/` | 当前主 URDF 及其实际引用的 75 个 STL 网格 |
-| `v6_lite/output/` | 正式指标、5 个完整 trace、验证报告和哈希清单 |
+| `v6_lite/output/v6_2_a1/` | A.1 两组报告、反例和本地原始 trace；完整 trace 不进入 Git 历史 |
+| `v6_lite/output/runs/` | B.1 起每次运行的新编号目录；失败与中止目录也保留 |
 | `v6_lite/visualization/output/` | 六面板误差图、三维路径图、基座漂移 GIF、五个单视角视频、组合视频及预览图 |
 | `v6_lite/visualization/continuum_focus_output/` | 连续体一侧专用视频、预览图及 manifest |
 | `v6_lite/visualization/output_v6_1_b/` | V6.1-B 启用版新生成的全套图、GIF、五视角视频、预览图和 22/22 校验 |
@@ -80,22 +85,25 @@ python -m pip install -r requirements.txt
 以下命令都从仓库根目录执行：
 
 ```bash
+# 每次自动生成 output/runs/<run_id>/；已存在的目录不会被覆盖
 python -m v6_lite.run_v6_lite
-python -m v6_lite.validate_v6_lite
-python -m unittest v6_lite.test_v6_lite v6_lite.test_target_collision_policy -v
-python -m unittest v6_lite.visualization.test_visualizations -v
-python -m v6_lite.audit_v6_1a
-python -m unittest v6_lite.test_continuum_shape_model v6_lite.test_shape_clearance v6_lite.test_v6_1a_artifacts -v
+python -m v6_lite.run_v6_lite --enable-pcc-cbf --enable-capsule-cbf
 
-# V6.1-B 正式几何审计、默认关闭/启用 A/B 与聚合报告
-python -m v6_lite.audit_v6_1_b
-python -m v6_lite.run_v6_lite --output-dir v6_lite/output/v6_1_b/baseline_root/output
-python -m v6_lite.run_v6_lite --output-dir v6_lite/output/v6_1_b/enabled_root/output --enable-pcc-cbf --enable-capsule-cbf
-python -m v6_lite.finalize_v6_1_b
-python -m unittest v6_lite.test_v6_1_b -v
+# 预声明每组 3 轮；所有轮次和失败均保留，不筛选通过轮次
+python -m v6_lite.run_matrix --repeats 3
+
+# 用实际新运行目录代替 <run_dir>；旧 26 项、A.1 的 11 项与 B.1 重算分别报告
+python -m v6_lite.validate_v6_lite --output-dir <run_dir>
+python -m v6_lite.recompute_execution_constraints --output-dir <run_dir>
+
+# 不覆盖既有包或导入目录；可重复 --include 引入反例和其他运行
+python -m v6_lite.bundle_evidence pack --bundle v6_lite/output/releases/v6-evidence.zip --include run=<run_dir>
+python -m v6_lite.bundle_evidence verify --bundle v6_lite/output/releases/v6-evidence.zip --import-dir v6_lite/output/releases/imported-v6-evidence
+
+python -m unittest discover -s v6_lite -p 'test*.py'
 ```
 
-完整五场景运行会重新生成约 140 MB 的 trace，并进行密集距离计算，因此耗时明显高于单元测试。仓库已经包含当前正式 trace，可直接运行独立验证。
+运行开始时的 `run_metadata.json` 绑定 Git 提交、源码哈希、模型、配置、场景和机器环境；`traces/` 保存力矩与状态，`failures/` 保存执行拒绝的部分 trace，`run_failure.json` 保存验收失败或异常。墙钟计时日志不能由物理重放重新产生。V6.1-B 的原路径是历史产物，当前运行入口会拒绝覆盖；原审计说明见 [V6.1-B 文档](docs/V6_1B_PCC_CBF_INTEGRATION.md)。
 
 ## 可视化
 

@@ -45,6 +45,7 @@ from v6_lite.irregular_waypoints import (
 )
 from v6_lite.pcc_monitor import PCCMonitor
 from v6_lite.execution_ramp import advance_reference
+from v6_lite.run_evidence import fail_run, finish_run, new_run_id, start_run
 from v6_lite.safety_contract import ActionValidation, FailureReason, command_is_current
 
 CONTRACT_VERSION = "v6_2_a1_ramp_aware_qp"
@@ -830,8 +831,9 @@ def run_scenario(
                 pcc_monitor.record(current_time, result)
 
             if result.planner_velocity is None:
-                trace_dir.mkdir(parents=True, exist_ok=True)
-                partial_path = trace_dir / f"{scenario.scenario_id}_partial_trace.npz"
+                failure_dir = trace_dir.parent / "failures"
+                failure_dir.mkdir(parents=True, exist_ok=True)
+                partial_path = failure_dir / f"{scenario.scenario_id}_partial_trace.npz"
                 np.savez_compressed(
                     partial_path,
                     **{key: np.asarray(value) for key, value in log.items()},
@@ -841,7 +843,7 @@ def run_scenario(
                     initial_qvel=initial_qvel,
                     failure_time_s=np.asarray(current_time),
                 )
-                snapshot_path = trace_dir / f"{scenario.scenario_id}_counterexample.json"
+                snapshot_path = failure_dir / f"{scenario.scenario_id}_counterexample.json"
                 _write_json(snapshot_path, {
                     "evidence_type": "complete_cross_cycle_failure_snapshot",
                     "contract_version": CONTRACT_VERSION,
@@ -860,7 +862,7 @@ def run_scenario(
                     },
                     "next_servo_step_executed": False,
                 })
-                _write_json(trace_dir / f"{scenario.scenario_id}_execution_failure.json", {
+                _write_json(failure_dir / f"{scenario.scenario_id}_execution_failure.json", {
                     "contract_version": CONTRACT_VERSION,
                     "scenario_id": scenario.scenario_id,
                     "time_s": current_time,
@@ -885,8 +887,9 @@ def run_scenario(
             command_velocity = result.planner_velocity.copy()
 
         if active_validation is None or not command_is_current(active_validation, current_time):
-            trace_dir.mkdir(parents=True, exist_ok=True)
-            partial_path = trace_dir / f"{scenario.scenario_id}_partial_trace.npz"
+            failure_dir = trace_dir.parent / "failures"
+            failure_dir.mkdir(parents=True, exist_ok=True)
+            partial_path = failure_dir / f"{scenario.scenario_id}_partial_trace.npz"
             np.savez_compressed(
                 partial_path,
                 **{key: np.asarray(value) for key, value in log.items()},
@@ -896,7 +899,7 @@ def run_scenario(
                 initial_qvel=initial_qvel,
                 failure_time_s=np.asarray(current_time),
             )
-            snapshot_path = trace_dir / f"{scenario.scenario_id}_counterexample.json"
+            snapshot_path = failure_dir / f"{scenario.scenario_id}_counterexample.json"
             _write_json(snapshot_path, {
                 "evidence_type": "complete_cross_cycle_failure_snapshot",
                 "contract_version": CONTRACT_VERSION,
@@ -915,7 +918,7 @@ def run_scenario(
                 },
                 "next_servo_step_executed": False,
             })
-            _write_json(trace_dir / f"{scenario.scenario_id}_execution_failure.json", {
+            _write_json(failure_dir / f"{scenario.scenario_id}_execution_failure.json", {
                 "contract_version": CONTRACT_VERSION,
                 "scenario_id": scenario.scenario_id,
                 "time_s": current_time,
@@ -1366,6 +1369,8 @@ def run_suite(
     run_config: V6LiteRunConfig,
     qp_config: HierarchicalQPConfig,
     output_dir: Path,
+    *,
+    parent_run_id: str | None = None,
 ) -> dict[str, Any]:
     run_config.validate()
     qp_config.validate()
@@ -1374,27 +1379,37 @@ def run_suite(
     spec = default_v6_lite_robot_spec()
     spec.validate()
     scenarios = build_scenarios(spec, run_config)
+    run_metadata = start_run(
+        output_dir, run_config=run_config, qp_config=qp_config,
+        spec=spec, scenarios=scenarios, parent_run_id=parent_run_id,
+    )
     scenario_results: list[dict[str, Any]] = []
     started = time.perf_counter()
-    for scenario in scenarios:
-        print(f"[v6-lite] running {scenario.scenario_id}", flush=True)
-        result = run_scenario(
-            spec,
-            run_config,
-            qp_config,
-            scenario,
-            output_dir / "traces",
-        )
-        scenario_results.append(result)
-        metrics = result["metrics"]
-        print(
-            "[v6-lite] "
-            f"pass={result['passed']} "
-            f"rigid_final={metrics['rigid_grasp_point']['final_error_m']:.5f} m "
-            f"continuum_path_rmse={metrics['continuum_irregular_waypoint_tracking']['active_path_rmse_m']:.5f} m "
-            f"clearance={metrics['whole_body_clearance']['minimum_clearance']:.5f} m",
-            flush=True,
-        )
+    current_scenario_id: str | None = None
+    try:
+        for scenario in scenarios:
+            current_scenario_id = scenario.scenario_id
+            print(f"[v6-lite] running {scenario.scenario_id}", flush=True)
+            result = run_scenario(
+                spec,
+                run_config,
+                qp_config,
+                scenario,
+                output_dir / "traces",
+            )
+            scenario_results.append(result)
+            metrics = result["metrics"]
+            print(
+                "[v6-lite] "
+                f"pass={result['passed']} "
+                f"rigid_final={metrics['rigid_grasp_point']['final_error_m']:.5f} m "
+                f"continuum_path_rmse={metrics['continuum_irregular_waypoint_tracking']['active_path_rmse_m']:.5f} m "
+                f"clearance={metrics['whole_body_clearance']['minimum_clearance']:.5f} m",
+                flush=True,
+            )
+    except BaseException as error:
+        fail_run(output_dir, run_metadata, error, scenario_id=current_scenario_id)
+        raise
     elapsed = time.perf_counter() - started
     rigid_final_values = [
         item["metrics"]["rigid_grasp_point"]["final_error_m"]
@@ -1579,12 +1594,32 @@ def run_suite(
         "traces": [item["trace"] for item in scenario_results],
     }
     _write_json(output_dir / "artifact_manifest.json", manifest)
+    finish_run(
+        output_dir, run_metadata, passed=payload["passed"],
+        summary={"aggregate_metrics": payload["aggregate_metrics"],
+                 "summary_checks": summary_checks,
+                 "failed_scenarios": [
+                     {"scenario_id": item["scenario"]["scenario_id"],
+                      "failed_checks": [
+                          key for key, passed in item["checks"].items() if not passed
+                      ]}
+                     for item in scenario_results if not item["passed"]
+                 ]},
+    )
     return payload
 
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=Path("v6_lite/output/v6_2_a1/enabled_root/output"))
+    parser.add_argument("--output-dir", type=Path, default=None,
+                        help="exact new run directory; must not already exist")
+    parser.add_argument("--output-root", type=Path,
+                        default=Path("v6_lite/output/runs"),
+                        help="parent directory for an automatically named run")
+    parser.add_argument("--run-id", type=str, default=None,
+                        help="optional unique directory name below --output-root")
+    parser.add_argument("--parent-run-id", type=str, default=None,
+                        help="prior run that motivated this rerun")
     parser.add_argument("--scenario-count", type=int, default=5)
     parser.add_argument("--seed", type=int, default=20260801)
     parser.add_argument("--duration", type=float, default=27.0)
@@ -1604,6 +1639,12 @@ def _parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = _parser().parse_args()
+    if args.output_dir is not None and args.run_id is not None:
+        raise SystemExit("--output-dir and --run-id cannot be combined")
+    output_dir = (
+        args.output_dir if args.output_dir is not None
+        else args.output_root / (args.run_id or new_run_id())
+    )
     config = V6LiteRunConfig(
         scenario_count=args.scenario_count,
         seed=args.seed,
@@ -1616,14 +1657,16 @@ def main() -> None:
             enable_pcc_cbf=args.enable_pcc_cbf,
             enable_capsule_cbf=args.enable_capsule_cbf,
         ),
-        args.output_dir,
+        output_dir,
+        parent_run_id=args.parent_run_id,
     )
     print(
         json.dumps(
             {
                 "passed": result["passed"],
                 "aggregate_metrics": result["aggregate_metrics"],
-                "output": (args.output_dir / "v6_lite_metrics.json").as_posix(),
+                "output": (output_dir / "v6_lite_metrics.json").as_posix(),
+                "run_id": output_dir.name,
             },
             ensure_ascii=False,
             indent=2,
