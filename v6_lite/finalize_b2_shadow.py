@@ -265,6 +265,21 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 != warm["modes"][mode]["counts"]["warm_all_task_unknown"]
                 or item["maximum_parity_error_m"] > 1e-12):
             raise ValueError("full saved-state prepared query parity failed")
+    prediction_margins = {}
+    for mode in ("baseline", "enabled"):
+        metrics_path = Path(probe["inputs"][mode]["metrics_path"])
+        metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+        prediction_margins[mode] = metrics["qp_config"]["lookahead_model_margin_m_s"]
+        if prediction_margins[mode] != .005:
+            raise ValueError("original lookahead margin changed")
+        summaries = warm["modes"][mode]["summaries"]
+        h = summaries["next_h_prediction_abs_error_m"]
+        residual = summaries["next_start_residual_abs_error_m_s"]
+        if (not 0 < residual["count"] == h["count"]
+                or any(not (0 <= series["p50"] <= series["p95"]
+                            <= series["p99"] <= series["max"])
+                       for series in (h, residual))):
+            raise ValueError("fixed-partition prediction summary invalid")
     rescue_dir = root / "root_rescue_frontier"
     if (root_rescue["input_repartition_counterfactual_sha256"]
             != _sha(sources["repartition_counterfactual"])
@@ -381,6 +396,28 @@ def finalize(root: Path, output_dir: Path) -> dict:
         )
     lines += [
         "", "调用次数下降不等于墙钟时延同比例下降；这里仍无新区间模式的实测全链时延。", "",
+        "## 固定区间的下一周期预测误差", "",
+        "在旧 A.1 力矩原生重放中，用当前冻结区间和共享十步斜坡预测下一规划边界的"
+        "区间安全函数及起点残差，再于下一边界重算同一固定区间。"
+        "下表只统计具备配对下一状态和所需导数的行。", "",
+        "| 模式 | 配对区间行 | 安全函数绝对误差 p95 / 最大 (µm) | 起点残差绝对误差 p95 / 最大 (mm/s) | 原前瞻裕度 (mm/s) |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        summaries = warm["modes"][mode]["summaries"]
+        h = summaries["next_h_prediction_abs_error_m"]
+        residual = summaries["next_start_residual_abs_error_m_s"]
+        lines.append(
+            f"| {mode} | {residual['count']} | "
+            f"{1e6 * h['p95']:.3f} / {1e6 * h['max']:.3f} | "
+            f"{1e3 * residual['p95']:.3f} / {1e3 * residual['max']:.3f} | "
+            f"{1e3 * prediction_margins[mode]:.3f} |"
+        )
+    lines += [
+        "", "所测两组最大绝对残差均低于原 5 mm/s 前瞻裕度，但这只是旧轨迹、"
+        "抽样状态和固定区间上的经验观察。绝对误差不保留偏差方向，"
+        "本审计也没有分离区间切换与新命令执行误差；不能把该裕度称为严格误差上界，"
+        "更不能用它放行当前起点违反。", "",
         "持久未知状态另以保存的 A.1 规划位置做同状态对照：保持 64 点预算不变，"
         "只从五段根区间重新查询，未重放力矩，也未将新分区用于动作。", "",
         "| 模式 | 持久未知 | 从根区间后确定安全 | 确定低于门槛 | 仍未知 | 额外冷查询 p95 ms |",
