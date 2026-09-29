@@ -57,7 +57,7 @@ class ScreenedReplayConstraintBuilder(ReplayConstraintBuilder):
                                           len(retained))
         self.pairs = retained
         try:
-            return super().build(data)
+            return super()._build_forwarded(data)
         finally:
             self.pairs = self._all_pairs
 

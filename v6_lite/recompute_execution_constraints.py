@@ -105,6 +105,10 @@ class ReplayConstraintBuilder:
 
     def build(self, data: mujoco.MjData) -> RecomputedRows:
         mujoco.mj_forward(self.model, data)
+        return self._build_forwarded(data)
+
+    def _build_forwarded(self, data: mujoco.MjData) -> RecomputedRows:
+        """Assemble rows when mj_forward has already prepared this state."""
         generalized_map, reaction_residual = self._reaction_map(data)
         target_qvel = np.zeros(self.model.nv, dtype=np.float64)
         target_qvel[self.target_dof_slice] = data.qvel[self.target_dof_slice]

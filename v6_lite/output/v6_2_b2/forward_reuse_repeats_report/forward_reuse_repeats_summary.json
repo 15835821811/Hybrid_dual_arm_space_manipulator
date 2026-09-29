@@ -1,0 +1,94 @@
+{
+  "schema": "v6_2_b2_forward_reuse_repeat_report_v1",
+  "scenario_id": "v6_lite_scenario_01",
+  "ticks_per_run": 1350,
+  "all_non_timing_records_exact": true,
+  "all_native_67_channel_torque_traces_equal": true,
+  "retained_variant": "one_mj_forward_in_screened_next_start_builder",
+  "unadopted_variant": "zero_mj_forward_uses_branch_prepared_state",
+  "private_necessary_p95_all_over_20ms": true,
+  "stage2_full_online_20ms_gate_met": false,
+  "runs": [
+    {
+      "label": "prior private",
+      "directory": "v6_lite/output/v6_2_b2/vectorized_positions_private_scene01_1350",
+      "necessary_component_sum": {
+        "p50_ms": 18.740099854767323,
+        "p95_ms": 20.886034588329494,
+        "p99_ms": 24.506180076859888,
+        "max_ms": 75.66459942609072,
+        "over_20ms_count": 165
+      },
+      "screen_source_sha256": "733cbed7c8e7f234ee998ecef5f51efa45dbdcff5229d76f39638c7544754543",
+      "summary_sha256": "140b589a7d086aecd728222502ad937dd45741f52a86c28751e3b3321be4070a",
+      "records_sha256": "f8c2c81ef31939497743f9568cee688489c0b6fa936ebd7953dd5998759c395a",
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+    },
+    {
+      "label": "one forward 1",
+      "directory": "v6_lite/output/v6_2_b2/forward_once_private_scene01_1350",
+      "necessary_component_sum": {
+        "p50_ms": 18.582399701699615,
+        "p95_ms": 20.577165251597762,
+        "p99_ms": 22.701463755220175,
+        "max_ms": 75.25810040533543,
+        "over_20ms_count": 127
+      },
+      "screen_source_sha256": "e19f8e36bec60a29945261413fcfacf4bc5395627a863f641c0ef71537b7f1e3",
+      "summary_sha256": "10aabd162b9260b63a91579605e805c6f71f6c1f7538db2c80a70f32f8aea236",
+      "records_sha256": "1b1f5c37d3b170e8c43e751b123bc3f651fbf20b8b0fe47c189f72874e3db771",
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+    },
+    {
+      "label": "one forward 2",
+      "directory": "v6_lite/output/v6_2_b2/forward_once_repeat02_scene01_1350",
+      "necessary_component_sum": {
+        "p50_ms": 18.52869987487793,
+        "p95_ms": 20.5022101290524,
+        "p99_ms": 22.58200422860682,
+        "max_ms": 73.81539978086948,
+        "over_20ms_count": 130
+      },
+      "screen_source_sha256": "e19f8e36bec60a29945261413fcfacf4bc5395627a863f641c0ef71537b7f1e3",
+      "summary_sha256": "3fa4d47f86e34c12eb76322fba749fefdf91b7733190a4f6c8176dbcf222f69e",
+      "records_sha256": "7d3cbaa08f2e4009f030491d89c3fa0e4c7e81dc6a116f812811b3f8fa1f995d",
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+    },
+    {
+      "label": "one forward 3",
+      "directory": "v6_lite/output/v6_2_b2/forward_once_repeat03_scene01_1350",
+      "necessary_component_sum": {
+        "p50_ms": 18.78794957883656,
+        "p95_ms": 20.93198506627232,
+        "p99_ms": 23.80483809392899,
+        "max_ms": 75.47769974917173,
+        "over_20ms_count": 183
+      },
+      "screen_source_sha256": "e19f8e36bec60a29945261413fcfacf4bc5395627a863f641c0ef71537b7f1e3",
+      "summary_sha256": "29c4bac1e64cc531b1651978d9867dca7ff00e448e71d0321967469211e3a2d2",
+      "records_sha256": "4cd6ec09b3ced96d48c4dda4a5f8671d07888415b1fbfa815c02188885394c57",
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+    },
+    {
+      "label": "zero forward trial",
+      "directory": "v6_lite/output/v6_2_b2/prepared_next_start_private_scene01_1350",
+      "necessary_component_sum": {
+        "p50_ms": 18.51784996688366,
+        "p95_ms": 20.600535068660975,
+        "p99_ms": 22.69171084277332,
+        "max_ms": 75.25460049510002,
+        "over_20ms_count": 135
+      },
+      "screen_source_sha256": "c4e7274e028076301f086d4d46dd4e3ccf97b523a4acd88d57035580a5ad8aa9",
+      "summary_sha256": "63cb9cb1c5ab6e250f164fe32c89104199d6e5ed9b0c58d2f60b4a476506e2f8",
+      "records_sha256": "ca7e65415ecc3e4276c351482cf65e84de0564cc3607f37b97ea80ab3864e726",
+      "trace_sha256": "46382a0e3421ee2b1a5b6149d73dc69c0e67de52c9dc58cd448821e309657f90"
+    }
+  ],
+  "source_sha256": {
+    "report_b2_forward_reuse_repeats.py": "82c20e90510662974d3566debf86503d2163440d80ce19058f3867741373bdf1",
+    "b2_screened_next_start_rows.py": "e19f8e36bec60a29945261413fcfacf4bc5395627a863f641c0ef71537b7f1e3",
+    "recompute_execution_constraints.py": "80d79d82f94f66109d70219123108a4b613b5eb9c4e6ef283f47627ae236d4b6",
+    "image": "691af66d20b63be3bdf39a93805e4eaa1c491726abf5ae12b6206263bbaef977"
+  }
+}
