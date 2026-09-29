@@ -24,6 +24,7 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 - V6.2-A.1：关闭组和 PCC＋胶囊开启组各 5 场景；每组原 26 项真实 MuJoCo 力矩重放 `26/26`，新增执行合同 `11/11`，QP 失败 `0`
 - V6.2-A.1：两组最差全链规划 p95 分别为 `14.402 ms` 和 `18.162 ms`；完整运行 trace 保存在本地，哈希见 [A.1 manifest](v6_lite/output/v6_2_a1/evidence_manifest.json)
 - V6.2-B.1：另行从力矩重放状态重建几何行、目标漂移和自由基座反作用映射；原 `11/11` 报告保持原定义，新增报告单独给出
+- V6.2-B.1 离线 PCC 有界距离查询：五段全覆盖区间下界；历史协议重生成 10,000 案例与独立冻结 1,024 案例的审计、精度、未判定和耗时见 [B.1 自动报告](v6_lite/output/v6_2_b1/formal_audit_r02/BOUNDED_CLEARANCE_AUDIT.md)
 - 历史 V6-lite 正式验证：5 场景 `26/26`，原生 500 Hz 连续体—目标最小间隙 `24.994694 mm`，整机 4×细分最小间隙 `14.995557 mm`
 - V6.1-A 影子审计：10,000 个臂形构型 + 10,000 个卫星相对几何案例，离散 FK、PCC 导数、包络覆盖与距离梯度全部通过，胶囊/PCC 假安全均为 `0`
 - V6.1-B：PCC/胶囊约束默认关闭；启用版真实五场景同样 `26/26`，QP 失败 `0`，PCC 激活 `3,718` 次、绑定 `202` 次，最差任务 p95 `18.089305 ms`
@@ -40,6 +41,7 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | `v6_lite/run_evidence.py`、`v6_lite/run_matrix.py` | 唯一运行目录、起始元数据、失败保留及预声明的重复时延试验 |
 | `v6_lite/recompute_execution_constraints.py` | 从原生力矩重放状态独立重建瞬时、斜坡和前瞻约束残差 |
 | `v6_lite/bundle_evidence.py` | 原始 trace 打包、SHA-256 清单校验与不可覆盖导入 |
+| `v6_lite/pcc_bounded_clearance.py`、`v6_lite/audit_b1_bounded_clearance.py` | 五段 PCC—OBB 距离上下界与只读离线审计；不进入在线控制 |
 | `v6_lite/irregular_waypoints.py` | 7 个不规则航点与分段 minimum-jerk 参考 |
 | `v6_lite/validate_v6_lite.py` | trace 独立重放、整机细分距离审计及 500 Hz 连续体—卫星专项检查 |
 | `v6_lite/continuum_model_spec.py` | 版本化的 5 段 PCC、30 模块离散链、10→60 映射与工作域合同 |
@@ -100,10 +102,15 @@ python -m v6_lite.recompute_execution_constraints --output-dir <run_dir>
 python -m v6_lite.bundle_evidence pack --bundle v6_lite/output/releases/v6-evidence.zip --include run=<run_dir>
 python -m v6_lite.bundle_evidence verify --bundle v6_lite/output/releases/v6-evidence.zip --import-dir v6_lite/output/releases/imported-v6-evidence
 
+# 离线有界几何审计；默认重生成历史 10,000 案例并冻结新留出集
+python -m v6_lite.audit_b1_bounded_clearance --output-dir v6_lite/output/v6_2_b1/new_audit_run
+
 python -m unittest discover -s v6_lite -p 'test*.py'
 ```
 
 运行开始时的 `run_metadata.json` 绑定 Git 提交、源码哈希、模型、配置、场景和机器环境；`traces/` 保存力矩与状态，`failures/` 保存执行拒绝的部分 trace，`run_failure.json` 保存验收失败或异常。墙钟计时日志不能由物理重放重新产生。V6.1-B 的原路径是历史产物，当前运行入口会拒绝覆盖；原审计说明见 [V6.1-B 文档](docs/V6_1B_PCC_CBF_INTEGRATION.md)。
+
+B.1 有界查询只界定当前 PCC 管体代理的连续弧长最小净空；返回代理安全、代理低于门槛或未知，并单独标明工作域和真实几何包络的证据范围。`bounds_valid` 依赖精确数学模型的弧长导数界，双精度外扩尚非形式化数值认证；有限样本包络回归不构成全域或连续时间保证。原在线 `PCCClearanceEvaluator` 及安全参数保持不变。
 
 ## 可视化
 
