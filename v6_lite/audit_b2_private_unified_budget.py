@@ -30,7 +30,6 @@ from v6_lite.shadow_b2_interval_cbf import ShadowBudget, select_intervals_by_fro
 from v6_lite.shape_clearance import target_box_from_mujoco
 
 
-SCENE = "v6_lite_scenario_03"
 TICKS = 1350
 QUERY_POINT_LIMIT = 255
 FROZEN_BUDGET = ShadowBudget()
@@ -79,16 +78,19 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
     records_path = root / "private_rollout_records.jsonl"
     trace_path = root / "private_rollout_trace.npz"
     private = json.loads(summary_path.read_text(encoding="utf-8"))
+    scene_id = private["scenario_id"]
     records = [json.loads(line) for line in records_path.read_text(
         encoding="utf-8").splitlines()]
-    if (private["scenario_id"] != SCENE or private["executed_ticks"] != TICKS
+    if (scene_id not in {f"v6_lite_scenario_{index:02d}" for index in range(5)}
+            or private["executed_ticks"] != TICKS
             or private["stop_reason"] != "HORIZON_COMPLETE"
             or private["point_budget"] != QUERY_POINT_LIMIT
             or private["records_sha256"] != _sha(records_path)
             or private["trace_sha256"] != _sha(trace_path)
             or len(records) != TICKS):
         raise ValueError("private full-scene trace provenance changed")
-    recompute_path = (root.parent / "cholesky_private_full_scene03_recompute" /
+    recompute_path = (root.parent /
+                      f"cholesky_private_full_scene{scene_id[-2:]}_recompute" /
                       "private_recompute_summary.json")
     recompute = json.loads(recompute_path.read_text(encoding="utf-8"))
     if (not recompute["pass_recompute"] or recompute["failure_count"]
@@ -104,7 +106,7 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
     cfg = HierarchicalQPConfig(**metrics["qp_config"])
     run_cfg = V6LiteRunConfig(**metrics["run_config"])
     saved = next(item for item in metrics["scenarios"]
-                 if item["scenario"]["scenario_id"] == SCENE)
+                 if item["scenario"]["scenario_id"] == scene_id)
     robot = default_v6_lite_robot_spec()
     verifier = WholeBodyCollisionVerifier(
         robot, _obstacles(saved["scenario"]), WholeBodyVerificationConfig(
@@ -176,6 +178,8 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
                 or any(item.derivative_status != "SUPPORTED"
                        for item in batch.rows if item.interval_id in selected)):
             parity_errors.append("REQUIRED_INTERVAL_UNSUPPORTED")
+        if batch.geometry_domain_status != saved_row["geometry_domain_status"]:
+            parity_errors.append("GEOMETRY_DOMAIN_CHANGED")
         budget_failures = assess_budget(
             branch_points, interval_points, local_points, jacobians,
             elapsed_ms, FROZEN_BUDGET)
@@ -191,6 +195,10 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
             "jacobian_evaluation_count": jacobians,
             "query_and_interval_assembly_ms": elapsed_ms,
             "proxy_status": decision.proxy_clearance_status,
+            "geometry_domain_status": batch.geometry_domain_status,
+            "strict_online_domain_met": (
+                batch.geometry_domain_status
+                == "INSIDE_DECLARED_WORK_DOMAIN;ON_DECLARED_SHAPE_SUBSPACE"),
             "query_budget_exhausted": decision.budget_exhausted,
             "selected_interval_count": len(selected),
             "excluded_interval_count": len(excluded),
@@ -208,7 +216,7 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
     report = {
         "schema": "v6_2_b2_private_unified_budget_audit_v1",
         "scope": "saved_private_task_states_direct_mj_forward_not_torque_replay",
-        "scenario_id": SCENE,
+        "scenario_id": scene_id,
         "task_ticks": len(rows),
         "query_point_limit_used_by_private_controller": QUERY_POINT_LIMIT,
         "budget_protocol": "bounded_cold_shadow_default",
@@ -217,6 +225,10 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         "budget_overrun_ticks": [row["tick"] for row in budget_failures],
         "parity_failure_count": len(parity_failures),
         "query_budget_exhausted_count": sum(row["query_budget_exhausted"] for row in rows),
+        "strict_domain_violation_tick_count": sum(
+            not row["strict_online_domain_met"] for row in rows),
+        "strict_domain_violation_ticks": [
+            row["tick"] for row in rows if not row["strict_online_domain_met"]],
         "count_statistics": {key: _stats([row[key] for row in rows]) for key in (
             "branch_point_evaluation_count", "interval_point_evaluation_count",
             "local_refinement_evaluation_count", "total_point_evaluation_count",
@@ -273,6 +285,8 @@ def run(root: Path, a1_root: Path, output_dir: Path) -> dict:
         f"局部细化 {FROZEN_BUDGET.local_refinement_evaluations}、"
         f"查询及装配 {FROZEN_BUDGET.total_query_time_ms:.0f} ms。"
         f"逐状态超限 {len(budget_failures)}，重算选择不一致 {len(parity_failures)}。",
+        f"严格工作域外规划周期 {report['strict_domain_violation_tick_count']}；"
+        "工作域状态与私有控制记录逐状态核对。",
         "", "私有控制器只预先限制分支查询最多 255 点；本报告对总点数、"
         "Jacobian、局部细化和耗时作事后检查，未把这些阈值接入动作放行。"
         "计时从保存状态的 `mj_forward` 之后开始，不含完整 QP、"

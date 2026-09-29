@@ -159,6 +159,8 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "cholesky_full_scene03_budget": root /
             "cholesky_private_full_scene03_budget" /
             "unified_budget_summary.json",
+        "full_private_five_gate": root / "full_private_five_gate" /
+            "private_five_gate_summary.json",
     })
     optimized = json.loads(sources["optimized_private_five_scene"].read_text(
         encoding="utf-8"))
@@ -496,6 +498,39 @@ def finalize(root: Path, output_dir: Path) -> dict:
     for name, digest in budget_audit["source_sha256"].items():
         if _source_sha(Path("v6_lite") / name) != digest:
             raise ValueError(f"full-scene budget source changed: {name}")
+    full_private_gate_dir = root / "full_private_five_gate"
+    full_private_gate = json.loads(sources["full_private_five_gate"].read_text(
+        encoding="utf-8"))
+    full_private_gate_manifest = json.loads((full_private_gate_dir /
+        "private_five_gate_manifest.json").read_text(encoding="utf-8"))
+    for label, filename in {
+        "summary": "private_five_gate_summary.json",
+        "failures": "private_five_gate_failures.jsonl",
+        "document": "FULL_PRIVATE_FIVE_GATE.md",
+    }.items():
+        if full_private_gate_manifest[f"{label}_sha256"] != _sha(
+                full_private_gate_dir / filename):
+            raise ValueError(f"full private five {label} changed")
+    if (full_private_gate["generator_source_sha256"]
+            != _source_sha(Path("v6_lite/finalize_b2_full_private_five.py"))
+            or full_private_gate["scene_count"] != 5
+            or full_private_gate["executed_task_ticks"] != 6750
+            or full_private_gate["recomputed_task_states"] != 6755
+            or full_private_gate["recomputed_interval_rows"] != 12549
+            or full_private_gate["strict_domain_violation_tick_count"] != 63
+            or full_private_gate["track_commands_issued_outside_declared_domain"]
+            != 63
+            or full_private_gate["failure_records_sha256"]
+            != _sha(full_private_gate_dir / "private_five_gate_failures.jsonl")
+            or full_private_gate["stage2_status"] != "GATE_NOT_MET"
+            or full_private_gate["stage3_admission"]
+            or full_private_gate["production_online_controller_changed"]):
+        raise ValueError("full private five scope or gate changed")
+    if [(item["scenario_id"], item["strict_domain_violation_ticks"])
+            for item in full_private_gate["scenes"]] != [
+                (f"v6_lite_scenario_{index:02d}", 63 if index == 1 else 0)
+                for index in range(5)]:
+        raise ValueError("full private five domain counterexample changed")
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -1499,6 +1534,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         for mode in ("baseline", "enabled")
     )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
+              or full_private_gate["strict_domain_violation_tick_count"]
               or not probe_ready or not sweep_ready or not micro_ready
               or not candidate_ramp_ready or not candidate_prediction_ready
               or not repeated_partial_budget_ready
@@ -2181,7 +2217,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"不一致 {cholesky['independent_failure_count']}；"
         "五场景轨迹哈希与原补偿基线完全相同。", "",
         "因此 400 周期私有预检＋QP 重复时延诊断通过，但不是完整任务周期"
-        "或硬实时证明。旧影子门禁、完整五场景新闭环、原 26/11 项新 trace "
+        "或硬实时证明。旧影子门禁、生产在线完整五场景闭环、原 26/11 项新 trace "
         "与故障注入仍未全部验收；阶段二总门禁保持关闭。", "",
         "### 单场景完整 27 s 私有诊断", "",
         "从已发布启用组场景 03 的初态开始，将同一私有 Cholesky 诊断"
@@ -2210,7 +2246,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "形状子空间条件；独立重放最大状态误差为 "
         f"{full_recompute['maximum_native_state_error']:.1e}。"
         "计时仅含私有预检＋QP，不含独立重算、十步力矩伺服、"
-        "状态监控和实时调度。其余四个完整场景、正式生产切换、"
+        "状态监控和实时调度。正式生产切换、"
         "原 26/11 项新 trace 验收及故障注入仍未完成；"
         "阶段二接入门禁保持关闭。", "",
         "同一条私有轨迹再按原冷影子预算独立复算 1,350 个保存规划状态。"
@@ -2226,6 +2262,32 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "局部细化在该路径没有启用，因此实际计数为 0。"
         "这属于保存状态的事后预算核对；私有执行器尚未把总预算"
         "作为动作放行条件，也未测完整控制周期。", "",
+        "### 五场景完整 27 s 私有诊断与工作域门禁", "",
+        "其余四个场景也以相同私有路径独立执行到 1,350 周期；"
+        "每条新轨迹分别做原生力矩重放、区间行重算与统一预算审计。"
+        "以下计时仅是预检＋QP，未完成生产在线任务层验收。", "",
+        "| 场景 | 周期 | 独立区间行 | 预算超限 | 域外仍 TRACK | 预检＋QP p95 / p99 / 最大 ms | 超 20 ms 周期 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for item in full_private_gate["scenes"]:
+        timing = item["preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['scenario_id'][-2:]} | {item['executed_ticks']} | "
+            f"{item['recomputed_interval_rows']} | "
+            f"{item['budget_overrun_ticks']} | "
+            f"{item['strict_domain_violation_ticks']} | "
+            f"{timing['p95_ms']:.3f} / {timing['p99_ms']:.3f} / "
+            f"{timing['max_ms']:.3f} | {timing['over_20ms_count']} |")
+    lines += [
+        "", f"五场景共 {full_private_gate['executed_task_ticks']} 个私有执行周期、"
+        f"{full_private_gate['recomputed_task_states']} 个独立重放任务状态、"
+        f"{full_private_gate['recomputed_interval_rows']} 条独立区间行，"
+        "重算不一致及冻结影子预算超限均为 0。",
+        "scene_01 在 tick 888–950 连续 63 个周期越出 B.1 声明的工作域，"
+        "私有诊断仍发出 TRACK 命令。原生重放一致性和当前状态代理安全"
+        "均不能替代声明域内的包络证据；这些周期在单独失败记录中逐项保存。"
+        "因此五场景完整私有试验暴露了明确的在线准入阻断条件，"
+        "阶段二总门禁仍为 GATE_NOT_MET。", "",
         "## 补偿轨迹上的球界筛选时延核对", "",
         "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
         "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"
