@@ -302,6 +302,8 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("blas_thread_trial", manifest["sources"])
         self.assertIn("mujoco_sphere_screen", manifest["sources"])
         self.assertIn("weighted_qp_sphere_trial", manifest["sources"])
+        self.assertIn("private_five_scene_rollout", manifest["sources"])
+        self.assertIn("private_rollout_recompute", manifest["sources"])
         self.assertIn("full_state_envelope", manifest["sources"])
         self.assertIn("microstep_envelope", manifest["sources"])
         self.assertIn("full_torque_envelope", manifest["sources"])

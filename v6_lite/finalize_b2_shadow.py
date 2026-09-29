@@ -99,6 +99,8 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "blas_thread_trial": root / "blas_thread_trial" / "abba_summary.json",
         "mujoco_sphere_screen": root / "mujoco_sphere_screen" / "sphere_screen_summary.json",
         "weighted_qp_sphere_trial": root / "qp_sphere_trial" / "qp_sphere_summary.json",
+        "private_five_scene_rollout": root / "private_rollout_400_summary" / "private_five_scene_summary.json",
+        "private_rollout_recompute": root / "private_recompute_400" / "private_recompute_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -110,7 +112,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -457,6 +459,93 @@ def finalize(root: Path, output_dir: Path) -> dict:
         if any(qp_sphere["modes"][mode][method]["record_count"] != 30
                for method in ("reference", "sphere_screen")):
             raise ValueError("weighted QP sphere-screen mode count changed")
+    if (private_rollout["input_refined_start_sha256"]
+            != _sha(sources["refined_start"])
+            or private_rollout["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or private_rollout["predeclared_horizon_ticks_per_scene"] != 400
+            or private_rollout["predeclared_scenarios"]
+            != [f"v6_lite_scenario_{index:02d}" for index in range(5)]
+            or private_rollout["complete_horizon_count"] != 5
+            or private_rollout["old_violation_tick_reached_count"] != 5
+            or private_rollout["old_violation_tick_start_satisfied_count"] != 5
+            or private_rollout["strict_online_admission"]
+            or private_rollout["new_mode_five_scene_acceptance"]
+            or private_rollout["full_cycle_20ms_acceptance"]):
+        raise ValueError("private multi-cycle scope or provenance changed")
+    for name, digest in private_rollout["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"private multi-cycle source changed: {name}")
+    private_summary_dir = root / "private_rollout_400_summary"
+    private_manifest = json.loads((private_summary_dir /
+                                   "private_five_scene_manifest.json")
+                                  .read_text(encoding="utf-8"))
+    if (private_manifest["summary_sha256"]
+            != _sha(sources["private_five_scene_rollout"])
+            or private_manifest["document_sha256"]
+            != _sha(private_summary_dir / "PRIVATE_FIVE_SCENE.md")):
+        raise ValueError("private multi-cycle aggregate changed")
+    for scene in private_rollout["scenes"]:
+        folder = Path(scene["folder"])
+        report_path = folder / "private_rollout_summary.json"
+        item = json.loads(report_path.read_text(encoding="utf-8"))
+        if (scene["summary_sha256"] != _sha(report_path)
+                or scene["manifest_sha256"]
+                != _sha(folder / "private_rollout_manifest.json")
+                or scene["executed_ticks"] != 400
+                or scene["stop_reason"] != "HORIZON_COMPLETE"
+                or scene["private_start_status_at_old_violation_tick"]
+                != "START_ROWS_SATISFIED"
+                or item["native_replay_max_qpos_error"] > 1e-8
+                or item["production_online_controller_changed"]
+                or item["stage3_admission"]
+                or item["strict_online_domain_all_executed_ticks"]):
+            raise ValueError("private multi-cycle scene evidence changed")
+        for name, digest in item["source_sha256"].items():
+            if _source_sha(Path("v6_lite") / name) != digest:
+                raise ValueError(f"private scene source changed: {name}")
+        scene_manifest = json.loads((folder / "private_rollout_manifest.json")
+                                    .read_text(encoding="utf-8"))
+        for label, filename in (("summary", "private_rollout_summary.json"),
+                                ("records", "private_rollout_records.jsonl"),
+                                ("trace", "private_rollout_trace.npz"),
+                                ("document", "PRIVATE_ROLLOUT.md")):
+            if scene_manifest[f"{label}_sha256"] != _sha(folder / filename):
+                raise ValueError(f"private scene {label} changed")
+    if (not private_recompute["pass_recompute"]
+            or private_recompute["failure_count"] != 0
+            or private_recompute["checked_task_states"] != 2005
+            or private_recompute["checked_interval_rows"] != 5257
+            or private_recompute["maximum_native_state_error"] > 1e-8
+            or private_recompute["maximum_query_error_m"] > 1e-8
+            or private_recompute["maximum_start_slack_error_m_s"] > 1e-7
+            or private_recompute["new_mode_online_admitted"]
+            or private_recompute["full_cycle_20ms_acceptance"]
+            or private_recompute["continuous_time_certified"]
+            or not private_recompute["shared_model_geometry_with_private_controller"]
+            or private_recompute["source_hash_newline_policy"] != "LF_NORMALIZED"):
+        raise ValueError("private torque independent recomputation changed")
+    for name, digest in private_recompute["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"private torque recomputation source changed: {name}")
+    recompute_dir = root / "private_recompute_400"
+    recompute_manifest = json.loads((recompute_dir / "private_recompute_manifest.json")
+                                    .read_text(encoding="utf-8"))
+    for label, filename in (("summary", "private_recompute_summary.json"),
+                            ("checks", "private_recompute_checks.jsonl"),
+                            ("interval_rows", "private_recompute_interval_rows.jsonl"),
+                            ("failures", "private_recompute_failures.jsonl"),
+                            ("document", "PRIVATE_RECOMPUTE.md")):
+        if recompute_manifest[f"{label}_sha256"] != _sha(recompute_dir / filename):
+            raise ValueError(f"private torque recomputation {label} changed")
+    for item in private_recompute["inputs"]:
+        if (item["summary_sha256"] != _sha(Path(item["summary_path"]))
+                or item["trace_sha256"]
+                != _sha(Path(item["summary_path"]).parent /
+                        "private_rollout_trace.npz")
+                or item["records_sha256"]
+                != _sha(Path(item["summary_path"]).parent /
+                        "private_rollout_records.jsonl")):
+            raise ValueError("private recomputation input changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1207,6 +1296,47 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "全身几何采用原验证器有限插值检查，仍不是连续时间认证。"
         "这只是从历史状态出发的单周期反事实；不能覆盖新区间闭环累计误差、"
         "停止策略、完整五场景或 20 ms 全链时延。", "",
+        "## 从初态出发的五场景私有多周期分支", "",
+        "从发布 A.1 的 enabled 五个初态启动私有 MuJoCo 模型，每场景预声明"
+        "400 个规划周期；之后只使用新区间 QP 验证出的命令，经原十步斜坡"
+        "和 67 路力矩伺服推进。旧 trace 只作初始条件和逐时刻差异对照。"
+        "这不是生产控制器在线接入。", "",
+        "| 场景 | 执行周期 | 旧起点首次违例抽样 tick | 私有对应起点 | "
+        "最小下一起点松弛 mm/s | 最小 500 Hz 包络余量 mm | 预检＋QP p95 ms | 超 20 ms |",
+        "| --- | ---: | ---: | --- | ---: | ---: | ---: | ---: |",
+    ]
+    for item in private_rollout["scenes"]:
+        timing = item["private_preflight_plus_qp_timing"]
+        lines.append(
+            f"| {item['scenario_id'][-2:]} | {item['executed_ticks']} | "
+            f"{item['old_first_sampled_start_violation_tick']} | "
+            f"{item['private_start_status_at_old_violation_tick']} | "
+            f"{1000*item['minimum_next_start_slack_m_s']:.3f} | "
+            f"{1000*item['minimum_ramp_envelope_margin_m']:.3f} | "
+            f"{timing['p95_ms']:.3f} | {timing['over_20ms_count']} |"
+        )
+    lines += [
+        "", f"私有分支完整 {private_rollout['complete_horizon_count']}/5；"
+        f"旧轨迹首次速度违例抽样时刻的私有路径起点满足 "
+        f"{private_rollout['old_violation_tick_start_satisfied_count']}/5。"
+        "这说明所测旧起点违例并非同一场景所有轨迹必然失败。"
+        "五组从第 1 周期起均超出原严格形状子空间判据，且预检＋QP p95 "
+        "都超过 20 ms；即使所测 500 Hz 胶囊在 PCC 管内，"
+        "也不能把这些私有动作称为获准在线执行。", "",
+        "## 私有力矩轨迹的单独重放与区间重算", "",
+        "另启程序从保存的私有初态和 67 路力矩逐步重放，"
+        "不调用 QP 求解，也不复用控制分支的区间批次；每个规划边界"
+        "重查根区间，重算固定区间的 17 维梯度、目标漂移、原 MuJoCo／"
+        "胶囊约束和下一起点松弛。", "",
+        f"共检查 {private_recompute['checked_task_states']} 个规划状态、"
+        f"{private_recompute['checked_interval_rows']} 条区间行，"
+        f"不一致 {private_recompute['failure_count']}；最大状态误差 "
+        f"{private_recompute['maximum_native_state_error']:.2e}，"
+        f"最大代理查询差 {private_recompute['maximum_query_error_m']:.2e} m，"
+        f"最大起点松弛差 "
+        f"{private_recompute['maximum_start_slack_error_m_s']:.2e} m/s。"
+        "重算仍共享声明的 MuJoCo/PCC 几何模型，不是独立物理测量。"
+        "严格子空间、全链时延、未测场景及连续时间证据缺口仍在。", "",
         "## 候选分支的同区间前瞻误差", "",
         "对同一 30 个私有候选分支，重建原只读 QP 的区间划分与筛选 ID，"
         "在执行后一规划起点冻结相同 ID 重算 h、17 维广义梯度及目标漂移。"
