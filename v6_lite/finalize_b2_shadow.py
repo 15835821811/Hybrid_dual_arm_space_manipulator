@@ -1504,6 +1504,16 @@ def finalize(root: Path, output_dir: Path) -> dict:
               or not repeated_partial_budget_ready
               or not full_torque_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
+    a1_enabled = json.loads(Path(full_root["inputs"]["enabled"]["metrics_path"])
+                            .read_text(encoding="utf-8"))
+    a1_task_p95_max = max(
+        scene["metrics"]["rates_and_latency"]["task_full_latency_p95_ms"]
+        for scene in a1_enabled["scenarios"])
+    a1_task_single_max = max(
+        scene["metrics"]["rates_and_latency"]["task_full_latency_max_ms"]
+        for scene in a1_enabled["scenarios"])
+    query_diagnostic_ceiling_ms = cold["modes"]["enabled"]["budget"][
+        "total_query_time_ms"]
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
         f"当前门禁：**{status}**。因此本证据不作为新区间模式的五场景闭环验收。",
@@ -1520,6 +1530,17 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "没有从 CBF 数学性质推得这个数值。只读查询或查询加 QP 探针"
         "不是完整任务层计时；即使该 p95 达标，也不构成每周期无超时的"
         "硬实时证明。",
+        f"旧 A.1 enabled 五场景中最差的任务层 p95 为 {a1_task_p95_max:.3f} ms，"
+        f"单次最大值为 {a1_task_single_max:.3f} ms；这也说明 p95 门槛允许个别周期超时。",
+        f"当前影子配置的 `total_query_time_ms={query_diagnostic_ceiling_ms:.1f}` "
+        "限制影子几何预检的诊断计时，包含区间查询、相关 Jacobian 和"
+        "几何核对；它占满整个任务周期，"
+        "没有给旧 MuJoCo 约束装配、QP、动作验证和调度预留时间，"
+        "不能单独作为在线准入预算。",
+        f"新区间私有 scene_03 的 {full_scene_timing['count']} 次预检＋QP "
+        f"p95 为 {full_scene_timing['p95_ms']:.3f} ms，"
+        f"最大值为 {full_scene_timing['max_ms']:.3f} ms；"
+        "这个局部指标没有完成生产在线模式的完整任务层验收。",
         "", "## A.1 原生力矩重放上的只读几何", "",
         "两组旧控制 trace 均按 500 Hz 力矩原生重放；每个规划边界先调用 `mj_forward`"
         " 更新空间几何量，再与保存的 50 Hz 状态及哈希核对。"
