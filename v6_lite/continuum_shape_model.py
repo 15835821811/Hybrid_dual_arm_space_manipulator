@@ -364,6 +364,23 @@ class ContinuumShapeModel:
             raise ValueError("PCC configuration must be finite with shape (10,)")
         base = validate_transform(base_transform)
         requested = [float(value) for value in arclengths]
+        # Locate all requested points against one immutable boundary vector.
+        # Recomputing the cumulative section lengths for every point dominates
+        # large interval batches without changing any geometric calculation.
+        boundaries = self.spec.segment_boundaries_m
+        total_length = float(boundaries[-1])
+        requested_array = np.asarray(requested, dtype=np.float64)
+        if (np.any(~np.isfinite(requested_array))
+                or np.any(requested_array < -1e-12)
+                or np.any(requested_array > total_length + 1e-12)):
+            raise ValueError(f"arclength must lie in [0, {total_length}]")
+        clipped = np.clip(requested_array, 0.0, total_length)
+        segment_ids = np.minimum(
+            np.searchsorted(boundaries[1:], clipped, side="right"),
+            len(self.spec.segment_lengths_m) - 1,
+        )
+        local_arclengths = clipped - boundaries[segment_ids]
+        local_arclengths[clipped >= total_length] = self.spec.segment_lengths_m[-1]
         prefixes = [base @ self.spec.base_to_shape_start]
         prefix_derivatives = (
             [[]]
@@ -384,8 +401,11 @@ class ContinuumShapeModel:
                 prefix_derivatives.append(derivatives)
             prefixes.append(prefixes[-1] @ full)
         results: list[ContinuumPoint] = []
-        for arclength in requested:
-            segment_index, local_arclength = self._segment_location(arclength)
+        for arclength, segment_id, section_s in zip(
+            requested, segment_ids, local_arclengths
+        ):
+            segment_index = int(segment_id)
+            local_arclength = float(section_s)
             local = self._section_transform(
                 configuration[2 * segment_index : 2 * segment_index + 2],
                 float(self.spec.segment_lengths_m[segment_index]),
