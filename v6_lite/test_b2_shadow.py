@@ -168,6 +168,48 @@ class B2ShadowTests(unittest.TestCase):
                 report["modes"][mode]["start_violations_with_negative_interval_h"],
             )
 
+    def test_repartition_counterfactual_preserves_shadow_unknowns(self) -> None:
+        base = Path(__file__).parent / "output" / "v6_2_b2"
+        report = json.loads((base / "repartition_counterfactual"
+                             / "repartition_counterfactual.json").read_text(encoding="utf-8"))
+        warm_path = base / "shadow_warm" / "shadow_report.json"
+        warm = json.loads(warm_path.read_text(encoding="utf-8"))
+        self.assertEqual(report["point_budget"], 64)
+        self.assertEqual(report["gate_m"], .005)
+        self.assertFalse(report["online_control_changed"])
+        self.assertFalse(report["repartition_applied_to_execution"])
+        self.assertEqual(report["input_shadow"]["sha256"],
+                         hashlib.sha256(warm_path.read_bytes()).hexdigest())
+        for source, digest in report["source_sha256"].items():
+            self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(), digest)
+        for mode in ("baseline", "enabled"):
+            counts = report["modes"][mode]["counts"]
+            self.assertEqual(counts["task_ticks"],
+                             warm["modes"][mode]["summaries"]["warm_all_task_query_ms"]["count"])
+            self.assertEqual(counts["warm_UNKNOWN_CROSSES_GATE"],
+                             warm["modes"][mode]["counts"]["warm_all_task_unknown"])
+            self.assertEqual(counts["sampled_status_matches"],
+                             warm["modes"][mode]["sample_count"])
+            self.assertEqual(counts["warm_UNKNOWN_CROSSES_GATE"], sum(
+                counts.get("cold_" + status, 0) for status in (
+                    "PROXY_CLEARANCE_AT_LEAST_GATE", "PROXY_CLEARANCE_BELOW_GATE",
+                    "UNKNOWN_CROSSES_GATE",
+                )
+            ))
+        self.assertEqual(len(report["entries"]), sum(
+            report["modes"][mode]["counts"]["warm_UNKNOWN_CROSSES_GATE"]
+            for mode in ("baseline", "enabled")
+        ))
+        for entry in report["entries"]:
+            self.assertEqual(entry["warm_status"], "UNKNOWN_CROSSES_GATE")
+            if entry["cold_status"] == "PROXY_CLEARANCE_AT_LEAST_GATE":
+                self.assertGreaterEqual(entry["cold_lower_m"], .005)
+            elif entry["cold_status"] == "PROXY_CLEARANCE_BELOW_GATE":
+                self.assertLess(entry["cold_upper_m"], .005)
+            else:
+                self.assertLess(entry["cold_lower_m"], .005)
+                self.assertGreaterEqual(entry["cold_upper_m"], .005)
+
     def test_stage2_manifest_preserves_failed_admission_gate(self) -> None:
         base = Path(__file__).parent / "output" / "v6_2_b2"
         manifest = json.loads((base / "stage2_summary" / "stage2_manifest.json").read_text(
@@ -176,6 +218,7 @@ class B2ShadowTests(unittest.TestCase):
         self.assertEqual(manifest["status"], "GATE_NOT_MET")
         self.assertIn("budget_frontier", manifest["sources"])
         self.assertIn("refined_start", manifest["sources"])
+        self.assertIn("repartition_counterfactual", manifest["sources"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()

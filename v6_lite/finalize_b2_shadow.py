@@ -26,10 +26,13 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "b1_holdout_geometry": root / "heldout_geometry" / "heldout_geometry_report.json",
         "budget_frontier": root / "budget_frontier" / "budget_frontier.json",
         "refined_start": root / "refined_start" / "refined_start_report.json",
+        "repartition_counterfactual": root / "repartition_counterfactual" / "repartition_counterfactual.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined = (values[name] for name in sources)
+    cold, warm, near, heldout, frontier, refined, repartition = (
+        values[name] for name in sources
+    )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
@@ -38,6 +41,18 @@ def finalize(root: Path, output_dir: Path) -> dict:
         raise ValueError("budget frontier is not tied to the current warm shadow")
     if refined["input_frontier"]["sha256"] != _sha(sources["budget_frontier"]):
         raise ValueError("refined start is not tied to the current budget frontier")
+    if repartition["input_shadow"]["sha256"] != _sha(sources["warm_shadow"]):
+        raise ValueError("repartition counterfactual is not tied to the current warm shadow")
+    if (repartition["point_budget"] != 64 or repartition["gate_m"] != .005
+            or repartition["repartition_applied_to_execution"]):
+        raise ValueError("repartition counterfactual changed the frozen comparison")
+    for mode in ("baseline", "enabled"):
+        counts = repartition["modes"][mode]["counts"]
+        expected = warm["modes"][mode]["counts"].get("warm_all_task_unknown", 0)
+        expected_ticks = warm["modes"][mode]["summaries"]["warm_all_task_query_ms"]["count"]
+        if (counts.get("warm_UNKNOWN_CROSSES_GATE", 0) != expected
+                or counts.get("task_ticks", 0) != expected_ticks):
+            raise ValueError(f"repartition counterfactual warm count changed: {mode}")
     if (len(refined["native_replay_checks"]) != 10
             or any(x["max_state_error"] > 1e-8
                    for x in refined["native_replay_checks"])):
@@ -53,7 +68,9 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "## A.1 原生力矩重放上的只读几何", "",
         "两组旧控制 trace 均按 500 Hz 力矩原生重放；每个规划边界先调用 `mj_forward`"
         " 更新空间几何量，再与保存的 50 Hz 状态及哈希核对。"
-        "每组五场景，每场景预定抽取 27 个规划状态；持久查询则在所有 6,750 个规划 tick 上更新。", "",
+        "每组五场景，每场景预定抽取 27 个规划状态；持久查询则在每组 "
+        f"{warm['modes']['baseline']['summaries']['warm_all_task_query_ms']['count']:,} "
+        "个规划 tick 上更新。", "",
         "| 模式 | 冷查询 p95 ms | 持久查询采样 p95 ms | 持久查询全部 tick 未知 | 最大叶数 | 配对容量估计 p95 ms | 真实几何误拒绝 | 子空间外状态 |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
@@ -73,6 +90,25 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "排除区间在所测下一 tick 进入激活距离的计数为 0，但此有限重放结果不是一般动态保证。",
         "配对容量估计使用旧全链耗时减旧形状查询耗时再加影子查询耗时；"
         "它不是新模式实测，也不能单独证明 20 ms 全链 p95。", "",
+        "持久未知状态另以保存的 A.1 规划位置做同状态对照：保持 64 点预算不变，"
+        "只从五段根区间重新查询，未重放力矩，也未将新分区用于动作。", "",
+        "| 模式 | 持久未知 | 从根区间后确定安全 | 确定低于门槛 | 仍未知 | 额外冷查询 p95 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = repartition["modes"][mode]
+        c = item["counts"]
+        lines.append(
+            f"| {mode} | {c.get('warm_UNKNOWN_CROSSES_GATE', 0)} | "
+            f"{c.get('cold_PROXY_CLEARANCE_AT_LEAST_GATE', 0)} | "
+            f"{c.get('cold_PROXY_CLEARANCE_BELOW_GATE', 0)} | "
+            f"{c.get('cold_UNKNOWN_CROSSES_GATE', 0)} | "
+            f"{item['counterfactual_cold_query_time_ms'].get('p95', float('nan')):.3f} |"
+        )
+    lines += [
+        "", "重分区能解释部分持久未知，但会改变区间安全函数集合。"
+        "这项额外耗时不能与热查询并列当作新模式全链计时；"
+        "分区切换后的斜坡起点、必要约束和预算仍须单独验证。", "",
         "区间激活筛选从现有速度、加速度和关节限位得到候选盒，"
         "并将十步斜坡起点速度纳入逐轴绝对上界；"
         "空盒退回全局速度上界并单独使门禁失败。"
