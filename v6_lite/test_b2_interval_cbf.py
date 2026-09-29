@@ -169,6 +169,53 @@ class IntervalCBFTests(unittest.TestCase):
         self.assertLessEqual(abs(numeric_drift - row.target_drift_m_s),
                              2e-5 + 2e-3 * abs(numeric_drift))
 
+    def test_body_origin_transport_matches_mujoco_point_jacobians(self) -> None:
+        data = self._state()
+        tangent = np.zeros(self.model.nv)
+        tangent[self.evaluator.base_dof_slice] = [0.02, -0.03, 0.04,
+                                                  0.13, -0.09, 0.07]
+        tangent[self.target_dof] = [-0.04, 0.02, -0.01,
+                                    -0.10, 0.08, 0.05]
+        mujoco.mj_integratePos(self.model, data.qpos, tangent, 1.0)
+        mujoco.mj_forward(self.model, data)
+        reaction = self.evaluator.reaction_map(data)
+        batch = self.evaluator.evaluate_state(
+            data, IntervalPartition.uniform(2), generalized_map=reaction,
+        )
+        supported = [row for row in batch.rows
+                     if row.derivative_status == "SUPPORTED"]
+        self.assertTrue(supported)
+        self.assertEqual(batch.mujoco_point_jacobian_count, 2)
+        self.assertEqual(batch.jacobian_evaluation_count,
+                         batch.shape_jacobian_evaluation_count + 2)
+        distance_only = self.evaluator.evaluate_state(
+            data, IntervalPartition.uniform(2), generalized_map=reaction,
+            derivative_interval_ids=set(),
+        )
+        self.assertEqual(distance_only.shape_jacobian_evaluation_count, 0)
+        self.assertEqual(distance_only.mujoco_point_jacobian_count, 0)
+        np.testing.assert_allclose(
+            [row.h_m for row in distance_only.rows],
+            [row.h_m for row in batch.rows], atol=1e-12, rtol=0.0,
+        )
+        target_velocity = np.zeros(self.model.nv)
+        target_velocity[self.target_dof] = data.qvel[self.target_dof]
+        for row in supported:
+            base_point = self.evaluator._point_jacobian(
+                data, self.evaluator.base_body_id, row.centerline_point_world,
+            )
+            target_point = self.evaluator._point_jacobian(
+                data, self.evaluator.target_body_id, row.obb_witness_world,
+            )
+            expected_gradient = (row.normal_box_to_point @ base_point @ reaction)
+            expected_gradient[:10] += row.shape_gradient
+            expected_drift = float(
+                -row.normal_box_to_point @ target_point @ target_velocity
+            )
+            np.testing.assert_allclose(row.generalized_gradient, expected_gradient,
+                                       atol=2e-10, rtol=2e-10)
+            self.assertAlmostEqual(row.target_drift_m_s, expected_drift, places=10)
+
     def test_multiple_intervals_and_nonsmooth_interior_are_explicit(self) -> None:
         data = self._state()
         partition = IntervalPartition.uniform(1)

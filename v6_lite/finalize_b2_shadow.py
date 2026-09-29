@@ -102,6 +102,21 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "排除区间在所测下一 tick 进入激活距离的计数为 0，但此有限重放结果不是一般动态保证。",
         "配对容量估计使用旧全链耗时减旧形状查询耗时再加影子查询耗时；"
         "它不是新模式实测，也不能单独证明 20 ms 全链 p95。", "",
+        "区间导数对每个状态的基座和目标刚体原点各调用一次 MuJoCo Jacobian，"
+        "再将刚体速度精确平移至各中点及目标 witness；"
+        "下面的计数包含形状 Jacobian 与这两次 MuJoCo 调用。", "",
+        "| 模式 | 抽样 Jacobian 次数 p95 | 统一预算超限 | 持久热查询 p95 ms |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = warm["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['summaries']['jacobian_evaluations']['p95']:.0f} | "
+            f"{item['counts'].get('unified_budget_exceeded', 0)} | "
+            f"{item['summaries']['query_time_ms']['p95']:.3f} |"
+        )
+    lines += [
+        "", "调用次数下降不等于墙钟时延同比例下降；这里仍无新区间模式的实测全链时延。", "",
         "持久未知状态另以保存的 A.1 规划位置做同状态对照：保持 64 点预算不变，"
         "只从五段根区间重新查询，未重放力矩，也未将新分区用于动作。", "",
         "| 模式 | 持久未知 | 从根区间后确定安全 | 确定低于门槛 | 仍未知 | 额外冷查询 p95 ms |",

@@ -253,6 +253,14 @@ class FixedIntervalCBFEvaluator:
         mujoco.mj_jac(self.model, data, result, None, point_world, body_id)
         return result
 
+    def _body_origin_jacobians(self, data: mujoco.MjData,
+                               body_id: int) -> tuple[np.ndarray, np.ndarray]:
+        linear = np.zeros((3, self.model.nv), dtype=np.float64)
+        angular = np.zeros((3, self.model.nv), dtype=np.float64)
+        mujoco.mj_jac(self.model, data, linear, angular,
+                      data.xpos[body_id], body_id)
+        return linear, angular
+
     def evaluate_state(self, data: mujoco.MjData, partition: IntervalPartition,
                        *, generalized_map: np.ndarray | None = None,
                        safe_distance_m: float = 0.005,
@@ -295,6 +303,7 @@ class FixedIntervalCBFEvaluator:
         point_count = 0
         shape_jac_count = 0
         mujoco_jac_count = 0
+        origin_rates = None
         boundaries = self.shape_spec.segment_boundaries_m
         ordered_intervals = sorted(partition.leaves)
         known_ids = {item.interval_id for item in ordered_intervals}
@@ -353,16 +362,38 @@ class FixedIntervalCBFEvaluator:
                 normal = signed.normal_box_to_point
                 shape_gradient = np.asarray(normal @ evaluation.position_jacobian,
                                             dtype=np.float64)
-                base_jacobian = self._point_jacobian(data, self.base_body_id, point)
+                if origin_rates is None:
+                    # Rigid point Jacobians share one translational and angular
+                    # origin Jacobian per body: v_p = v_o + omega x (p - o).
+                    base_linear, base_angular = self._body_origin_jacobians(
+                        data, self.base_body_id
+                    )
+                    target_linear, target_angular = self._body_origin_jacobians(
+                        data, self.target_body_id
+                    )
+                    origin_rates = (
+                        np.asarray(data.xpos[self.base_body_id]).copy(),
+                        base_linear @ generalized_map,
+                        base_angular @ generalized_map,
+                        np.asarray(data.xpos[self.target_body_id]).copy(),
+                        target_linear @ target_qvel,
+                        target_angular @ target_qvel,
+                    )
+                    mujoco_jac_count += 2
+                (base_origin, base_linear_map, base_angular_map,
+                 target_origin, target_linear_rate, target_angular_rate) = origin_rates
+                base_lever_normal = np.cross(point - base_origin, normal)
                 generalized_gradient = np.asarray(
-                    normal @ base_jacobian @ generalized_map, dtype=np.float64
+                    normal @ base_linear_map
+                    + base_lever_normal @ base_angular_map,
+                    dtype=np.float64,
                 )
                 generalized_gradient[:10] += shape_gradient
-                target_jacobian = self._point_jacobian(
-                    data, self.target_body_id, signed.box_point
+                target_lever_normal = np.cross(
+                    signed.box_point - target_origin, normal
                 )
-                mujoco_jac_count += 2
-                drift = float(-normal @ target_jacobian @ target_qvel)
+                drift = float(-normal @ target_linear_rate
+                              - target_lever_normal @ target_angular_rate)
                 if (np.any(~np.isfinite(shape_gradient))
                         or np.any(~np.isfinite(generalized_gradient))
                         or not math.isfinite(drift)):
