@@ -92,10 +92,13 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "weighted_qp_probe": root / "qp_probe_early" / "weighted_qp_probe.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
+        "batched_point_trial": root / "batched_query_trial" / "batched_query_summary.json",
+        "prepared_cold_trial": root / "prepared_query_trial" / "prepared_query_summary.json",
+        "prepared_full_trace": root / "prepared_full_trace" / "prepared_full_trace_summary.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro, batched, prepared_cold, prepared_full = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -203,6 +206,64 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or _sha(micro_dir / "microstep_envelope_failures.jsonl")
             != micro["failure_records_sha256"]):
         raise ValueError("microstep envelope records changed")
+    trials = (
+        (batched, root / "batched_query_trial", {
+            "summary": "batched_query_summary.json",
+            "document": "BATCHED_QUERY_TRIAL.md",
+        }, "batched_query_manifest.json", "input_refined_start_sha256",
+         sources["refined_start"]),
+        (prepared_cold, root / "prepared_query_trial", {
+            "summary": "prepared_query_summary.json",
+            "document": "PREPARED_QUERY_TRIAL.md",
+        }, "prepared_query_manifest.json", "input_warm_shadow_sha256",
+         sources["warm_shadow"]),
+        (prepared_full, root / "prepared_full_trace", {
+            "summary": "prepared_full_trace_summary.json",
+            "states": "prepared_full_trace_states.jsonl",
+            "failures": "prepared_full_trace_failures.jsonl",
+            "document": "PREPARED_FULL_TRACE.md",
+        }, "prepared_full_trace_manifest.json", "input_warm_shadow_sha256",
+         sources["warm_shadow"]),
+    )
+    for trial, directory, outputs, manifest_name, input_key, input_path in trials:
+        if (trial[input_key] != _sha(input_path)
+                or trial["source_hash_newline_policy"] != "LF_NORMALIZED"
+                or trial["online_control_changed"]
+                or trial["new_interval_mode_executed"]):
+            raise ValueError("read-only performance trial provenance failed")
+        for name, digest in trial["source_sha256"].items():
+            if _source_sha(Path("v6_lite") / name) != digest:
+                raise ValueError(f"performance trial source changed: {name}")
+        for item in trial["inputs"].values():
+            if _sha(Path(item["metrics_path"])) != item["metrics_sha256"]:
+                raise ValueError("performance trial metrics changed")
+            if len(item["traces"]) != 5:
+                raise ValueError("performance trial lacks five scenarios")
+            for trace in item["traces"]:
+                if _sha(Path(trace["path"])) != trace["sha256"]:
+                    raise ValueError("performance trial trace changed")
+        trial_manifest = json.loads((directory / manifest_name).read_text(
+            encoding="utf-8"))
+        for name, filename in outputs.items():
+            if trial_manifest[f"{name}_sha256"] != _sha(directory / filename):
+                raise ValueError(f"performance trial {name} hash changed")
+    if (len(batched["records"]) != 60
+            or len(prepared_cold["records"]) != 136
+            or prepared_full["state_records_sha256"] != _sha(
+                root / "prepared_full_trace" / "prepared_full_trace_states.jsonl")
+            or prepared_full["failure_records_sha256"] != _sha(
+                root / "prepared_full_trace" / "prepared_full_trace_failures.jsonl")
+            or (root / "prepared_full_trace" /
+                "prepared_full_trace_failures.jsonl").stat().st_size != 0):
+        raise ValueError("performance trial records or parity changed")
+    for mode in ("baseline", "enabled"):
+        item = prepared_full["modes"][mode]
+        if (item["counts"]["task_states"] != 6750
+                or item["counts"].get("parity_failures", 0)
+                or item["counts"]["UNKNOWN_CROSSES_GATE"]
+                != warm["modes"][mode]["counts"]["warm_all_task_unknown"]
+                or item["maximum_parity_error_m"] > 1e-12):
+            raise ValueError("full saved-state prepared query parity failed")
     gate = warm["online_admission_gate"]
     blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
@@ -503,7 +564,8 @@ def finalize(root: Path, output_dir: Path) -> dict:
     lines += [
         "", "全量余量均为正，但这只证明保存时刻的模型几何包含。"
         "检查耗时不含 MuJoCo 正运动学、区间查询和 QP；无法单独证明 20 ms 全链。"
-        "仍无斜坡中间状态或跨规划周期的包络保持证明。", "",
+        "本节全量扫描不包括斜坡内部；下节另检查预定的 20 个斜坡窗口。"
+        "仍无跨规划周期的包络保持证明。", "",
         "## 原生力矩重放的十步斜坡中间状态", "",
         "每场景预定 tick 50 和首次抽样旧速度 CBF 起点违例 tick 两个窗口，"
         "原生重放旧 trace 的 500 Hz 力矩，对十步斜坡两端及九个内部状态"
@@ -522,6 +584,32 @@ def finalize(root: Path, output_dir: Path) -> dict:
     lines += [
         "", "所选 20 个窗口不能代表全部 13,500 个斜坡；500 Hz 离散观察"
         "不证明两次观测之间、连续时间或新区间闭环安全。", "",
+        "## 只读查询计算复用试验", "",
+        "首次批量点模型试验在 30 个冻结状态上没有获得稳定提速，"
+        "因此未用于控制或正式影子结果。随后将同一状态的五段完整变换仅计算一次，"
+        "并保持参考查询的分区细分、区间下界及终止规则。"
+        "冷查询试验覆盖 58 个已保存的持久热查询抽样未知状态和 10 个早期状态；"
+        "以下全量对照使用旧 A.1 的 13,500 个保存规划 qpos。", "",
+        "| 模式 | 全量状态 | 分区/判定不一致 | 最大距离偏差 m | 参考查询 p95 ms | 前缀复用 p95 ms | 单状态配对加速比 p50 | 持久未知 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = prepared_full["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['counts']['task_states']} | "
+            f"{item['counts'].get('parity_failures', 0)} | "
+            f"{item['maximum_parity_error_m']:.2e} | "
+            f"{item['reference_query_ms']['p95']:.3f} | "
+            f"{item['prepared_query_ms']['p95']:.3f} | "
+            f"{item['per_state_speedup']['p50']:.3f} | "
+            f"{item['counts']['UNKNOWN_CROSSES_GATE']} |"
+        )
+    lines += [
+        "", "全量试验以参考结果推进持久分区；每状态另用试验实现检查同一输入。"
+        "查询时间只在本次配对运行内比较，不能与先前报告的 p95 直接拼接。"
+        "该改进降低了计算时间，没有消除未知或旧起点违例；"
+        "也未计入 MuJoCo 正运动学、广义 Jacobian、原约束、QP 和力矩执行。"
+        "没有新区间模式全链 20 ms 验收或连续时间认证。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"

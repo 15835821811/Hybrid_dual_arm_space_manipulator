@@ -295,6 +295,9 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("weighted_qp_probe", manifest["sources"])
         self.assertIn("full_state_envelope", manifest["sources"])
         self.assertIn("microstep_envelope", manifest["sources"])
+        self.assertIn("batched_point_trial", manifest["sources"])
+        self.assertIn("prepared_cold_trial", manifest["sources"])
+        self.assertIn("prepared_full_trace", manifest["sources"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()
