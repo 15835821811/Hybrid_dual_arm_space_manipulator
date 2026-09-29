@@ -85,6 +85,12 @@ class B2ShadowTests(unittest.TestCase):
         warm = json.loads((base / "shadow_warm" / "shadow_report.json").read_text(
             encoding="utf-8"
         ))
+        cold = json.loads((base / "shadow_a1" / "shadow_report.json").read_text(
+            encoding="utf-8"
+        ))
+        for report in (cold, warm):
+            for source, digest in report["source_sha256"].items():
+                self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(), digest)
         self.assertEqual(warm["online_admission_gate"]["status"], "NOT_MET")
         self.assertGreater(warm["modes"]["enabled"]["counts"][
             "warm_all_task_unknown"], 0)

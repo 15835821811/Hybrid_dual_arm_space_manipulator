@@ -4,6 +4,7 @@ import unittest
 
 import mujoco
 import numpy as np
+from scipy.linalg import expm_frechet
 
 from v6_lite.continuum_model_spec import (
     CONTINUUM_ACTUATED_DOF,
@@ -110,6 +111,41 @@ class ContinuumShapeModelTests(unittest.TestCase):
                     rtol=0.0,
                     atol=1e-7,
                 )
+
+    def test_closed_form_section_derivative_matches_matrix_frechet(self) -> None:
+        rng = np.random.default_rng(8061)
+        length = float(self.spec.segment_lengths_m[0])
+        bending_map = self.spec.pcc_bending_map
+        inputs = [np.zeros(2), np.array([1e-8, -2e-8])]
+        inputs.extend(rng.uniform(-1.0, 1.0, size=(20, 2)))
+        for bending in inputs:
+            omega = bending_map @ bending / length
+            generator = np.zeros((4, 4))
+            generator[:3, :3] = np.array([
+                [0.0, -omega[2], omega[1]],
+                [omega[2], 0.0, -omega[0]],
+                [-omega[1], omega[0], 0.0],
+            ])
+            generator[:3, 3] = [1.0, 0.0, 0.0]
+            for arclength in (0.0, 0.07, length):
+                derivatives = self.shape._section_derivatives(
+                    bending, length, arclength, bending_map
+                )
+                for coordinate in range(2):
+                    omega_prime = bending_map[:, coordinate] / length
+                    direction = np.zeros((4, 4))
+                    direction[:3, :3] = np.array([
+                        [0.0, -omega_prime[2], omega_prime[1]],
+                        [omega_prime[2], 0.0, -omega_prime[0]],
+                        [-omega_prime[1], omega_prime[0], 0.0],
+                    ])
+                    expected = expm_frechet(
+                        generator * arclength, direction * arclength,
+                        compute_expm=False,
+                    )
+                    np.testing.assert_allclose(
+                        derivatives[coordinate], expected, rtol=0.0, atol=1e-11
+                    )
 
     def test_independent_urdf_fk_matches_mujoco(self) -> None:
         rng = np.random.default_rng(1907)

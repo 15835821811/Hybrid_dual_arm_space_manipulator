@@ -499,6 +499,8 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
         "schema": "v6_2_b2_native_replay_interval_shadow_v1",
         "source_sha256": {
             "v6_lite/pcc_interval_cbf.py": _sha(Path(__file__).with_name("pcc_interval_cbf.py")),
+            "v6_lite/continuum_shape_model.py": _sha(Path(__file__).with_name("continuum_shape_model.py")),
+            "v6_lite/pcc_persistent_interval_query.py": _sha(Path(__file__).with_name("pcc_persistent_interval_query.py")),
             "v6_lite/shadow_b2_interval_cbf.py": _sha(Path(__file__)),
         },
         "sample_plan": "all five scenarios in each A.1 mode; task ticks 0, stride, ...; evaluate next tick on frozen partition",

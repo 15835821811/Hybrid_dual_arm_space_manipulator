@@ -15,7 +15,6 @@ from pathlib import Path
 
 import mujoco
 import numpy as np
-from scipy.linalg import expm_frechet
 
 from v6_lite.continuum_model_spec import (
     CONTINUUM_ACTUATED_DOF,
@@ -205,19 +204,50 @@ class ContinuumShapeModel:
         arclength: float,
         bending_map: np.ndarray,
     ) -> tuple[np.ndarray, np.ndarray]:
+        if arclength < -1e-12 or arclength > length + 1e-12:
+            raise ValueError("section arclength lies outside the section")
         u = float(np.clip(arclength, 0.0, length))
-        angular_strain = bending_map @ np.asarray(bending, dtype=np.float64) / length
-        algebra = np.zeros((4, 4), dtype=np.float64)
-        algebra[:3, :3] = skew(angular_strain)
-        algebra[:3, 3] = [1.0, 0.0, 0.0]
-        argument = algebra * u
+        omega = bending_map @ np.asarray(bending, dtype=np.float64) / length
+        magnitude = float(np.linalg.norm(omega))
+        z = magnitude * magnitude
+        generator = skew(omega)
+        generator2 = generator @ generator
+        # Differentiate the same Rodrigues/integral coefficients used by
+        # _section_transform.  The small-angle series avoids subtracting
+        # nearly equal trigonometric terms at straight configurations.
+        if magnitude * max(u, length) <= 1e-4:
+            a = u - z * u**3 / 6.0 + z**2 * u**5 / 120.0
+            b = u**2 / 2.0 - z * u**4 / 24.0 + z**2 * u**6 / 720.0
+            c = u**3 / 6.0 - z * u**5 / 120.0 + z**2 * u**7 / 5040.0
+            da = -u**3 / 6.0 + z * u**5 / 60.0
+            db = -u**4 / 24.0 + z * u**6 / 360.0
+            dc = -u**5 / 120.0 + z * u**7 / 2520.0
+        else:
+            angle = magnitude * u
+            sine, cosine = float(np.sin(angle)), float(np.cos(angle))
+            a = sine / magnitude
+            b = (1.0 - cosine) / z
+            c = (angle - sine) / (z * magnitude)
+            da = (angle * cosine - sine) / (2.0 * magnitude**3)
+            db = (angle * sine - 2.0 * (1.0 - cosine)) / (2.0 * z**2)
+            dc = (3.0 * sine - angle * (2.0 + cosine)) / (2.0 * magnitude**5)
+        tangent = np.array([1.0, 0.0, 0.0], dtype=np.float64)
         derivatives = []
         for column in range(2):
-            direction = np.zeros((4, 4), dtype=np.float64)
-            direction[:3, :3] = skew(bending_map[:, column] / length)
-            derivatives.append(
-                expm_frechet(argument, direction * u, compute_expm=False)
+            omega_prime = bending_map[:, column] / length
+            dz = 2.0 * float(omega @ omega_prime)
+            generator_prime = skew(omega_prime)
+            generator2_prime = generator_prime @ generator + generator @ generator_prime
+            derivative = np.zeros((4, 4), dtype=np.float64)
+            derivative[:3, :3] = (
+                dz * (da * generator + db * generator2)
+                + a * generator_prime + b * generator2_prime
             )
+            derivative[:3, 3] = (
+                dz * (db * generator + dc * generator2)
+                + b * generator_prime + c * generator2_prime
+            ) @ tangent
+            derivatives.append(derivative)
         return derivatives[0], derivatives[1]
 
     def _segment_location(self, arclength: float) -> tuple[int, float]:
