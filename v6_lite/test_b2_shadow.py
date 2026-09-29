@@ -77,6 +77,8 @@ class B2ShadowTests(unittest.TestCase):
             encoding="utf-8"
         ))
         self.assertEqual(manifest["status"], "GATE_NOT_MET")
+        self.assertIn("budget_frontier", manifest["sources"])
+        self.assertIn("refined_start", manifest["sources"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()
@@ -91,6 +93,8 @@ class B2ShadowTests(unittest.TestCase):
         for report in (cold, warm):
             for source, digest in report["source_sha256"].items():
                 self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(), digest)
+            self.assertEqual(report["task_spatial_refresh"],
+                             "mj_forward_before_each_50Hz_geometry_query")
         self.assertEqual(warm["online_admission_gate"]["status"], "NOT_MET")
         self.assertFalse(warm["online_admission_gate"]["shadow_conditions"][
             "no_frozen_action_infeasibility"])
@@ -100,6 +104,25 @@ class B2ShadowTests(unittest.TestCase):
             self.assertGreater(item["counts"].get("frozen_executable_false", 0), 0)
         self.assertGreater(warm["modes"]["enabled"]["counts"][
             "warm_all_task_unknown"], 0)
+        frontier_path = base / "budget_frontier" / "budget_frontier.json"
+        frontier = json.loads(frontier_path.read_text(encoding="utf-8"))
+        self.assertEqual(frontier["budgets"], [31, 63, 127, 255, 511])
+        self.assertEqual(len(frontier["entries"]), 270)
+        self.assertEqual(frontier["input_shadow"]["sha256"], hashlib.sha256(
+            (base / "shadow_warm" / "shadow_report.json").read_bytes()
+        ).hexdigest())
+        refined = json.loads((base / "refined_start" / "refined_start_report.json").read_text(
+            encoding="utf-8"
+        ))
+        self.assertEqual(refined["input_frontier"]["sha256"], hashlib.sha256(
+            frontier_path.read_bytes()
+        ).hexdigest())
+        self.assertEqual(len(refined["native_replay_checks"]), 10)
+        self.assertEqual(len(refined["records"]), 270)
+        self.assertFalse(refined["online_admission_claim"])
+        for mode in ("baseline", "enabled"):
+            self.assertGreater(refined["modes"][mode][
+                "old_bad_remains_unexecutable"], 0)
 
 
 if __name__ == "__main__":

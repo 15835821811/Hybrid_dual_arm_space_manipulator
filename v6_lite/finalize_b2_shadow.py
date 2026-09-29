@@ -24,21 +24,35 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "warm_shadow": root / "shadow_warm" / "shadow_report.json",
         "near_gate": root / "near_gate_audit" / "near_gate_audit.json",
         "b1_holdout_geometry": root / "heldout_geometry" / "heldout_geometry_report.json",
+        "budget_frontier": root / "budget_frontier" / "budget_frontier.json",
+        "refined_start": root / "refined_start" / "refined_start_report.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout = (values[name] for name in sources)
+    cold, warm, near, heldout, frontier, refined = (values[name] for name in sources)
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
         raise ValueError("native replay shadow integrity failed")
     if not near["passed"] or not heldout["passed"]:
         raise ValueError("frozen geometry audit failed")
+    if frontier["input_shadow"]["sha256"] != _sha(sources["warm_shadow"]):
+        raise ValueError("budget frontier is not tied to the current warm shadow")
+    if refined["input_frontier"]["sha256"] != _sha(sources["budget_frontier"]):
+        raise ValueError("refined start is not tied to the current budget frontier")
+    if (len(refined["native_replay_checks"]) != 10
+            or any(x["max_state_error"] > 1e-8
+                   for x in refined["native_replay_checks"])):
+        raise ValueError("refined native torque replay integrity failed")
     gate = warm["online_admission_gate"]
-    status = "GATE_NOT_MET" if gate["status"] == "NOT_MET" else "NEEDS_TRUE_ONLINE_TIMING"
+    remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
+                    for mode in ("baseline", "enabled"))
+    status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
+              else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
         f"当前门禁：**{status}**。因此本证据不作为新区间模式的五场景闭环验收。",
         "", "## A.1 原生力矩重放上的只读几何", "",
-        "两组旧控制 trace 均按 500 Hz 力矩原生重放，并与保存的 50 Hz 状态及哈希核对。"
+        "两组旧控制 trace 均按 500 Hz 力矩原生重放；每个规划边界先调用 `mj_forward`"
+        " 更新空间几何量，再与保存的 50 Hz 状态及哈希核对。"
         "每组五场景，每场景预定抽取 27 个规划状态；持久查询则在所有 6,750 个规划 tick 上更新。", "",
         "| 模式 | 冷查询 p95 ms | 持久查询采样 p95 ms | 持久查询全部 tick 未知 | 最大叶数 | 配对容量估计 p95 ms | 真实几何误拒绝 | 子空间外状态 |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
@@ -90,6 +104,27 @@ def finalize(root: Path, output_dir: Path) -> dict:
     lines += [
         "", "逐状态失败、区间 ID、起点残差和 LP 结果保留在两份影子 JSON 中。"
         "这些是旧轨迹的反例，不可引用为新控制器已经失败或已完成闭环。", "",
+        "## 预算阶梯与细分后起点", "",
+        "固定预算阶梯 31/63/127/255/511 从完整根分区重新查询保存状态。"
+        "随后在原生力矩重放中，以 255 点诊断预算重建新区间行与斜坡起点。"
+        "高预算只用于辨别原因，不是在线接入配置。", "",
+        "| 模式 | 511 点确定代理低于 5 mm | 511 点仍未知 | 旧起点违例经细分消除 | 细分后旧违例仍不可执行 | 细分计算超过 20 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        front = frontier["modes"][mode]
+        ref = refined["modes"][mode]
+        lines.append(
+            f"| {mode} | {front['status_by_budget']['511'].get('PROXY_CLEARANCE_BELOW_GATE', 0)} | "
+            f"{front['status_by_budget']['511'].get('UNKNOWN_CROSSES_GATE', 0)} | "
+            f"{ref['old_bad_cured_by_diagnostic_refinement']} | "
+            f"{ref['old_bad_remains_unexecutable']} | "
+            f"{ref['interval_20ms_exceeded']} |"
+        )
+    lines += [
+        "", "代理低于门槛不是实际链碰撞；细分后区间函数与梯度必须重新计算，"
+        "且分区切换还可能产生新的起点违例。逐状态预算、失败原因及运行耗时均保留在"
+        "预算阶梯和细分起点 JSON 中。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"

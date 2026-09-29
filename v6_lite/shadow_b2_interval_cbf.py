@@ -254,6 +254,10 @@ def shadow_mode(mode: str, root: Path, *, sample_stride: int,
         for step, control in enumerate(torque):
             if step % 10 == 0:
                 tick = step // 10
+                # mj_step leaves position-dependent spatial fields at the
+                # pre-integration state. The online QP calls mj_forward at
+                # each task tick; shadow geometry must use that same state.
+                mujoco.mj_forward(model, data)
                 max_state_error = max(
                     max_state_error,
                     float(np.max(np.abs(data.qpos - task_qpos[tick]))),
@@ -568,6 +572,7 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
         "modes": {},
         "online_control_changed": False,
         "old_trace_reused_as_new_control_acceptance": False,
+        "task_spatial_refresh": "mj_forward_before_each_50Hz_geometry_query",
     }
     for mode in ("baseline", "enabled"):
         report["modes"][mode] = shadow_mode(
@@ -679,7 +684,8 @@ def run_shadow(output_dir: Path, *, a1_root: Path = DEFAULT_A1_ROOT,
         "不能与 A.1 全链 p95 直接相减或作为新模式 20 ms 验收。"
         "逐状态 `paired_replacement_estimate_ms` 仅用历史全链耗时扣除历史形状查询再加影子查询；"
         "它是配对容量预警，不是真实新模式时延。",
-        "", "历史 trace 的力矩按 500 Hz 原生重放，50 Hz 规划状态与保存状态逐点对比。"
+        "", "历史 trace 的力矩按 500 Hz 原生重放，每个 50 Hz 规划边界先执行"
+        " `mj_forward` 更新空间几何量，再与保存状态逐点对比。"
         "区间拓扑在采样 tick 到下一 tick 的预测检查中冻结。实际形状子空间残差"
         "与几何包络状态分开报告。旧 trace 的起点违反新区间行，不能用一个新终点"
         "的线性可行性消除；本审计不能证明全域或连续时间安全。", "",

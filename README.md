@@ -25,7 +25,7 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 - V6.2-A.1：两组最差全链规划 p95 分别为 `14.402 ms` 和 `18.162 ms`；完整运行 trace 保存在本地，哈希见 [A.1 manifest](v6_lite/output/v6_2_a1/evidence_manifest.json)
 - V6.2-B.1：另行从力矩重放状态重建几何行、目标漂移和自由基座反作用映射；原 `11/11` 报告保持原定义，新增报告单独给出
 - V6.2-B.1 离线 PCC 有界距离查询：五段全覆盖区间下界；历史协议重生成 10,000 案例与独立冻结 1,024 案例的审计、精度、未判定和耗时见 [B.1 自动报告](v6_lite/output/v6_2_b1/formal_audit_r02/BOUNDED_CLEARANCE_AUDIT.md)
-- V6.2-B.2 开发中：已验证固定区间安全函数及其 10/17 维导数，完成旧 A.1 trace 的只读影子评估与新留出集几何对照；[第二阶段自动证据](v6_lite/output/v6_2_b2/stage2_summary/STAGE2_EVIDENCE.md)显示在线接入门禁尚未满足，因此尚无新区间控制模式的闭环验收
+- V6.2-B.2 开发中：已验证固定区间安全函数及其 10/17 维导数；修正影子重放在规划边界的 MuJoCo 空间量刷新后，完成旧 A.1 trace、预算阶梯、细分起点及新留出集的只读审计。[第二阶段自动证据](v6_lite/output/v6_2_b2/stage2_summary/STAGE2_EVIDENCE.md)显示在线接入门禁尚未满足，因此尚无新区间控制模式的闭环验收
 - 历史 V6-lite 正式验证：5 场景 `26/26`，原生 500 Hz 连续体—目标最小间隙 `24.994694 mm`，整机 4×细分最小间隙 `14.995557 mm`
 - V6.1-A 影子审计：10,000 个臂形构型 + 10,000 个卫星相对几何案例，离散 FK、PCC 导数、包络覆盖与距离梯度全部通过，胶囊/PCC 假安全均为 `0`
 - V6.1-B：PCC/胶囊约束默认关闭；启用版真实五场景同样 `26/26`，QP 失败 `0`，PCC 激活 `3,718` 次、绑定 `202` 次，最差任务 p95 `18.089305 ms`
@@ -44,6 +44,7 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | `v6_lite/bundle_evidence.py` | 原始 trace 打包、SHA-256 清单校验与不可覆盖导入 |
 | `v6_lite/pcc_bounded_clearance.py`、`v6_lite/audit_b1_bounded_clearance.py` | 五段 PCC—OBB 距离上下界与只读离线审计；不进入在线控制 |
 | `v6_lite/pcc_interval_cbf.py`、`v6_lite/pcc_persistent_interval_query.py` | B.2 固定材料区间安全函数、同一函数的 Jacobian 与持久区间决策查询；当前仅用于影子评估 |
+| `v6_lite/shadow_b2_interval_cbf.py`、`v6_lite/audit_b2_budget_frontier.py`、`v6_lite/audit_b2_refined_start.py` | B.2 原生重放影子、离线预算阶梯及高预算斜坡起点诊断；逐状态结果和失败快照保留 |
 | `v6_lite/irregular_waypoints.py` | 7 个不规则航点与分段 minimum-jerk 参考 |
 | `v6_lite/validate_v6_lite.py` | trace 独立重放、整机细分距离审计及 500 Hz 连续体—卫星专项检查 |
 | `v6_lite/continuum_model_spec.py` | 版本化的 5 段 PCC、30 模块离散链、10→60 映射与工作域合同 |
