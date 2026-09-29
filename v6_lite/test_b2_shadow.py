@@ -293,6 +293,8 @@ class B2ShadowTests(unittest.TestCase):
         self.assertIn("repartition_counterfactual", manifest["sources"])
         self.assertIn("repartition_handoff", manifest["sources"])
         self.assertIn("weighted_qp_probe", manifest["sources"])
+        self.assertIn("full_state_envelope", manifest["sources"])
+        self.assertIn("microstep_envelope", manifest["sources"])
         for item in [*manifest["sources"].values(), manifest["generated_document"]]:
             path = Path(item["path"])
             data = path.read_bytes()

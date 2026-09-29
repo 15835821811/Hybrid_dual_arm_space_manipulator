@@ -91,10 +91,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "repartition_handoff": root / "repartition_handoff" / "repartition_handoff.json",
         "weighted_qp_probe": root / "qp_probe_early" / "weighted_qp_probe.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
+        "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep, micro = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -174,6 +175,34 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or _sha(sweep_dir / "envelope_sweep_failures.jsonl")
             != sweep["failure_records_sha256"]):
         raise ValueError("full envelope sweep records changed")
+    if (micro["input_refined_start_sha256"] != _sha(sources["refined_start"])
+            or micro["input_full_sweep_sha256"] != _sha(sources["full_state_envelope"])
+            or micro["input_full_sweep_states_sha256"]
+            != sweep["state_records_sha256"]
+            or micro["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or micro["new_interval_mode_executed"]
+            or micro["continuous_time_certified"]
+            or len(micro["native_replay_checks"]) != 10
+            or any(item["max_state_error"] > 1e-8
+                   for item in micro["native_replay_checks"])):
+        raise ValueError("microstep envelope native replay provenance failed")
+    for name, digest in micro["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"microstep envelope source changed: {name}")
+    for item in micro["inputs"].values():
+        if _sha(Path(item["metrics_path"])) != item["metrics_sha256"]:
+            raise ValueError("microstep envelope metrics changed")
+        if len(item["traces"]) != 5:
+            raise ValueError("microstep envelope lacks five scenarios")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("microstep envelope trace changed")
+    micro_dir = root / "microstep_envelope"
+    if (_sha(micro_dir / "microstep_envelope_states.jsonl")
+            != micro["state_records_sha256"]
+            or _sha(micro_dir / "microstep_envelope_failures.jsonl")
+            != micro["failure_records_sha256"]):
+        raise ValueError("microstep envelope records changed")
     gate = warm["online_admission_gate"]
     blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
@@ -190,8 +219,14 @@ def finalize(root: Path, output_dir: Path) -> dict:
             "COVERED_AT_THIS_STATE", 0) == 6750
         for mode in ("baseline", "enabled")
     )
+    micro_ready = all(
+        micro["modes"][mode]["window_count"] == 10
+        and micro["modes"][mode]["microstate_count"] == 110
+        and micro["modes"][mode]["covered_microstate_count"] == 110
+        for mode in ("baseline", "enabled")
+    )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
-              or not probe_ready or not sweep_ready
+              or not probe_ready or not sweep_ready or not micro_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
@@ -469,6 +504,24 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "全量余量均为正，但这只证明保存时刻的模型几何包含。"
         "检查耗时不含 MuJoCo 正运动学、区间查询和 QP；无法单独证明 20 ms 全链。"
         "仍无斜坡中间状态或跨规划周期的包络保持证明。", "",
+        "## 原生力矩重放的十步斜坡中间状态", "",
+        "每场景预定 tick 50 和首次抽样旧速度 CBF 起点违例 tick 两个窗口，"
+        "原生重放旧 trace 的 500 Hz 力矩，对十步斜坡两端及九个内部状态"
+        "分别检查实际胶囊包络。规划边界与保存状态逐步一致；未执行新区间 QP 命令。", "",
+        "| 模式 | 窗口 | 500 Hz 状态 | 当前状态包含 | 最小余量 mm | 内部余量低于两端的窗口 |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = micro["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['window_count']} | {item['microstate_count']} | "
+            f"{item['covered_microstate_count']} | "
+            f"{1000 * item['minimum_margin_m']['min']:.3f} | "
+            f"{item['interior_below_both_endpoints_count']} |"
+        )
+    lines += [
+        "", "所选 20 个窗口不能代表全部 13,500 个斜坡；500 Hz 离散观察"
+        "不证明两次观测之间、连续时间或新区间闭环安全。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"
