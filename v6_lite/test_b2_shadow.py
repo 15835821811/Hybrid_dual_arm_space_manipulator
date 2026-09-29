@@ -259,6 +259,35 @@ class B2ShadowTests(unittest.TestCase):
             encoding="utf-8"
         ))
         self.assertEqual(manifest["status"], "GATE_NOT_MET")
+        blockers = manifest["gate_blockers"]
+        self.assertEqual(
+            blockers["baseline"]["initial_proxy_safe_and_frozen_rows_feasible"],
+            5,
+        )
+        self.assertEqual(
+            blockers["enabled"]["initial_proxy_safe_and_frozen_rows_feasible"],
+            5,
+        )
+        self.assertEqual(
+            blockers["baseline"]["sampled_proxy_below_gate_with_point_witness"],
+            50,
+        )
+        self.assertEqual(
+            blockers["enabled"]["sampled_proxy_below_gate_with_point_witness"],
+            0,
+        )
+        self.assertEqual(
+            blockers["enabled"]["old_start_violations_with_nonnegative_interval_h"],
+            27,
+        )
+        self.assertEqual(
+            blockers["baseline"]["first_witnessed_below_tick_by_scenario"]
+            ["v6_lite_scenario_00"], 350,
+        )
+        self.assertEqual(
+            blockers["enabled"]["first_old_start_violation_tick_by_scenario"]
+            ["v6_lite_scenario_03"], 200,
+        )
         self.assertIn("budget_frontier", manifest["sources"])
         self.assertIn("refined_start", manifest["sources"])
         self.assertIn("repartition_counterfactual", manifest["sources"])

@@ -1,6 +1,42 @@
 {
   "schema": "v6_2_b2_stage2_hash_manifest_v1",
   "status": "GATE_NOT_MET",
+  "gate_blockers": {
+    "baseline": {
+      "initial_proxy_safe_and_frozen_rows_feasible": 5,
+      "sampled_proxy_below_gate_with_point_witness": 50,
+      "first_witnessed_below_tick_by_scenario": {
+        "v6_lite_scenario_00": 350,
+        "v6_lite_scenario_01": 500,
+        "v6_lite_scenario_02": 400,
+        "v6_lite_scenario_03": 350,
+        "v6_lite_scenario_04": 350
+      },
+      "sampled_old_start_clearance_violations_after_refinement": 61,
+      "first_old_start_violation_tick_by_scenario": {
+        "v6_lite_scenario_00": 250,
+        "v6_lite_scenario_01": 350,
+        "v6_lite_scenario_02": 300,
+        "v6_lite_scenario_03": 200,
+        "v6_lite_scenario_04": 300
+      },
+      "old_start_violations_with_nonnegative_interval_h": 10
+    },
+    "enabled": {
+      "initial_proxy_safe_and_frozen_rows_feasible": 5,
+      "sampled_proxy_below_gate_with_point_witness": 0,
+      "first_witnessed_below_tick_by_scenario": {},
+      "sampled_old_start_clearance_violations_after_refinement": 27,
+      "first_old_start_violation_tick_by_scenario": {
+        "v6_lite_scenario_00": 250,
+        "v6_lite_scenario_01": 350,
+        "v6_lite_scenario_02": 300,
+        "v6_lite_scenario_03": 200,
+        "v6_lite_scenario_04": 300
+      },
+      "old_start_violations_with_nonnegative_interval_h": 27
+    }
+  },
   "sources": {
     "cold_shadow": {
       "path": "v6_lite/output/v6_2_b2/shadow_a1/shadow_report.json",
@@ -45,7 +81,7 @@
   },
   "generated_document": {
     "path": "v6_lite/output/v6_2_b2/stage2_summary/STAGE2_EVIDENCE.md",
-    "sha256": "3ab3c423d0edb7695b55ef57afab362ba782dd0671b9f03d96d805970bc25f25",
-    "bytes": 7126
+    "sha256": "a572569304305e807bea6559599617589588294d9a88b36b2458458050f8bb85",
+    "bytes": 8136
   }
 }

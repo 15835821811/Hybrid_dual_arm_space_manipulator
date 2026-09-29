@@ -16,6 +16,63 @@ def _sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _gate_blockers(frontier: dict, refined: dict) -> dict[str, dict]:
+    """Separate witnessed proxy penetration from old-velocity CBF failures."""
+
+    if frontier["budgets"][-1] != 511 or frontier["gate_m"] != .005:
+        raise ValueError("the frozen high-budget witness protocol changed")
+    blockers = {}
+    for mode in ("baseline", "enabled"):
+        entries = [item for item in frontier["entries"] if item["mode"] == mode]
+        records = [item for item in refined["records"] if item["mode"] == mode]
+        witnessed_below = []
+        for entry in entries:
+            last = entry["budget_ladder"][-1]
+            if last["point_budget"] != 511:
+                raise ValueError("missing high-budget witness result")
+            if last["proxy_status"] == "PROXY_CLEARANCE_BELOW_GATE":
+                if not last["upper_m"] < frontier["gate_m"]:
+                    raise ValueError("below-gate status lacks a point witness")
+                witnessed_below.append(entry)
+        start_bad = [item for item in records if item["feasibility"]["status"]
+                     == "START_CLEARANCE_VIOLATION"]
+        initial = [item for item in records if item["tick"] == 0]
+        positive_h_bad = [item for item in start_bad
+                          if item["worst_interval_start_terms"] is not None
+                          and item["worst_interval_start_terms"]["h_m"] >= 0.0]
+        if (len(witnessed_below) != frontier["modes"][mode]["status_by_budget"]
+                ["511"].get("PROXY_CLEARANCE_BELOW_GATE", 0)
+                or len(start_bad) != refined["modes"][mode]
+                ["diagnostic_refined_start_violation_count"]
+                or len(positive_h_bad) != refined["modes"][mode]
+                ["start_violations_with_positive_interval_h"]
+                or len(initial) != 5
+                or len({item["scenario_id"] for item in initial}) != 5):
+            raise ValueError(f"gate blocker totals disagree with source: {mode}")
+
+        def earliest_by_scenario(items: list[dict]) -> dict[str, int]:
+            first = {}
+            for item in items:
+                name = item["scenario_id"]
+                first[name] = min(first.get(name, item["tick"]), item["tick"])
+            return dict(sorted(first.items()))
+
+        blockers[mode] = {
+            "initial_proxy_safe_and_frozen_rows_feasible": sum(
+                item["proxy_status"] == "PROXY_CLEARANCE_AT_LEAST_GATE"
+                and item["feasibility"]["status"] == "FROZEN_ROWS_FEASIBLE"
+                for item in initial),
+            "sampled_proxy_below_gate_with_point_witness": len(witnessed_below),
+            "first_witnessed_below_tick_by_scenario": earliest_by_scenario(
+                witnessed_below),
+            "sampled_old_start_clearance_violations_after_refinement": len(start_bad),
+            "first_old_start_violation_tick_by_scenario": earliest_by_scenario(
+                start_bad),
+            "old_start_violations_with_nonnegative_interval_h": len(positive_h_bad),
+        }
+    return blockers
+
+
 def finalize(root: Path, output_dir: Path) -> dict:
     root = Path(root)
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -70,6 +127,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
                    for x in refined["native_replay_checks"])):
         raise ValueError("refined native torque replay integrity failed")
     gate = warm["online_admission_gate"]
+    blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
                     for mode in ("baseline", "enabled"))
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
@@ -260,6 +318,36 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "启用组静态下界仍达到 5 mm 门槛的起点也可能因旧动作的相对逼近速率"
         "违反新区间 CBF；进一步提高静态查询预算本身不能使这些旧斜坡起点合格。"
         "这不证明新区间模式一定无法找到不同轨迹，也不批准在当前门禁下接入。", "",
+        "## 门禁障碍的首次出现", "",
+        "511 点诊断中的代理低于门槛状态都有 PCC 曲线中点 witness：该点的"
+        " PCC 净空上界小于 5 mm。继续细分不能把同一旧状态变成代理安全；"
+        "这仍不等于实际离散链碰撞。下表的 tick 是 50 Hz 规划 tick，"
+        "来自每 50 tick 抽样，"
+        "只是所测首次出现位置。", "",
+        "| 模式 | 五场景初始可行 | 代理低于门槛的 witness 状态 | 细分后旧起点违反 | 其中最差行 h >= 0 | 各场景首次 witness tick | 各场景首次起点违反 tick |",
+        "| --- | ---: | ---: | ---: | ---: | --- | --- |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = blockers[mode]
+
+        def ticks(name: str) -> str:
+            values = item[name]
+            return ", ".join(f"{scenario[-2:]}:{tick}"
+                             for scenario, tick in values.items()) or "无"
+
+        lines.append(
+            f"| {mode} | "
+            f"{item['initial_proxy_safe_and_frozen_rows_feasible']}/5 | "
+            f"{item['sampled_proxy_below_gate_with_point_witness']} | "
+            f"{item['sampled_old_start_clearance_violations_after_refinement']} | "
+            f"{item['old_start_violations_with_nonnegative_interval_h']} | "
+            f"{ticks('first_witnessed_below_tick_by_scenario')} | "
+            f"{ticks('first_old_start_violation_tick_by_scenario')} |"
+        )
+    lines += [
+        "", "开启组的静态 witness 未发现低于门槛，但旧起点仍可因相对逼近过快"
+        "而失效。要验证不同的控制轨迹，必须先解决在线接入门禁；"
+        "旧 trace 的继续重放不能代替新区间闭环。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"
@@ -283,6 +371,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     manifest = {
         "schema": "v6_2_b2_stage2_hash_manifest_v1",
         "status": status,
+        "gate_blockers": blockers,
         "sources": {name: {"path": path.as_posix(), "sha256": _sha(path),
                            "bytes": path.stat().st_size}
                     for name, path in sources.items()},
