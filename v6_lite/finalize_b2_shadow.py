@@ -96,6 +96,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "candidate_prediction": root / "candidate_prediction_early" / "candidate_prediction_summary.json",
         "candidate_prediction_failure": root / "candidate_prediction_early_failures" / "attempt1.json",
         "repeated_qp_probe": root / "repeated_qp_probe_early" / "repeated_probe_summary.json",
+        "blas_thread_trial": root / "blas_thread_trial" / "abba_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -107,7 +108,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -333,6 +334,41 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 or item["manifest_sha256"]
                 != _sha(round_dir / "weighted_qp_probe_manifest.json")):
             raise ValueError("repeated QP probe round outputs changed")
+    if (blas_trial["input_original_probe_sha256"]
+            != _sha(sources["weighted_qp_probe"])
+            or blas_trial["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or blas_trial["new_interval_mode_executed"]
+            or blas_trial["full_control_cycle_measured"]
+            or blas_trial["complete_group_count"] != 4
+            or blas_trial["candidate_mismatch_count"] != 0
+            or blas_trial["probe_ticks"] != [50, 100, 150]
+            or blas_trial["point_budget"] != 63
+            or [item["requested_openblas_threads"] for item in blas_trial["groups"]]
+            != [2, 1, 1, 2]):
+        raise ValueError("OpenBLAS ABBA trial provenance failed")
+    for name, digest in blas_trial["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"OpenBLAS ABBA trial source changed: {name}")
+    blas_dir = root / "blas_thread_trial"
+    blas_manifest = json.loads((blas_dir / "abba_manifest.json").read_text(encoding="utf-8"))
+    for label, filename in (("summary", "abba_summary.json"),
+                            ("records", "abba_records.jsonl"),
+                            ("document", "BLAS_THREAD_TRIAL.md")):
+        if blas_manifest[f"{label}_sha256"] != _sha(blas_dir / filename):
+            raise ValueError(f"OpenBLAS ABBA trial {label} hash changed")
+    if blas_trial["records_sha256"] != _sha(blas_dir / "abba_records.jsonl"):
+        raise ValueError("OpenBLAS ABBA trial records changed")
+    for item in blas_trial["groups"]:
+        folder = blas_dir / item["name"]
+        if (item["status"] != "COMPLETE" or item["record_count"] != 30
+                or item["candidate_mismatch_count"] != 0
+                or item["report_sha256"] != _sha(folder / "weighted_qp_probe.json")
+                or item["document_sha256"] != _sha(folder / "WEIGHTED_QP_PROBE.md")
+                or item["manifest_sha256"]
+                != _sha(folder / "weighted_qp_probe_manifest.json")
+                or item["stdout_sha256"] != _sha(blas_dir / f"{item['name']}_stdout.txt")
+                or item["stderr_sha256"] != _sha(blas_dir / f"{item['name']}_stderr.txt")):
+            raise ValueError("OpenBLAS ABBA trial group outputs changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -962,6 +998,30 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "没有计入全部状态采样、监控及 500 Hz 力矩计算和执行，"
         "包络列也只是同冻结状态计时相加。它不能替代新区间模式真实全链计时，"
         "超 20 ms 的只读探针记录也不能称为在线漏期。", "",
+        "## 线性代数线程数的 ABBA 只读对照", "",
+        "在相同 30 个冻结状态上，按请求 OpenBLAS 线程数 2→1→1→2 "
+        "分别启动独立进程；所有候选与首次探针核对，保留每组原始报告。", "",
+        "| 模式 | 请求线程数 | 记录 | 查询加 QP p95 / p99 / 最大 ms | 超 20 ms | QP 求解 p95 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        for threads in (2, 1):
+            item = blas_trial["modes"][mode][str(threads)]
+            partial = item["query_plus_qp_probe_ms"]
+            lines.append(
+                f"| {mode} | {threads} | {item['record_count']} | "
+                f"{partial['p95']:.3f} / {partial['p99']:.3f} / "
+                f"{partial['max']:.3f} | {partial['over_20ms_count']} | "
+                f"{item['qp_solver_ms']['p95']:.3f} |"
+            )
+    lines += [
+        "", "只改变子进程的 `OPENBLAS_NUM_THREADS` 请求值；未固定操作系统调度，"
+        "也未核实每个库的实际线程数。这是本机性能敏感性诊断，"
+        "不能与旧影子的容量估计拼接成全链 20 ms 验收。"
+        "同一次 ABBA 对照中 1 与 2 的 p95 差异很小，且两者均未复现前一次"
+        "五轮重复探针的耗时尾部；因此不能把跨次差异归因于线程数，"
+        "也不能丢弃先前超 20 ms 的原始记录。"
+        "新区间接入门禁仍需独立满足几何、动作与真实闭环要求。", "",
         "## 五场景初始状态的加权 QP 只读预检", "",
         "另在两组五场景的 tick 0 从根区间以最多 255 点查询，并将所需区间行"
         "送入原单个 17 维加权 QP；候选只经原动作验证，未驱动力矩伺服。"

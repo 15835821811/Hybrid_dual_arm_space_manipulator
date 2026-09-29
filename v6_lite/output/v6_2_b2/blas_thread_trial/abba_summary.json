@@ -1,0 +1,287 @@
+{
+  "schema": "v6_2_b2_openblas_threads_abba_v1",
+  "scope": "read_only_partial_chain_on_30_frozen_old_A1_states_per_group",
+  "groups_predeclared": [
+    {
+      "name": "a1",
+      "requested_openblas_threads": 2
+    },
+    {
+      "name": "b1",
+      "requested_openblas_threads": 1
+    },
+    {
+      "name": "b2",
+      "requested_openblas_threads": 1
+    },
+    {
+      "name": "a2",
+      "requested_openblas_threads": 2
+    }
+  ],
+  "probe_ticks": [
+    50,
+    100,
+    150
+  ],
+  "point_budget": 63,
+  "period_reference_ms": 20.0,
+  "source_hash_newline_policy": "LF_NORMALIZED",
+  "source_sha256": {
+    "audit_b2_blas_thread_trial.py": "b238004a1994aac9b74b268178dfad9ff15fb3136f1a11c48b6116ddc780cd20",
+    "audit_b2_weighted_qp_probe.py": "ff28fb5fbf797127d86e5307e59886b08e0765679e0e6fb10d1bd1ddc2cc8437",
+    "hierarchical_qp.py": "1e2ae02348fadb231827a720b0cdfb1b0fd3aa8393f068d766c7145b91087a65",
+    "pcc_interval_cbf.py": "befb7cf61aebadb17b3b138fb6c6baf88a5d04fd51656ef88fdb5f010738c61d",
+    "safety_contract.py": "40d0e0ff22bba254d0fdce932632053724df57277546b5aac07431683357d4c0"
+  },
+  "input_original_probe_sha256": "a957f0120173f0cfddf1fe28525054c9c2f02ec308d80741b62f132f2e8f97ee",
+  "new_interval_mode_executed": false,
+  "full_control_cycle_measured": false,
+  "groups": [
+    {
+      "name": "a1",
+      "requested_openblas_threads": 2,
+      "environment_variable": "OPENBLAS_NUM_THREADS",
+      "command": [
+        "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Scripts\\python.exe",
+        "-m",
+        "v6_lite.audit_b2_weighted_qp_probe",
+        "--output-dir",
+        "v6_lite\\output\\v6_2_b2\\blas_thread_trial\\a1",
+        "--probe-ticks",
+        "50",
+        "100",
+        "150",
+        "--point-budget",
+        "63"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 29.674636399839073,
+      "stdout_sha256": "5d0b91adf1f5609c6c3a71429c94cf0659b825345120529fec212ab940a78336",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "COMPLETE",
+      "record_count": 30,
+      "candidate_mismatch_count": 0,
+      "report_path": "v6_lite/output/v6_2_b2/blas_thread_trial/a1/weighted_qp_probe.json",
+      "report_sha256": "827dd256b65ee7ca9528acec137d90051ea2fc8343eb228cbb3e60fa087e3ab6",
+      "document_sha256": "8b83fa283717084dec1f6cea4c7e3cdd8fffc9ffde0aa2eee521bee2ecf5ae4a",
+      "manifest_sha256": "f99ac17998eae9e6036799403a537697525823f5ca6420eb78f55426300f0f00"
+    },
+    {
+      "name": "b1",
+      "requested_openblas_threads": 1,
+      "environment_variable": "OPENBLAS_NUM_THREADS",
+      "command": [
+        "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Scripts\\python.exe",
+        "-m",
+        "v6_lite.audit_b2_weighted_qp_probe",
+        "--output-dir",
+        "v6_lite\\output\\v6_2_b2\\blas_thread_trial\\b1",
+        "--probe-ticks",
+        "50",
+        "100",
+        "150",
+        "--point-budget",
+        "63"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 29.82141079986468,
+      "stdout_sha256": "ff6e3fb68de96d88fb71c875020f8ef7570ae0b0665331e5139618f6f5384564",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "COMPLETE",
+      "record_count": 30,
+      "candidate_mismatch_count": 0,
+      "report_path": "v6_lite/output/v6_2_b2/blas_thread_trial/b1/weighted_qp_probe.json",
+      "report_sha256": "92d90913489fbed59c463616eb768a011315f5aa835930a2d5373066468f601c",
+      "document_sha256": "b86e98fc864799744972cd6f17e56ba5de43d729fe1f51b738db84a3d3b96836",
+      "manifest_sha256": "8c669ea56697ee790a734f25f7d31e3acd2bd3b04f8a247f0d3404de58b5d51f"
+    },
+    {
+      "name": "b2",
+      "requested_openblas_threads": 1,
+      "environment_variable": "OPENBLAS_NUM_THREADS",
+      "command": [
+        "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Scripts\\python.exe",
+        "-m",
+        "v6_lite.audit_b2_weighted_qp_probe",
+        "--output-dir",
+        "v6_lite\\output\\v6_2_b2\\blas_thread_trial\\b2",
+        "--probe-ticks",
+        "50",
+        "100",
+        "150",
+        "--point-budget",
+        "63"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 29.471005899831653,
+      "stdout_sha256": "37b4552521650862d63509a3f0c49008b828d902819486ada1a47db96fa23cea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "COMPLETE",
+      "record_count": 30,
+      "candidate_mismatch_count": 0,
+      "report_path": "v6_lite/output/v6_2_b2/blas_thread_trial/b2/weighted_qp_probe.json",
+      "report_sha256": "b4394b7748549d6bf9961005240e5fccb98fcee24da5f724faa9b6dfb473f8c3",
+      "document_sha256": "bb6d0874fb75c022651930db3f6c138a66d7e57f2f78d90ea1f6f6268c5f6045",
+      "manifest_sha256": "0f652150991eec7657ab174258e4ddc40ff7eb4291c6f8203367e714e6a10be7"
+    },
+    {
+      "name": "a2",
+      "requested_openblas_threads": 2,
+      "environment_variable": "OPENBLAS_NUM_THREADS",
+      "command": [
+        "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Scripts\\python.exe",
+        "-m",
+        "v6_lite.audit_b2_weighted_qp_probe",
+        "--output-dir",
+        "v6_lite\\output\\v6_2_b2\\blas_thread_trial\\a2",
+        "--probe-ticks",
+        "50",
+        "100",
+        "150",
+        "--point-budget",
+        "63"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 29.64898579986766,
+      "stdout_sha256": "373bbc19340db75ba3106148b4403a906d78c427770cb65d9cd3d0f339aac009",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "COMPLETE",
+      "record_count": 30,
+      "candidate_mismatch_count": 0,
+      "report_path": "v6_lite/output/v6_2_b2/blas_thread_trial/a2/weighted_qp_probe.json",
+      "report_sha256": "594db1ab1947fa10870bfaf0168ed16e6e13155e5c94bc56d78ea442582b50a2",
+      "document_sha256": "a350b46bfbd3667730b87288ca1fb5b86dcee44349a3f87b66461aef5a75ec1c",
+      "manifest_sha256": "26a9952c4575f07dde1f9f1a88aa13e4e307d1172bd44a89547e54fbef1fab9f"
+    }
+  ],
+  "modes": {
+    "baseline": {
+      "1": {
+        "record_count": 30,
+        "query_plus_qp_probe_ms": {
+          "count": 30,
+          "min": 8.373899850994349,
+          "p50": 10.844600154086947,
+          "p95": 12.730409950017929,
+          "p99": 12.932324977591634,
+          "max": 13.004099950194359,
+          "over_20ms_count": 0
+        },
+        "qp_full_ms": {
+          "count": 30,
+          "min": 7.223000284284353,
+          "p50": 9.610250126570463,
+          "p95": 11.577379982918501,
+          "p99": 11.813198789022863,
+          "max": 11.873199604451656,
+          "over_20ms_count": 0
+        },
+        "qp_solver_ms": {
+          "count": 30,
+          "min": 0.3091003745794296,
+          "p50": 2.6888998690992594,
+          "p95": 3.851450141519307,
+          "p99": 4.009395032189786,
+          "max": 4.025199916213751,
+          "over_20ms_count": 0
+        }
+      },
+      "2": {
+        "record_count": 30,
+        "query_plus_qp_probe_ms": {
+          "count": 30,
+          "min": 8.775300346314907,
+          "p50": 11.246300069615245,
+          "p95": 13.141019945032895,
+          "p99": 13.17839098162949,
+          "max": 13.18769995123148,
+          "over_20ms_count": 0
+        },
+        "qp_full_ms": {
+          "count": 30,
+          "min": 7.425099611282349,
+          "p50": 10.110149858519435,
+          "p95": 11.888714833185077,
+          "p99": 12.052520760335028,
+          "max": 12.097499798983335,
+          "over_20ms_count": 0
+        },
+        "qp_solver_ms": {
+          "count": 30,
+          "min": 0.3073001280426979,
+          "p50": 2.9476499184966087,
+          "p95": 3.8382599130272865,
+          "p99": 4.009580104611814,
+          "max": 4.078600089997053,
+          "over_20ms_count": 0
+        }
+      }
+    },
+    "enabled": {
+      "1": {
+        "record_count": 30,
+        "query_plus_qp_probe_ms": {
+          "count": 30,
+          "min": 8.526400197297335,
+          "p50": 11.126500088721514,
+          "p95": 11.95868996437639,
+          "p99": 12.432604073546827,
+          "max": 12.595700100064278,
+          "over_20ms_count": 0
+        },
+        "qp_full_ms": {
+          "count": 30,
+          "min": 7.347899954766035,
+          "p50": 9.921949822455645,
+          "p95": 10.731069976463914,
+          "p99": 11.326609025709331,
+          "max": 11.569600086659193,
+          "over_20ms_count": 0
+        },
+        "qp_solver_ms": {
+          "count": 30,
+          "min": 0.31589996069669724,
+          "p50": 2.696800045669079,
+          "p95": 3.664285014383495,
+          "p99": 3.8575188629329205,
+          "max": 3.929699771106243,
+          "over_20ms_count": 0
+        }
+      },
+      "2": {
+        "record_count": 30,
+        "query_plus_qp_probe_ms": {
+          "count": 30,
+          "min": 8.708699606359005,
+          "p50": 11.302350088953972,
+          "p95": 12.177410023286939,
+          "p99": 12.369506931863725,
+          "max": 12.422199826687574,
+          "over_20ms_count": 0
+        },
+        "qp_full_ms": {
+          "count": 30,
+          "min": 7.441500201821327,
+          "p50": 10.043200105428696,
+          "p95": 11.009999993257225,
+          "p99": 11.161091942340136,
+          "max": 11.220599990338087,
+          "over_20ms_count": 0
+        },
+        "qp_solver_ms": {
+          "count": 30,
+          "min": 0.3128000535070896,
+          "p50": 2.724149962887168,
+          "p95": 3.650619857944548,
+          "p99": 3.727409029379487,
+          "max": 3.7587000988423824,
+          "over_20ms_count": 0
+        }
+      }
+    }
+  },
+  "complete_group_count": 4,
+  "candidate_mismatch_count": 0,
+  "records_sha256": "7392ededbbbccd6efe11decb3c95d96a434cd7702150903a352022f2d71554ad"
+}
