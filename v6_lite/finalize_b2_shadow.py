@@ -97,6 +97,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "candidate_prediction_failure": root / "candidate_prediction_early_failures" / "attempt1.json",
         "repeated_qp_probe": root / "repeated_qp_probe_early" / "repeated_probe_summary.json",
         "blas_thread_trial": root / "blas_thread_trial" / "abba_summary.json",
+        "mujoco_sphere_screen": root / "mujoco_sphere_screen" / "sphere_screen_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -108,7 +109,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -369,6 +370,47 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 or item["stdout_sha256"] != _sha(blas_dir / f"{item['name']}_stdout.txt")
                 or item["stderr_sha256"] != _sha(blas_dir / f"{item['name']}_stderr.txt")):
             raise ValueError("OpenBLAS ABBA trial group outputs changed")
+    if (sphere_screen["record_count"] != 70
+            or sphere_screen["failure_count"] != 0
+            or sphere_screen["probe_ticks"]
+            != [50, 100, 150, 250, 350, 500, 1000]
+            or sphere_screen["query_max_m"] != .09
+            or sphere_screen["activation_m"] != .08
+            or sphere_screen["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or sphere_screen["new_interval_mode_executed"]
+            or sphere_screen["online_controller_changed"]
+            or sphere_screen["full_control_cycle_measured"]):
+        raise ValueError("MuJoCo sphere screen protocol changed")
+    for name, digest in sphere_screen["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"MuJoCo sphere screen source changed: {name}")
+    sphere_dir = root / "mujoco_sphere_screen"
+    sphere_manifest = json.loads((sphere_dir / "sphere_screen_manifest.json")
+                                 .read_text(encoding="utf-8"))
+    for label, filename in (("summary", "sphere_screen_summary.json"),
+                            ("records", "sphere_screen_records.jsonl"),
+                            ("failures", "sphere_screen_failures.jsonl"),
+                            ("document", "MUJOCO_SPHERE_SCREEN.md")):
+        if sphere_manifest[f"{label}_sha256"] != _sha(sphere_dir / filename):
+            raise ValueError(f"MuJoCo sphere screen {label} hash changed")
+    if (sphere_screen["records_sha256"]
+            != _sha(sphere_dir / "sphere_screen_records.jsonl")
+            or sphere_screen["failures_sha256"]
+            != _sha(sphere_dir / "sphere_screen_failures.jsonl")):
+        raise ValueError("MuJoCo sphere screen raw records changed")
+    for item in sphere_screen["inputs"]:
+        metrics = Path("v6_lite/output/v6_2_a1") / f"{item['mode']}_root" / "output" / "v6_lite_metrics.json"
+        if (_sha(metrics) != item["metrics_sha256"]
+                or _sha(Path(item["trace_path"])) != item["trace_sha256"]):
+            raise ValueError("MuJoCo sphere screen input hashes changed")
+    for mode in ("baseline", "enabled"):
+        item = sphere_screen["modes"][mode]
+        if (item["state_count"] != 35 or item["pair_count_per_state"] != 2927
+                or item["missed_active_count"] != 0
+                or item["max_active_distance_error_m"] != 0.0
+                or item["max_active_witness_error_m"] != 0.0
+                or item["max_minimum_error_m"] != 0.0):
+            raise ValueError("MuJoCo sphere screen did not preserve frozen rows")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1022,6 +1064,31 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "五轮重复探针的耗时尾部；因此不能把跨次差异归因于线程数，"
         "也不能丢弃先前超 20 ms 的原始记录。"
         "新区间接入门禁仍需独立满足几何、动作与真实闭环要求。", "",
+        "## 原 MuJoCo 碰撞对的只读包围球筛选", "",
+        "在旧力矩原生重放的两组五场景各七个规划状态，以原 0.09 m 查询上限"
+        "和 0.08 m 激活距离对 2,927 个碰撞对作全对→筛选→筛选→全对配对测量。"
+        "只有包围球下界严格超过查询范围再加 1 μm 时才试验跳过精确查询；"
+        "若筛选集合没有近距见证，则回退全对。", "",
+        "| 模式 | 状态 | 每状态精确调用 p95：全对→筛选 | 对查询 p95 ms：全对→筛选 | 漏失激活行 | 最大见证点/最小值差异 m |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = sphere_screen["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['state_count']} | "
+            f"{item['pair_count_per_state']}→{item['exact_call_count']['p95']:.1f} | "
+            f"{item['reference_pair_time_ms']['p95']:.3f}→"
+            f"{item['screened_pair_time_ms']['p95']:.3f} | "
+            f"{item['missed_active_count']} | "
+            f"{item['max_active_witness_error_m']:.1e} / "
+            f"{item['max_minimum_error_m']:.1e} |"
+        )
+    lines += [
+        "", "所测 70 个状态的激活距离、见证点、全局及目标最小值逐项一致，"
+        "原生力矩重放状态误差为零。MuJoCo 的远距离返回值有时为极大哨兵值，"
+        "因此不能声称被跳过的每一对距离数值都等于查询上限。"
+        "此筛选尚未接入 QP；上表只计碰撞对距离查询，不包含 Jacobian、"
+        "区间行、QP、状态监控或力矩伺服，也不是 20 ms 全链证明。", "",
         "## 五场景初始状态的加权 QP 只读预检", "",
         "另在两组五场景的 tick 0 从根区间以最多 255 点查询，并将所需区间行"
         "送入原单个 17 维加权 QP；候选只经原动作验证，未驱动力矩伺服。"
