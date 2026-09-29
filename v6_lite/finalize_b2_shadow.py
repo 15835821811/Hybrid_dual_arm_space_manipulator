@@ -107,6 +107,9 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "discrete_servo_first_tick": root / "discrete_servo_first_tick" / "discrete_servo_summary.json",
         "discrete_private_five_scene": root / "discrete_private_400_summary" / "discrete_private_five_scene_summary.json",
         "discrete_private_recompute": root / "discrete_private_recompute_400" / "private_recompute_summary.json",
+        "discrete_screened_scene00": root / "discrete_screened_private_rollout_400" / "scene_00" / "private_rollout_summary.json",
+        "discrete_private_paired_qp": root / "discrete_private_full_qp_sphere" / "private_full_qp_sphere_summary.json",
+        "discrete_screened_parity": root / "discrete_screened_parity" / "discrete_screened_parity_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -118,7 +121,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, private_qp_full, servo_origin, discrete_first_tick, discrete_private, discrete_recompute, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, private_rollout, private_recompute, private_qp_sphere, private_qp_full, servo_origin, discrete_first_tick, discrete_private, discrete_recompute, screened_scene, paired_discrete_qp, screened_parity, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -748,6 +751,65 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 or item["manifest_sha256"]
                 != _sha(folder / "private_rollout_manifest.json")):
             raise ValueError("compensated private scene changed")
+    if (screened_scene["schema"]
+            != "v6_2_b2_discrete_screened_private_multicycle_v1"
+            or screened_scene["scenario_id"] != "v6_lite_scenario_00"
+            or screened_scene["executed_ticks"] != 400
+            or screened_scene["stop_reason"] != "HORIZON_COMPLETE"
+            or not screened_scene["strict_online_domain_all_executed_ticks"]
+            or screened_scene["native_replay_max_qpos_error"] > 1e-8
+            or len(screened_scene["sphere_screen_exact_pair_calls"]) != 400
+            or screened_scene["private_preflight_plus_qp_timing"]["p95_ms"]
+            <= 20.0
+            or screened_scene["stage3_admission"]
+            or paired_discrete_qp["record_count"] != 4000
+            or paired_discrete_qp["failure_count"]
+            or paired_discrete_qp["private_servo_commanded_by_trial"]
+            or paired_discrete_qp["full_cycle_timing_measured"]
+            or paired_discrete_qp["summary"]["sphere_screen"][
+                "preflight_plus_qp_ms"]["p95"] <= 20.0
+            or screened_parity["status"]
+            != "SCREEN_PARITY_PASS_TIMING_GATE_NOT_MET"
+            or screened_parity["maximum_qpos_difference_m_or_rad"] > 1e-8
+            or screened_parity["maximum_torque_difference_nm"] > 1e-8
+            or screened_parity["paired_failure_count"]
+            or screened_parity["stage3_admission"]
+            or screened_parity["full_cycle_20ms_acceptance"]
+            or screened_parity["continuous_time_certified"]):
+        raise ValueError("compensated pair screen result changed")
+    for source in (screened_scene, paired_discrete_qp, screened_parity):
+        for name, digest in source["source_sha256"].items():
+            if _source_sha(Path("v6_lite") / name) != digest:
+                raise ValueError(f"compensated pair-screen source changed: {name}")
+    for directory, manifest_name, names in (
+        (root / "discrete_screened_private_rollout_400" / "scene_00",
+         "private_rollout_manifest.json",
+         {"summary": "private_rollout_summary.json",
+          "records": "private_rollout_records.jsonl",
+          "trace": "private_rollout_trace.npz",
+          "document": "PRIVATE_ROLLOUT.md"}),
+        (root / "discrete_private_full_qp_sphere",
+         "private_full_qp_sphere_manifest.json",
+         {"summary": "private_full_qp_sphere_summary.json",
+          "records": "private_full_qp_sphere_records.jsonl",
+          "failures": "private_full_qp_sphere_failures.jsonl"}),
+        (root / "discrete_screened_parity",
+         "discrete_screened_parity_manifest.json",
+         {"summary": "discrete_screened_parity_summary.json",
+          "document": "DISCRETE_SCREENED_PARITY.md"}),
+    ):
+        manifest = json.loads((directory / manifest_name).read_text(
+            encoding="utf-8"))
+        for label, filename in names.items():
+            if manifest[f"{label}_sha256"] != _sha(directory / filename):
+                raise ValueError(f"compensated {directory.name} {label} changed")
+    if (screened_parity["reference_summary_sha256"]
+            != discrete_private["scenes"][0]["summary_sha256"]
+            or screened_parity["screened_summary_sha256"]
+            != _sha(sources["discrete_screened_scene00"])
+            or screened_parity["paired_qp_summary_sha256"]
+            != _sha(sources["discrete_private_paired_qp"])):
+        raise ValueError("compensated pair-screen input hashes changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1649,6 +1711,29 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "这仍共享 MuJoCo/PCC 模型，没有独立物理测量或连续时间认证。"
         "该私有控制链的预检＋QP p95 全部超过 20 ms，"
         "且未完成完整周期和生产在线故障注入；第三阶段门禁继续关闭。", "",
+        "## 补偿轨迹上的球界筛选时延核对", "",
+        "在上述补偿私有轨迹的全部五场景 2,000 个保存规划状态上，"
+        "原精确碰撞对与保守球界筛选各重新求解一次 17 维 QP，"
+        "共 4,000 次；约束行、候选与已验证命令的配对失败数为 "
+        f"{paired_discrete_qp['failure_count']}。"
+        "另以筛选 QP 独立运行场景 00 的 400 周期私有闭环，"
+        "与未筛选补偿分支的状态最大差 "
+        f"{screened_parity['maximum_qpos_difference_m_or_rad']:.2e}、"
+        "力矩最大差 "
+        f"{screened_parity['maximum_torque_difference_nm']:.2e} Nm。", "",
+        "| 测量 | 原对查询 | 球界筛选 |",
+        "| --- | ---: | ---: |",
+        f"| 五场景冻结状态预检＋QP p95 ms | "
+        f"{paired_discrete_qp['summary']['reference']['preflight_plus_qp_ms']['p95']:.3f} | "
+        f"{paired_discrete_qp['summary']['sphere_screen']['preflight_plus_qp_ms']['p95']:.3f} |",
+        f"| 精确碰撞对查询 p95 次／状态 | "
+        f"{paired_discrete_qp['summary']['reference']['exact_pair_calls']['p95']:.0f} | "
+        f"{paired_discrete_qp['summary']['sphere_screen']['exact_pair_calls']['p95']:.0f} |",
+        f"| 场景 00 筛选私有闭环预检＋QP p95 ms | — | "
+        f"{screened_scene['private_preflight_plus_qp_timing']['p95_ms']:.3f} |",
+        "", "球界筛选减少了原 MuJoCo 对的精确查询数，"
+        "但成对只读 p95 和场景 00 私有闭环 p95 均超过原 20 ms 周期。"
+        "后者仍未测完整调度和伺服时延，不能作为第三阶段在线接入依据。", "",
         "## 候选分支的同区间前瞻误差", "",
         "对同一 30 个私有候选分支，重建原只读 QP 的区间划分与筛选 ID，"
         "在执行后一规划起点冻结相同 ID 重算 h、17 维广义梯度及目标漂移。"

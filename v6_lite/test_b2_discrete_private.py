@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 from v6_lite.finalize_b2_discrete_private import run
+from v6_lite.audit_b2_discrete_screened_parity import run as check_screened
 
 
 class B2DiscretePrivateEvidenceTests(unittest.TestCase):
@@ -49,6 +50,29 @@ class B2DiscretePrivateEvidenceTests(unittest.TestCase):
         self.assertFalse(old[
             "independent_strict_online_domain_all_executed_ticks"])
         self.assertFalse(old["all_500hz_states_on_declared_shape_subspace"])
+
+    def test_pair_screen_keeps_executed_trace_and_misses_timing_gate(self) -> None:
+        base = Path(__file__).parent / "output" / "v6_2_b2"
+        with tempfile.TemporaryDirectory() as temporary:
+            fresh = check_screened(
+                base / "discrete_private_rollout_400" / "scene_00",
+                base / "discrete_screened_private_rollout_400" / "scene_00",
+                base / "discrete_private_full_qp_sphere",
+                Path(temporary) / "result",
+            )
+        saved = json.loads((base / "discrete_screened_parity"
+                            / "discrete_screened_parity_summary.json").read_text(
+            encoding="utf-8"))
+        self.assertEqual(fresh, saved)
+        self.assertEqual(fresh["maximum_qpos_difference_m_or_rad"], 0.0)
+        self.assertEqual(fresh["maximum_torque_difference_nm"], 0.0)
+        self.assertEqual(fresh["paired_record_count"], 4000)
+        self.assertEqual(fresh["paired_failure_count"], 0)
+        self.assertGreater(fresh["paired_five_scene_preflight_plus_qp"]
+                           ["sphere_screen"]["p95"], 20.0)
+        self.assertGreater(fresh["screened_scene_00_preflight_plus_qp"]
+                           ["p95_ms"], 20.0)
+        self.assertFalse(fresh["stage3_admission"])
 
 
 if __name__ == "__main__":
