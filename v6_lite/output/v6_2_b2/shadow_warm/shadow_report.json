@@ -1,0 +1,1445 @@
+{
+  "schema": "v6_2_b2_native_replay_interval_shadow_v1",
+  "source_sha256": {
+    "v6_lite/pcc_interval_cbf.py": "59ddf2e84da307be814ee9b829c0c80c50c855538a059cd7d68392ab296dade7",
+    "v6_lite/shadow_b2_interval_cbf.py": "9f3c6125bd3ca20c698f44d4d6e8e00c7ca51e285bfa285e6f5485f2cc7f97bd"
+  },
+  "sample_plan": "all five scenarios in each A.1 mode; task ticks 0, stride, ...; evaluate next tick on frozen partition",
+  "query_mode": "persistent_warm",
+  "modes": {
+    "baseline": {
+      "mode": "baseline",
+      "metrics_sha256": "48ad83822d632464032d7bf82fb3f32e6e636a6e3843d6fecc1d9caaf93b2c58",
+      "sample_stride_task_ticks": 50,
+      "query_mode": "persistent_warm",
+      "budget": {
+        "branch_point_evaluations": 64,
+        "total_point_evaluations": 128,
+        "jacobian_evaluations": 96,
+        "local_refinement_evaluations": 0,
+        "total_query_time_ms": 20.0
+      },
+      "scenarios": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "trace_sha256": "9f91b5cdf8f028c971b00243867dd5840c058df8629740f025859ae0e4d37836",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "trace_sha256": "58bb492d756cb8ea5284b6bfbc4331ff6df6c06d93d3e7d2b93d1518f847df41",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "trace_sha256": "3d3d3d84aba14f7c2bddb8c0c9f8cce57bac02692abad599465c7d6da9535893",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "trace_sha256": "63b1af1dd11965d8ce0e9ee0c49890430f3bfdb592f72ae26b9233f372de5798",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "trace_sha256": "9abb83de5c9997d34115c57c2b6f7d58a4a97ee735221880e960bbfd5d3f9838",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        }
+      ],
+      "sample_count": 135,
+      "counts": {
+        "warm_all_task_unknown": 681,
+        "warm_all_task_budget_exhausted": 681,
+        "warm_all_task_invalid": 0,
+        "paired_replacement_estimate_over_20ms": 93,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 73,
+        "budget_exhausted": 13,
+        "unified_budget_exceeded": 92,
+        "coverage_incomplete": 0,
+        "derivative_unsupported": 0,
+        "off_shape_subspace": 126,
+        "mujoco_geometry_safe": 135,
+        "proxy_false_safe_vs_mujoco": 0,
+        "proxy_false_reject_vs_mujoco": 62,
+        "excluded_reached_activation_next_tick": 0,
+        "PROXY_CLEARANCE_BELOW_GATE": 49,
+        "UNKNOWN_CROSSES_GATE": 13
+      },
+      "summaries": {
+        "bound_gap_m": {
+          "count": 135,
+          "min": 0.0010470302608046288,
+          "p50": 0.04430957355175747,
+          "p95": 0.15000000200000002,
+          "p99": 0.1500000020000001,
+          "max": 0.1500000020000001
+        },
+        "query_time_ms": {
+          "count": 135,
+          "min": 1.5667998231947422,
+          "p50": 21.94890007376671,
+          "p95": 23.223360162228346,
+          "p99": 24.31308189406991,
+          "max": 28.266399633139372
+        },
+        "branch_query_time_ms": {
+          "count": 135,
+          "min": 0.4115002229809761,
+          "p50": 2.5788000784814358,
+          "p95": 3.0361099634319544,
+          "p99": 3.2525739353150125,
+          "max": 3.505000378936529
+        },
+        "interval_assembly_time_ms": {
+          "count": 135,
+          "min": 0.493600033223629,
+          "p50": 18.422899767756462,
+          "p95": 19.58666993305087,
+          "p99": 20.66737395711243,
+          "max": 24.474100209772587
+        },
+        "point_evaluations": {
+          "count": 135,
+          "min": 10.0,
+          "p50": 124.0,
+          "p95": 126.0,
+          "p99": 126.0,
+          "max": 126.0
+        },
+        "jacobian_evaluations": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 177.0,
+          "p95": 183.0,
+          "p99": 183.0,
+          "max": 183.0
+        },
+        "partition_size": {
+          "count": 135,
+          "min": 5.0,
+          "p50": 62.0,
+          "p95": 63.0,
+          "p99": 63.0,
+          "max": 63.0
+        },
+        "subspace_residual_linf_rad": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 1.7278708394630193e-08,
+          "p95": 6.476791213089887e-08,
+          "p99": 9.064635604245047e-08,
+          "max": 9.972653623041561e-08
+        },
+        "selected_interval_count": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 59.0,
+          "p95": 61.0,
+          "p99": 61.0,
+          "max": 61.0
+        },
+        "excluded_interval_count": {
+          "count": 135,
+          "min": 2.0,
+          "p50": 2.0,
+          "p95": 6.0,
+          "p99": 56.66,
+          "max": 57.0
+        },
+        "frozen_reach_m": {
+          "count": 6356,
+          "min": 0.012446809931191061,
+          "p50": 0.031021983530929654,
+          "p95": 0.053473817065707765,
+          "p99": 0.08004829893206998,
+          "max": 0.08060865489293707
+        },
+        "historical_full_control_ms": {
+          "count": 135,
+          "min": 4.51240036636591,
+          "p50": 5.056499969214201,
+          "p95": 11.212959885597229,
+          "p99": 14.34250013902783,
+          "max": 24.066600017249584
+        },
+        "historical_shape_query_ms": {
+          "count": 135,
+          "min": 0.00019976869225502014,
+          "p50": 0.0003003515303134918,
+          "p95": 0.000500120222568512,
+          "p99": 0.0008322019129991525,
+          "max": 0.001000240445137024
+        },
+        "historical_qp_ms": {
+          "count": 135,
+          "min": 0.07189996540546417,
+          "p50": 0.2029002644121647,
+          "p95": 2.5311100762337446,
+          "p99": 2.891933945938945,
+          "max": 3.631199710071087
+        },
+        "paired_replacement_estimate_ms": {
+          "count": 135,
+          "min": 8.711699862033129,
+          "p50": 27.098599821329117,
+          "p95": 32.29181985370815,
+          "p99": 35.84499206393957,
+          "max": 46.016800217330456
+        },
+        "next_h_prediction_abs_error_m": {
+          "count": 5740,
+          "min": 1.235534036192476e-10,
+          "p50": 6.716717430178126e-07,
+          "p95": 2.972927341323568e-06,
+          "p99": 1.0266358654259611e-05,
+          "max": 3.880638910412626e-05
+        },
+        "next_start_residual_abs_error_m_s": {
+          "count": 5740,
+          "min": 7.709164417946113e-10,
+          "p50": 1.297815961573412e-05,
+          "p95": 0.0002624252601291456,
+          "p99": 0.0011240280060531892,
+          "max": 0.004119062758323855
+        },
+        "warm_all_task_query_ms": {
+          "count": 6750,
+          "min": 0.45819999650120735,
+          "p50": 2.674599876627326,
+          "p95": 3.101339982822537,
+          "p99": 3.393822940997781,
+          "max": 5.435300059616566
+        },
+        "warm_all_task_partition_size": {
+          "count": 6750,
+          "min": 5.0,
+          "p50": 62.0,
+          "p95": 63.0,
+          "p99": 63.0,
+          "max": 63.0
+        }
+      },
+      "examples": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 350,
+          "time_s": 6.999999999999451,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.026394797741917744,
+          "actual_mujoco_distance_m": 0.05440266588090771,
+          "subspace_residual_linf_rad": 3.5649217355882e-08,
+          "query_time_ms": 19.843399990350008,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 159,
+          "selected_interval_count": 53,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 400,
+          "time_s": 7.999999999999341,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.03552172717226878,
+          "actual_mujoco_distance_m": 0.0457295171099934,
+          "subspace_residual_linf_rad": 1.099175784419204e-08,
+          "query_time_ms": 19.94730019941926,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 450,
+          "time_s": 8.999999999999675,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.05672323461075603,
+          "actual_mujoco_distance_m": 0.03064158448997649,
+          "subspace_residual_linf_rad": 1.5838477307461574e-08,
+          "query_time_ms": 20.97519999369979,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 500,
+          "time_s": 10.000000000000009,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.09108781918978123,
+          "actual_mujoco_distance_m": 0.02625544038751589,
+          "subspace_residual_linf_rad": 2.5798215669628477e-08,
+          "query_time_ms": 20.414599683135748,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 550,
+          "time_s": 11.000000000000343,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.10300433198172734,
+          "actual_mujoco_distance_m": 0.02807997037953204,
+          "subspace_residual_linf_rad": 1.62595794328535e-08,
+          "query_time_ms": 20.184500142931938,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 600,
+          "time_s": 12.000000000000677,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.10820925182128158,
+          "actual_mujoco_distance_m": 0.02572492944367724,
+          "subspace_residual_linf_rad": 6.814600871617171e-08,
+          "query_time_ms": 21.16480004042387,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 650,
+          "time_s": 13.00000000000101,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.12038945331076364,
+          "actual_mujoco_distance_m": 0.025684363924369707,
+          "subspace_residual_linf_rad": 1.9150507367393654e-08,
+          "query_time_ms": 20.814800169318914,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 700,
+          "time_s": 14.000000000001345,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.11904597957659249,
+          "actual_mujoco_distance_m": 0.03632149947351591,
+          "subspace_residual_linf_rad": 6.123606130593114e-08,
+          "query_time_ms": 20.57830011472106,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 750,
+          "time_s": 15.000000000001679,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.11129536399688009,
+          "actual_mujoco_distance_m": 0.03857042819442881,
+          "subspace_residual_linf_rad": 1.682305265926498e-08,
+          "query_time_ms": 20.337499678134918,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 800,
+          "time_s": 16.00000000000201,
+          "proxy_status": "PROXY_CLEARANCE_BELOW_GATE",
+          "minimum_h_m": -0.10003763271593967,
+          "actual_mujoco_distance_m": 0.051225396963451506,
+          "subspace_residual_linf_rad": 2.2525311962895422e-08,
+          "query_time_ms": 20.521000027656555,
+          "point_evaluations": 112,
+          "jacobian_evaluations": 162,
+          "selected_interval_count": 54,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 850,
+          "time_s": 17.000000000001457,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.00238327143142417,
+          "actual_mujoco_distance_m": 0.09664326648433616,
+          "subspace_residual_linf_rad": 2.000511327426846e-08,
+          "query_time_ms": 22.804100066423416,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 900,
+          "time_s": 18.000000000000902,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.020662083405918328,
+          "actual_mujoco_distance_m": 0.12340795985047336,
+          "subspace_residual_linf_rad": 2.3782923935788958e-08,
+          "query_time_ms": 22.260600235313177,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 950,
+          "time_s": 19.000000000000348,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.015019683152969306,
+          "actual_mujoco_distance_m": 0.11871463140383157,
+          "subspace_residual_linf_rad": 2.3973361795714965e-08,
+          "query_time_ms": 22.295299917459488,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1000,
+          "time_s": 19.999999999999794,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.017826190480788286,
+          "actual_mujoco_distance_m": 0.13221104825923052,
+          "subspace_residual_linf_rad": 1.1142505085270926e-08,
+          "query_time_ms": 22.060499992221594,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1050,
+          "time_s": 20.99999999999924,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.03556749543590562,
+          "actual_mujoco_distance_m": 0.14605499692963037,
+          "subspace_residual_linf_rad": 2.8852986874716713e-08,
+          "query_time_ms": 22.75760006159544,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1100,
+          "time_s": 21.999999999998685,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.03305842993204272,
+          "actual_mujoco_distance_m": 0.14153832034313163,
+          "subspace_residual_linf_rad": 5.231508920511274e-09,
+          "query_time_ms": 22.636299952864647,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1150,
+          "time_s": 22.99999999999813,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.021394063044891495,
+          "actual_mujoco_distance_m": 0.12838283887933968,
+          "subspace_residual_linf_rad": 1.3164965312340016e-08,
+          "query_time_ms": 22.8732000105083,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1200,
+          "time_s": 23.999999999997577,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.018721447825265577,
+          "actual_mujoco_distance_m": 0.11482710003419723,
+          "subspace_residual_linf_rad": 6.255754386730317e-09,
+          "query_time_ms": 22.045299876481295,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 177,
+          "selected_interval_count": 59,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1250,
+          "time_s": 24.999999999997023,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.019761880544966862,
+          "actual_mujoco_distance_m": 0.11037314129749766,
+          "subspace_residual_linf_rad": 1.6936075250550964e-08,
+          "query_time_ms": 21.48950006812811,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 171,
+          "selected_interval_count": 57,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 1300,
+          "time_s": 25.99999999999647,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.015427472747154645,
+          "actual_mujoco_distance_m": 0.10268384364489498,
+          "subspace_residual_linf_rad": 1.864691873132429e-10,
+          "query_time_ms": 22.316500078886747,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 171,
+          "selected_interval_count": 57,
+          "unsupported_interval_ids": []
+        }
+      ],
+      "warm_unknown_examples": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 314,
+          "time_s": 6.27999999999953,
+          "lower_m": 0.004608168286274359,
+          "upper_m": 0.0056975192695512145,
+          "interval_count": 56,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 834,
+          "time_s": 16.680000000001634,
+          "lower_m": -0.019767542256732478,
+          "upper_m": 0.005054311598836571,
+          "interval_count": 60,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 835,
+          "time_s": 16.700000000001623,
+          "lower_m": -0.008993896166444833,
+          "upper_m": 0.005719945009873913,
+          "interval_count": 62,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 836,
+          "time_s": 16.720000000001612,
+          "lower_m": -0.007514623551194132,
+          "upper_m": 0.006791673014341014,
+          "interval_count": 63,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 837,
+          "time_s": 16.7400000000016,
+          "lower_m": -0.006407886863454103,
+          "upper_m": 0.007865597818190214,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 838,
+          "time_s": 16.76000000000159,
+          "lower_m": -0.005304610234181982,
+          "upper_m": 0.008940723049848722,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 839,
+          "time_s": 16.78000000000158,
+          "lower_m": -0.004205597545872438,
+          "upper_m": 0.01001606065822533,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 840,
+          "time_s": 16.800000000001567,
+          "lower_m": -0.0031116432564174687,
+          "upper_m": 0.011090633088100684,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 841,
+          "time_s": 16.820000000001556,
+          "lower_m": -0.0020235311952363647,
+          "upper_m": 0.01216347485231223,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 842,
+          "time_s": 16.840000000001545,
+          "lower_m": -0.0009420338331333079,
+          "upper_m": 0.013233633623105522,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 843,
+          "time_s": 16.860000000001534,
+          "lower_m": 0.00013208827506394573,
+          "upper_m": 0.014300171111906611,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 844,
+          "time_s": 16.880000000001523,
+          "lower_m": 0.0011980869892547895,
+          "upper_m": 0.01536216384896283,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 845,
+          "time_s": 16.900000000001512,
+          "lower_m": 0.0022552270557770473,
+          "upper_m": 0.016418703897392518,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 846,
+          "time_s": 16.9200000000015,
+          "lower_m": 0.00330278655952261,
+          "upper_m": 0.01746889951297562,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 847,
+          "time_s": 16.94000000000149,
+          "lower_m": 0.004340057358812764,
+          "upper_m": 0.018511875755817326,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 462,
+          "time_s": 9.239999999999755,
+          "lower_m": 0.004713113679478137,
+          "upper_m": 0.005864694337513536,
+          "interval_count": 59,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 463,
+          "time_s": 9.259999999999762,
+          "lower_m": 0.004421664453455652,
+          "upper_m": 0.005534497616283678,
+          "interval_count": 61,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 464,
+          "time_s": 9.279999999999768,
+          "lower_m": 0.004094419659337765,
+          "upper_m": 0.005198771745360558,
+          "interval_count": 62,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 901,
+          "time_s": 18.02000000000089,
+          "lower_m": -0.032243902525064816,
+          "upper_m": 0.00525609947493519,
+          "interval_count": 63,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 902,
+          "time_s": 18.04000000000088,
+          "lower_m": -0.031919392165227836,
+          "upper_m": 0.00558060983477217,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        }
+      ]
+    },
+    "enabled": {
+      "mode": "enabled",
+      "metrics_sha256": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416",
+      "sample_stride_task_ticks": 50,
+      "query_mode": "persistent_warm",
+      "budget": {
+        "branch_point_evaluations": 64,
+        "total_point_evaluations": 128,
+        "jacobian_evaluations": 96,
+        "local_refinement_evaluations": 0,
+        "total_query_time_ms": 20.0
+      },
+      "scenarios": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "trace_sha256": "85b69932b2167280f116996a8724921651cf227edcb996e1a3830b315f143ae4",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "trace_sha256": "66b7cecef9ff30ddbafba2250d9ad980c63fa4494f2ef604c9853fc647b8e0b2",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "trace_sha256": "0b39ce169a2e2c108bea471c7198cd038a98ec69168f4ce668d937bc66ef5616",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "trace_sha256": "036963a73d3504c5988ad20ac6258e72b0e6ab86d8351b6714dee658b14658aa",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "trace_sha256": "89907376ed824ef55890ed36b62962971187e4f29227106ef76336b9b865ddb0",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        }
+      ],
+      "sample_count": 135,
+      "counts": {
+        "warm_all_task_unknown": 2212,
+        "warm_all_task_budget_exhausted": 2212,
+        "warm_all_task_invalid": 0,
+        "paired_replacement_estimate_over_20ms": 51,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 90,
+        "budget_exhausted": 45,
+        "unified_budget_exceeded": 47,
+        "coverage_incomplete": 0,
+        "derivative_unsupported": 0,
+        "off_shape_subspace": 129,
+        "mujoco_geometry_safe": 135,
+        "proxy_false_safe_vs_mujoco": 0,
+        "proxy_false_reject_vs_mujoco": 45,
+        "excluded_reached_activation_next_tick": 0,
+        "UNKNOWN_CROSSES_GATE": 45
+      },
+      "summaries": {
+        "bound_gap_m": {
+          "count": 135,
+          "min": 0.0010650550043841585,
+          "p50": 0.07500000200000001,
+          "p95": 0.15000000200000002,
+          "p99": 0.1500000020000001,
+          "max": 0.1500000020000001
+        },
+        "query_time_ms": {
+          "count": 135,
+          "min": 1.6032001003623009,
+          "p50": 8.704999927431345,
+          "p95": 22.47016984038055,
+          "p99": 23.29626604914665,
+          "max": 24.166100192815065
+        },
+        "branch_query_time_ms": {
+          "count": 135,
+          "min": 0.3971001133322716,
+          "p50": 2.598599996417761,
+          "p95": 2.849160134792328,
+          "p99": 3.0788301210850477,
+          "max": 3.856599796563387
+        },
+        "interval_assembly_time_ms": {
+          "count": 135,
+          "min": 0.506300013512373,
+          "p50": 5.193599965423346,
+          "p95": 18.78185998648405,
+          "p99": 19.212618311867118,
+          "max": 20.20569983869791
+        },
+        "point_evaluations": {
+          "count": 135,
+          "min": 10.0,
+          "p50": 126.0,
+          "p95": 126.0,
+          "p99": 126.0,
+          "max": 126.0
+        },
+        "jacobian_evaluations": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 15.0,
+          "p95": 183.0,
+          "p99": 183.0,
+          "max": 183.0
+        },
+        "partition_size": {
+          "count": 135,
+          "min": 5.0,
+          "p50": 63.0,
+          "p95": 63.0,
+          "p99": 63.0,
+          "max": 63.0
+        },
+        "subspace_residual_linf_rad": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 1.915341439444329e-08,
+          "p95": 7.286193492482899e-08,
+          "p99": 1.3984629540665933e-07,
+          "max": 3.686307477853215e-07
+        },
+        "selected_interval_count": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 5.0,
+          "p95": 61.0,
+          "p99": 61.0,
+          "max": 61.0
+        },
+        "excluded_interval_count": {
+          "count": 135,
+          "min": 2.0,
+          "p50": 3.0,
+          "p95": 63.0,
+          "p99": 63.0,
+          "max": 63.0
+        },
+        "frozen_reach_m": {
+          "count": 6459,
+          "min": 0.012417918274565178,
+          "p50": 0.03098529034971323,
+          "p95": 0.0477991691751914,
+          "p99": 0.08004661437054082,
+          "max": 0.08061465933904087
+        },
+        "historical_full_control_ms": {
+          "count": 135,
+          "min": 8.672699797898531,
+          "p50": 9.626800194382668,
+          "p95": 17.72898002527654,
+          "p99": 23.96066401153802,
+          "max": 27.45559997856617
+        },
+        "historical_shape_query_ms": {
+          "count": 135,
+          "min": 3.789599984884262,
+          "p50": 4.441200289875269,
+          "p95": 5.145299946889281,
+          "p99": 5.496344109997152,
+          "max": 6.437799893319607
+        },
+        "historical_qp_ms": {
+          "count": 135,
+          "min": 0.06269989535212517,
+          "p50": 0.20010024309158325,
+          "p95": 2.2262099664658304,
+          "p99": 2.883617840707302,
+          "max": 3.599700052291155
+        },
+        "paired_replacement_estimate_ms": {
+          "count": 135,
+          "min": 8.643300272524357,
+          "p50": 14.332300052046776,
+          "p95": 29.809339996427298,
+          "p99": 34.68752183020115,
+          "max": 35.66059982404113
+        },
+        "next_h_prediction_abs_error_m": {
+          "count": 3149,
+          "min": 3.7119947393637887e-10,
+          "p50": 7.571170184727041e-07,
+          "p95": 6.770637336482588e-06,
+          "p99": 1.1238376970943291e-05,
+          "max": 1.8130092177090495e-05
+        },
+        "next_start_residual_abs_error_m_s": {
+          "count": 3149,
+          "min": 2.852084356186335e-08,
+          "p50": 1.34785635447221e-05,
+          "p95": 0.0004934592089237742,
+          "p99": 0.00123261407766729,
+          "max": 0.0017995963451349767
+        },
+        "warm_all_task_query_ms": {
+          "count": 6750,
+          "min": 0.4561999812722206,
+          "p50": 2.6731002144515514,
+          "p95": 2.9368750983849163,
+          "p99": 3.269890807569028,
+          "max": 8.291100151836872
+        },
+        "warm_all_task_partition_size": {
+          "count": 6750,
+          "min": 5.0,
+          "p50": 63.0,
+          "p95": 63.0,
+          "p99": 63.0,
+          "max": 63.0
+        }
+      },
+      "examples": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 350,
+          "time_s": 6.999999999999451,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.004191030623061389,
+          "actual_mujoco_distance_m": 0.07940890343141564,
+          "subspace_residual_linf_rad": 1.2419305555309845e-07,
+          "query_time_ms": 24.166100192815065,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 180,
+          "selected_interval_count": 60,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 400,
+          "time_s": 7.999999999999341,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.006058166564637115,
+          "actual_mujoco_distance_m": 0.08367502814150801,
+          "subspace_residual_linf_rad": 1.6641930236649394e-08,
+          "query_time_ms": 22.636799607425928,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 450,
+          "time_s": 8.999999999999675,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.026924147631475017,
+          "actual_mujoco_distance_m": 0.07987528659302601,
+          "subspace_residual_linf_rad": 6.449892311043148e-08,
+          "query_time_ms": 22.784899920225143,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 500,
+          "time_s": 10.000000000000009,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.054103911133197256,
+          "actual_mujoco_distance_m": 0.08060779611650867,
+          "subspace_residual_linf_rad": 9.626802681406144e-09,
+          "query_time_ms": 22.378200199455023,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 550,
+          "time_s": 11.000000000000343,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.057986505959184774,
+          "actual_mujoco_distance_m": 0.09018176120480431,
+          "subspace_residual_linf_rad": 2.2266057053688115e-08,
+          "query_time_ms": 23.535999935120344,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 600,
+          "time_s": 12.000000000000677,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.05510703188240892,
+          "actual_mujoco_distance_m": 0.0976369247078011,
+          "subspace_residual_linf_rad": 1.2412794715699338e-08,
+          "query_time_ms": 22.477100137621164,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 650,
+          "time_s": 13.00000000000101,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.07076128753090434,
+          "actual_mujoco_distance_m": 0.08695997044184521,
+          "subspace_residual_linf_rad": 9.764877972298809e-09,
+          "query_time_ms": 22.091099992394447,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 700,
+          "time_s": 14.000000000001345,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.06319340655758353,
+          "actual_mujoco_distance_m": 0.08445116524486124,
+          "subspace_residual_linf_rad": 9.887709881330892e-09,
+          "query_time_ms": 22.461699787527323,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 750,
+          "time_s": 15.000000000001679,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.05663199149268252,
+          "actual_mujoco_distance_m": 0.093231204189391,
+          "subspace_residual_linf_rad": 1.4695709080192465e-08,
+          "query_time_ms": 22.83090027049184,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 800,
+          "time_s": 16.00000000000201,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.03243131360877554,
+          "actual_mujoco_distance_m": 0.11795751318600663,
+          "subspace_residual_linf_rad": 1.592713115561306e-08,
+          "query_time_ms": 11.631000321358442,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 42,
+          "selected_interval_count": 14,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 500,
+          "time_s": 10.000000000000009,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.007462718927885869,
+          "actual_mujoco_distance_m": 0.07948888778697626,
+          "subspace_residual_linf_rad": 4.2959264634316596e-08,
+          "query_time_ms": 22.292100358754396,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 180,
+          "selected_interval_count": 60,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 550,
+          "time_s": 11.000000000000343,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.019374138379042453,
+          "actual_mujoco_distance_m": 0.08461143285987034,
+          "subspace_residual_linf_rad": 1.0176689761720592e-08,
+          "query_time_ms": 21.26939967274666,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 600,
+          "time_s": 12.000000000000677,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.014882159679342092,
+          "actual_mujoco_distance_m": 0.09749160764063676,
+          "subspace_residual_linf_rad": 8.60981389655402e-09,
+          "query_time_ms": 21.53179980814457,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 650,
+          "time_s": 13.00000000000101,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.014192908293891752,
+          "actual_mujoco_distance_m": 0.10076503494513522,
+          "subspace_residual_linf_rad": 3.773982278076904e-08,
+          "query_time_ms": 21.433500107377768,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 700,
+          "time_s": 14.000000000001345,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.03465755842164148,
+          "actual_mujoco_distance_m": 0.08416115972939582,
+          "subspace_residual_linf_rad": 1.6010472614347293e-08,
+          "query_time_ms": 22.018800023943186,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 750,
+          "time_s": 15.000000000001679,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.03057008773909228,
+          "actual_mujoco_distance_m": 0.09372108725477989,
+          "subspace_residual_linf_rad": 3.7366756997642137e-08,
+          "query_time_ms": 21.762799937278032,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 800,
+          "time_s": 16.00000000000201,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.02458612156239248,
+          "actual_mujoco_distance_m": 0.10682567677685859,
+          "subspace_residual_linf_rad": 1.5748368623058617e-08,
+          "query_time_ms": 21.640799939632416,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 850,
+          "time_s": 17.000000000001457,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.006457041942195815,
+          "actual_mujoco_distance_m": 0.1361507631550868,
+          "subspace_residual_linf_rad": 7.261430734484264e-09,
+          "query_time_ms": 22.23389968276024,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 183,
+          "selected_interval_count": 61,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 350,
+          "time_s": 6.999999999999451,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 5.5999108921348656e-05,
+          "actual_mujoco_distance_m": 0.0801987870543452,
+          "subspace_residual_linf_rad": 1.4791008563425144e-07,
+          "query_time_ms": 17.319200094789267,
+          "point_evaluations": 104,
+          "jacobian_evaluations": 147,
+          "selected_interval_count": 49,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 400,
+          "time_s": 7.999999999999341,
+          "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+          "minimum_h_m": 0.0012924987374559362,
+          "actual_mujoco_distance_m": 0.08210842439845255,
+          "subspace_residual_linf_rad": 7.236997612292129e-09,
+          "query_time_ms": 21.58519998192787,
+          "point_evaluations": 126,
+          "jacobian_evaluations": 180,
+          "selected_interval_count": 60,
+          "unsupported_interval_ids": []
+        }
+      ],
+      "warm_unknown_examples": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 324,
+          "time_s": 6.479999999999508,
+          "lower_m": 0.004988882064233096,
+          "upper_m": 0.006105712593570527,
+          "interval_count": 57,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 325,
+          "time_s": 6.499999999999506,
+          "lower_m": 0.004955158352166254,
+          "upper_m": 0.006037332403156086,
+          "interval_count": 60,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 326,
+          "time_s": 6.519999999999504,
+          "lower_m": 0.004940566485238667,
+          "upper_m": 0.005978791721740777,
+          "interval_count": 62,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 327,
+          "time_s": 6.539999999999502,
+          "lower_m": 0.004911588695652563,
+          "upper_m": 0.0059287152351649875,
+          "interval_count": 63,
+          "point_evaluations": 64,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 328,
+          "time_s": 6.5599999999995,
+          "lower_m": 0.0048657256064702,
+          "upper_m": 0.005885842716180827,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 329,
+          "time_s": 6.579999999999497,
+          "lower_m": 0.004826049414119965,
+          "upper_m": 0.005849104243997831,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 330,
+          "time_s": 6.599999999999495,
+          "lower_m": 0.004791710577942426,
+          "upper_m": 0.005817650033160553,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 331,
+          "time_s": 6.619999999999493,
+          "lower_m": 0.0047619685602645675,
+          "upper_m": 0.005790739157002249,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 332,
+          "time_s": 6.639999999999491,
+          "lower_m": 0.004736122970350981,
+          "upper_m": 0.005767619263924566,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 333,
+          "time_s": 6.6599999999994886,
+          "lower_m": 0.004713627923137903,
+          "upper_m": 0.005747628394888753,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 334,
+          "time_s": 6.679999999999486,
+          "lower_m": 0.004694061955398293,
+          "upper_m": 0.005730514343778319,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 335,
+          "time_s": 6.699999999999484,
+          "lower_m": 0.004676965542156358,
+          "upper_m": 0.005715817161846508,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 336,
+          "time_s": 6.719999999999482,
+          "lower_m": 0.004662052382203135,
+          "upper_m": 0.005703248865483583,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 337,
+          "time_s": 6.73999999999948,
+          "lower_m": 0.00443642397277391,
+          "upper_m": 0.0056925004893088205,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 338,
+          "time_s": 6.7599999999994775,
+          "lower_m": 0.004093779829584336,
+          "upper_m": 0.005683221324783898,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 339,
+          "time_s": 6.779999999999475,
+          "lower_m": 0.003762302164766667,
+          "upper_m": 0.005675234816788293,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 340,
+          "time_s": 6.799999999999473,
+          "lower_m": 0.0034419156811258114,
+          "upper_m": 0.005668411283682633,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 341,
+          "time_s": 6.819999999999471,
+          "lower_m": 0.0031324773968668665,
+          "upper_m": 0.005662602378293762,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 342,
+          "time_s": 6.839999999999469,
+          "lower_m": 0.002833703785032198,
+          "upper_m": 0.005657603301981078,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 343,
+          "time_s": 6.8599999999994665,
+          "lower_m": 0.0025454280350840344,
+          "upper_m": 0.0056532964343159065,
+          "interval_count": 63,
+          "point_evaluations": 63,
+          "failure_reason": "DECISION_UNKNOWN_AT_BUDGET"
+        }
+      ]
+    }
+  },
+  "online_control_changed": false,
+  "old_trace_reused_as_new_control_acceptance": false,
+  "checks": {
+    "two_modes_five_scenarios_each": true,
+    "all_a1_trace_hashes_match": true,
+    "native_replay_states_match": true,
+    "all_partitions_cover_five_sections": true,
+    "warm_query_valid_if_enabled": true
+  },
+  "passed_as_read_only_audit": true,
+  "online_admission_gate": {
+    "status": "NOT_MET",
+    "reason": "new-mode full-loop timing and unknown/budget handling require further work",
+    "shadow_conditions": {
+      "no_unknown_proxy_decisions": false,
+      "no_query_budget_exhaustion": false,
+      "no_excluded_interval_reached_activation_next_tick": true,
+      "no_required_derivative_unsupported": true
+    },
+    "paired_timing_is_estimate_not_new_execution": true
+  }
+}

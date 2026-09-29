@@ -1,0 +1,44 @@
+{
+  "schema": "v6_2_b2_near_gate_holdout_audit_v1",
+  "frozen_input_sha256": "ffe92910e331dc76b132a19b64b4da2a4649a296bf1215c582f5b3f729442f57",
+  "gate_m": 0.005,
+  "counts": {
+    "checked_count": 128,
+    "bounds_invalid": 0,
+    "PROXY_CLEARANCE_BELOW_GATE": 64,
+    "actual_geometry_safe": 128,
+    "empirical_proxy_false_safe": 0,
+    "empirical_proxy_false_reject": 64,
+    "PROXY_CLEARANCE_AT_LEAST_GATE": 64
+  },
+  "bound_gap_m": {
+    "count": 128,
+    "min": 0.0002929707500000031,
+    "p50": 0.0004941101948694481,
+    "p95": 0.0007963944652029805,
+    "max": 0.0013172473140668677
+  },
+  "query_elapsed_ms": {
+    "count": 128,
+    "min": 6.180800031870604,
+    "p50": 28.10030011460185,
+    "p95": 51.26609986182302,
+    "max": 54.09639980643988
+  },
+  "by_generation_side": {
+    "below": {
+      "PROXY_CLEARANCE_BELOW_GATE": 64
+    },
+    "above": {
+      "PROXY_CLEARANCE_AT_LEAST_GATE": 64
+    }
+  },
+  "unknown_examples": [],
+  "mujoco_comparator": "actual discrete-chain MuJoCo geomDistance at frozen state",
+  "checks": {
+    "all_frozen_inputs_compared": true,
+    "all_bounds_well_formed": true,
+    "empirical_false_safe_zero": true
+  },
+  "passed": true
+}

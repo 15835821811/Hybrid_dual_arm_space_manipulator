@@ -73,13 +73,38 @@ class IntervalCBFTests(unittest.TestCase):
         duplicate = IntervalPartition(base.leaves + (base.leaves[0],))
         self.assertFalse(duplicate.coverage(lengths).interval_well_formed)
 
+    def test_batched_jacobians_match_scalar_at_all_five_sections(self) -> None:
+        shape = self.evaluator.shape_model
+        rng = np.random.default_rng(20260930)
+        lengths = shape.spec.segment_lengths_m
+        boundaries = shape.spec.segment_boundaries_m
+        for _ in range(4):
+            q = rng.uniform(-0.7, 0.7, 10)
+            arclengths = [float(boundaries[i] + fraction * lengths[i])
+                          for i in range(5) for fraction in (0.2, 0.5, 0.8)]
+            batch = shape.batch_query(q, np.eye(4), arclengths,
+                                      with_jacobians=True)
+            for s, result in zip(arclengths, batch):
+                scalar = shape.evaluate(q, np.eye(4), s, with_jacobians=True)
+                np.testing.assert_allclose(result.position_world, scalar.position_world,
+                                           atol=1e-12, rtol=0.0)
+                np.testing.assert_allclose(result.position_jacobian,
+                                           scalar.position_jacobian,
+                                           atol=1e-10, rtol=0.0)
+                np.testing.assert_allclose(result.rotation_jacobian,
+                                           scalar.rotation_jacobian,
+                                           atol=1e-10, rtol=0.0)
+
     def test_fixed_function_and_shape_gradient_match_same_midpoint(self) -> None:
         data = self._state()
         batch = self.evaluator.evaluate_state(data, IntervalPartition.uniform(1))
         self.assertTrue(batch.coverage_complete)
         self.assertEqual(batch.floating_point_certification, "NOT_FORMALLY_CERTIFIED")
         self.assertEqual(batch.point_evaluation_count, 10)
-        self.assertEqual(batch.jacobian_evaluation_count, 10)
+        self.assertEqual(batch.shape_jacobian_evaluation_count, 10)
+        self.assertEqual(batch.jacobian_evaluation_count,
+                         batch.shape_jacobian_evaluation_count
+                         + batch.mujoco_point_jacobian_count)
         row = next(x for x in batch.rows if x.derivative_status == "SUPPORTED")
         expected = (row.point_signed_distance_m - row.tube_radius_m
                     - row.coverage_term_m - row.numerical_pad_m
@@ -150,6 +175,18 @@ class IntervalCBFTests(unittest.TestCase):
         batch = self.evaluator.evaluate_state(data, partition)
         self.assertEqual(len({row.interval_id for row in batch.rows}), 10)
         self.assertEqual({row.segment_id for row in batch.rows}, set(range(5)))
+        selected = {batch.rows[0].interval_id}
+        selective = self.evaluator.evaluate_state(
+            data, partition, derivative_interval_ids=selected,
+        )
+        self.assertEqual(selective.point_evaluation_count, 10)
+        self.assertEqual(selective.shape_jacobian_evaluation_count, 1)
+        self.assertLessEqual(selective.mujoco_point_jacobian_count, 2)
+        np.testing.assert_allclose(
+            [x.h_m for x in selective.rows], [x.h_m for x in batch.rows],
+            atol=1e-12, rtol=0.0,
+        )
+        self.assertEqual(selective.rows[1].derivative_status, "NOT_REQUESTED")
         cube = OrientedBox(np.zeros(3), np.eye(3), np.ones(3) * 0.1)
         self.assertEqual(_obb_derivative_status(np.zeros(3), cube),
                          "NONSMOOTH_OBB_INTERIOR_FEATURE")

@@ -324,13 +324,6 @@ class ContinuumShapeModel:
         as a typed object avoids losing its section ownership at boundaries.
         """
 
-        if with_jacobians:
-            return self.sample(
-                planner_configuration,
-                base_transform,
-                arclengths,
-                with_jacobians=True,
-            )
         configuration = np.asarray(planner_configuration, dtype=np.float64)
         if configuration.shape != (CONTINUUM_PLANNER_DOF,) or np.any(
             ~np.isfinite(configuration)
@@ -339,16 +332,24 @@ class ContinuumShapeModel:
         base = validate_transform(base_transform)
         requested = [float(value) for value in arclengths]
         prefixes = [base @ self.spec.base_to_shape_start]
+        prefix_derivatives = (
+            [[np.zeros((4, 4), dtype=np.float64) for _ in range(10)]]
+            if with_jacobians else []
+        )
         for segment_index, length in enumerate(self.spec.segment_lengths_m):
-            prefixes.append(
-                prefixes[-1]
-                @ self._section_transform(
-                    configuration[2 * segment_index : 2 * segment_index + 2],
-                    float(length),
-                    float(length),
-                    self.spec.pcc_bending_map,
-                )
+            bending = configuration[2 * segment_index : 2 * segment_index + 2]
+            full = self._section_transform(
+                bending, float(length), float(length), self.spec.pcc_bending_map,
             )
+            if with_jacobians:
+                derivatives = [item @ full for item in prefix_derivatives[-1]]
+                local_d0, local_d1 = self._section_derivatives(
+                    bending, float(length), float(length), self.spec.pcc_bending_map,
+                )
+                derivatives[2 * segment_index] += prefixes[-1] @ local_d0
+                derivatives[2 * segment_index + 1] += prefixes[-1] @ local_d1
+                prefix_derivatives.append(derivatives)
+            prefixes.append(prefixes[-1] @ full)
         results: list[ContinuumPoint] = []
         for arclength in requested:
             segment_index, local_arclength = self._segment_location(arclength)
@@ -359,6 +360,26 @@ class ContinuumShapeModel:
                 self.spec.pcc_bending_map,
             )
             transform = prefixes[segment_index] @ local
+            position_jacobian = np.zeros((3, 10), dtype=np.float64)
+            rotation_jacobian = np.zeros((3, 10), dtype=np.float64)
+            if with_jacobians:
+                derivatives = [
+                    item @ local for item in prefix_derivatives[segment_index]
+                ]
+                local_d0, local_d1 = self._section_derivatives(
+                    configuration[2 * segment_index : 2 * segment_index + 2],
+                    float(self.spec.segment_lengths_m[segment_index]),
+                    local_arclength,
+                    self.spec.pcc_bending_map,
+                )
+                derivatives[2 * segment_index] += prefixes[segment_index] @ local_d0
+                derivatives[2 * segment_index + 1] += prefixes[segment_index] @ local_d1
+                rotation = transform[:3, :3]
+                for coordinate, derivative in enumerate(derivatives):
+                    position_jacobian[:, coordinate] = derivative[:3, 3]
+                    rotation_jacobian[:, coordinate] = vee(
+                        derivative[:3, :3] @ rotation.T
+                    )
             results.append(
                 ContinuumPoint(
                     arclength_m=arclength,
@@ -366,8 +387,8 @@ class ContinuumShapeModel:
                     segment_arclength_m=local_arclength,
                     position=transform[:3, 3].copy(),
                     rotation=transform[:3, :3].copy(),
-                    position_jacobian=np.zeros((3, 10), dtype=np.float64),
-                    rotation_jacobian=np.zeros((3, 10), dtype=np.float64),
+                    position_jacobian=position_jacobian,
+                    rotation_jacobian=rotation_jacobian,
                 )
             )
         return tuple(results)

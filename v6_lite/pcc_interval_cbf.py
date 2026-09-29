@@ -185,6 +185,8 @@ class IntervalSafetyBatch:
     envelope_evidence_status: str
     subspace_residual_linf_rad: float
     point_evaluation_count: int
+    shape_jacobian_evaluation_count: int
+    mujoco_point_jacobian_count: int
     jacobian_evaluation_count: int
     total_query_time_ms: float
 
@@ -255,7 +257,8 @@ class FixedIntervalCBFEvaluator:
                        *, generalized_map: np.ndarray | None = None,
                        safe_distance_m: float = 0.005,
                        numerical_pad_m: float = NUMERICAL_PAD_M,
-                       with_derivatives: bool = True) -> IntervalSafetyBatch:
+                       with_derivatives: bool = True,
+                       derivative_interval_ids: set[str] | None = None) -> IntervalSafetyBatch:
         started = time.perf_counter()
         if not math.isfinite(safe_distance_m) or safe_distance_m <= 0:
             raise ValueError("safe distance must be positive and finite")
@@ -290,17 +293,50 @@ class FixedIntervalCBFEvaluator:
 
         rows = []
         point_count = 0
-        jac_count = 0
+        shape_jac_count = 0
+        mujoco_jac_count = 0
         boundaries = self.shape_spec.segment_boundaries_m
-        for interval in sorted(partition.leaves):
+        ordered_intervals = sorted(partition.leaves)
+        known_ids = {item.interval_id for item in ordered_intervals}
+        if derivative_interval_ids is not None and not derivative_interval_ids <= known_ids:
+            raise ValueError("derivative request includes an interval absent from the partition")
+        midpoint_by_id = {}
+        for interval in ordered_intervals:
             length = float(self.shape_spec.segment_lengths_m[interval.segment_id])
             a, b = interval.local_bounds(length)
-            midpoint = float(boundaries[interval.segment_id] + (a + b) / 2.0)
-            evaluation = self.shape_model.evaluate(q, base_transform, midpoint,
-                                                   with_jacobians=with_derivatives)
+            midpoint_by_id[interval.interval_id] = float(
+                boundaries[interval.segment_id] + (a + b) / 2.0
+            )
+        selected = [item for item in ordered_intervals if with_derivatives
+                    and (derivative_interval_ids is None
+                         or item.interval_id in derivative_interval_ids)]
+        selected_ids = {item.interval_id for item in selected}
+        unselected = [item for item in ordered_intervals
+                      if item.interval_id not in selected_ids]
+        cached = {}
+        if unselected:
+            sampled = self.shape_model.batch_query(
+                q, base_transform,
+                [midpoint_by_id[item.interval_id] for item in unselected],
+                with_jacobians=False,
+            )
+            cached = {item.interval_id: point for item, point in zip(unselected, sampled)}
+        if selected:
+            sampled = self.shape_model.batch_query(
+                q, base_transform,
+                [midpoint_by_id[item.interval_id] for item in selected],
+                with_jacobians=True,
+            )
+            cached.update({item.interval_id: point for item, point in zip(selected, sampled)})
+        for interval in ordered_intervals:
+            length = float(self.shape_spec.segment_lengths_m[interval.segment_id])
+            a, b = interval.local_bounds(length)
+            midpoint = midpoint_by_id[interval.interval_id]
+            request_derivative = interval.interval_id in selected_ids
+            evaluation = cached[interval.interval_id]
             point_count += 1
-            if with_derivatives:
-                jac_count += 1
+            if request_derivative:
+                shape_jac_count += 1
             point = evaluation.position_world
             signed = point_obb_signed_distance(point, box)
             radius = float(V61A_PCC_TUBE_RADII_M[interval.segment_id])
@@ -313,7 +349,7 @@ class FixedIntervalCBFEvaluator:
             drift = None
             if not all(math.isfinite(x) for x in (lower, h)):
                 derivative_status = "INVALID_NUMERIC"
-            elif with_derivatives and derivative_status == "SUPPORTED":
+            elif request_derivative and derivative_status == "SUPPORTED":
                 normal = signed.normal_box_to_point
                 shape_gradient = np.asarray(normal @ evaluation.position_jacobian,
                                             dtype=np.float64)
@@ -325,13 +361,14 @@ class FixedIntervalCBFEvaluator:
                 target_jacobian = self._point_jacobian(
                     data, self.target_body_id, signed.box_point
                 )
+                mujoco_jac_count += 2
                 drift = float(-normal @ target_jacobian @ target_qvel)
                 if (np.any(~np.isfinite(shape_gradient))
                         or np.any(~np.isfinite(generalized_gradient))
                         or not math.isfinite(drift)):
                     derivative_status = "INVALID_NUMERIC"
                     shape_gradient = generalized_gradient = drift = None
-            elif not with_derivatives and derivative_status == "SUPPORTED":
+            elif not request_derivative and derivative_status == "SUPPORTED":
                 derivative_status = "NOT_REQUESTED"
             rows.append(IntervalSafetyRow(
                 interval.interval_id, interval.segment_id, a, b, midpoint,
@@ -351,6 +388,8 @@ class FixedIntervalCBFEvaluator:
             envelope_evidence_status=envelope,
             subspace_residual_linf_rad=projection.residual_linf_rad,
             point_evaluation_count=point_count,
-            jacobian_evaluation_count=jac_count,
+            shape_jacobian_evaluation_count=shape_jac_count,
+            mujoco_point_jacobian_count=mujoco_jac_count,
+            jacobian_evaluation_count=shape_jac_count + mujoco_jac_count,
             total_query_time_ms=(time.perf_counter() - started) * 1000.0,
         )

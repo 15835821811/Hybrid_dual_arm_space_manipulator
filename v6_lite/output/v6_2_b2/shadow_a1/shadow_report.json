@@ -1,0 +1,863 @@
+{
+  "schema": "v6_2_b2_native_replay_interval_shadow_v1",
+  "source_sha256": {
+    "v6_lite/pcc_interval_cbf.py": "59ddf2e84da307be814ee9b829c0c80c50c855538a059cd7d68392ab296dade7",
+    "v6_lite/shadow_b2_interval_cbf.py": "9f3c6125bd3ca20c698f44d4d6e8e00c7ca51e285bfa285e6f5485f2cc7f97bd"
+  },
+  "sample_plan": "all five scenarios in each A.1 mode; task ticks 0, stride, ...; evaluate next tick on frozen partition",
+  "query_mode": "bounded_cold",
+  "modes": {
+    "baseline": {
+      "mode": "baseline",
+      "metrics_sha256": "48ad83822d632464032d7bf82fb3f32e6e636a6e3843d6fecc1d9caaf93b2c58",
+      "sample_stride_task_ticks": 50,
+      "query_mode": "bounded_cold",
+      "budget": {
+        "branch_point_evaluations": 31,
+        "total_point_evaluations": 64,
+        "jacobian_evaluations": 96,
+        "local_refinement_evaluations": 0,
+        "total_query_time_ms": 20.0
+      },
+      "scenarios": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "trace_sha256": "9f91b5cdf8f028c971b00243867dd5840c058df8629740f025859ae0e4d37836",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "trace_sha256": "58bb492d756cb8ea5284b6bfbc4331ff6df6c06d93d3e7d2b93d1518f847df41",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "trace_sha256": "3d3d3d84aba14f7c2bddb8c0c9f8cce57bac02692abad599465c7d6da9535893",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "trace_sha256": "63b1af1dd11965d8ce0e9ee0c49890430f3bfdb592f72ae26b9233f372de5798",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "trace_sha256": "9abb83de5c9997d34115c57c2b6f7d58a4a97ee735221880e960bbfd5d3f9838",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        }
+      ],
+      "sample_count": 135,
+      "counts": {
+        "paired_replacement_estimate_over_20ms": 15,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 76,
+        "budget_exhausted": 135,
+        "unified_budget_exceeded": 0,
+        "coverage_incomplete": 0,
+        "derivative_unsupported": 0,
+        "off_shape_subspace": 126,
+        "mujoco_geometry_safe": 135,
+        "proxy_false_safe_vs_mujoco": 0,
+        "proxy_false_reject_vs_mujoco": 59,
+        "excluded_reached_activation_next_tick": 0,
+        "PROXY_CLEARANCE_BELOW_GATE": 50,
+        "UNKNOWN_CROSSES_GATE": 9
+      },
+      "summaries": {
+        "bound_gap_m": {
+          "count": 135,
+          "min": 0.004740903580428297,
+          "p50": 0.01373532800983069,
+          "p95": 0.027151252767102726,
+          "p99": 0.0334305894666424,
+          "max": 0.0334305894666424
+        },
+        "query_time_ms": {
+          "count": 135,
+          "min": 6.562000140547752,
+          "p50": 11.766400188207626,
+          "p95": 12.619239976629615,
+          "p99": 13.136227931827305,
+          "max": 14.703700318932533
+        },
+        "branch_query_time_ms": {
+          "count": 135,
+          "min": 4.285000264644623,
+          "p50": 4.8462999984622,
+          "p95": 5.43092000298202,
+          "p99": 5.703029967844486,
+          "max": 5.741399712860584
+        },
+        "interval_assembly_time_ms": {
+          "count": 135,
+          "min": 1.0131997987627983,
+          "p50": 5.9287999756634235,
+          "p95": 6.507429853081703,
+          "p99": 6.727418042719364,
+          "max": 8.390000090003014
+        },
+        "point_evaluations": {
+          "count": 135,
+          "min": 49.0,
+          "p50": 49.0,
+          "p95": 49.0,
+          "p99": 49.0,
+          "max": 49.0
+        },
+        "jacobian_evaluations": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 48.0,
+          "p95": 51.0,
+          "p99": 51.0,
+          "max": 51.0
+        },
+        "partition_size": {
+          "count": 135,
+          "min": 18.0,
+          "p50": 18.0,
+          "p95": 18.0,
+          "p99": 18.0,
+          "max": 18.0
+        },
+        "subspace_residual_linf_rad": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 1.7278708394630193e-08,
+          "p95": 6.476791213089887e-08,
+          "p99": 9.064635604245047e-08,
+          "max": 9.972653623041561e-08
+        },
+        "selected_interval_count": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 16.0,
+          "p95": 17.0,
+          "p99": 17.0,
+          "max": 17.0
+        },
+        "excluded_interval_count": {
+          "count": 135,
+          "min": 1.0,
+          "p50": 2.0,
+          "p95": 18.0,
+          "p99": 18.0,
+          "max": 18.0
+        },
+        "frozen_reach_m": {
+          "count": 2430,
+          "min": 0.012446809931191061,
+          "p50": 0.03458687878590727,
+          "p95": 0.07980588935067824,
+          "p99": 0.08037289364175222,
+          "max": 0.08819479641426373
+        },
+        "historical_full_control_ms": {
+          "count": 135,
+          "min": 4.51240036636591,
+          "p50": 5.056499969214201,
+          "p95": 11.212959885597229,
+          "p99": 14.34250013902783,
+          "max": 24.066600017249584
+        },
+        "historical_shape_query_ms": {
+          "count": 135,
+          "min": 0.00019976869225502014,
+          "p50": 0.0003003515303134918,
+          "p95": 0.000500120222568512,
+          "p99": 0.0008322019129991525,
+          "max": 0.001000240445137024
+        },
+        "historical_qp_ms": {
+          "count": 135,
+          "min": 0.07189996540546417,
+          "p50": 0.2029002644121647,
+          "p95": 2.5311100762337446,
+          "p99": 2.891933945938945,
+          "max": 3.631199710071087
+        },
+        "paired_replacement_estimate_ms": {
+          "count": 135,
+          "min": 11.719799134880304,
+          "p50": 17.08540040999651,
+          "p95": 21.86470981687307,
+          "p99": 25.63959023915231,
+          "max": 36.30600031465292
+        },
+        "next_h_prediction_abs_error_m": {
+          "count": 1968,
+          "min": 7.487424083518768e-10,
+          "p50": 7.729239553423695e-07,
+          "p95": 4.231670041827321e-06,
+          "p99": 1.3109928545326762e-05,
+          "max": 3.9843879029381746e-05
+        },
+        "next_start_residual_abs_error_m_s": {
+          "count": 1968,
+          "min": 4.302438627590277e-09,
+          "p50": 1.743972515391018e-05,
+          "p95": 0.0003460447790275142,
+          "p99": 0.0015334286185338967,
+          "max": 0.004233858709710159
+        },
+        "warm_all_task_query_ms": {
+          "count": 0
+        },
+        "warm_all_task_partition_size": {
+          "count": 0
+        }
+      },
+      "examples": [
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 450,
+          "time_s": 8.999999999999675,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.006149696747301658,
+          "actual_mujoco_distance_m": 0.08308480472140924,
+          "subspace_residual_linf_rad": 1.2244837678532239e-08,
+          "query_time_ms": 11.43260020762682,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 1000,
+          "time_s": 19.999999999999794,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.007269542283209189,
+          "actual_mujoco_distance_m": 0.09049882298954381,
+          "subspace_residual_linf_rad": 9.670975784081826e-09,
+          "query_time_ms": 12.340299785137177,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 350,
+          "time_s": 6.999999999999451,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.008560337250796756,
+          "actual_mujoco_distance_m": 0.07977833436270435,
+          "subspace_residual_linf_rad": 2.4512353842889856e-08,
+          "query_time_ms": 12.239800300449133,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 850,
+          "time_s": 17.000000000001457,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.0025910033829415024,
+          "actual_mujoco_distance_m": 0.08156687003179194,
+          "subspace_residual_linf_rad": 1.006042758822101e-08,
+          "query_time_ms": 12.828799895942211,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "tick": 300,
+          "time_s": 5.999999999999561,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.007076725026132293,
+          "actual_mujoco_distance_m": 0.08051711393629145,
+          "subspace_residual_linf_rad": 8.722919830894682e-09,
+          "query_time_ms": 11.383500415831804,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "tick": 950,
+          "time_s": 19.000000000000348,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.004434577772709041,
+          "actual_mujoco_distance_m": 0.09411580829041054,
+          "subspace_residual_linf_rad": 1.769626464982743e-08,
+          "query_time_ms": 12.4014001339674,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "tick": 1200,
+          "time_s": 23.999999999997577,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.002283185735015718,
+          "actual_mujoco_distance_m": 0.09161957176272728,
+          "subspace_residual_linf_rad": 6.1206396409496655e-09,
+          "query_time_ms": 11.843899730592966,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "tick": 1250,
+          "time_s": 24.999999999997023,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.0043685242105816445,
+          "actual_mujoco_distance_m": 0.08641298506051441,
+          "subspace_residual_linf_rad": 1.3580452346007021e-08,
+          "query_time_ms": 12.001900002360344,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "tick": 1300,
+          "time_s": 25.99999999999647,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.011700819859249378,
+          "actual_mujoco_distance_m": 0.07884604300597421,
+          "subspace_residual_linf_rad": 9.56268259022508e-11,
+          "query_time_ms": 12.628800235688686,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        }
+      ],
+      "warm_unknown_examples": []
+    },
+    "enabled": {
+      "mode": "enabled",
+      "metrics_sha256": "57503d3383e1aafeeb7732f7843c9e88aab7ff98b04cdda1fad6759d3e5ba416",
+      "sample_stride_task_ticks": 50,
+      "query_mode": "bounded_cold",
+      "budget": {
+        "branch_point_evaluations": 31,
+        "total_point_evaluations": 64,
+        "jacobian_evaluations": 96,
+        "local_refinement_evaluations": 0,
+        "total_query_time_ms": 20.0
+      },
+      "scenarios": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "trace_sha256": "85b69932b2167280f116996a8724921651cf227edcb996e1a3830b315f143ae4",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "trace_sha256": "66b7cecef9ff30ddbafba2250d9ad980c63fa4494f2ef604c9853fc647b8e0b2",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "trace_sha256": "0b39ce169a2e2c108bea471c7198cd038a98ec69168f4ce668d937bc66ef5616",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_03",
+          "trace_sha256": "036963a73d3504c5988ad20ac6258e72b0e6ab86d8351b6714dee658b14658aa",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        },
+        {
+          "scenario_id": "v6_lite_scenario_04",
+          "trace_sha256": "89907376ed824ef55890ed36b62962971187e4f29227106ef76336b9b865ddb0",
+          "trace_hash_matches": true,
+          "sampled_task_ticks": 27,
+          "max_native_replay_state_error": 0.0
+        }
+      ],
+      "sample_count": 135,
+      "counts": {
+        "paired_replacement_estimate_over_20ms": 16,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 99,
+        "budget_exhausted": 135,
+        "unified_budget_exceeded": 0,
+        "coverage_incomplete": 0,
+        "derivative_unsupported": 0,
+        "off_shape_subspace": 129,
+        "mujoco_geometry_safe": 135,
+        "proxy_false_safe_vs_mujoco": 0,
+        "proxy_false_reject_vs_mujoco": 36,
+        "excluded_reached_activation_next_tick": 0,
+        "UNKNOWN_CROSSES_GATE": 36
+      },
+      "summaries": {
+        "bound_gap_m": {
+          "count": 135,
+          "min": 0.005368155082130545,
+          "p50": 0.014203060313885976,
+          "p95": 0.030354314257852153,
+          "p99": 0.0334305894666424,
+          "max": 0.0334305894666424
+        },
+        "query_time_ms": {
+          "count": 135,
+          "min": 6.483700126409531,
+          "p50": 11.256400030106306,
+          "p95": 12.660549767315388,
+          "p99": 13.582893889397381,
+          "max": 13.863599859178066
+        },
+        "branch_query_time_ms": {
+          "count": 135,
+          "min": 4.4883000664412975,
+          "p50": 4.970700014382601,
+          "p95": 5.726580135524273,
+          "p99": 6.710194190964102,
+          "max": 7.114599924534559
+        },
+        "interval_assembly_time_ms": {
+          "count": 135,
+          "min": 1.0128999128937721,
+          "p50": 5.547500215470791,
+          "p95": 6.2941699754446745,
+          "p99": 6.706338245421647,
+          "max": 7.242499850690365
+        },
+        "point_evaluations": {
+          "count": 135,
+          "min": 49.0,
+          "p50": 49.0,
+          "p95": 49.0,
+          "p99": 49.0,
+          "max": 49.0
+        },
+        "jacobian_evaluations": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 45.0,
+          "p95": 51.0,
+          "p99": 51.0,
+          "max": 51.0
+        },
+        "partition_size": {
+          "count": 135,
+          "min": 18.0,
+          "p50": 18.0,
+          "p95": 18.0,
+          "p99": 18.0,
+          "max": 18.0
+        },
+        "subspace_residual_linf_rad": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 1.915341439444329e-08,
+          "p95": 7.286193492482899e-08,
+          "p99": 1.3984629540665933e-07,
+          "max": 3.686307477853215e-07
+        },
+        "selected_interval_count": {
+          "count": 135,
+          "min": 0.0,
+          "p50": 15.0,
+          "p95": 17.0,
+          "p99": 17.0,
+          "max": 17.0
+        },
+        "excluded_interval_count": {
+          "count": 135,
+          "min": 1.0,
+          "p50": 3.0,
+          "p95": 18.0,
+          "p99": 18.0,
+          "max": 18.0
+        },
+        "frozen_reach_m": {
+          "count": 2430,
+          "min": 0.012417918274565178,
+          "p50": 0.036285636772430185,
+          "p95": 0.07984971949916601,
+          "p99": 0.08797730769959908,
+          "max": 0.08831990933904084
+        },
+        "historical_full_control_ms": {
+          "count": 135,
+          "min": 8.672699797898531,
+          "p50": 9.626800194382668,
+          "p95": 17.72898002527654,
+          "p99": 23.96066401153802,
+          "max": 27.45559997856617
+        },
+        "historical_shape_query_ms": {
+          "count": 135,
+          "min": 3.789599984884262,
+          "p50": 4.441200289875269,
+          "p95": 5.145299946889281,
+          "p99": 5.496344109997152,
+          "max": 6.437799893319607
+        },
+        "historical_qp_ms": {
+          "count": 135,
+          "min": 0.06269989535212517,
+          "p50": 0.20010024309158325,
+          "p95": 2.2262099664658304,
+          "p99": 2.883617840707302,
+          "max": 3.599700052291155
+        },
+        "paired_replacement_estimate_ms": {
+          "count": 135,
+          "min": 11.344800237566233,
+          "p50": 16.605299897491932,
+          "p95": 23.686860036104914,
+          "p99": 29.332151887938362,
+          "max": 34.62960012257099
+        },
+        "next_h_prediction_abs_error_m": {
+          "count": 1393,
+          "min": 1.9090704711510753e-11,
+          "p50": 9.84347543794839e-07,
+          "p95": 5.336429928539266e-06,
+          "p99": 1.5948949628328274e-05,
+          "max": 1.9768705563773074e-05
+        },
+        "next_start_residual_abs_error_m_s": {
+          "count": 1393,
+          "min": 4.308542406183946e-08,
+          "p50": 1.849914741522407e-05,
+          "p95": 0.000502455789800437,
+          "p99": 0.0014819094425378271,
+          "max": 0.0018312915432264903
+        },
+        "warm_all_task_query_ms": {
+          "count": 0
+        },
+        "warm_all_task_partition_size": {
+          "count": 0
+        }
+      },
+      "examples": [
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 350,
+          "time_s": 6.999999999999451,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.00860633100087611,
+          "actual_mujoco_distance_m": 0.07940890343141564,
+          "subspace_residual_linf_rad": 1.2419305555309845e-07,
+          "query_time_ms": 11.539099738001823,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 400,
+          "time_s": 7.999999999999341,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.004674366983451455,
+          "actual_mujoco_distance_m": 0.08367502814150801,
+          "subspace_residual_linf_rad": 1.6641930236649394e-08,
+          "query_time_ms": 11.710799764841795,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 450,
+          "time_s": 8.999999999999675,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.012119139216511303,
+          "actual_mujoco_distance_m": 0.07987528659302601,
+          "subspace_residual_linf_rad": 6.449892311043148e-08,
+          "query_time_ms": 12.035100255161524,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 500,
+          "time_s": 10.000000000000009,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.014545277078711682,
+          "actual_mujoco_distance_m": 0.08060779611650867,
+          "subspace_residual_linf_rad": 9.626802681406144e-09,
+          "query_time_ms": 11.922599747776985,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 550,
+          "time_s": 11.000000000000343,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.0074475835618562185,
+          "actual_mujoco_distance_m": 0.09018176120480431,
+          "subspace_residual_linf_rad": 2.2266057053688115e-08,
+          "query_time_ms": 12.106699869036674,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 600,
+          "time_s": 12.000000000000677,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -6.4557368251137726e-06,
+          "actual_mujoco_distance_m": 0.0976369247078011,
+          "subspace_residual_linf_rad": 1.2412794715699338e-08,
+          "query_time_ms": 13.863599859178066,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 650,
+          "time_s": 13.00000000000101,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.00970611034827695,
+          "actual_mujoco_distance_m": 0.08695997044184521,
+          "subspace_residual_linf_rad": 9.764877972298809e-09,
+          "query_time_ms": 12.096600141376257,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_00",
+          "tick": 700,
+          "time_s": 14.000000000001345,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.002633867252939802,
+          "actual_mujoco_distance_m": 0.08445116524486124,
+          "subspace_residual_linf_rad": 9.887709881330892e-09,
+          "query_time_ms": 13.82800005376339,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 450,
+          "time_s": 8.999999999999675,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.006277962330124575,
+          "actual_mujoco_distance_m": 0.08295900977995466,
+          "subspace_residual_linf_rad": 1.2310288181188733e-08,
+          "query_time_ms": 11.43640000373125,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 500,
+          "time_s": 10.000000000000009,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.013925002370805722,
+          "actual_mujoco_distance_m": 0.07948888778697626,
+          "subspace_residual_linf_rad": 4.2959264634316596e-08,
+          "query_time_ms": 11.077399831265211,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 550,
+          "time_s": 11.000000000000343,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.010584150080139697,
+          "actual_mujoco_distance_m": 0.08461143285987034,
+          "subspace_residual_linf_rad": 1.0176689761720592e-08,
+          "query_time_ms": 12.745499610900879,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 700,
+          "time_s": 14.000000000001345,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.012920619858652668,
+          "actual_mujoco_distance_m": 0.08416115972939582,
+          "subspace_residual_linf_rad": 1.6010472614347293e-08,
+          "query_time_ms": 11.884099803864956,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_01",
+          "tick": 750,
+          "time_s": 15.000000000001679,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.0016417546263680148,
+          "actual_mujoco_distance_m": 0.09372108725477989,
+          "subspace_residual_linf_rad": 3.7366756997642137e-08,
+          "query_time_ms": 12.338699772953987,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 350,
+          "time_s": 6.999999999999451,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.008122878185386938,
+          "actual_mujoco_distance_m": 0.0801987870543452,
+          "subspace_residual_linf_rad": 1.4791008563425144e-07,
+          "query_time_ms": 11.457500047981739,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 400,
+          "time_s": 7.999999999999341,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.00631014185779338,
+          "actual_mujoco_distance_m": 0.08210842439845255,
+          "subspace_residual_linf_rad": 7.236997612292129e-09,
+          "query_time_ms": 11.907899752259254,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 450,
+          "time_s": 8.999999999999675,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.006848302891698459,
+          "actual_mujoco_distance_m": 0.08141857764382729,
+          "subspace_residual_linf_rad": 1.4896969234567958e-08,
+          "query_time_ms": 11.467000003904104,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 45,
+          "selected_interval_count": 15,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 500,
+          "time_s": 10.000000000000009,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.01388571600368282,
+          "actual_mujoco_distance_m": 0.07939981761976621,
+          "subspace_residual_linf_rad": 2.8797332013354854e-08,
+          "query_time_ms": 12.42200005799532,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 550,
+          "time_s": 11.000000000000343,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.011369555743059086,
+          "actual_mujoco_distance_m": 0.08366937817412835,
+          "subspace_residual_linf_rad": 1.3774337188215968e-08,
+          "query_time_ms": 11.83560024946928,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 600,
+          "time_s": 12.000000000000677,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.0015058488775718348,
+          "actual_mujoco_distance_m": 0.09597114423300124,
+          "subspace_residual_linf_rad": 7.001208862655872e-09,
+          "query_time_ms": 11.604100000113249,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 48,
+          "selected_interval_count": 16,
+          "unsupported_interval_ids": []
+        },
+        {
+          "scenario_id": "v6_lite_scenario_02",
+          "tick": 700,
+          "time_s": 14.000000000001345,
+          "proxy_status": "UNKNOWN_CROSSES_GATE",
+          "minimum_h_m": -0.007235569857935619,
+          "actual_mujoco_distance_m": 0.08502635493623795,
+          "subspace_residual_linf_rad": 3.30944230006458e-08,
+          "query_time_ms": 12.667200062423944,
+          "point_evaluations": 49,
+          "jacobian_evaluations": 51,
+          "selected_interval_count": 17,
+          "unsupported_interval_ids": []
+        }
+      ],
+      "warm_unknown_examples": []
+    }
+  },
+  "online_control_changed": false,
+  "old_trace_reused_as_new_control_acceptance": false,
+  "checks": {
+    "two_modes_five_scenarios_each": true,
+    "all_a1_trace_hashes_match": true,
+    "native_replay_states_match": true,
+    "all_partitions_cover_five_sections": true,
+    "warm_query_valid_if_enabled": true
+  },
+  "passed_as_read_only_audit": true,
+  "online_admission_gate": {
+    "status": "NOT_MET",
+    "reason": "new-mode full-loop timing and unknown/budget handling require further work",
+    "shadow_conditions": {
+      "no_unknown_proxy_decisions": false,
+      "no_query_budget_exhaustion": true,
+      "no_excluded_interval_reached_activation_next_tick": true,
+      "no_required_derivative_unsupported": true
+    },
+    "paired_timing_is_estimate_not_new_execution": true
+  }
+}
