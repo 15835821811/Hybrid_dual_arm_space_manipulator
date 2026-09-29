@@ -98,6 +98,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "repeated_qp_probe": root / "repeated_qp_probe_early" / "repeated_probe_summary.json",
         "blas_thread_trial": root / "blas_thread_trial" / "abba_summary.json",
         "mujoco_sphere_screen": root / "mujoco_sphere_screen" / "sphere_screen_summary.json",
+        "weighted_qp_sphere_trial": root / "qp_sphere_trial" / "qp_sphere_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -109,7 +110,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, candidate_prediction, prediction_failure, repeated_qp, blas_trial, sphere_screen, qp_sphere, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -411,6 +412,51 @@ def finalize(root: Path, output_dir: Path) -> dict:
                 or item["max_active_witness_error_m"] != 0.0
                 or item["max_minimum_error_m"] != 0.0):
             raise ValueError("MuJoCo sphere screen did not preserve frozen rows")
+    if (qp_sphere["input_original_probe_sha256"]
+            != _sha(sources["weighted_qp_probe"])
+            or qp_sphere["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or qp_sphere["online_controller_changed"]
+            or qp_sphere["new_interval_mode_executed"]
+            or qp_sphere["full_control_cycle_measured"]
+            or qp_sphere["groups_predeclared"] != [
+                {"name": "a1", "method": "reference"},
+                {"name": "b1", "method": "sphere_screen"},
+                {"name": "b2", "method": "sphere_screen"},
+                {"name": "a2", "method": "reference"},
+            ]
+            or qp_sphere["probe_ticks"] != [50, 100, 150]
+            or qp_sphere["point_budget"] != 63
+            or qp_sphere["complete_group_count"] != 4
+            or qp_sphere["candidate_mismatch_count"] != 0):
+        raise ValueError("weighted QP sphere-screen provenance failed")
+    for name, digest in qp_sphere["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"weighted QP sphere-screen source changed: {name}")
+    qp_sphere_dir = root / "qp_sphere_trial"
+    qp_sphere_manifest = json.loads((qp_sphere_dir / "qp_sphere_manifest.json")
+                                    .read_text(encoding="utf-8"))
+    for label, filename in (("summary", "qp_sphere_summary.json"),
+                            ("records", "qp_sphere_records.jsonl"),
+                            ("document", "QP_SPHERE_TRIAL.md")):
+        if qp_sphere_manifest[f"{label}_sha256"] != _sha(qp_sphere_dir / filename):
+            raise ValueError(f"weighted QP sphere-screen {label} hash changed")
+    if qp_sphere["records_sha256"] != _sha(qp_sphere_dir / "qp_sphere_records.jsonl"):
+        raise ValueError("weighted QP sphere-screen records changed")
+    for group in qp_sphere["groups"]:
+        folder = qp_sphere_dir / group["name"]
+        if (group["status"] != "COMPLETE" or group["record_count"] != 30
+                or group["candidate_mismatch_count"] != 0
+                or group["report_sha256"] != _sha(folder / "weighted_qp_probe.json")
+                or group["document_sha256"] != _sha(folder / "WEIGHTED_QP_PROBE.md")
+                or group["manifest_sha256"]
+                != _sha(folder / "weighted_qp_probe_manifest.json")
+                or group["stdout_sha256"]
+                != _sha(qp_sphere_dir / f"{group['name']}_stdout.txt")):
+            raise ValueError("weighted QP sphere-screen group outputs changed")
+    for mode in ("baseline", "enabled"):
+        if any(qp_sphere["modes"][mode][method]["record_count"] != 30
+               for method in ("reference", "sphere_screen")):
+            raise ValueError("weighted QP sphere-screen mode count changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -1089,6 +1135,28 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "因此不能声称被跳过的每一对距离数值都等于查询上限。"
         "此筛选尚未接入 QP；上表只计碰撞对距离查询，不包含 Jacobian、"
         "区间行、QP、状态监控或力矩伺服，也不是 20 ms 全链证明。", "",
+        "## 原加权 QP 的包围球筛选只读交叉试验", "",
+        "在两组五场景 tick 50/100/150 的旧力矩重放状态中，按全对→筛选→"
+        "筛选→全对顺序重新求解同一个 17 维加权 QP。每组重建模型、清空"
+        "对偶热启动，并将候选及独立重算约束行与冻结基准逐状态核对。", "",
+        "| 模式 | 方法 | 记录 | 查询加 QP p95 / 最大 ms | 超 20 ms | 精确距离调用 p95 |",
+        "| --- | --- | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        for method in ("reference", "sphere_screen"):
+            item = qp_sphere["modes"][mode][method]
+            timing = item["query_plus_qp_probe_ms"]
+            lines.append(
+                f"| {mode} | {method} | {item['record_count']} | "
+                f"{timing['p95']:.3f} / {timing['max']:.3f} | "
+                f"{timing['over_20ms_count']} | "
+                f"{item['exact_call_count']['p95']:.1f} |"
+            )
+    lines += [
+        "", f"四组完整，候选不一致 {qp_sphere['candidate_mismatch_count']}。"
+        "筛选降低原 MuJoCo 碰撞对精确查询数，但两组筛选后的部分链路 p95 "
+        "仍超过原 20 ms 周期。该试验未发出候选、未执行新区间闭环，"
+        "没有计入完整监控和力矩伺服；不能将局部加速算作全链接入通过。", "",
         "## 五场景初始状态的加权 QP 只读预检", "",
         "另在两组五场景的 tick 0 从根区间以最多 255 点查询，并将所需区间行"
         "送入原单个 17 维加权 QP；候选只经原动作验证，未驱动力矩伺服。"
