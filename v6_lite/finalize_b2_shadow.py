@@ -90,10 +90,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "repartition_counterfactual": root / "repartition_counterfactual" / "repartition_counterfactual.json",
         "repartition_handoff": root / "repartition_handoff" / "repartition_handoff.json",
         "weighted_qp_probe": root / "qp_probe_early" / "weighted_qp_probe.json",
+        "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, sweep = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -150,6 +151,29 @@ def finalize(root: Path, output_dir: Path) -> dict:
         for trace in item["traces"]:
             if _sha(Path(trace["path"])) != trace["sha256"]:
                 raise ValueError("weighted QP probe trace changed")
+    if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
+            or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or sweep["online_control_changed"]
+            or sweep["fallback_geom_names"] != ["collision_0003"]):
+        raise ValueError("full task-state envelope sweep provenance failed")
+    for name, digest in sweep["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"full envelope sweep source changed: {name}")
+    for mode in ("baseline", "enabled"):
+        item = sweep["inputs"][mode]
+        if _sha(Path(item["metrics_path"])) != item["metrics_sha256"]:
+            raise ValueError("full envelope sweep metrics changed")
+        if len(item["traces"]) != 5:
+            raise ValueError("full envelope sweep lacks five scenarios")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("full envelope sweep trace changed")
+    sweep_dir = root / "full_state_envelope"
+    if (_sha(sweep_dir / "envelope_sweep_states.jsonl")
+            != sweep["state_records_sha256"]
+            or _sha(sweep_dir / "envelope_sweep_failures.jsonl")
+            != sweep["failure_records_sha256"]):
+        raise ValueError("full envelope sweep records changed")
     gate = warm["online_admission_gate"]
     blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
@@ -160,8 +184,14 @@ def finalize(root: Path, output_dir: Path) -> dict:
         and probe["summary"][mode]["validated_command_count"] == 15
         for mode in ("baseline", "enabled")
     )
+    sweep_ready = all(
+        sweep["modes"][mode]["state_count"] == 6750
+        and sweep["modes"][mode]["status_counts"].get(
+            "COVERED_AT_THIS_STATE", 0) == 6750
+        for mode in ("baseline", "enabled")
+    )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
-              or not probe_ready
+              or not probe_ready or not sweep_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
@@ -419,6 +449,26 @@ def finalize(root: Path, output_dir: Path) -> dict:
         f"{probe['summary']['baseline']['state_local_capsule_envelope_check_ms']['p95']:.3f}、"
         f"{probe['summary']['enabled']['state_local_capsule_envelope_check_ms']['p95']:.3f} ms。"
         "所测耗时尾部和后续旧轨迹反例也仍存在。", "",
+        "## 全部保存规划状态的实际胶囊包络", "",
+        "对旧 A.1 两组五场景全部保存的规划 qpos 直接执行 MuJoCo 正运动学，"
+        "逐状态检查实际胶囊是否包含于原 PCC 管；所用 trace 与上述原生重放审计逐场景哈希一致。"
+        "这不是第二次力矩重放，也不是新区间模式动作。", "",
+        "| 模式 | 保存状态 | 当前状态包含 | 未包含 | 最小余量 mm | 包络检查 p95 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = sweep["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['state_count']} | "
+            f"{item['status_counts'].get('COVERED_AT_THIS_STATE', 0)} | "
+            f"{item['status_counts'].get('NOT_COVERED_AT_THIS_STATE', 0)} | "
+            f"{1000 * item['minimum_margin_m']['min']:.3f} | "
+            f"{item['check_ms_excluding_mj_forward']['p95']:.3f} |"
+        )
+    lines += [
+        "", "全量余量均为正，但这只证明保存时刻的模型几何包含。"
+        "检查耗时不含 MuJoCo 正运动学、区间查询和 QP；无法单独证明 20 ms 全链。"
+        "仍无斜坡中间状态或跨规划周期的包络保持证明。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"
