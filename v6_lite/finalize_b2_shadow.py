@@ -85,10 +85,11 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "refined_start": root / "refined_start" / "refined_start_report.json",
         "repartition_counterfactual": root / "repartition_counterfactual" / "repartition_counterfactual.json",
         "repartition_handoff": root / "repartition_handoff" / "repartition_handoff.json",
+        "weighted_qp_probe": root / "qp_probe_early" / "weighted_qp_probe.json",
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -126,11 +127,35 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or any(x["max_state_error"] > 1e-8
                    for x in refined["native_replay_checks"])):
         raise ValueError("refined native torque replay integrity failed")
+    if (not probe["passed_as_read_only_integrity"]
+            or probe["online_control_changed"]
+            or probe["new_mode_closed_loop_acceptance"]
+            or probe["probe_ticks"] != [50, 100, 150]
+            or len(probe["native_replay_checks"]) != 10
+            or len(probe["records"]) != 30
+            or probe["input_refined_start_sha256"] != _sha(sources["refined_start"])):
+        raise ValueError("weighted QP probe integrity or scope failed")
+    for name, digest in probe["source_sha256"].items():
+        if _sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"weighted QP probe source changed: {name}")
+    for item in probe["inputs"].values():
+        if _sha(Path(item["metrics_path"])) != item["metrics_sha256"]:
+            raise ValueError("weighted QP probe metrics changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("weighted QP probe trace changed")
     gate = warm["online_admission_gate"]
     blockers = _gate_blockers(frontier, refined)
     remaining = sum(refined["modes"][mode]["old_bad_remains_unexecutable"]
                     for mode in ("baseline", "enabled"))
+    probe_ready = all(
+        probe["summary"][mode]["probe_count"] == 15
+        and probe["summary"][mode]["admission_preconditions_met_count"] == 15
+        and probe["summary"][mode]["validated_command_count"] == 15
+        for mode in ("baseline", "enabled")
+    )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
+              or not probe_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
         "# V6.2-B.2 第二阶段：影子评估与在线接入门禁", "",
@@ -348,6 +373,32 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "", "开启组的静态 witness 未发现低于门槛，但旧起点仍可因相对逼近过快"
         "而失效。要验证不同的控制轨迹，必须先解决在线接入门禁；"
         "旧 trace 的继续重放不能代替新区间闭环。", "",
+        "## 原加权 QP 的早期只读探针", "",
+        "在旧力矩 trace 的每场景 tick 50/100/150，用 63 点根分区构造区间行，"
+        "与原 MuJoCo 和胶囊行放进同一个 17 维加权 QP。逐行结果与独立重算对照；"
+        "候选仅做原动作验证，不发送给执行器。每个探针清空对偶热启动，"
+        "因此下面的耗时既不是连续新模式全链，也不能代替其 20 ms 验收。", "",
+        "| 模式 | 冻结状态 | 查询预算合格 | 静态代理安全 | 包络证据支持 | QP 验证命令 | 接入前提合格 | 查询加 QP 探针 p95 ms |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = probe["summary"][mode]
+        lines.append(
+            f"| {mode} | {item['probe_count']} | {item['query_budget_ok_count']} | "
+            f"{item['proxy_safe_count']} | {item['envelope_supported_count']} | "
+            f"{item['validated_command_count']} | "
+            f"{item['admission_preconditions_met_count']} | "
+            f"{item['query_plus_qp_probe_ms']['p95']:.3f} |"
+        )
+    lines += [
+        "", "早期探针证明原求解及动作验证接口能够处理这些冻结新区间行；"
+        "但现有严格形状子空间判据未支持真实链包络，不能把 QP 命令验证"
+        "改写成新区间安全接入。"
+        f"子空间阈值 {probe['shape_subspace_membership_tolerance_rad']:.1e} rad；"
+        f"两组残差 p95 分别为 "
+        f"{probe['summary']['baseline']['subspace_residual_linf_rad']['p95']:.2e}、"
+        f"{probe['summary']['enabled']['subspace_residual_linf_rad']['p95']:.2e} rad。"
+        "所测耗时尾部和后续旧轨迹反例也仍存在。", "",
         "## 冻结留出与真实几何", "",
         f"旧 B.1 独立留出 {heldout['counts']['checked_count']} 例完成新补的 MuJoCo 离散链对照："
         f"代理假安全 {heldout['counts']['empirical_proxy_false_safe']}、"
