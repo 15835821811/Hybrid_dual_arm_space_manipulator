@@ -92,6 +92,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "weighted_qp_probe": root / "qp_probe_early" / "weighted_qp_probe.json",
         "initial_qp_probe": root / "qp_probe_initial255" / "weighted_qp_probe.json",
         "initial_qp_probe_failure": root / "qp_probe_initial255_failures" / "attempt1.json",
+        "candidate_ramp_early": root / "candidate_ramp_early" / "candidate_ramp_summary.json",
         "full_state_envelope": root / "full_state_envelope" / "envelope_sweep_summary.json",
         "microstep_envelope": root / "microstep_envelope" / "microstep_envelope_summary.json",
         "full_torque_envelope": root / "full_torque_envelope" / "full_torque_envelope_summary.json",
@@ -103,7 +104,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     }
     values = {name: json.loads(path.read_text(encoding="utf-8"))
               for name, path in sources.items()}
-    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
+    cold, warm, near, heldout, frontier, refined, repartition, handoff, probe, initial_probe, initial_failure, candidate_ramp, sweep, micro, full_torque, batched, prepared_cold, prepared_full, root_rescue, full_root = (
         values[name] for name in sources
     )
     if not cold["passed_as_read_only_audit"] or not warm["passed_as_read_only_audit"]:
@@ -208,6 +209,42 @@ def finalize(root: Path, output_dir: Path) -> dict:
             or initial_failure["exception"] != "TypeError: 'float' object is not iterable"
             or initial_failure["failure_output_file_count"] != 0):
         raise ValueError("initial probe first-attempt failure record changed")
+    if (candidate_ramp["input_probe_sha256"] != _sha(sources["weighted_qp_probe"])
+            or candidate_ramp["source_hash_newline_policy"] != "LF_NORMALIZED"
+            or candidate_ramp["new_interval_mode_executed"]
+            or candidate_ramp["continuous_time_certified"]
+            or not candidate_ramp["private_counterfactual_servo_executed"]
+            or candidate_ramp["probe_ticks"] != [50, 100, 150]
+            or candidate_ramp["servo_steps_per_task"] != 10
+            or len(candidate_ramp["records"]) != 30):
+        raise ValueError("one-ramp candidate branch provenance failed")
+    for name, digest in candidate_ramp["source_sha256"].items():
+        if _source_sha(Path("v6_lite") / name) != digest:
+            raise ValueError(f"one-ramp candidate source changed: {name}")
+    for item in candidate_ramp["inputs"].values():
+        if (_sha(Path(item["metrics_path"])) != item["metrics_sha256"]
+                or len(item["traces"]) != 5):
+            raise ValueError("one-ramp candidate metrics changed")
+        for trace in item["traces"]:
+            if _sha(Path(trace["path"])) != trace["sha256"]:
+                raise ValueError("one-ramp candidate trace changed")
+    candidate_dir = root / "candidate_ramp_early"
+    candidate_outputs = {
+        "summary": "candidate_ramp_summary.json",
+        "microstates": "candidate_ramp_states.jsonl",
+        "failures": "candidate_ramp_failures.jsonl",
+        "document": "CANDIDATE_RAMP.md",
+    }
+    candidate_manifest = json.loads((candidate_dir / "candidate_ramp_manifest.json")
+                                    .read_text(encoding="utf-8"))
+    for name, filename in candidate_outputs.items():
+        if candidate_manifest[f"{name}_sha256"] != _sha(candidate_dir / filename):
+            raise ValueError(f"one-ramp candidate {name} hash changed")
+    if (candidate_ramp["microstate_records_sha256"]
+            != _sha(candidate_dir / candidate_outputs["microstates"])
+            or candidate_ramp["failure_records_sha256"]
+            != _sha(candidate_dir / candidate_outputs["failures"])):
+        raise ValueError("one-ramp candidate records changed")
     if (sweep["warm_shadow_sha256"] != _sha(sources["warm_shadow"])
             or sweep["source_hash_newline_policy"] != "LF_NORMALIZED"
             or sweep["online_control_changed"]
@@ -494,6 +531,16 @@ def finalize(root: Path, output_dir: Path) -> dict:
         and micro["modes"][mode]["covered_microstate_count"] == 110
         for mode in ("baseline", "enabled")
     )
+    candidate_ramp_ready = all(
+        candidate_ramp["modes"][mode]["ramp_count"] == 15
+        and candidate_ramp["modes"][mode]["covered_ramp_count"] == 15
+        and candidate_ramp["modes"][mode]["realized_next_start_satisfied_count"] == 15
+        and candidate_ramp["modes"][mode]["next_proxy_safe_count"] == 15
+        and candidate_ramp["modes"][mode]["whole_body_violation_ramp_count"] == 0
+        and candidate_ramp["modes"][mode]["maximum_old_torque_error"] <= 1e-8
+        and candidate_ramp["modes"][mode]["maximum_old_next_qpos_error"] <= 1e-8
+        for mode in ("baseline", "enabled")
+    )
     full_torque_ready = all(
         full_torque["modes"][mode]["scene_count"] == 5
         and full_torque["modes"][mode]["torque_steps"] == 67500
@@ -504,6 +551,7 @@ def finalize(root: Path, output_dir: Path) -> dict:
     )
     status = ("GATE_NOT_MET" if gate["status"] == "NOT_MET" or remaining
               or not probe_ready or not sweep_ready or not micro_ready
+              or not candidate_ramp_ready
               or not full_torque_ready
               else "NEEDS_TRUE_ONLINE_TIMING")
     lines = [
@@ -817,6 +865,30 @@ def finalize(root: Path, output_dir: Path) -> dict:
         "这些计时不含状态包络检查和连续执行；enabled 的所测尾部还超过"
         "20 ms，故不能当作全链性能通过。后续状态的子空间残差、"
         "旧速度起点违例和预算未知仍阻止在线门禁。", "",
+        "## 早期候选命令的单周期私有力矩分支", "",
+        "对上面的 tick 50/100/150 只读 QP 候选，在旧 A.1 冻结状态另开"
+        "私有 MuJoCo 分支。先以旧命令逐步复现保存的十步力矩和下一规划 qpos；"
+        "再用同一参考斜坡及 67 路力矩伺服执行候选，并在实际到达的下一起点"
+        "重新查询 255 点根区间、独立装配原 MuJoCo/胶囊及新区间行。"
+        "这检验冻结预测之后的实际一步结果，不是新模式在线闭环。", "",
+        "| 模式 | 单周期分支 | 11 状态均包含 | 实现下一起点满足 | 代理安全 | 全身几何违例窗口 | 最小包络余量 mm |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for mode in ("baseline", "enabled"):
+        item = candidate_ramp["modes"][mode]
+        lines.append(
+            f"| {mode} | {item['ramp_count']} | {item['covered_ramp_count']} | "
+            f"{item['realized_next_start_satisfied_count']} | "
+            f"{item['next_proxy_safe_count']} | "
+            f"{item['whole_body_violation_ramp_count']} | "
+            f"{1000*item['minimum_envelope_margin_m']:.3f} |"
+        )
+    lines += [
+        "", "候选和旧命令的差异在这 30 个分支中确实非零；旧命令分支"
+        "的力矩及下一 qpos 最大误差均为零。"
+        "全身几何采用原验证器有限插值检查，仍不是连续时间认证。"
+        "这只是从历史状态出发的单周期反事实；不能覆盖新区间闭环累计误差、"
+        "停止策略、完整五场景或 20 ms 全链时延。", "",
         "## 全部保存规划状态的实际胶囊包络", "",
         "对旧 A.1 两组五场景全部保存的规划 qpos 直接执行 MuJoCo 正运动学，"
         "逐状态检查实际胶囊是否包含于原 PCC 管；所用 trace 与上述原生重放审计逐场景哈希一致。"
