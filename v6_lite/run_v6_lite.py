@@ -528,6 +528,7 @@ def run_scenario(
     scenario: V6LiteScenario,
     trace_dir: Path,
 ) -> dict[str, Any]:
+    scenario_initialization_started = time.perf_counter()
     verification_config = WholeBodyVerificationConfig(
         minimum_clearance=run_config.whole_body_minimum_clearance_m,
         query_distance_max=2.5,
@@ -569,6 +570,7 @@ def run_scenario(
 
     interval_admission = None
     interval_next_start_checker = None
+    runtime_workspace = None
     if run_config.pcc_mode == "bounded_interval_pcc":
         if qp_config.enable_pcc_cbf or not qp_config.enable_capsule_cbf:
             raise ValueError("bounded interval PCC requires legacy PCC off and capsule CBF on")
@@ -583,6 +585,10 @@ def run_scenario(
         interval_admission = OptimizedBoundedIntervalAdmission(spec, model, qp)
         from v6_lite.b2_screened_next_start_rows import ScreenedNextStart
         interval_next_start_checker = ScreenedNextStart()
+        interval_next_start_checker.initialize(
+            model, spec, verifier, qp_config, evaluator)
+        from v6_lite.b2_interval_runtime import RuntimeWorkspace
+        runtime_workspace = RuntimeWorkspace(model, spec)
     else:
         qp = HierarchicalVelocityQP(spec, model, verifier.pairs, qp_config)
     pcc_monitor = (
@@ -747,6 +753,7 @@ def run_scenario(
             f"{scenario.scenario_id} at {data.time:.3f}s: {reason}; "
             "no further servo step executed")
     initial_momentum = _robot_momentum(model, data, base_body_id)
+    scenario_initialization_latency_s = time.perf_counter() - scenario_initialization_started
 
     for physics_step in range(physics_steps):
         current_time = float(data.time)
@@ -846,6 +853,7 @@ def run_scenario(
                         physics_period_s=run_config.physics_period_s,
                         task_period_s=run_config.task_period_s,
                         prepared_step=True,
+                        workspace=runtime_workspace, source_data=data,
                     )
                     branch_finished = time.perf_counter()
                     timeline.mark("ten_step_preview")
@@ -1200,6 +1208,7 @@ def run_scenario(
             timeline.mark("torque_publish")
             timing_rows.append(timeline.record(
                 accepted=True, qp_iterations=int(result.solver_iterations),
+                penalty_updates=int(getattr(qp, "last_penalty_update_count", 0)),
                 interval_point_evaluations=(
                     int(interval_diagnostic["point_evaluations"])
                     if interval_diagnostic is not None else 0),
@@ -1498,6 +1507,7 @@ def run_scenario(
                 "pcc_avoidance_intervention_max": pcc_intervention_max,
             },
             "rates_and_latency": {
+                "initialization_latency_s": scenario_initialization_latency_s,
                 "dispatch": latency_summary(
                     [row["dispatch_latency_s"] for row in timing_rows]),
                 "algorithm": latency_summary(task_arrays["full_latency"]),

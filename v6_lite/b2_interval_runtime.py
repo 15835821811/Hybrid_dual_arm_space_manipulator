@@ -24,6 +24,35 @@ STEPS = 10
 POINT_BUDGET = 255
 
 
+class RuntimeWorkspace:
+    """Private per-model buffers; every preview reloads the integration state.
+
+    getState/setState includes time, act, warm start, applied forces, ctrl,
+    equality activity, mocap, userdata and plugin state, beyond qpos/qvel.
+    Derived MuJoCo quantities are refreshed at each microstate. Returned
+    arrays are borrowed until the next preview, after the current ramp ends.
+    """
+
+    def __init__(self, model, robot):
+        self.model = model
+        self.data = mujoco.MjData(model)
+        self.qpos_ids, self.dof_ids = joint_addresses(model, robot)
+        _, self.base_dof = free_joint_slices(model, robot.base_joint_name)
+        self.mass = np.zeros((model.nv, model.nv), dtype=np.float64)
+        self.state_spec = mujoco.mjtState.mjSTATE_INTEGRATION
+        self.integration_state = np.empty(mujoco.mj_stateSize(model, self.state_spec))
+        self.qpos_states = np.empty((STEPS + 1, model.nq))
+        self.qvel_states = np.empty((STEPS + 1, model.nv))
+        self.torques = np.empty((STEPS, model.nu))
+        self.natural_frequency = np.concatenate([np.full(60, 42.), np.full(7, 34.)])
+        self.acceleration_limit = np.concatenate([np.full(60, 45.), np.full(7, 70.)])
+        self.base_ids = np.arange(self.base_dof.start, self.base_dof.stop, dtype=np.int32)
+
+    def load(self, source):
+        mujoco.mj_getState(self.model, source, self.integration_state, self.state_spec)
+        mujoco.mj_setState(self.model, self.data, self.integration_state, self.state_spec)
+
+
 def compensated_torque(model, data, robot, qpos_ids, dof_ids, base_dof,
                        reference_position, reference_velocity,
                        feedforward_acceleration, full_mass):
@@ -59,16 +88,24 @@ def compensated_torque(model, data, robot, qpos_ids, dof_ids, base_dof,
 def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
                  reference_start, previous_command, endpoint_command,
                  *, physics_period_s, task_period_s,
-                 prepared_step: bool = False):
+                 prepared_step: bool = False, workspace=None, source_data=None):
     """Predict 11 MuJoCo microstates and all ten 67-channel torque commands."""
-    data = mujoco.MjData(model)
-    data.qpos[:] = qpos
-    data.qvel[:] = qvel
-    data.time = start_time
-    data.ctrl[:] = 0
-    qpos_ids, dof_ids = joint_addresses(model, robot)
-    _base_qpos, base_dof = free_joint_slices(model, robot.base_joint_name)
-    mass = np.zeros((model.nv, model.nv), dtype=np.float64)
+    if workspace is None:
+        data = mujoco.MjData(model)
+        data.qpos[:] = qpos
+        data.qvel[:] = qvel
+        data.time = start_time
+        data.ctrl[:] = 0
+        qpos_ids, dof_ids = joint_addresses(model, robot)
+        _base_qpos, base_dof = free_joint_slices(model, robot.base_joint_name)
+        mass = np.zeros((model.nv, model.nv), dtype=np.float64)
+    else:
+        if workspace.model is not model or source_data is None:
+            raise ValueError("workspace must match model and have a full source state")
+        workspace.load(source_data)
+        data = workspace.data
+        qpos_ids, dof_ids = workspace.qpos_ids, workspace.dof_ids
+        base_dof, mass = workspace.base_dof, workspace.mass
     reference = reference_start.copy()
     torques = []
     states = []
@@ -78,7 +115,11 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
             mujoco.mj_step1(model, data)
         else:
             mujoco.mj_forward(model, data)
-        states.append(data.qpos.copy())
+        if workspace is None:
+            states.append(data.qpos.copy())
+        else:
+            workspace.qpos_states[step] = data.qpos
+            workspace.qvel_states[step] = data.qvel
         actual = data.qpos[evaluator.qpos_ids[:60]]
         projection = evaluator.shape_spec.project_actual_configuration(actual)
         base = transform_from_free_qpos(data.qpos[evaluator.base_qpos_slice])
@@ -102,8 +143,11 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
         torque, _desired, diagnostic = prepared_compensated_torque(
             model, data, robot, qpos_ids, dof_ids, base_dof,
             ramp.position, ramp.velocity, ramp.feedforward_acceleration, mass,
-            legacy_diagnostic=False)
-        torques.append(torque.copy())
+            legacy_diagnostic=False, workspace=workspace)
+        if workspace is None:
+            torques.append(torque.copy())
+        else:
+            workspace.torques[step] = torque
         data.ctrl[:] = torque
         if prepared_step:
             # step1 prepared position and velocity dependent terms at this
@@ -113,8 +157,9 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
         else:
             mujoco.mj_step(model, data)
     return {
-        "torques": np.asarray(torques),
-        "qpos_states": np.asarray(states),
+        "torques": np.asarray(torques) if workspace is None else workspace.torques,
+        "qpos_states": np.asarray(states) if workspace is None else workspace.qpos_states,
+        "qvel_states": None if workspace is None else workspace.qvel_states,
         "coverage": coverage_records,
         "maximum_torque_change_from_legacy_nm": None,
     }, data

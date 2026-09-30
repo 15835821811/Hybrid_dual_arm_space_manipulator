@@ -15,7 +15,8 @@ import numpy as np
 def prepared_compensated_torque(model, data, robot, qpos_ids, dof_ids,
                                 base_dof, reference_position,
                                 reference_velocity, feedforward_acceleration,
-                                full_mass, *, legacy_diagnostic: bool = True):
+                                full_mass, *, legacy_diagnostic: bool = True,
+                                workspace=None):
     # Caller invariant: mj_forward(model, data) ran at this same state.
     mujoco.mj_fullM(model, full_mass, data.qM)
     measured_q = np.asarray(data.qpos)[qpos_ids]
@@ -23,16 +24,19 @@ def prepared_compensated_torque(model, data, robot, qpos_ids, dof_ids,
     reference_low_q = robot.encode_position(reference_position)
     reference_low_dq = robot.encode_velocity(reference_velocity)
     feedforward_low_ddq = robot.encode_velocity(feedforward_acceleration)
-    natural_frequency = np.concatenate([np.full(60, 42.0), np.full(7, 34.0)])
+    natural_frequency = (workspace.natural_frequency if workspace is not None else
+                         np.concatenate([np.full(60, 42.0), np.full(7, 34.0)]))
     desired = (
         feedforward_low_ddq
         + natural_frequency**2 * (reference_low_q - measured_q)
         + 2.0 * natural_frequency * (reference_low_dq - measured_dq)
     )
-    acceleration_limit = np.concatenate([np.full(60, 45.0), np.full(7, 70.0)])
+    acceleration_limit = (workspace.acceleration_limit if workspace is not None else
+                          np.concatenate([np.full(60, 45.0), np.full(7, 70.0)]))
     unclipped = desired.copy()
     desired = np.clip(desired, -acceleration_limit, acceleration_limit)
-    base_ids = np.arange(base_dof.start, base_dof.stop, dtype=np.int32)
+    base_ids = (workspace.base_ids if workspace is not None else
+                np.arange(base_dof.start, base_dof.stop, dtype=np.int32))
     bias = np.asarray(data.qfrc_bias)
     passive = np.asarray(data.qfrc_passive)
     if legacy_diagnostic:

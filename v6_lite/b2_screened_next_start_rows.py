@@ -81,8 +81,8 @@ class ScreenedNextStart(ReusedNextStart):
         super().__init__()
         self.instances.append(self)
 
-    def __call__(self, model, robot, verifier, cfg, evaluator, data,
-                 endpoint_command):
+    def initialize(self, model, robot, verifier, cfg, evaluator):
+        """Allocate model-constant geometry before the first timed cycle."""
         if self._model is not model:
             no_legacy = replace(cfg, enable_pcc_cbf=False,
                                 enable_capsule_cbf=True)
@@ -92,5 +92,9 @@ class ScreenedNextStart(ReusedNextStart):
                 evaluator.shape_model)
             self._model = model
             self.builder_constructions += 1
+
+    def __call__(self, model, robot, verifier, cfg, evaluator, data,
+                 endpoint_command):
+        self.initialize(model, robot, verifier, cfg, evaluator)
         return super().__call__(model, robot, verifier, cfg, evaluator,
                                 data, endpoint_command)

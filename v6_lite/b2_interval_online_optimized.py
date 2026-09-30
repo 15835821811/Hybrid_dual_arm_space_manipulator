@@ -40,9 +40,21 @@ class OptimizedBoundedIntervalVelocityQP(BoundedIntervalVelocityQP):
             [pair.geom_b for pair in self.collision_pairs], dtype=np.int32)
         self.last_exact_pair_call_count = 0
         self.last_sphere_fallback = False
+        self._reaction_state_key = None
+        self._reaction_result = None
+        self.last_penalty_update_count = 0
         self._batched_capsules = (
             BatchedCapsuleMidpointBounds(self._capsule_envelopes)
             if self._capsule_envelopes is not None else None)
+
+    def reaction_velocity_map(self, data):
+        # Full input identity, including the forwarded mass representation.
+        # A changed state invalidates this one-entry cache. No verifier uses it.
+        key = (float(data.time), data.qpos.tobytes(), data.qvel.tobytes(), data.qM.tobytes())
+        if key != self._reaction_state_key:
+            self._reaction_result = super().reaction_velocity_map(data)
+            self._reaction_state_key = key
+        return self._reaction_result
 
     def _unconstrained_solve(self, hessian, linear):
         try:
@@ -124,6 +136,7 @@ class OptimizedBoundedIntervalVelocityQP(BoundedIntervalVelocityQP):
         initial_dual = (None if initial_dual is None else np.concatenate((
             initial_dual, np.zeros(10, dtype=np.float64))))
         cfg = self.config
+        self.last_penalty_update_count = 0
         rho = cfg.admm_rho
         sigma = cfg.admm_sigma
         gram = matrix.T @ matrix
@@ -174,6 +187,7 @@ class OptimizedBoundedIntervalVelocityQP(BoundedIntervalVelocityQP):
                 elif primal_ratio > 3.0 * dual_ratio:
                     next_rho = min(rho * 5.0, 500.0)
                 if next_rho != rho:
+                    self.last_penalty_update_count += 1
                     rho = next_rho
                     system = hessian + sigma * identity + rho * gram
                     factor = cho_factor(system, lower=True, check_finite=False)
