@@ -28,6 +28,7 @@ class ReusedNextStart:
     def __init__(self) -> None:
         self._model = None
         self._builder = None
+        self._query = None
         self.builder_constructions = 0
 
     def __call__(self, model, robot, verifier, cfg, evaluator, data,
@@ -44,7 +45,8 @@ class ReusedNextStart:
             data.qpos[evaluator.qpos_ids[:60]])
         base = transform_from_free_qpos(data.qpos[evaluator.base_qpos_slice])
         box = target_box_from_mujoco(model, data, evaluator.target_geom_id)
-        query = PersistentIntervalDecisionQuery(evaluator.shape_model)
+        query = self._query or PersistentIntervalDecisionQuery(
+            evaluator.shape_model)
         decision = query.evaluate(
             projection.planner_configuration, base, box,
             IntervalPartition.uniform(), max_point_evaluations=POINT_BUDGET)
@@ -83,7 +85,9 @@ class ReusedNextStart:
                         for row in batch.rows if row.interval_id in ids)):
             result["frozen_rows_status"] = "UNSUPPORTED"
             return result
-        original = independent.build(data)
+        original = (independent.build_prepared(data)
+                    if hasattr(independent, "build_prepared")
+                    else independent.build(data))
         matrix, lower, _drifts, _gains, sources = combined_rows(
             original, batch, ids, cfg)
         slacks = matrix @ endpoint_command - lower

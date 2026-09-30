@@ -121,6 +121,7 @@ def run(output_dir: Path, a1_root: Path, trace_override: Path | None = None) -> 
                 state_timestamp_s=float(data.time),
                 target_timestamp_s=float(data.time),
                 ramp_start_velocity=previous[i],
+                prepared_state=(qp_type is OptimizedBoundedIntervalVelocityQP),
             )
             current.append((preflight, qp, result))
         a, b = current

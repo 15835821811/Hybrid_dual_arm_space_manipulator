@@ -107,6 +107,12 @@ class ReplayConstraintBuilder:
         mujoco.mj_forward(self.model, data)
         return self._build_forwarded(data)
 
+    def _minimum_capsule(self, data: mujoco.MjData, target_box):
+        return minimum_capsule_clearance(
+            self.model, data, self.capsules, target_box,
+            spec=self.shape_spec, compute_planner_gradient=False,
+        )
+
     def _build_forwarded(self, data: mujoco.MjData) -> RecomputedRows:
         """Assemble rows when mj_forward has already prepared this state."""
         generalized_map, reaction_residual = self._reaction_map(data)
@@ -190,10 +196,7 @@ class ReplayConstraintBuilder:
                     self.config.pcc_clearance_safe_m,
                 )
         if self.capsules is not None:
-            result = minimum_capsule_clearance(
-                self.model, data, self.capsules, target_box,
-                spec=self.shape_spec, compute_planner_gradient=False,
-            )
+            result = self._minimum_capsule(data, target_box)
             if result.signed_distance_m <= self.config.capsule_clearance_activation_m:
                 body_id = int(self.model.geom_bodyid[result.source_index])
                 arm_jacobian = self._point_jacobian(data, body_id, result.point_on_arm)

@@ -15,6 +15,8 @@ import numpy as np
 
 SPHERE_SCREEN_PAD_M = 1e-6
 from v6_lite.b2_reused_next_start import ReusedNextStart
+from v6_lite.b2_batched_capsule_bounds import BatchedCapsuleMidpointBounds
+from v6_lite.pcc_batched_distance_query import BatchedDistanceDecisionQuery
 from v6_lite.recompute_execution_constraints import ReplayConstraintBuilder
 
 
@@ -33,9 +35,17 @@ class ScreenedReplayConstraintBuilder(ReplayConstraintBuilder):
         self.calls = 0
         self.exact_pair_calls = 0
         self.minimum_retained_pairs = len(self._all_pairs)
+        self._batched_capsules = BatchedCapsuleMidpointBounds(self.capsules)
+
+    def _minimum_capsule(self, data, target_box):
+        return self._batched_capsules.minimum(self.model, data, target_box)
 
     def build(self, data: mujoco.MjData):
         mujoco.mj_forward(self.model, data)
+        return self.build_prepared(data)
+
+    def build_prepared(self, data: mujoco.MjData):
+        """Screen rows after the preview has forwarded the identical state."""
         center_a = np.asarray(data.geom_xpos[self._a], dtype=np.float64)
         center_b = np.asarray(data.geom_xpos[self._b], dtype=np.float64)
         finite = (
@@ -78,6 +88,8 @@ class ScreenedNextStart(ReusedNextStart):
                                 enable_capsule_cbf=True)
             self._builder = ScreenedReplayConstraintBuilder(
                 robot, model, verifier.pairs, no_legacy)
+            self._query = BatchedDistanceDecisionQuery(
+                evaluator.shape_model)
             self._model = model
             self.builder_constructions += 1
         return super().__call__(model, robot, verifier, cfg, evaluator,

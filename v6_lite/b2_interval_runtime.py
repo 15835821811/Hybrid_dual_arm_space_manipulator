@@ -58,7 +58,8 @@ def compensated_torque(model, data, robot, qpos_ids, dof_ids, base_dof,
 
 def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
                  reference_start, previous_command, endpoint_command,
-                 *, physics_period_s, task_period_s):
+                 *, physics_period_s, task_period_s,
+                 prepared_step: bool = False):
     """Predict 11 MuJoCo microstates and all ten 67-channel torque commands."""
     data = mujoco.MjData(model)
     data.qpos[:] = qpos
@@ -72,9 +73,11 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
     torques = []
     states = []
     coverage_records = []
-    torque_changes = []
     for step in range(STEPS + 1):
-        mujoco.mj_forward(model, data)
+        if prepared_step:
+            mujoco.mj_step1(model, data)
+        else:
+            mujoco.mj_forward(model, data)
         states.append(data.qpos.copy())
         actual = data.qpos[evaluator.qpos_ids[:60]]
         projection = evaluator.shape_spec.project_actual_configuration(actual)
@@ -98,16 +101,22 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
         reference = ramp.position
         torque, _desired, diagnostic = prepared_compensated_torque(
             model, data, robot, qpos_ids, dof_ids, base_dof,
-            ramp.position, ramp.velocity, ramp.feedforward_acceleration, mass)
+            ramp.position, ramp.velocity, ramp.feedforward_acceleration, mass,
+            legacy_diagnostic=False)
         torques.append(torque.copy())
-        torque_changes.append(diagnostic["torque_change_linf_nm"])
         data.ctrl[:] = torque
-        mujoco.mj_step(model, data)
+        if prepared_step:
+            # step1 prepared position and velocity dependent terms at this
+            # state; step2 computes control dependent stages and retains the
+            # model's implicitfast integrator.
+            mujoco.mj_step2(model, data)
+        else:
+            mujoco.mj_step(model, data)
     return {
         "torques": np.asarray(torques),
         "qpos_states": np.asarray(states),
         "coverage": coverage_records,
-        "maximum_torque_change_from_legacy_nm": max(torque_changes),
+        "maximum_torque_change_from_legacy_nm": None,
     }, data
 
 

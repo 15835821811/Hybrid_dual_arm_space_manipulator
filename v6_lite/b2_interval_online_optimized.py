@@ -14,12 +14,14 @@ import numpy as np
 from scipy.linalg import cho_factor, cho_solve
 
 from v6_lite.b2_batched_capsule_bounds import BatchedCapsuleMidpointBounds
+from v6_lite.b2_compact_fixed_arc_envelope import (
+    CompactFixedArcStateLocalPCCEnvelopeAudit,
+)
 from v6_lite.b2_interval_online import (
     BoundedIntervalAdmission, BoundedIntervalVelocityQP,
 )
 from v6_lite.pcc_batched_distance_query import BatchedDistanceDecisionQuery
 from v6_lite.hierarchical_qp import _ShapeClearanceKinematics
-from v6_lite.pcc_fixed_arc_state_envelope import FixedArcStateLocalPCCEnvelopeAudit
 from v6_lite.pcc_vectorized_fixed_arc_positions import VectorizedFixedArcPCCPositions
 from v6_lite.shape_clearance import target_box_from_mujoco
 
@@ -185,7 +187,7 @@ class OptimizedBoundedIntervalAdmission(BoundedIntervalAdmission):
 
     def __init__(self, spec, model, qp):
         super().__init__(spec, model, qp)
-        self.envelope = FixedArcStateLocalPCCEnvelopeAudit(
+        self.envelope = CompactFixedArcStateLocalPCCEnvelopeAudit(
             model, self.evaluator.shape_spec)
         self.envelope._positions = VectorizedFixedArcPCCPositions(
             self.evaluator.shape_spec, self.envelope.arclengths)

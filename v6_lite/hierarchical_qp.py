@@ -1033,9 +1033,11 @@ class HierarchicalVelocityQP:
         state_timestamp_s: float | None = None,
         target_timestamp_s: float | None = None,
         ramp_start_velocity: np.ndarray | None = None,
+        prepared_state: bool = False,
     ) -> HierarchicalQPResult:
         started = time.perf_counter()
-        mujoco.mj_forward(self.model, data)
+        if not prepared_state:
+            mujoco.mj_forward(self.model, data)
         cfg = self.config
         generalized_map, momentum_residual = self.reaction_velocity_map(data)
         rigid_position = np.asarray(data.xpos[self.rigid_body_id]).copy()

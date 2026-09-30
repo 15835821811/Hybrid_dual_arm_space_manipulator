@@ -790,6 +790,7 @@ def run_scenario(
                 state_timestamp_s=current_time,
                 target_timestamp_s=current_time,
                     ramp_start_velocity=command_velocity,
+                    prepared_state=interval_admission is not None,
                 )
             except Exception as error:
                 if interval_admission is None:
@@ -800,9 +801,9 @@ def run_scenario(
                     "preflight": interval_diagnostic,
                 })
             if interval_admission is not None:
-                # The QP queries temporary geometry states. Refresh the
-                # execution data before matching its ten-step preview.
-                mujoco.mj_forward(model, data)
+                # The preflight forwarded this same execution state. The QP
+                # reads its geometry and does not mutate qpos or qvel; the
+                # preview constructs and prepares its own MjData.
                 interval_diagnostic.update({
                     "solver_status": result.solver_status,
                     "solver_candidate": result.solver_candidate.tolist(),
@@ -830,6 +831,7 @@ def run_scenario(
                         result.planner_velocity.copy(),
                         physics_period_s=run_config.physics_period_s,
                         task_period_s=run_config.task_period_s,
+                        prepared_step=True,
                     )
                     branch_finished = time.perf_counter()
                     next_start = interval_next_start_checker(
