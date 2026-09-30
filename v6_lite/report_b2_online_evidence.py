@@ -34,6 +34,7 @@ def _failed_scenario_checks(metrics: dict) -> dict[str, list[str]]:
 def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
         recompute_dir: Path, injection_dir: Path, repeats_dir: Path,
         visual_dir: Path, aabb_dir: Path, qp_dir: Path, parity_dir: Path,
+        shadow_dir: Path, near_gate_dir: Path,
         output_dir: Path, doc_path: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=False)
     inputs = {
@@ -51,6 +52,8 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
         "aabb_negative": aabb_dir / "aabb_screen_visual_summary.json",
         "qp_breakdown": qp_dir / "latest_qp_breakdown_summary.json",
         "trace_parity": parity_dir / "trace_parity_summary.json",
+        "historical_a1_shadow": shadow_dir / "shadow_report.json",
+        "near_gate_holdout": near_gate_dir / "near_gate_audit.json",
     }
     evidence = {key: _read(path) for key, path in inputs.items()}
     old = evidence["old_metrics"]
@@ -63,6 +66,8 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
     repeats = evidence["repeated_timing"]
     visual = evidence["online_visual"]
     trace_parity = evidence["trace_parity"]
+    shadow = evidence["historical_a1_shadow"]
+    near_gate = evidence["near_gate_holdout"]
     if (len(old["scenarios"]) != 5 or len(new["scenarios"]) != 5
             or old["run_config"]["pcc_mode"] != "legacy_pcc"
             or new["run_config"]["pcc_mode"] != "bounded_interval_pcc"
@@ -74,7 +79,9 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
             or not execution["passed"] or not recompute["passed"]
             or not injection["passed"] or not repeats["all_traces_saved"]
             or not visual["full_online_cycle_timed"]
-            or not trace_parity["all_passed"]):
+            or not trace_parity["all_passed"]
+            or not shadow["passed_as_read_only_audit"]
+            or not near_gate["passed"]):
         raise ValueError("saved B.2 online evidence is incomplete")
     common_qp = set(old["qp_config"]) & set(new["qp_config"])
     changed_qp = sorted(key for key in common_qp
@@ -156,6 +163,8 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
             item["passed"] for item in injection["records"]),
         "new_mode_nontiming_trace_parity_scenarios": sum(
             item["passed"] for item in trace_parity["records"]),
+        "historical_a1_shadow_gate": shadow["online_admission_gate"]["status"],
+        "near_gate_holdout_counts": near_gate["counts"],
         "legacy_native_replay": {
             "passed_count": evidence["old_native_validation"]["passed_count"],
             "total_count": evidence["old_native_validation"]["total_count"],
@@ -235,6 +244,15 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
         "命令过期均在下一力矩步前拒绝。", "",
         "新旧在线实现的五场景非计时 trace 逐项相同，包括全部选中命令和"
         "67 路力矩；性能优化只改变计算路径与实测耗时。", "",
+        "## 历史影子与门槛附近边界", "",
+        f"旧 A.1 轨迹的只读影子审计通过，但其当时的在线门禁为 "
+        f"`{shadow['online_admission_gate']['status']}`；旧轨迹存在代理未知、"
+        "形状子空间外与冻结起点违例。此次新区间闭环在自身新轨迹上重新"
+        "完成完整执行及重放，不能把旧影子结果改写成当时已通过门禁。", "",
+        f"冻结门槛附近留出集 {near_gate['counts']['checked_count']} 例，"
+        f"经验代理假安全 {near_gate['counts']['empirical_proxy_false_safe']} 例，"
+        f"经验误拒绝 {near_gate['counts']['empirical_proxy_false_reject']} 例；"
+        "这是有限样本几何对照，不代表全状态域结论。", "",
         "A.1 历史产物仅是开发基线；本报告的 26 项检查从本次保存的 67 路"
         "力矩重新运行 MuJoCo。失败轨迹和性能反例保留在各自独立目录。"
         "数值区间实现没有形式化浮点认证，代理包络与真实机器人全域安全"
@@ -253,12 +271,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("old-dir", "new-dir", "unoptimized-dir", "recompute-dir",
                  "injection-dir", "repeats-dir", "visual-dir", "aabb-dir",
-                 "qp-dir", "parity-dir", "output-dir", "doc-path"):
+                 "qp-dir", "parity-dir", "shadow-dir", "near-gate-dir",
+                 "output-dir", "doc-path"):
         parser.add_argument("--" + name, type=Path, required=True)
     args = parser.parse_args()
     result = run(args.old_dir, args.new_dir, args.unoptimized_dir,
                  args.recompute_dir, args.injection_dir, args.repeats_dir,
                  args.visual_dir, args.aabb_dir, args.qp_dir, args.parity_dir,
+                 args.shadow_dir, args.near_gate_dir,
                  args.output_dir,
                  args.doc_path)
     print(json.dumps({"stage3_functional_five_scenes_complete": result[
