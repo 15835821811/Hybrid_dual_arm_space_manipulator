@@ -164,6 +164,8 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
         "new_mode_nontiming_trace_parity_scenarios": sum(
             item["passed"] for item in trace_parity["records"]),
         "historical_a1_shadow_gate": shadow["online_admission_gate"]["status"],
+        "user_authorized_stage_order_waiver_used": (
+            shadow["online_admission_gate"]["status"] != "MET"),
         "near_gate_holdout_counts": near_gate["counts"],
         "legacy_native_replay": {
             "passed_count": evidence["old_native_validation"]["passed_count"],
@@ -248,7 +250,9 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
         f"旧 A.1 轨迹的只读影子审计通过，但其当时的在线门禁为 "
         f"`{shadow['online_admission_gate']['status']}`；旧轨迹存在代理未知、"
         "形状子空间外与冻结起点违例。此次新区间闭环在自身新轨迹上重新"
-        "完成完整执行及重放，不能把旧影子结果改写成当时已通过门禁。", "",
+        "完成完整执行及重放。依据用户后续明确的有限放宽授权，放宽的是"
+        "先后阶段门禁；安全距离、PCC 半径、数值容差和执行器限制未放宽。"
+        "旧影子结果仍为未通过，不能改写成当时已通过门禁。", "",
         f"冻结门槛附近留出集 {near_gate['counts']['checked_count']} 例，"
         f"经验代理假安全 {near_gate['counts']['empirical_proxy_false_safe']} 例，"
         f"经验误拒绝 {near_gate['counts']['empirical_proxy_false_reject']} 例；"
