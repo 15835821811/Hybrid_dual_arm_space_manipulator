@@ -57,7 +57,7 @@ class CycleTimeline:
             "actual_dispatch_monotonic_ns": self.last,
             "dispatch_latency_s": (self.last - self.started) * 1e-9,
             "thread_cpu_s": (self.cpu_last - self.cpu_started) * 1e-9,
-            "phases": self.phases,
+            "phases": [dict(phase) for phase in self.phases],
             "nested_measurements": {
                 "qp_solver_latency": "qp_assembly_and_solve",
                 "interval_preview_latency": ["ten_step_preview", "next_start_check"],

@@ -29,6 +29,8 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 - V6.2-B.2 功能交付：五场景完整运行，真实力矩重放 `26/26`、执行合同 `11/11`；6,755 个规划边界、12,350 条区间行独立重算无不一致。[在线证据](docs/V6_2_B2_ONLINE_EVIDENCE.md)保留完整运行 p95 最大值 `19.529 ms` 和三轮重复计时失败 `20.457 / 20.571 / 24.729 ms`。
 - 旧 A.1 影子轨迹的在线门禁仍为 `NOT_MET`，见[历史第二阶段证据](v6_lite/output/v6_2_b2/stage2_summary/STAGE2_EVIDENCE.md)。新区间闭环验收不改写历史门禁结果。
 - C.1 在 `timing/<scenario>.jsonl` 保存状态采集至首路力矩发布的墙钟与线程 CPU 时间线，保留原算法计时。各阶段不重叠，嵌套求解器统计单独注明；p95、p99、最大值、超期次数、连续超期与首周期均保留。
+- C.1 区间模式默认执行 `wall_deadline`：有效期固定从采集时刻起算 20 ms，十个力矩步均检查墙钟、模型、命令、区间、次序及预演起点；到期拒绝，不自动续期。同步仿真计算期间物理被冻结，因此即使墙钟门禁通过，也不能解释为真实异步硬件的安全证明。
+- `offline_replay` 仅用于功能复验与完整性能采样，明确标记墙钟有效性未强制保证；它仍检查状态及预演一致性。停止仿真与迟到拒绝不构成安全备份。
 - 历史 V6-lite 正式验证：5 场景 `26/26`，原生 500 Hz 连续体—目标最小间隙 `24.994694 mm`，整机 4×细分最小间隙 `14.995557 mm`
 - V6.1-A 影子审计：10,000 个臂形构型 + 10,000 个卫星相对几何案例，离散 FK、PCC 导数、包络覆盖与距离梯度全部通过，胶囊/PCC 假安全均为 `0`
 - V6.1-B：PCC/胶囊约束默认关闭；启用版真实五场景同样 `26/26`，QP 失败 `0`，PCC 激活 `3,718` 次、绑定 `202` 次，最差任务 p95 `18.089305 ms`
@@ -97,6 +99,13 @@ python -m pip install -r requirements.txt
 # 每次自动生成 output/runs/<run_id>/；已存在的目录不会被覆盖
 python -m v6_lite.run_v6_lite
 python -m v6_lite.run_v6_lite --enable-pcc-cbf --enable-capsule-cbf
+
+# C.1 默认墙钟门禁；超时保留失败目录并停止物理消费命令
+python -m v6_lite.run_v6_lite --pcc-mode bounded_interval_pcc --enable-capsule-cbf
+
+# 预声明三轮、每轮完整五场景 27 s；显式离线复验，保留全部时延与失败
+python -m v6_lite.run_c1_acceptance --output-dir v6_lite/output/runs/c1-new-matrix --reference-dir <frozen-reference-run>
+python -m v6_lite.audit_c1_delay_injection --run-dir <complete-c1-run> --output-dir v6_lite/output/runs/c1-new-delay
 
 # 预声明每组 3 轮；所有轮次和失败均保留，不筛选通过轮次
 python -m v6_lite.run_matrix --repeats 3

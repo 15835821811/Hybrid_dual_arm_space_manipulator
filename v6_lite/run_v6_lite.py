@@ -50,6 +50,7 @@ from v6_lite.safety_contract import ActionValidation, FailureReason, command_is_
 from v6_lite.runtime_timing import (
     CycleTimeline, latency_summary, runtime_identity, write_timelines,
 )
+from v6_lite.runtime_command import CommandCertificate, DispatchGate, model_id, partition_id, state_id
 
 CONTRACT_VERSION = "v6_2_a1_ramp_aware_qp"
 
@@ -105,8 +106,11 @@ class V6LiteRunConfig:
     torque_latency_p95_threshold_s: float = 0.002
     steady_window_s: float = 1.5
     pcc_mode: str = "legacy_pcc"
+    dispatch_clock_policy: str = "wall_deadline"
 
     def validate(self) -> None:
+        if self.dispatch_clock_policy not in ("wall_deadline", "offline_replay"):
+            raise ValueError("unsupported dispatch clock policy")
         if self.pcc_mode not in ("legacy_pcc", "bounded_interval_pcc"):
             raise ValueError("unsupported PCC control mode")
         if self.scenario_count < 3:
@@ -584,7 +588,7 @@ def run_scenario(
             spec, model, verifier.pairs, qp_config, evaluator=evaluator)
         interval_admission = OptimizedBoundedIntervalAdmission(spec, model, qp)
         from v6_lite.b2_screened_next_start_rows import ScreenedNextStart
-        interval_next_start_checker = ScreenedNextStart()
+        interval_next_start_checker = ScreenedNextStart(track_instances=False)
         interval_next_start_checker.initialize(
             model, spec, verifier, qp_config, evaluator)
         from v6_lite.b2_interval_runtime import RuntimeWorkspace
@@ -717,6 +721,10 @@ def run_scenario(
             "interval_realized_next_start_minimum_slack_m_s": [],
         })
     approved_branch = None
+    dispatch_gate = DispatchGate()
+    command_certificate = None
+    source_contract_hash = spec.runtime_contract_sha256()
+    source_model_hash = model_id(model, source_contract_hash)
     timing_rows = []
     timeline = None
     timing_path = trace_dir.parent / "timing" / f"{scenario.scenario_id}.jsonl"
@@ -745,6 +753,10 @@ def run_scenario(
             "time_s": float(data.time),
             "failure_reason": reason,
             "diagnostic": diagnostic,
+            "command_certificate": (command_certificate.to_dict()
+                                    if command_certificate is not None else None),
+            "continuation_guaranteed": False,
+            "simulation_stop_is_safe_backup": False,
             "next_servo_step_executed": False,
             "partial_trace": {"path": partial_path.as_posix(),
                               "sha256": _sha256(partial_path)},
@@ -761,6 +773,7 @@ def run_scenario(
             task_tick_started = time.perf_counter()
             timeline = CycleTimeline(physics_step // task_stride, current_time)
             mujoco.mj_forward(model, data)
+            acquisition_state_id = state_id(model, data) if interval_admission is not None else None
             timeline.mark("state_refresh")
             interval_diagnostic = None
             if interval_admission is not None:
@@ -821,6 +834,7 @@ def run_scenario(
                     "preflight": interval_diagnostic,
                 })
             timeline.mark("qp_assembly_and_solve")
+            solve_finished_time = timeline.last * 1e-9
             if interval_admission is not None:
                 # The preflight forwarded this same execution state. The QP
                 # reads its geometry and does not mutate qpos or qvel; the
@@ -905,6 +919,16 @@ def run_scenario(
                 timeline.mark("ten_step_preview")
                 timeline.mark("next_start_check")
             timeline.mark("execution_validation")
+            if interval_admission is not None and result.planner_velocity is not None:
+                command_certificate = CommandCertificate.issue(
+                    command_id=physics_step // task_stride,
+                    source_state_id=acquisition_state_id,
+                    source_model_hash=source_model_hash,
+                    source_partition_id=partition_id(qp.partition),
+                    command=result.planner_velocity, acquired=timeline.started * 1e-9,
+                    source_simulation_s=current_time, solve_finished=solve_finished_time,
+                    validated=timeline.last * 1e-9,
+                    period_s=run_config.task_period_s)
             interval_full_control_latency_s = (
                 time.perf_counter() - task_tick_started)
             recent_snapshots.append(
@@ -1203,11 +1227,34 @@ def run_scenario(
             )
         if segment_step == 0:
             timeline.mark("reference_and_first_torque_preparation")
+        dispatch_check = None
+        if interval_admission is not None:
+            # Observe the execution state, never substitute the private preview.
+            # The existing 1e-9 numerical replay tolerance is unchanged.
+            microstate_matches = (
+                np.max(np.abs(data.qpos - approved_branch["qpos_states"][segment_step])) <= 1e-9
+                and np.max(np.abs(data.qvel - approved_branch["qvel_states"][segment_step])) <= 1e-9)
+            observed_id = state_id(model, data) if segment_step == 0 else None
+            dispatch_check = dispatch_gate.check(
+                command_certificate, now=time.perf_counter(),
+                model_hash=model_id(model, source_contract_hash), partition_hash=partition_id(qp.partition),
+                command=command_velocity, observed_state_id=observed_id,
+                observed_simulation_s=float(data.time), substep=segment_step,
+                microstate_matches=microstate_matches, policy=run_config.dispatch_clock_policy)
+            if not dispatch_check["accepted"]:
+                reject_interval(dispatch_check["reason"], dispatch_check)
         data.ctrl[:] = torque
+        if (interval_admission is not None and run_config.dispatch_clock_policy == "wall_deadline"
+                and time.perf_counter() > command_certificate.valid_until):
+            reject_interval("EXPIRED_BEFORE_PHYSICS_CONSUMPTION", {
+                "servo_substep": segment_step, "torque_consumed_by_mj_step": False})
         if segment_step == 0:
             timeline.mark("torque_publish")
             timing_rows.append(timeline.record(
                 accepted=True, qp_iterations=int(result.solver_iterations),
+                certificate=(command_certificate.to_dict() if command_certificate else None),
+                dispatch_check=dispatch_check,
+                servo_dispatch_checks=[dispatch_check] if dispatch_check else [],
                 penalty_updates=int(getattr(qp, "last_penalty_update_count", 0)),
                 interval_point_evaluations=(
                     int(interval_diagnostic["point_evaluations"])
@@ -1215,6 +1262,9 @@ def run_scenario(
                 interval_selected_rows=(
                     int(interval_diagnostic["selected_interval_count"])
                     if interval_diagnostic is not None else 0)))
+            timeline = None
+        elif dispatch_check is not None:
+            timing_rows[-1]["servo_dispatch_checks"].append(dispatch_check)
         torque_latency = time.perf_counter() - torque_started
         mujoco.mj_step(model, data)
         segment_step += 1
@@ -1585,7 +1635,12 @@ def run_scenario(
         },
         "execution_contract": {
             "runtime_identity": runtime_identity(run_config.pcc_mode, spec, model),
+            "source_compiled_model_sha256": source_model_hash,
             "dispatch_clock_scope": "measured_wall_clock_with_frozen_physics_during_compute",
+            "dispatch_clock_policy": run_config.dispatch_clock_policy,
+            "wall_deadline_enforced": (interval_admission is not None
+                                       and run_config.dispatch_clock_policy == "wall_deadline"),
+            "safe_backup_controller_established": False,
             "architecture": (
                 "one_priority_weighted_velocity_qp_plus_model_based_torque_servo"
             ),
@@ -1902,6 +1957,9 @@ def _parser() -> argparse.ArgumentParser:
         default="legacy_pcc",
         help="select the PCC backend before starting the run",
     )
+    parser.add_argument("--dispatch-clock-policy", choices=("wall_deadline", "offline_replay"),
+                        default="wall_deadline",
+                        help="bounded mode defaults to wall deadline; offline replay measures but does not certify wall validity")
     return parser
 
 
@@ -1919,6 +1977,7 @@ def main() -> None:
         duration_s=args.duration,
         verification_subdivisions=args.verification_subdivisions,
         pcc_mode=args.pcc_mode,
+        dispatch_clock_policy=args.dispatch_clock_policy,
     )
     result = run_suite(
         config,

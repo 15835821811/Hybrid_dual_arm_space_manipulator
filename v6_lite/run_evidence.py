@@ -29,6 +29,7 @@ SOURCE_FILES = (
     "v6_lite/run_v6_lite.py",
     "v6_lite/run_evidence.py",
     "v6_lite/runtime_timing.py",
+    "v6_lite/runtime_command.py",
     "v6_lite/b2_interval_runtime.py",
     "v6_lite/b2_interval_online_optimized.py",
     "v6_lite/b2_prepared_compensated_torque.py",
@@ -104,7 +105,10 @@ def start_run(
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
     scenario_definitions = [item.to_dict() for item in scenarios]
-    source_hashes = {name: _source_hash(ROOT / name) for name in SOURCE_FILES}
+    source_names = set(SOURCE_FILES)
+    for package in ("v6_lite", "model_test"):
+        source_names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / package).rglob("*.py"))
+    source_hashes = {name: _source_hash(ROOT / name) for name in sorted(source_names)}
     commit = _git("rev-parse", "HEAD")
     tracked_changes = _git("status", "--porcelain", "--untracked-files=no")
     host_label = hashlib.sha256(platform.node().encode("utf-8")).hexdigest()
@@ -146,8 +150,15 @@ def start_run(
         },
     }
     from v6_lite.runtime_timing import runtime_identity
-    metadata["runtime_identity"] = runtime_identity(run_config.pcc_mode, spec)
+    pcc_mode = getattr(run_config, "pcc_mode", None)
+    dispatch_policy = getattr(run_config, "dispatch_clock_policy", "historical_not_specified")
+    metadata["runtime_identity"] = (runtime_identity(pcc_mode, spec)
+                                    if pcc_mode is not None else None)
     metadata["timing_protocol"].update({
+        "dispatch_clock_policy": dispatch_policy,
+        "wall_deadline_enforced": (pcc_mode == "bounded_interval_pcc"
+                                   and dispatch_policy == "wall_deadline"),
+        "thread_cpu_clock": "time.thread_time; Windows samples may be coarsely quantized",
         "dispatch_start": "state acquisition before mj_forward",
         "dispatch_end": "first 67-channel data.ctrl assignment",
         "stage_policy": "nonoverlapping monotonic and thread CPU phases; nested diagnostics separate",

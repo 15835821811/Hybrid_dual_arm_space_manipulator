@@ -77,9 +77,10 @@ class ScreenedNextStart(ReusedNextStart):
 
     instances: list["ScreenedNextStart"] = []
 
-    def __init__(self) -> None:
+    def __init__(self, *, track_instances=True) -> None:
         super().__init__()
-        self.instances.append(self)
+        if track_instances:
+            self.instances.append(self)
 
     def initialize(self, model, robot, verifier, cfg, evaluator):
         """Allocate model-constant geometry before the first timed cycle."""
