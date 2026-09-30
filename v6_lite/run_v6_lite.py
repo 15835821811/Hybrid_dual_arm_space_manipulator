@@ -47,6 +47,9 @@ from v6_lite.pcc_monitor import PCCMonitor
 from v6_lite.execution_ramp import advance_reference
 from v6_lite.run_evidence import fail_run, finish_run, new_run_id, start_run
 from v6_lite.safety_contract import ActionValidation, FailureReason, command_is_current
+from v6_lite.runtime_timing import (
+    CycleTimeline, latency_summary, runtime_identity, write_timelines,
+)
 
 CONTRACT_VERSION = "v6_2_a1_ramp_aware_qp"
 
@@ -708,8 +711,15 @@ def run_scenario(
             "interval_realized_next_start_minimum_slack_m_s": [],
         })
     approved_branch = None
+    timing_rows = []
+    timeline = None
+    timing_path = trace_dir.parent / "timing" / f"{scenario.scenario_id}.jsonl"
 
     def reject_interval(reason: str, diagnostic: dict[str, Any]) -> None:
+        if timeline is not None:
+            timeline.mark("rejected_before_dispatch")
+            timing_rows.append(timeline.record(accepted=False, reason=reason))
+        write_timelines(timing_path, timing_rows)
         failure_dir = trace_dir.parent / "failures"
         failure_dir.mkdir(parents=True, exist_ok=True)
         partial_path = failure_dir / f"{scenario.scenario_id}_interval_partial_trace.npz"
@@ -742,7 +752,9 @@ def run_scenario(
         current_time = float(data.time)
         if physics_step % task_stride == 0:
             task_tick_started = time.perf_counter()
+            timeline = CycleTimeline(physics_step // task_stride, current_time)
             mujoco.mj_forward(model, data)
+            timeline.mark("state_refresh")
             interval_diagnostic = None
             if interval_admission is not None:
                 from v6_lite.b2_interval_online import IntervalPreflightFailure
@@ -759,6 +771,7 @@ def run_scenario(
                     })
                 interval_diagnostic["preflight_latency_s"] = (
                     time.perf_counter() - interval_started)
+            timeline.mark("interval_query_and_envelope_preflight")
             (
                 rigid_target,
                 rigid_target_velocity,
@@ -800,6 +813,7 @@ def run_scenario(
                     "exception": str(error),
                     "preflight": interval_diagnostic,
                 })
+            timeline.mark("qp_assembly_and_solve")
             if interval_admission is not None:
                 # The preflight forwarded this same execution state. The QP
                 # reads its geometry and does not mutate qpos or qvel; the
@@ -834,10 +848,12 @@ def run_scenario(
                         prepared_step=True,
                     )
                     branch_finished = time.perf_counter()
+                    timeline.mark("ten_step_preview")
                     next_start = interval_next_start_checker(
                         model, spec, verifier, qp_config,
                         interval_admission.evaluator, preview_next,
                         result.planner_velocity)
+                    timeline.mark("next_start_check")
                 except Exception as error:
                     reject_interval("INTERVAL_RAMP_PREVIEW_EXCEPTION", {
                         "exception_type": type(error).__name__,
@@ -877,6 +893,10 @@ def run_scenario(
                         != "START_ROWS_SATISFIED"):
                     reject_interval("REALIZED_NEXT_START_UNSUPPORTED",
                                     interval_diagnostic)
+            if interval_admission is None or result.planner_velocity is None:
+                timeline.mark("ten_step_preview")
+                timeline.mark("next_start_check")
+            timeline.mark("execution_validation")
             interval_full_control_latency_s = (
                 time.perf_counter() - task_tick_started)
             recent_snapshots.append(
@@ -1083,6 +1103,7 @@ def run_scenario(
                     f"{active_validation.failure_reason.value}; no servo step executed"
                 )
             command_velocity = result.planner_velocity.copy()
+            timeline.mark("snapshot_logging_and_command_selection")
 
         if active_validation is None or not command_is_current(active_validation, current_time):
             failure_dir = trace_dir.parent / "failures"
@@ -1172,7 +1193,19 @@ def run_scenario(
                 torque_saturation_count=compensated[
                     "compensated_torque_saturation_count"],
             )
+        if segment_step == 0:
+            timeline.mark("reference_and_first_torque_preparation")
         data.ctrl[:] = torque
+        if segment_step == 0:
+            timeline.mark("torque_publish")
+            timing_rows.append(timeline.record(
+                accepted=True, qp_iterations=int(result.solver_iterations),
+                interval_point_evaluations=(
+                    int(interval_diagnostic["point_evaluations"])
+                    if interval_diagnostic is not None else 0),
+                interval_selected_rows=(
+                    int(interval_diagnostic["selected_interval_count"])
+                    if interval_diagnostic is not None else 0)))
         torque_latency = time.perf_counter() - torque_started
         mujoco.mj_step(model, data)
         segment_step += 1
@@ -1282,6 +1315,7 @@ def run_scenario(
         log["torque_latency"].append(torque_latency)
 
     task_qpos_trace.append(np.asarray(data.qpos).copy())
+    write_timelines(timing_path, timing_rows)
     arrays = {key: np.asarray(value) for key, value in log.items()}
     task_arrays = {key: np.asarray(value) for key, value in task_log.items()}
     initial_base_pose = np.asarray(initial_qpos[base_qpos_slice], dtype=np.float64)
@@ -1464,6 +1498,9 @@ def run_scenario(
                 "pcc_avoidance_intervention_max": pcc_intervention_max,
             },
             "rates_and_latency": {
+                "dispatch": latency_summary(
+                    [row["dispatch_latency_s"] for row in timing_rows]),
+                "algorithm": latency_summary(task_arrays["full_latency"]),
                 "physics_hz": 1.0 / float(model.opt.timestep),
                 "task_hz": 1.0 / run_config.task_period_s,
                 "physics_steps": physics_steps,
@@ -1537,6 +1574,8 @@ def run_scenario(
             },
         },
         "execution_contract": {
+            "runtime_identity": runtime_identity(run_config.pcc_mode, spec, model),
+            "dispatch_clock_scope": "measured_wall_clock_with_frozen_physics_during_compute",
             "architecture": (
                 "one_priority_weighted_velocity_qp_plus_model_based_torque_servo"
             ),
@@ -1695,6 +1734,7 @@ def run_suite(
     }
     payload = {
         "contract_version": CONTRACT_VERSION,
+        "runtime_identity": runtime_identity(run_config.pcc_mode, spec),
         "passed": bool(all(summary_checks.values())),
         "summary_checks": summary_checks,
         "architecture": {

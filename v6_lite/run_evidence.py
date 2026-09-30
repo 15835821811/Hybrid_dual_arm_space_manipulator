@@ -28,6 +28,11 @@ SOURCE_FILES = (
     "v6_lite/execution_ramp.py",
     "v6_lite/run_v6_lite.py",
     "v6_lite/run_evidence.py",
+    "v6_lite/runtime_timing.py",
+    "v6_lite/b2_interval_runtime.py",
+    "v6_lite/b2_interval_online_optimized.py",
+    "v6_lite/b2_prepared_compensated_torque.py",
+    "v6_lite/b2_screened_next_start_rows.py",
 )
 
 
@@ -140,6 +145,16 @@ def start_run(
             "replay_can_reproduce_wall_clock": False,
         },
     }
+    from v6_lite.runtime_timing import runtime_identity
+    metadata["runtime_identity"] = runtime_identity(run_config.pcc_mode, spec)
+    metadata["timing_protocol"].update({
+        "dispatch_start": "state acquisition before mj_forward",
+        "dispatch_end": "first 67-channel data.ctrl assignment",
+        "stage_policy": "nonoverlapping monotonic and thread CPU phases; nested diagnostics separate",
+        "initialization": "recorded separately from first cycle; no startup cycle excluded",
+        "physics_during_compute": "frozen synchronous simulation",
+        "continuous_time_certified": False,
+    })
     _write_json(output_dir / "run_metadata.json", metadata, exclusive=True)
     return metadata
 
