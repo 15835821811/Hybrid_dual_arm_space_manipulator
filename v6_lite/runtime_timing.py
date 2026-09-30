@@ -61,7 +61,7 @@ class CycleTimeline:
             "nested_measurements": {
                 "qp_solver_latency": "qp_assembly_and_solve",
                 "interval_preview_latency": ["ten_step_preview", "next_start_check"],
-                "algorithm_full_latency": "state_refresh_through_validation",
+                "algorithm_full_latency": "task_tick_started_before_timeline_to_before_constraint_snapshot",
             },
             **diagnostic,
         }

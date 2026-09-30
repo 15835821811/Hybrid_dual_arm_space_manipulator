@@ -1,6 +1,19 @@
 # V6-lite：确定性混合双臂跟踪与避障
 
-> 历史五场景产物合同：`v6_lite_6`（2026-09-21）。当前开发分支运行合同：`v6_2_a_safety_contract`。
+> 历史五场景产物合同：`v6_lite_6`（2026-09-21）。当前历史 trace schema：`v6_2_a1_ramp_aware_qp`；实际控制器为 `v6_2_c1_bounded_interval_pcc` 或历史 `v6_2_a1_legacy_pcc`，模式、伺服与模型身份分别记录。
+
+## V6.2-C.1 时序与执行状态
+
+C.1 保留 B.2 数值动作。三轮完整五场景显式 `offline_replay` 的算法和发布 p95 均通过原 20 ms 门槛，非计时 trace 全部严格相同；第一轮真实力矩重放 `26/26`、合同 `11/11`、6,755 状态与 12,350 区间行重算通过。发布 p95 最大 `17.775 ms`，但仍有 `238/20,250` 个周期超过 20 ms。
+
+区间模式默认 `wall_deadline`，有效期从状态采集起算 20 ms，每个力矩步检查模型、命令、来源、区间、次序、实际状态与墙钟。五场景墙钟持续执行探测均因过期在 6–10 ms 仿真时刻拒绝，因此持续执行状态仍为 `NOT_MET`。原历史 B.2 重复计时失败不改写；停止仿真不构成安全备份。
+
+完整证据、27 个物理继续演化的延迟拒绝条件、长尾与历史源码哈希回归失败见 [C.1 报告](../docs/V6_2_C1_RUNTIME_EVIDENCE.md) 和 [机器状态](controller_status.json)。
+
+```powershell
+python -m v6_lite.run_c1_acceptance --output-dir v6_lite/output/runs/c1-new-three-rounds --reference-dir <frozen-reference-run>
+python -m v6_lite.audit_c1_wall_execution --output-dir v6_lite/output/runs/c1-new-wall-probes
+```
 
 ## V6.2-B.2 开关式区间 PCC
 
@@ -13,7 +26,7 @@
 
 完整五场景、真实力矩重放、独立区间行重算、故障注入和自动生成的性能图见 [B.2 在线证据](../docs/V6_2_B2_ONLINE_EVIDENCE.md)。原 20 ms 全控制 p95 门槛仍适用；最新完整五场景运行通过该门槛及 26 项重放，但预声明的短程重复计时仍出现超时，不能据此宣称硬实时保证。区间代理与真实机器人全域安全不能等同，也没有连续时间安全证明。
 
-## V6.2-A 执行安全合同
+## 历史 V6.2-A 执行安全合同
 
 当前分支保留原 17 维加权速度 QP、67 路力矩伺服、目标外生漂移和全部原 MuJoCo 碰撞 pair。求解器候选速度和实际选中的命令分开记录；QP 不可行、迭代耗尽、输入过期或当前线性化约束/速度斜坡检查失败时，`selected_command` 为空、状态为 `UNCERTIFIED`，运行在下一次力矩更新前中止并写出失败事件。零速度、上一周期命令和高初始速度下的停止动作都不会自动获得安全身份。
 
@@ -27,7 +40,7 @@ python -m v6_lite.validate_v6_lite                 # 从保存的力矩真实重
 python -m v6_lite.generate_evidence                # 从 JSON 生成 docs/V6_2A_EVIDENCE.md
 ```
 
-运行输出默认写到 `v6_lite/output/v6_2_a/`，不会覆盖历史报告。若合同中止，失败 JSON 写入该目录的 `traces/`；中止的场景不得计入成功或 26/26 重放。历史 V6.1-B 启用版未提交原始 trace，因此其已提交 26/26 只能作为历史产物检查，不能被本分支伪装成新重放。
+当前运行输出默认写到 `v6_lite/output/runs/<新 run_id>/`，拒绝覆盖既有目录。若合同中止，失败 JSON 与部分 trace 写入该运行的 `failures/`，逐周期时间线写入 `timing/`；中止的场景不得计入成功或 26/26 重放。历史 V6.1-B 启用版未提交原始 trace，因此其已提交 26/26 只能作为历史产物检查，不能被本分支伪装成新重放。
 
 V6-lite 是一个单独目录内的最小闭环实现。它不加载训练集、权重、归一化器或任何 Diffusion 模块，也不生成、投影或排序多条候选轨迹。
 

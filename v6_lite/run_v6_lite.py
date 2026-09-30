@@ -729,11 +729,20 @@ def run_scenario(
     timeline = None
     timing_path = trace_dir.parent / "timing" / f"{scenario.scenario_id}.jsonl"
 
-    def reject_interval(reason: str, diagnostic: dict[str, Any]) -> None:
+    def persist_rejected_timeline(reason: str) -> None:
         if timeline is not None:
             timeline.mark("rejected_before_dispatch")
-            timing_rows.append(timeline.record(accepted=False, reason=reason))
+            timing_rows.append(timeline.record(
+                accepted=False, reason=reason,
+                certificate=command_certificate.to_dict() if command_certificate else None))
+        elif timing_rows:
+            timing_rows[-1]["later_dispatch_rejection"] = {
+                "reason": reason, "monotonic_ns": time.perf_counter_ns(),
+                "servo_substep": segment_step, "next_servo_step_executed": False}
         write_timelines(timing_path, timing_rows)
+
+    def reject_interval(reason: str, diagnostic: dict[str, Any]) -> None:
+        persist_rejected_timeline(reason)
         failure_dir = trace_dir.parent / "failures"
         failure_dir.mkdir(parents=True, exist_ok=True)
         partial_path = failure_dir / f"{scenario.scenario_id}_interval_partial_trace.npz"
@@ -1081,6 +1090,7 @@ def run_scenario(
                 pcc_monitor.record(current_time, result)
 
             if result.planner_velocity is None:
+                persist_rejected_timeline(active_validation.failure_reason.value)
                 failure_dir = trace_dir.parent / "failures"
                 failure_dir.mkdir(parents=True, exist_ok=True)
                 partial_path = failure_dir / f"{scenario.scenario_id}_partial_trace.npz"
@@ -1138,6 +1148,7 @@ def run_scenario(
             timeline.mark("snapshot_logging_and_command_selection")
 
         if active_validation is None or not command_is_current(active_validation, current_time):
+            persist_rejected_timeline(FailureReason.EXPIRED_COMMAND.value)
             failure_dir = trace_dir.parent / "failures"
             failure_dir.mkdir(parents=True, exist_ok=True)
             partial_path = failure_dir / f"{scenario.scenario_id}_partial_trace.npz"
