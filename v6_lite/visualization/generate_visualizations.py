@@ -102,10 +102,13 @@ def _plot_obstacle_spheres(axis: Any, obstacles: tuple[WorkspaceSphere, ...]) ->
 def _clearance_summary_payload(metrics: dict[str, Any]) -> dict[str, Any]:
     """Extract the two distinct safety quantities defined by V6-lite 6."""
 
-    if metrics.get("contract_version") != SOURCE_CONTRACT_VERSION:
+    if metrics.get("contract_version") not in {
+        SOURCE_CONTRACT_VERSION,
+        "v6_2_a1_ramp_aware_qp",
+    }:
         raise ValueError(
-            "clearance visualization requires source contract "
-            f"{SOURCE_CONTRACT_VERSION!r}"
+            f"clearance visualization requires {SOURCE_CONTRACT_VERSION} "
+            "or v6_2_a1_ramp_aware_qp source metrics"
         )
     scenario_ids: list[str] = []
     whole_body_m: list[float] = []
@@ -485,8 +488,10 @@ def plot_base_pose_drift_gif(
     }
 
 
-def plot_tracking_paths(metrics: dict[str, Any], output_path: Path) -> None:
-    scenario_result = metrics["scenarios"][0]
+def plot_tracking_paths(
+    metrics: dict[str, Any], output_path: Path, *, scenario_index: int = 0
+) -> None:
+    scenario_result = metrics["scenarios"][scenario_index]
     trace = np.load(Path(scenario_result["trace"]["path"]), allow_pickle=False)
     obstacles = _scenario_obstacles(scenario_result["scenario"])
     figure = plt.figure(figsize=(14.0, 6.6))
@@ -1095,11 +1100,13 @@ def render_five_views(
     width: int = 640,
     height: int = 480,
     fps: float = 30.0,
+    scenario_index: int = 0,
 ) -> tuple[list[Path], Path, Path, dict[str, Any]]:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to encode V6-lite videos")
-    scenario_result = metrics["scenarios"][0]
+    scenario_result = metrics["scenarios"][scenario_index]
+    scenario_id = str(scenario_result["scenario"]["scenario_id"])
     target_contract = scenario_result["scenario"]["continuum_target"]
     continuum_target_minimum_clearance_m = float(
         scenario_result["metrics"]["whole_body_clearance"]["minimum_by_class"][
@@ -1147,7 +1154,7 @@ def render_five_views(
     mujoco.mj_forward(model, data)
     cameras = _make_cameras(lookat, distance)
     output_dir.mkdir(parents=True, exist_ok=True)
-    paths = [output_dir / f"v6_lite_scenario_00_{view}.mp4" for view in VIEWS]
+    paths = [output_dir / f"{scenario_id}_{view}.mp4" for view in VIEWS]
     writers = {
         view: _RawFfmpegWriter(ffmpeg, path, width, height, fps)
         for view, path in zip(VIEWS, paths)
@@ -1334,7 +1341,7 @@ def render_five_views(
     if rendered != frame_count:
         raise RuntimeError(f"rendered {rendered} frames, expected {frame_count}")
 
-    composite = output_dir / "v6_lite_scenario_00_five_view_grid.mp4"
+    composite = output_dir / f"{scenario_id}_five_view_grid.mp4"
     blank_duration = frame_count / fps
     command = [ffmpeg, "-y", "-loglevel", "error"]
     for path in paths:
@@ -1367,7 +1374,7 @@ def render_five_views(
     completed = subprocess.run(command, capture_output=True, text=True)
     if completed.returncode != 0:
         raise RuntimeError(f"five-view composition failed: {completed.stderr}")
-    preview = output_dir / "v6_lite_scenario_00_five_view_preview.png"
+    preview = output_dir / f"{scenario_id}_five_view_preview.png"
     completed = subprocess.run(
         [
             ffmpeg,

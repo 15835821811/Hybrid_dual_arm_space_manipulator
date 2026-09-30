@@ -226,6 +226,7 @@ def run(old_dir: Path, new_dir: Path, unoptimized_dir: Path,
         f"{1000*old['aggregate_metrics']['whole_body_minimum_clearance_m']:.3f} mm | "
         f"{1000*new['aggregate_metrics']['whole_body_minimum_clearance_m']:.3f} mm |",
         "", f"![B.2 在线证据性能图]({image_rel.as_posix()})", "",
+        "[最新完整五场景图与视频](V6_2_B2_LATEST_VISUALIZATION.md)", "",
         f"新区间模式五场景完整调用 p95 最大值 {optimized_p95:.3f} ms，"
         + ("本次低于原 20 ms 门槛，原 26 项真实力矩重放全部通过。"
            if report["original_20ms_gate_met"] and

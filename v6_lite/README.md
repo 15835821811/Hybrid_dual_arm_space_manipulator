@@ -120,7 +120,14 @@ python -m unittest v6_lite.test_v6_1_b -v
 
 ## 跟踪可视化与五视角视频
 
-V6.1-B 启用版的最新整套可视化位于 `visualization/output_v6_1_b/`，连续体单侧视频位于 `visualization/continuum_focus_output_v6_1_b/`。它们从本次启用版的五场景 trace 生成，图像、五个视角视频、组合视频共 11 个清单产物，并通过 22/22 项可视化校验。`visualization/output/` 与 `visualization/continuum_focus_output/` 保留此前 V6-lite 稳定版产物。
+最新 B.2 整套可视化位于 `visualization/output_v6_2_b2_latest_20260930/`，由 `output/v6_2_b2/online_dense_slices_five_20260930/` 的正式五场景 trace 生成。总图、五个逐场景路径图、基座漂移 GIF、每场景五个视角和组合视频、预览图均在[可视化总览](../docs/V6_2_B2_LATEST_VISUALIZATION.md)中索引。`visualization/output_v6_1_b/` 与 `visualization/output/` 是历史产物。
+
+```powershell
+python -m v6_lite.visualization.generate_b2_latest_full --output-dir v6_lite/visualization/output_v6_2_b2_rebuild
+python -m v6_lite.visualization.generate_b2_latest_full --output-dir v6_lite/visualization/output_v6_2_b2_rebuild --validate-only
+```
+
+生成器拒绝覆盖已有清单，文件校验会核对正式 metrics/trace、26/26 与 11/11 重放文件、全部图视频以及每个视频的帧数和尺寸。原五视角渲染函数仍可生成 V6-lite 历史格式；以下旧命令只用于历史产物。
 
 V6.1-B 的 PCC、胶囊、MuJoCo 距离与梯度对照另见 `output/v6_1_b/plots/`，对应 `pcc_audit.json`、`clearance_compare.json` 和 `regression_report.json`。
 
@@ -133,4 +140,4 @@ python -m v6_lite.visualization.validate_visualizations
 
 `visualization/output/videos/` 保存 overview、front、side、top、iso 五个 640×480、30 FPS、27 s 的独立视频，以及一个 1920×960 五视角组合视频。每帧除了刚性/连续体目标与末端坐标系，还绘制基座初始/当前坐标系和 W1–W7 的七个固定坐标系；front 视角直接标注 W1–W7。RGB 分别为 XYZ，顶部叠加基座平移与姿态漂移的逐帧数值。所有视频均由正式 trace 中的力矩序列重新执行 MuJoCo 后渲染。
 
-当前图、GIF、视频及其 manifest 均由已通过验证的 `v6_lite_6` 五场景 trace 重新生成；旧合同生成的可视化只能作为历史产物，不能作为当前验收证据。
+`visualization/output/` 的图、GIF、视频及 manifest 源于 `v6_lite_6`，仅作历史产物；B.2 当前证据使用上方的新清单。

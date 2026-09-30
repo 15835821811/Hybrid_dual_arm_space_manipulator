@@ -14,6 +14,8 @@
 
 ![B.2 在线证据性能图](../v6_lite/output/v6_2_b2/online_complete_evidence_report_waiver_20260930/b2-online-evidence.png)
 
+[最新完整五场景图与视频](V6_2_B2_LATEST_VISUALIZATION.md)
+
 新区间模式五场景完整调用 p95 最大值 19.529 ms，本次低于原 20 ms 门槛，原 26 项真实力矩重放全部通过。三轮预声明的 6 s 计时 p95 为 20.457 / 20.571 / 24.729 ms；重复计时的超时结果按原值保留，不能据单次五场景通过推断稳定的硬实时保证。
 
 ## 独立与故障证据

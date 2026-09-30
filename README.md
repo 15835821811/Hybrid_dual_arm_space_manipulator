@@ -60,9 +60,10 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | `dual_arm_space_robot_2026/` | 当前主 URDF 及其实际引用的 75 个 STL 网格 |
 | `v6_lite/output/v6_2_a1/` | A.1 两组报告、反例和本地原始 trace；完整 trace 不进入 Git 历史 |
 | `v6_lite/output/runs/` | B.1 起每次运行的新编号目录；失败与中止目录也保留 |
-| `v6_lite/visualization/output/` | 六面板误差图、三维路径图、基座漂移 GIF、五个单视角视频、组合视频及预览图 |
-| `v6_lite/visualization/continuum_focus_output/` | 连续体一侧专用视频、预览图及 manifest |
-| `v6_lite/visualization/output_v6_1_b/` | V6.1-B 启用版新生成的全套图、GIF、五视角视频、预览图和 22/22 校验 |
+| `v6_lite/visualization/output/` | 历史 V6-lite 六面板误差图、三维路径图、GIF 和五视角视频 |
+| `v6_lite/visualization/continuum_focus_output/` | 历史连续体单侧视频、预览图及 manifest |
+| `v6_lite/visualization/output_v6_2_b2_latest_20260930/` | 最新 B.2 五场景总图、逐场景路径图、30 个五视角/组合视频、预览图和哈希校验 |
+| `v6_lite/visualization/output_v6_1_b/` | V6.1-B 历史图、GIF、五视角视频和 22/22 校验 |
 | `v6_lite/visualization/continuum_focus_output_v6_1_b/` | V6.1-B 连续体单侧视频及预览图 |
 | `docs/DERIVATION_PACKAGE.md` | PCC 臂形曲线、臂体—卫星距离、时变 CBF 推导和相关文献 |
 | `docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md` | V6.1-A 实现、正式数值、产物和证据边界 |
@@ -117,14 +118,14 @@ B.1 有界查询只界定当前 PCC 管体代理的连续弧长最小净空；�
 
 ## 可视化
 
-V6.1-B 启用版最新可视化使用 `v6_lite/output/v6_1_b/enabled_root/output/` 中的正式五场景 trace；目录 `visualization/output/` 保留 V6-lite 稳定版的旧图和视频。完整的 V6.1-B 图与视频清单见 [visualization_manifest.json](v6_lite/visualization/output_v6_1_b/visualization_manifest.json)，独立校验为 [22/22](v6_lite/visualization/output_v6_1_b/visualization_validation.json)。
+当前可视化使用 B.2 新区间 PCC 的[最新完整五场景运行](v6_lite/output/v6_2_b2/online_dense_slices_five_20260930/artifact_manifest.json)。图、GIF、逐场景路径、每场景五个视角和组合视频见[可视化总览](docs/V6_2_B2_LATEST_VISUALIZATION.md)，逐文件 SHA-256 和源 trace 绑定见[清单](v6_lite/visualization/output_v6_2_b2_latest_20260930/visualization_manifest.json)，独立文件与视频核验见[校验结果](v6_lite/visualization/output_v6_2_b2_latest_20260930/visualization_validation.json)。完整控制调用计时及求解候选与实际执行也在该总览中。旧图和视频仍在各自历史目录。
 
-![V6.1-B 六面板误差总图](v6_lite/visualization/output_v6_1_b/error_curves.png)
+![B.2 最新五场景六面板误差总图](v6_lite/visualization/output_v6_2_b2_latest_20260930/error_curves.png)
 
-![V6.1-B 双臂三维路径图](v6_lite/visualization/output_v6_1_b/tracking_paths_3d.png)
+![B.2 最新完整控制计时](v6_lite/visualization/output_v6_2_b2_latest_20260930/full_control_timing.png)
 
-- [V6.1-B 五视角组合视频](v6_lite/visualization/output_v6_1_b/videos/v6_lite_scenario_00_five_view_grid.mp4)
-- [V6.1-B 连续体单侧视频](v6_lite/visualization/continuum_focus_output_v6_1_b/videos/v6_lite_scenario_00_continuum_focus.mp4)
+- [最新五场景组合视频入口](docs/V6_2_B2_LATEST_VISUALIZATION.md#每个场景的路径与五视角回放)
+- [历史 V6.1-B 清单](v6_lite/visualization/output_v6_1_b/visualization_manifest.json)
 
 以下命令重建 V6-lite 稳定版可视化：
 
@@ -138,14 +139,7 @@ python -m v6_lite.visualization.generate_visualizations \
   --output-dir v6_lite/visualization/continuum_focus_output
 ```
 
-![六面板误差总图](v6_lite/visualization/output/error_curves.png)
-
-![双臂三维路径图](v6_lite/visualization/output/tracking_paths_3d.png)
-
-视频入口：
-
-- [五视角组合视频](v6_lite/visualization/output/videos/v6_lite_scenario_00_five_view_grid.mp4)
-- [连续体一侧专用视频](v6_lite/visualization/continuum_focus_output/videos/v6_lite_scenario_00_continuum_focus.mp4)
+历史 V6-lite 稳定版的图和视频仍可从[旧清单](v6_lite/visualization/output/visualization_manifest.json)查询；它们不属于当前 B.2 可视化。
 
 ## 进一步阅读
 
