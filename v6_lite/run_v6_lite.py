@@ -106,7 +106,7 @@ class V6LiteRunConfig:
     torque_latency_p95_threshold_s: float = 0.002
     steady_window_s: float = 1.5
     pcc_mode: str = "legacy_pcc"
-    dispatch_clock_policy: str = "wall_deadline"
+    dispatch_clock_policy: str = "research_simulation"
     wall_executor_backend: str = "native"
     wall_scheduler_policy: str = "high"
 
@@ -115,7 +115,7 @@ class V6LiteRunConfig:
             raise ValueError("unsupported wall executor backend")
         if self.wall_scheduler_policy not in ("high", "realtime"):
             raise ValueError("unsupported own-process scheduling policy")
-        if self.dispatch_clock_policy not in ("wall_deadline", "offline_replay"):
+        if self.dispatch_clock_policy not in ("wall_deadline", "offline_replay", "research_simulation"):
             raise ValueError("unsupported dispatch clock policy")
         if self.pcc_mode not in ("legacy_pcc", "bounded_interval_pcc"):
             raise ValueError("unsupported PCC control mode")
@@ -542,6 +542,15 @@ def run_scenario(spec, run_config, qp_config, scenario, trace_dir):
     return run_synchronous_scenario(spec, run_config, qp_config, scenario, trace_dir)
 
 
+def _select_acceptance_checks(checks, clock_policy):
+    """Research retains timing failures as measured results outside acceptance."""
+    performance = {name: checks[name] for name in (
+        "task_controller_runs_within_50hz_p95", "torque_controller_runs_within_500hz_p95")}
+    acceptance = ({name: value for name, value in checks.items() if name not in performance}
+                  if clock_policy == "research_simulation" else checks)
+    return acceptance, performance
+
+
 def run_synchronous_scenario(
     spec: RobotModelSpecV5,
     run_config: V6LiteRunConfig,
@@ -954,7 +963,7 @@ def run_synchronous_scenario(
                     command=result.planner_velocity, acquired=timeline.started * 1e-9,
                     source_simulation_s=current_time, solve_finished=solve_finished_time,
                     validated=timeline.last * 1e-9,
-                    period_s=run_config.task_period_s)
+                    period_s=run_config.task_period_s, policy=run_config.dispatch_clock_policy)
             interval_full_control_latency_s = (
                 time.perf_counter() - task_tick_started)
             recent_snapshots.append(
@@ -1542,6 +1551,7 @@ def finalize_scenario(spec, run_config, qp_config, scenario, trace_dir, *,
         "physics_and_task_rate_exact": abs(float(model.opt.timestep) - 0.002) <= 1e-12
         and task_stride == 10,
     }
+    checks, performance_checks = _select_acceptance_checks(checks, run_config.dispatch_clock_policy)
     trace_dir.mkdir(parents=True, exist_ok=True)
     trace_path = trace_dir / f"{scenario.scenario_id}.npz"
     np.savez_compressed(
@@ -1561,6 +1571,13 @@ def finalize_scenario(spec, run_config, qp_config, scenario, trace_dir, *,
         "scenario": scenario.to_dict(),
         "passed": bool(all(checks.values())),
         "checks": checks,
+        "execution_mode": run_config.dispatch_clock_policy,
+        "acceptance_profile": ("research_function_and_safety" if
+            run_config.dispatch_clock_policy == "research_simulation" else
+            "function_safety_and_compute_performance"),
+        "performance_checks": performance_checks,
+        "performance_passed": bool(all(performance_checks.values())),
+        "performance_is_acceptance_gate": run_config.dispatch_clock_policy != "research_simulation",
         "metrics": {
             "rigid_grasp_point": {
                 "final_error_m": final_rigid_error,
@@ -1707,9 +1724,17 @@ def finalize_scenario(spec, run_config, qp_config, scenario, trace_dir, *,
             },
         },
         "execution_contract": {
-            "runtime_identity": runtime_identity(run_config.pcc_mode, spec, model),
+            "runtime_identity": runtime_identity(run_config.pcc_mode, spec, model,
+                dispatch_clock_policy=run_config.dispatch_clock_policy,
+                wall_executor_backend=run_config.wall_executor_backend),
             "source_compiled_model_sha256": source_model_hash,
-            "dispatch_clock_scope": "measured_wall_clock_with_frozen_physics_during_compute",
+            "dispatch_clock_scope": ("simulation_time_admission_with_measured_wall_compute_diagnostics"
+                if run_config.dispatch_clock_policy == "research_simulation" else
+                "measured_wall_clock_with_frozen_physics_during_compute"),
+            "command_validity_clock": ("simulation_time" if
+                run_config.dispatch_clock_policy == "research_simulation" else "wall_monotonic"),
+            "performance_is_acceptance_gate": run_config.dispatch_clock_policy != "research_simulation",
+            "wall_deployment_certified": False,
             "dispatch_clock_policy": run_config.dispatch_clock_policy,
             "wall_deadline_enforced": (interval_admission is not None
                                        and run_config.dispatch_clock_policy == "wall_deadline"),
@@ -1802,10 +1827,12 @@ def run_suite(
                 flush=True,
             )
         if failed_scenarios:
-            _write_json(output_dir / "wall_trial_report.json", {
+            _write_json(output_dir / ("research_trial_report.json" if
+                run_config.dispatch_clock_policy == "research_simulation" else "wall_trial_report.json"), {
                 "complete_five_scene_horizons": False, "all_predeclared_scenes_attempted": True,
                 "failed_scenarios": failed_scenarios, "completed_scenes": scenario_results})
-            raise UncertifiedExecutionError(f"{len(failed_scenarios)} of {len(scenarios)} wall scenes rejected; trial failed")
+            raise UncertifiedExecutionError(f"{len(failed_scenarios)} of {len(scenarios)} "
+                f"{run_config.dispatch_clock_policy} scenes rejected; trial failed")
     except BaseException as error:
         fail_run(output_dir, run_metadata, error, scenario_id=current_scenario_id)
         raise
@@ -1881,6 +1908,9 @@ def run_suite(
     }
     payload = {
         "contract_version": CONTRACT_VERSION,
+        "execution_mode": run_config.dispatch_clock_policy,
+        "performance_is_acceptance_gate": run_config.dispatch_clock_policy != "research_simulation",
+        "wall_deployment_certified": False,
         "runtime_identity": runtime_identity(run_config.pcc_mode, spec,
                                              dispatch_clock_policy=run_config.dispatch_clock_policy,
                                              wall_executor_backend=run_config.wall_executor_backend),
@@ -2041,9 +2071,9 @@ def _parser() -> argparse.ArgumentParser:
         default="legacy_pcc",
         help="select the PCC backend before starting the run",
     )
-    parser.add_argument("--dispatch-clock-policy", choices=("wall_deadline", "offline_replay"),
-                        default="wall_deadline",
-                        help="bounded mode defaults to wall deadline; offline replay measures but does not certify wall validity")
+    parser.add_argument("--dispatch-clock-policy", choices=("research_simulation", "wall_deadline", "offline_replay"),
+                        default="research_simulation",
+                        help="research checks 20ms/2ms simulation execution; wall_deadline separately enforces deployment deadlines")
     parser.add_argument("--continue-failed-scenarios", action="store_true",
                         help="attempt every predeclared scene and preserve each rejection; the suite still fails")
     parser.add_argument("--wall-executor-backend", choices=("native", "python"), default="native")

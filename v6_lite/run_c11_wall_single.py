@@ -8,7 +8,8 @@ from v6_lite.run_v6_lite import (V6LiteRunConfig, build_scenarios,
 
 
 def run(output, scheduler_policy="high"):
-    cfg = V6LiteRunConfig(pcc_mode="bounded_interval_pcc", wall_scheduler_policy=scheduler_policy)
+    cfg = V6LiteRunConfig(pcc_mode="bounded_interval_pcc", dispatch_clock_policy="wall_deadline",
+                          wall_scheduler_policy=scheduler_policy)
     qp = HierarchicalQPConfig(enable_capsule_cbf=True)
     spec = default_v6_lite_robot_spec()
     scenario = build_scenarios(spec, cfg)[0]

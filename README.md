@@ -4,7 +4,9 @@
 
 **C.1 最新结果：** 三轮完整五场景的非计时 trace 严格相同，原重放 `26/26`、合同 `11/11`、区间独立重算通过；20,250 周期的发布 p95 最差 `17.775 ms`，15/15 场景运行通过原 20 ms p95 门槛。功能和计时采样显式使用 `offline_replay`。默认墙钟门禁的五场景持续执行探测全部因过期停止，故持续执行验收仍为 `NOT_MET`，不宣称稳定 50 Hz 或硬实时。完整长尾、27 项延迟拒绝及全量回归 16 项历史源码哈希失败见 [C.1 报告](docs/V6_2_C1_RUNTIME_EVIDENCE.md)。
 
-**C.1.1 当前状态：部分通过，持续执行验收 NOT_MET。** 默认区间墙钟路径为原生 500 Hz 执行循环，独立规划进程直接发布双缓冲命令。最新默认 native/HIGH/wall_deadline 流程绑定同一源码，当前测试 186/186、历史冻结 16/16；27 s 单场景完整通过，发布 p95 为 14.954 ms、采集到实际应用 p95 为 19.861 ms。五场景全部尝试，仅 01 完成，四场因原生晚唤醒 3.735–4.608 ms 拒绝。强化审计确认完整场景 13,500 步一致，四次拒绝后未执行下一步。旧试验和失败全部保留；正式三轮及新完整 26/11/区间验收仍未达成，下一平台条件试验待授权。详见 [C.1.1 报告](docs/V6_2_C11_WALL_HANDOFF.md)。
+**C.1.1 当前状态：部分通过，持续执行验收 NOT_MET。** 默认区间墙钟路径为原生 500 Hz 执行循环，独立规划进程直接发布双缓冲命令。最新默认 native/HIGH/wall_deadline 流程绑定同一源码，该冻结候选的当前测试 186/186、历史冻结 16/16；27 s 单场景完整通过，发布 p95 为 14.954 ms、采集到实际应用 p95 为 19.861 ms。五场景全部尝试，仅 01 完成，四场因原生晚唤醒 3.735–4.608 ms 拒绝。强化审计确认完整场景 13,500 步一致，四次拒绝后未执行下一步。旧试验和失败全部保留；原生完整五场景、正式三轮及新完整 26/11/区间验收仍未达成。管理员优先级试验支线现已暂缓；权限条件未满足，不阻塞下面的补充研究路线。详见 [C.1.1 报告](docs/V6_2_C11_WALL_HANDOFF.md)。
+
+**研究/仿真补充验收：PENDING。** 复用 C.1 已有同步优化路径，模式为 `research_simulation`；模拟规划周期保持 20 ms、物理/力矩步保持 2 ms，原 QP、安全距离、PCC 查询、模型与执行一致性检查保持原定义。研究入口无需管理员权限，实际计算超过墙钟周期仍继续推进名义模型的模拟时间，并单独记录计算开销。独立交付验证仍完整重算原 26 项，显式研究 profile 将 `measured_rate_deadlines` 单列为性能观察，功能与证据门槛为 `25/25`，另保留 `11/11` 合同及区间独立重算；默认 legacy 的 26 项判定不变。它补充原 C.1.1 目标；研究轨迹通过不代表原生墙钟部署通过，也不完成旧目标。四项判定及最新证据位置见 [研究验收说明](docs/V6_2_RESEARCH_ACCEPTANCE.md)：研究完整新五场景及独立重放待验证，性能另行报告，墙钟部署为 `NOT_MET`，硬件安全为 `NOT_ESTABLISHED`。
 
 V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经网络权重、归一化器或 Diffusion 模块。核心链路为：
 
@@ -100,6 +102,9 @@ python -m pip install -r requirements.txt
 以下命令都从仓库根目录执行：
 
 ```bash
+# 补充研究入口：新目录、完整五场景及独立验证；无需管理员权限
+python -m v6_lite.run_research_acceptance --output-dir v6_lite/output/runs/research-new-acceptance
+
 # 每次自动生成 output/runs/<run_id>/；已存在的目录不会被覆盖
 python -m v6_lite.run_v6_lite
 python -m v6_lite.run_v6_lite --enable-pcc-cbf --enable-capsule-cbf
@@ -159,6 +164,7 @@ python -m v6_lite.visualization.generate_visualizations \
 
 ## 进一步阅读
 
+- [研究/仿真、性能、墙钟部署与硬件安全的独立验收](docs/V6_2_RESEARCH_ACCEPTANCE.md)
 - [V6-lite 完整逻辑架构](v6_lite/V6_LITE_LOGIC_ARCHITECTURE.md)
 - [PCC 几何距离与安全约束推导](docs/DERIVATION_PACKAGE.md)
 - [V6.1-A 臂形与有限体积几何审计](docs/V6_1A_SHAPE_GEOMETRY_AUDIT.md)

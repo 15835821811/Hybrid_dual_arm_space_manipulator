@@ -16,7 +16,9 @@ TIMING_SCHEMA_VERSION = "v6_2_c1_dispatch_timeline_v1"
 def runtime_identity(pcc_mode, spec, model=None, *, dispatch_clock_policy=None, wall_executor_backend=None):
     return {
         "trace_schema_version": TRACE_SCHEMA_VERSION,
-        "controller_version": ("v6_2_c11_native_wall_handoff" if pcc_mode == "bounded_interval_pcc"
+        "controller_version": ("v6_2_research_simulation_bounded_interval_pcc" if
+                               pcc_mode == "bounded_interval_pcc" and dispatch_clock_policy == "research_simulation" else
+                               "v6_2_c11_native_wall_handoff" if pcc_mode == "bounded_interval_pcc"
                                and dispatch_clock_policy == "wall_deadline" and wall_executor_backend == "native" else
                                "v6_2_c11_wall_handoff" if pcc_mode == "bounded_interval_pcc"
                                and dispatch_clock_policy == "wall_deadline" else
@@ -24,6 +26,11 @@ def runtime_identity(pcc_mode, spec, model=None, *, dispatch_clock_policy=None, 
                                pcc_mode == "bounded_interval_pcc" else
                                "v6_2_a1_legacy_pcc"),
         "pcc_mode": pcc_mode,
+        "execution_mode": dispatch_clock_policy or "historical_not_specified",
+        "command_validity_clock": ("simulation_time" if dispatch_clock_policy == "research_simulation"
+                                   else "wall_monotonic"),
+        "performance_is_acceptance_gate": dispatch_clock_policy != "research_simulation",
+        "wall_deployment_certified": False,
         "servo_law_version": ("b2_implicitfast_compensated_torque_v1" if
                               pcc_mode == "bounded_interval_pcc" else
                               "a1_model_based_servo_torque_v1"),

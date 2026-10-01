@@ -317,11 +317,29 @@ def _replay_trace(
     }
 
 
+def delivery_acceptance_checks(checks, *, profile, dispatch_clock_policy):
+    """Keep the original audit, with an explicit simulation-only gate split."""
+    if profile == "legacy_combined":
+        return dict(checks), {}
+    if profile != "research_simulation":
+        raise ValueError("unsupported delivery acceptance profile")
+    if dispatch_clock_policy != "research_simulation":
+        raise ValueError("research acceptance requires explicit research_simulation evidence")
+    if "measured_rate_deadlines" not in checks:
+        raise ValueError("timing observation missing from delivery audit")
+    performance = {"measured_rate_deadlines": checks["measured_rate_deadlines"]}
+    functional = {key: value for key, value in checks.items()
+                  if key not in performance}
+    return functional, performance
+
+
 def validate_delivery(
     root: Path = Path("v6_lite"),
     output_dir: Path | None = None,
     expected_contract: str = CONTRACT_VERSION,
     report_path: Path | None = None,
+    *,
+    acceptance_profile: str = "legacy_combined",
 ) -> dict[str, Any]:
     """Actually replay saved torques through MuJoCo and recompute 26 checks."""
     output_dir = root / "output" / "v6_2_a1" / "enabled_root" / "output" if output_dir is None else output_dir
@@ -766,14 +784,23 @@ def validate_delivery(
         )
         <= 1e-10
     )
+    observed_checks = dict(checks)
+    checks, performance_checks = delivery_acceptance_checks(
+        observed_checks, profile=acceptance_profile,
+        dispatch_clock_policy=run_config.get("dispatch_clock_policy"))
     failures = [name for name, passed in checks.items() if not passed]
     result = {
         "contract_version": expected_contract,
+        "acceptance_profile": acceptance_profile,
         "evidence_type": "native_mujoco_torque_replay",
         "passed": not failures,
         "passed_count": int(sum(checks.values())),
         "total_count": len(checks),
         "checks": checks,
+        "observed_checks": observed_checks,
+        "performance_checks": performance_checks,
+        "performance_is_research_gate": False if performance_checks else True,
+        "wall_continuation_or_hardware_validated": False,
         "failures": failures,
         "recomputed_aggregate": {
             "scenario_count": len(scenarios),
@@ -949,13 +976,16 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--expected-contract", default=CONTRACT_VERSION)
     parser.add_argument("--report-path", type=Path, default=None)
+    parser.add_argument("--acceptance-profile", choices=("legacy_combined", "research_simulation"),
+                        default="legacy_combined")
     return parser
 
 
 def main() -> None:
     args = _parser().parse_args()
     result = validate_delivery(
-        args.root, args.output_dir, args.expected_contract, args.report_path
+        args.root, args.output_dir, args.expected_contract, args.report_path,
+        acceptance_profile=args.acceptance_profile
     )
     execution_result = None
     if args.expected_contract == CONTRACT_VERSION:

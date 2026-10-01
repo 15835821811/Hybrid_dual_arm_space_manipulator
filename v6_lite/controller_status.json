@@ -38,5 +38,115 @@
   "c11_new_candidate_wall_retest": "COMPLETE_FAILED; single passed, full-five qualification failed, formal stages not started",
   "c11_admin_trial_authorization": "PENDING",
   "c11_default_qualification_report": "v6_lite/output/runs/c11_qualified_default_01/report.json",
-  "c11_runtime_blocker": "default Windows HIGH native wake-window misses; next platform trial requires pending administrator authorization"
+  "c11_runtime_blocker": "default Windows HIGH native wake-window misses; next platform trial requires pending administrator authorization",
+  "current_acceptance_route": {
+    "relationship_to_c11_goal": "SUPPLEMENT; does not replace or complete the original C.1.1 goal",
+    "mode": "research_simulation",
+    "implementation_basis": "existing C.1 synchronous equivalent-optimization path",
+    "entrypoint": "python -m v6_lite.run_research_acceptance --output-dir <new-directory>",
+    "administrator_required": false,
+    "wall_overrun_stops_research_simulation": false,
+    "wall_costs_retained": true,
+    "simulation_planning_period_s": 0.02,
+    "simulation_physics_and_torque_period_s": 0.002,
+    "nominal_safety_contract_preserved": true,
+    "research_evidence": "docs/V6_2_RESEARCH_ACCEPTANCE.md",
+    "research_current_run": "PENDING",
+    "research_independent_validation": "PENDING",
+    "old_functional_baseline_restarted": false,
+    "research_success_satisfies_native_wall_acceptance": false
+  },
+  "acceptance_dimensions": {
+    "research_simulation": {
+      "status": "PENDING",
+      "scope": "new current-source full five-scene research_simulation traces",
+      "scene_count": 5,
+      "scene_duration_s": 27,
+      "seed": 20260801,
+      "required_physics_steps_total": 67500,
+      "required_planning_ticks_total": 6750,
+      "required_validation": [
+        "original per-scene checks",
+        "all original 26 delivery checks recomputed; explicit research_simulation profile gates 25 functional/evidence checks and reports measured_rate_deadlines separately as performance",
+        "original execution contract 11/11",
+        "independent interval constraint reconstruction",
+        "exact non-timing parity against C.1 round_01",
+        "raw timing evidence independently recomputed",
+        "artifact manifest"
+      ],
+      "delivery_profile": "research_simulation",
+      "legacy_default_26_check_profile_unchanged": true,
+      "original_delivery_checks_recomputed": 26,
+      "functional_and_evidence_delivery_gate_checks": 25,
+      "separate_performance_check": "measured_rate_deadlines",
+      "research_delivery_result_must_not_be_labelled_original_26_of_26_pass": true,
+      "expected_independent_interval_boundaries": 6755,
+      "expected_independent_interval_rows": 12350,
+      "exact_nontiming_reference": "v6_lite/output/runs/c1_formal_three_by_five/round_01",
+      "current_run_directory": null,
+      "current_independent_report": null,
+      "historical_functional_evidence": "docs/V6_2_C1_RUNTIME_EVIDENCE.md"
+    },
+    "compute_performance": {
+      "status": "PENDING_CURRENT_RESEARCH_RUN",
+      "scope": "measured host computation costs reported independently of functional acceptance",
+      "wall_overruns_do_not_fail_research_functional_acceptance": true,
+      "startup_samples_retained": true,
+      "current_research_target_planning_and_dispatch_p95_ms": 20,
+      "current_research_target_torque_p95_ms": 2,
+      "original_delivery_timing_check_reported_separately": "measured_rate_deadlines",
+      "historical_c1_20ms_p95_sampling_gate": "PASSED; 15/15 offline_replay scenes",
+      "historical_c1_p95_16ms_p99_20ms_engineering_goal": "NOT_MET",
+      "historical_c1_worst_p95_ms": 17.775,
+      "historical_c1_worst_p99_ms": 21.504,
+      "historical_c1_max_ms": 31.772,
+      "historical_c1_over_20ms_count": 238,
+      "historical_c1_sample_count": 20250,
+      "historical_c1_longest_consecutive_over_20ms": 11,
+      "historical_evidence": "docs/V6_2_C1_RUNTIME_EVIDENCE.md"
+    },
+    "wall_deployment": {
+      "status": "NOT_MET",
+      "default_conditions": "native/HIGH/wall_deadline",
+      "latest_full_five_trial": "FAILED; all five attempted, only scene01 completed",
+      "latest_trial_report": "v6_lite/output/runs/c11_qualified_default_01/report.json",
+      "remaining_original_goal_work": [
+        "default full five-scene native wall execution qualification",
+        "predeclared three-by-five native wall repeats",
+        "new complete native wall trajectory original 26/11 and independent interval validation"
+      ],
+      "research_traces_count_as_wall_pass": false,
+      "hard_realtime_status": "NOT_ESTABLISHED",
+      "evidence": "docs/V6_2_C11_WALL_HANDOFF.md"
+    },
+    "hardware_safety": {
+      "status": "NOT_ESTABLISHED",
+      "hardware_trial_performed": false,
+      "continuous_time_certified": false,
+      "hard_realtime_certified": false,
+      "safe_backup_controller_established": false,
+      "scope": "nominal MuJoCo model and discrete simulation checks only"
+    }
+  },
+  "administrator_priority_branch": {
+    "status": "DEFERRED",
+    "platform_condition_status": "BLOCKED",
+    "reason": "existing non-administrator token lacks SeIncreaseBasePriorityPrivilege; administrator priority trial intentionally deferred",
+    "requires_separate_human_authorization_to_resume": true,
+    "blocks_research_simulation": false,
+    "blocks_compute_performance_reporting": false,
+    "establishes_hard_realtime_guarantee": false
+  },
+  "legacy_status_field_scope": "Existing C.1/C.1.1 fields are retained historical evidence snapshots; appended current_acceptance_route and acceptance_dimensions describe the supplemental research route. Earlier c11_admin_trial_authorization=PENDING does not schedule or authorize the currently deferred administrator branch.",
+  "last_frozen_regression_scope": {
+    "source_commit": "c2b5077c45c465a6f97db94704001a02bbe79148",
+    "current_tests": "186/186",
+    "historical_tests": "16/16 unchanged frozen goldens",
+    "report": "v6_lite/output/runs/c11_qualified_default_01/test_profiles/report.json",
+    "new_research_entrypoint_automatically_covered": false,
+    "historical_check_classification": "v6_lite/output/v6_2_c11_historical_v3/classification.json",
+    "historical_failed_runs_retained": true,
+    "old_122_of_138_result_rewritten": false,
+    "historical_golden_values_changed": false
+  }
 }

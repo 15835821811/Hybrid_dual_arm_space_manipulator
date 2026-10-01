@@ -56,15 +56,24 @@ class CommandCertificate:
     maximum_supported_state_age: float
     scope: str = "exact_source_start_then_ten_declared_model_microstates"
     clock: str = "monotonic_seconds; simulation time is a separate coordinate"
+    validity_clock: str = "wall_monotonic"
+    simulation_valid_until: float | None = None
 
     @classmethod
     def issue(cls, *, command_id, source_state_id, source_model_hash,
               source_partition_id, command, acquired, source_simulation_s,
-              solve_finished, validated, period_s=.020):
+              solve_finished, validated, period_s=.020, policy="wall_deadline"):
+        if policy not in ("wall_deadline", "offline_replay", "research_simulation"):
+            raise ValueError("unsupported command clock policy")
+        research = policy == "research_simulation"
         return cls(command_id, source_state_id, source_model_hash,
                    source_partition_id, hashlib.sha256(command.tobytes()).hexdigest(),
                    acquired, acquired, acquired, source_simulation_s,
-                   solve_finished, validated, acquired + period_s, period_s)
+                   solve_finished, validated, acquired + period_s, period_s,
+                   clock=("simulation seconds for admission; monotonic seconds for compute diagnostics"
+                          if research else "monotonic_seconds; simulation time is a separate coordinate"),
+                   validity_clock="simulation_time" if research else "wall_monotonic",
+                   simulation_valid_until=source_simulation_s+period_s if research else None)
 
     def to_dict(self):
         return asdict(self)
@@ -82,12 +91,15 @@ class DispatchGate:
         clocks = (now, c.state_acquisition_time, c.target_acquisition_time,
                   c.planned_execution_start, c.solve_finished_time,
                   c.validation_finished_time, c.valid_until,
-                  c.maximum_supported_state_age, observed_simulation_s)
+                  c.maximum_supported_state_age, c.planned_execution_start_simulation_s,
+                  observed_simulation_s)
         reason = None
         if not all(math.isfinite(v) for v in clocks):
             reason = "NONFINITE_TIME"
-        elif policy not in ("wall_deadline", "offline_replay"):
+        elif policy not in ("wall_deadline", "offline_replay", "research_simulation"):
             reason = "UNSUPPORTED_CLOCK_POLICY"
+        elif c.validity_clock != ("simulation_time" if policy == "research_simulation" else "wall_monotonic"):
+            reason = "CERTIFICATE_CLOCK_POLICY_MISMATCH"
         elif not (c.state_acquisition_time <= c.solve_finished_time
                   <= c.validation_finished_time <= now):
             reason = "INVALID_TIME_ORDER"
@@ -101,6 +113,13 @@ class DispatchGate:
             reason = "PARTITION_ID_MISMATCH"
         elif hashlib.sha256(command.tobytes()).hexdigest() != c.command_sha256:
             reason = "COMMAND_PAYLOAD_MISMATCH"
+        elif policy == "research_simulation" and (
+                c.simulation_valid_until is None or not math.isfinite(c.simulation_valid_until)
+                or abs(c.simulation_valid_until-c.planned_execution_start_simulation_s
+                       - c.maximum_supported_state_age) > 1e-12):
+            reason = "INVALID_SIMULATION_VALIDITY_RANGE"
+        elif policy == "research_simulation" and observed_simulation_s >= c.simulation_valid_until:
+            reason = "EXPIRED_COMMAND_SIMULATION_TIME"
         elif policy == "wall_deadline" and now > c.valid_until:
             reason = "EXPIRED_COMMAND_WALL_CLOCK"
         elif now < c.target_acquisition_time:
@@ -124,6 +143,10 @@ class DispatchGate:
             self.next_substep = substep + 1
         return {"accepted": reason is None, "reason": reason,
                 "policy": policy, "wall_clock_current": now <= c.valid_until,
+                "validity_clock": c.validity_clock,
+                "simulation_state_age_s": observed_simulation_s-c.planned_execution_start_simulation_s,
+                "simulation_valid_until": c.simulation_valid_until,
+                "wall_deployment_certified": False,
                 "state_age_s": now - c.state_acquisition_time,
                 "target_age_s": now - c.target_acquisition_time,
                 "dispatch_time": now, "servo_substep": substep,

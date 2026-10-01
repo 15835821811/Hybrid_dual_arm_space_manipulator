@@ -162,6 +162,9 @@ def start_run(
                                     if pcc_mode is not None else None)
     metadata["timing_protocol"].update({
         "dispatch_clock_policy": dispatch_policy,
+        "command_validity_clock": "simulation_time" if dispatch_policy == "research_simulation" else "wall_monotonic",
+        "performance_is_acceptance_gate": dispatch_policy != "research_simulation",
+        "wall_deployment_certified": False,
         "wall_deadline_enforced": (pcc_mode == "bounded_interval_pcc"
                                    and dispatch_policy == "wall_deadline"),
         "thread_cpu_clock": "time.thread_time; Windows samples may be coarsely quantized",
@@ -172,6 +175,12 @@ def start_run(
         "physics_during_compute": "frozen synchronous simulation",
         "continuous_time_certified": False,
     })
+    if dispatch_policy == "research_simulation":
+        metadata["timing_protocol"].update({
+            "deadline_scope": "unchanged 20ms validated simulation segment and ten 2ms native physics updates",
+            "compute_wall_time_scope": "measured diagnostic; does not advance or expire simulation time",
+            "research_pass_scope": "task behavior, numerical execution consistency and declared simulation safety checks",
+        })
     if pcc_mode == "bounded_interval_pcc" and dispatch_policy == "wall_deadline":
         metadata["timing_protocol"].update({
             "physics_during_compute": "independent_500Hz_executor_while_process_plans_next_segment",
