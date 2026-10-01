@@ -1,0 +1,2828 @@
+{
+  "schema": "research_velocity_failure_linear_feasibility_diagnosis_v1",
+  "evidence_valid": true,
+  "diagnostic_execution_completed": true,
+  "created_utc": "2026-10-01T15:12:18.029411+00:00",
+  "trial_produced_commit": "9c7120e8ca8711cd58dc65471e58763c965148ff",
+  "auditor_source_commit": "9c7120e8ca8711cd58dc65471e58763c965148ff",
+  "auditor_script_sha256": "6ef70cf9215028bee94c9e277e3d76898e14c06e62e03b06d4f3910b7de226cf",
+  "trial_report_sha256": "fa5a951d1db58fc71077c77faa5fd0eeb648986801e2ce7184771e10fcc14e32",
+  "trial_report_passed": false,
+  "trial_report_complete": false,
+  "producer_manifest_items_verified": 34,
+  "source_inventory_files_verified": 237,
+  "model_source_assets_verified": 76,
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "executable": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Scripts\\python.exe",
+    "numpy": "1.26.4",
+    "scipy": "1.11.2",
+    "mujoco": "3.3.2",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "lp_method": "scipy.optimize.linprog(method='highs')",
+  "lp_options": {
+    "primal_feasibility_tolerance": 0.0001,
+    "dual_feasibility_tolerance": 5e-05
+  },
+  "original_qp_config": {
+    "task_period_s": 0.02,
+    "rigid_position_gain": 5.0,
+    "continuum_position_gain": 12.0,
+    "rigid_orientation_gain": 8.0,
+    "continuum_orientation_gain": 10.0,
+    "rigid_priority_weight": 500.0,
+    "continuum_priority_weight": 260.0,
+    "rigid_orientation_weight": 4000.0,
+    "continuum_orientation_weight": 2500.0,
+    "posture_weight": 0.02,
+    "base_reaction_weight": 0.05,
+    "posture_gain": 0.08,
+    "rigid_speed_limit_m_s": 0.24,
+    "continuum_speed_limit_m_s": 0.24,
+    "rigid_angular_speed_limit_rad_s": 0.45,
+    "continuum_angular_speed_limit_rad_s": 0.45,
+    "velocity_limit_scale": 0.7,
+    "joint_position_margin_rad": 0.04,
+    "joint_barrier_gain": 4.0,
+    "clearance_safe_m": 0.025,
+    "rigid_target_clearance_safe_m": 0.005,
+    "clearance_activation_m": 0.08,
+    "clearance_barrier_gain": 8.0,
+    "clearance_query_max_m": 0.09,
+    "enable_pcc_cbf": false,
+    "enable_capsule_cbf": true,
+    "pcc_clearance_safe_m": 0.005,
+    "pcc_clearance_activation_m": 0.1,
+    "pcc_clearance_barrier_gain": 8.0,
+    "pcc_coarse_samples_per_segment": 5,
+    "pcc_active_segment_count": 1,
+    "pcc_refinement_max_iterations": 5,
+    "capsule_clearance_safe_m": 0.005,
+    "capsule_clearance_activation_m": 0.08,
+    "capsule_clearance_barrier_gain": 8.0,
+    "qp_max_iterations": 1200,
+    "qp_ftol": 5e-05,
+    "feasibility_tolerance": 0.0001,
+    "clearance_rate_tolerance_m_s": 0.0001,
+    "velocity_tolerance_rad_s": 0.0001,
+    "lookahead_model_margin_m_s": 0.005,
+    "admm_rho": 50.0,
+    "admm_sigma": 1e-06,
+    "admm_relaxation": 1.8
+  },
+  "retained_previous_audit": {
+    "directory": "research_velocity_failure_feasibility_01",
+    "terminal_exit_code": 1,
+    "script_sha256": "2a0c441226bdffbb266b91f192dd510d4cfc81bf6a3f7f2bc5d22bf8f78324f8",
+    "report_sha256": "4c704e458edd4a7c56a085352ef8bbb2a8b41bada7ce60f9ff6b456f01d3aac9",
+    "manifest_sha256": "12deb7bff1a8c5b43530077be96dd1ee6441b1b1b7cd6af8b900e34020006678",
+    "scope_of_failure": "Auditor used default V5 servo gains instead of pinned V6 gains. Full runtime-contract gate failed before any case LP or numerical result was produced. Original trial inputs and constraints were unchanged.",
+    "correction": "Construct V6 RobotModelSpecV5 independently from original URDF with the exact run_v6_lite.py:77-89 gains/torque limits; no tolerance change."
+  },
+  "constraint_completeness": "All 38 saved current rows, 38 lookahead rows, 17 saved velocity-box rows, and 10 additionally reconstructed endpoint-domain rows form the actual 103-row QP operator. Separate combined system includes step 0..10 frozen current-row and velocity-box tests from the original action contract.",
+  "independence": "No producer QP/admission/solver/action-validator function imported or called. Named model/spec compilation supplies joint addresses and pinned model parameters only. No geometry query or physics integration performed.",
+  "counts": {
+    "frozen_failure_cases": 3,
+    "complete_qp_linear_infeasible": 3,
+    "original_tolerance_infeasible": 3,
+    "exact_scalar_contradictions": 3,
+    "frozen_ramp_combined_infeasible": 3,
+    "feasible_witnesses": 0
+  },
+  "cases": [
+    {
+      "scenario_id": "v6_lite_scenario_00",
+      "failure_time_s": 14.660000000001565,
+      "classification": "INFEASIBLE_WITHIN_UNCHANGED_ORIGINAL_TOLERANCES",
+      "qp_row_count": 103,
+      "qp_plus_frozen_ramp_row_count": 708,
+      "conflicting_planner_index": 8,
+      "endpoint_velocity_gap_rad_s": 0.0058729519989713375,
+      "tolerance_adjusted_gap_rad_s": 0.005672951998971338,
+      "phase_one_minimum_uniform_violation": 0.002936475999485655,
+      "producer_candidate_max_violation": 0.002936479382588203,
+      "diagnosis_file": "v6_lite_scenario_00_diagnosis.json"
+    },
+    {
+      "scenario_id": "v6_lite_scenario_03",
+      "failure_time_s": 13.680000000001238,
+      "classification": "INFEASIBLE_WITHIN_UNCHANGED_ORIGINAL_TOLERANCES",
+      "qp_row_count": 103,
+      "qp_plus_frozen_ramp_row_count": 708,
+      "conflicting_planner_index": 8,
+      "endpoint_velocity_gap_rad_s": 0.6100190513623744,
+      "tolerance_adjusted_gap_rad_s": 0.6098190513623745,
+      "phase_one_minimum_uniform_violation": 0.3050095256811872,
+      "producer_candidate_max_violation": 0.30500952568119744,
+      "diagnosis_file": "v6_lite_scenario_03_diagnosis.json"
+    },
+    {
+      "scenario_id": "v6_lite_scenario_04",
+      "failure_time_s": 14.320000000001452,
+      "classification": "INFEASIBLE_WITHIN_UNCHANGED_ORIGINAL_TOLERANCES",
+      "qp_row_count": 103,
+      "qp_plus_frozen_ramp_row_count": 708,
+      "conflicting_planner_index": 8,
+      "endpoint_velocity_gap_rad_s": 0.03302245821604205,
+      "tolerance_adjusted_gap_rad_s": 0.03282245821604205,
+      "phase_one_minimum_uniform_violation": 0.016511229108021053,
+      "producer_candidate_max_violation": 0.016511229108021108,
+      "diagnosis_file": "v6_lite_scenario_04_diagnosis.json"
+    }
+  ],
+  "checks": [
+    {
+      "name": "exclusive_output",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "trial_commit_is_current",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:plan.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:report.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:scenario_definitions.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_00_counterexample.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_00_execution_failure.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_00_partial_trace.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_03_counterexample.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_03_execution_failure.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_03_partial_trace.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_04_counterexample.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_04_execution_failure.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/failures/v6_lite_scenario_04_partial_trace.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_01/clearance_compare.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_01/plots/distance_comparison.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_01/plots/gradient_comparison.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_01/plots/minimum_clearance_comparison.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_02/clearance_compare.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_02/plots/distance_comparison.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_02/plots/gradient_comparison.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/pcc_monitor/v6_lite_scenario_02/plots/minimum_clearance_comparison.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/research_trial_report.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/run_failure.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/run_metadata.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/timing/v6_lite_scenario_00.jsonl",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/timing/v6_lite_scenario_01.jsonl",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/timing/v6_lite_scenario_02.jsonl",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/timing/v6_lite_scenario_03.jsonl",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/timing/v6_lite_scenario_04.jsonl",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/traces/v6_lite_scenario_01.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:simulation/traces/v6_lite_scenario_02.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:test_profiles/current_tests.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:test_profiles/frozen_source_manifest.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:test_profiles/historical_tests.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "producer_artifact_sha:test_profiles/report.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "trial_retains_failure",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "plan_source_commit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source_before_after_identical",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/__init__.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b1_bounded_clearance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_aabb_pair_screen.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_admm_solver_trial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_batched_capsule_adversarial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_batched_capsule_bounds.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_batched_capsule_private_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_batched_query.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_blas_thread_trial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_budget_frontier.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_candidate_prediction.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_candidate_ramp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_cholesky_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_cholesky_repeat_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_compact_envelope_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_current_branch_breakdown.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_current_qp_breakdown.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_discrete_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_discrete_screened_parity.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_discrete_screened_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_discrete_servo_counterfactual.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_domain_endpoint_recompute.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_domain_full_decision_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_domain_unified_budget.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_fixed_arc_envelope_all_states.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_fixed_arc_full_decision_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_full_root255.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_full_torque_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_full_trace_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_holdout_geometry.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_latest_qp_breakdown.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_microstep_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_mujoco_sphere_screen.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_near_gate.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_online_bottleneck.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_online_failure_injection.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_online_interval_recompute.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_online_optimization_parity.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_online_repeated_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_online_trace_parity.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_optimized_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_optimized_repeat_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_prepared_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_prepared_full_trace.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_prepared_query.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_prepared_query_private.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_prepared_screened_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_prepared_torque_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_full_qp_sphere.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_qp_sphere.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_query_cross_impl.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_recompute.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_task_metrics.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_private_unified_budget.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_qp_phase_probe.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_refined_start.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_repartition_counterfactual.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_repartition_handoff.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_repeated_probe.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_reused_next_start_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_root_rescue_frontier.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_same_state_cache_private_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_screened_next_start_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_servo_subspace_origin.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_squared_envelope_frozen.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_strict_cholesky_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_strict_domain_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_strict_domain_replay.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_vectorized_fixed_arc_positions.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_vectorized_full_decision_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_vectorized_positions_private_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_weighted_qp_probe.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_weighted_qp_sphere_trial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_b2_work_domain_qp_private_rollout.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c11_first_rejection.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c11_historical_classification.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c11_native_partial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c11_wall_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c11_wall_repeats.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c1_delay_injection.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c1_trace_parity.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_c1_wall_execution.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_research_conservatism.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_research_shape_decomposition.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_v6_1_b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/audit_v6_1a.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_aabb_pair_screen.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_batched_capsule_bounds.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_cholesky_unconstrained.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_compact_fixed_arc_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_interval_online.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_interval_online_optimized.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_interval_runtime.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_optimized_admm.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_prepared_compensated_torque.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_reused_next_start.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_same_state_decision_cache.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_screened_next_start_rows.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_shadow_feasibility.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_squared_distance_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/b2_work_domain_velocity_box.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/bundle_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/c11_wall_qualification.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/continuum_jacobian.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/continuum_model_spec.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/continuum_shape_model.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/execution_ramp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_cholesky_private.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_decision_timing_progress.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_discrete_private.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_domain_private_five.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_full_decision_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_full_private_five.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_optimized_private.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_private_rollouts.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_b2_shadow.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_v6_1_b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/finalize_v6_2_a1.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/generate_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/hierarchical_qp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/irregular_waypoints.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_batched_distance_query.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_batched_point_model.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_bounded_clearance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_clearance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_fixed_arc_positions.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_fixed_arc_state_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_interval_cbf.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_monitor.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_persistent_interval_query.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_prepared_state_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_state_local_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_subspace_residual_bound.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_vectorized_fixed_arc_positions.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/pcc_vectorized_state_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/recompute_execution_constraints.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_b2_aabb_screen.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_b2_capsule_progress.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_b2_forward_reuse_repeats.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_b2_latest_status.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_b2_online_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_b2_online_progress.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/report_c1_acceptance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_c11_qualified_acceptance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_c11_wall_single.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_c1_acceptance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_matrix.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_research_acceptance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_research_velocity_stress.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_test_profiles.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/run_v6_lite.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_command.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_compiled_qp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_handoff.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_native_executor.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_native_loop.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_scheduler_environment.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_shared_slot.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/runtime_wall_executor.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/safety_contract.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/shadow_b2_interval_cbf.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/shape_clearance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b1_bounded_clearance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b1_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_batched_point_model.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_blas_thread_trial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_candidate_prediction.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_candidate_ramp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_compact_fixed_arc_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_discrete_private.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_domain_private_five.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_full_private_five.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_full_root255.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_full_torque_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_full_trace_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_initial_qp_probe.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_interval_cbf.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_microstep_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_mujoco_sphere_screen.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_persistent_query.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_prepared_query.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_private_full_qp_sphere.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_private_qp_sphere.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_private_rollouts.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_private_unified_budget.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_query_optimization.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_repeated_probe.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_root_rescue_frontier.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_shadow.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_shadow_feasibility.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_state_local_envelope.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_subspace_residual_bound.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_weighted_qp_probe.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_weighted_qp_sphere_trial.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_b2_work_domain_velocity_box.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_c11_native_evidence_audit.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_c11_profile_provenance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_c11_wall_qualification.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_continuum_shape_model.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_evidence.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_ramp_aware_qp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_research_acceptance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_research_simulation.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_research_velocity_stress.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_command.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_compiled_qp.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_handoff.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_native_executor.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_native_loop.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_scheduler_environment.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_timing.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_runtime_workspace.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_safety_contract.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_shape_clearance.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_target_collision_policy.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_target_velocity_scale.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_v6_1_b.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_v6_1a_artifacts.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/test_v6_lite.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/validate_v6_lite.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualize_b2_branch_breakdown.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualize_b2_capsule_progress.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualize_b2_timing_basis.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/__init__.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/generate_b2_domain_five.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/generate_b2_latest_full.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/generate_b2_strict_domain_gate.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/generate_visualizations.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/test_visualizations.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:v6_lite/visualization/validate_visualizations.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:model_test/__init__.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:model_test/angle_convention.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:model_test/robot_model_spec_v5.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "frozen_source_sha:model_test/whole_body_verifier_v5.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_tolerances",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "model_identity_matches_run",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_ramp_weights",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:last_failure",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:model_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:configuration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:base_link_2_joint_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_1_2_link_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_1_2_joint_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_2_2_link_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_2_2_joint_3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_3_2_link_3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_3_2_joint_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_4_2_link_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_4_2_joint_5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_5_2_link_5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_5_2_joint_6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_6_2_link_6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_6_2_joint_7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_7_2_link_7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_7_2_joint_8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_8_2_link_8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_8_2_joint_9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_9_2_link_9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_9_2_joint_10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_10_2_link_10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_10_2_joint_11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_11_2_link_11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_11_2_joint_12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_12_2_link_12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_12_2_joint_13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_13_2_link_13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_13_2_joint_14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_14_2_link_14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_14_2_joint_15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_15_2_link_15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_15_2_joint_16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_16_2_link_16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_16_2_joint_17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_17_2_link_17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_17_2_joint_18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_18_2_link_18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_18_2_joint_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_19_2_link_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_19_2_joint_20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_20_2_link_20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_20_2_joint_21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_21_2_link_21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_21_2_joint_22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_22_2_link_22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_22_2_joint_23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_23_2_link_23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_23_2_joint-24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_24_2_link_24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_24_2_joint_25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_25_2_link_25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_25_2_joint_26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_26_2_link_26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_26_2_joint_27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_27_2_link_27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_27_2_joint_28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_28_2_link_28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_28_2_joint_29",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_29_2_link_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:link_29_2_joint_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:joint_30_2_link_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:base_2_shoulder_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:shoulder_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:shoulder_2_back_arm_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:back_2_fore_arm_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:arm_2_wrist_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:wrist_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:named_scalar_joint:wrist_2_end_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:qpos",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:qvel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:old_command",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:candidate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:old_equals_previous_selected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:velocity_lower",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:velocity_upper",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:velocity_bounds_reconstruct_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:frozen_state_equals_trace",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:partial_trace_sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:complete_rows_finite",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:lookahead_reconstruct_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:stored_candidate_residuals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:exact_scalar_infeasibility_certificate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_00:highs_corroborates_exact_certificate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:last_failure",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:model_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:configuration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:base_link_2_joint_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_1_2_link_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_1_2_joint_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_2_2_link_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_2_2_joint_3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_3_2_link_3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_3_2_joint_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_4_2_link_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_4_2_joint_5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_5_2_link_5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_5_2_joint_6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_6_2_link_6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_6_2_joint_7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_7_2_link_7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_7_2_joint_8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_8_2_link_8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_8_2_joint_9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_9_2_link_9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_9_2_joint_10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_10_2_link_10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_10_2_joint_11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_11_2_link_11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_11_2_joint_12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_12_2_link_12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_12_2_joint_13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_13_2_link_13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_13_2_joint_14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_14_2_link_14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_14_2_joint_15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_15_2_link_15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_15_2_joint_16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_16_2_link_16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_16_2_joint_17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_17_2_link_17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_17_2_joint_18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_18_2_link_18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_18_2_joint_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_19_2_link_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_19_2_joint_20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_20_2_link_20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_20_2_joint_21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_21_2_link_21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_21_2_joint_22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_22_2_link_22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_22_2_joint_23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_23_2_link_23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_23_2_joint-24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_24_2_link_24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_24_2_joint_25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_25_2_link_25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_25_2_joint_26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_26_2_link_26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_26_2_joint_27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_27_2_link_27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_27_2_joint_28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_28_2_link_28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_28_2_joint_29",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_29_2_link_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:link_29_2_joint_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:joint_30_2_link_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:base_2_shoulder_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:shoulder_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:shoulder_2_back_arm_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:back_2_fore_arm_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:arm_2_wrist_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:wrist_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:named_scalar_joint:wrist_2_end_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:qpos",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:qvel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:old_command",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:candidate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:old_equals_previous_selected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:velocity_lower",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:velocity_upper",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:velocity_bounds_reconstruct_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:frozen_state_equals_trace",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:partial_trace_sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:complete_rows_finite",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:lookahead_reconstruct_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:stored_candidate_residuals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:exact_scalar_infeasibility_certificate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_03:highs_corroborates_exact_certificate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:last_failure",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:model_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:configuration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:base_link_2_joint_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_1_2_link_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_1_2_joint_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_2_2_link_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_2_2_joint_3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_3_2_link_3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_3_2_joint_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_4_2_link_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_4_2_joint_5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_5_2_link_5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_5_2_joint_6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_6_2_link_6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_6_2_joint_7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_7_2_link_7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_7_2_joint_8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_8_2_link_8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_8_2_joint_9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_9_2_link_9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_9_2_joint_10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_10_2_link_10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_10_2_joint_11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_11_2_link_11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_11_2_joint_12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_12_2_link_12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_12_2_joint_13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_13_2_link_13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_13_2_joint_14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_14_2_link_14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_14_2_joint_15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_15_2_link_15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_15_2_joint_16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_16_2_link_16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_16_2_joint_17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_17_2_link_17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_17_2_joint_18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_18_2_link_18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_18_2_joint_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_19_2_link_19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_19_2_joint_20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_20_2_link_20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_20_2_joint_21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_21_2_link_21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_21_2_joint_22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_22_2_link_22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_22_2_joint_23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_23_2_link_23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_23_2_joint-24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_24_2_link_24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_24_2_joint_25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_25_2_link_25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_25_2_joint_26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_26_2_link_26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_26_2_joint_27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_27_2_link_27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_27_2_joint_28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_28_2_link_28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_28_2_joint_29",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_29_2_link_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:link_29_2_joint_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:joint_30_2_link_30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:base_2_shoulder_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:shoulder_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:shoulder_2_back_arm_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:back_2_fore_arm_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:arm_2_wrist_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:wrist_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:named_scalar_joint:wrist_2_end_joint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:qpos",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:qvel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:old_command",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:candidate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:old_equals_previous_selected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:velocity_lower",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:velocity_upper",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:velocity_bounds_reconstruct_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:frozen_state_equals_trace",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:partial_trace_sha",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:complete_rows_finite",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:lookahead_reconstruct_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:stored_candidate_residuals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:exact_scalar_infeasibility_certificate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "v6_lite_scenario_04:highs_corroborates_exact_certificate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_producer_inputs_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_frozen_sources_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_model_assets_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "head_unchanged",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "interpretation": "At all three recorded terminal states the unchanged endpoint domain restriction and acceleration velocity box conflict beyond the original 1e-4 tolerances. The iteration-limit code alone did not distinguish this, but independent scalar certificates and HiGHS show these are infeasible declared linear constraints, not merely an unlocated feasible solution. Increasing the iteration budget alone cannot make these recorded polytopes feasible.",
+  "claim_limits": "This finite diagnosis does not prove that every 2x trajectory is impossible, identify a safe alternative trajectory, certify nonlinear ten-step execution or tracking, establish delay/model robustness, or meet the old wall C11/hardware goal. The full 2x cohort remains failed and incomplete."
+}

@@ -403,5 +403,101 @@
     "baseline_lookahead_near_binding_row_count": 840,
     "baseline_near_binding_threshold_m_s": 2e-05,
     "near_binding_count_establishes_avoidance_causal_effect": false
+  },
+  "closed_loop_research_protocol_record_scope": "next_closed_loop_research_protocol is the preserved historical NOT_EXECUTED declaration; actual completed attempt is completed_research_velocity_stress; current next step is next_model_sensitivity_research_protocol.",
+  "completed_research_velocity_stress": {
+    "trial_source_commit": "9c7120e8ca8711cd58dc65471e58763c965148ff",
+    "status": "FAILED_INCOMPLETE",
+    "passed": false,
+    "complete": false,
+    "report": "v6_lite/output/runs/research_velocity_stress_01/report.json",
+    "factor": "target_linear_velocity_scale",
+    "factor_value": 2.0,
+    "all_five_scenes_attempted": true,
+    "completed_scenes": [
+      1,
+      2
+    ],
+    "rejected_scenes": [
+      0,
+      3,
+      4
+    ],
+    "rejection_times_s": {
+      "00": 14.66,
+      "03": 13.68,
+      "04": 14.32
+    },
+    "physics_steps_saved": 48330,
+    "accepted_certificates": 4833,
+    "consumer_guards": 48330,
+    "planning_attempts": 4836,
+    "full_cohort_delivery_25": "NOT_RUN",
+    "full_cohort_execution_11": "NOT_RUN",
+    "full_cohort_interval_recompute": "NOT_RUN",
+    "logged_interval_selected_rows": 10778,
+    "logged_row_count_is_independent_recompute": false,
+    "independent_saved_evidence_audit": "v6_lite/output/runs/research_velocity_stress_independent_audit_01/report.json",
+    "independent_saved_evidence_checks": "338/338",
+    "saved_evidence_valid": true,
+    "all_five_actual_initial_velocity_factors_independently_verified": true,
+    "three_rejected_next_servo_steps_not_executed": true,
+    "linear_feasibility_diagnosis": "v6_lite/output/runs/research_velocity_failure_feasibility_02/report.json",
+    "linear_feasibility_evidence_checks": "538/538",
+    "independent_scalar_verification": "v6_lite/output/runs/research_velocity_failure_scalar_independent_01/verification.json",
+    "independent_scalar_checks": "249/249",
+    "frozen_original_tolerance_infeasible_cases": 3,
+    "conflicting_planner_variable": "theta9 (index 8)",
+    "retained_failed_auditor": "v6_lite/output/runs/research_velocity_failure_feasibility_01/report.json",
+    "all_twofold_velocity_trajectories_impossible_proven": false,
+    "full_cohort_performance_status": "NOT_RUN_INCOMPLETE_COHORT",
+    "wall_deployment_status": "NOT_MET",
+    "nominal_research_acceptance_invalidated": false,
+    "safety_parameters_changed": false,
+    "documentation": "docs/V6_2_RESEARCH_VELOCITY_STRESS.md",
+    "decision": "stop solver iteration budget expansion at these infeasible states; proceed to model and execution error research"
+  },
+  "research_velocity_stress_regression": {
+    "source_commit": "9c7120e8ca8711cd58dc65471e58763c965148ff",
+    "current_passed": 213,
+    "current_total": 213,
+    "historical_passed": 16,
+    "historical_total": 16,
+    "source_unchanged": true,
+    "report": "v6_lite/output/runs/research_velocity_stress_01/test_profiles/report.json"
+  },
+  "next_model_sensitivity_research_protocol": {
+    "status": "NOT_EXECUTED",
+    "tool_review_and_source_freeze_required_before_execution": true,
+    "kind": "uncertified controller-free same-torque numerical shadow replay",
+    "baseline_run": "v6_lite/output/runs/research_acceptance_01",
+    "factor": "robot_subtree_principal_body_inertia_scale",
+    "factor_values": [
+      0.95,
+      1.0,
+      1.05
+    ],
+    "robot_subtree_definition": "descendants of model.jnt_bodyid for named spec.base_joint_name (world_joint), including free base and both arms",
+    "scenario_count": 5,
+    "duration_per_scene_s": 27.0,
+    "physics_period_s": 0.002,
+    "total_replays": 15,
+    "unchanged": [
+      "body_mass",
+      "COM",
+      "dof_armature",
+      "damping",
+      "geometry",
+      "target inputs",
+      "67-channel original torque input",
+      "physics period"
+    ],
+    "nominal_scale_reproduction_gate": true,
+    "all_failed_or_aborted_replays_retained": true,
+    "all_2ms_geometry_observations_required": true,
+    "new_feedback_or_qp_enabled": false,
+    "runtime_execution_certificate_claim": false,
+    "unknown_model_error_closed_loop_robustness_claim": false,
+    "inertia_shadow_draft_or_plan_is_executed_evidence": false
   }
 }
