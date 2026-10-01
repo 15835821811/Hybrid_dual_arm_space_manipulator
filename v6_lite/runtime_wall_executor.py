@@ -734,6 +734,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             raise UncertifiedExecutionError(publication["reason"])
         pending_payload = payload
     def persist_failure(error, physics_step):
+        rejected_at = time.perf_counter()
         failure_dir = trace_dir.parent / "failures"
         failure_dir.mkdir(parents=True, exist_ok=True)
         partial = failure_dir / f"{scenario.scenario_id}_interval_partial_trace.npz"
@@ -743,7 +744,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             initial_qvel=ctx.initial_qvel, observed_integration_state=_integration(model, data))
         _write_json(failure_dir / f"{scenario.scenario_id}_interval_failure.json", {
             "schema": "c11_wall_rejection_v1", "scenario_id": scenario.scenario_id,
-            "time_s": float(data.time), "wall_time": time.perf_counter(),
+            "time_s": float(data.time), "wall_time": rejected_at,
             "failure_reason": str(error), "physics_step": physics_step,
             "next_servo_step_executed": False, "continuation_guaranteed": False,
             "physics_steps_executed": int(round(float(data.time) / run_config.physics_period_s)),
@@ -752,7 +753,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
                 "physics_step": physics_step,
                 "scheduled": epoch + max(physics_step, 0) * run_config.physics_period_s,
                 "actual_start": servo_started if physics_step >= 0 else None,
-                "rejection_observed": time.perf_counter(),
+                "rejection_observed": rejected_at,
                 "torque_consumed": False},
             "last_request": {k: v for k, v in request.items() if k not in
                 ("predicted_start", "reference_start", "previous_command")},
