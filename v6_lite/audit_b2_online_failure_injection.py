@@ -62,7 +62,9 @@ def run(output_dir: Path) -> dict:
         thrown = None
         with patch.object(target, attribute, replacement):
             try:
-                run_v6_lite.run_scenario(
+                # Original C.1 synchronous fault cases remain separately
+                # runnable; process-level C.1.1 packet faults have their own tests.
+                run_v6_lite.run_synchronous_scenario(
                     spec, cfg, qp_cfg, scenario, trace_dir)
             except run_v6_lite.UncertifiedExecutionError as error:
                 thrown = str(error)

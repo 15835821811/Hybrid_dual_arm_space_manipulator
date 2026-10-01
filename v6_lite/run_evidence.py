@@ -107,7 +107,12 @@ def start_run(
     scenario_definitions = [item.to_dict() for item in scenarios]
     source_names = set(SOURCE_FILES)
     for package in ("v6_lite", "model_test"):
-        source_names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / package).rglob("*.py"))
+        # Runtime sources exclude generated evidence and archived snapshots.
+        # Do not recurse through a fixture junction back into this repository.
+        for directory, children, files in os.walk(ROOT / package, followlinks=False):
+            children[:] = [name for name in children if name not in ("output", "__pycache__")]
+            source_names.update((Path(directory) / name).relative_to(ROOT).as_posix()
+                                for name in files if name.endswith(".py"))
     source_hashes = {name: _source_hash(ROOT / name) for name in sorted(source_names)}
     commit = _git("rev-parse", "HEAD")
     tracked_changes = _git("status", "--porcelain", "--untracked-files=no")
@@ -152,7 +157,7 @@ def start_run(
     from v6_lite.runtime_timing import runtime_identity
     pcc_mode = getattr(run_config, "pcc_mode", None)
     dispatch_policy = getattr(run_config, "dispatch_clock_policy", "historical_not_specified")
-    metadata["runtime_identity"] = (runtime_identity(pcc_mode, spec)
+    metadata["runtime_identity"] = (runtime_identity(pcc_mode, spec, dispatch_clock_policy=dispatch_policy)
                                     if pcc_mode is not None else None)
     metadata["timing_protocol"].update({
         "dispatch_clock_policy": dispatch_policy,
@@ -166,6 +171,15 @@ def start_run(
         "physics_during_compute": "frozen synchronous simulation",
         "continuous_time_certified": False,
     })
+    if pcc_mode == "bounded_interval_pcc" and dispatch_policy == "wall_deadline":
+        metadata["timing_protocol"].update({
+            "physics_during_compute": "independent_500Hz_executor_while_process_plans_next_segment",
+            "dispatch_start": "fresh full-state snapshot at current-segment handoff",
+            "dispatch_end": "complete immutable packet published into bounded shared slot",
+            "initialization": "private workspace/JIT warmup before acquisition; separately validated startup before predeclared unarmed-model task release",
+            "deadline_scope": "publish_deadline separate from execution_start and execution_end",
+            "servo_application_recorded_separately": True,
+        })
     _write_json(output_dir / "run_metadata.json", metadata, exclusive=True)
     return metadata
 

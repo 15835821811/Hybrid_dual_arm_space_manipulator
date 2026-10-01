@@ -13,10 +13,12 @@ TRACE_SCHEMA_VERSION = "v6_2_a1_ramp_aware_qp"
 TIMING_SCHEMA_VERSION = "v6_2_c1_dispatch_timeline_v1"
 
 
-def runtime_identity(pcc_mode, spec, model=None):
+def runtime_identity(pcc_mode, spec, model=None, *, dispatch_clock_policy=None):
     return {
         "trace_schema_version": TRACE_SCHEMA_VERSION,
-        "controller_version": ("v6_2_c1_bounded_interval_pcc" if
+        "controller_version": ("v6_2_c11_wall_handoff" if pcc_mode == "bounded_interval_pcc"
+                               and dispatch_clock_policy == "wall_deadline" else
+                               "v6_2_c1_bounded_interval_pcc" if
                                pcc_mode == "bounded_interval_pcc" else
                                "v6_2_a1_legacy_pcc"),
         "pcc_mode": pcc_mode,

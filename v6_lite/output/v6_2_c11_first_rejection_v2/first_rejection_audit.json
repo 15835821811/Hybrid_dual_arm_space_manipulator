@@ -1,0 +1,1198 @@
+{
+  "schema": "c11_first_rejection_audit_v1",
+  "clock": "perf_counter monotonic seconds",
+  "records": [
+    {
+      "scenario_id": "v6_lite_scenario_00",
+      "source": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_00/timing/v6_lite_scenario_00.jsonl",
+      "source_sha256": "bb6405ee653869c07a2c365693acc68a048472157d4e1f126bec9b51fa8db31b",
+      "preserved_timeline": "v6_lite/output/v6_2_c11_first_rejection_v2/v6_lite_scenario_00.jsonl",
+      "events_monotonic_s": {
+        "state_acquisition": 2535335.6787709002,
+        "planning_release": 2535335.6787709002,
+        "solve_start": 2535335.6805203003,
+        "solve_end": 2535335.6859736,
+        "validation_end": 2535335.6960462,
+        "planned_execution_start": 2535335.6787709002,
+        "publish": 2535335.6968809003,
+        "first_servo_application": 2535335.6967882,
+        "rejected_servo_substep": 3,
+        "rejection": 2535335.6988818,
+        "expiry": 2535335.6987709003
+      },
+      "publish_slack_s": 0.0018899999558925629,
+      "application_start_offset_s": 0.018017299938946962,
+      "remaining_execution_coverage_at_rejection_s": -0.00011089956387877464,
+      "evidence_limit": "planning release shares acquisition; C.1 publish deadline was the single valid_until; first dispatch recorded immediately before mj_step",
+      "confirmed_mechanisms": [
+        "expiry during the first ramp, after successful first dispatch",
+        "acquisition+20ms covers serial planning and subsequent servo work together",
+        "physics did not advance during planning; there was no concurrent next-segment planner"
+      ],
+      "not_established_by_this_short_trace": [
+        "long-run phase drift",
+        "steady-state scheduling tails"
+      ],
+      "raw_record": {
+        "schema": "v6_2_c1_dispatch_timeline_v1",
+        "command_id": 0,
+        "source_simulation_time_s": 0.0,
+        "state_acquisition_monotonic_ns": 2535335678770900,
+        "actual_dispatch_monotonic_ns": 2535335696880900,
+        "dispatch_latency_s": 0.01811,
+        "thread_cpu_s": 0.015625,
+        "phases": [
+          {
+            "name": "state_refresh",
+            "start_ns": 2535335678770900,
+            "end_ns": 2535335679127800,
+            "wall_s": 0.0003569,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "interval_query_and_envelope_preflight",
+            "start_ns": 2535335679127800,
+            "end_ns": 2535335680520300,
+            "wall_s": 0.0013925,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "qp_assembly_and_solve",
+            "start_ns": 2535335680520300,
+            "end_ns": 2535335685973600,
+            "wall_s": 0.0054533,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "ten_step_preview",
+            "start_ns": 2535335685973600,
+            "end_ns": 2535335692643800,
+            "wall_s": 0.0066702,
+            "thread_cpu_s": 0.015625
+          },
+          {
+            "name": "next_start_check",
+            "start_ns": 2535335692643800,
+            "end_ns": 2535335695966700,
+            "wall_s": 0.0033229,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "execution_validation",
+            "start_ns": 2535335695966700,
+            "end_ns": 2535335696046200,
+            "wall_s": 7.950000000000001e-05,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "snapshot_logging_and_command_selection",
+            "start_ns": 2535335696046200,
+            "end_ns": 2535335696224100,
+            "wall_s": 0.00017790000000000001,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "reference_and_first_torque_preparation",
+            "start_ns": 2535335696224100,
+            "end_ns": 2535335696762600,
+            "wall_s": 0.0005385,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "torque_publish",
+            "start_ns": 2535335696762600,
+            "end_ns": 2535335696880900,
+            "wall_s": 0.0001183,
+            "thread_cpu_s": 0.0
+          }
+        ],
+        "nested_measurements": {
+          "qp_solver_latency": "qp_assembly_and_solve",
+          "interval_preview_latency": [
+            "ten_step_preview",
+            "next_start_check"
+          ],
+          "algorithm_full_latency": "state_refresh_through_validation"
+        },
+        "accepted": true,
+        "qp_iterations": 101,
+        "certificate": {
+          "command_id": 0,
+          "source_state_id": "5cf296b27e6d1dca65b2a564eec9ea767afa79c687c134a95ddfacb911408c9a",
+          "source_model_hash": "ce7fa42c24f977cda2c9669e5ccba62fe92fc76f948488b337e36bd2e753ec7d",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "d60102c15a055b7e4685e154b013665966b4f0a6217ee23f2f4e819a868ae54c",
+          "state_acquisition_time": 2535335.6787709002,
+          "target_acquisition_time": 2535335.6787709002,
+          "planned_execution_start": 2535335.6787709002,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535335.6859736,
+          "validation_finished_time": 2535335.6960462,
+          "valid_until": 2535335.6987709003,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "dispatch_check": {
+          "accepted": true,
+          "reason": null,
+          "policy": "wall_deadline",
+          "wall_clock_current": true,
+          "state_age_s": 0.018017299938946962,
+          "target_age_s": 0.018017299938946962,
+          "dispatch_time": 2535335.6967882,
+          "servo_substep": 0,
+          "continuation_guaranteed_on_reject": false
+        },
+        "servo_dispatch_checks": [
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.018017299938946962,
+            "target_age_s": 0.018017299938946962,
+            "dispatch_time": 2535335.6967882,
+            "servo_substep": 0,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.018829899840056896,
+            "target_age_s": 0.018829899840056896,
+            "dispatch_time": 2535335.6976008,
+            "servo_substep": 1,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.01950289960950613,
+            "target_age_s": 0.01950289960950613,
+            "dispatch_time": 2535335.6982738,
+            "servo_substep": 2,
+            "continuation_guaranteed_on_reject": false
+          }
+        ],
+        "penalty_updates": 1,
+        "interval_point_evaluations": 5,
+        "interval_selected_rows": 0
+      },
+      "raw_failure": {
+        "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+        "pcc_mode": "bounded_interval_pcc",
+        "scenario_id": "v6_lite_scenario_00",
+        "time_s": 0.006,
+        "failure_reason": "EXPIRED_COMMAND_WALL_CLOCK",
+        "diagnostic": {
+          "accepted": false,
+          "reason": "EXPIRED_COMMAND_WALL_CLOCK",
+          "policy": "wall_deadline",
+          "wall_clock_current": false,
+          "state_age_s": 0.020110899582505226,
+          "target_age_s": 0.020110899582505226,
+          "dispatch_time": 2535335.6988818,
+          "servo_substep": 3,
+          "continuation_guaranteed_on_reject": false
+        },
+        "command_certificate": {
+          "command_id": 0,
+          "source_state_id": "5cf296b27e6d1dca65b2a564eec9ea767afa79c687c134a95ddfacb911408c9a",
+          "source_model_hash": "ce7fa42c24f977cda2c9669e5ccba62fe92fc76f948488b337e36bd2e753ec7d",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "d60102c15a055b7e4685e154b013665966b4f0a6217ee23f2f4e819a868ae54c",
+          "state_acquisition_time": 2535335.6787709002,
+          "target_acquisition_time": 2535335.6787709002,
+          "planned_execution_start": 2535335.6787709002,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535335.6859736,
+          "validation_finished_time": 2535335.6960462,
+          "valid_until": 2535335.6987709003,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "continuation_guaranteed": false,
+        "simulation_stop_is_safe_backup": false,
+        "next_servo_step_executed": false,
+        "partial_trace": {
+          "path": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_00/failures/v6_lite_scenario_00_interval_partial_trace.npz",
+          "sha256": "1094b2741f45f6b127240b79b93931af04594fbe502176a2aa32e548517e3c2c"
+        }
+      },
+      "failure_source_sha256": "767f05c2b6934e3e26584577491455f950549b350bb0ac7d313e9e8f98a78ec0"
+    },
+    {
+      "scenario_id": "v6_lite_scenario_01",
+      "source": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_01/timing/v6_lite_scenario_01.jsonl",
+      "source_sha256": "c9f60f0ac27bb296bbca95ccd77f3c01a90841174512c76c6009a384d40084b8",
+      "preserved_timeline": "v6_lite/output/v6_2_c11_first_rejection_v2/v6_lite_scenario_01.jsonl",
+      "events_monotonic_s": {
+        "state_acquisition": 2535338.4373542,
+        "planning_release": 2535338.4373542,
+        "solve_start": 2535338.4390308,
+        "solve_end": 2535338.4443137003,
+        "validation_end": 2535338.4541042,
+        "planned_execution_start": 2535338.4373542,
+        "publish": 2535338.4548672,
+        "first_servo_application": 2535338.4547845,
+        "rejected_servo_substep": 4,
+        "rejection": 2535338.4573701,
+        "expiry": 2535338.4573542
+      },
+      "publish_slack_s": 0.0024870000779628754,
+      "application_start_offset_s": 0.017430299893021584,
+      "remaining_execution_coverage_at_rejection_s": -1.5900004655122757e-05,
+      "evidence_limit": "planning release shares acquisition; C.1 publish deadline was the single valid_until; first dispatch recorded immediately before mj_step",
+      "confirmed_mechanisms": [
+        "expiry during the first ramp, after successful first dispatch",
+        "acquisition+20ms covers serial planning and subsequent servo work together",
+        "physics did not advance during planning; there was no concurrent next-segment planner"
+      ],
+      "not_established_by_this_short_trace": [
+        "long-run phase drift",
+        "steady-state scheduling tails"
+      ],
+      "raw_record": {
+        "schema": "v6_2_c1_dispatch_timeline_v1",
+        "command_id": 0,
+        "source_simulation_time_s": 0.0,
+        "state_acquisition_monotonic_ns": 2535338437354200,
+        "actual_dispatch_monotonic_ns": 2535338454867200,
+        "dispatch_latency_s": 0.017513,
+        "thread_cpu_s": 0.03125,
+        "phases": [
+          {
+            "name": "state_refresh",
+            "start_ns": 2535338437354200,
+            "end_ns": 2535338437709000,
+            "wall_s": 0.0003548,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "interval_query_and_envelope_preflight",
+            "start_ns": 2535338437709000,
+            "end_ns": 2535338439030800,
+            "wall_s": 0.0013218000000000001,
+            "thread_cpu_s": 0.015625
+          },
+          {
+            "name": "qp_assembly_and_solve",
+            "start_ns": 2535338439030800,
+            "end_ns": 2535338444313700,
+            "wall_s": 0.0052829,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "ten_step_preview",
+            "start_ns": 2535338444313700,
+            "end_ns": 2535338450888900,
+            "wall_s": 0.006575200000000001,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "next_start_check",
+            "start_ns": 2535338450888900,
+            "end_ns": 2535338454050700,
+            "wall_s": 0.0031618,
+            "thread_cpu_s": 0.015625
+          },
+          {
+            "name": "execution_validation",
+            "start_ns": 2535338454050700,
+            "end_ns": 2535338454104200,
+            "wall_s": 5.3500000000000006e-05,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "snapshot_logging_and_command_selection",
+            "start_ns": 2535338454104200,
+            "end_ns": 2535338454262900,
+            "wall_s": 0.0001587,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "reference_and_first_torque_preparation",
+            "start_ns": 2535338454262900,
+            "end_ns": 2535338454760700,
+            "wall_s": 0.0004978000000000001,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "torque_publish",
+            "start_ns": 2535338454760700,
+            "end_ns": 2535338454867200,
+            "wall_s": 0.0001065,
+            "thread_cpu_s": 0.0
+          }
+        ],
+        "nested_measurements": {
+          "qp_solver_latency": "qp_assembly_and_solve",
+          "interval_preview_latency": [
+            "ten_step_preview",
+            "next_start_check"
+          ],
+          "algorithm_full_latency": "state_refresh_through_validation"
+        },
+        "accepted": true,
+        "qp_iterations": 102,
+        "certificate": {
+          "command_id": 0,
+          "source_state_id": "1c04cca8b8b53ba7e7fc476844d8bd0733aca80b2fc9a78f3751d3e0e035e3e3",
+          "source_model_hash": "e4dd0c1c549b649e914054ce0f4b6c13ec51c1a14866e6ba3ac7fa56bb5843ee",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "e2266336ba5606b602708b735677a3ef781855b855fcd4ae0c47af5e686677dc",
+          "state_acquisition_time": 2535338.4373542,
+          "target_acquisition_time": 2535338.4373542,
+          "planned_execution_start": 2535338.4373542,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535338.4443137003,
+          "validation_finished_time": 2535338.4541042,
+          "valid_until": 2535338.4573542,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "dispatch_check": {
+          "accepted": true,
+          "reason": null,
+          "policy": "wall_deadline",
+          "wall_clock_current": true,
+          "state_age_s": 0.017430299893021584,
+          "target_age_s": 0.017430299893021584,
+          "dispatch_time": 2535338.4547845,
+          "servo_substep": 0,
+          "continuation_guaranteed_on_reject": false
+        },
+        "servo_dispatch_checks": [
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.017430299893021584,
+            "target_age_s": 0.017430299893021584,
+            "dispatch_time": 2535338.4547845,
+            "servo_substep": 0,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.018156299833208323,
+            "target_age_s": 0.018156299833208323,
+            "dispatch_time": 2535338.4555105,
+            "servo_substep": 1,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.018798499833792448,
+            "target_age_s": 0.018798499833792448,
+            "dispatch_time": 2535338.4561527,
+            "servo_substep": 2,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.019394199829548597,
+            "target_age_s": 0.019394199829548597,
+            "dispatch_time": 2535338.4567484,
+            "servo_substep": 3,
+            "continuation_guaranteed_on_reject": false
+          }
+        ],
+        "penalty_updates": 1,
+        "interval_point_evaluations": 5,
+        "interval_selected_rows": 0
+      },
+      "raw_failure": {
+        "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+        "pcc_mode": "bounded_interval_pcc",
+        "scenario_id": "v6_lite_scenario_01",
+        "time_s": 0.008,
+        "failure_reason": "EXPIRED_COMMAND_WALL_CLOCK",
+        "diagnostic": {
+          "accepted": false,
+          "reason": "EXPIRED_COMMAND_WALL_CLOCK",
+          "policy": "wall_deadline",
+          "wall_clock_current": false,
+          "state_age_s": 0.020015900023281574,
+          "target_age_s": 0.020015900023281574,
+          "dispatch_time": 2535338.4573701,
+          "servo_substep": 4,
+          "continuation_guaranteed_on_reject": false
+        },
+        "command_certificate": {
+          "command_id": 0,
+          "source_state_id": "1c04cca8b8b53ba7e7fc476844d8bd0733aca80b2fc9a78f3751d3e0e035e3e3",
+          "source_model_hash": "e4dd0c1c549b649e914054ce0f4b6c13ec51c1a14866e6ba3ac7fa56bb5843ee",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "e2266336ba5606b602708b735677a3ef781855b855fcd4ae0c47af5e686677dc",
+          "state_acquisition_time": 2535338.4373542,
+          "target_acquisition_time": 2535338.4373542,
+          "planned_execution_start": 2535338.4373542,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535338.4443137003,
+          "validation_finished_time": 2535338.4541042,
+          "valid_until": 2535338.4573542,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "continuation_guaranteed": false,
+        "simulation_stop_is_safe_backup": false,
+        "next_servo_step_executed": false,
+        "partial_trace": {
+          "path": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_01/failures/v6_lite_scenario_01_interval_partial_trace.npz",
+          "sha256": "b4e213f7668cda8a51c247f1f4ccbd2f708cd26c2ceb95046bc2ada28cb95e05"
+        }
+      },
+      "failure_source_sha256": "af9d9deaea9383c6e8e5bf9c118ad1e161ec88476c965862f799ffb069c59832"
+    },
+    {
+      "scenario_id": "v6_lite_scenario_02",
+      "source": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_02/timing/v6_lite_scenario_02.jsonl",
+      "source_sha256": "ff12ffc8d722bb271cfb0467a41090f35b25637e8959e8c3861fbff95834e212",
+      "preserved_timeline": "v6_lite/output/v6_2_c11_first_rejection_v2/v6_lite_scenario_02.jsonl",
+      "events_monotonic_s": {
+        "state_acquisition": 2535341.1824647,
+        "planning_release": 2535341.1824647,
+        "solve_start": 2535341.1840019003,
+        "solve_end": 2535341.1890082,
+        "validation_end": 2535341.1995319,
+        "planned_execution_start": 2535341.1824647,
+        "publish": 2535341.200267,
+        "first_servo_application": 2535341.2001888,
+        "rejected_servo_substep": 4,
+        "rejection": 2535341.2026644,
+        "expiry": 2535341.2024647
+      },
+      "publish_slack_s": 0.002197700086981058,
+      "application_start_offset_s": 0.017724100034683943,
+      "remaining_execution_coverage_at_rejection_s": -0.0001996997743844986,
+      "evidence_limit": "planning release shares acquisition; C.1 publish deadline was the single valid_until; first dispatch recorded immediately before mj_step",
+      "confirmed_mechanisms": [
+        "expiry during the first ramp, after successful first dispatch",
+        "acquisition+20ms covers serial planning and subsequent servo work together",
+        "physics did not advance during planning; there was no concurrent next-segment planner"
+      ],
+      "not_established_by_this_short_trace": [
+        "long-run phase drift",
+        "steady-state scheduling tails"
+      ],
+      "raw_record": {
+        "schema": "v6_2_c1_dispatch_timeline_v1",
+        "command_id": 0,
+        "source_simulation_time_s": 0.0,
+        "state_acquisition_monotonic_ns": 2535341182464700,
+        "actual_dispatch_monotonic_ns": 2535341200267000,
+        "dispatch_latency_s": 0.0178023,
+        "thread_cpu_s": 0.015625,
+        "phases": [
+          {
+            "name": "state_refresh",
+            "start_ns": 2535341182464700,
+            "end_ns": 2535341182818600,
+            "wall_s": 0.00035390000000000004,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "interval_query_and_envelope_preflight",
+            "start_ns": 2535341182818600,
+            "end_ns": 2535341184001900,
+            "wall_s": 0.0011833,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "qp_assembly_and_solve",
+            "start_ns": 2535341184001900,
+            "end_ns": 2535341189008200,
+            "wall_s": 0.0050063,
+            "thread_cpu_s": 0.015625
+          },
+          {
+            "name": "ten_step_preview",
+            "start_ns": 2535341189008200,
+            "end_ns": 2535341196260300,
+            "wall_s": 0.0072521,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "next_start_check",
+            "start_ns": 2535341196260300,
+            "end_ns": 2535341199480800,
+            "wall_s": 0.0032205000000000003,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "execution_validation",
+            "start_ns": 2535341199480800,
+            "end_ns": 2535341199531900,
+            "wall_s": 5.11e-05,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "snapshot_logging_and_command_selection",
+            "start_ns": 2535341199531900,
+            "end_ns": 2535341199680100,
+            "wall_s": 0.0001482,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "reference_and_first_torque_preparation",
+            "start_ns": 2535341199680100,
+            "end_ns": 2535341200167300,
+            "wall_s": 0.0004872,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "torque_publish",
+            "start_ns": 2535341200167300,
+            "end_ns": 2535341200267000,
+            "wall_s": 9.970000000000001e-05,
+            "thread_cpu_s": 0.0
+          }
+        ],
+        "nested_measurements": {
+          "qp_solver_latency": "qp_assembly_and_solve",
+          "interval_preview_latency": [
+            "ten_step_preview",
+            "next_start_check"
+          ],
+          "algorithm_full_latency": "state_refresh_through_validation"
+        },
+        "accepted": true,
+        "qp_iterations": 101,
+        "certificate": {
+          "command_id": 0,
+          "source_state_id": "a18292884245e19dd986aaed1476bf7c6000ebd28e2219b8ca7c0fb79a9083bb",
+          "source_model_hash": "e72c0aa5c55ca5db365f59cac87ee9fd5e12ec4708fff2a7b55557f3fdca1042",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "f2b433d89a192e314f05aa500a5ec116c494b5f076b675e3a57b63910a0fdcb7",
+          "state_acquisition_time": 2535341.1824647,
+          "target_acquisition_time": 2535341.1824647,
+          "planned_execution_start": 2535341.1824647,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535341.1890082,
+          "validation_finished_time": 2535341.1995319,
+          "valid_until": 2535341.2024647,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "dispatch_check": {
+          "accepted": true,
+          "reason": null,
+          "policy": "wall_deadline",
+          "wall_clock_current": true,
+          "state_age_s": 0.017724100034683943,
+          "target_age_s": 0.017724100034683943,
+          "dispatch_time": 2535341.2001888,
+          "servo_substep": 0,
+          "continuation_guaranteed_on_reject": false
+        },
+        "servo_dispatch_checks": [
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.017724100034683943,
+            "target_age_s": 0.017724100034683943,
+            "dispatch_time": 2535341.2001888,
+            "servo_substep": 0,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.01838899962604046,
+            "target_age_s": 0.01838899962604046,
+            "dispatch_time": 2535341.2008537,
+            "servo_substep": 1,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.019001399632543325,
+            "target_age_s": 0.019001399632543325,
+            "dispatch_time": 2535341.2014661,
+            "servo_substep": 2,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.019606999587267637,
+            "target_age_s": 0.019606999587267637,
+            "dispatch_time": 2535341.2020717,
+            "servo_substep": 3,
+            "continuation_guaranteed_on_reject": false
+          }
+        ],
+        "penalty_updates": 1,
+        "interval_point_evaluations": 5,
+        "interval_selected_rows": 0
+      },
+      "raw_failure": {
+        "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+        "pcc_mode": "bounded_interval_pcc",
+        "scenario_id": "v6_lite_scenario_02",
+        "time_s": 0.008,
+        "failure_reason": "EXPIRED_COMMAND_WALL_CLOCK",
+        "diagnostic": {
+          "accepted": false,
+          "reason": "EXPIRED_COMMAND_WALL_CLOCK",
+          "policy": "wall_deadline",
+          "wall_clock_current": false,
+          "state_age_s": 0.02019969979301095,
+          "target_age_s": 0.02019969979301095,
+          "dispatch_time": 2535341.2026644,
+          "servo_substep": 4,
+          "continuation_guaranteed_on_reject": false
+        },
+        "command_certificate": {
+          "command_id": 0,
+          "source_state_id": "a18292884245e19dd986aaed1476bf7c6000ebd28e2219b8ca7c0fb79a9083bb",
+          "source_model_hash": "e72c0aa5c55ca5db365f59cac87ee9fd5e12ec4708fff2a7b55557f3fdca1042",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "f2b433d89a192e314f05aa500a5ec116c494b5f076b675e3a57b63910a0fdcb7",
+          "state_acquisition_time": 2535341.1824647,
+          "target_acquisition_time": 2535341.1824647,
+          "planned_execution_start": 2535341.1824647,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535341.1890082,
+          "validation_finished_time": 2535341.1995319,
+          "valid_until": 2535341.2024647,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "continuation_guaranteed": false,
+        "simulation_stop_is_safe_backup": false,
+        "next_servo_step_executed": false,
+        "partial_trace": {
+          "path": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_02/failures/v6_lite_scenario_02_interval_partial_trace.npz",
+          "sha256": "9572349b417272b0c17ad1ef6133ec3e1ce873fe8093a385e37c5a9618033843"
+        }
+      },
+      "failure_source_sha256": "cfe54f6cd175c3d2230dfd12880b9fe53f5877a8f31df38732aac8c6cadf41c5"
+    },
+    {
+      "scenario_id": "v6_lite_scenario_03",
+      "source": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_03/timing/v6_lite_scenario_03.jsonl",
+      "source_sha256": "c25befc02e781aa8be2b72840e3dda1c2cfa0ebffb348303a867a08cb177c8c1",
+      "preserved_timeline": "v6_lite/output/v6_2_c11_first_rejection_v2/v6_lite_scenario_03.jsonl",
+      "events_monotonic_s": {
+        "state_acquisition": 2535343.9281586003,
+        "planning_release": 2535343.9281586003,
+        "solve_start": 2535343.9297704003,
+        "solve_end": 2535343.9351576003,
+        "validation_end": 2535343.9443765003,
+        "planned_execution_start": 2535343.9281586003,
+        "publish": 2535343.9451148002,
+        "first_servo_application": 2535343.9450357,
+        "rejected_servo_substep": 5,
+        "rejection": 2535343.9482728,
+        "expiry": 2535343.9481586004
+      },
+      "publish_slack_s": 0.003043800126761198,
+      "application_start_offset_s": 0.016877099871635437,
+      "remaining_execution_coverage_at_rejection_s": -0.00011419970542192459,
+      "evidence_limit": "planning release shares acquisition; C.1 publish deadline was the single valid_until; first dispatch recorded immediately before mj_step",
+      "confirmed_mechanisms": [
+        "expiry during the first ramp, after successful first dispatch",
+        "acquisition+20ms covers serial planning and subsequent servo work together",
+        "physics did not advance during planning; there was no concurrent next-segment planner"
+      ],
+      "not_established_by_this_short_trace": [
+        "long-run phase drift",
+        "steady-state scheduling tails"
+      ],
+      "raw_record": {
+        "schema": "v6_2_c1_dispatch_timeline_v1",
+        "command_id": 0,
+        "source_simulation_time_s": 0.0,
+        "state_acquisition_monotonic_ns": 2535343928158600,
+        "actual_dispatch_monotonic_ns": 2535343945114800,
+        "dispatch_latency_s": 0.0169562,
+        "thread_cpu_s": 0.015625,
+        "phases": [
+          {
+            "name": "state_refresh",
+            "start_ns": 2535343928158600,
+            "end_ns": 2535343928516900,
+            "wall_s": 0.00035830000000000004,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "interval_query_and_envelope_preflight",
+            "start_ns": 2535343928516900,
+            "end_ns": 2535343929770400,
+            "wall_s": 0.0012535,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "qp_assembly_and_solve",
+            "start_ns": 2535343929770400,
+            "end_ns": 2535343935157600,
+            "wall_s": 0.0053872,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "ten_step_preview",
+            "start_ns": 2535343935157600,
+            "end_ns": 2535343941406900,
+            "wall_s": 0.0062493,
+            "thread_cpu_s": 0.015625
+          },
+          {
+            "name": "next_start_check",
+            "start_ns": 2535343941406900,
+            "end_ns": 2535343944326600,
+            "wall_s": 0.0029197000000000003,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "execution_validation",
+            "start_ns": 2535343944326600,
+            "end_ns": 2535343944376500,
+            "wall_s": 4.99e-05,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "snapshot_logging_and_command_selection",
+            "start_ns": 2535343944376500,
+            "end_ns": 2535343944519200,
+            "wall_s": 0.0001427,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "reference_and_first_torque_preparation",
+            "start_ns": 2535343944519200,
+            "end_ns": 2535343945015100,
+            "wall_s": 0.0004959000000000001,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "torque_publish",
+            "start_ns": 2535343945015100,
+            "end_ns": 2535343945114800,
+            "wall_s": 9.970000000000001e-05,
+            "thread_cpu_s": 0.0
+          }
+        ],
+        "nested_measurements": {
+          "qp_solver_latency": "qp_assembly_and_solve",
+          "interval_preview_latency": [
+            "ten_step_preview",
+            "next_start_check"
+          ],
+          "algorithm_full_latency": "state_refresh_through_validation"
+        },
+        "accepted": true,
+        "qp_iterations": 105,
+        "certificate": {
+          "command_id": 0,
+          "source_state_id": "0595c7555ef9131cfb3ebc5ee32c80dc01f57b872c39b39e5d553fc12e685940",
+          "source_model_hash": "4fa736b7f4f5217a52985320402e223a5250d8f09e54528fef46a84e79f9b529",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "aa7a670edccdeaf68a67b9d52f8558ec97c8669318a67c32d5244e4eea9b4528",
+          "state_acquisition_time": 2535343.9281586003,
+          "target_acquisition_time": 2535343.9281586003,
+          "planned_execution_start": 2535343.9281586003,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535343.9351576003,
+          "validation_finished_time": 2535343.9443765003,
+          "valid_until": 2535343.9481586004,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "dispatch_check": {
+          "accepted": true,
+          "reason": null,
+          "policy": "wall_deadline",
+          "wall_clock_current": true,
+          "state_age_s": 0.016877099871635437,
+          "target_age_s": 0.016877099871635437,
+          "dispatch_time": 2535343.9450357,
+          "servo_substep": 0,
+          "continuation_guaranteed_on_reject": false
+        },
+        "servo_dispatch_checks": [
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.016877099871635437,
+            "target_age_s": 0.016877099871635437,
+            "dispatch_time": 2535343.9450357,
+            "servo_substep": 0,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.017559999600052834,
+            "target_age_s": 0.017559999600052834,
+            "dispatch_time": 2535343.9457186,
+            "servo_substep": 1,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.01816979981958866,
+            "target_age_s": 0.01816979981958866,
+            "dispatch_time": 2535343.9463284,
+            "servo_substep": 2,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.018769999500364065,
+            "target_age_s": 0.018769999500364065,
+            "dispatch_time": 2535343.9469286,
+            "servo_substep": 3,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.019439199473708868,
+            "target_age_s": 0.019439199473708868,
+            "dispatch_time": 2535343.9475978,
+            "servo_substep": 4,
+            "continuation_guaranteed_on_reject": false
+          }
+        ],
+        "penalty_updates": 1,
+        "interval_point_evaluations": 5,
+        "interval_selected_rows": 0
+      },
+      "raw_failure": {
+        "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+        "pcc_mode": "bounded_interval_pcc",
+        "scenario_id": "v6_lite_scenario_03",
+        "time_s": 0.01,
+        "failure_reason": "EXPIRED_COMMAND_WALL_CLOCK",
+        "diagnostic": {
+          "accepted": false,
+          "reason": "EXPIRED_COMMAND_WALL_CLOCK",
+          "policy": "wall_deadline",
+          "wall_clock_current": false,
+          "state_age_s": 0.020114199724048376,
+          "target_age_s": 0.020114199724048376,
+          "dispatch_time": 2535343.9482728,
+          "servo_substep": 5,
+          "continuation_guaranteed_on_reject": false
+        },
+        "command_certificate": {
+          "command_id": 0,
+          "source_state_id": "0595c7555ef9131cfb3ebc5ee32c80dc01f57b872c39b39e5d553fc12e685940",
+          "source_model_hash": "4fa736b7f4f5217a52985320402e223a5250d8f09e54528fef46a84e79f9b529",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "aa7a670edccdeaf68a67b9d52f8558ec97c8669318a67c32d5244e4eea9b4528",
+          "state_acquisition_time": 2535343.9281586003,
+          "target_acquisition_time": 2535343.9281586003,
+          "planned_execution_start": 2535343.9281586003,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535343.9351576003,
+          "validation_finished_time": 2535343.9443765003,
+          "valid_until": 2535343.9481586004,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "continuation_guaranteed": false,
+        "simulation_stop_is_safe_backup": false,
+        "next_servo_step_executed": false,
+        "partial_trace": {
+          "path": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_03/failures/v6_lite_scenario_03_interval_partial_trace.npz",
+          "sha256": "4335d146423f2d9af55eb262b726f931234be92d84c47d43d47b40151b6afa88"
+        }
+      },
+      "failure_source_sha256": "ebaaab4c8479eceb24d3c31ebffe53919e2d471218fbad9cb58e4705b266c174"
+    },
+    {
+      "scenario_id": "v6_lite_scenario_04",
+      "source": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_04/timing/v6_lite_scenario_04.jsonl",
+      "source_sha256": "6e7fef217fd1ef95ef5fd6c673df993d65c4094bfe8ab8923709fbb4736601cc",
+      "preserved_timeline": "v6_lite/output/v6_2_c11_first_rejection_v2/v6_lite_scenario_04.jsonl",
+      "events_monotonic_s": {
+        "state_acquisition": 2535346.6826228,
+        "planning_release": 2535346.6826228,
+        "solve_start": 2535346.6842087,
+        "solve_end": 2535346.6893808004,
+        "validation_end": 2535346.6990953,
+        "planned_execution_start": 2535346.6826228,
+        "publish": 2535346.6999176,
+        "first_servo_application": 2535346.6998325,
+        "rejected_servo_substep": 5,
+        "rejection": 2535346.7030639,
+        "expiry": 2535346.7026228
+      },
+      "publish_slack_s": 0.002705200109630823,
+      "application_start_offset_s": 0.01720969984307885,
+      "remaining_execution_coverage_at_rejection_s": -0.00044109998270869255,
+      "evidence_limit": "planning release shares acquisition; C.1 publish deadline was the single valid_until; first dispatch recorded immediately before mj_step",
+      "confirmed_mechanisms": [
+        "expiry during the first ramp, after successful first dispatch",
+        "acquisition+20ms covers serial planning and subsequent servo work together",
+        "physics did not advance during planning; there was no concurrent next-segment planner"
+      ],
+      "not_established_by_this_short_trace": [
+        "long-run phase drift",
+        "steady-state scheduling tails"
+      ],
+      "raw_record": {
+        "schema": "v6_2_c1_dispatch_timeline_v1",
+        "command_id": 0,
+        "source_simulation_time_s": 0.0,
+        "state_acquisition_monotonic_ns": 2535346682622800,
+        "actual_dispatch_monotonic_ns": 2535346699917600,
+        "dispatch_latency_s": 0.017294800000000003,
+        "thread_cpu_s": 0.015625,
+        "phases": [
+          {
+            "name": "state_refresh",
+            "start_ns": 2535346682622800,
+            "end_ns": 2535346682984900,
+            "wall_s": 0.0003621,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "interval_query_and_envelope_preflight",
+            "start_ns": 2535346682984900,
+            "end_ns": 2535346684208700,
+            "wall_s": 0.0012238000000000001,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "qp_assembly_and_solve",
+            "start_ns": 2535346684208700,
+            "end_ns": 2535346689380800,
+            "wall_s": 0.005172100000000001,
+            "thread_cpu_s": 0.015625
+          },
+          {
+            "name": "ten_step_preview",
+            "start_ns": 2535346689380800,
+            "end_ns": 2535346695876600,
+            "wall_s": 0.0064958,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "next_start_check",
+            "start_ns": 2535346695876600,
+            "end_ns": 2535346699042400,
+            "wall_s": 0.0031658000000000003,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "execution_validation",
+            "start_ns": 2535346699042400,
+            "end_ns": 2535346699095300,
+            "wall_s": 5.2900000000000005e-05,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "snapshot_logging_and_command_selection",
+            "start_ns": 2535346699095300,
+            "end_ns": 2535346699250900,
+            "wall_s": 0.00015560000000000001,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "reference_and_first_torque_preparation",
+            "start_ns": 2535346699250900,
+            "end_ns": 2535346699808100,
+            "wall_s": 0.0005572,
+            "thread_cpu_s": 0.0
+          },
+          {
+            "name": "torque_publish",
+            "start_ns": 2535346699808100,
+            "end_ns": 2535346699917600,
+            "wall_s": 0.0001095,
+            "thread_cpu_s": 0.0
+          }
+        ],
+        "nested_measurements": {
+          "qp_solver_latency": "qp_assembly_and_solve",
+          "interval_preview_latency": [
+            "ten_step_preview",
+            "next_start_check"
+          ],
+          "algorithm_full_latency": "state_refresh_through_validation"
+        },
+        "accepted": true,
+        "qp_iterations": 105,
+        "certificate": {
+          "command_id": 0,
+          "source_state_id": "8e69f72d1e5f5a12c8d2c5ec0a2ca1e3bd013be44fb5948c34c75dc0985e1730",
+          "source_model_hash": "39fe5c14d8de341d28d92c999ee11dda908ffaef44128bdbbf502a14ab0774b0",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "168012c5bb6c7c3007087d07241697f2b9d5a6303f428abc5c89e4e9b9fa4745",
+          "state_acquisition_time": 2535346.6826228,
+          "target_acquisition_time": 2535346.6826228,
+          "planned_execution_start": 2535346.6826228,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535346.6893808004,
+          "validation_finished_time": 2535346.6990953,
+          "valid_until": 2535346.7026228,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "dispatch_check": {
+          "accepted": true,
+          "reason": null,
+          "policy": "wall_deadline",
+          "wall_clock_current": true,
+          "state_age_s": 0.01720969984307885,
+          "target_age_s": 0.01720969984307885,
+          "dispatch_time": 2535346.6998325,
+          "servo_substep": 0,
+          "continuation_guaranteed_on_reject": false
+        },
+        "servo_dispatch_checks": [
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.01720969984307885,
+            "target_age_s": 0.01720969984307885,
+            "dispatch_time": 2535346.6998325,
+            "servo_substep": 0,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.017993099987506866,
+            "target_age_s": 0.017993099987506866,
+            "dispatch_time": 2535346.7006159,
+            "servo_substep": 1,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.0186298000626266,
+            "target_age_s": 0.0186298000626266,
+            "dispatch_time": 2535346.7012526,
+            "servo_substep": 2,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.01924449997022748,
+            "target_age_s": 0.01924449997022748,
+            "dispatch_time": 2535346.7018673,
+            "servo_substep": 3,
+            "continuation_guaranteed_on_reject": false
+          },
+          {
+            "accepted": true,
+            "reason": null,
+            "policy": "wall_deadline",
+            "wall_clock_current": true,
+            "state_age_s": 0.019844899885356426,
+            "target_age_s": 0.019844899885356426,
+            "dispatch_time": 2535346.7024677,
+            "servo_substep": 4,
+            "continuation_guaranteed_on_reject": false
+          }
+        ],
+        "penalty_updates": 1,
+        "interval_point_evaluations": 5,
+        "interval_selected_rows": 0
+      },
+      "raw_failure": {
+        "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+        "pcc_mode": "bounded_interval_pcc",
+        "scenario_id": "v6_lite_scenario_04",
+        "time_s": 0.01,
+        "failure_reason": "EXPIRED_COMMAND_WALL_CLOCK",
+        "diagnostic": {
+          "accepted": false,
+          "reason": "EXPIRED_COMMAND_WALL_CLOCK",
+          "policy": "wall_deadline",
+          "wall_clock_current": false,
+          "state_age_s": 0.020441100001335144,
+          "target_age_s": 0.020441100001335144,
+          "dispatch_time": 2535346.7030639,
+          "servo_substep": 5,
+          "continuation_guaranteed_on_reject": false
+        },
+        "command_certificate": {
+          "command_id": 0,
+          "source_state_id": "8e69f72d1e5f5a12c8d2c5ec0a2ca1e3bd013be44fb5948c34c75dc0985e1730",
+          "source_model_hash": "39fe5c14d8de341d28d92c999ee11dda908ffaef44128bdbbf502a14ab0774b0",
+          "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+          "command_sha256": "168012c5bb6c7c3007087d07241697f2b9d5a6303f428abc5c89e4e9b9fa4745",
+          "state_acquisition_time": 2535346.6826228,
+          "target_acquisition_time": 2535346.6826228,
+          "planned_execution_start": 2535346.6826228,
+          "planned_execution_start_simulation_s": 0.0,
+          "solve_finished_time": 2535346.6893808004,
+          "validation_finished_time": 2535346.6990953,
+          "valid_until": 2535346.7026228,
+          "maximum_supported_state_age": 0.02,
+          "scope": "exact_source_start_then_ten_declared_model_microstates",
+          "clock": "monotonic_seconds; simulation time is a separate coordinate"
+        },
+        "continuation_guaranteed": false,
+        "simulation_stop_is_safe_backup": false,
+        "next_servo_step_executed": false,
+        "partial_trace": {
+          "path": "v6_lite/output/runs/c1_wall_five/v6_lite_scenario_04/failures/v6_lite_scenario_04_interval_partial_trace.npz",
+          "sha256": "ae57238f247e909f91b347f860b5d4b9c3e4f86f651370f9c22c322bc5099234"
+        }
+      },
+      "failure_source_sha256": "fb44bcc3945eab9543f75db3d71935f749cac4d0c70d07da6254071f8c1d6939"
+    }
+  ],
+  "continuous_execution_passed": false
+}

@@ -525,7 +525,15 @@ def build_scenarios(
     return tuple(scenarios)
 
 
-def run_scenario(
+def run_scenario(spec, run_config, qp_config, scenario, trace_dir):
+    if (run_config.pcc_mode == "bounded_interval_pcc"
+            and run_config.dispatch_clock_policy == "wall_deadline"):
+        from v6_lite.runtime_wall_executor import run_wall_scenario
+        return run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir)
+    return run_synchronous_scenario(spec, run_config, qp_config, scenario, trace_dir)
+
+
+def run_synchronous_scenario(
     spec: RobotModelSpecV5,
     run_config: V6LiteRunConfig,
     qp_config: HierarchicalQPConfig,
@@ -1386,6 +1394,51 @@ def run_scenario(
 
     task_qpos_trace.append(np.asarray(data.qpos).copy())
     write_timelines(timing_path, timing_rows)
+    return finalize_scenario(spec, run_config, qp_config, scenario, trace_dir,
+        log=log,
+        task_log=task_log,
+        task_qpos_trace=task_qpos_trace,
+        model=model,
+        verifier=verifier,
+        qp=qp,
+        pcc_monitor=pcc_monitor,
+        initial_qpos=initial_qpos,
+        initial_qvel=initial_qvel,
+        initial_momentum=initial_momentum,
+        base_qpos_slice=base_qpos_slice,
+        physics_steps=physics_steps,
+        task_stride=task_stride,
+        qpos_write_count_after_initialization=qpos_write_count_after_initialization,
+        qvel_write_count_after_initialization=qvel_write_count_after_initialization,
+        scenario_initialization_latency_s=scenario_initialization_latency_s,
+        timing_rows=timing_rows,
+        source_model_hash=source_model_hash,
+        interval_admission=interval_admission,
+    )
+
+
+def finalize_scenario(spec, run_config, qp_config, scenario, trace_dir, *,
+                      log,
+                      task_log,
+                      task_qpos_trace,
+                      model,
+                      verifier,
+                      qp,
+                      pcc_monitor,
+                      initial_qpos,
+                      initial_qvel,
+                      initial_momentum,
+                      base_qpos_slice,
+                      physics_steps,
+                      task_stride,
+                      qpos_write_count_after_initialization,
+                      qvel_write_count_after_initialization,
+                      scenario_initialization_latency_s,
+                      timing_rows,
+                      source_model_hash,
+                      interval_admission,
+):
+    """Common unchanged physical, tracking, and trace acceptance checks."""
     arrays = {key: np.asarray(value) for key, value in log.items()}
     task_arrays = {key: np.asarray(value) for key, value in task_log.items()}
     initial_base_pose = np.asarray(initial_qpos[base_qpos_slice], dtype=np.float64)
@@ -1810,7 +1863,8 @@ def run_suite(
     }
     payload = {
         "contract_version": CONTRACT_VERSION,
-        "runtime_identity": runtime_identity(run_config.pcc_mode, spec),
+        "runtime_identity": runtime_identity(run_config.pcc_mode, spec,
+                                             dispatch_clock_policy=run_config.dispatch_clock_policy),
         "passed": bool(all(summary_checks.values())),
         "summary_checks": summary_checks,
         "architecture": {

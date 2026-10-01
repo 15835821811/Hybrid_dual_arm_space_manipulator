@@ -88,7 +88,8 @@ def compensated_torque(model, data, robot, qpos_ids, dof_ids, base_dof,
 def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
                  reference_start, previous_command, endpoint_command,
                  *, physics_period_s, task_period_s,
-                 prepared_step: bool = False, workspace=None, source_data=None):
+                 prepared_step: bool = False, workspace=None, source_data=None,
+                 capture_execution: bool = False):
     """Predict 11 MuJoCo microstates and all ten 67-channel torque commands."""
     if workspace is None:
         data = mujoco.MjData(model)
@@ -110,7 +111,13 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
     torques = []
     states = []
     coverage_records = []
+    integration_states = []
+    execution_records = []
     for step in range(STEPS + 1):
+        if capture_execution:
+            integration = np.empty(mujoco.mj_stateSize(model, mujoco.mjtState.mjSTATE_INTEGRATION))
+            mujoco.mj_getState(model, data, integration, mujoco.mjtState.mjSTATE_INTEGRATION)
+            integration_states.append(integration)
         if prepared_step:
             mujoco.mj_step1(model, data)
         else:
@@ -144,6 +151,16 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
             model, data, robot, qpos_ids, dof_ids, base_dof,
             ramp.position, ramp.velocity, ramp.feedforward_acceleration, mass,
             legacy_diagnostic=False, workspace=workspace)
+        if capture_execution:
+            natural = workspace.natural_frequency
+            unclipped = (robot.encode_velocity(ramp.feedforward_acceleration)
+                + natural**2 * (robot.encode_position(ramp.position) - data.qpos[qpos_ids])
+                + 2 * natural * (robot.encode_velocity(ramp.velocity) - data.qvel[dof_ids]))
+            execution_records.append({
+                "reference_step": ramp,
+                "desired_arm_acceleration": _desired.copy(),
+                "diagnostic": {**diagnostic, "acceleration_unclipped_max_rad_s2": float(np.max(np.abs(unclipped)))},
+            })
         if workspace is None:
             torques.append(torque.copy())
         else:
@@ -162,6 +179,9 @@ def preview_ramp(model, robot, evaluator, envelope, qpos, qvel, start_time,
         "qvel_states": None if workspace is None else workspace.qvel_states,
         "coverage": coverage_records,
         "maximum_torque_change_from_legacy_nm": None,
+        "integration_states": np.asarray(integration_states) if capture_execution else None,
+        "execution_records": execution_records if capture_execution else None,
+        "reference_end": reference.copy() if capture_execution else None,
     }, data
 
 
