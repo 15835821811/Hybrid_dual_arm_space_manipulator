@@ -1,0 +1,88 @@
+{
+  "schema": "independent_shape_decomposition_audit_v1",
+  "complete": true,
+  "evidence_valid": false,
+  "source_trial_commit": "32c3b04764669402f06d4a843b4ef36c81138908",
+  "auditor_source_commit": "32c3b04764669402f06d4a843b4ef36c81138908",
+  "auditor_script_sha256": "7f3542d8b88f49dba59507d7339439e1ffb8081a1acbbb88977f72320c1c5c22",
+  "case_count": 172,
+  "indices_sha256": "5d528aa0b01942484d9f9d0375ffe4c79c1f3c6c016b8c2cc9303af15e50c243",
+  "checks_passed": 12,
+  "checks_count": 13,
+  "per_case_check_count": 1720,
+  "per_case_checks_passed": 1720,
+  "same_radius_chain_status_counts": {
+    "BELOW": 147,
+    "SAFE": 25
+  },
+  "capsule_status_counts": {
+    "SAFE": 171,
+    "BELOW": 1
+  },
+  "sufficient_envelope_support_count": 172,
+  "independent_actual_native_query_count": 10492,
+  "independent_chain_segment_count": 5160,
+  "independent_capsule_candidate_count": 10492,
+  "independent_per_capsule_envelope_count": 10492,
+  "original_PCC_samples_per_section": 17,
+  "original_axis_samples_per_capsule": 5,
+  "statistics": {
+    "witness_position_discrepancy_norm_m": {
+      "count": 172,
+      "min": 0.0028197343274654943,
+      "p50": 0.025385973340483935,
+      "p95": 0.043732705981751704,
+      "max": 0.04785553436217567
+    },
+    "witness_directional_distance_effect_m": {
+      "count": 172,
+      "min": -0.020246390927867633,
+      "p50": 0.01728359780931727,
+      "p95": 0.029099744448353875,
+      "max": 0.03505681242147059
+    },
+    "minimum_sufficient_radius_margin_m": {
+      "count": 172,
+      "min": 0.0013279843087670162,
+      "p50": 0.011082222400114514,
+      "p95": 0.021621842257720757,
+      "max": 0.02505219538522102
+    },
+    "actual_minus_capsule_indicator_m": {
+      "count": 172,
+      "min": 1.5603113929715806e-07,
+      "p50": 0.00010681380730871715,
+      "p95": 0.0014657417813327357,
+      "max": 0.011691955232566886
+    }
+  },
+  "previous_retained_audit": {
+    "path": "v6_lite/output/runs/research_shape_decomposition_independent_audit_01",
+    "report_sha256": "34a2055654e074264601f3b06ca34444e25f01e47f74824d2924475411022755",
+    "manifest_sha256": "069189dcf77433f49bb8ebe68e2052a1618c75002b622d53f7399bc7fabe8d91",
+    "evidence_valid": false,
+    "checks_passed": 10,
+    "checks_count": 12,
+    "tool_error": "audit01 selected last eigenvector for tied maximal PCA eigenvalues; original capsule protocol uses first maximal eigenvalue via argmax. The terminal cube gives multiple equally valid axes, but matching the frozen capsule requires the declared tie rule. Original producer artifacts are unchanged."
+  },
+  "failed_checks": [
+    {
+      "name": "source_commit_snapshot_and_raw_hashes",
+      "passed": false,
+      "detail": null
+    }
+  ],
+  "failed_cases": [],
+  "limits": [
+    "172 selected offline states; no full-1024 geometry/budget rerun",
+    "all sampled centerline minima and capsule minima are exterior here; negative values elsewhere only unsafe indicators",
+    "negative sufficient-envelope margin would be inconclusive; no actual noncontainment inference",
+    "same-radius chain is a classification counterfactual, not an independently authorized online replacement",
+    "PCC/capsule sampling bound uses unit-speed Lipschitz distances and fixed allowances plus original empirical numerical margin",
+    "global actual minimum need not occur at the PCC material witness; residual is not pure physical radius",
+    "shape/radius/correspondence effects coupled; no independent contribution percentages or online radius reduction"
+  ],
+  "wall_deployment_status": "NOT_MET",
+  "closed_loop_claim": false,
+  "hardware_claim": false
+}

@@ -1,0 +1,228 @@
+{
+  "schema": "saved_research_interval_activity_baseline_v1",
+  "evidence_scope": "Arithmetic analysis of existing accepted traces and independently recomputed interval rows; no new geometry query, physics or timing experiment",
+  "reference_run": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01",
+  "reference_commit": "9cd1831e7c77a340464a669eac3b5aa7cd9c3c3c",
+  "reference_manifest_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\manifest.json",
+  "reference_manifest_sha256": "379b9977a441c540a20cfc50a9e90614a1e0985fa2a5a73bbb7c9690f823eec0",
+  "verified_reference_file_count": 46,
+  "binding_rule": "slack <= 2e-5 m/s, matching original QP diagnostic; includes tolerated negative slacks and does not establish causal/dual activity",
+  "binding_threshold_m_s": 2e-05,
+  "original_clearance_rate_tolerance_m_s": 0.0001,
+  "pcc_barrier_gain_s_inv": 8.0,
+  "task_period_s": 0.02,
+  "ramp_mean_weights": {
+    "old": 0.45,
+    "new": 0.55
+  },
+  "lookahead_model_margin_m_s": 0.005,
+  "planning_period_count": 6750,
+  "ticks_with_selected_interval_rows": 4906,
+  "selected_interval_row_occurrences": 12350,
+  "instantaneous_binding_row_occurrences": 0,
+  "lookahead_binding_row_occurrences": 840,
+  "lookahead_binding_unique_ticks": 840,
+  "closest_interval_boundary": {
+    "scenario_id": "v6_lite_scenario_03",
+    "tick_zero_based": 713,
+    "time_s": 14.260000000001432,
+    "interval_id": "pcc_interval:4:root",
+    "h_m": 0.0005765653784600457,
+    "lower_m": 0.005576565378460046,
+    "endpoint_slack_m_s": 0.0049316134167333905,
+    "candidate_slack_m_s": 0.0049316134167333905,
+    "lookahead_slack_m_s": -4.528033654859105e-05,
+    "source_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\interval_recompute\\online_recompute_interval_rows.jsonl",
+    "source_jsonl_line_one_based": 9493
+  },
+  "minimum_endpoint_slack_row": {
+    "scenario_id": "v6_lite_scenario_03",
+    "tick_zero_based": 717,
+    "time_s": 14.340000000001458,
+    "interval_id": "pcc_interval:4:root",
+    "h_m": 0.0005808882401835171,
+    "lower_m": 0.005580888240183517,
+    "endpoint_slack_m_s": 0.004924124799167258,
+    "candidate_slack_m_s": 0.004924124799167258,
+    "lookahead_slack_m_s": -4.584093414770809e-05,
+    "source_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\interval_recompute\\online_recompute_interval_rows.jsonl",
+    "source_jsonl_line_one_based": 9501
+  },
+  "minimum_lookahead_slack_row": {
+    "scenario_id": "v6_lite_scenario_00",
+    "tick_zero_based": 511,
+    "time_s": 10.220000000000082,
+    "interval_id": "pcc_interval:3:root",
+    "h_m": 0.000615144579799335,
+    "lower_m": 0.005615144579799335,
+    "endpoint_slack_m_s": 0.00494866080025471,
+    "candidate_slack_m_s": 0.00494866080025471,
+    "lookahead_slack_m_s": -4.999375161897097e-05,
+    "source_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\interval_recompute\\online_recompute_interval_rows.jsonl",
+    "source_jsonl_line_one_based": 1408
+  },
+  "lookahead_rows_below_original_contract_tolerance": 0,
+  "scenarios": {
+    "v6_lite_scenario_00": {
+      "trace_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\traces\\v6_lite_scenario_00.npz",
+      "monitor_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\pcc_monitor\\v6_lite_scenario_00\\clearance_compare.json",
+      "planning_periods": 1350,
+      "ticks_with_selected_interval_rows": 972,
+      "selected_interval_row_occurrences": 2373,
+      "minimum_interval_lower_m": 0.005614848708597795,
+      "minimum_interval_h_m": 0.0006148487085977953,
+      "closest_tick_zero_based": 517,
+      "closest_time_s": 10.340000000000122,
+      "legacy_pcc_active_row_occurrences": 0,
+      "legacy_pcc_binding_row_occurrences": 0,
+      "disabled_pcc_nonfinite_placeholder_count": 1350,
+      "target_linear_velocity_m_s": [
+        0.0018278250797038923,
+        0.0032178255160037563,
+        0.00132355185398393
+      ],
+      "target_angular_velocity_rad_s": [
+        0.0005748365195491602,
+        -0.0012469556725488574,
+        0.0011484225676211923
+      ],
+      "independent_terminal_interval_rows": 0,
+      "instantaneous_binding_row_occurrences": 0,
+      "instantaneous_binding_unique_ticks": 0,
+      "lookahead_binding_row_occurrences": 170,
+      "lookahead_binding_unique_ticks": 170,
+      "minimum_interval_endpoint_slack_m_s": 0.0049339382305081106,
+      "minimum_interval_lookahead_slack_m_s": -4.999375161897097e-05
+    },
+    "v6_lite_scenario_01": {
+      "trace_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\traces\\v6_lite_scenario_01.npz",
+      "monitor_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\pcc_monitor\\v6_lite_scenario_01\\clearance_compare.json",
+      "planning_periods": 1350,
+      "ticks_with_selected_interval_rows": 965,
+      "selected_interval_row_occurrences": 2584,
+      "minimum_interval_lower_m": 0.0056184856922711895,
+      "minimum_interval_h_m": 0.0006184856922711894,
+      "closest_tick_zero_based": 563,
+      "closest_time_s": 11.26000000000043,
+      "legacy_pcc_active_row_occurrences": 0,
+      "legacy_pcc_binding_row_occurrences": 0,
+      "disabled_pcc_nonfinite_placeholder_count": 1350,
+      "target_linear_velocity_m_s": [
+        -0.001979915187133304,
+        0.001909045754645819,
+        -0.0008809975895172262
+      ],
+      "target_angular_velocity_rad_s": [
+        0.0013140667304347756,
+        -0.0014353282862944142,
+        0.00037573903470190166
+      ],
+      "independent_terminal_interval_rows": 0,
+      "instantaneous_binding_row_occurrences": 0,
+      "instantaneous_binding_unique_ticks": 0,
+      "lookahead_binding_row_occurrences": 100,
+      "lookahead_binding_unique_ticks": 100,
+      "minimum_interval_endpoint_slack_m_s": 0.00495570341356945,
+      "minimum_interval_lookahead_slack_m_s": -4.982154890938845e-05
+    },
+    "v6_lite_scenario_02": {
+      "trace_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\traces\\v6_lite_scenario_02.npz",
+      "monitor_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\pcc_monitor\\v6_lite_scenario_02\\clearance_compare.json",
+      "planning_periods": 1350,
+      "ticks_with_selected_interval_rows": 998,
+      "selected_interval_row_occurrences": 2572,
+      "minimum_interval_lower_m": 0.005608478165004758,
+      "minimum_interval_h_m": 0.0006084781650047581,
+      "closest_tick_zero_based": 552,
+      "closest_time_s": 11.040000000000356,
+      "legacy_pcc_active_row_occurrences": 0,
+      "legacy_pcc_binding_row_occurrences": 0,
+      "disabled_pcc_nonfinite_placeholder_count": 1350,
+      "target_linear_velocity_m_s": [
+        0.00016660448374715593,
+        0.0031998972736836293,
+        0.000941431590140865
+      ],
+      "target_angular_velocity_rad_s": [
+        0.000865077457044539,
+        0.001182242141875766,
+        0.00045404590712594655
+      ],
+      "independent_terminal_interval_rows": 0,
+      "instantaneous_binding_row_occurrences": 0,
+      "instantaneous_binding_unique_ticks": 0,
+      "lookahead_binding_row_occurrences": 125,
+      "lookahead_binding_unique_ticks": 125,
+      "minimum_interval_endpoint_slack_m_s": 0.00494527929495402,
+      "minimum_interval_lookahead_slack_m_s": -4.9966864756996725e-05
+    },
+    "v6_lite_scenario_03": {
+      "trace_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\traces\\v6_lite_scenario_03.npz",
+      "monitor_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\pcc_monitor\\v6_lite_scenario_03\\clearance_compare.json",
+      "planning_periods": 1350,
+      "ticks_with_selected_interval_rows": 960,
+      "selected_interval_row_occurrences": 2331,
+      "minimum_interval_lower_m": 0.005576565378460045,
+      "minimum_interval_h_m": 0.0005765653784600448,
+      "closest_tick_zero_based": 713,
+      "closest_time_s": 14.260000000001432,
+      "legacy_pcc_active_row_occurrences": 0,
+      "legacy_pcc_binding_row_occurrences": 0,
+      "disabled_pcc_nonfinite_placeholder_count": 1350,
+      "target_linear_velocity_m_s": [
+        0.002267415591730716,
+        0.0033034466410490973,
+        0.0012232884445699489
+      ],
+      "target_angular_velocity_rad_s": [
+        0.0014558219719207322,
+        -0.0014203169167499802,
+        -0.0014843837545385507
+      ],
+      "independent_terminal_interval_rows": 0,
+      "instantaneous_binding_row_occurrences": 0,
+      "instantaneous_binding_unique_ticks": 0,
+      "lookahead_binding_row_occurrences": 175,
+      "lookahead_binding_unique_ticks": 175,
+      "minimum_interval_endpoint_slack_m_s": 0.004924124799167258,
+      "minimum_interval_lookahead_slack_m_s": -4.989961174008302e-05
+    },
+    "v6_lite_scenario_04": {
+      "trace_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\traces\\v6_lite_scenario_04.npz",
+      "monitor_path": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_acceptance_01\\simulation\\pcc_monitor\\v6_lite_scenario_04\\clearance_compare.json",
+      "planning_periods": 1350,
+      "ticks_with_selected_interval_rows": 1011,
+      "selected_interval_row_occurrences": 2490,
+      "minimum_interval_lower_m": 0.0056147497974577115,
+      "minimum_interval_h_m": 0.0006147497974577113,
+      "closest_tick_zero_based": 762,
+      "closest_time_s": 15.240000000001759,
+      "legacy_pcc_active_row_occurrences": 0,
+      "legacy_pcc_binding_row_occurrences": 0,
+      "disabled_pcc_nonfinite_placeholder_count": 1350,
+      "target_linear_velocity_m_s": [
+        0.0021598641254218834,
+        0.00340623088787881,
+        0.00040267606587672295
+      ],
+      "target_angular_velocity_rad_s": [
+        0.0002547602675260837,
+        -0.0008586506154437966,
+        0.0001707016550017192
+      ],
+      "independent_terminal_interval_rows": 0,
+      "instantaneous_binding_row_occurrences": 0,
+      "instantaneous_binding_unique_ticks": 0,
+      "lookahead_binding_row_occurrences": 270,
+      "lookahead_binding_unique_ticks": 270,
+      "minimum_interval_endpoint_slack_m_s": 0.0049535196628584435,
+      "minimum_interval_lookahead_slack_m_s": -4.996480421185206e-05
+    }
+  },
+  "limitations": [
+    "pcc_monitor legacy active/binding masks match pcc: sources, excluding pcc_interval: sources. Disabled legacy zero counts and nonfinite distance placeholders do not measure interval CBF activity.",
+    "The optimized screened MuJoCo continuum-target field can return query-max 0.09 m as a supported lower bound. It is not an exact measured distance; this analysis does not use it for geometry attribution.",
+    "Selected interval rows and near-binding slacks do not independently measure avoidance intervention or establish which constraint caused a trajectory change.",
+    "No new closed-loop, robustness, wall deployment, hard realtime or hardware claim is added."
+  ]
+}
