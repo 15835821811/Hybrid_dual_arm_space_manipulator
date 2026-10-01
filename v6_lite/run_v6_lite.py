@@ -2082,4 +2082,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # Use the canonical module so runtime exceptions and suite catch clauses
+    # have one class identity when this file is invoked through ``python -m``.
+    from v6_lite.run_v6_lite import main as package_main
+    package_main()

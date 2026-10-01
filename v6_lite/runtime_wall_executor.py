@@ -748,6 +748,12 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             "next_servo_step_executed": False, "continuation_guaranteed": False,
             "physics_steps_executed": int(round(float(data.time) / run_config.physics_period_s)),
             "trace_recorded_steps": len(log["time"]),
+            "rejected_servo_attempt": {
+                "physics_step": physics_step,
+                "scheduled": epoch + max(physics_step, 0) * run_config.physics_period_s,
+                "actual_start": servo_started if physics_step >= 0 else None,
+                "rejection_observed": time.perf_counter(),
+                "torque_consumed": False},
             "last_request": {k: v for k, v in request.items() if k not in
                 ("predicted_start", "reference_start", "previous_command")},
             "simulation_stop_is_safe_backup": False,
