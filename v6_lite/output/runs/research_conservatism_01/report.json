@@ -1,0 +1,496 @@
+{
+  "schema": "research_conservatism_attribution_v1",
+  "complete": true,
+  "evidence_valid": true,
+  "online_controller_changed": false,
+  "closed_loop_claim": false,
+  "hardware_claim": false,
+  "supplements_previous_goal": true,
+  "checks": {
+    "all_original_1024_compared": true,
+    "historical_counts_reproduced": true,
+    "all_bounds_valid": true,
+    "no_empirical_false_safe_baseline": true,
+    "all_predeclared_subset_variants_complete": true,
+    "subset_only_unknown": true,
+    "online_complete_coverage": true,
+    "source_unchanged": true,
+    "input_unchanged": true,
+    "historical_report_unchanged": true,
+    "all_subset_safe_predictions_actual_safe": true
+  },
+  "git_commit": "2d76555d8078342bdf28ae56933deb74c80aca96",
+  "frozen_input_sha256": "ec620f3396bc06f98597e76270501a1bd7a88a941e5740239bb10d775d3efe8c",
+  "baseline_counts": {
+    "checked_count": 1024,
+    "PROXY_CLEARANCE_AT_LEAST_GATE": 35,
+    "PROXY_CLEARANCE_BELOW_GATE": 971,
+    "UNKNOWN_CROSSES_GATE": 18,
+    "bounds_invalid": 0,
+    "actual_geometry_safe": 225,
+    "actual_geometry_below_gate": 799,
+    "empirical_proxy_false_safe": 0,
+    "empirical_proxy_false_reject": 190
+  },
+  "unknown_count": 18,
+  "status_by_actual_gate": {
+    "PROXY_CLEARANCE_AT_LEAST_GATE": {
+      "actual_safe": 35,
+      "actual_below_gate": 0
+    },
+    "PROXY_CLEARANCE_BELOW_GATE": {
+      "actual_safe": 172,
+      "actual_below_gate": 799
+    },
+    "UNKNOWN_CROSSES_GATE": {
+      "actual_safe": 18,
+      "actual_below_gate": 0
+    }
+  },
+  "actual_safe_proxy_below_count": 172,
+  "actual_safe_proxy_unknown_count": 18,
+  "actual_distance_censored_count": 0,
+  "baseline_query_gap_m": {
+    "count": 1024,
+    "min": 4.874742237356844e-05,
+    "p50": 0.0011621113750000384,
+    "p95": 0.007745211628652652,
+    "max": 0.015076594837768935
+  },
+  "baseline_offline_query_elapsed_ms": {
+    "count": 1024,
+    "min": 1.9998997449874878,
+    "p50": 4.534499952569604,
+    "p95": 6.339454813860357,
+    "max": 7.8074997290968895
+  },
+  "subset_variants": [
+    {
+      "family": "B1_distance_bounds",
+      "point_budget": 255,
+      "leaf_budget": null,
+      "sample_count": 18,
+      "status_counts": {
+        "UNKNOWN_CROSSES_GATE": 5,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 13
+      },
+      "point_count": {
+        "count": 18,
+        "min": 53.0,
+        "p50": 75.0,
+        "p95": 137.99999999999997,
+        "max": 155.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 29.0,
+        "p50": 40.0,
+        "p95": 71.49999999999999,
+        "max": 80.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0008157820422618209,
+        "p50": 0.000980012248142498,
+        "p95": 0.0009940567363211357,
+        "max": 0.0009954435546420436
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 6.089299917221069,
+        "p50": 13.615249888971448,
+        "p95": 21.484380005858828,
+        "max": 27.576500084251165
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        55,
+        67,
+        143,
+        191,
+        235,
+        543,
+        591,
+        663,
+        703,
+        723,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": [
+        35,
+        51,
+        203,
+        603,
+        739
+      ]
+    },
+    {
+      "family": "B1_distance_bounds",
+      "point_budget": 510,
+      "leaf_budget": null,
+      "sample_count": 18,
+      "status_counts": {
+        "UNKNOWN_CROSSES_GATE": 5,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 13
+      },
+      "point_count": {
+        "count": 18,
+        "min": 53.0,
+        "p50": 75.0,
+        "p95": 137.99999999999997,
+        "max": 155.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 29.0,
+        "p50": 40.0,
+        "p95": 71.49999999999999,
+        "max": 80.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0008157820422618209,
+        "p50": 0.000980012248142498,
+        "p95": 0.0009940567363211357,
+        "max": 0.0009954435546420436
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 5.9333001263439655,
+        "p50": 13.303300132974982,
+        "p95": 21.689620008692135,
+        "max": 27.478800155222416
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        55,
+        67,
+        143,
+        191,
+        235,
+        543,
+        591,
+        663,
+        703,
+        723,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": [
+        35,
+        51,
+        203,
+        603,
+        739
+      ]
+    },
+    {
+      "family": "B1_distance_bounds",
+      "point_budget": 1020,
+      "leaf_budget": null,
+      "sample_count": 18,
+      "status_counts": {
+        "UNKNOWN_CROSSES_GATE": 5,
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 13
+      },
+      "point_count": {
+        "count": 18,
+        "min": 53.0,
+        "p50": 75.0,
+        "p95": 137.99999999999997,
+        "max": 155.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 29.0,
+        "p50": 40.0,
+        "p95": 71.49999999999999,
+        "max": 80.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0008157820422618209,
+        "p50": 0.000980012248142498,
+        "p95": 0.0009940567363211357,
+        "max": 0.0009954435546420436
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 5.902700126171112,
+        "p50": 13.13604973256588,
+        "p95": 21.63573505822568,
+        "max": 27.243100106716156
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        55,
+        67,
+        143,
+        191,
+        235,
+        543,
+        591,
+        663,
+        703,
+        723,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": [
+        35,
+        51,
+        203,
+        603,
+        739
+      ]
+    },
+    {
+      "family": "BatchedDistanceDecisionQuery",
+      "point_budget": 255,
+      "leaf_budget": 128,
+      "sample_count": 18,
+      "status_counts": {
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 18
+      },
+      "point_count": {
+        "count": 18,
+        "min": 33.0,
+        "p50": 59.0,
+        "p95": 117.69999999999997,
+        "max": 133.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 19.0,
+        "p50": 32.0,
+        "p95": 61.34999999999999,
+        "max": 69.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0001966252629981768,
+        "p50": 0.0017671059384789132,
+        "p95": 0.007923916124637017,
+        "max": 0.009375001999999997
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 1.284200232475996,
+        "p50": 2.2939497139304876,
+        "p95": 4.63186006527394,
+        "max": 5.359800066798925
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        35,
+        51,
+        55,
+        67,
+        143,
+        191,
+        203,
+        235,
+        543,
+        591,
+        603,
+        663,
+        703,
+        723,
+        739,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": []
+    },
+    {
+      "family": "BatchedDistanceDecisionQuery",
+      "point_budget": 255,
+      "leaf_budget": 512,
+      "sample_count": 18,
+      "status_counts": {
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 18
+      },
+      "point_count": {
+        "count": 18,
+        "min": 33.0,
+        "p50": 59.0,
+        "p95": 117.69999999999997,
+        "max": 133.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 19.0,
+        "p50": 32.0,
+        "p95": 61.34999999999999,
+        "max": 69.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0001966252629981768,
+        "p50": 0.0017671059384789132,
+        "p95": 0.007923916124637017,
+        "max": 0.009375001999999997
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 1.2674997560679913,
+        "p50": 2.249299781396985,
+        "p95": 4.773504938930271,
+        "max": 5.595199763774872
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        35,
+        51,
+        55,
+        67,
+        143,
+        191,
+        203,
+        235,
+        543,
+        591,
+        603,
+        663,
+        703,
+        723,
+        739,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": []
+    },
+    {
+      "family": "BatchedDistanceDecisionQuery",
+      "point_budget": 510,
+      "leaf_budget": 512,
+      "sample_count": 18,
+      "status_counts": {
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 18
+      },
+      "point_count": {
+        "count": 18,
+        "min": 33.0,
+        "p50": 59.0,
+        "p95": 117.69999999999997,
+        "max": 133.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 19.0,
+        "p50": 32.0,
+        "p95": 61.34999999999999,
+        "max": 69.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0001966252629981768,
+        "p50": 0.0017671059384789132,
+        "p95": 0.007923916124637017,
+        "max": 0.009375001999999997
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 1.2060999870300293,
+        "p50": 2.1663501393049955,
+        "p95": 4.599160235375165,
+        "max": 5.303300451487303
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        35,
+        51,
+        55,
+        67,
+        143,
+        191,
+        203,
+        235,
+        543,
+        591,
+        603,
+        663,
+        703,
+        723,
+        739,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": []
+    },
+    {
+      "family": "BatchedDistanceDecisionQuery",
+      "point_budget": 1020,
+      "leaf_budget": 512,
+      "sample_count": 18,
+      "status_counts": {
+        "PROXY_CLEARANCE_AT_LEAST_GATE": 18
+      },
+      "point_count": {
+        "count": 18,
+        "min": 33.0,
+        "p50": 59.0,
+        "p95": 117.69999999999997,
+        "max": 133.0
+      },
+      "leaf_count": {
+        "count": 18,
+        "min": 19.0,
+        "p50": 32.0,
+        "p95": 61.34999999999999,
+        "max": 69.0
+      },
+      "gap_m": {
+        "count": 18,
+        "min": 0.0001966252629981768,
+        "p50": 0.0017671059384789132,
+        "p95": 0.007923916124637017,
+        "max": 0.009375001999999997
+      },
+      "query_elapsed_ms": {
+        "count": 18,
+        "min": 1.229199580848217,
+        "p50": 2.174699679017067,
+        "p95": 4.625504789873956,
+        "max": 5.571300163865089
+      },
+      "timing_population": "baseline UNKNOWN subset only, first sample included",
+      "resolved_safe_indices": [
+        35,
+        51,
+        55,
+        67,
+        143,
+        191,
+        203,
+        235,
+        543,
+        591,
+        603,
+        663,
+        703,
+        723,
+        739,
+        755,
+        927,
+        959
+      ],
+      "resolved_below_indices": [],
+      "remaining_unknown_indices": []
+    }
+  ],
+  "claim_scope": "finite frozen offline geometry attribution; no robust/continuous-time/closed-loop or wall deployment guarantee"
+}

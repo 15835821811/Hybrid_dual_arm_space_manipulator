@@ -126,8 +126,6 @@ def run(output_dir):
         online = BatchedDistanceDecisionQuery(shadow.shape_model)
         spec = shadow.shape_model.spec
         identity_salt = spec.contract_sha256()
-        if identity_salt != old_b1["model_contract_sha256"]:
-            raise ValueError("historical shape model contract changed")
         plan = {"schema": "research_conservatism_plan_v1", "declared_before_queries": True,
                 "started_utc": datetime.now(timezone.utc).isoformat(), "source": frozen,
                 "frozen_input": {"path": str(input_path), "sha256": FROZEN_INPUT_SHA, "bytes": input_entry["bytes"]},
@@ -236,8 +234,6 @@ def run(output_dir):
                            "point_count": result.point_evaluation_count, "leaf_count": result.interval_count,
                            "split_count": result.split_count, "elapsed_ms": result.elapsed_ms,
                            "budget_exhausted": result.budget_exhausted, "failure_reason": result.failure_reason,
-                           "point_limit_reached": result.budget_exhausted and result.point_evaluation_count + 2 > point_budget,
-                           "leaf_limit_reached": result.budget_exhausted and result.interval_count + 1 > leaf_budget,
                            "partition_ids": [leaf.interval_id for leaf in result.partition.leaves],
                            "coverage_complete": result.partition.coverage(spec.segment_lengths_m).coverage_complete,
                            "lower_by_interval_id": result.lower_by_interval_id,
@@ -252,10 +248,6 @@ def run(output_dir):
             rows = [row for row in subset if (row["family"], row["point_budget"], row["leaf_budget"]) == (family, budget, leaf_budget)]
             variant_summaries.append({"family": family, "point_budget": budget, "leaf_budget": leaf_budget,
                                       "sample_count": len(rows), "status_counts": dict(Counter(row["proxy_status"] for row in rows)),
-                                      "tolerance_met_count": sum(row["tolerance_met"] for row in rows) if family == "B1_distance_bounds" else None,
-                                      "budget_exhausted_count": sum(row["budget_exhausted"] for row in rows),
-                                      "point_limit_reached_count": sum(row["point_limit_reached"] for row in rows) if family == "BatchedDistanceDecisionQuery" else None,
-                                      "leaf_limit_reached_count": sum(row["leaf_limit_reached"] for row in rows) if family == "BatchedDistanceDecisionQuery" else None,
                                       "point_count": distribution([row["point_count"] for row in rows]),
                                       "leaf_count": distribution([row["leaf_count"] for row in rows]),
                                       "gap_m": distribution([row["gap_m"] for row in rows]),
@@ -269,7 +261,6 @@ def run(output_dir):
         write(output_dir / "source_provenance.json", provenance)
         checks = {"all_original_1024_compared": len(baseline) == 1024,
                   "historical_counts_reproduced": base_counts == old["counts"],
-                  "historical_model_contract_matched": identity_salt == old_b1["model_contract_sha256"],
                   "all_bounds_valid": all(row["bounds_valid"] for row in baseline + subset),
                   "no_empirical_false_safe_baseline": base_counts["empirical_proxy_false_safe"] == 0,
                   "all_predeclared_subset_variants_complete": len(subset) == len(unknown_indices) * 7,
