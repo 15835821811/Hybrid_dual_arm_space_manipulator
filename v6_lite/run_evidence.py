@@ -157,7 +157,8 @@ def start_run(
     from v6_lite.runtime_timing import runtime_identity
     pcc_mode = getattr(run_config, "pcc_mode", None)
     dispatch_policy = getattr(run_config, "dispatch_clock_policy", "historical_not_specified")
-    metadata["runtime_identity"] = (runtime_identity(pcc_mode, spec, dispatch_clock_policy=dispatch_policy)
+    metadata["runtime_identity"] = (runtime_identity(pcc_mode, spec, dispatch_clock_policy=dispatch_policy,
+                                    wall_executor_backend=getattr(run_config, "wall_executor_backend", None))
                                     if pcc_mode is not None else None)
     metadata["timing_protocol"].update({
         "dispatch_clock_policy": dispatch_policy,

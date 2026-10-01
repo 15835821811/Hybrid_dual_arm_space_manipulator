@@ -33,7 +33,7 @@ def run(output):
             "startup_scope": "separately validated unarmed simulation before predetermined task epoch",
             "original_physics_and_contract_required": True},
         "retention": "all declared rounds and all rejected scenes retained; no selection or overwrite",
-        "runtime_conditions": "Windows HIGH_PRIORITY_CLASS; separate planner/executor CPU affinity; BLAS one thread; absolute 2 ms servo grid; final 2 ms active wait; cyclic GC disabled during task",
+        "runtime_conditions": "Windows HIGH_PRIORITY_CLASS; disjoint physical P-core sets for planner/native actor; BLAS one thread; native no-GIL absolute 2 ms QPC grid; native full-state capture and model/payload SHA256 checks; planner directly releases two bounded native command slots; supervisor outside critical path; cyclic GC disabled during task",
         "hard_realtime_certified": False}
     write(output / "plan.json", plan)
     rounds = []

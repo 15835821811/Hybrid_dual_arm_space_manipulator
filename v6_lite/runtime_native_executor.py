@@ -515,7 +515,7 @@ def _finalize_native(ctx, spec, run_config, qp_config, scenario, trace_dir,
     payload["execution_contract"].update({
         "dispatch_clock_scope": "native_no_GIL_wall_actor_and_independent_next_segment_planner",
         "runtime_identity": runtime_identity(run_config.pcc_mode, spec, ctx.model,
-            dispatch_clock_policy="wall_deadline"),
+            dispatch_clock_policy="wall_deadline", wall_executor_backend="native"),
         "controller_config_hash": ctx.controller_config_hash,
         "controller_version": "v6_2_c11_native_wall_handoff",
         "published_packets_immutable": True,

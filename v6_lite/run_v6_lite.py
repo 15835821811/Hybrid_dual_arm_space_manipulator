@@ -1882,7 +1882,8 @@ def run_suite(
     payload = {
         "contract_version": CONTRACT_VERSION,
         "runtime_identity": runtime_identity(run_config.pcc_mode, spec,
-                                             dispatch_clock_policy=run_config.dispatch_clock_policy),
+                                             dispatch_clock_policy=run_config.dispatch_clock_policy,
+                                             wall_executor_backend=run_config.wall_executor_backend),
         "passed": bool(all(summary_checks.values())),
         "summary_checks": summary_checks,
         "architecture": {
