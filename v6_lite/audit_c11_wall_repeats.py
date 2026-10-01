@@ -11,7 +11,7 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def run(output):
+def run(output, scheduler_policy="high"):
     root = Path(__file__).resolve().parent.parent
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -23,7 +23,7 @@ def run(output):
         "bounded_interval_pcc", "--enable-capsule-cbf", "--dispatch-clock-policy",
         "wall_deadline", "--scenario-count", "5", "--duration", "27",
         "--seed", "20260801", "--continue-failed-scenarios", "--output-dir",
-        str(output / f"round_{number:02d}")] for number in range(1, 4)]
+        str(output / f"round_{number:02d}"), "--wall-scheduler-policy", scheduler_policy] for number in range(1, 4)]
     plan = {"created_at_utc": datetime.now(timezone.utc).isoformat(),
         "source_commit": commit, "round_count": 3, "scenario_count_per_round": 5,
         "duration_per_scene_s": 27, "seed": 20260801, "commands": commands,
@@ -35,6 +35,9 @@ def run(output):
         "retention": "all declared rounds and all rejected scenes retained; no selection or overwrite",
         "runtime_conditions": "Windows HIGH_PRIORITY_CLASS; disjoint physical P-core sets for planner/native actor; BLAS one thread; native no-GIL absolute 2 ms QPC grid; native full-state capture and model/payload SHA256 checks; planner directly releases two bounded native command slots; supervisor outside critical path; cyclic GC disabled during task",
         "hard_realtime_certified": False}
+    plan["scheduler_policy"] = scheduler_policy
+    plan["runtime_conditions"] = plan["runtime_conditions"].replace(
+        "HIGH_PRIORITY_CLASS", "REALTIME_PRIORITY_CLASS" if scheduler_policy == "realtime" else "HIGH_PRIORITY_CLASS")
     write(output / "plan.json", plan)
     rounds = []
     for number, command in enumerate(commands, 1):
@@ -66,5 +69,6 @@ def run(output):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--wall-scheduler-policy", choices=("high", "realtime"), default="high")
     args = parser.parse_args()
-    raise SystemExit(0 if run(args.output_dir) else 1)
+    raise SystemExit(0 if run(args.output_dir, args.wall_scheduler_policy) else 1)

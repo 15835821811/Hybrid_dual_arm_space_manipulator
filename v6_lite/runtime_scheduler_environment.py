@@ -5,6 +5,49 @@ import os
 import struct
 
 
+class ExistingPriorityPrivilege:
+    """Enable only a privilege already granted to this process token."""
+    def __init__(self, kernel):
+        self.token = wintypes.HANDLE()
+        self.api = ctypes.WinDLL("advapi32", use_last_error=True)
+        class LUID(ctypes.Structure):
+            _fields_ = [("low", wintypes.DWORD), ("high", wintypes.LONG)]
+        class Entry(ctypes.Structure):
+            _fields_ = [("luid", LUID), ("attributes", wintypes.DWORD)]
+        class Privileges(ctypes.Structure):
+            _fields_ = [("count", wintypes.DWORD), ("entry", Entry)]
+        self.old = Privileges()
+        desired = Privileges()
+        desired.count, desired.entry.attributes = 1, 2
+        self.api.OpenProcessToken.argtypes = (wintypes.HANDLE, wintypes.DWORD, ctypes.POINTER(wintypes.HANDLE))
+        self.api.LookupPrivilegeValueW.argtypes = (wintypes.LPCWSTR, wintypes.LPCWSTR, ctypes.POINTER(LUID))
+        self.api.AdjustTokenPrivileges.argtypes = (wintypes.HANDLE, wintypes.BOOL, ctypes.c_void_p,
+            wintypes.DWORD, ctypes.c_void_p, ctypes.c_void_p)
+        self.kernel = kernel
+        self.enabled = False
+        self.error = None
+        if not self.api.OpenProcessToken(kernel.GetCurrentProcess(), 0x20 | 0x8, ctypes.byref(self.token)):
+            self.error = ctypes.get_last_error()
+            return
+        if not self.api.LookupPrivilegeValueW(None, "SeIncreaseBasePriorityPrivilege", ctypes.byref(desired.entry.luid)):
+            self.error = ctypes.get_last_error()
+            return
+        size = wintypes.DWORD()
+        ctypes.set_last_error(0)
+        success = self.api.AdjustTokenPrivileges(self.token, False, ctypes.byref(desired),
+            ctypes.sizeof(self.old), ctypes.byref(self.old), ctypes.byref(size))
+        self.error = ctypes.get_last_error()
+        self.enabled = bool(success and self.error == 0)
+
+    def restore(self):
+        if self.token:
+            if self.enabled and self.old.count:
+                self.api.AdjustTokenPrivileges(self.token, False, ctypes.byref(self.old), 0, None, None)
+            self.kernel.CloseHandle.argtypes = (wintypes.HANDLE,)
+            self.kernel.CloseHandle(self.token)
+            self.token = None
+
+
 def processor_cores(kernel, allowed_mask):
     """Current-group core topology, queried only before task acquisition."""
     query = kernel.GetLogicalProcessorInformationEx
@@ -53,6 +96,7 @@ class ThreadScheduling:
         k.SetPriorityClass.argtypes = (wintypes.HANDLE, wintypes.DWORD)
         k.GetPriorityClass.argtypes = (wintypes.HANDLE,)
         self.old_process_priority = k.GetPriorityClass(k.GetCurrentProcess())
+        self.privilege = ExistingPriorityPrivilege(k) if policy == "realtime" else None
         thread = k.GetCurrentThread()
         self.old_priority = k.GetThreadPriority(thread)
         # Lower the coordinator before raising its own process class. Native
@@ -96,6 +140,8 @@ class ThreadScheduling:
             "process_realtime_priority_used": k.GetPriorityClass(k.GetCurrentProcess()) == 0x100,
             "process_priority_class": "REALTIME_PRIORITY_CLASS" if policy == "realtime" else "HIGH_PRIORITY_CLASS",
             "actual_process_priority_class": k.GetPriorityClass(k.GetCurrentProcess()),
+            "existing_priority_privilege_enabled": self.privilege.enabled if self.privilege else None,
+            "existing_priority_privilege_error": self.privilege.error if self.privilege else None,
             "process_priority_set": bool(process_priority_set),
             "error": ctypes.get_last_error() if not self.old_affinity or not success else None})
 
@@ -106,3 +152,5 @@ class ThreadScheduling:
                 self.kernel.SetThreadAffinityMask(thread, self.old_affinity)
             self.kernel.SetThreadPriority(thread, self.old_priority)
             self.kernel.SetPriorityClass(self.kernel.GetCurrentProcess(), self.old_process_priority)
+            if self.privilege:
+                self.privilege.restore()

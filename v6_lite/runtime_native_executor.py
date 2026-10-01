@@ -57,7 +57,7 @@ def _native_planner_worker(connection, spec, run_config, qp_config, scenario, bu
         request = connection.recv()
         if request is None:
             return
-        gate = HandoffBuffer(ctx.source_model_hash, ctx.controller_config_hash)
+        gate = HandoffBuffer(request["executor_model_hash"], request["executor_config_hash"])
         ticks = (ctx.physics_steps+9)//10
         for command in range(ticks):
             if command:
@@ -239,6 +239,8 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
         "previous_command": np.zeros(17), "simulation_start": 0., "epoch": epoch,
         "execution_start": epoch, "source_state_id": array_id(snapshot),
         "acquired": acquired, "source_simulation_s": float(snapshot[0]),
+        "executor_model_hash": ctx.source_model_hash,
+        "executor_config_hash": ctx.controller_config_hash,
         "prediction_remaining_microsteps": 0, "release": time.perf_counter()}
     if not conditions_available:
         error = UncertifiedExecutionError("DECLARED_SCHEDULER_CONDITIONS_UNAVAILABLE")
