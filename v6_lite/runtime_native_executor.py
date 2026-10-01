@@ -74,7 +74,7 @@ def _native_planner_worker(connection, spec, run_config, qp_config, scenario, bu
                 gate.active, gate.pending = previous, None
                 gate.last_id = command-1
                 request = {"command_id": command, "predecessor_id": command-1,
-                    "predicted_start": previous.integration_states[-1],
+                    "predicted_start": previous.integration_states[-1].copy(),
                     "prediction_id": array_id(previous.integration_states[-1]),
                     "reference_start": previous.reference_end, "previous_command": previous.endpoint_velocity,
                     "simulation_start": command*.020, "epoch": request["epoch"],
