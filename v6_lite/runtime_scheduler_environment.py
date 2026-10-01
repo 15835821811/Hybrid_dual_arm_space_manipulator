@@ -35,8 +35,10 @@ def processor_cores(kernel, allowed_mask):
 
 
 class ThreadScheduling:
-    def __init__(self, role):
-        self.record = {"role": role, "platform": os.name, "applied": False}
+    def __init__(self, role, policy="high"):
+        if policy not in ("high", "realtime"):
+            raise ValueError("unsupported per-process scheduler policy")
+        self.record = {"role": role, "platform": os.name, "applied": False, "policy": policy}
         self.old_affinity = None
         if os.name != "nt":
             return
@@ -51,9 +53,15 @@ class ThreadScheduling:
         k.SetPriorityClass.argtypes = (wintypes.HANDLE, wintypes.DWORD)
         k.GetPriorityClass.argtypes = (wintypes.HANDLE,)
         self.old_process_priority = k.GetPriorityClass(k.GetCurrentProcess())
-        process_priority_set = k.SetPriorityClass(k.GetCurrentProcess(), 0x80)
         thread = k.GetCurrentThread()
         self.old_priority = k.GetThreadPriority(thread)
+        # Lower the coordinator before raising its own process class. Native
+        # executor and planner retain distinct physical cores; Windows and
+        # interactive applications retain the other cores.
+        priority = (-7 if role == "supervisor" else
+                    (-1 if role == "planner" else 0)) if policy == "realtime" else 2
+        k.SetThreadPriority(thread, priority)
+        process_priority_set = k.SetPriorityClass(k.GetCurrentProcess(), 0x100 if policy == "realtime" else 0x80)
         available, system = ctypes.c_size_t(), ctypes.c_size_t()
         if not k.GetProcessAffinityMask(k.GetCurrentProcess(), ctypes.byref(available), ctypes.byref(system)):
             self.record["error"] = ctypes.get_last_error()
@@ -65,7 +73,11 @@ class ThreadScheduling:
         # On the declared hybrid CPU use distinct physical cores, leaving the
         # first core outside both timed roles. The executor may migrate among
         # its disjoint set rather than being tied to one interrupted sibling.
-        if len(preferred) >= 5:
+        if role == "supervisor":
+            lower = [core for core in cores if core["efficiency_class"] != fastest]
+            chosen = lower if lower else preferred[:1]
+            processors = [(core["mask"] & -core["mask"]).bit_length() - 1 for core in chosen]
+        elif len(preferred) >= 5:
             chosen = preferred[4:] if role == "executor" else preferred[2:4]
             processors = [(core["mask"] & -core["mask"]).bit_length() - 1 for core in chosen]
         elif len(preferred) >= 3:
@@ -75,20 +87,21 @@ class ThreadScheduling:
             processors = [cpus[min(1 if role == "executor" else 3, len(cpus) - 1)]]
         mask = sum(1 << processor for processor in processors)
         self.old_affinity = k.SetThreadAffinityMask(thread, mask)
-        priority = 2
         success = k.SetThreadPriority(thread, priority)
         self.record.update({"applied": bool(self.old_affinity and success),
             "processors": processors, "affinity_mask": mask,
             "physical_core_topology": cores,
             "affinity_policy": "disjoint physical core sets of highest reported efficiency class; first two cores excluded when available",
-            "thread_priority": priority, "process_realtime_priority_used": False,
-            "process_priority_class": "HIGH_PRIORITY_CLASS",
+            "thread_priority": priority, "process_realtime_priority_used": policy == "realtime",
+            "process_priority_class": "REALTIME_PRIORITY_CLASS" if policy == "realtime" else "HIGH_PRIORITY_CLASS",
+            "actual_process_priority_class": k.GetPriorityClass(k.GetCurrentProcess()),
             "process_priority_set": bool(process_priority_set),
             "error": ctypes.get_last_error() if not self.old_affinity or not success else None})
 
     def restore(self):
-        if os.name == "nt" and self.old_affinity:
+        if os.name == "nt" and hasattr(self, "kernel"):
             thread = self.kernel.GetCurrentThread()
-            self.kernel.SetThreadAffinityMask(thread, self.old_affinity)
+            if self.old_affinity:
+                self.kernel.SetThreadAffinityMask(thread, self.old_affinity)
             self.kernel.SetThreadPriority(thread, self.old_priority)
             self.kernel.SetPriorityClass(self.kernel.GetCurrentProcess(), self.old_process_priority)

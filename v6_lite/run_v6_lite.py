@@ -107,8 +107,14 @@ class V6LiteRunConfig:
     steady_window_s: float = 1.5
     pcc_mode: str = "legacy_pcc"
     dispatch_clock_policy: str = "wall_deadline"
+    wall_executor_backend: str = "native"
+    wall_scheduler_policy: str = "high"
 
     def validate(self) -> None:
+        if self.wall_executor_backend not in ("native", "python"):
+            raise ValueError("unsupported wall executor backend")
+        if self.wall_scheduler_policy not in ("high", "realtime"):
+            raise ValueError("unsupported own-process scheduling policy")
         if self.dispatch_clock_policy not in ("wall_deadline", "offline_replay"):
             raise ValueError("unsupported dispatch clock policy")
         if self.pcc_mode not in ("legacy_pcc", "bounded_interval_pcc"):
@@ -528,7 +534,10 @@ def build_scenarios(
 def run_scenario(spec, run_config, qp_config, scenario, trace_dir):
     if (run_config.pcc_mode == "bounded_interval_pcc"
             and run_config.dispatch_clock_policy == "wall_deadline"):
-        from v6_lite.runtime_wall_executor import run_wall_scenario
+        if run_config.wall_executor_backend == "native":
+            from v6_lite.runtime_native_executor import run_native_scenario as run_wall_scenario
+        else:
+            from v6_lite.runtime_wall_executor import run_wall_scenario
         return run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir)
     return run_synchronous_scenario(spec, run_config, qp_config, scenario, trace_dir)
 
@@ -2036,6 +2045,9 @@ def _parser() -> argparse.ArgumentParser:
                         help="bounded mode defaults to wall deadline; offline replay measures but does not certify wall validity")
     parser.add_argument("--continue-failed-scenarios", action="store_true",
                         help="attempt every predeclared scene and preserve each rejection; the suite still fails")
+    parser.add_argument("--wall-executor-backend", choices=("native", "python"), default="native")
+    parser.add_argument("--wall-scheduler-policy", choices=("high", "realtime"), default="high",
+                        help="reversible own-process priority; all other OS settings unchanged")
     return parser
 
 
@@ -2054,6 +2066,8 @@ def main() -> None:
         verification_subdivisions=args.verification_subdivisions,
         pcc_mode=args.pcc_mode,
         dispatch_clock_policy=args.dispatch_clock_policy,
+        wall_executor_backend=args.wall_executor_backend,
+        wall_scheduler_policy=args.wall_scheduler_policy,
     )
     result = run_suite(
         config,

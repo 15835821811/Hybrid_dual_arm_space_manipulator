@@ -127,7 +127,8 @@ def _context(spec, run_config, qp_config, scenario):
     controller_source_hashes = {}
     for name in ("runtime_wall_executor.py", "runtime_handoff.py", "runtime_shared_slot.py",
                  "runtime_compiled_qp.py", "runtime_scheduler_environment.py",
-                 "b2_interval_runtime.py", "b2_interval_online_optimized.py"):
+                 "b2_interval_runtime.py", "b2_interval_online_optimized.py",
+                 "runtime_native_loop.py", "runtime_native_executor.py"):
         raw = (Path(__file__).parent / name).read_bytes().replace(b"\r\n", b"\n")
         controller_source_hashes[name] = hashlib.sha256(raw).hexdigest()
     controller_config_hash = hashlib.sha256(json.dumps({
@@ -590,7 +591,7 @@ def _plan_one(ctx, request):
 
 
 def _planner_worker(connection, spec, run_config, qp_config, scenario, result_slot):
-    scheduling = ThreadScheduling("planner")
+    scheduling = ThreadScheduling("planner", run_config.wall_scheduler_policy)
     gc_was_enabled = gc.isenabled()
     try:
         ctx = _context(spec, run_config, qp_config, scenario)
