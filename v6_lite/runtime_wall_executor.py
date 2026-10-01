@@ -698,6 +698,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             "epoch": epoch, "execution_start": epoch + i * run_config.task_period_s,
             "source_state_id": snapshot_id, "acquired": acquired_at,
             "source_simulation_s": float(data.time),
+            "prediction_remaining_microsteps": 0 if i == 0 else 9,
             "release": time.perf_counter()}
     request = request_for(0, snapshot, -1, spec.planner_zero.copy(), np.zeros(17), source_id, acquired)
     parent.send(request)
@@ -726,6 +727,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             "source_simulation_time_s": request["source_simulation_s"],
             "actual_dispatch_monotonic_ns": int(now * 1e9),
             "planning_release_monotonic_s": request["release"],
+            "prediction_remaining_microsteps": request["prediction_remaining_microsteps"],
             "actual_publish_monotonic_s": now,
             "executor_consumed_publication_monotonic_s": time.perf_counter(),
             "dispatch_latency_s": now - request["acquired"],
@@ -794,12 +796,6 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
                 task_qpos_trace.append(data.qpos.copy())
                 if pcc_monitor is not None:
                     pcc_monitor.record(float(data.time), active_payload["result"])
-                next_i = gate.active.certificate.command_id + 1
-                if next_i * ctx.task_stride < ctx.physics_steps:
-                    request = request_for(next_i, gate.active.integration_states[-1],
-                        gate.active.certificate.command_id, gate.active.reference_end,
-                        gate.active.endpoint_velocity, array_id(observed), time.perf_counter())
-                    parent.send(request)
             command_velocity = gate.active.endpoint_velocity
             execution = active_payload["execution_records"][segment_step]
             reference_step = execution["reference_step"]
@@ -925,6 +921,19 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             log["robot_momentum"].append(_robot_momentum(model, data, base_body_id))
             log["torque_latency"].append(torque_latency)
 
+            if segment_step == 0:
+                next_i = gate.active.certificate.command_id + 1
+                if next_i * ctx.task_stride < ctx.physics_steps:
+                    # Acquire a new observed full state after the first real
+                    # update. The earlier native realization check binds it
+                    # to cached state 1, so Phi covers the nine committed
+                    # updates remaining before the fixed next boundary.
+                    source_acquired = time.perf_counter()
+                    source_snapshot = _integration(model, data)
+                    request = request_for(next_i, gate.active.integration_states[-1],
+                        gate.active.certificate.command_id, gate.active.reference_end,
+                        gate.active.endpoint_velocity, array_id(source_snapshot), source_acquired)
+                    parent.send(request)
             servo_timing.append({"physics_step": physics_step, "scheduled": scheduled,
                 "actual_start": servo_started, "consumed": consumed,
                 "finished": time.perf_counter(), "jitter_s": servo_started - scheduled,
@@ -963,7 +972,8 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
         "runtime_identity": runtime_identity(run_config.pcc_mode, spec, model, dispatch_clock_policy="wall_deadline"),
         "controller_config_hash": config_hash,
         "controller_version": "v6_2_c11_wall_handoff", "published_packets_immutable": True,
-        "predecessor_prediction": "cached_native_Phi_of_committed_ten_step_segment_bound_to_observed_start",
+        "predecessor_prediction": "cached_native_Phi_of_nine_committed_remaining_steps_bound_to_observed_state_after_first_step",
+        "planning_source_phase": "after_first_native_microstep",
         "startup_scope": "new_full_state_after_workspace_init; simulation_unarmed_before_predeclared_task_release",
         "state_acquisition_retimestamps": 0,
         "numerical_thread_pools": ctx.numerical_thread_pools,

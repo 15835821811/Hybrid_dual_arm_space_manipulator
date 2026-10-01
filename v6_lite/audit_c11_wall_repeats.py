@@ -28,7 +28,10 @@ def run(output):
         "source_commit": commit, "round_count": 3, "scenario_count_per_round": 5,
         "duration_per_scene_s": 27, "seed": 20260801, "commands": commands,
         "acceptance": {"all_15_full_scenes_required": True,
-            "dispatch_p95_ms_max": 20, "original_physics_and_contract_required": True},
+            "dispatch_p95_ms_max": 20, "acquisition_to_first_application_p95_ms_max": 20,
+            "startup_first_cycle_retained_in_percentiles": True,
+            "startup_scope": "separately validated unarmed simulation before predetermined task epoch",
+            "original_physics_and_contract_required": True},
         "retention": "all declared rounds and all rejected scenes retained; no selection or overwrite",
         "runtime_conditions": "Windows HIGH_PRIORITY_CLASS; separate planner/executor CPU affinity; BLAS one thread; absolute 2 ms servo grid; final 2 ms active wait; cyclic GC disabled during task",
         "hard_realtime_certified": False}
@@ -44,10 +47,14 @@ def run(output):
         dispatch_passed = metrics is not None and all(
             scene["metrics"]["rates_and_latency"]["dispatch"]["p95_ms"] <= 20
             for scene in metrics["scenarios"])
+        application_passed = metrics is not None and all(
+            scene["metrics"]["rates_and_latency"]["acquisition_to_first_application"]["p95_ms"] <= 20
+            for scene in metrics["scenarios"])
         rounds.append({"round": number, "exit_code": completed.returncode,
             "complete_five_scenes": metrics is not None and len(metrics["scenarios"]) == 5,
             "dispatch_p95_passed": dispatch_passed,
-            "passed": completed.returncode == 0 and metrics is not None and metrics["passed"] and dispatch_passed,
+            "actual_application_p95_passed": application_passed,
+            "passed": completed.returncode == 0 and metrics is not None and metrics["passed"] and dispatch_passed and application_passed,
             "run_directory": run_dir.as_posix(), "log": f"round_{number:02d}.log"})
         write(output / "report.json", {"plan": "plan.json", "rounds": rounds,
             "complete": len(rounds) == 3, "passed": len(rounds) == 3 and all(x["passed"] for x in rounds),
