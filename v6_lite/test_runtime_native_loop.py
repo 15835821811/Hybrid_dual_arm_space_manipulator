@@ -11,6 +11,7 @@ from v6_lite.runtime_handoff import (
     CommandPacket, HandoffCertificate, array_id, payload_id,
 )
 from v6_lite.runtime_native_loop import NativeBuffers, NativeHashContext, atomic_read
+from v6_lite.runtime_native_executor import _rejected_native_attempt
 
 
 class NativeLoopTests(unittest.TestCase):
@@ -53,11 +54,11 @@ class NativeLoopTests(unittest.TestCase):
         mujoco.mj_getState(self.model, data, result, self.state_spec)
         return result
 
-    def run_actor(self, packets=None):
+    def run_actor(self, packets=None, count=20):
         for packet in self.packets if packets is None else packets:
             self.buffers.publish(packet, 99.99)
         count = self.buffers.execute(
-            self.model, self.data, self.crypto, 100., 20, self.times)
+            self.model, self.data, self.crypto, 100., count, self.times)
         self.assertEqual(count, atomic_read(self.buffers.view("signals"), 1))
         self.assertAlmostEqual(self.data.time, count*.002)
         return count, atomic_read(self.buffers.view("signals"), 2)
@@ -66,6 +67,43 @@ class NativeLoopTests(unittest.TestCase):
         self.assertEqual(self.run_actor(), (20, 2))
         np.testing.assert_array_equal(self.buffers.view("states")[20], self.packets[1].integration_states[-1])
         self.assertTrue(np.all(self.buffers.view("timings")[:, 2] < self.times[:, 0]+.002))
+
+    def test_unarmed_actor_has_no_fabricated_attempt_or_timestamps(self):
+        attempt = _rejected_native_attempt(self.buffers, 100., 20, 101.)
+        self.assertFalse(attempt["attempted"])
+        self.assertIsNone(attempt["physics_step"])
+        self.assertIsNone(attempt["actual_start"])
+        self.assertFalse(attempt["torque_consumed"])
+        self.assertEqual(attempt["operation_phase"], "not_attempted")
+
+    def test_partial_last_segment_has_a_source_slot_and_realizes_eleven_steps(self):
+        self.buffers = NativeBuffers(mp.get_context("spawn"), self.size, 11)
+        self.assertEqual(len(self.buffers.view("source_times")), 2)
+        self.assertEqual(self.run_actor(count=11), (11, 2))
+        np.testing.assert_array_equal(self.buffers.view("states")[11],
+                                      self.packets[1].integration_states[1])
+        self.assertEqual(self.buffers.view("source_times")[1], self.times[10, 1])
+
+    def test_nonfinite_native_metadata_never_advances_physics(self):
+        for column in range(4):
+            for value in (np.nan, np.inf, -np.inf):
+                with self.subTest(column=column, value=value):
+                    self.buffers = NativeBuffers(mp.get_context("spawn"), self.size, 20)
+                    self.buffers.publish(self.packets[0], 99.99)
+                    self.buffers.view("slot_meta")[0, column] = value
+                    self.assertEqual(self.run_actor([]), (0, -4))
+
+    def test_nonfinite_certificate_times_are_rejected_before_staging(self):
+        for field in ("source_acquisition_time", "planning_release", "solve_started",
+                "solve_finished", "validation_finished", "publish_deadline",
+                "execution_start", "execution_end", "execution_start_simulation_s"):
+            for value in (np.nan, np.inf, -np.inf):
+                with self.subTest(field=field, value=value):
+                    changed = replace(self.packets[0], certificate=replace(
+                        self.packets[0].certificate, **{field: value}))
+                    with self.assertRaisesRegex(ValueError, "NONFINITE_NATIVE_CLOCK_CONTRACT"):
+                        self.buffers.stage(changed)
+                    self.assertEqual(atomic_read(self.buffers.view("ready"), 0), -1)
 
     def test_exhausted_packet_does_not_execute_eleventh_step(self):
         self.assertEqual(self.run_actor([self.packets[0]]), (10, -1))
@@ -107,6 +145,10 @@ class NativeLoopTests(unittest.TestCase):
     def test_late_consumption_stops_without_physics(self):
         self.times[0, 1] = 100.0021
         self.assertEqual(self.run_actor(), (0, -12))
+        attempt = _rejected_native_attempt(self.buffers, 100., 20, 101.)
+        self.assertEqual(attempt["physics_step"], 0)
+        self.assertFalse(attempt["torque_consumed"])
+        self.assertEqual(attempt["consumption_check_time"], 100.0021)
 
     def test_poststep_mismatch_records_the_step_that_really_ran(self):
         packet = self.packets[0]
@@ -118,6 +160,12 @@ class NativeLoopTests(unittest.TestCase):
             states, packet.torques, packet.endpoint_velocity, packet.reference_end)
         self.assertEqual(self.run_actor([altered]), (1, -9))
         np.testing.assert_array_equal(self.buffers.view("states")[1], self.state(self.data))
+        attempt = _rejected_native_attempt(self.buffers, 100., 20, 101.)
+        self.assertEqual(attempt["physics_step"], 0)
+        self.assertEqual(attempt["operation_phase"], "poststep_realization_check")
+        self.assertTrue(attempt["torque_consumed"])
+        self.assertTrue(attempt["physical_step_executed"])
+        self.assertEqual(attempt["actual_start"], self.times[0, 0])
 
 
 if __name__ == "__main__":

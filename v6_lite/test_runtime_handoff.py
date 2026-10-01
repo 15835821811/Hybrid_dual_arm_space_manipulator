@@ -87,6 +87,19 @@ class HandoffTests(unittest.TestCase):
         observed[0] = np.nan
         self.assertFalse(gate.handoff(1., observed, 0.)["accepted"])
 
+    def test_every_nonfinite_certificate_time_is_rejected(self):
+        for field in ("source_acquisition_time", "planning_release", "solve_started",
+                "solve_finished", "validation_finished", "publish_deadline",
+                "execution_start", "execution_end", "execution_start_simulation_s"):
+            for value in (np.nan, np.inf, -np.inf):
+                with self.subTest(field=field, value=value):
+                    gate = HandoffBuffer("model", "config")
+                    p = packet()
+                    p = replace(p, certificate=replace(p.certificate, **{field: value}))
+                    result = gate.publish(p, .999, source_state_id="snapshot", partition_id="partition")
+                    self.assertEqual(result["reason"], "NONFINITE_TIME")
+                    self.assertIsNone(gate.pending)
+
 
 if __name__ == "__main__":
     unittest.main()

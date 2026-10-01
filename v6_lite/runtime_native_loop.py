@@ -54,6 +54,12 @@ ERRORS = {
     9: "NATIVE_REALIZATION_MISMATCH", 10: "NATIVE_HASH_API_ERROR",
     11: "EXECUTION_CANCELLED", 12: "MISSED_PHYSICS_CONSUMPTION_WINDOW",
 }
+ATTEMPT_PHASES = {
+    0: "not_attempted", 1: "waiting_for_servo_boundary", 2: "command_admission",
+    3: "payload_model_and_state_guards", 4: "control_written_before_consumption_check",
+    5: "native_physics_step", 6: "poststep_realization_check", 7: "task_horizon_wait",
+    8: "complete",
+}
 
 
 @intrinsic
@@ -97,7 +103,8 @@ def now(counter, frequency):
 @njit(nogil=True, fastmath=False)
 def release_now(ready, metadata, slot, command, deadline, counter, frequency):
     stamp = now(counter, frequency)
-    if not math.isfinite(stamp) or stamp > deadline or _atomic_load(ready, slot) != -1:
+    if (not math.isfinite(stamp) or not math.isfinite(deadline)
+            or stamp > deadline or _atomic_load(ready, slot) != -1):
         return math.nan
     metadata[slot, 2] = stamp
     _atomic_store(ready, slot, command)
@@ -153,16 +160,20 @@ def execute(model_address, data_address, control, state_spec, epoch, count,
             option_doubles, option_integers, option_buffer, model_hash, digest,
             states, timings, applied_torques, source_times, slot_states, slot_torques, slot_tail,
             slot_meta, slot_ids, slot_hashes, ready, signals, virtual_times):
-    """signals: stop / completed steps / status / active ID."""
+    """signals: stop / completed / status / active ID / attempt / phase / consumed."""
     _get_state(model_address, data_address, states[0].ctypes.data, state_spec)
     _atomic_store(signals, 2, 1)
     error = 0
     completed = 0
     for step_index in range(count):
+        _atomic_store(signals, 4, step_index)
+        _atomic_store(signals, 5, 1)
+        _atomic_store(signals, 6, 0)
         command = step_index // 10
         substep = step_index % 10
         slot = command % 2
         scheduled = epoch + step_index * .002
+        timings[step_index, 0] = scheduled
         if virtual_times.size:
             started = virtual_times[step_index, 0]
         else:
@@ -177,12 +188,12 @@ def execute(model_address, data_address, control, state_spec, epoch, count,
         if _atomic_load(signals, 0):
             error = 11
             break
-        timings[step_index, 0] = scheduled
         timings[step_index, 1] = started
         if not math.isfinite(started) or not scheduled <= started < scheduled + .002:
             error = 5
             break
         if substep == 0:
+            _atomic_store(signals, 5, 2)
             if _atomic_load(ready, slot) != command:
                 error = 1
                 break
@@ -192,13 +203,17 @@ def execute(model_address, data_address, control, state_spec, epoch, count,
             if slot_ids[slot, 1] != command - 1:
                 error = 3
                 break
-            if (not math.isfinite(slot_meta[slot, 2])
+            if (not math.isfinite(slot_meta[slot, 0])
+                    or not math.isfinite(slot_meta[slot, 1])
+                    or not math.isfinite(slot_meta[slot, 2])
+                    or not math.isfinite(slot_meta[slot, 3])
                     or slot_meta[slot, 2] > slot_meta[slot, 0]
                     or abs(slot_meta[slot, 0] - scheduled) > 1e-9
                     or abs(slot_meta[slot, 1] - scheduled - .020) > 1e-9
                     or abs(states[step_index, 0] - slot_meta[slot, 3]) > 1e-9):
                 error = 4
                 break
+        _atomic_store(signals, 5, 3)
         if not _packet_digest(hash_handle, slot_states[slot], slot_torques[slot], slot_tail[slot], digest):
             error = 10
             break
@@ -217,16 +232,20 @@ def execute(model_address, data_address, control, state_spec, epoch, count,
             break
         for actuator in range(67):
             control[actuator] = slot_torques[slot, substep, actuator]
+        _atomic_store(signals, 5, 4)
         consumed = virtual_times[step_index, 1] if virtual_times.size else now(counter, frequency)
+        timings[step_index, 2] = consumed
         if not math.isfinite(consumed) or not scheduled <= consumed < scheduled + .002:
             error = 12
             break
-        timings[step_index, 2] = consumed
         for actuator in range(67):
             applied_torques[step_index, actuator] = control[actuator]
         if substep == 0:
             _atomic_store(signals, 3, command)
+        _atomic_store(signals, 5, 5)
         _step(model_address, data_address)
+        _atomic_store(signals, 6, 1)
+        _atomic_store(signals, 5, 6)
         _get_state(model_address, data_address, states[step_index + 1].ctypes.data, state_spec)
         realization_matches = _same_state(states[step_index + 1], slot_states[slot, substep + 1])
         finished = consumed if virtual_times.size else now(counter, frequency)
@@ -243,11 +262,15 @@ def execute(model_address, data_address, control, state_spec, epoch, count,
     if error:
         _atomic_store(signals, 2, -error)
     else:
+        _atomic_store(signals, 4, -1)
+        _atomic_store(signals, 5, 7)
+        _atomic_store(signals, 6, 0)
         if not virtual_times.size:
             while now(counter, frequency) < epoch + count * .002:
                 if _atomic_load(signals, 0):
                     _atomic_store(signals, 2, -11)
                     return completed
+        _atomic_store(signals, 5, 8)
         _atomic_store(signals, 2, 2)
     return completed
 
@@ -332,14 +355,15 @@ class NativeBuffers:
     def __init__(self, context, state_size, count):
         self.shapes = {"states": (count + 1, state_size), "timings": (count, 4),
             "applied_torques": (count, 67),
-            "source_times": (max(count // 10, 1),), "slot_states": (2, 11, state_size),
+            "source_times": (max((count + 9) // 10, 1),), "slot_states": (2, 11, state_size),
             "slot_torques": (2, 10, 67), "slot_tail": (2, 34),
             "slot_meta": (2, 4), "slot_ids": (2, 2), "slot_hashes": (2, 32),
-            "ready": (2,), "signals": (4,)}
+            "ready": (2,), "signals": (7,)}
         self.storage = {name: context.RawArray(self.LAYOUT[name][0], int(np.prod(shape)))
                         for name, shape in self.shapes.items()}
         self.view("ready")[:] = -1
         self.view("signals")[3] = -1
+        self.view("signals")[4] = -1
 
     def view(self, name):
         return np.frombuffer(self.storage[name], dtype=self.LAYOUT[name][1]).reshape(self.shapes[name])
@@ -347,6 +371,11 @@ class NativeBuffers:
     def stage(self, packet):
         c = packet.certificate
         slot = c.command_id % 2
+        if not all(math.isfinite(stamp) for stamp in (
+                c.source_acquisition_time, c.planning_release, c.solve_started,
+                c.solve_finished, c.validation_finished, c.publish_deadline,
+                c.execution_start, c.execution_end, c.execution_start_simulation_s)):
+            raise ValueError("NONFINITE_NATIVE_CLOCK_CONTRACT")
         if atomic_read(self.view("ready"), slot) != -1:
             raise ValueError("NATIVE_SLOT_STILL_OWNED_BY_EXECUTOR")
         self.view("slot_states")[slot] = packet.integration_states
@@ -364,7 +393,8 @@ class NativeBuffers:
         slot = c.command_id % 2
         if atomic_read(self.view("ready"), slot) != -1:
             raise ValueError("NATIVE_SLOT_STILL_OWNED_BY_EXECUTOR")
-        if not math.isfinite(publication_time) or publication_time > c.publish_deadline:
+        if (not math.isfinite(publication_time) or not math.isfinite(c.publish_deadline)
+                or publication_time > c.publish_deadline):
             raise ValueError("LATE_OR_INVALID_PUBLICATION")
         self.view("slot_meta")[slot, 2] = publication_time
         atomic_write(self.view("ready"), c.command_id, slot)

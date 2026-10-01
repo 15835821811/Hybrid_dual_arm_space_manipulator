@@ -7,6 +7,7 @@ import hashlib
 import json
 import multiprocessing as mp
 from pathlib import Path
+import queue
 from types import SimpleNamespace
 import threading
 import time
@@ -16,7 +17,8 @@ import numpy as np
 
 from v6_lite.runtime_handoff import HandoffBuffer, array_id
 from v6_lite.runtime_native_loop import (
-    NativeBuffers, NativeHashContext, ERRORS, atomic_read, atomic_write, now, release_now,
+    NativeBuffers, NativeHashContext, ERRORS, ATTEMPT_PHASES,
+    atomic_read, atomic_write, now, release_now,
 )
 from v6_lite.runtime_scheduler_environment import ThreadScheduling
 from v6_lite.runtime_shared_slot import SharedResultSlot
@@ -27,6 +29,107 @@ from v6_lite.run_v6_lite import (
     _body_pose_and_twist, ServoDiagnostics, finalize_scenario,
 )
 from v6_lite.hierarchical_qp import rotation_error_angle_rad, CONTINUUM_EE_OFFSET_M
+
+
+def _receive_planner_records(connection, records, maximum_records, timeout_s=5.):
+    """Bound complete receives, including a sender stalled midway through pickle."""
+    events = queue.Queue()
+    def receive():
+        try:
+            header = connection.recv()
+            if not isinstance(header, dict):
+                raise ValueError("invalid planner transfer header")
+            record_count = header.get("record_count")
+            if (not isinstance(record_count, int) or isinstance(record_count, bool)
+                    or not 0 <= record_count <= maximum_records):
+                raise ValueError("invalid planner transfer record count")
+            events.put(("header", header))
+            for _ in range(record_count):
+                events.put(("record", connection.recv()))
+            events.put(("complete", None))
+        except BaseException as error:
+            events.put(("error", error))
+    receiver = threading.Thread(target=receive, name="c11-postrun-record-receiver", daemon=True)
+    receiver.start()
+    header, problem = {}, None
+    try:
+        while True:
+            try:
+                kind, value = events.get(timeout=timeout_s)
+            except queue.Empty:
+                problem = "PLANNER_RECORD_TRANSFER_TIMEOUT"
+                break
+            if kind == "header":
+                header = value
+            elif kind == "record":
+                records.append(value)
+            elif kind == "error":
+                problem = f"PLANNER_RECORD_TRANSFER_FAILED: {type(value).__name__}: {value}"
+                break
+            else:
+                break
+    finally:
+        # Closing the pipe plus terminating its sender in outer cleanup unblocks
+        # an incomplete receive; this reader never accesses live model or data.
+        if receiver.is_alive():
+            try:
+                connection.close()
+            except BaseException as error:
+                problem = problem or f"PLANNER_CONNECTION_CLOSE_FAILED: {error}"
+        receiver.join(timeout=.1)
+    return header, problem
+
+
+def _cleanup_native_runtime(worker, connection, supervisor, crypto, gc_was_enabled,
+                            *, actor_stopped=True):
+    """Every resource gets its cleanup attempt, even when another cleanup fails."""
+    problems = []
+    def attempt(name, action):
+        try:
+            action()
+        except BaseException as error:
+            problems.append(f"{name}: {type(error).__name__}: {error}")
+    attempt("planner_join", lambda: worker.join(timeout=2))
+    try:
+        worker_alive = worker.is_alive()
+    except BaseException as error:
+        problems.append(f"planner_liveness: {type(error).__name__}: {error}")
+        worker_alive = True
+    if worker_alive:
+        attempt("planner_termination", worker.terminate)
+        attempt("planner_termination_join", lambda: worker.join(timeout=2))
+        try:
+            if worker.is_alive():
+                problems.append("planner_termination: planner remains alive")
+        except BaseException as error:
+            problems.append(f"planner_liveness: {type(error).__name__}: {error}")
+    attempt("planner_connection_close", connection.close)
+    attempt("supervisor_scheduling_restore", supervisor.restore)
+    if gc_was_enabled:
+        attempt("cyclic_gc_restore", gc.enable)
+    # A live native loop still owns the hash handle; never free it underneath C.
+    if actor_stopped:
+        attempt("native_hash_close", crypto.close)
+    return problems
+
+
+def _rejected_native_attempt(buffers, epoch, total_steps, rejected_at):
+    signals = buffers.view("signals")
+    step = int(atomic_read(signals, 4))
+    phase = int(atomic_read(signals, 5))
+    consumed = bool(atomic_read(signals, 6))
+    valid_step = 0 <= step < total_steps
+    timing = buffers.view("timings")[step] if valid_step else None
+    def stamp(column):
+        value = float(timing[column]) if timing is not None else 0.
+        return value if np.isfinite(value) and value != 0. else None
+    return {"physics_step": step if valid_step else None, "attempted": valid_step,
+        "scheduled": epoch+step*.002 if valid_step else None,
+        "actual_start": stamp(1), "consumption_check_time": stamp(2),
+        "actual_finish": stamp(3), "rejection_observed": rejected_at,
+        "operation_phase": ATTEMPT_PHASES.get(phase, f"unknown_{phase}"),
+        "torque_consumed": consumed,
+        "physical_step_executed": consumed}
 
 
 def _native_planner_worker(connection, spec, run_config, qp_config, scenario, buffers, error_slot):
@@ -250,6 +353,7 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
         parent.send(request)
     arm.set()
     rejected_at, wall_task_finished = None, None
+    transfer_error, cleanup_errors = None, []
     try:
         if error:
             raise error
@@ -270,25 +374,21 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
         error, rejected_at = caught, time.perf_counter()
         atomic_write(buffers.view("signals"), 1, 0)
     finally:
-        native_thread.join(timeout=2)
-        if native_thread.is_alive():
+        actor_stopped = False
+        try:
+            native_thread.join(timeout=2)
+            actor_stopped = not native_thread.is_alive()
+            if actor_stopped and conditions_available:
+                header, transfer_error = _receive_planner_records(
+                    parent, records, (ctx.physics_steps+9)//10)
+        finally:
+            cleanup_errors = _cleanup_native_runtime(worker, parent, supervisor,
+                crypto, gc_was_enabled, actor_stopped=actor_stopped)
+        if not actor_stopped:
             raise RuntimeError("native cancellation failed; postrun model access forbidden")
-        if conditions_available:
-            if parent.poll(5):
-                header = parent.recv()
-                for _ in range(header.get("record_count", 0)):
-                    records.append(parent.recv())
-            else:
-                error = UncertifiedExecutionError("PLANNER_RECORD_TRANSFER_FAILED")
-        worker.join(timeout=2)
-        if worker.is_alive():
-            worker.terminate()
-            worker.join()
-        parent.close()
-        supervisor.restore()
-        if gc_was_enabled:
-            gc.enable()
-        crypto.close()
+    if transfer_error or cleanup_errors:
+        error = error or UncertifiedExecutionError(transfer_error or "NATIVE_RUNTIME_CLEANUP_FAILED")
+        rejected_at = rejected_at or time.perf_counter()
     if thread_error:
         error = thread_error[0]
     count = atomic_read(buffers.view("signals"), 1)
@@ -312,6 +412,7 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
         "wait_policy": "native absolute QPC grid; busy wait; planner directly observes source and publishes native slot",
         "task_duration_s": run_config.duration_s, "cyclic_gc_during_task": False,
         "native_physics_steps": count, "native_status": atomic_read(buffers.view("signals"), 2),
+        "record_transfer_error": transfer_error, "cleanup_errors": cleanup_errors,
         "supervisor_on_per_segment_critical_path": False,
         "native_raw_trace": {"path": raw_path.as_posix(), "sha256": _sha256(raw_path)}}
     _write_json(timing_path.with_name(f"{scenario.scenario_id}_environment.json"), environment)
@@ -322,17 +423,19 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
     if error:
         directory = trace_dir.parent/"failures"
         directory.mkdir(parents=True, exist_ok=True)
-        attempted = min(count, ctx.physics_steps-1)
+        rejected_attempt = _rejected_native_attempt(buffers, epoch, ctx.physics_steps, rejected_at)
         _write_json(directory/f"{scenario.scenario_id}_interval_failure.json", {
             "schema": "c11_native_wall_rejection_v2", "scenario_id": scenario.scenario_id,
             "time_s": float(data.time), "wall_time": rejected_at, "failure_reason": str(error),
-            "physics_step": count, "physics_steps_executed": count, "trace_recorded_steps": count,
+            "physics_step": rejected_attempt["physics_step"],
+            "physics_steps_executed": count, "trace_recorded_steps": count,
+            "next_unexecuted_physics_step": count,
+            "rejected_step_executed": rejected_attempt["physical_step_executed"],
             "native_status": environment["native_status"], "next_servo_step_executed": False,
             "continuation_guaranteed": False, "simulation_stop_is_safe_backup": False,
-            "rejected_servo_attempt": {"physics_step": count, "scheduled": epoch+count*.002,
-                "actual_start": float(buffers.view("timings")[attempted, 1]),
-                "rejection_observed": rejected_at, "torque_consumed": False},
+            "rejected_servo_attempt": rejected_attempt,
             "planner_error": header.get("error"),
+            "record_transfer_error": transfer_error, "cleanup_errors": cleanup_errors,
             "partial_trace": {"path": raw_path.as_posix(), "sha256": _sha256(raw_path)}})
         rejected = header.get("rejected_candidate")
         _write_json(directory/f"{scenario.scenario_id}_post_rejection_candidate.json", {

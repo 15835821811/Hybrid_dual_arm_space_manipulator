@@ -100,7 +100,7 @@ class HandoffBuffer:
         reason = None
         times = (now, c.source_acquisition_time, c.planning_release, c.solve_started,
                  c.solve_finished, c.validation_finished, c.publish_deadline,
-                 c.execution_start, c.execution_end)
+                 c.execution_start, c.execution_end, c.execution_start_simulation_s)
         predecessor = self.active.certificate.command_id if self.active else -1
         if not all(math.isfinite(x) for x in times):
             reason = "NONFINITE_TIME"
@@ -148,6 +148,8 @@ class HandoffBuffer:
         else:
             c = p.certificate
             if (not math.isfinite(now) or not math.isfinite(simulation_s)
+                    or not all(math.isfinite(stamp) for stamp in
+                        (c.execution_start, c.execution_end, c.execution_start_simulation_s))
                     or np.asarray(observed_state).shape != p.integration_states[0].shape
                     or not np.all(np.isfinite(observed_state))):
                 reason = "NONFINITE_OR_MALFORMED_OBSERVED_STATE"
@@ -177,6 +179,8 @@ class HandoffBuffer:
             c = p.certificate
             scheduled = c.execution_start + substep * SERVO_PERIOD
             if (not math.isfinite(now) or not math.isfinite(simulation_s)
+                    or not all(math.isfinite(stamp) for stamp in
+                        (c.execution_start, c.execution_end, c.execution_start_simulation_s))
                     or np.asarray(observed_state).shape != p.integration_states[0].shape
                     or not np.all(np.isfinite(observed_state))):
                 reason = "NONFINITE_OR_MALFORMED_OBSERVED_STATE"
