@@ -60,7 +60,7 @@ class ThreadScheduling:
         # interactive applications retain the other cores.
         priority = (-7 if role == "supervisor" else
                     (-1 if role == "planner" else 0)) if policy == "realtime" else 2
-        k.SetThreadPriority(thread, priority)
+        k.SetThreadPriority(thread, max(priority, -2))
         process_priority_set = k.SetPriorityClass(k.GetCurrentProcess(), 0x100 if policy == "realtime" else 0x80)
         available, system = ctypes.c_size_t(), ctypes.c_size_t()
         if not k.GetProcessAffinityMask(k.GetCurrentProcess(), ctypes.byref(available), ctypes.byref(system)):
@@ -92,7 +92,8 @@ class ThreadScheduling:
             "processors": processors, "affinity_mask": mask,
             "physical_core_topology": cores,
             "affinity_policy": "disjoint physical core sets of highest reported efficiency class; first two cores excluded when available",
-            "thread_priority": priority, "process_realtime_priority_used": policy == "realtime",
+            "thread_priority": k.GetThreadPriority(thread),
+            "process_realtime_priority_used": k.GetPriorityClass(k.GetCurrentProcess()) == 0x100,
             "process_priority_class": "REALTIME_PRIORITY_CLASS" if policy == "realtime" else "HIGH_PRIORITY_CLASS",
             "actual_process_priority_class": k.GetPriorityClass(k.GetCurrentProcess()),
             "process_priority_set": bool(process_priority_set),
