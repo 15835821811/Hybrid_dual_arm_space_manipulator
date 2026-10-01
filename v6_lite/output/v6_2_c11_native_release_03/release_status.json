@@ -1,0 +1,398 @@
+{
+  "schema": "c11_default_wall_release_status_v3",
+  "created_utc": "2026-10-01T11:32:29.727421+00:00",
+  "goal_acceptance": "NOT_MET",
+  "trial_source_commit": "c2b5077c45c465a6f97db94704001a02bbe79148",
+  "auditor_source_commit": "c2b5077c45c465a6f97db94704001a02bbe79148",
+  "documentation_commit": "2af3a7cb741b1fa682100ffe0852919e675eeca8",
+  "default_conditions": "native/HIGH/wall_deadline; ordinary Windows token",
+  "test_profiles": {
+    "current": {
+      "tests": 186,
+      "failures": 0,
+      "errors": 0,
+      "passed": true,
+      "elapsed_seconds": 103.90800500009209,
+      "log_file": "current_tests.log",
+      "log_size_bytes": 32046,
+      "log_sha256_raw": "68693d00bf807aa1d3c7136a3ac20a29fbd2b2ff4f5ba1e97f13a0c04e2e43ae"
+    },
+    "historical": {
+      "tests_selected": 16,
+      "exit_code": 0,
+      "snapshot": "C:/Users/admin/AppData/Local/Temp/c11_frozen_xs4hm0o4",
+      "passed": true,
+      "elapsed_seconds": 2.675279200077057,
+      "log_file": "historical_tests.log",
+      "log_size_bytes": 2871,
+      "log_sha256_raw": "714d3c38a2551991976da334594f91a32568ccd92dfde3b34d210744bc34c51c"
+    },
+    "source_unchanged": true,
+    "historical_goldens_modified": false
+  },
+  "single_scene": {
+    "passed": true,
+    "physics_steps": 13500,
+    "segments": 1350,
+    "rates_and_latency": {
+      "initialization_latency_s": 8.953302300069481,
+      "dispatch": {
+        "count": 1350,
+        "p50_ms": 13.915800023823977,
+        "p95_ms": 14.954089978709817,
+        "p99_ms": 15.525213819928467,
+        "max_ms": 19.135499838739634,
+        "over_deadline_count": 0,
+        "longest_consecutive_over_deadline": 0,
+        "first_cycle_ms": 14.717800077050924,
+        "steady_after_first_cycle": {
+          "count": 1349,
+          "p50_ms": 13.91540002077818,
+          "p95_ms": 14.954379945993423,
+          "p99_ms": 15.52552781999111,
+          "max_ms": 19.135499838739634,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 14.442100189626217,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "algorithm": {
+        "count": 1350,
+        "p50_ms": 13.588399859145284,
+        "p95_ms": 14.604875072836876,
+        "p99_ms": 15.146374786272645,
+        "max_ms": 18.809699919074774,
+        "over_deadline_count": 0,
+        "longest_consecutive_over_deadline": 0,
+        "first_cycle_ms": 14.094899874180555,
+        "steady_after_first_cycle": {
+          "count": 1349,
+          "p50_ms": 13.585600070655346,
+          "p95_ms": 14.60500005632639,
+          "p99_ms": 15.146599784493446,
+          "max_ms": 18.809699919074774,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 14.039499685168266,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "physics_hz": 500.0,
+      "task_hz": 50.0,
+      "physics_steps": 13500,
+      "task_ticks": 1350,
+      "task_full_latency_median_ms": 13.588399859145284,
+      "task_full_latency_p95_ms": 14.604875072836876,
+      "task_full_latency_max_ms": 18.809699919074774,
+      "qp_solver_latency_p95_ms": 0.2720049116760492,
+      "shape_clearance_latency_p95_ms": 0.7190551841631532,
+      "torque_latency_p95_ms": 0.23320491891354314,
+      "qp_failure_count": 0,
+      "qp_status_counts": {
+        "solved": 1350
+      },
+      "execution_mode_counts": {
+        "TRACK": 1350
+      },
+      "failure_reason_counts": {
+        "none": 1350
+      },
+      "qp_call_count": 1350,
+      "torque_update_count": 13500,
+      "servo_jitter": {
+        "count": 13500,
+        "p50_ms": 0.0,
+        "p95_ms": 4.6566128730773926e-07,
+        "p99_ms": 4.6566128730773926e-07,
+        "max_ms": 0.08610030636191368,
+        "over_deadline_count": 0,
+        "longest_consecutive_over_deadline": 0,
+        "first_cycle_ms": 0.0,
+        "steady_after_first_cycle": {
+          "count": 13499,
+          "p50_ms": 0.0,
+          "p95_ms": 4.6566128730773926e-07,
+          "p99_ms": 4.6566128730773926e-07,
+          "max_ms": 0.08610030636191368,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 4.6566128730773926e-07,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "full_servo_cycle": {
+        "count": 13500,
+        "p50_ms": 0.19720010459423065,
+        "p95_ms": 0.23320491891354314,
+        "p99_ms": 0.26570127345621586,
+        "max_ms": 0.5220999009907246,
+        "over_deadline_count": 0,
+        "longest_consecutive_over_deadline": 0,
+        "first_cycle_ms": 0.44480012729763985,
+        "steady_after_first_cycle": {
+          "count": 13499,
+          "p50_ms": 0.19720010459423065,
+          "p95_ms": 0.23319991305470467,
+          "p99_ms": 0.26569982059299946,
+          "max_ms": 0.5220999009907246,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 0.34639984369277954,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "acquisition_to_first_application": {
+        "count": 1350,
+        "p50_ms": 19.853449892252684,
+        "p95_ms": 19.86090000718832,
+        "p99_ms": 19.862852958031,
+        "max_ms": 100.05510039627552,
+        "over_deadline_count": 1,
+        "longest_consecutive_over_deadline": 1,
+        "first_cycle_ms": 100.05510039627552,
+        "steady_after_first_cycle": {
+          "count": 1349,
+          "p50_ms": 19.85340006649494,
+          "p95_ms": 19.86090000718832,
+          "p99_ms": 19.86260414123535,
+          "max_ms": 19.908899907022715,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 19.604899920523167,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "publication_to_first_application": {
+        "count": 1350,
+        "p50_ms": 5.938500398769975,
+        "p95_ms": 6.940475036390126,
+        "p99_ms": 7.135068904608488,
+        "max_ms": 85.3373003192246,
+        "over_deadline_count": 1,
+        "longest_consecutive_over_deadline": 1,
+        "first_cycle_ms": 85.3373003192246,
+        "steady_after_first_cycle": {
+          "count": 1349,
+          "p50_ms": 5.938300397247076,
+          "p95_ms": 6.937200017273426,
+          "p99_ms": 7.130691986531019,
+          "max_ms": 7.408800069242716,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 5.16279973089695,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "application_start_offset": {
+        "count": 1350,
+        "p50_ms": 0.04920037463307381,
+        "p95_ms": 0.050500500947237015,
+        "p99_ms": 0.05460018292069435,
+        "max_ms": 0.09799981489777565,
+        "over_deadline_count": 0,
+        "longest_consecutive_over_deadline": 0,
+        "first_cycle_ms": 0.05510030314326286,
+        "steady_after_first_cycle": {
+          "count": 1349,
+          "p50_ms": 0.04920037463307381,
+          "p95_ms": 0.05050031468272209,
+          "p99_ms": 0.05455212667584419,
+          "max_ms": 0.09799981489777565,
+          "over_deadline_count": 0,
+          "longest_consecutive_over_deadline": 0,
+          "first_cycle_ms": 0.04970002919435501,
+          "steady_after_first_cycle": null,
+          "passed": true
+        },
+        "passed": true
+      },
+      "wall_task_duration_s": 27.00144200026989,
+      "startup_validation_ms": 14.717800077050924
+    }
+  },
+  "five_scene": {
+    "passed": false,
+    "all_declared_scenes_attempted": true,
+    "completed_scenes": [
+      "v6_lite_scenario_01"
+    ],
+    "failed_scenes": [
+      {
+        "scenario_id": "v6_lite_scenario_00",
+        "error": "MISSED_SERVO_WINDOW"
+      },
+      {
+        "scenario_id": "v6_lite_scenario_02",
+        "error": "MISSED_SERVO_WINDOW"
+      },
+      {
+        "scenario_id": "v6_lite_scenario_03",
+        "error": "MISSED_SERVO_WINDOW"
+      },
+      {
+        "scenario_id": "v6_lite_scenario_04",
+        "error": "MISSED_SERVO_WINDOW"
+      }
+    ],
+    "retained_first_rejections": [
+      {
+        "scenario_id": "v6_lite_scenario_00",
+        "reason": "MISSED_SERVO_WINDOW",
+        "physical_steps": 6644,
+        "physical_time_s": 13.288000000001107,
+        "previous_step_finished": 2627540.8615922,
+        "final_actual_physics_time_s": 13.288000000001107,
+        "final_actual_matches_last_capture": true,
+        "state_capture_complete": true,
+        "native_trace_hash_matches_failure": true,
+        "rejected_attempt": {
+          "physics_step": 6644,
+          "attempted": true,
+          "scheduled": 2627540.8633987005,
+          "actual_start": 2627540.8671336,
+          "consumption_check_time": null,
+          "actual_finish": null,
+          "rejection_observed": 2627540.8682002,
+          "operation_phase": "waiting_for_servo_boundary",
+          "torque_consumed": false,
+          "physical_step_executed": false
+        },
+        "rejected_operation_consumed": false,
+        "rejected_operation_attempted": true,
+        "attempted_step_count_consistent": true,
+        "rejected_attempt_timing_available": true,
+        "wake_offset_ms": 3.7348996847867966,
+        "no_next_physics_step": true,
+        "failure_sha256": "33390f029e945a6e0e766163a8e4580552fef696ab9d2931994480e483812023",
+        "native_trace_sha256": "deb11bf6fb63be84000dd42e39f86c4f716591c5c60374a93152a853f1ce611c"
+      },
+      {
+        "scenario_id": "v6_lite_scenario_02",
+        "reason": "MISSED_SERVO_WINDOW",
+        "physical_steps": 2924,
+        "physical_time_s": 5.847999999999578,
+        "previous_step_finished": 2627619.2750463,
+        "final_actual_physics_time_s": 5.847999999999578,
+        "final_actual_matches_last_capture": true,
+        "state_capture_complete": true,
+        "native_trace_hash_matches_failure": true,
+        "rejected_attempt": {
+          "physics_step": 2924,
+          "attempted": true,
+          "scheduled": 2627619.2768418,
+          "actual_start": 2627619.2806015,
+          "consumption_check_time": null,
+          "actual_finish": null,
+          "rejection_observed": 2627619.2820031,
+          "operation_phase": "waiting_for_servo_boundary",
+          "torque_consumed": false,
+          "physical_step_executed": false
+        },
+        "rejected_operation_consumed": false,
+        "rejected_operation_attempted": true,
+        "attempted_step_count_consistent": true,
+        "rejected_attempt_timing_available": true,
+        "wake_offset_ms": 3.759699873626232,
+        "no_next_physics_step": true,
+        "failure_sha256": "87b72123f23cb826f074cae6522f662b69c6211f334f1340fbd6712f5d4650ec",
+        "native_trace_sha256": "61ce59892da6ae6057bea20eefecd76fb5ff1c357dc2262465e622f04c44ddda"
+      },
+      {
+        "scenario_id": "v6_lite_scenario_03",
+        "reason": "MISSED_SERVO_WINDOW",
+        "physical_steps": 2981,
+        "physical_time_s": 5.961999999999565,
+        "previous_step_finished": 2627633.6768611,
+        "final_actual_physics_time_s": 5.961999999999565,
+        "final_actual_matches_last_capture": true,
+        "state_capture_complete": true,
+        "native_trace_hash_matches_failure": true,
+        "rejected_attempt": {
+          "physics_step": 2981,
+          "attempted": true,
+          "scheduled": 2627633.6786574,
+          "actual_start": 2627633.6829687,
+          "consumption_check_time": null,
+          "actual_finish": null,
+          "rejection_observed": 2627633.6845441,
+          "operation_phase": "waiting_for_servo_boundary",
+          "torque_consumed": false,
+          "physical_step_executed": false
+        },
+        "rejected_operation_consumed": false,
+        "rejected_operation_attempted": true,
+        "attempted_step_count_consistent": true,
+        "rejected_attempt_timing_available": true,
+        "wake_offset_ms": 4.311299882829189,
+        "no_next_physics_step": true,
+        "failure_sha256": "4cb6252c9b94fa0e383bc40b41cc400c47b487b46627425c56875febfabb8b62",
+        "native_trace_sha256": "56ab8c13ef30ddcba752c2ed7b79dc14f7f29681d51a60ce5010346742b1b98d"
+      },
+      {
+        "scenario_id": "v6_lite_scenario_04",
+        "reason": "MISSED_SERVO_WINDOW",
+        "physical_steps": 1238,
+        "physical_time_s": 2.475999999999949,
+        "previous_step_finished": 2627644.6229003,
+        "final_actual_physics_time_s": 2.475999999999949,
+        "final_actual_matches_last_capture": true,
+        "state_capture_complete": true,
+        "native_trace_hash_matches_failure": true,
+        "rejected_attempt": {
+          "physics_step": 1238,
+          "attempted": true,
+          "scheduled": 2627644.624709,
+          "actual_start": 2627644.6293165,
+          "consumption_check_time": null,
+          "actual_finish": null,
+          "rejection_observed": 2627644.6301875,
+          "operation_phase": "waiting_for_servo_boundary",
+          "torque_consumed": false,
+          "physical_step_executed": false
+        },
+        "rejected_operation_consumed": false,
+        "rejected_operation_attempted": true,
+        "attempted_step_count_consistent": true,
+        "rejected_attempt_timing_available": true,
+        "wake_offset_ms": 4.607500042766333,
+        "no_next_physics_step": true,
+        "failure_sha256": "6eef7520011628c0150e44ba13b5036f656b95504097d238257557a6cbfa0eaf",
+        "native_trace_sha256": "5130e6898cb548a6cebecc6df73f01ec72eb5d79f9993f2d7f46abd273b50287"
+      }
+    ]
+  },
+  "partial_evidence_consistent": true,
+  "complete_scene_physics_steps": 13500,
+  "native_formal_three_by_five": "NOT_STARTED_FAILED_PREREQUISITE",
+  "whole_26_11_interval_acceptance": "NOT_MET; incomplete full-five qualification",
+  "next_available_platform_trial": "prepared optional REALTIME trial; administrator authorization pending",
+  "current_token": {
+    "captured_utc": "2026-10-01T11:26:38.328295+00:00",
+    "is_administrator": false,
+    "privilege_inventory": "\r\nPRIVILEGES INFORMATION\r\n----------------------\r\n\r\nPrivilege Name                Description                          State   \r\n============================= ==================================== ========\r\nSeShutdownPrivilege           Shut down the system                 Disabled\r\nSeChangeNotifyPrivilege       Bypass traverse checking             Enabled \r\nSeUndockPrivilege             Remove computer from docking station Disabled\r\nSeIncreaseWorkingSetPrivilege Increase a process working set       Disabled\r\nSeTimeZonePrivilege           Change the time zone                 Disabled\r\n",
+    "SeIncreaseBasePriorityPrivilege_present": false,
+    "scope": "read-only current inherited Windows token; no elevation or privilege grant",
+    "next_optional_realtime_trial_authorization": "PENDING"
+  },
+  "specific_interrupt_or_preemption_source_verified": false,
+  "higher_priority_resolves_failure_verified": false,
+  "all_prior_failure_trials_retained": true,
+  "hard_realtime_certified": false,
+  "continuous_time_certified": false,
+  "safe_backup_established": false,
+  "existing_implementation_source_snapshot": "v6_lite/output/v6_2_c11_native_release_02/source_snapshot_manifest.json",
+  "qualification_entrypoint": "v6_lite/run_c11_qualified_acceptance.py"
+}
