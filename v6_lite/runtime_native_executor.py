@@ -114,6 +114,7 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
     error = None
     rejected_at = None
     wall_task_finished = None
+    rejected_candidate = None
 
     def issue(command, source, source_time, predecessor):
         nonlocal request, outstanding
@@ -165,7 +166,8 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
                       float(buffers.view("source_times")[command]), command)
 
     def accept_result(payload, worker_published):
-        nonlocal outstanding
+        nonlocal outstanding, rejected_candidate
+        rejected_candidate = (payload, worker_published)
         if "error" in payload:
             raise UncertifiedExecutionError(payload["error"])
         packet = payload["packet"]
@@ -204,6 +206,7 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
         packets[packet.certificate.command_id] = payload
         timing_rows.append(row)
         outstanding = False
+        rejected_candidate = None
 
     try:
         issue(0, snapshot, acquired, -1)
@@ -235,7 +238,7 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
         if worker.is_alive():
             worker.terminate()
             worker.join()
-        late = result_slot.take() if error else None
+        late = (rejected_candidate or result_slot.take()) if error else None
         parent.close()
         supervisor.restore()
         if gc_was_enabled:
@@ -283,6 +286,7 @@ def run_native_scenario(spec, run_config, qp_config, scenario, trace_dir):
             "partial_trace": {"path": raw_path.as_posix(), "sha256": _sha256(raw_path)}})
         _write_json(failure_dir / f"{scenario.scenario_id}_post_rejection_candidate.json", {
             "available_after_worker_stop": late is not None, "candidate_consumed_by_physics": False,
+            "worker_publish_monotonic_s": late[1] if late else None,
             "timeline": late[0].get("timeline") if late else None,
             "certificate": asdict(late[0]["packet"].certificate) if late and "packet" in late[0] else None})
         raise UncertifiedExecutionError(str(error))

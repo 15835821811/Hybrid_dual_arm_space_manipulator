@@ -7,8 +7,8 @@ from v6_lite.run_v6_lite import (V6LiteRunConfig, build_scenarios,
     default_v6_lite_robot_spec, run_scenario, _write_json)
 
 
-def run(output):
-    cfg = V6LiteRunConfig(pcc_mode="bounded_interval_pcc")
+def run(output, scheduler_policy="high"):
+    cfg = V6LiteRunConfig(pcc_mode="bounded_interval_pcc", wall_scheduler_policy=scheduler_policy)
     qp = HierarchicalQPConfig(enable_capsule_cbf=True)
     spec = default_v6_lite_robot_spec()
     scenario = build_scenarios(spec, cfg)[0]
@@ -27,5 +27,6 @@ def run(output):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--wall-scheduler-policy", choices=("high", "realtime"), default="high")
     args = parser.parse_args()
-    raise SystemExit(0 if run(args.output_dir) else 1)
+    raise SystemExit(0 if run(args.output_dir, args.wall_scheduler_policy) else 1)
