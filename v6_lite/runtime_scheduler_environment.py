@@ -65,19 +65,22 @@ class ThreadScheduling:
         # On the declared hybrid CPU use distinct physical cores, leaving the
         # first core outside both timed roles. The executor may migrate among
         # its disjoint set rather than being tied to one interrupted sibling.
-        if len(preferred) >= 3:
+        if len(preferred) >= 5:
+            chosen = preferred[4:] if role == "executor" else preferred[2:4]
+            processors = [(core["mask"] & -core["mask"]).bit_length() - 1 for core in chosen]
+        elif len(preferred) >= 3:
             chosen = preferred[2:] if role == "executor" else preferred[1:2]
             processors = [(core["mask"] & -core["mask"]).bit_length() - 1 for core in chosen]
         else:
             processors = [cpus[min(1 if role == "executor" else 3, len(cpus) - 1)]]
         mask = sum(1 << processor for processor in processors)
         self.old_affinity = k.SetThreadAffinityMask(thread, mask)
-        priority = 2 if role == "executor" else 1
+        priority = 2
         success = k.SetThreadPriority(thread, priority)
         self.record.update({"applied": bool(self.old_affinity and success),
             "processors": processors, "affinity_mask": mask,
             "physical_core_topology": cores,
-            "affinity_policy": "disjoint physical cores of highest reported efficiency class; first core excluded",
+            "affinity_policy": "disjoint physical core sets of highest reported efficiency class; first two cores excluded when available",
             "thread_priority": priority, "process_realtime_priority_used": False,
             "process_priority_class": "HIGH_PRIORITY_CLASS",
             "process_priority_set": bool(process_priority_set),

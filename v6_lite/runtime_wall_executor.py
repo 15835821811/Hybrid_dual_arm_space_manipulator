@@ -766,6 +766,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
         write_timelines(timing_path, timing_rows)
         _write_json(trace_dir.parent / "timing" / f"{scenario.scenario_id}_servo.json", servo_timing)
     physics_step = -1
+    rejection_happened = False
     try:
         while time.perf_counter() < epoch:
             if pending_payload is None:
@@ -941,6 +942,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
         _wait_until(epoch + run_config.duration_s)
         wall_task_finished = time.perf_counter()
     except BaseException as error:
+        rejection_happened = True
         persist_failure(error, physics_step)
         raise
     finally:
@@ -951,6 +953,18 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
         if worker.is_alive():
             worker.terminate()
             worker.join()
+        if rejection_happened:
+            # A candidate completing after rejection is diagnostic evidence.
+            # It is never admitted and no further physical step is executed.
+            late = result_slot.take()
+            evidence = {"available_after_worker_stop": late is not None,
+                "candidate_consumed_by_physics": False}
+            if late is not None:
+                candidate, publication_time = late
+                evidence.update({"actual_publish_monotonic_s": publication_time,
+                    "error": candidate.get("error"), "timeline": candidate.get("timeline"),
+                    "certificate": asdict(candidate["packet"].certificate) if "packet" in candidate else None})
+            _write_json(trace_dir.parent / "failures" / f"{scenario.scenario_id}_post_rejection_candidate.json", evidence)
         parent.close()
         scheduling.restore()
         if gc_was_enabled:
