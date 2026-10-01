@@ -697,6 +697,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             "simulation_start": i * run_config.task_period_s,
             "epoch": epoch, "execution_start": epoch + i * run_config.task_period_s,
             "source_state_id": snapshot_id, "acquired": acquired_at,
+            "source_simulation_s": float(data.time),
             "release": time.perf_counter()}
     request = request_for(0, snapshot, -1, spec.planner_zero.copy(), np.zeros(17), source_id, acquired)
     parent.send(request)
@@ -722,6 +723,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
         row.update({"schema": "v6_2_c11_wall_handoff_v1",
             "certificate": asdict(payload["packet"].certificate),
             "state_acquisition_monotonic_ns": int(request["acquired"] * 1e9),
+            "source_simulation_time_s": request["source_simulation_s"],
             "actual_dispatch_monotonic_ns": int(now * 1e9),
             "planning_release_monotonic_s": request["release"],
             "actual_publish_monotonic_s": now,
@@ -974,6 +976,14 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
     payload["metrics"]["rates_and_latency"].update({
         "servo_jitter": latency_summary([r["jitter_s"] for r in servo_timing], .002),
         "full_servo_cycle": latency_summary([r["servo_latency_s"] for r in servo_timing], .002),
+        "acquisition_to_first_application": latency_summary([
+            r["first_servo_application_monotonic_s"] - r["certificate"]["source_acquisition_time"]
+            for r in timing_rows], .020),
+        "publication_to_first_application": latency_summary([
+            r["first_servo_application_monotonic_s"] - r["actual_publish_monotonic_s"]
+            for r in timing_rows], .020),
+        "application_start_offset": latency_summary([
+            r["application_start_offset_s"] for r in timing_rows], .002),
         "wall_task_duration_s": wall_task_finished - epoch,
         "startup_validation_ms": (timing_rows[0]["actual_publish_monotonic_s"] - acquired) * 1e3})
     return payload
