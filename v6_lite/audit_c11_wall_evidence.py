@@ -93,6 +93,7 @@ def packet_replay(run_dir, metrics):
         rows = [json.loads(line) for line in (run_dir / "timing" / f"{scene_id}.jsonl").read_text(encoding="utf-8").splitlines()]
         native_info = scene["execution_contract"].get("native_raw_trace")
         native = np.load(Path(native_info["path"]), allow_pickle=False) if native_info else None
+        native_states = native["integration_states"] if native is not None else None
         native_errors = []
         if native_info and sha(Path(native_info["path"])) != native_info["sha256"]:
             native_errors.append("NATIVE_RAW_TRACE_HASH")
@@ -106,14 +107,14 @@ def packet_replay(run_dir, metrics):
                     native_errors.append("NATIVE_APPLIED_TORQUES_DIFFER_FROM_OBSERVER_LOG")
                 times = native["timings"]
                 scheduled = float(native["epoch"]) + np.arange(len(torques))*.002
-                if (len(times) != len(torques) or len(native["integration_states"]) != len(torques)+1
+                if (len(times) != len(torques) or len(native_states) != len(torques)+1
                         or not np.all(np.isfinite(times))
                         or not np.all(np.abs(times[:, 0]-scheduled) <= 1e-9)
                         or not np.all((times[:, 1] >= scheduled) & (times[:, 1] < scheduled+.002))
                         or not np.all((times[:, 2] >= times[:, 1]) & (times[:, 2] < scheduled+.002))
                         or not np.all(times[:, 3] >= times[:, 2])):
                     native_errors.append("NATIVE_ALL_STEP_CLOCK_CONTRACT")
-                if not np.array_equal(state(model, data), native["integration_states"][0]):
+                if not np.array_equal(state(model, data), native_states[0]):
                     native_errors.append("NATIVE_FRESH_INITIAL_STATE")
             boundary_ids, mid_ids, errors = [], [], []
             for tick, row in enumerate(rows):
@@ -130,7 +131,7 @@ def packet_replay(run_dir, metrics):
                     data.ctrl[:] = torques[step]
                     mujoco.mj_step(model, data)
                     states.append(state(model, data))
-                    if native is not None and not np.array_equal(states[-1], native["integration_states"][step+1]):
+                    if native is not None and not np.array_equal(states[-1], native_states[step+1]):
                         native_errors.append(f"{step}:NATIVE_CAPTURED_FULL_STATE")
                 mid_ids.append(array_sha(states[1]))
                 digest = hashlib.sha256()
