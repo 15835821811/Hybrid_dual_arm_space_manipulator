@@ -109,8 +109,11 @@ class V6LiteRunConfig:
     dispatch_clock_policy: str = "research_simulation"
     wall_executor_backend: str = "native"
     wall_scheduler_policy: str = "high"
+    target_linear_velocity_scale: float = 1.0
 
     def validate(self) -> None:
+        if not math.isfinite(self.target_linear_velocity_scale) or self.target_linear_velocity_scale <= 0.0:
+            raise ValueError("target linear velocity scale must be finite and positive")
         if self.wall_executor_backend not in ("native", "python"):
             raise ValueError("unsupported wall executor backend")
         if self.wall_scheduler_policy not in ("high", "realtime"):
@@ -477,6 +480,7 @@ def build_scenarios(
             [rng.uniform(-0.0025, 0.0025), rng.uniform(0.0010, 0.0040), rng.uniform(-0.0015, 0.0015)],
             dtype=np.float64,
         )
+        target_velocity *= config.target_linear_velocity_scale
         target_angular_velocity = np.asarray(
             [
                 rng.uniform(-0.0015, 0.0015),
@@ -2055,6 +2059,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--scenario-count", type=int, default=5)
     parser.add_argument("--seed", type=int, default=20260801)
     parser.add_argument("--duration", type=float, default=27.0)
+    parser.add_argument("--target-linear-velocity-scale", type=float, default=1.0,
+                        help="multiply target translation velocity while preserving seeded scenario draws")
     parser.add_argument("--verification-subdivisions", type=int, default=4)
     parser.add_argument(
         "--enable-pcc-cbf",
@@ -2094,6 +2100,7 @@ def main() -> None:
         scenario_count=args.scenario_count,
         seed=args.seed,
         duration_s=args.duration,
+        target_linear_velocity_scale=args.target_linear_velocity_scale,
         verification_subdivisions=args.verification_subdivisions,
         pcc_mode=args.pcc_mode,
         dispatch_clock_policy=args.dispatch_clock_policy,
