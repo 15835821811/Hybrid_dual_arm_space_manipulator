@@ -710,14 +710,25 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
         publication = gate.publish(payload["packet"], now,
             source_state_id=request["source_state_id"], partition_id=leaves_hash)
         row = payload["timeline"]
+        first_stage_start = row["phases"][0]["start_ns"]
+        source_ns = int(request["acquired"] * 1e9)
+        row["phases"].insert(0, {"name": "snapshot_ipc_and_planning_release",
+            "start_ns": source_ns, "end_ns": first_stage_start,
+            "wall_s": (first_stage_start - source_ns) * 1e-9, "thread_cpu_s": None})
+        last_stage_end = row["phases"][-1]["end_ns"]
+        row["phases"].append({"name": "packet_logging_and_bounded_publication",
+            "start_ns": last_stage_end, "end_ns": int(now * 1e9),
+            "wall_s": now - last_stage_end * 1e-9, "thread_cpu_s": None})
         row.update({"schema": "v6_2_c11_wall_handoff_v1",
             "certificate": asdict(payload["packet"].certificate),
             "state_acquisition_monotonic_ns": int(request["acquired"] * 1e9),
+            "actual_dispatch_monotonic_ns": int(now * 1e9),
             "planning_release_monotonic_s": request["release"],
             "actual_publish_monotonic_s": now,
             "executor_consumed_publication_monotonic_s": time.perf_counter(),
             "dispatch_latency_s": now - request["acquired"],
             "publication_check": publication, "servo_dispatch_checks": []})
+        row["nested_measurements"]["algorithm_full_latency"] = "planner private-state refresh through execution validation"
         timing_rows.append(row)
         if not publication["accepted"]:
             raise UncertifiedExecutionError(publication["reason"])
@@ -735,6 +746,10 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             "time_s": float(data.time), "wall_time": time.perf_counter(),
             "failure_reason": str(error), "physics_step": physics_step,
             "next_servo_step_executed": False, "continuation_guaranteed": False,
+            "physics_steps_executed": int(round(float(data.time) / run_config.physics_period_s)),
+            "trace_recorded_steps": len(log["time"]),
+            "last_request": {k: v for k, v in request.items() if k not in
+                ("predicted_start", "reference_start", "previous_command")},
             "simulation_stop_is_safe_backup": False,
             "partial_trace": {"path": partial.as_posix(), "sha256": _sha256(partial)}})
         write_timelines(timing_path, timing_rows)
@@ -764,7 +779,7 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
                     raise UncertifiedExecutionError(str(handoff))
                 active_payload, pending_payload = pending_payload, None
                 timing_rows[-1]["handoff_check"] = handoff
-                timing_rows[-1]["application_start_offset_s"] = handoff["time"] - gate.active.certificate.execution_start
+                timing_rows[-1]["handoff_offset_s"] = handoff["time"] - gate.active.certificate.execution_start
                 for key,value in active_payload["task_row"].items():
                     task_log[key].append(value)
                 task_qpos_trace.append(data.qpos.copy())
@@ -795,6 +810,10 @@ def run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir):
             torque = gate.active.torques[segment_step]
             data.ctrl[:] = torque
             consumed = time.perf_counter()
+            if segment_step == 0:
+                active_row["first_servo_application_monotonic_s"] = consumed
+                active_row["application_start_offset_s"] = consumed - gate.active.certificate.execution_start
+                active_row["remaining_execution_coverage_at_first_application_s"] = gate.active.certificate.execution_end - consumed
             if consumed >= scheduled + run_config.physics_period_s:
                 raise UncertifiedExecutionError("MISSED_PHYSICS_CONSUMPTION_WINDOW")
             mujoco.mj_step(model, data)

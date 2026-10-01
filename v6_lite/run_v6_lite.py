@@ -1752,6 +1752,7 @@ def run_suite(
     output_dir: Path,
     *,
     parent_run_id: str | None = None,
+    continue_failed_scenarios: bool = False,
 ) -> dict[str, Any]:
     run_config.validate()
     qp_config.validate()
@@ -1767,17 +1768,20 @@ def run_suite(
     scenario_results: list[dict[str, Any]] = []
     started = time.perf_counter()
     current_scenario_id: str | None = None
+    failed_scenarios = []
     try:
         for scenario in scenarios:
             current_scenario_id = scenario.scenario_id
             print(f"[v6-lite] running {scenario.scenario_id}", flush=True)
-            result = run_scenario(
-                spec,
-                run_config,
-                qp_config,
-                scenario,
-                output_dir / "traces",
-            )
+            try:
+                result = run_scenario(
+                    spec, run_config, qp_config, scenario, output_dir / "traces")
+            except UncertifiedExecutionError as error:
+                if not continue_failed_scenarios:
+                    raise
+                failed_scenarios.append({"scenario_id": scenario.scenario_id, "error": str(error)})
+                print(f"[v6-lite] rejected {scenario.scenario_id}: {error}", flush=True)
+                continue
             scenario_results.append(result)
             metrics = result["metrics"]
             print(
@@ -1788,6 +1792,11 @@ def run_suite(
                 f"clearance={metrics['whole_body_clearance']['minimum_clearance']:.5f} m",
                 flush=True,
             )
+        if failed_scenarios:
+            _write_json(output_dir / "wall_trial_report.json", {
+                "complete_five_scene_horizons": False, "all_predeclared_scenes_attempted": True,
+                "failed_scenarios": failed_scenarios, "completed_scenes": scenario_results})
+            raise UncertifiedExecutionError(f"{len(failed_scenarios)} of {len(scenarios)} wall scenes rejected; trial failed")
     except BaseException as error:
         fail_run(output_dir, run_metadata, error, scenario_id=current_scenario_id)
         raise
@@ -2025,6 +2034,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--dispatch-clock-policy", choices=("wall_deadline", "offline_replay"),
                         default="wall_deadline",
                         help="bounded mode defaults to wall deadline; offline replay measures but does not certify wall validity")
+    parser.add_argument("--continue-failed-scenarios", action="store_true",
+                        help="attempt every predeclared scene and preserve each rejection; the suite still fails")
     return parser
 
 
@@ -2052,6 +2063,7 @@ def main() -> None:
         ),
         output_dir,
         parent_run_id=args.parent_run_id,
+        continue_failed_scenarios=args.continue_failed_scenarios,
     )
     print(
         json.dumps(
