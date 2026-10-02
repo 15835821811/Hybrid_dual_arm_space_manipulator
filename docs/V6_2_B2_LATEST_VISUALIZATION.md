@@ -1,4 +1,6 @@
-# V6.2-B.2 最新五场景可视化
+# V6.2-B.2 历史五场景可视化
+
+本页保留 2026-09-30 的 B.2 冻结结果。当前研究、压力与模型敏感性的完整展示见[最新结果全套可视化](V6_2_LATEST_VISUALIZATION.md)。以下“最新”仅指当时 B.2 的生成来源。
 
 本页由 `python -m v6_lite.visualization.generate_b2_latest_full` 从已保存的最新正式运行自动生成。
 数据源：`v6_lite/output/v6_2_b2/online_dense_slices_five_20260930`；五个 27 秒场景；原生 MuJoCo 力矩重放 26/26、执行合同 11/11。

@@ -2,6 +2,12 @@
 
 > 历史五场景产物合同：`v6_lite_6`（2026-09-21）。当前历史 trace schema：`v6_2_a1_ramp_aware_qp`；实际控制器为 `v6_2_c1_bounded_interval_pcc` 或历史 `v6_2_a1_legacy_pcc`，模式、伺服与模型身份分别记录。
 
+## 当前研究交付
+
+最新名义研究为 `output/runs/research_acceptance_01/`：五场景各 27 s，功能 25/25、执行合同 11/11、6,755 边界和 12,350 区间行重算通过。模拟规划/物理周期为 20 ms/2 ms，墙钟计时单列性能。有限补充研究覆盖保守性、形状、2 倍速度全部五次尝试及 15 组惯量同力矩开环敏感性；压力实验 FAILED/INCOMPLETE，惯量为完整有限诊断。原 C.1.1 墙钟持续执行仍为 NOT_MET。
+
+当前所有图、动画与 35 个完整场景视频见[最新结果全套可视化](../docs/V6_2_LATEST_VISUALIZATION.md)，研究验收与范围见[研究报告](../docs/V6_2_RESEARCH_ACCEPTANCE.md)和[模型敏感性报告](../docs/V6_2_RESEARCH_MODEL_SENSITIVITY.md)。下列旧阶段章节保留其当时结果。
+
 ## V6.2-C.1 时序与执行状态
 
 C.1 保留 B.2 数值动作。三轮完整五场景显式 `offline_replay` 的算法和发布 p95 均通过原 20 ms 门槛，非计时 trace 全部严格相同；第一轮真实力矩重放 `26/26`、合同 `11/11`、6,755 状态与 12,350 区间行重算通过。发布 p95 最大 `17.775 ms`，但仍有 `238/20,250` 个周期超过 20 ms。
@@ -133,14 +139,14 @@ python -m unittest v6_lite.test_v6_1_b -v
 
 ## 跟踪可视化与五视角视频
 
-最新 B.2 整套可视化位于 `visualization/output_v6_2_b2_latest_20260930/`，由 `output/v6_2_b2/online_dense_slices_five_20260930/` 的正式五场景 trace 生成。总图、五个逐场景路径图、基座漂移 GIF、每场景五个视角和组合视频、预览图均在[可视化总览](../docs/V6_2_B2_LATEST_VISUALIZATION.md)中索引。`visualization/output_v6_1_b/` 与 `visualization/output/` 是历史产物。
+当前整套可视化位于 `visualization/latest/`，覆盖最新名义研究、保守性、形状诊断、压力失败/完成尝试、惯量敏感性和性能/部署六类结果。[最新总览](../docs/V6_2_LATEST_VISUALIZATION.md)索引全部图与五场景每场 7 个完整视频，[HTML](visualization/latest/index.html)提供本地交互。名义视频读取完整保存状态，逐帧 `mj_forward`，不积分；保留首末态、航点标签、末端坐标系与基座漂移。
 
 ```powershell
-python -m v6_lite.visualization.generate_b2_latest_full --output-dir v6_lite/visualization/output_v6_2_b2_rebuild
-python -m v6_lite.visualization.generate_b2_latest_full --output-dir v6_lite/visualization/output_v6_2_b2_rebuild --validate-only
+python -m v6_lite.visualization.generate_latest_full --output-dir v6_lite/visualization/latest_rebuild
+python -m v6_lite.visualization.validate_latest_full --output-dir v6_lite/visualization/latest_rebuild
 ```
 
-生成器拒绝覆盖已有清单，文件校验会核对正式 metrics/trace、26/26 与 11/11 重放文件、全部图视频以及每个视频的帧数和尺寸。原五视角渲染函数仍可生成 V6-lite 历史格式；以下旧命令只用于历史产物。
+生成器拒绝覆盖已有目录；独立校验绑定冻结输入与全部产物 SHA，核对五场景 35 个视频的帧数/时长并解码首中末帧，检查全部压力轨迹与结论范围。图表检查不会改写原功能验收。历史 B.2 图在 `visualization/output_v6_2_b2_latest_20260930/`，见[历史总览](../docs/V6_2_B2_LATEST_VISUALIZATION.md)；原五视角渲染函数与下列旧命令用于历史产物。
 
 V6.1-B 的 PCC、胶囊、MuJoCo 距离与梯度对照另见 `output/v6_1_b/plots/`，对应 `pcc_audit.json`、`clearance_compare.json` 和 `regression_report.json`。
 
@@ -153,4 +159,4 @@ python -m v6_lite.visualization.validate_visualizations
 
 `visualization/output/videos/` 保存 overview、front、side、top、iso 五个 640×480、30 FPS、27 s 的独立视频，以及一个 1920×960 五视角组合视频。每帧除了刚性/连续体目标与末端坐标系，还绘制基座初始/当前坐标系和 W1–W7 的七个固定坐标系；front 视角直接标注 W1–W7。RGB 分别为 XYZ，顶部叠加基座平移与姿态漂移的逐帧数值。所有视频均由正式 trace 中的力矩序列重新执行 MuJoCo 后渲染。
 
-`visualization/output/` 的图、GIF、视频及 manifest 源于 `v6_lite_6`，仅作历史产物；B.2 当前证据使用上方的新清单。
+`visualization/output/` 的图、GIF、视频及 manifest 源于 `v6_lite_6`，仅作历史产物；当前证据使用 `visualization/latest/` 的新清单。

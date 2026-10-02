@@ -79,7 +79,8 @@ V6-lite 是**无学习在线控制器**：运行时不加载训练集、神经�
 | `v6_lite/output/runs/` | B.1 起每次运行的新编号目录；失败与中止目录也保留 |
 | `v6_lite/visualization/output/` | 历史 V6-lite 六面板误差图、三维路径图、GIF 和五视角视频 |
 | `v6_lite/visualization/continuum_focus_output/` | 历史连续体单侧视频、预览图及 manifest |
-| `v6_lite/visualization/output_v6_2_b2_latest_20260930/` | 最新 B.2 五场景总图、逐场景路径图、30 个五视角/组合视频、预览图和哈希校验 |
+| `v6_lite/visualization/latest/` | 当前研究全部六类结果、五场景 35 个完整视频、交互总览和独立哈希/媒体校验 |
+| `v6_lite/visualization/output_v6_2_b2_latest_20260930/` | 历史 B.2 五场景图、30 个五视角/组合视频、预览图和哈希校验 |
 | `v6_lite/visualization/output_v6_1_b/` | V6.1-B 历史图、GIF、五视角视频和 22/22 校验 |
 | `v6_lite/visualization/continuum_focus_output_v6_1_b/` | V6.1-B 连续体单侧视频及预览图 |
 | `docs/DERIVATION_PACKAGE.md` | PCC 臂形曲线、臂体—卫星距离、时变 CBF 推导和相关文献 |
@@ -145,28 +146,30 @@ B.1 有界查询只界定当前 PCC 管体代理的连续弧长最小净空；�
 
 ## 可视化
 
-当前可视化使用 B.2 新区间 PCC 的[最新完整五场景运行](v6_lite/output/v6_2_b2/online_dense_slices_five_20260930/artifact_manifest.json)。图、GIF、逐场景路径、每场景五个视角和组合视频见[可视化总览](docs/V6_2_B2_LATEST_VISUALIZATION.md)，逐文件 SHA-256 和源 trace 绑定见[清单](v6_lite/visualization/output_v6_2_b2_latest_20260930/visualization_manifest.json)，独立文件与视频核验见[校验结果](v6_lite/visualization/output_v6_2_b2_latest_20260930/visualization_validation.json)。完整控制调用计时及求解候选与实际执行也在该总览中。旧图和视频仍在各自历史目录。
+当前展示入口是[最新结果全套可视化](docs/V6_2_LATEST_VISUALIZATION.md)，覆盖名义研究五场景、1,024 例保守性、172 例形状诊断、2 倍速度全部五次尝试、15 组惯量敏感性及墙钟部署结果。图、GIF、PCC 对照、逐场景路径、五视角/组合/连续体单侧共 35 个视频全部使用最新保存结果；HTML 提供分类切换和场景/视角选择。压力实验的三条部分轨迹和失败明确保留。
 
-![B.2 最新五场景六面板误差总图](v6_lite/visualization/output_v6_2_b2_latest_20260930/error_curves.png)
+![最新名义研究五场景跟踪与基座漂移](v6_lite/visualization/latest/error_curves.png)
 
-![B.2 最新完整控制计时](v6_lite/visualization/output_v6_2_b2_latest_20260930/full_control_timing.png)
+![最新完整规划、发布与力矩计时](v6_lite/visualization/latest/full_control_timing.png)
 
-- [最新五场景组合视频入口](docs/V6_2_B2_LATEST_VISUALIZATION.md#每个场景的路径与五视角回放)
+- [最新完整图表与五场景视频](docs/V6_2_LATEST_VISUALIZATION.md)
+- [交互式本地总览](v6_lite/visualization/latest/index.html)
+- [最新 SHA-256 清单](v6_lite/visualization/latest/visualization_manifest.json)与[独立校验](v6_lite/visualization/latest/visualization_validation.json)
+- [历史 B.2 总览](docs/V6_2_B2_LATEST_VISUALIZATION.md)
 - [历史 V6.1-B 清单](v6_lite/visualization/output_v6_1_b/visualization_manifest.json)
 
-以下命令重建 V6-lite 稳定版可视化：
+当前可视化从完整保存的 qpos/qvel 做 `mj_forward` 渲染，0 个物理积分步，不重新运行控制器。新鲜状态诊断和原名义验收统计分别标注；研究通过、压力失败、惯量开环诊断及墙钟 `NOT_MET` 分别展示。重新生成使用新目录，拒绝覆盖已有结果：
 
 ```bash
-python -m v6_lite.visualization.generate_visualizations
-python -m v6_lite.visualization.validate_visualizations
+python -m v6_lite.visualization.generate_latest_full --output-dir v6_lite/visualization/latest_rebuild
+python -m v6_lite.visualization.validate_latest_full --output-dir v6_lite/visualization/latest_rebuild
 
-# 只生成连续体一侧专用视频
-python -m v6_lite.visualization.generate_visualizations \
-  --continuum-focus-only \
-  --output-dir v6_lite/visualization/continuum_focus_output
+# 从仓库根目录启动后，在浏览器打开下列本地地址
+python -m http.server 8765 --bind 127.0.0.1
+# http://127.0.0.1:8765/v6_lite/visualization/latest/index.html
 ```
 
-历史 V6-lite 稳定版的图和视频仍可从[旧清单](v6_lite/visualization/output/visualization_manifest.json)查询；它们不属于当前 B.2 可视化。
+GitHub 可直接显示 Markdown 中的 PNG/GIF；MP4 点击查看或下载，交互 HTML 使用本地浏览器。历史 V6-lite 稳定版的图和视频仍可从[旧清单](v6_lite/visualization/output/visualization_manifest.json)查询。
 
 ## 进一步阅读
 

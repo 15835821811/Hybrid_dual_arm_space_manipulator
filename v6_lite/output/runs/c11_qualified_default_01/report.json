@@ -1,0 +1,35 @@
+{
+  "plan": "plan.json",
+  "steps": [
+    {
+      "name": "test_profiles",
+      "exit_code": 0,
+      "source_provenance": "test_profiles_source_provenance.json",
+      "status": "PASSED"
+    },
+    {
+      "name": "single",
+      "exit_code": 0,
+      "source_provenance": "single_source_provenance.json",
+      "qualification": "single_qualification.json",
+      "status": "PASSED"
+    },
+    {
+      "name": "five",
+      "exit_code": 1,
+      "source_provenance": "five_source_provenance.json",
+      "qualification": "five_qualification.json",
+      "status": "FAILED"
+    },
+    {
+      "name": "three_by_five",
+      "status": "NOT_STARTED_FAILED_PREREQUISITE"
+    },
+    {
+      "name": "independent_acceptance",
+      "status": "NOT_STARTED_FAILED_PREREQUISITE"
+    }
+  ],
+  "passed": false,
+  "hard_realtime_certified": false
+}
