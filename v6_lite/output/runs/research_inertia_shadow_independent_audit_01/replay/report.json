@@ -1,0 +1,36 @@
+{
+  "schema": "independent_inertia_shadow_replay_audit_v1",
+  "stage": "replay",
+  "evidence_valid": false,
+  "passed_checks": 141,
+  "total_checks": 141,
+  "failed_checks": [],
+  "scope_complete": false,
+  "full_independent_experiment_replayed": false,
+  "shadow_is_runtime_certified": false,
+  "research_acceptance_passed": null,
+  "error": {
+    "type": "ValueError",
+    "message": "ParseXML: Error opening file 'E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\dual_arm_space_robot_2026\\urdf\\dual_arm_space_robot_2026.urdf': No such file or directory",
+    "traceback": "Traceback (most recent call last):\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_inertia_shadow_independent_audit_01\\audit_saved_inertia_shadow.py\", line 689, in execute\n    result=(replay_audit if stage_name=='replay' else geometry_audit)(pin,stage,checks)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_inertia_shadow_independent_audit_01\\audit_saved_inertia_shadow.py\", line 432, in replay_audit\n    spec,model,pairs,policy=construct(index,scenario,np,mj,cls,vcls,ccls,ocls,checks)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\v6_lite\\output\\runs\\research_inertia_shadow_independent_audit_01\\audit_saved_inertia_shadow.py\", line 296, in construct\n    spec = cls.from_urdf(urdf, continuum_kp=100., continuum_kd=5., continuum_torque_limit=4.,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\model_test\\robot_model_spec_v5.py\", line 105, in from_urdf\n    model = mujoco.MjModel.from_xml_path(str(source_urdf))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: ParseXML: Error opening file 'E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\dual_arm_space_robot_2026\\urdf\\dual_arm_space_robot_2026.urdf': No such file or directory\n"
+  },
+  "elapsed_s": 1.4835142996162176,
+  "result": {},
+  "limitations": {
+    "new_producer_imported_or_called": false,
+    "physical_replay_scope": "only nominal alpha=1 first 20 steps per scene; total 100 steps",
+    "independent_full_15_run_physics_replay": false,
+    "geometry_scope": "all saved minima/count records; direct native queries at fixed samples and saved worst state",
+    "independent_full_geometry_recalculation": false,
+    "all_pair_truncation_count_independently_reconstructed": false,
+    "all_pair_class_minima_independently_reconstructed": false,
+    "source_state_id_fully_reconstructed_from_old_qpos_only_trace": false,
+    "closed_loop_robustness_established": false,
+    "runtime_certificate_applies_to_shadow": false,
+    "continuous_time_collision_certified": false,
+    "wall_deployment_certified": false,
+    "hardware_established": false,
+    "new_acceptance_claim": false
+  },
+  "script_sha256": "de8ab191c249370d6b9107180ff9ad40f59c51c69de3a0827a00ae8627befcff"
+}
