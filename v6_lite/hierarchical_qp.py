@@ -1034,6 +1034,8 @@ class HierarchicalVelocityQP:
         target_timestamp_s: float | None = None,
         ramp_start_velocity: np.ndarray | None = None,
         prepared_state: bool = False,
+        posture_reference_q: np.ndarray | None = None,
+        posture_reference_dq: np.ndarray | None = None,
     ) -> HierarchicalQPResult:
         started = time.perf_counter()
         if not prepared_state:
@@ -1088,7 +1090,18 @@ class HierarchicalVelocityQP:
         )
         low_level_q = np.asarray(data.qpos[self.qpos_ids], dtype=np.float64)
         planner_q = self.spec.low_level_to_planner @ low_level_q
-        posture_velocity = -cfg.posture_gain * (planner_q - self.spec.planner_zero)
+        if posture_reference_q is None and posture_reference_dq is None:
+            posture_velocity = -cfg.posture_gain * (planner_q - self.spec.planner_zero)
+        else:
+            if posture_reference_q is None or posture_reference_dq is None:
+                raise ValueError("posture reference position and velocity must be supplied together")
+            posture_q = np.asarray(posture_reference_q, dtype=np.float64)
+            posture_dq = np.asarray(posture_reference_dq, dtype=np.float64)
+            if (posture_q.shape != (17,) or posture_dq.shape != (17,)
+                    or not np.all(np.isfinite(posture_q))
+                    or not np.all(np.isfinite(posture_dq))):
+                raise ValueError("posture references must be finite 17-dimensional vectors")
+            posture_velocity = posture_dq + cfg.posture_gain * (posture_q - planner_q)
 
         hessian = (
             cfg.rigid_priority_weight * (rigid_jacobian.T @ rigid_jacobian)
