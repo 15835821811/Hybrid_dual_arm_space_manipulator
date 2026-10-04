@@ -67,14 +67,16 @@ def gate_allows_execution(gate, *, require_raw_gate=True):
 
 def run_attempt(task: TaskSpec, output_dir: Path, *, method: str,
                 proposal: TrajectoryProposal | None = None,
-                require_raw_gate: bool = True, attribution: dict | None = None):
+                require_raw_gate: bool = True, attribution: dict | None = None,
+                pass_through_reference: bool = False,
+                qp_config_override: HierarchicalQPConfig | None = None):
     """Keep every gate failure, complete run, and physical refusal separately."""
     spec = default_v6_lite_robot_spec()
     scenario = scenario_from_task(task)
     run_config = V6LiteRunConfig(pcc_mode="bounded_interval_pcc",
                                 dispatch_clock_policy="research_simulation")
     run_config.validate()
-    qp_config = HierarchicalQPConfig(enable_pcc_cbf=False, enable_capsule_cbf=True)
+    qp_config = qp_config_override or HierarchicalQPConfig(enable_pcc_cbf=False, enable_capsule_cbf=True)
     output_dir = Path(output_dir)
     metadata = start_run(output_dir, run_config=run_config, qp_config=qp_config,
                          spec=spec, scenarios=(scenario,))
@@ -92,6 +94,7 @@ def run_attempt(task: TaskSpec, output_dir: Path, *, method: str,
                 "attribution": attribution or {}, "raw_gate_required": require_raw_gate,
                 "future_actual_state_is_planner_input": False,
                 "wall_20ms_is_acceptance_gate": False}
+    identity['pass_through_reference'] = bool(pass_through_reference)
     _write_json(output_dir / "planning_identity.json", identity, exclusive=True)
     provider, gate, scene_result, evaluation = None, None, None, None
     reference_path = None
@@ -134,6 +137,12 @@ def run_attempt(task: TaskSpec, output_dir: Path, *, method: str,
             # Its availability is distinct from a learned joint-proposal gate.
             result["proposal_accepted"] = True
             result["raw_proposal_metric_scope"] = "fixed Cartesian reference availability; no joint proposal gate"
+            if pass_through_reference:
+                from v6_4.reference_adapter import CartesianPassThroughReferenceProvider
+                provider = CartesianPassThroughReferenceProvider(task)
+                reference_path = output_dir / 'selected_reference.npz'
+                save_reference(provider, reference_path)
+                _write_json(output_dir / 'reference_identity.json', provider.metadata, exclusive=True)
         else:
             raise ValueError("a trajectory proposal is required for this method")
 

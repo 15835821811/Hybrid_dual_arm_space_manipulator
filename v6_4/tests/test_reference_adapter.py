@@ -8,7 +8,7 @@ import numpy as np
 from model_test.whole_body_verifier_v5 import WholeBodyCollisionVerifier,WholeBodyVerificationConfig
 from v6_lite.run_v6_lite import default_v6_lite_robot_spec,build_scenarios,V6LiteRunConfig
 from v6_4.task_protocol import task_from_scenario
-from v6_4.reference_adapter import SplineReferenceProvider,scenario_from_task,_RotationReference
+from v6_4.reference_adapter import SplineReferenceProvider,scenario_from_task,_RotationReference,CartesianPassThroughReferenceProvider
 from v6_4.trajectory_codec import CubicBSplineCodec
 
 
@@ -75,6 +75,37 @@ class AdapterTests(unittest.TestCase):
             rotation,omega=reference.sample(float(t))
             np.testing.assert_allclose(rotation,rotations[i],atol=1e-14,rtol=0.)
             np.testing.assert_allclose(omega,[0,0,.1],atol=1e-14,rtol=0.)
+
+    def test_cartesian_passthrough_matches_current_task_inputs_without_physics(self):
+        from v6_lite.run_v6_lite import _body_pose_and_twist
+        data=self.data()
+        provider=CartesianPassThroughReferenceProvider(self.task).prepare(self.spec,self.model,data,self.scene)
+        target=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_BODY,'target_satellite')
+        with patch.object(mujoco,'mj_step',side_effect=AssertionError('physics forbidden')):
+            for t in (0.,3.,8.08,24.48,27.):
+                data.time=t
+                # An offline snapshot changes target attitude and velocity;
+                # a provider that caches initial target values must fail here.
+                data.qvel[-6:]+=np.array([.001,0,0,0,0,.0001])
+                mujoco.mj_forward(self.model,data)
+                before={k:np.asarray(getattr(data,k)).tobytes() for k in ('qpos','qvel','ctrl')}
+                actual=provider.sample(t)
+                p,v,r,w=_body_pose_and_twist(self.model,data,target,self.scene.grasp_point_target_frame_m)
+                cp,cv=self.scene.continuum_target.sample(t)
+                expected={'rigid_target_position':p,'rigid_target_velocity':v,
+                    'rigid_target_rotation':r@self.scene.grasp_rotation_target_frame,
+                    'rigid_target_angular_velocity':w,'continuum_target_position':cp,
+                    'continuum_target_velocity':cv,'continuum_target_rotation':self.scene.continuum_target_rotation_world,
+                    'continuum_target_angular_velocity':np.zeros(3),
+                    'posture_reference_q':self.spec.planner_zero,'posture_reference_dq':np.zeros(17)}
+                for k in expected:np.testing.assert_array_equal(actual[k],expected[k])
+                for k in before:self.assertEqual(before[k],np.asarray(getattr(data,k)).tobytes())
+
+    def test_cartesian_passthrough_refuses_future_feedback_time(self):
+        data=self.data()
+        provider=CartesianPassThroughReferenceProvider(self.task).prepare(self.spec,self.model,data,self.scene)
+        for t in (float('nan'),-.01,.02):
+            with self.assertRaises(ValueError):provider.sample(t)
 
 
 if __name__=='__main__':unittest.main()

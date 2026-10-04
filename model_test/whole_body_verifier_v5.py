@@ -120,6 +120,7 @@ class WholeBodyVerificationReport:
     uses_contact_list: bool
     nativeccd_claimed: bool
     pair_policy_sha256: str
+    negative_distance_query_count: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -535,6 +536,7 @@ class WholeBodyCollisionVerifier:
         minimum_by_class: dict[str, float] = {}
         minimum_pair: dict[str, Any] = {}
         violation_count = 0
+        negative_distance_query_count = 0
         truncated = 0
         fromto = np.empty(6, dtype=np.float64)
         for state_index, state in enumerate(states):
@@ -563,6 +565,8 @@ class WholeBodyCollisionVerifier:
                     minimum_by_class[pair.pair_class] = distance
                 if distance < self.config.minimum_clearance:
                     violation_count += 1
+                if distance < 0.0:
+                    negative_distance_query_count += 1
                 if distance < minimum:
                     minimum = distance
                     minimum_pair = {
@@ -600,6 +604,7 @@ class WholeBodyCollisionVerifier:
             uses_contact_list=False,
             nativeccd_claimed=False,
             pair_policy_sha256=self._pair_policy_sha256,
+            negative_distance_query_count=negative_distance_query_count,
         )
 
     def planner_sequence_to_qpos(

@@ -67,6 +67,22 @@ class BoundedIntervalVelocityQP(HierarchicalVelocityQP):
             domain.work_domain_lower_rad, domain.work_domain_upper_rad,
             self.config.task_period_s,
         )
+        self._domain_endpoint_rate_lower = self._domain_rate_lower.copy()
+        self._domain_endpoint_rate_upper = self._domain_rate_upper.copy()
+        self._domain_braking_rate_lower = None
+        self._domain_braking_rate_upper = None
+        if self.config.enable_pcc_braking_guard:
+            from v6_lite.pcc_braking_guard import ramp_braking_endpoint_velocity_box
+            braking_lower, braking_upper = ramp_braking_endpoint_velocity_box(
+                planner_q[:10], np.asarray(start)[:10],
+                domain.work_domain_lower_rad, domain.work_domain_upper_rad,
+                self.spec.planner_acceleration_limits[:10],
+                self.config.velocity_limit_scale * self.spec.planner_velocity_limits[:10],
+                self.config.task_period_s)
+            self._domain_braking_rate_lower = braking_lower
+            self._domain_braking_rate_upper = braking_upper
+            self._domain_rate_lower = np.maximum(self._domain_rate_lower, braking_lower)
+            self._domain_rate_upper = np.minimum(self._domain_rate_upper, braking_upper)
         return super().solve(data, *args, **kwargs)
 
     def _solve_qp_admm(self, hessian, linear, matrix, lower, upper,

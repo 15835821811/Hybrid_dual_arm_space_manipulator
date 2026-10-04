@@ -56,6 +56,64 @@ def _multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return np.r_[a[0]*b[0]-np.dot(a[1:], b[1:]), a[0]*b[1:]+b[0]*a[1:]+np.cross(a[1:], b[1:])]
 
 
+class CartesianPassThroughReferenceProvider:
+    """Observe current feedback and expose the original Cartesian task inputs.
+
+    This positive control neither encodes a trajectory nor consumes a learned
+    proposal.  Its home posture is exactly the original QP preference.  The
+    live data is read at its current time; no prediction is written into it.
+    """
+
+    def __init__(self, task: TaskSpec) -> None:
+        self.task = task
+        self._data = self._model = self._spec = self._scenario = None
+        codec = CubicBSplineCodec(task.initial_planner_q, task.initial_planner_dq)
+        self.controls = codec.decode_free(np.tile(np.asarray(task.initial_planner_q), (30, 1)))
+        self.controls.setflags(write=False)
+        self.prediction = codec.sample(self.controls, np.linspace(0., 27., 1351))
+        self.prediction['time'] = np.linspace(0., 27., 1351)
+        self.prediction['reference_mode'] = np.asarray('cartesian_passthrough_home_posture')
+        self.metadata = {'schema': 'v64_a1_cartesian_passthrough_v1',
+            'task_sha256': task.sha256(), 'learned_proposal': False,
+            'cartesian_source': 'original current-feedback task formulas',
+            'posture_source': 'original fixed home preference',
+            'future_actual_trace_read': False, 'physics_steps_executed': 0}
+
+    def prepare(self, spec, model, initial_data, scenario):
+        if canonical_json(scenario.to_dict()) != canonical_json(self.task.scenario):
+            raise ValueError('pass-through scenario differs from frozen task')
+        if (spec.runtime_contract_sha256() != self.task.model_contract_sha256
+                or not np.array_equal(initial_data.qpos, self.task.initial_qpos)
+                or not np.array_equal(initial_data.qvel, self.task.initial_qvel)
+                or float(initial_data.time) != 0.):
+            raise ValueError('pass-through requires the declared initial model/state')
+        if not np.array_equal(spec.planner_zero, self.task.initial_planner_q):
+            raise ValueError('pass-through home posture differs from original preference')
+        if np.any(np.asarray(self.task.initial_planner_dq) != 0.):
+            raise ValueError('positive-control home posture requires zero initial velocity')
+        self._spec, self._model, self._data, self._scenario = spec, model, initial_data, scenario
+        return self
+
+    def sample(self, time_s):
+        if self._data is None:
+            raise RuntimeError('pass-through provider has not been prepared')
+        if not np.isfinite(time_s) or abs(float(time_s)-float(self._data.time)) > 1e-9:
+            raise ValueError('pass-through may only read the current feedback time')
+        from v6_lite.run_v6_lite import _body_pose_and_twist
+        body = mujoco.mj_name2id(self._model, mujoco.mjtObj.mjOBJ_BODY, 'target_satellite')
+        p, v, r, w = _body_pose_and_twist(self._model, self._data, body,
+                                        self._scenario.grasp_point_target_frame_m)
+        cp, cv = self._scenario.continuum_target.sample(float(time_s))
+        return {'rigid_target_position': p, 'rigid_target_velocity': v,
+            'rigid_target_rotation': r @ self._scenario.grasp_rotation_target_frame,
+            'rigid_target_angular_velocity': w,
+            'continuum_target_position': cp, 'continuum_target_velocity': cv,
+            'continuum_target_rotation': self._scenario.continuum_target_rotation_world,
+            'continuum_target_angular_velocity': np.zeros(3),
+            'posture_reference_q': self._spec.planner_zero.copy(),
+            'posture_reference_dq': np.zeros(17)}
+
+
 class _RotationReference:
     """Normalized quaternion Hermite interpolation with world angular rates."""
 

@@ -8,7 +8,7 @@ the original geometric, interval and shared-ramp checks remain independent.
 from __future__ import annotations
 
 import argparse
-from dataclasses import replace
+from dataclasses import asdict, replace
 import hashlib
 import json
 from pathlib import Path
@@ -52,6 +52,69 @@ def _performance(samples,period):
     return {**_stats(a),'p99':float(np.quantile(a,.99)),'period_s':period,
             'over_period_count':int(np.sum(over)),'longest_over_period_run':longest,
             'is_task_success_gate':False,'hard_realtime_certified':False}
+
+
+def _shape_error_metrics(actual_q, reference_q, times, coordinate_names, *, reference_scope):
+    """Compare aligned 17D state and posture preference, never Cartesian task error."""
+    actual=np.asarray(actual_q,dtype=float);reference=np.asarray(reference_q,dtype=float)
+    if actual.ndim!=2 or actual.shape[1]!=17 or reference.shape!=actual.shape or not len(actual):
+        raise ValueError('shape-error vectors must be matching nonempty Nx17 arrays')
+    if not np.all(np.isfinite(actual)) or not np.all(np.isfinite(reference)):
+        raise ValueError('shape-error vectors must be finite')
+    clock=_finite(times,(len(actual),),'shape-error aligned time')
+    names=tuple(coordinate_names)
+    if len(names)!=17 or len(set(names))!=17:raise ValueError('17 distinct coordinate names required')
+    error=actual-reference
+    coordinate_rmse=np.sqrt(np.mean(error*error,axis=0))
+    return {'definition':'e_k = fresh replay decoded actual q(t_k) - frozen selected posture reference q_ref(t_k)',
+            'unit':'rad','reference_scope':reference_scope,'sample_count':len(actual),
+            'includes_initial_state':bool(clock[0]==0.),'first_time_s':float(clock[0]),'last_time_s':float(clock[-1]),
+            'time_alignment':'both vectors at the same actual simulation time; no time shift or future-state input',
+            'RMS_L2_17':float(np.sqrt(np.mean(np.sum(error*error,axis=1)))),
+            'RMS_L2_continuum_10':float(np.sqrt(np.mean(np.sum(error[:,:10]**2,axis=1)))),
+            'RMS_L2_rigid_7':float(np.sqrt(np.mean(np.sum(error[:,10:]**2,axis=1)))),
+            'coordinate_rmse_17':{name:float(value) for name,value in zip(names,coordinate_rmse)},
+            'is_end_effector_task_error':False,'is_single_coordinate_rmse':False}
+
+
+def _save_native_geometry(task,state,whole,verifier,target_pairs,query_counts,witness,output_dir):
+    """Persist fresh geometry before later command/reference binding can fail."""
+    config=asdict(verifier.config)
+    pairs=[{'class':p.pair_class,'geom_a':p.geom_a_name,'geom_b':p.geom_b_name,
+            'body_a':p.body_a_name,'body_b':p.body_b_name} for p in verifier.pairs]
+    policy={'schema':'v64_a1_declared_whole_body_policy_v1','configuration':config,'pairs':pairs,
+            'pair_policy_sha256':whole['pair_policy_sha256'],
+            'intentional_target_contact_geom_names':list(verifier.config.intentional_target_contact_geom_names),
+            'source_model_contract_sha256':task.model_contract_sha256,
+            'verifier_source_sha256':_sha(Path(__file__).resolve().parents[1]/'model_test/whole_body_verifier_v5.py')}
+    policy_path=Path(output_dir)/'whole_body_policy.json'
+    with policy_path.open('x',encoding='utf-8') as f:
+        json.dump(policy,f,indent=2,allow_nan=False);f.write('\n')
+    values=np.asarray(state['target_minimum_m'])
+    native={'schema':'v64_a1_fresh_native_geometry_v1','evidence_available':True,
+        'task_id':task.task_id,'task_sha256':task.sha256(),'model_contract_sha256':task.model_contract_sha256,
+        'model_source_bundle_sha256':verifier.robot_spec.source_bundle_sha256(),
+        'passed':bool(np.min(values)>=config['minimum_clearance'] and whole['feasible']),
+        'robot_target_500hz':{'state_count':len(state['time']),'pair_count':len(target_pairs),
+            'query_count':len(state['time'])*len(target_pairs),'minimum_m':float(np.min(values)),
+            'minimum_witness':witness,'minimum_clearance_m':config['minimum_clearance'],
+            'below_5mm_states':int(np.sum(values<.005)),
+            'negative_states':int(np.sum(values<0)),
+            'below_threshold_query_count':int(query_counts['below_threshold']),
+            'negative_distance_query_count':int(query_counts['negative']),
+            'truncated_query_count':int(query_counts['truncated']),
+            'minimum_is_censored_lower_bound':bool(state['target_minimum_censored'][np.argmin(values)]),
+            'sampling_scope':'all saved native 2ms physical states including declared initial state'},
+        'whole_body':whole,
+        'whole_body_count_scope':'pair queries over 50Hz boundary states plus configuration-space adaptive subdivisions; not all 500Hz states',
+        'whole_body_supplied_period_s':.02,'whole_body_adaptive_subdivisions':config['adaptive_subdivisions'],
+        'whole_body_policy':{'path':policy_path.resolve().as_posix(),'sha256':_sha(policy_path)},
+        'query_distance_max_m':config['query_distance_max'],'continuous_time_certified':False,
+        'offline_state_copy_independent_of_execution':True}
+    path=Path(output_dir)/'native_geometry.json'
+    with path.open('x',encoding='utf-8') as f:
+        json.dump(native,f,indent=2,allow_nan=False);f.write('\n')
+    return native
 
 
 def _execution_trace_checks(task,trace,spec,qp_config):
@@ -182,6 +245,8 @@ def _replay(task,trace,qp_config,output_dir):
     ticks=len(trace['torque'])//10;tools=_interval_checker(spec,model,verifier.pairs,qp_config)
     values={key:[] for key in ('time','q','dq','qpos','qvel','base_pose','target_position','target_rotation','rigid_position','rigid_rotation','continuum_position','continuum_rotation','target_minimum_m','target_minimum_censored')}
     boundaries=[];intervals=[]
+    target_query_counts={'below_threshold':0,'negative':0,'truncated':0}
+    target_witness={};target_global_minimum=float('inf')
     for index in range(len(trace['torque'])+1):
         mujoco.mj_forward(model,data)  # new current-state definition, never stale mj_step cache.
         values['time'].append(index*.002);values['q'].append(spec.decode_position(data.qpos[qp]).copy())
@@ -192,7 +257,19 @@ def _replay(task,trace,qp_config,output_dir):
             r=data.xmat[body].reshape(3,3).copy();position=data.xpos[body].copy()
             if arm=='continuum':position+=r@np.asarray([.0475,0.,0.])
             values[arm+'_position'].append(position);values[arm+'_rotation'].append(r)
-        distances=[float(mujoco.mj_geomDistance(model,data,p.geom_a,p.geom_b,2.5,np.zeros(6))) for p in target_pairs]
+        distances=[]
+        for pair in target_pairs:
+            fromto=np.zeros(6)
+            distance=float(mujoco.mj_geomDistance(model,data,pair.geom_a,pair.geom_b,2.5,fromto))
+            distances.append(distance)
+            target_query_counts['below_threshold']+=int(distance<verifier.config.minimum_clearance)
+            target_query_counts['negative']+=int(distance<0.)
+            target_query_counts['truncated']+=int(distance>=2.5-1e-12)
+            if distance<target_global_minimum:
+                target_global_minimum=distance
+                target_witness={'pair_class':pair.pair_class,'geom_a':pair.geom_a_name,'geom_b':pair.geom_b_name,
+                    'body_a':pair.body_a_name,'body_b':pair.body_b_name,'state_index':index,
+                    'actual_time_s':index*.002,'signed_distance_m':distance,'fromto':fromto.tolist()}
         if not np.all(np.isfinite(distances)):raise ValueError('nonfinite native robot-target signed query')
         values['target_minimum_m'].append(min(distances));values['target_minimum_censored'].append(min(distances)>=2.5)
         if index%10==0:
@@ -205,6 +282,7 @@ def _replay(task,trace,qp_config,output_dir):
         if not np.all(np.isfinite(a)):raise ValueError('nonfinite fresh replay '+key)
     np.savez_compressed(output_dir/'fresh_replay.npz',**state)
     whole=verifier.verify_qpos_sequence(state['qpos'][::10]).to_dict()
+    native=_save_native_geometry(task,state,whole,verifier,target_pairs,target_query_counts,target_witness,output_dir)
     for filename,rows in (('interval_boundaries.jsonl',boundaries),('interval_rows.jsonl',intervals)):
         with (output_dir/filename).open('x',encoding='utf-8') as f:
             for row in rows:f.write(json.dumps(row,allow_nan=False)+'\n')
@@ -212,13 +290,6 @@ def _replay(task,trace,qp_config,output_dir):
               'boundary_count':len(boundaries),'row_count':len(intervals),
               'mismatch_count':sum(bool(r['errors']) for r in boundaries),
               'boundary_sha256':_sha(output_dir/'interval_boundaries.jsonl'),'rows_sha256':_sha(output_dir/'interval_rows.jsonl')}
-    native={'passed':bool(np.min(state['target_minimum_m'])>=.005 and whole['feasible']),
-            'robot_target_500hz':{'state_count':len(state['time']),'pair_count':len(target_pairs),
-                'query_count':len(state['time'])*len(target_pairs),'minimum_m':float(np.min(state['target_minimum_m'])),
-                'below_5mm_states':int(np.sum(state['target_minimum_m']<.005)),
-                'negative_states':int(np.sum(state['target_minimum_m']<0)),
-                'minimum_is_censored_lower_bound':bool(state['target_minimum_censored'][np.argmin(state['target_minimum_m'])])},
-            'whole_body':whole,'continuous_time_certified':False}
     return state,spec,interval,native
 
 
@@ -240,6 +311,8 @@ def evaluate_trial(task,trace_path,reference_path,*,scenario_result,qp_config,ou
             with np.load(reference_path,allow_pickle=False) as f:reference={k:f[k].copy() for k in f.files}
         else:
             reference=None
+        pass_through_home = (reference is not None and
+            str(np.asarray(reference.get('reference_mode','')).item()) == 'cartesian_passthrough_home_posture')
         n=len(trace['torque'])
         if n==0 or n%10:raise ValueError('no complete consumed ten-step ramp in saved trace')
         _finite(trace['torque'],(n,67),'torque');times=_finite(trace['time'],(n,),'time')
@@ -247,6 +320,10 @@ def evaluate_trial(task,trace_path,reference_path,*,scenario_result,qp_config,ou
         if not np.array_equal(trace['initial_qpos'],task.initial_qpos) or not np.array_equal(trace['initial_qvel'],task.initial_qvel):raise ValueError('actual initial state differs from frozen task')
         _finite(trace['task_qpos'],(n//10+1,81),'task_qpos');_finite(trace['planner_q'],(n,17),'planner_q')
         state,spec,interval,native=_replay(task,trace,qp_config,output_dir)
+        # This component survives a later execution-contract/reference-binding error.
+        geometry_path=output_dir/'native_geometry.json'
+        report['native_geometry']=native
+        if geometry_path.exists():report['native_geometry_evidence']={'path':geometry_path.resolve().as_posix(),'sha256':_sha(geometry_path)}
         execution=_execution_trace_checks(task,trace,spec,qp_config)
         if np.max(np.abs(state['q'][1:]-trace['planner_q']))>1e-9:raise ValueError('actual saved planner state does not reproduce')
         from v6_4.trajectory_codec import CubicBSplineCodec
@@ -289,11 +366,17 @@ def evaluate_trial(task,trace_path,reference_path,*,scenario_result,qp_config,ou
         dots=np.abs(state['base_pose'][:,3:]@np.asarray(task.base_pose[3:]))
         angles=2*np.arccos(np.clip(dots,-1.,1.))
         metrics={'actual_to_planned_shape_error_rad':_stats(np.linalg.norm(state['q']-ref['q'],axis=1)),
+            'aligned_posture_reference_error':_shape_error_metrics(state['q'],ref['q'],state['time'],
+                getattr(spec,'planner_coordinate_names',tuple([f'theta{i+1}' for i in range(10)]+[f'theta_R{i+1}' for i in range(7)])),
+                reference_scope='saved_spline_controls' if reference is not None else 'historical_fixed_home_posture_preference'),
             'actual_command_to_planned_velocity_difference_rad_s':_stats(np.linalg.norm(trace['command_velocity']-ref['dq'][:-1],axis=1)),
             'actual_joint_path_length_rad':float(np.sum(np.linalg.norm(np.diff(state['q'],axis=0),axis=1))),
             'actual_tip_path_length_m':{arm:float(np.sum(np.linalg.norm(np.diff(state[arm+'_position'],axis=0),axis=1))) for arm in ('rigid','continuum')},
             'base_translation_drift_m':_stats(translation),'base_orientation_drift_rad':_stats(angles),
-            'planned_shape_scope':'saved_spline_controls' if reference is not None else 'historical_fixed_home_posture_preference',
+            'planned_shape_scope':('historical_fixed_home_posture_preference'
+                if reference is None or pass_through_home else 'saved_spline_controls'),
+            'cartesian_reference_scope':('original current-feedback Cartesian task formulas, no codec'
+                if pass_through_home else 'joint proposal private nominal prediction' if reference is not None else 'original fixed Cartesian task formulas'),
             'actual_torque_abs_max_nm':np.max(np.abs(trace['torque']),axis=0).tolist(),
             'physics_steps':n,'planning_ticks':n//10,'actual_saved_horizon_s':float(times[-1]),
             'planning_algorithm_wall_latency_s':_performance(trace['task_full_latency'],.020),

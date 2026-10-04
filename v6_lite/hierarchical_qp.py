@@ -94,6 +94,7 @@ class HierarchicalQPConfig:
     admm_rho: float = 50.0
     admm_sigma: float = 1e-6
     admm_relaxation: float = 1.8
+    enable_pcc_braking_guard: bool = False
 
     def validate(self) -> None:
         if abs(self.task_period_s - 0.02) > 1e-12:
@@ -163,6 +164,8 @@ class HierarchicalQPConfig:
             raise ValueError("qp_max_iterations must be positive")
         if self.admm_relaxation >= 2.0:
             raise ValueError("ADMM relaxation must be below two")
+        if not isinstance(self.enable_pcc_braking_guard, bool):
+            raise TypeError("PCC braking guard enable flag must be boolean")
 
 
 @dataclass(frozen=True)
