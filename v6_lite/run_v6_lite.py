@@ -759,6 +759,11 @@ def run_synchronous_scenario(
             "generated_reference_time_s", "actual_full_qpos", "actual_full_qvel",
             "actual_generated_q_error_norm",)})
         task_log.update({"generated_reference_q": [], "generated_reference_dq": []})
+        task_log.update({f"input_reference_{key}": [] for key in (
+            "rigid_target_position", "rigid_target_velocity", "rigid_target_rotation",
+            "rigid_target_angular_velocity", "continuum_target_position",
+            "continuum_target_velocity", "continuum_target_rotation",
+            "continuum_target_angular_velocity", "posture_reference_q", "posture_reference_dq")})
     if interval_admission is not None:
         task_log.update({
             "interval_preflight_latency_s": [],
@@ -877,6 +882,10 @@ def run_synchronous_scenario(
             posture_kwargs = {}
             if reference_provider is not None:
                 planned = reference_provider.sample(current_time)
+                for key, value in planned.items():
+                    log_key = f"input_reference_{key}"
+                    if log_key in task_log:
+                        task_log[log_key].append(np.asarray(value).copy())
                 rigid_target = planned["rigid_target_position"]
                 rigid_target_velocity = planned["rigid_target_velocity"]
                 rigid_target_rotation = planned["rigid_target_rotation"]

@@ -42,6 +42,73 @@ def _stats(a):
             'maximum':float(np.max(a)),'p95':float(np.quantile(a,.95))}
 
 
+def _selected_posture_reference(codec, controls, times, reference):
+    """Bind a frozen path to its disclosed physical-time progress repair."""
+    times=np.asarray(times,dtype=float)
+    if not np.all(np.isfinite(times)) or np.any(times < -1e-9) or np.any(times > 27.+1e-9):
+        raise ValueError('selected reference clock escaped the original horizon')
+    clock=np.minimum(27.,np.maximum(0.,times))
+    mode=str(np.asarray(reference.get('reference_mode','')).item()) if reference is not None else ''
+    if mode=='terminal_progress_v1':
+        from v6_4.terminal_progress import terminal_progress
+        if (float(np.asarray(reference['progress_start_s']).item())!=24.
+                or float(np.asarray(reference['progress_end_s']).item())!=26.5):
+            raise ValueError('selected progress source is not the frozen 24-to-26.5 repair')
+        progress,rate,acceleration=terminal_progress(clock)
+        values=codec.sample(controls,progress)
+        values['ddq']=values['ddq']*rate[:,None]**2+values['dq']*acceleration[:,None]
+        values['dq']=values['dq']*rate[:,None]
+        return values
+    return codec.sample(controls,clock)
+
+
+def _terminal_cartesian_reference_binding(task, trace, state, controls, spec):
+    """Reconstruct disclosed references on independent current feedback copies."""
+    import mujoco
+    from v6_4.run_planning import prepare_provider
+    from v6_4.reference_adapter import scenario_from_task
+    from v6_4.terminal_progress import TerminalProgressReferenceProvider
+    base,verifier=prepare_provider(task,controls,spec)
+    model=verifier.model
+    observed=mujoco.MjData(model)
+    observed.qpos[:]=task.initial_qpos;observed.qvel[:]=task.initial_qvel
+    mujoco.mj_forward(model,observed)
+    provider=TerminalProgressReferenceProvider(task,base).prepare(spec,model,observed,scenario_from_task(task))
+    n=len(trace['torque']);ticks=n//10;errors={}
+    keys=('rigid_target_position','rigid_target_velocity','rigid_target_rotation',
+          'rigid_target_angular_velocity','continuum_target_position','continuum_target_velocity',
+          'continuum_target_rotation','continuum_target_angular_velocity',
+          'posture_reference_q','posture_reference_dq')
+    inputs={}
+    for key in keys:
+        a=np.asarray(trace['task_input_reference_'+key])[:ticks]
+        shape=(ticks,3,3) if key.endswith('rotation') else (ticks,17) if key.startswith('posture') else (ticks,3)
+        inputs[key]=_finite(a,shape,'consumed QP input '+key)
+    generated={}
+    for arm in ('rigid','continuum'):
+        generated[arm+'_position']=_finite(trace['generated_'+arm+'_position'],(n,3),'generated '+arm+' position')
+        generated[arm+'_rotation']=_finite(trace['generated_'+arm+'_rotation'],(n,3,3),'generated '+arm+' rotation')
+    for index,t in enumerate(state['time']):
+        observed.qpos[:]=state['qpos'][index];observed.qvel[:]=state['qvel'][index];observed.time=float(t)
+        expected=provider.sample(float(t))
+        if index%10==0 and index<n:
+            for key in keys:
+                errors['QP_'+key]=max(errors.get('QP_'+key,0.),float(np.max(np.abs(inputs[key][index//10]-expected[key]))))
+        if index:
+            for arm in ('rigid','continuum'):
+                for suffix in ('position','rotation'):
+                    key=arm+'_'+suffix
+                    errors['generated_'+key]=max(errors.get('generated_'+key,0.),
+                        float(np.max(np.abs(generated[key][index-1]-expected[arm+'_target_'+suffix]))))
+    maximum=max(errors.values())
+    if maximum>1e-9:raise ValueError('terminal-progress QP/Cartesian reference binding differs from frozen path and current target feedback')
+    return {'passed':True,'component_maximum_absolute_residual':errors,'comparison_threshold':1e-9,
+        'planning_inputs_bound':ticks,'post_step_generated_pose_samples_bound':n,
+        'current_feedback_source':'independent saved-torque fresh replay at the same physical time',
+        'physics_steps_executed_by_binding':0,'geometry_queries_by_binding':0,
+        'future_actual_state_is_online_input':False}
+
+
 def _performance(samples,period):
     a=np.asarray(samples,dtype=float)
     if a.ndim!=1 or not len(a) or not np.all(np.isfinite(a)) or np.any(a<0):
@@ -338,12 +405,12 @@ def evaluate_trial(task,trace_path,reference_path,*,scenario_result,qp_config,ou
             # Only the same <=1ns endpoint roundoff accepted by the provider;
             # never project or clip candidate values.
             if np.any(saved_clock< -1e-9) or np.any(saved_clock>27.+1e-9):raise ValueError('generated reference clock escaped horizon')
-            consumed=codec.sample(controls,np.minimum(27.,np.maximum(0.,saved_clock)))
+            consumed=_selected_posture_reference(codec,controls,saved_clock,reference)
             errors=[]
             for source,key in (('q','generated_reference_q'),('dq','generated_reference_dq')):
                 errors.append(float(np.max(np.abs(consumed[source]-_finite(trace[key],(n,17),key)))))
             task_clock=_finite(trace['task_time'],(len(trace['task_selected_command']),),'task_time')[:n//10]
-            task_consumed=codec.sample(controls,np.minimum(27.,np.maximum(0.,task_clock)))
+            task_consumed=_selected_posture_reference(codec,controls,task_clock,reference)
             for source,key in (('q','task_generated_reference_q'),('dq','task_generated_reference_dq')):
                 a=np.asarray(trace[key])[:n//10];_finite(a,(n//10,17),key)
                 errors.append(float(np.max(np.abs(task_consumed[source]-a))))
@@ -358,9 +425,12 @@ def evaluate_trial(task,trace_path,reference_path,*,scenario_result,qp_config,ou
             reference_binding.update({'maximum_generated_reference_residual':max(errors),
                 'physics_samples_bound':n,'task_samples_bound':n//10,
                 'actual_saved_full_state_reproduced':True})
+            if str(np.asarray(reference.get('reference_mode','')).item())=='terminal_progress_v1':
+                reference_binding['terminal_cartesian_and_QP_inputs']=_terminal_cartesian_reference_binding(
+                    task,trace,state,controls,spec)
         elif any(k.startswith('generated_reference_') for k in trace):
             raise ValueError('generated execution has no frozen selected reference source')
-        ref=codec.sample(controls,state['time'])
+        ref=_selected_posture_reference(codec,controls,state['time'],reference)
         requirements=requirement_results(task,state)
         translation=np.linalg.norm(state['base_pose'][:,:3]-np.asarray(task.base_pose[:3]),axis=1)
         dots=np.abs(state['base_pose'][:,3:]@np.asarray(task.base_pose[3:]))
@@ -374,9 +444,13 @@ def evaluate_trial(task,trace_path,reference_path,*,scenario_result,qp_config,ou
             'actual_tip_path_length_m':{arm:float(np.sum(np.linalg.norm(np.diff(state[arm+'_position'],axis=0),axis=1))) for arm in ('rigid','continuum')},
             'base_translation_drift_m':_stats(translation),'base_orientation_drift_rad':_stats(angles),
             'planned_shape_scope':('historical_fixed_home_posture_preference'
-                if reference is None or pass_through_home else 'saved_spline_controls'),
+                if reference is None or pass_through_home else 'saved_spline_controls_with_terminal_progress_repair'
+                if str(np.asarray(reference.get('reference_mode','')).item())=='terminal_progress_v1'
+                else 'saved_spline_controls'),
             'cartesian_reference_scope':('original current-feedback Cartesian task formulas, no codec'
-                if pass_through_home else 'joint proposal private nominal prediction' if reference is not None else 'original fixed Cartesian task formulas'),
+                if pass_through_home else 'disclosed terminal progress: original continuum world path, rigid path relative to current physical-time target feedback'
+                if reference is not None and str(np.asarray(reference.get('reference_mode','')).item())=='terminal_progress_v1'
+                else 'joint proposal private nominal prediction' if reference is not None else 'original fixed Cartesian task formulas'),
             'actual_torque_abs_max_nm':np.max(np.abs(trace['torque']),axis=0).tolist(),
             'physics_steps':n,'planning_ticks':n//10,'actual_saved_horizon_s':float(times[-1]),
             'planning_algorithm_wall_latency_s':_performance(trace['task_full_latency'],.020),

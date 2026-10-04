@@ -69,7 +69,8 @@ def run_attempt(task: TaskSpec, output_dir: Path, *, method: str,
                 proposal: TrajectoryProposal | None = None,
                 require_raw_gate: bool = True, attribution: dict | None = None,
                 pass_through_reference: bool = False,
-                qp_config_override: HierarchicalQPConfig | None = None):
+                qp_config_override: HierarchicalQPConfig | None = None,
+                terminal_progress_repair: bool = False):
     """Keep every gate failure, complete run, and physical refusal separately."""
     spec = default_v6_lite_robot_spec()
     scenario = scenario_from_task(task)
@@ -95,6 +96,7 @@ def run_attempt(task: TaskSpec, output_dir: Path, *, method: str,
                 "future_actual_state_is_planner_input": False,
                 "wall_20ms_is_acceptance_gate": False}
     identity['pass_through_reference'] = bool(pass_through_reference)
+    identity['terminal_progress_repair'] = bool(terminal_progress_repair)
     _write_json(output_dir / "planning_identity.json", identity, exclusive=True)
     provider, gate, scene_result, evaluation = None, None, None, None
     reference_path = None
@@ -129,9 +131,31 @@ def run_attempt(task: TaskSpec, output_dir: Path, *, method: str,
             else:
                 result["proposal_accepted"] = True
                 import shutil
-                selected = output_dir / "selected_reference.npz"
+                selected = output_dir / ("original_selected_reference.npz"
+                    if terminal_progress_repair else "selected_reference.npz")
                 shutil.copyfile(reference_path, selected)
                 reference_path = selected
+                if terminal_progress_repair:
+                    from v6_4.terminal_progress import TerminalProgressReferenceProvider
+                    repaired_provider = TerminalProgressReferenceProvider(task, provider)
+                    private_initial = mujoco.MjData(verifier.model)
+                    private_initial.qpos[:] = task.initial_qpos
+                    private_initial.qvel[:] = task.initial_qvel
+                    mujoco.mj_forward(verifier.model, private_initial)
+                    repaired_provider.prepare(spec, verifier.model, private_initial, scenario)
+                    repair_gate = repaired_provider.gate_repair(spec)
+                    _write_json(output_dir / 'reference_repair_gate.json', repair_gate, exclusive=True)
+                    result['reference_repair_gate'] = repair_gate
+                    result['postprocessing'].append('terminal_progress_24_to_26_5_then_hold_to_27')
+                    if not repair_gate['passed']:
+                        result['proposal_accepted'] = False
+                        result['status'] = 'REFERENCE_REPAIR_REJECTED'
+                        result['failure'] = {'phase':'reference_repair_gate','gate':repair_gate}
+                    else:
+                        provider = repaired_provider
+                        reference_path = output_dir / 'selected_reference.npz'
+                        save_reference(provider, reference_path)
+                        _write_json(output_dir / 'reference_repair_identity.json', provider.metadata, exclusive=True)
         elif method == "fixed_reference":
             # Protocol-B tasks retain the declared current deterministic curve.
             # Its availability is distinct from a learned joint-proposal gate.

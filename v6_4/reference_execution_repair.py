@@ -124,7 +124,7 @@ def diagnose(mapping, output):
 
 
 def execute(task_path, output, *, proposal_path=None, positive=False, config=None, attribution=None,
-            method='diffusion'):
+            method='diffusion', terminal_progress_repair=False):
     task=TaskSpec.from_dict(json.loads(Path(task_path).read_text(encoding='utf8')))
     proposal=(TrajectoryProposal.from_dict(json.loads(Path(proposal_path).read_text(encoding='utf8')))
               if proposal_path else None)
@@ -136,7 +136,7 @@ def execute(task_path, output, *, proposal_path=None, positive=False, config=Non
     result=run_attempt(task,output,method='fixed_reference' if positive else method,
         proposal=proposal,require_raw_gate=False if proposal else True,
         attribution=attribution or {},pass_through_reference=positive,
-        qp_config_override=config)
+        qp_config_override=config,terminal_progress_repair=terminal_progress_repair)
     after=record_sources()
     receipt={'schema':'v64_a1_actual_execution_receipt_v1','command_argv':sys.argv,
         'source_commit':head,'source_before':before,'source_after':after,
@@ -163,6 +163,7 @@ def main():
     actual.add_argument('--proposal',type=Path)
     actual.add_argument('--positive-control',action='store_true')
     actual.add_argument('--method',choices=('diffusion','derived_reference_diagnostic'),default='diffusion')
+    actual.add_argument('--terminal-progress-repair',action='store_true')
     actual.add_argument('--config',type=Path,required=True)
     actual.add_argument('--attribution',type=Path)
     actual.add_argument('--output',type=Path,required=True)
@@ -175,7 +176,8 @@ def main():
         config=HierarchicalQPConfig(**json.loads(args.config.read_text(encoding='utf8')))
         attribution=json.loads(args.attribution.read_text(encoding='utf8')) if args.attribution else {}
         execute(args.task,args.output,proposal_path=args.proposal,positive=args.positive_control,
-                config=config,attribution=attribution,method=args.method)
+                config=config,attribution=attribution,method=args.method,
+                terminal_progress_repair=args.terminal_progress_repair)
 
 
 if __name__=='__main__':
