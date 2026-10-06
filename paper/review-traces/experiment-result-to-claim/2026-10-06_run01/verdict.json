@@ -1,0 +1,60 @@
+{
+  "schema": "v6_4_b1_result_to_claim_review_v1",
+  "created_at_utc": "2026-10-06T05:59:55.988921+00:00",
+  "review_role": "paper architect/reviewer",
+  "experiment_id": "V6.4-B.1 architecture_pilot_20261006_01",
+  "intended_claim": "同信息、同6000更新预算、原codec/schedule/DDIM/共有损失与冻结v2 repair+A.1末段修复/控制器下，M1提高raw综合候选通过数且完整27s任务结果不下降。",
+  "claim_supported": "no",
+  "confidence": "high",
+  "confidence_scope": "High for this bounded single-seed pilot counts and identities; broad advantage, noninferiority and module-specific causality are not established.",
+  "what_results_support": [
+    "M0/M1均完成真实6000次AdamW更新、有效batch32和192000参考样本曝光；保存的Adam状态中M0的63个参数state及M1的76个参数state，step均为6000且一、二阶矩有限。正式从相同固定seed全新初始化，未复用smoke或旧权重。",
+    "两模型6000次数据/timestep/epsilon抽样的完整SHA及7 TRAIN参考曝光计数已独立重建；6 VAL参考曝光为0。固定96 VAL噪声样本、每250更新验证与最小共有损失选权重得到M0 update250、M1 update500，未按TEST选权重。",
+    "48个正式raw槽为两模型×6独立TEST任务×4配对latent；每candidate_index在两模型与全部任务间的latent字节精确相同，并从声明seed独立重建。每模型24个独特控制点提案，固定C0/C1、Task、proposal、controls及selected checkpoint身份匹配。",
+    "M1在原raw速度约束检查上为24/24，M0为0/24；M1终端/强制任务点位置误差的mean、median、maximum更低。这只支持本轮速度约束和位置误差组件改善。两组Task点整体通过仍为0/24。",
+    "raw综合通过均0/24，raw K1与any-of-K4均0/6；完整27s工程K1成功均0/6。M1没有提高预声明raw综合通过数，因此主效果claim不成立。",
+    "冻结v2 repair、A.1末段修复和控制器下，M0的6次K1均repair拒绝；M1三次repair拒绝、三次进入actual并中止。11670+9610+9900=31180个真实2ms力矩步保留，不能计为完整成功。",
+    "固定latent的任务目标/障碍条件变化影响M1输出，障碍联合token置换最大差9.536743e-7低于1e-5。支持条件接线和置换诊断，未建立学会绕障。",
+    "原A.1五个保护文件当前字节SHA与bootstrap一致，其历史结果仍为2/4；本轮六个新TEST的0/6不得改写历史开发回归结果。"
+  ],
+  "what_results_dont_support": [
+    "M1提高raw综合候选通过或建立完整27s任务收益；两主指标的实测差均为0。观测成功数不下降仅表示本组六任务0=0，不能作为总体非劣性或已具备任务能力的证明。",
+    "raw几何通过、raw避障优势、raw closed-loop成功或K4 closed-loop成功；48个主raw几何均因原门禁short-circuit为NOT_RUN、passed=null。raw实际与K4实际均NOT_RUN。",
+    "将三条M1 prefix、CLI退出码0、QP求解成功或预演几何裕量当作完整Task成功；三条prefix独立执行/Task/区间/几何评价仍NOT_RUN。保存数组有限与域内不等于已取得全部独立安全验收。",
+    "将条件输出变化、障碍排序测试通过或额外影子几何诊断当作学会绕障；原/改目标/改障碍三个1351状态影子几何全部不通过，且未计入48主槽。",
+    "M1计算速度更快；同口径同步DDIM20 mean/median和真实训练耗时均较M0高。slot总耗时mean受M0首槽6.0113s与初始化/条件/保存等开销影响，median反而M1更高，不能混用口径宣称推理加速。",
+    "单独归因于cross-attention、全局调制或边界token，也不能外推广泛泛化、统计显著性、硬件部署、硬实时、可靠备份恢复、鲁棒性或连续时间安全。",
+    "默认保留M0意味着M0在这批新任务有完整成功；M0同样是0/6，保留的是公平基线和较低计算成本，不是本轮能力认证。"
+  ],
+  "missing_evidence": [
+    "只有6个源任务13条成功消费原参考：3 TRAIN/7参考、3 VAL/6参考；6新TEST与每模型1训练seed不足以支撑广泛跨任务泛化或统计显著性，DATA_LIMITED。9条失败或未执行proposal-only可用但全部排除。",
+    "6新TEST的轨迹可行性未通过本轮独立成功参考预先证明；双0结果不能证明整个架构方向或Diffusion方向永远无效，也不能将所有失败唯一归因于某网络模块。",
+    "主raw几何未运行，三条actual prefix因冻结runner精确文件名不匹配而未自动独立评价；因此缺少这些范围内的独立几何/Task/执行通过证据，不能补写通过。",
+    "没有本轮任何完整27s成功，raw与K4实际也未运行；没有真实部署及时性、硬件、连续时间或安全备份证据。",
+    "未提供paper/PAPER_CLAIM_AUDIT.json；后续论文措辞状态为provisional。该缺失不阻碍本轮有限实测负判定，不启动submission assurance。"
+  ],
+  "suggested_claim_revision": "在本次冻结、同信息、同6000更新预算、单训练seed和六新TEST任务的先导比较中，M1改善原raw速度约束检查及位置误差描述统计，并使更多固定K1工程提案获准进入actual；但raw综合通过仍为0/24，与M0相同，完整27s成功均0/6。因而未建立M1的预声明主效果或完整任务收益。默认保留M0作为基线，保存M1结果并结束本轮架构假设，不追加预算。",
+  "next_experiments_needed": [],
+  "next_action": "retain_M0_as_default_and_end_current_architecture_hypothesis_without_more_budget",
+  "routing_action": "end_hypothesis",
+  "retain_M1": false,
+  "default_model": "M0",
+  "end_current_architecture_hypothesis": true,
+  "paper_claim_audit": "unavailable",
+  "paper_prose_status": "provisional",
+  "submission_assurance_started": false,
+  "pending_external_review_for_paper_prose": true,
+  "reviewer_independence": {
+    "type": "internal cross-review",
+    "participated_in_reference_data_and_trainer": true,
+    "owned_evaluation_module": false,
+    "fully_zero_context": false,
+    "external_peer_review_performed": false,
+    "limitation": "reviewer authored data/trainer, independently read and reaggregated frozen evaluation records and other-agent readonly evidence audit; no external independence claim"
+  },
+  "trace_path": "paper/review-traces/experiment-result-to-claim/2026-10-06_run01",
+  "input_manifest_sha256": "217dcc746836de8498e6890901d1a60616ab4598ffaa0aeecb8e7902a7b2e8a2",
+  "raw_reviewer_response_sha256": "770ef7bd7c2c638ee71cbf08707328ca94dcea5327bb780134356c90f58ed636",
+  "full_review_path": "E:/v64b1work_20261006_01/v6_4/output/architecture_pilot_20261006_01/result_to_claim_review.json",
+  "full_review_sha256": "632038264386981919b8da89d74c00cefa88ff2b3111bd07892a16df129ebbda"
+}
