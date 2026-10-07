@@ -39,3 +39,18 @@ Review route: end hypothesis / preserve baseline; next_experiments_needed=[]。�
 成本分开记actual81000、私有预演81000、独立保存力矩重放81000步，执行证据geometry201187130、路线质量5022372、输入预检41846、旧状态绑定预检186；旧权重DDIM32，新训练/新TEST为0。20ms墙钟非研究门禁；仿真20ms/2ms/27s及原安全检查保持，deployment NOT_MET。
 
 路由STOP_CURRENT_FINITE_STUDY_WITH_NEGATIVE_ROUTE_VALUE_RESULT，next_experiments_needed=[]；科学研究结束，发布收尾由root完成。完整审阅paper/review-traces/experiment-result-to-claim/2026-10-07_run02；无paper claim audit，后续论文verdict provisional。
+
+
+## B.3.1 — 控制器感知参考与有限质量教师补充
+
+有限teacher较最佳常量低3.27%、较冻结几何规则低1.03%；同幅值v2没有一致优势，Diffusion收益未建立。
+
+固定 28 槽（六条旧原件复用、22 条新增）；完整 Task 与原安全门禁通过 28/28，质量可比较 28/28。失败与质量后处理缺测分开记录。一个母场景上的四个开发任务不能建立独立泛化或 Diffusion 必要性。
+
+后续状态：`REFERENCE_VALUE_REQUIRES_COST_AND_GEOMETRIC_RULE_REVIEW_DIFFUSION_NECESSITY_UNESTABLISHED`。下一步：结束本轮，保留有限质量向量和非学习基线，暂不训练新网络。
+
+未训练、未模型采样，独立 TEST 为 `NOT_RUN_DEVELOPMENT_STUDY`，deployment 为 `NOT_MET`。旧 B.3 的负结果及五组 `NOT_RUN_PILOT_STOP` 保持，不因本补充变更。
+
+证据：[完整报告](v6_4/releases/execution_aware_route_teacher_20261007_01/report.md)、[全部候选](v6_4/visualization/execution_aware_route_teacher_20261007_01/all_candidates.csv)、[两图](v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html)、[run03](paper/review-traces/experiment-result-to-claim/2026-10-07_run03/response.md)。
+
+独立审查：run03为partial / high，blocking_issues=[]；支持有限开发集结论，下游论文写作因缺少paper claim audit保持provisional。 发布状态：研究结论已独立审阅；本地封存、便携导出和远端提交验证由publication_receipts中的收据记录。

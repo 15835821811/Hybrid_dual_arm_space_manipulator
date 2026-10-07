@@ -15,3 +15,13 @@
 | 2026-10-07 | saved-state visualization | v6_4/visualization/conditional_route_value_20261007_01/ | figure | 两张PNG/PDF、实际保存曲线、方法表、静态总览和来源manifest |
 | 20261007_190539 | experiment-plan | paper/EXPERIMENT_PLAN.md | experiment | B.3.1固定28槽、六旧来源复用、v2解析参考与有限教师计划；原B3已归档 |
 | 20261007_190539 | experiment-plan | paper/EXPERIMENT_TRACKER.md | experiment | B.3.1实施进度；训练/采样预算0 |
+
+
+## B.3.1 终态交付
+
+| Date | Tool | File | Type | Description |
+|---|---|---|---|---|
+| 2026-10-07 | saved-file publication (local Codex) | v6_4/releases/execution_aware_route_teacher_20261007_01/report.md | B.3.1 delivery | 固定 28 槽终态报告；actual 安全通过与质量可比状态分列；无训练、采样或独立 TEST |
+| 2026-10-07 | saved-file publication (local Codex) | v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html | B.3.1 visualization | 两张 PNG、全部 28 行 CSV 与绑定来源；历史 B.2/B.3 图表保持 |
+| 2026-10-07 | independent review trace | paper/review-traces/experiment-result-to-claim/2026-10-07_run03/verdict.json | B.3.1 review | run03为partial / high，blocking_issues=[]；支持有限开发集结论，下游论文写作因缺少paper claim audit保持provisional。 |
+| 2026-10-07 | saved-file publication (local Codex) | docs/V6_4_B31_VISUALIZATION.md | B.3.1 navigation | 当前入口与历史边界；科学结论引用完整报告与 run03 |

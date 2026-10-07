@@ -27,3 +27,12 @@ V_cond仅在可比完整矩阵直接计算，失败先报固定分母成功率�
 | 交付 | 两张参考/实际图、全候选表、报告、独立审阅、seal、单独GitHub分支与入口刷新 | 不批量视频/PDF；不训练 |
 
 actual、preview、独立保存力矩replay、原生geometry与路线质量geometry分别计账。墙钟只记录，20ms规划/2ms物理/27s及QP17D/力矩67保持；deployment NOT_MET。若没有改善结束参考/权限假设，不扩大网络、障碍搜索或时限。
+
+
+## 终态交付指针（2026-10-07）
+
+上文固定计划保持原文。终态证据见 [portable 报告](../v6_4/releases/execution_aware_route_teacher_20261007_01/report.md)、[全部 28 槽](../v6_4/visualization/execution_aware_route_teacher_20261007_01/all_candidates.csv)、[两张 PNG](../v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html) 与 [run03 审查](review-traces/experiment-result-to-claim/2026-10-07_run03/response.md)。完整安全通过 28/28，质量可比 28/28。
+
+有限teacher较最佳常量低3.27%、较冻结几何规则低1.03%；同幅值v2没有一致优势，Diffusion收益未建立。 下一步：结束本轮，保留有限质量向量和非学习基线，暂不训练新网络。
+
+旧 B.3 计划与进度保存在 `EXPERIMENT_PLAN_B3_archive_20261007_190539.md` / `EXPERIMENT_TRACKER_B3_archive_20261007_190539.md`；旧停止结论不改写。

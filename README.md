@@ -1,3 +1,26 @@
+# Hybrid Dual-Arm Space Manipulator — V6.4-B.3.1
+
+当前分支 `v6.4-b3-1-execution-aware-route-teacher` 交付控制器感知参考与有限质量教师补充：一个母场景、四个开发任务、七种固定参考，共 28 个固定槽位，其中六条复用旧 B.3 原件、22 条为新增槽位。
+
+**有限teacher较最佳常量低3.27%、较冻结几何规则低1.03%；同幅值v2没有一致优势，Diffusion收益未建立。**
+
+完整 Task 与原安全门禁通过 **28/28**，质量指标可比较 **28/28**；两者分开记账。没有训练、模型采样或独立泛化 TEST，deployment 为 `NOT_MET`。下一步：结束本轮，保留有限质量向量和非学习基线，暂不训练新网络。
+
+[当前两图与全部候选](v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html) · [可视化说明](docs/V6_4_B31_VISUALIZATION.md) · [全部 28 行 CSV](v6_4/visualization/execution_aware_route_teacher_20261007_01/all_candidates.csv) · [有限教师与对照](v6_4/visualization/execution_aware_route_teacher_20261007_01/teacher_records.json) · [portable 研究报告](v6_4/releases/execution_aware_route_teacher_20261007_01/report.md) · [run03 独立审查](paper/review-traces/experiment-result-to-claim/2026-10-07_run03/response.md) · [审查 verdict](paper/review-traces/experiment-result-to-claim/2026-10-07_run03/verdict.json)
+
+![四任务全部候选的参考与实际路线响应](v6_4/visualization/execution_aware_route_teacher_20261007_01/fig_reference_actual.png)
+
+![实际路线质量、相关净空与参考到执行响应](v6_4/visualization/execution_aware_route_teacher_20261007_01/fig_route_quality.png)
+
+两图分别展示参考与实际横向响应、实际路线质量及几何指标；失败和缺测保持标注，旧六条缺失的 QP 向量不反算。actual、private preview、独立 replay、原生几何与附加路线查询成本见报告分账。actual producer 为 `d4464c8ae2aa7913a730ebbd775917e7a3b1af71`；后处理、绘图和发布的 source/hash 另行绑定。
+
+独立审查：run03为partial / high，blocking_issues=[]；支持有限开发集结论，下游论文写作因缺少paper claim audit保持provisional。 发布状态：研究结论已独立审阅；本地封存、便携导出和远端提交验证由publication_receipts中的收据记录。
+
+旧 B.3 的六条 pilot 均完整安全通过，但相对零参考仅 2.79%/3.81%，未达到原 10% 门槛；旧 P2/P3 与五组 TEST 仍为 `NOT_RUN_PILOT_STOP`。本补充不改写旧停止结论。[B.3 原报告](v6_4/releases/conditional_route_value_20261007_01/report.md) · [B.3 图表](v6_4/visualization/conditional_route_value_20261007_01/index.html) · [B.2 图表](v6_4/visualization/task_anchored_residual_20261007_01/index.html) · [V6.2 历史](v6_lite/visualization/latest/index.html)
+
+<details>
+<summary>历史归档：B.3 负结果、B.2 与 V6.2 原发布说明</summary>
+
 # Hybrid Dual-Arm Space Manipulator — V6.4-B.3
 
 本分支 `v6.4-b3-conditional-route-value` 收录场景依赖路线价值的固定预算补充研究。它从已发布 B.2 派生，使用原 12 维、20 mm 任务锚定残差和原执行/安全层；每对任务仅将一个既有球障碍换边。
@@ -278,5 +301,8 @@ GitHub 可直接显示 Markdown 中的 PNG/GIF；MP4 点击查看或下载，交
 - [V6.1-B PCC/胶囊 CBF 控制集成](docs/V6_1B_PCC_CBF_INTEGRATION.md)
 - [V6-lite 模块说明](v6_lite/README.md)
 - [机器人模型资产来源与发布状态](ASSET_PROVENANCE.md)
+
+</details>
+
 
 </details>

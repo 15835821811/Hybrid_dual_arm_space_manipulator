@@ -1,0 +1,1079 @@
+{
+  "schema": "v64_b31_baseline_diagnosis_v1",
+  "stage": "T0_STATIC_REUSE_ONLY",
+  "old_output": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01",
+  "old_release_commit": "bdd6df6b4c68a6c95872f4639b8b8269fb6856c7",
+  "old_actual_producer": "f5f1687f5ba0b119c91bbc385dfdc841b56d091e",
+  "old_manifest_sha256": "57ba4bbf31ca3ff106d93d1ade0d1700bb4ab50840075847d5299878cf429033",
+  "old_B3_status_unchanged": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+  "old_B3_route_value_identifiable_unchanged": false,
+  "old_B3_new_training_and_TEST": "NOT_RUN_PILOT_STOP",
+  "source_slot_count": 6,
+  "independent_task_count": 2,
+  "mother_scene_count": 1,
+  "strictly_reusable_slot_count": 6,
+  "reuse_contract": "exact original 43mm TaskSpec bytes and v1 plan bytes; original task_id retained; new alias is wrapper metadata; no new actual credit",
+  "rows": [
+    {
+      "source_slot_id": "PILOT_00",
+      "new_slot_alias": "EA_00",
+      "canonical_mode": "z0",
+      "task_id_retained": "b3_mother_00_c_plus",
+      "obstacle_offset_m": 0.043,
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "strict_checks": {
+        "slot_identity": true,
+        "original_TaskSpec_exact_object": true,
+        "original_TaskSpec_exact_bytes": true,
+        "task_canonical_identity": true,
+        "original_v1_plan_exact_object": true,
+        "original_v1_plan_exact_bytes": true,
+        "plan_canonical_identity": true,
+        "definition_canonical_identity": true,
+        "v1_version": true,
+        "expected_frozen_z": true,
+        "route_interval_unchanged": true,
+        "complete_original_task_and_safety": true,
+        "no_repair_or_fallback": true,
+        "exact_43mm_declaration": true
+      },
+      "strictly_reusable_as_original_input": true,
+      "reused_evidence_is_new_actual": false,
+      "T_route_s": [
+        8.461298845015024,
+        11.977496008196567
+      ],
+      "unmeasured": {
+        "original_unconstrained_velocity_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "velocity_box_clipped_nominal_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "I_route_continuum_10d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "I_route_rigid_7d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "single_sphere_intervention_or_constraint_activity": {
+          "status": "NOT_MEASURED",
+          "reason": "no per-row sphere-source activation/residual log"
+        },
+        "controller_transfer_gain_or_causal_attribution": {
+          "status": "NOT_MEASURED",
+          "reason": "paired closed-loop trajectory differences are descriptive, not an identified transfer function"
+        }
+      },
+      "status": "FULL_LOCAL_RAW_VERIFIED",
+      "selected_command_source": {
+        "status": "SAVED",
+        "field": "task_selected_command",
+        "dimension": 17
+      },
+      "input_reference_minus_base": {
+        "sampling": "actual consumed input positions at original 50Hz planning ticks",
+        "source_field": "task_input_reference_continuum_target_position",
+        "max_analytic_consistency_error_m": 4.577566798522237e-16,
+        "full_task": {
+          "sample_count": 1350,
+          "norm_rms_m": 8.288978229531801e-17,
+          "norm_peak_m": 4.577566798522237e-16,
+          "norm_mean_m": 3.8843610203880026e-17,
+          "first_transverse_signed_min_m": -3.604567005760011e-16,
+          "first_transverse_signed_max_m": 3.8906361330577137e-16,
+          "first_transverse_rms_m": 4.2728827885058787e-17,
+          "first_transverse_peak_absolute_m": 3.8906361330577137e-16
+        },
+        "route_window": {
+          "sample_count": 175,
+          "norm_rms_m": 7.207293661882783e-17,
+          "norm_peak_m": 3.3306690738754696e-16,
+          "norm_mean_m": 3.334760728017701e-17,
+          "first_transverse_signed_min_m": -7.297764836816403e-19,
+          "first_transverse_signed_max_m": 4.865176557877602e-19,
+          "first_transverse_rms_m": 1.4294519637272814e-19,
+          "first_transverse_peak_absolute_m": 7.297764836816403e-19
+        }
+      },
+      "declared_input_minus_base_on_native_actual_grid": {
+        "sampling": "analytic v1 reference evaluated on saved native actual times; no synthetic actual",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        }
+      },
+      "actual_minus_base": {
+        "sampling": "original independent fresh saved 2ms states minus analytic base at the same physical times",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.003740865593753871,
+          "norm_peak_m": 0.024797777485935785,
+          "norm_mean_m": 0.000860543490047531,
+          "first_transverse_signed_min_m": -0.023082730538830913,
+          "first_transverse_signed_max_m": 0.0003123495710159349,
+          "first_transverse_rms_m": 0.0033181635179697767,
+          "first_transverse_peak_absolute_m": 0.023082730538830913
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.010310481857678251,
+          "norm_peak_m": 0.024797777485935785,
+          "norm_mean_m": 0.005703675615758163,
+          "first_transverse_signed_min_m": -0.023082730538830913,
+          "first_transverse_signed_max_m": 4.976615356183538e-06,
+          "first_transverse_rms_m": 0.00919418311370101,
+          "first_transverse_peak_absolute_m": 0.023082730538830913
+        }
+      },
+      "actual_minus_same_task_zero_actual": {
+        "status": "MEASURED_FROM_SAVED_PAIRED_ACTUAL",
+        "zero_source_slot_id": "PILOT_00",
+        "sampling": "same physical time; exact common saved 2ms grid; no interpolation",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        }
+      },
+      "original_scalar_intervention": {
+        "I_route_rad_s": 0.10860163231078468,
+        "I_full_rad_s": 0.09460137190674829,
+        "route_sample_count": 175,
+        "full_sample_count": 1350,
+        "scope": "17D velocity-box-clipped nominal to selected norm; all constraints jointly; not single-obstacle contribution"
+      },
+      "midpoint_slice": {
+        "frozen_midpoint_s": 10.219397426605795,
+        "nearest_saved_time_s": 10.22,
+        "source_state_index": 5110,
+        "declared_reference_first_transverse_offset_m": 0.0,
+        "actual_first_transverse_offset_from_base_m": -0.02209141891697936,
+        "actual_first_transverse_difference_from_same_task_zero_m": 0.0,
+        "interpretation": "local slice only; not full-window transfer gain, required avoidance distance, or causal proof"
+      }
+    },
+    {
+      "source_slot_id": "PILOT_01",
+      "new_slot_alias": "EA_01",
+      "canonical_mode": "v1_plus12",
+      "task_id_retained": "b3_mother_00_c_plus",
+      "obstacle_offset_m": 0.043,
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "strict_checks": {
+        "slot_identity": true,
+        "original_TaskSpec_exact_object": true,
+        "original_TaskSpec_exact_bytes": true,
+        "task_canonical_identity": true,
+        "original_v1_plan_exact_object": true,
+        "original_v1_plan_exact_bytes": true,
+        "plan_canonical_identity": true,
+        "definition_canonical_identity": true,
+        "v1_version": true,
+        "expected_frozen_z": true,
+        "route_interval_unchanged": true,
+        "complete_original_task_and_safety": true,
+        "no_repair_or_fallback": true,
+        "exact_43mm_declaration": true
+      },
+      "strictly_reusable_as_original_input": true,
+      "reused_evidence_is_new_actual": false,
+      "T_route_s": [
+        8.461298845015024,
+        11.977496008196567
+      ],
+      "unmeasured": {
+        "original_unconstrained_velocity_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "velocity_box_clipped_nominal_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "I_route_continuum_10d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "I_route_rigid_7d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "single_sphere_intervention_or_constraint_activity": {
+          "status": "NOT_MEASURED",
+          "reason": "no per-row sphere-source activation/residual log"
+        },
+        "controller_transfer_gain_or_causal_attribution": {
+          "status": "NOT_MEASURED",
+          "reason": "paired closed-loop trajectory differences are descriptive, not an identified transfer function"
+        }
+      },
+      "status": "FULL_LOCAL_RAW_VERIFIED",
+      "selected_command_source": {
+        "status": "SAVED",
+        "field": "task_selected_command",
+        "dimension": 17
+      },
+      "input_reference_minus_base": {
+        "sampling": "actual consumed input positions at original 50Hz planning ticks",
+        "source_field": "task_input_reference_continuum_target_position",
+        "max_analytic_consistency_error_m": 4.577566798522237e-16,
+        "full_task": {
+          "sample_count": 1350,
+          "norm_rms_m": 0.0025287639162916604,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.0007144019646573644,
+          "first_transverse_signed_min_m": -3.604567005760011e-16,
+          "first_transverse_signed_max_m": 0.01199999577101733,
+          "first_transverse_rms_m": 0.0025287639162916604,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        },
+        "route_window": {
+          "sample_count": 175,
+          "norm_rms_m": 0.007023541383847119,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.005511100870213687,
+          "first_transverse_signed_min_m": 9.320932657127457e-08,
+          "first_transverse_signed_max_m": 0.01199999577101733,
+          "first_transverse_rms_m": 0.007023541383847119,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        }
+      },
+      "declared_input_minus_base_on_native_actual_grid": {
+        "sampling": "analytic v1 reference evaluated on saved native actual times; no synthetic actual",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.002528670263572143,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.0007143490485686829,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.011999995771017319,
+          "first_transverse_rms_m": 0.002528670263572143,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.007007542407754221,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.005486021902574396,
+          "first_transverse_signed_min_m": 6.085885963862535e-12,
+          "first_transverse_signed_max_m": 0.011999995771017319,
+          "first_transverse_rms_m": 0.007007542407754221,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        }
+      },
+      "actual_minus_base": {
+        "sampling": "original independent fresh saved 2ms states minus analytic base at the same physical times",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.005053074591300293,
+          "norm_peak_m": 0.03241868593880964,
+          "norm_mean_m": 0.0013041140931830256,
+          "first_transverse_signed_min_m": -0.02140331186284755,
+          "first_transverse_signed_max_m": 0.00605574598486633,
+          "first_transverse_rms_m": 0.002975101930110456,
+          "first_transverse_peak_absolute_m": 0.02140331186284755
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.01396160565653449,
+          "norm_peak_m": 0.03241868593880964,
+          "norm_mean_m": 0.009110395186108325,
+          "first_transverse_signed_min_m": -0.02140331186284755,
+          "first_transverse_signed_max_m": 0.00605574598486633,
+          "first_transverse_rms_m": 0.008243336440170787,
+          "first_transverse_peak_absolute_m": 0.02140331186284755
+        }
+      },
+      "actual_minus_same_task_zero_actual": {
+        "status": "MEASURED_FROM_SAVED_PAIRED_ACTUAL",
+        "zero_source_slot_id": "PILOT_00",
+        "sampling": "same physical time; exact common saved 2ms grid; no interpolation",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0031607364359228685,
+          "norm_peak_m": 0.01904976775261649,
+          "norm_mean_m": 0.0008143576999564966,
+          "first_transverse_signed_min_m": -0.005033539244743233,
+          "first_transverse_signed_max_m": 0.008138889070404361,
+          "first_transverse_rms_m": 0.0015472303735515084,
+          "first_transverse_peak_absolute_m": 0.008138889070404361
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.008759146909727053,
+          "norm_peak_m": 0.01904976775261649,
+          "norm_mean_m": 0.006253207347660156,
+          "first_transverse_signed_min_m": -0.005033539244743233,
+          "first_transverse_signed_max_m": 0.008138889070404361,
+          "first_transverse_rms_m": 0.004287740626426373,
+          "first_transverse_peak_absolute_m": 0.008138889070404361
+        }
+      },
+      "original_scalar_intervention": {
+        "I_route_rad_s": 0.11196314201535783,
+        "I_full_rad_s": 0.09514228383243532,
+        "route_sample_count": 175,
+        "full_sample_count": 1350,
+        "scope": "17D velocity-box-clipped nominal to selected norm; all constraints jointly; not single-obstacle contribution"
+      },
+      "midpoint_slice": {
+        "frozen_midpoint_s": 10.219397426605795,
+        "nearest_saved_time_s": 10.22,
+        "source_state_index": 5110,
+        "declared_reference_first_transverse_offset_m": 0.011999995771017319,
+        "actual_first_transverse_offset_from_base_m": -0.01589894353279295,
+        "actual_first_transverse_difference_from_same_task_zero_m": 0.006192475384186405,
+        "interpretation": "local slice only; not full-window transfer gain, required avoidance distance, or causal proof"
+      }
+    },
+    {
+      "source_slot_id": "PILOT_02",
+      "new_slot_alias": "EA_02",
+      "canonical_mode": "v1_minus12",
+      "task_id_retained": "b3_mother_00_c_plus",
+      "obstacle_offset_m": 0.043,
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "strict_checks": {
+        "slot_identity": true,
+        "original_TaskSpec_exact_object": true,
+        "original_TaskSpec_exact_bytes": true,
+        "task_canonical_identity": true,
+        "original_v1_plan_exact_object": true,
+        "original_v1_plan_exact_bytes": true,
+        "plan_canonical_identity": true,
+        "definition_canonical_identity": true,
+        "v1_version": true,
+        "expected_frozen_z": true,
+        "route_interval_unchanged": true,
+        "complete_original_task_and_safety": true,
+        "no_repair_or_fallback": true,
+        "exact_43mm_declaration": true
+      },
+      "strictly_reusable_as_original_input": true,
+      "reused_evidence_is_new_actual": false,
+      "T_route_s": [
+        8.461298845015024,
+        11.977496008196567
+      ],
+      "unmeasured": {
+        "original_unconstrained_velocity_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "velocity_box_clipped_nominal_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "I_route_continuum_10d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "I_route_rigid_7d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "single_sphere_intervention_or_constraint_activity": {
+          "status": "NOT_MEASURED",
+          "reason": "no per-row sphere-source activation/residual log"
+        },
+        "controller_transfer_gain_or_causal_attribution": {
+          "status": "NOT_MEASURED",
+          "reason": "paired closed-loop trajectory differences are descriptive, not an identified transfer function"
+        }
+      },
+      "status": "FULL_LOCAL_RAW_VERIFIED",
+      "selected_command_source": {
+        "status": "SAVED",
+        "field": "task_selected_command",
+        "dimension": 17
+      },
+      "input_reference_minus_base": {
+        "sampling": "actual consumed input positions at original 50Hz planning ticks",
+        "source_field": "task_input_reference_continuum_target_position",
+        "max_analytic_consistency_error_m": 4.577566798522237e-16,
+        "full_task": {
+          "sample_count": 1350,
+          "norm_rms_m": 0.0025287639162916604,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.0007144019646573644,
+          "first_transverse_signed_min_m": -0.01199999577101733,
+          "first_transverse_signed_max_m": 3.8906361330577137e-16,
+          "first_transverse_rms_m": 0.0025287639162916604,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        },
+        "route_window": {
+          "sample_count": 175,
+          "norm_rms_m": 0.007023541383847119,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.005511100870213687,
+          "first_transverse_signed_min_m": -0.01199999577101733,
+          "first_transverse_signed_max_m": -9.320932657030154e-08,
+          "first_transverse_rms_m": 0.007023541383847119,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        }
+      },
+      "declared_input_minus_base_on_native_actual_grid": {
+        "sampling": "analytic v1 reference evaluated on saved native actual times; no synthetic actual",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.002528670263572143,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.0007143490485686829,
+          "first_transverse_signed_min_m": -0.011999995771017319,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.002528670263572143,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.007007542407754221,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.005486021902574396,
+          "first_transverse_signed_min_m": -0.011999995771017319,
+          "first_transverse_signed_max_m": -6.085885963862535e-12,
+          "first_transverse_rms_m": 0.007007542407754221,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        }
+      },
+      "actual_minus_base": {
+        "sampling": "original independent fresh saved 2ms states minus analytic base at the same physical times",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.00394876116958561,
+          "norm_peak_m": 0.023600173150397315,
+          "norm_mean_m": 0.0011178673369263276,
+          "first_transverse_signed_min_m": -0.02351296058012292,
+          "first_transverse_signed_max_m": 0.0003123495710159349,
+          "first_transverse_rms_m": 0.0038957947938055904,
+          "first_transverse_peak_absolute_m": 0.02351296058012292
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.01088959071569987,
+          "norm_peak_m": 0.023600173150397315,
+          "norm_mean_m": 0.00767985950020035,
+          "first_transverse_signed_min_m": -0.02351296058012292,
+          "first_transverse_signed_max_m": 1.3330777025967113e-05,
+          "first_transverse_rms_m": 0.010795118361387922,
+          "first_transverse_peak_absolute_m": 0.02351296058012292
+        }
+      },
+      "actual_minus_same_task_zero_actual": {
+        "status": "MEASURED_FROM_SAVED_PAIRED_ACTUAL",
+        "zero_source_slot_id": "PILOT_00",
+        "sampling": "same physical time; exact common saved 2ms grid; no interpolation",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0017819476985255055,
+          "norm_peak_m": 0.008658154842194538,
+          "norm_mean_m": 0.0005200115615777707,
+          "first_transverse_signed_min_m": -0.006936866637432142,
+          "first_transverse_signed_max_m": 0.0005995925655887586,
+          "first_transverse_rms_m": 0.001288511523647372,
+          "first_transverse_peak_absolute_m": 0.006936866637432142
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.004938197743101895,
+          "norm_peak_m": 0.008658154842194538,
+          "norm_mean_m": 0.003992984918122526,
+          "first_transverse_signed_min_m": -0.006936866637432142,
+          "first_transverse_signed_max_m": 0.0005995925655887586,
+          "first_transverse_rms_m": 0.003570769581866527,
+          "first_transverse_peak_absolute_m": 0.006936866637432142
+        }
+      },
+      "original_scalar_intervention": {
+        "I_route_rad_s": 0.1055704751670103,
+        "I_full_rad_s": 0.09407614046917046,
+        "route_sample_count": 175,
+        "full_sample_count": 1350,
+        "scope": "17D velocity-box-clipped nominal to selected norm; all constraints jointly; not single-obstacle contribution"
+      },
+      "midpoint_slice": {
+        "frozen_midpoint_s": 10.219397426605795,
+        "nearest_saved_time_s": 10.22,
+        "source_state_index": 5110,
+        "declared_reference_first_transverse_offset_m": -0.011999995771017319,
+        "actual_first_transverse_offset_from_base_m": -0.023437048666333622,
+        "actual_first_transverse_difference_from_same_task_zero_m": -0.0013456297493542652,
+        "interpretation": "local slice only; not full-window transfer gain, required avoidance distance, or causal proof"
+      }
+    },
+    {
+      "source_slot_id": "PILOT_03",
+      "new_slot_alias": "EA_07",
+      "canonical_mode": "z0",
+      "task_id_retained": "b3_mother_00_c_minus",
+      "obstacle_offset_m": 0.043,
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "strict_checks": {
+        "slot_identity": true,
+        "original_TaskSpec_exact_object": true,
+        "original_TaskSpec_exact_bytes": true,
+        "task_canonical_identity": true,
+        "original_v1_plan_exact_object": true,
+        "original_v1_plan_exact_bytes": true,
+        "plan_canonical_identity": true,
+        "definition_canonical_identity": true,
+        "v1_version": true,
+        "expected_frozen_z": true,
+        "route_interval_unchanged": true,
+        "complete_original_task_and_safety": true,
+        "no_repair_or_fallback": true,
+        "exact_43mm_declaration": true
+      },
+      "strictly_reusable_as_original_input": true,
+      "reused_evidence_is_new_actual": false,
+      "T_route_s": [
+        8.461298845015024,
+        11.977496008196567
+      ],
+      "unmeasured": {
+        "original_unconstrained_velocity_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "velocity_box_clipped_nominal_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "I_route_continuum_10d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "I_route_rigid_7d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "single_sphere_intervention_or_constraint_activity": {
+          "status": "NOT_MEASURED",
+          "reason": "no per-row sphere-source activation/residual log"
+        },
+        "controller_transfer_gain_or_causal_attribution": {
+          "status": "NOT_MEASURED",
+          "reason": "paired closed-loop trajectory differences are descriptive, not an identified transfer function"
+        }
+      },
+      "status": "FULL_LOCAL_RAW_VERIFIED",
+      "selected_command_source": {
+        "status": "SAVED",
+        "field": "task_selected_command",
+        "dimension": 17
+      },
+      "input_reference_minus_base": {
+        "sampling": "actual consumed input positions at original 50Hz planning ticks",
+        "source_field": "task_input_reference_continuum_target_position",
+        "max_analytic_consistency_error_m": 4.577566798522237e-16,
+        "full_task": {
+          "sample_count": 1350,
+          "norm_rms_m": 8.288978229531801e-17,
+          "norm_peak_m": 4.577566798522237e-16,
+          "norm_mean_m": 3.8843610203880026e-17,
+          "first_transverse_signed_min_m": -3.604567005760011e-16,
+          "first_transverse_signed_max_m": 3.8906361330577137e-16,
+          "first_transverse_rms_m": 4.2728827885058787e-17,
+          "first_transverse_peak_absolute_m": 3.8906361330577137e-16
+        },
+        "route_window": {
+          "sample_count": 175,
+          "norm_rms_m": 7.207293661882783e-17,
+          "norm_peak_m": 3.3306690738754696e-16,
+          "norm_mean_m": 3.334760728017701e-17,
+          "first_transverse_signed_min_m": -7.297764836816403e-19,
+          "first_transverse_signed_max_m": 4.865176557877602e-19,
+          "first_transverse_rms_m": 1.4294519637272814e-19,
+          "first_transverse_peak_absolute_m": 7.297764836816403e-19
+        }
+      },
+      "declared_input_minus_base_on_native_actual_grid": {
+        "sampling": "analytic v1 reference evaluated on saved native actual times; no synthetic actual",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        }
+      },
+      "actual_minus_base": {
+        "sampling": "original independent fresh saved 2ms states minus analytic base at the same physical times",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.003743650313551299,
+          "norm_peak_m": 0.024721711309144672,
+          "norm_mean_m": 0.000861530259330275,
+          "first_transverse_signed_min_m": -9.511919275838123e-05,
+          "first_transverse_signed_max_m": 0.023111367704595084,
+          "first_transverse_rms_m": 0.003323394540351416,
+          "first_transverse_peak_absolute_m": 0.023111367704595084
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.010318242330304197,
+          "norm_peak_m": 0.024721711309144672,
+          "norm_mean_m": 0.005711422365073843,
+          "first_transverse_signed_min_m": -1.4564095034090324e-06,
+          "first_transverse_signed_max_m": 0.023111367704595084,
+          "first_transverse_rms_m": 0.009208682476128877,
+          "first_transverse_peak_absolute_m": 0.023111367704595084
+        }
+      },
+      "actual_minus_same_task_zero_actual": {
+        "status": "MEASURED_FROM_SAVED_PAIRED_ACTUAL",
+        "zero_source_slot_id": "PILOT_03",
+        "sampling": "same physical time; exact common saved 2ms grid; no interpolation",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.0,
+          "norm_peak_m": 0.0,
+          "norm_mean_m": 0.0,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.0,
+          "first_transverse_peak_absolute_m": 0.0
+        }
+      },
+      "original_scalar_intervention": {
+        "I_route_rad_s": 0.11206975487291264,
+        "I_full_rad_s": 0.09510896574166713,
+        "route_sample_count": 175,
+        "full_sample_count": 1350,
+        "scope": "17D velocity-box-clipped nominal to selected norm; all constraints jointly; not single-obstacle contribution"
+      },
+      "midpoint_slice": {
+        "frozen_midpoint_s": 10.219397426605795,
+        "nearest_saved_time_s": 10.22,
+        "source_state_index": 5110,
+        "declared_reference_first_transverse_offset_m": 0.0,
+        "actual_first_transverse_offset_from_base_m": 0.02209636980684281,
+        "actual_first_transverse_difference_from_same_task_zero_m": 0.0,
+        "interpretation": "local slice only; not full-window transfer gain, required avoidance distance, or causal proof"
+      }
+    },
+    {
+      "source_slot_id": "PILOT_04",
+      "new_slot_alias": "EA_08",
+      "canonical_mode": "v1_plus12",
+      "task_id_retained": "b3_mother_00_c_minus",
+      "obstacle_offset_m": 0.043,
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "strict_checks": {
+        "slot_identity": true,
+        "original_TaskSpec_exact_object": true,
+        "original_TaskSpec_exact_bytes": true,
+        "task_canonical_identity": true,
+        "original_v1_plan_exact_object": true,
+        "original_v1_plan_exact_bytes": true,
+        "plan_canonical_identity": true,
+        "definition_canonical_identity": true,
+        "v1_version": true,
+        "expected_frozen_z": true,
+        "route_interval_unchanged": true,
+        "complete_original_task_and_safety": true,
+        "no_repair_or_fallback": true,
+        "exact_43mm_declaration": true
+      },
+      "strictly_reusable_as_original_input": true,
+      "reused_evidence_is_new_actual": false,
+      "T_route_s": [
+        8.461298845015024,
+        11.977496008196567
+      ],
+      "unmeasured": {
+        "original_unconstrained_velocity_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "velocity_box_clipped_nominal_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "I_route_continuum_10d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "I_route_rigid_7d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "single_sphere_intervention_or_constraint_activity": {
+          "status": "NOT_MEASURED",
+          "reason": "no per-row sphere-source activation/residual log"
+        },
+        "controller_transfer_gain_or_causal_attribution": {
+          "status": "NOT_MEASURED",
+          "reason": "paired closed-loop trajectory differences are descriptive, not an identified transfer function"
+        }
+      },
+      "status": "FULL_LOCAL_RAW_VERIFIED",
+      "selected_command_source": {
+        "status": "SAVED",
+        "field": "task_selected_command",
+        "dimension": 17
+      },
+      "input_reference_minus_base": {
+        "sampling": "actual consumed input positions at original 50Hz planning ticks",
+        "source_field": "task_input_reference_continuum_target_position",
+        "max_analytic_consistency_error_m": 4.577566798522237e-16,
+        "full_task": {
+          "sample_count": 1350,
+          "norm_rms_m": 0.0025287639162916604,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.0007144019646573644,
+          "first_transverse_signed_min_m": -3.604567005760011e-16,
+          "first_transverse_signed_max_m": 0.01199999577101733,
+          "first_transverse_rms_m": 0.0025287639162916604,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        },
+        "route_window": {
+          "sample_count": 175,
+          "norm_rms_m": 0.007023541383847119,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.005511100870213687,
+          "first_transverse_signed_min_m": 9.320932657127457e-08,
+          "first_transverse_signed_max_m": 0.01199999577101733,
+          "first_transverse_rms_m": 0.007023541383847119,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        }
+      },
+      "declared_input_minus_base_on_native_actual_grid": {
+        "sampling": "analytic v1 reference evaluated on saved native actual times; no synthetic actual",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.002528670263572143,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.0007143490485686829,
+          "first_transverse_signed_min_m": 0.0,
+          "first_transverse_signed_max_m": 0.011999995771017319,
+          "first_transverse_rms_m": 0.002528670263572143,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.007007542407754221,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.005486021902574396,
+          "first_transverse_signed_min_m": 6.085885963862535e-12,
+          "first_transverse_signed_max_m": 0.011999995771017319,
+          "first_transverse_rms_m": 0.007007542407754221,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        }
+      },
+      "actual_minus_base": {
+        "sampling": "original independent fresh saved 2ms states minus analytic base at the same physical times",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.003952181868334844,
+          "norm_peak_m": 0.02365425821169112,
+          "norm_mean_m": 0.0011188709591808416,
+          "first_transverse_signed_min_m": -9.511919275838123e-05,
+          "first_transverse_signed_max_m": 0.02355899068968921,
+          "first_transverse_rms_m": 0.0038995742336574643,
+          "first_transverse_peak_absolute_m": 0.02355899068968921
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.01089911791972795,
+          "norm_peak_m": 0.02365425821169112,
+          "norm_mean_m": 0.0076877398529319775,
+          "first_transverse_signed_min_m": -1.1182031635529027e-05,
+          "first_transverse_signed_max_m": 0.02355899068968921,
+          "first_transverse_rms_m": 0.010805593993851581,
+          "first_transverse_peak_absolute_m": 0.02355899068968921
+        }
+      },
+      "actual_minus_same_task_zero_actual": {
+        "status": "MEASURED_FROM_SAVED_PAIRED_ACTUAL",
+        "zero_source_slot_id": "PILOT_03",
+        "sampling": "same physical time; exact common saved 2ms grid; no interpolation",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0017791414229785271,
+          "norm_peak_m": 0.008665342957638808,
+          "norm_mean_m": 0.0005190528277269422,
+          "first_transverse_signed_min_m": -0.0005994432150764135,
+          "first_transverse_signed_max_m": 0.006911937000483428,
+          "first_transverse_rms_m": 0.0012864479511964957,
+          "first_transverse_peak_absolute_m": 0.006911937000483428
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.00493042091447002,
+          "norm_peak_m": 0.008665342957638808,
+          "norm_mean_m": 0.003985857082586321,
+          "first_transverse_signed_min_m": -0.0005994432150764135,
+          "first_transverse_signed_max_m": 0.006911937000483428,
+          "first_transverse_rms_m": 0.0035650509324082398,
+          "first_transverse_peak_absolute_m": 0.006911937000483428
+        }
+      },
+      "original_scalar_intervention": {
+        "I_route_rad_s": 0.1077965504580734,
+        "I_full_rad_s": 0.09441994548253373,
+        "route_sample_count": 175,
+        "full_sample_count": 1350,
+        "scope": "17D velocity-box-clipped nominal to selected norm; all constraints jointly; not single-obstacle contribution"
+      },
+      "midpoint_slice": {
+        "frozen_midpoint_s": 10.219397426605795,
+        "nearest_saved_time_s": 10.22,
+        "source_state_index": 5110,
+        "declared_reference_first_transverse_offset_m": 0.011999995771017319,
+        "actual_first_transverse_offset_from_base_m": 0.023434323705324372,
+        "actual_first_transverse_difference_from_same_task_zero_m": 0.0013379538984815596,
+        "interpretation": "local slice only; not full-window transfer gain, required avoidance distance, or causal proof"
+      }
+    },
+    {
+      "source_slot_id": "PILOT_05",
+      "new_slot_alias": "EA_09",
+      "canonical_mode": "v1_minus12",
+      "task_id_retained": "b3_mother_00_c_minus",
+      "obstacle_offset_m": 0.043,
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "strict_checks": {
+        "slot_identity": true,
+        "original_TaskSpec_exact_object": true,
+        "original_TaskSpec_exact_bytes": true,
+        "task_canonical_identity": true,
+        "original_v1_plan_exact_object": true,
+        "original_v1_plan_exact_bytes": true,
+        "plan_canonical_identity": true,
+        "definition_canonical_identity": true,
+        "v1_version": true,
+        "expected_frozen_z": true,
+        "route_interval_unchanged": true,
+        "complete_original_task_and_safety": true,
+        "no_repair_or_fallback": true,
+        "exact_43mm_declaration": true
+      },
+      "strictly_reusable_as_original_input": true,
+      "reused_evidence_is_new_actual": false,
+      "T_route_s": [
+        8.461298845015024,
+        11.977496008196567
+      ],
+      "unmeasured": {
+        "original_unconstrained_velocity_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "velocity_box_clipped_nominal_17d": {
+          "status": "NOT_MEASURED",
+          "reason": "not saved in the B.3 trace"
+        },
+        "I_route_continuum_10d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "I_route_rigid_7d": {
+          "status": "NOT_MEASURED",
+          "reason": "cannot decompose a scalar norm without the nominal source vector"
+        },
+        "single_sphere_intervention_or_constraint_activity": {
+          "status": "NOT_MEASURED",
+          "reason": "no per-row sphere-source activation/residual log"
+        },
+        "controller_transfer_gain_or_causal_attribution": {
+          "status": "NOT_MEASURED",
+          "reason": "paired closed-loop trajectory differences are descriptive, not an identified transfer function"
+        }
+      },
+      "status": "FULL_LOCAL_RAW_VERIFIED",
+      "selected_command_source": {
+        "status": "SAVED",
+        "field": "task_selected_command",
+        "dimension": 17
+      },
+      "input_reference_minus_base": {
+        "sampling": "actual consumed input positions at original 50Hz planning ticks",
+        "source_field": "task_input_reference_continuum_target_position",
+        "max_analytic_consistency_error_m": 4.577566798522237e-16,
+        "full_task": {
+          "sample_count": 1350,
+          "norm_rms_m": 0.0025287639162916604,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.0007144019646573644,
+          "first_transverse_signed_min_m": -0.01199999577101733,
+          "first_transverse_signed_max_m": 3.8906361330577137e-16,
+          "first_transverse_rms_m": 0.0025287639162916604,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        },
+        "route_window": {
+          "sample_count": 175,
+          "norm_rms_m": 0.007023541383847119,
+          "norm_peak_m": 0.01199999577101733,
+          "norm_mean_m": 0.005511100870213687,
+          "first_transverse_signed_min_m": -0.01199999577101733,
+          "first_transverse_signed_max_m": -9.320932657030154e-08,
+          "first_transverse_rms_m": 0.007023541383847119,
+          "first_transverse_peak_absolute_m": 0.01199999577101733
+        }
+      },
+      "declared_input_minus_base_on_native_actual_grid": {
+        "sampling": "analytic v1 reference evaluated on saved native actual times; no synthetic actual",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.002528670263572143,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.0007143490485686829,
+          "first_transverse_signed_min_m": -0.011999995771017319,
+          "first_transverse_signed_max_m": 0.0,
+          "first_transverse_rms_m": 0.002528670263572143,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.007007542407754221,
+          "norm_peak_m": 0.011999995771017319,
+          "norm_mean_m": 0.005486021902574396,
+          "first_transverse_signed_min_m": -0.011999995771017319,
+          "first_transverse_signed_max_m": -6.085885963862535e-12,
+          "first_transverse_rms_m": 0.007007542407754221,
+          "first_transverse_peak_absolute_m": 0.011999995771017319
+        }
+      },
+      "actual_minus_base": {
+        "sampling": "original independent fresh saved 2ms states minus analytic base at the same physical times",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.005052049888156539,
+          "norm_peak_m": 0.03236587147380953,
+          "norm_mean_m": 0.0013042306882421462,
+          "first_transverse_signed_min_m": -0.006057591633250177,
+          "first_transverse_signed_max_m": 0.021421144486121056,
+          "first_transverse_rms_m": 0.0029804325276015318,
+          "first_transverse_peak_absolute_m": 0.021421144486121056
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.013958757686760795,
+          "norm_peak_m": 0.03236587147380953,
+          "norm_mean_m": 0.009111247945131297,
+          "first_transverse_signed_min_m": -0.006057591633250177,
+          "first_transverse_signed_max_m": 0.021421144486121056,
+          "first_transverse_rms_m": 0.008258112307316753,
+          "first_transverse_peak_absolute_m": 0.021421144486121056
+        }
+      },
+      "actual_minus_same_task_zero_actual": {
+        "status": "MEASURED_FROM_SAVED_PAIRED_ACTUAL",
+        "zero_source_slot_id": "PILOT_03",
+        "sampling": "same physical time; exact common saved 2ms grid; no interpolation",
+        "full_task": {
+          "sample_count": 13501,
+          "norm_rms_m": 0.0031570265668024863,
+          "norm_peak_m": 0.019010526531527835,
+          "norm_mean_m": 0.0008136913232406441,
+          "first_transverse_signed_min_m": -0.008107135588639914,
+          "first_transverse_signed_max_m": 0.005017297595211837,
+          "first_transverse_rms_m": 0.0015477177730588705,
+          "first_transverse_peak_absolute_m": 0.008107135588639914
+        },
+        "route_window": {
+          "sample_count": 1758,
+          "norm_rms_m": 0.00874886605265991,
+          "norm_peak_m": 0.019010526531527835,
+          "norm_mean_m": 0.006248630461891619,
+          "first_transverse_signed_min_m": -0.008107135588639914,
+          "first_transverse_signed_max_m": 0.005017297595211837,
+          "first_transverse_rms_m": 0.004289091323116506,
+          "first_transverse_peak_absolute_m": 0.008107135588639914
+        }
+      },
+      "original_scalar_intervention": {
+        "I_route_rad_s": 0.11433806112317475,
+        "I_full_rad_s": 0.09541743713007009,
+        "route_sample_count": 175,
+        "full_sample_count": 1350,
+        "scope": "17D velocity-box-clipped nominal to selected norm; all constraints jointly; not single-obstacle contribution"
+      },
+      "midpoint_slice": {
+        "frozen_midpoint_s": 10.219397426605795,
+        "nearest_saved_time_s": 10.22,
+        "source_state_index": 5110,
+        "declared_reference_first_transverse_offset_m": -0.011999995771017319,
+        "actual_first_transverse_offset_from_base_m": 0.015911036885278354,
+        "actual_first_transverse_difference_from_same_task_zero_m": -0.006185332921564459,
+        "interpretation": "local slice only; not full-window transfer gain, required avoidance distance, or causal proof"
+      }
+    }
+  ],
+  "observations": [
+    "The original zero references already have substantial signed actual-base displacement near the fixed midpoint.",
+    "Same-side nonzero-vs-zero differences are measured separately over the full route window and full task.",
+    "Midpoint slices are descriptive; no transfer gain, minimum necessary avoidance or causal attribution is inferred.",
+    "Original 17D scalar intervention cannot provide 10D/7D or single-sphere decomposition."
+  ],
+  "new_costs": {
+    "actual_slots": 0,
+    "physics_steps": 0,
+    "private_preview_steps": 0,
+    "replay_steps": 0,
+    "geometry_queries": 0,
+    "DDIM_calls": 0,
+    "optimizer_updates": 0
+  },
+  "old_sources_unchanged_after_read": true,
+  "deployment": "NOT_MET"
+}

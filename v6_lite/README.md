@@ -1,3 +1,9 @@
+> 当前入口为 **V6.4-B.3.1**：[两图与全部候选](../v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html)、[可视化说明](../docs/V6_4_B31_VISUALIZATION.md)、[完整报告](../v6_4/releases/execution_aware_route_teacher_20261007_01/report.md)、[run03 审查](../paper/review-traces/experiment-result-to-claim/2026-10-07_run03/response.md)。
+>
+> 有限teacher较最佳常量低3.27%、较冻结几何规则低1.03%；同幅值v2没有一致优势，Diffusion收益未建立。 完整安全通过 28/28，质量可比 28/28。未训练、未模型采样、未运行独立泛化 TEST；deployment 为 `NOT_MET`。旧 B.3 的六槽负结果及五组 `NOT_RUN_PILOT_STOP` 保持。
+
+以下为历史模块说明及 B.3 发布时的入口记录。当前指针以上方 B.3.1 为准。
+
 > **当前分支为 V6.4-B.3**：固定 pilot 6/6 完整安全通过，非零方向相对零残差的干预改善为 2.79% / 3.81%，未达预声明 10% 门槛；新训练与五组正式 TEST 均未运行，部署仍为 `NOT_MET`。见[当前两图与方法表](../docs/V6_4_B3_VISUALIZATION.md)、[静态总览](../v6_4/visualization/conditional_route_value_20261007_01/index.html)及[研究报告](../v6_4/releases/conditional_route_value_20261007_01/report.md)。本文件以下记录继承的 **V6.2 历史控制器与研究**；[B.2 历史总览](../v6_4/visualization/task_anchored_residual_20261007_01/index.html)独立保留。
 
 # V6-lite：确定性混合双臂跟踪与避障

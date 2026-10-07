@@ -1,3 +1,11 @@
+> **当前研究入口：V6.4-B.3.1** — [两图与全部候选](../v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html)、[说明](V6_4_B31_VISUALIZATION.md)、[完整报告](../v6_4/releases/execution_aware_route_teacher_20261007_01/report.md)、[run03 审查](../paper/review-traces/experiment-result-to-claim/2026-10-07_run03/response.md)。
+>
+> 有限teacher较最佳常量低3.27%、较冻结几何规则低1.03%；同幅值v2没有一致优势，Diffusion收益未建立。 未训练、未模型采样、未运行独立泛化 TEST；deployment 为 `NOT_MET`。
+>
+> 本文下方是 V6.2 与 B.3 发布时的历史记录；其中 35 段视频属于 V6.2。B.3 原六槽负结果与五组 `NOT_RUN_PILOT_STOP` 保持，B.3/B.2 历史媒体与 manifest 均未刷新为 B.3.1 结果。
+
+---
+
 > **历史归档（V6.2）**：本页及其35视频保留原始结果，不是 B.3 新实验。当前分支为 [V6.4-B.3 两图与方法表](V6_4_B3_VISUALIZATION.md)：pilot 6/6 完整安全通过，路线干预改善 2.79% / 3.81% 未达预声明 10% 门槛，新训练与五组正式 TEST 均为 `NOT_RUN_PILOT_STOP`，部署 `NOT_MET`。[B.2 全套历史可视化](V6_4_B2_VISUALIZATION.md)独立保留。
 
 # V6.2 最新结果全套可视化
