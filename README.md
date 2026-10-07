@@ -1,4 +1,58 @@
-# Hybrid Dual-Arm Space Manipulator — V6-lite
+# Hybrid Dual-Arm Space Manipulator — V6.4-B.2
+
+本分支 `v6.4-b2-task-anchored-residual` 发布任务锚定的低维 Cartesian 路线残差先导试验及全套当前可视化。它是 V6.4-B.1 之后的独立补充；原执行和安全控制层保持冻结，旧试验及失败不改写。
+
+**表示有效，学习收益未建立。** 非零残差确实改变控制器参考和实际运动，并在预声明允许中间绕行的补充 TaskSpec 下完成任务。固定 TEST 的结果如下；完整成功必须同时通过 Task、执行合同、区间独立重算、声明原生几何和参考消费绑定。
+
+| 方法 | 完整 Task / 固定4任务 | 结论 |
+|---|---:|---|
+| E0：零残差 Cartesian | 4/4 | 非学习基础参考 |
+| E1：TRAIN-only 最近邻检索 | 4/4 | 保留的非学习路线库 |
+| E2：残差 Diffusion，固定 K1 | 3/4 | 学习收益未建立，不升为默认规划器 |
+
+全部37次actual保留，共488260个实际物理步。Teacher23/24成功，TRAIN17参考/6任务、VAL6参考/2任务。一次真实训练4000更新/128000曝光；VAL选中update250，对应8000曝光。E2 raw16个有限非零、14个合法，2个超幅值原样拒绝；K4闭环未运行。两个原工作域拒绝（teacher_17、TEST_01_E2）均保留。
+
+**验收边界：** 全部30条成功非零运行仍未通过历史严格全曲线 `continuum_irregular_waypoint_path_rmse`；本轮Task协议允许合法锚点间绕行，不能把它改写成旧全曲线协议通过。墙钟20ms不作本研究门禁，20ms规划/2ms物理/27s时长及安全标准不变。部署 `NOT_MET`，未建立连续时间安全、硬实时或计算延迟下的真实异步执行有效性。
+
+## 当前全套可视化
+
+[图表与回放目录](docs/V6_4_B2_VISUALIZATION.md) · [交互式总览](v6_4/visualization/task_anchored_residual_20261007_01/index.html) · [可移植完整报告](v6_4/releases/task_anchored_residual_20261007_01/report.md)
+
+![V6.4-B.2 固定TEST与全部示范结果](v6_4/visualization/task_anchored_residual_20261007_01/figures/01_fixed_test_outcomes.png)
+
+![一次真实训练与预声明VAL选择](v6_4/visualization/task_anchored_residual_20261007_01/figures/04_training_and_validation.png)
+
+![全部16个raw候选与幅值拒绝](v6_4/visualization/task_anchored_residual_20261007_01/figures/06_raw_candidate_amplitudes.png)
+
+当前展示覆盖全部4 TEST×3方法、全部24教师、训练/验证、16 raw、解析表示、路径与参考、Task误差、几何、基座漂移、实际命令/力矩、PCC/区间诊断和发布计时。14条固定保存状态回放提供五视角、连续体特写和组合视频；失败只回放到实际停止时刻，不补齐尾部。渲染只调用 `mj_forward`，不重新运行控制器、训练或采样。
+
+GitHub能显示PNG/GIF和Markdown；交互HTML请在本地HTTP服务打开，视频也可通过目录链接查看/下载：
+
+```powershell
+python -m http.server 8765 --bind 127.0.0.1
+# http://127.0.0.1:8765/v6_4/visualization/task_anchored_residual_20261007_01/index.html
+```
+
+## 发布数据与复验
+
+[v6_4/releases/task_anchored_residual_20261007_01](v6_4/releases/task_anchored_residual_20261007_01)包含冻结计划、Task、数据集、全部候选、两份真实权重、训练曲线、37槽结果与独立验收摘要及原封存manifest/verification。原文件字节不改，新增可移植映射与省略账本单独记录。
+
+约2.4GB完整物理/重放NPZ及逐周期大流保留本地，未加入普通Git；**克隆此分支不等于取得全部可重放原始证据**。轻量发布包逐项匹配原封存哈希，省略项也保留原SHA与大小。详见[发布清单](v6_4/releases/task_anchored_residual_20261007_01/release_manifest.json)和[发布校验](v6_4/releases/task_anchored_residual_20261007_01/release_verification.json)。
+
+```powershell
+python -B -X utf8 -m v6_4.export_residual_release --verify --output v6_4/releases/task_anchored_residual_20261007_01
+```
+
+原实验源码producer：`7d0a3fd4bd17f41b99b388c30c5ac4897ac4d31d`。当前分支后续提交仅增加发布、可视化和说明，不重写原实验身份。[原实现说明](v6_4/TASK_ANCHORED_RESIDUAL.md)与[独立结论审阅](paper/review-traces/experiment-result-to-claim/2026-10-07_run01/response.md)保留。
+
+## 历史归档
+
+[V6.2 历史可视化](docs/V6_2_LATEST_VISUALIZATION.md)保留原35视频与所有历史研究图，均为其原协议结果，不重标为V6.4新实验。
+
+<details>
+<summary>展开继承的 V6.2 控制器、安装与历史证据说明</summary>
+
+# V6.2 继承控制器与历史研究
 
 这是 V6-lite 的独立实验仓库。当前实现为 V6.2-C.1 `bounded_interval_pcc`：保留 B.2 功能，加入端到端发布时序、等价工作区优化与延迟拒绝。C.1 的离线功能与重复计时验收通过，持续墙钟执行验收未通过；历史 B.2 的重复计时失败继续保留。在线使用一个 17 维加权速度 QP、十步执行斜坡与 67 路力矩伺服。A.1 / `legacy_pcc` 保留为历史对照。[机器可读状态](v6_lite/controller_status.json)区分历史结果与当前验收状态。
 
@@ -8,7 +62,7 @@
 
 **研究/仿真补充验收：PASSED。** 新源码 `9cd1831e7c77a340464a669eac3b5aa7cd9c3c3c` 完成五场景各 27 s、67,500 个物理步和 6,750 个规划周期；当前测试 200/200、历史冻结 16/16。研究交付功能/证据检查 25/25、执行合同 11/11；6,755 个规划边界、12,350 条区间行独立重算零失配，每场 90 个非计时数组与 C.1 第一轮严格相同。原 26 项仍全部重算，显式研究 profile 将 `measured_rate_deadlines` 单列性能观察；默认 legacy 的 26 项判定不变。模式 `research_simulation` 复用已有 C.1 同步优化路径，保留模拟 50 Hz/500 Hz 及原安全合同，无需管理员权限。
 
-本轮规划/发布 20 ms、力矩 2 ms 的 p95 采样目标通过；最差单场景发布 p95/p99 为 18.929/22.350 ms，最大 37.411 ms，107/6,750 周期超过 20 ms、最长连续 11 个，启动周期完整保留。[额外独立审计 02](v6_lite/output/runs/research_independent_audit_02/report.json) 190/190，通过对全部证书、守卫、原始时钟、数组及 manifest 的核对；审计 01 的路径表示比较工具失败仍保留。研究通过补充原 C.1.1 目标；原生墙钟部署仍为 `NOT_MET`，硬件安全为 `NOT_ESTABLISHED`，旧目标未完成。具体源码、轨迹、独立验证、审计限制和性能范围见 [研究验收说明](docs/V6_2_RESEARCH_ACCEPTANCE.md) 与 [新运行报告](v6_lite/output/runs/research_acceptance_01/report.json)。
+本轮规划/发布 20 ms、力矩 2 ms 的 p95 采样目标通过；最差单场景发布 p95/p99 为 18.929/22.350 ms，最大 37.411 ms，107/6,750 周期超过 20 ms、最长连续 11 个，启动周期完整保留。额外独立审计 02（记录见[研究验收说明](docs/V6_2_RESEARCH_ACCEPTANCE.md)） 190/190，通过对全部证书、守卫、原始时钟、数组及 manifest 的核对；审计 01 的路径表示比较工具失败仍保留。研究通过补充原 C.1.1 目标；原生墙钟部署仍为 `NOT_MET`，硬件安全为 `NOT_ESTABLISHED`，旧目标未完成。具体源码、轨迹、独立验证、审计限制和性能范围见 [研究验收说明](docs/V6_2_RESEARCH_ACCEPTANCE.md) 与 [新运行报告](v6_lite/output/runs/research_acceptance_01/report.json)。
 
 **有限补充研究已完成：** 原 1,024 例保守性归因与固定 172 例形状诊断完成；默认在线查询解决全部 18 个未知案例，更大预算没有新增收益。同半径离散链只恢复 25/172 个判定，原协议充分包络余量均为正，保持安全半径并停止静态诊断扩张。预声明目标平移速度 2 倍闭环实验五场全尝试，2 场完成、3 场拒绝，整体验收失败且不完整；三次冻结状态在原容差下约束冲突，停止扩展求解迭代。失败证据及独立核对完整保留，见 [保守性](docs/V6_2_RESEARCH_CONSERVATISM.md)、[形状与包络](docs/V6_2_RESEARCH_SHAPE_DECOMPOSITION.md) 和 [压力实验](docs/V6_2_RESEARCH_VELOCITY_STRESS.md) 报告。
 
@@ -144,7 +198,7 @@ python -m unittest discover -s v6_lite -p 'test*.py'
 
 B.1 有界查询只界定当前 PCC 管体代理的连续弧长最小净空；返回代理安全、代理低于门槛或未知，并单独标明工作域和真实几何包络的证据范围。`bounds_valid` 依赖精确数学模型的弧长导数界，双精度外扩尚非形式化数值认证；有限样本包络回归不构成全域或连续时间保证。原在线 `PCCClearanceEvaluator` 及安全参数保持不变。
 
-## 可视化
+## V6.2 历史可视化（归档）
 
 当前展示入口是[最新结果全套可视化](docs/V6_2_LATEST_VISUALIZATION.md)，覆盖名义研究五场景、1,024 例保守性、172 例形状诊断、2 倍速度全部五次尝试、15 组惯量敏感性及墙钟部署结果。图、GIF、PCC 对照、逐场景路径、五视角/组合/连续体单侧共 35 个视频全部使用最新保存结果；HTML 提供分类切换和场景/视角选择。压力实验的三条部分轨迹和失败明确保留。
 
@@ -181,3 +235,5 @@ GitHub 可直接显示 Markdown 中的 PNG/GIF；MP4 点击查看或下载，交
 - [V6.1-B PCC/胶囊 CBF 控制集成](docs/V6_1B_PCC_CBF_INTEGRATION.md)
 - [V6-lite 模块说明](v6_lite/README.md)
 - [机器人模型资产来源与发布状态](ASSET_PROVENANCE.md)
+
+</details>

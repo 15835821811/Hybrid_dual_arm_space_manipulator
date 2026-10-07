@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>V6.4-B.2 · 任务锚定路线残差</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="eyebrow">HYBRID DUAL-ARM SPACE MANIPULATOR <span>V6.4-B.2 / 2026-10-07</span></div>
+  <div class="hero"><div><h1>任务锚定路线残差</h1><p class="lead">非零表示有效。学习收益未建立。</p><p>冻结任务、原执行层与有限预算下的完整先导结果。所有新画面来自保存状态，零新增物理积分、训练或采样。</p></div><div class="verdict"><span>部署状态</span><strong>NOT_MET</strong><small>离散仿真证据 · 无连续时间或硬实时认证</small></div></div>
+  <div class="links"><a href="../../releases/task_anchored_residual_20261007_01/report.md">完整研究报告 ↗</a><a href="../../../README.md">分支说明 ↗</a><a href="../../../v6_lite/visualization/latest/index.html">V6.2 历史展示 ↗</a></div>
+</header>
+<main>
+  <section class="cards" aria-label="固定结果">
+    <article><span>E0 · 零残差</span><strong>4<span>/4</span></strong><p>原 Cartesian 基础参考</p></article>
+    <article><span>E1 · 非学习检索</span><strong>4<span>/4</span></strong><p>仅使用成功 TRAIN 参考</p></article>
+    <article><span>E2 · Diffusion K1</span><strong class="amber">3<span>/4</span></strong><p>固定 slot 0，无候选替换</p></article>
+    <article><span>Teacher · 成功示范</span><strong>23<span>/24</span></strong><p>TRAIN 17 / VAL 6 · 失败保留</p></article>
+  </section>
+  <aside class="scope"><strong>验收范围</strong><p>完整成功指生成候选前冻结的 <code>end_effector_detour</code> 补充 TaskSpec 与执行合同、区间重算及声明原生几何检查。全部 30 条成功非零运行仍未通过历史全曲线 RMSE 检查；旧协议与历史负结果保持不变。失败前缀不参与完整任务质量比较。</p></aside>
+  <nav class="tabs" aria-label="展示分类"></nav>
+  <section id="replay-section" class="section">
+    <div class="section-head"><div><span class="kicker">SAVED-STATE REPLAY</span><h2>实际运动回放</h2></div><span class="badge">14 条固定回放 · 7 种视图</span></div>
+    <div class="controls"><label>任务 / 示例<select id="task-select"></select></label><label>方法<select id="method-select"></select></label><label>视角<select id="view-select"><option value="five_view_grid">五视角组合</option><option value="overview">总览</option><option value="front">正面</option><option value="side">侧面</option><option value="top">俯视</option><option value="iso">斜视</option><option value="continuum_focus">连续体特写</option></select></label></div>
+    <div id="replay-status" class="replay-status" role="status">正在读取回放清单…</div>
+    <video id="main-player" controls preload="metadata" playsinline></video>
+    <p id="replay-caption" class="caption"></p><div id="media-links" class="links"></div>
+    <details id="paired-comparison"><summary>同任务三组对照播放</summary><p class="caption">按保存的仿真时刻对齐。失败视频只到拒绝时刻，结束后不会生成或补齐后续运动。</p><button id="sync-play" type="button">从起点同步播放</button><div id="paired-players" class="paired-players"></div></details>
+  </section>
+  <section id="results-section" class="section">
+    <div class="section-head"><div><span class="kicker">ALL FROZEN TEST ATTEMPTS</span><h2>任务与完整路径指标</h2></div><span class="badge">分母固定 4 / 方法</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Slot</th><th>完整任务</th><th>实际末时刻 s</th><th>连续体路径 m</th><th>整机最小 mm</th><th>arm-obstacle mm</th><th>干预 RMS rad/s</th><th>参考峰值 mm</th></tr></thead><tbody id="results-body"></tbody></table></div>
+    <p class="caption">整机最小值常由 rigid-target 主导，不能解释为绕障学习收益。失败行净空仅覆盖已执行前缀；完整路径长度和干预比较留空。逐要求误差是在选定的同一达标时刻评价，终态在 27.0 s 评价。</p>
+  </section>
+  <section id="figures-section" class="section">
+    <div class="section-head"><div><span class="kicker">TRACEABLE FIGURES</span><h2>图表与诊断</h2></div><label class="search">筛选图表<input id="figure-search" type="search" placeholder="路径、训练、间隙、计时…"></label></div>
+    <div id="figure-grid" class="figure-grid"></div>
+  </section>
+  <section class="section provenance-section">
+    <details><summary>来源、发布范围与复验</summary><div class="provenance-grid"><div><h3>固定预算</h3><p>零接口 1 + Teacher 24 + TEST K1 12 = 37 次 actual。实际 488,260 步，保存力矩独立重放另计。K4 actual 未运行。</p><h3>真实训练</h3><p>4,000 更新 / 128,000 TRAIN 曝光；VAL 选中 update 250，对应 8,000 曝光。17 TRAIN 与 6 VAL 独立参考，VAL 训练曝光为零。</p></div><div><h3>几何与计时</h3><p>robot-target 原生 500 Hz；整机 50 Hz 边界加配置细分 4。20 ms 规划 / 2 ms 物理 / 27 s 任务不变；墙钟 20 ms 不作研究门禁，全部长尾保留。</p><h3>GitHub 发布</h3><p>轻量快照保留配置、权重、结果和失败说明；完整 NPZ 与逐周期大流保留本地，省略表逐项绑定 SHA-256。克隆仓库不包含全部原始重放数据。</p></div></div><div class="links"><a href="visualization_manifest.json">可视化 SHA-256 清单</a><a href="visualization_validation.json">发布校验</a><a href="../../releases/task_anchored_residual_20261007_01/release_manifest.json">轻量发布清单</a><a href="../../releases/task_anchored_residual_20261007_01/snapshot/verification.json">原始封存验证</a><a href="dashboard_data.json">当前结构化结果</a></div><pre id="source-identity"></pre></details>
+  </section>
+</main>
+<footer>v6.4-b2-task-anchored-residual · 本分支的当前展示。历史 V6.2 可视化保留其原始来源与结果。</footer>
+<script src="app.js"></script>
+</body>
+</html>

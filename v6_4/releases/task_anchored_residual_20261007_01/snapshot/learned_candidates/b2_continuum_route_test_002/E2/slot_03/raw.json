@@ -1,0 +1,109 @@
+{
+  "task_id": "b2_continuum_route_test_002",
+  "slot": 3,
+  "seed": 2026100714,
+  "initial_noise": [
+    -0.9222089052200317,
+    -0.2789889872074127,
+    -1.307445764541626,
+    0.4587891697883606,
+    0.5569641590118408,
+    -1.0550193786621094,
+    0.509758710861206,
+    -0.21462692320346832,
+    -0.9287967085838318,
+    1.4102357625961304,
+    0.011136386543512344,
+    -0.3614879548549652
+  ],
+  "raw_z_m": [
+    [
+      -0.008946745592313418,
+      0.0026002017481640553
+    ],
+    [
+      -0.011443075730268568,
+      0.005686932850626746
+    ],
+    [
+      0.0026975344496339114,
+      0.00023556452237354433
+    ],
+    [
+      0.0023151862891372236,
+      0.0033110391807415506
+    ],
+    [
+      -0.008688158246120983,
+      0.01059110254932847
+    ],
+    [
+      -0.001800943533667976,
+      0.0027563746788374045
+    ]
+  ],
+  "checkpoint_sha256": "9ace53f482253216cea7baabed7479d84f37a9e80e71231219c7e2f9d3c94ca1",
+  "inference_repair": false,
+  "sampler_metadata": {
+    "method": "E2",
+    "checkpoint_sha256": "9ace53f482253216cea7baabed7479d84f37a9e80e71231219c7e2f9d3c94ca1",
+    "selected_update": 250,
+    "selected_validation_loss": 0.9856387367472053,
+    "inference_wall_s": 0.04031790001317859,
+    "training_config_sha256": "22a04539781ddefd3ee50a92591bcafffddb16cb9eb60297c3d286f6ea65269b",
+    "noise_schedule_identity": {
+      "alpha_bars_sha256": "bf0561b8e9e3389c93d4046f9e43e7ee40a63f99f9a040b3acaa51a7ac048817",
+      "beta_cap": 0.999,
+      "betas_sha256": "101ff0c0af0c8a6aceb59b87b82cc38bc3154a819d83d0e299b4c98e4cec70eb",
+      "buffer_dtype": "float32",
+      "cosine_s": 0.008,
+      "diffusion_steps": 100,
+      "hash_encoding": "schema+NUL+100 little-endian float32 betas+100 little-endian float32 alpha_bars",
+      "linear_beta_end": null,
+      "linear_beta_start": null,
+      "noise_schedule": "cosine",
+      "prediction_type": "epsilon",
+      "schedule_calculation": "float64 betas/cumprod then float32",
+      "schedule_sha256": "bd9e32157a559d91bbe36c64b5b8e7e4fd31cbf79a8afacb9413c5fa50343589",
+      "schema": "v6_4_ddpm_effective_f32_schedule_v1",
+      "terminal_alpha_bar": 2.428572258850181e-07,
+      "terminal_alpha_exact_zero": false,
+      "terminal_signal_coefficient": 0.0004928054645445991,
+      "terminal_snr": 2.428572848646646e-07
+    },
+    "parameterization": {
+      "epsilon_formula": "sqrt(1-alpha_bar)*xt+sqrt(alpha_bar)*r_net",
+      "equivalent_internal_residual_mse_weight": "1",
+      "loss": "basic_v_mean_squared_error",
+      "loss_target": "true_forward_v",
+      "network_output": "internal_v_residual",
+      "parameterization": "epsilon_residual",
+      "parameterization_sha256": "bd7e5d36c51523e76ffe9e33fb62c53f4f641e7d777974fffbbb11a969584936",
+      "postprocessing_clipping_projection_or_reference_optimization": false,
+      "requires_parameterization_specific_training": true,
+      "schema": "v6_4_v_parameterization_v2",
+      "terminal_residual_supervision_weight": "1",
+      "terminal_risk": "v MSE changes timestep weighting; finite fit does not establish task or physical success",
+      "x0_formula": "sqrt(alpha_bar)*xt-sqrt(1-alpha_bar)*r_net"
+    },
+    "objective": {
+      "additional_losses": [],
+      "epsilon_timestep_weight_of_v_mse": "1/alpha_bar",
+      "is_basic_epsilon_mse": false,
+      "loss": "mean_squared_error",
+      "objective": "v_mse",
+      "objective_sha256": "b70945a5baaa61ed8bcc26a2df40ea6526f1331dc6b0b6db9f38aa31fa23c45a",
+      "residual_error_relation": "L_epsilon_per_example=alpha_bar*L_v;L_x0_per_example=(1-alpha_bar)*L_v",
+      "sampling_prediction": "epsilon_and_unclipped_x0",
+      "schema": "v6_4_explicit_training_objective_v1",
+      "target": "sqrt(alpha_bar)*epsilon-sqrt(1-alpha_bar)*x0"
+    },
+    "initial_noise_sha256": "5b5fd7c47b452bab0384f2fefe25398084b4c59b2c561a8eaa2b42380c843b8b",
+    "masked_initial_noise_sha256": "5b5fd7c47b452bab0384f2fefe25398084b4c59b2c561a8eaa2b42380c843b8b",
+    "condition_scaler_sha256": "1b9ab821913177783aa01cba3187fdba2392411a664f950f06bc0fe88ec3633f",
+    "residual_scaler_sha256": "baaea14393b3dab58eefe584951a25ace27977ff031b6fbfe992d023efa9bb62",
+    "postprocessing": "inverse TRAIN residual scaler only; no clip/project/fallback",
+    "physics_steps": 0
+  },
+  "generation_wall_s": 0.22962509980425239
+}

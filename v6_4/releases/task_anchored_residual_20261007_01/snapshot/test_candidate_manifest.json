@@ -1,0 +1,2491 @@
+{
+  "schema": "v64_b2_fixed_TEST_candidates_v1",
+  "records": [
+    {
+      "task_id": "b2_continuum_route_test_000",
+      "E1": {
+        "plan_path": "learned_candidates/b2_continuum_route_test_000/E1/plan.json",
+        "status": "DECLARED",
+        "method": "E1",
+        "source_task_id": "b2_continuum_route_train_000",
+        "candidate_index": 0,
+        "source_plan_sha256": "57add6cbee6f22a94ce4ef5a9be4a2968e46c5d1b50a6fa4dd9bfcc626ba1bb0",
+        "squared_condition_distance": 121.4983672040751,
+        "tie_rule": "distance,task_id,candidate_index,plan_sha256",
+        "z_modified": false
+      },
+      "E2": [
+        {
+          "slot": 0,
+          "seed": 2026100711,
+          "plan_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_000",
+            "task_sha256": "a1c42dd74dd56a51d76314289b389f2240d49b4431379625545b1ff0a12d5665",
+            "plan_sha256": "e64d86e19f4ae50b3944c10d78fcc9e7d2da7021bab1ba702bf8ca63087ec779",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.597307872260712,
+                "protected_window_s": [
+                  7.247307872260713,
+                  7.947307872260712
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.356102875310881,
+                "protected_window_s": [
+                  11.006102875310882,
+                  11.706102875310881
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.284697675997352,
+                "protected_window_s": [
+                  14.934697675997352,
+                  15.634697675997351
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.077631175497913,
+                "protected_window_s": [
+                  18.727631175497912,
+                  19.427631175497915
+                ],
+                "position_error_m": 1.0007415106216802e-16,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.152047911729042,
+                "protected_window_s": [
+                  21.80204791172904,
+                  22.502047911729044
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.09457874572581651,
+            "base_reference_speed_upper_bound_m_s": 0.07930648380382443,
+            "residual_speed_upper_bound_m_s": 0.015272261921992068,
+            "reference_speed_sampled_max_m_s": 0.07930648377134084,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.01375299698823341,
+            "reference_offset_analytic_peak_m": 0.01375300903326049,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 1,
+          "seed": 2026100712,
+          "plan_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/reference_precheck.json",
+          "finite_format_amplitude_passed": false,
+          "precheck": {
+            "passed": false,
+            "reference_task_passed": false,
+            "reference_velocity_passed": false,
+            "errors": [
+              {
+                "message": "coefficient two-dimensional norm exceeds 0.020 m"
+              }
+            ],
+            "whole_body_geometry": "NOT_RUN",
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION"
+          }
+        },
+        {
+          "slot": 2,
+          "seed": 2026100713,
+          "plan_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_000",
+            "task_sha256": "a1c42dd74dd56a51d76314289b389f2240d49b4431379625545b1ff0a12d5665",
+            "plan_sha256": "42e712bca932d2e87c48c272fe1825126f69c2e5a6c91642c4e0f67110c9d422",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.597307872260712,
+                "protected_window_s": [
+                  7.247307872260713,
+                  7.947307872260712
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.356102875310881,
+                "protected_window_s": [
+                  11.006102875310882,
+                  11.706102875310881
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.284697675997352,
+                "protected_window_s": [
+                  14.934697675997352,
+                  15.634697675997351
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.077631175497913,
+                "protected_window_s": [
+                  18.727631175497912,
+                  19.427631175497915
+                ],
+                "position_error_m": 1.0007415106216802e-16,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.152047911729042,
+                "protected_window_s": [
+                  21.80204791172904,
+                  22.502047911729044
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.09594180272840461,
+            "base_reference_speed_upper_bound_m_s": 0.07930648380382443,
+            "residual_speed_upper_bound_m_s": 0.01663531892458018,
+            "reference_speed_sampled_max_m_s": 0.07930648377134084,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.015637537942133753,
+            "reference_offset_analytic_peak_m": 0.015637540826437143,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 3,
+          "seed": 2026100714,
+          "plan_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_000",
+            "task_sha256": "a1c42dd74dd56a51d76314289b389f2240d49b4431379625545b1ff0a12d5665",
+            "plan_sha256": "9ee36322dbd600d3bc7c2820c856552740e82fdcbabeffa5400113ea9c4091fd",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.597307872260712,
+                "protected_window_s": [
+                  7.247307872260713,
+                  7.947307872260712
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.356102875310881,
+                "protected_window_s": [
+                  11.006102875310882,
+                  11.706102875310881
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.284697675997352,
+                "protected_window_s": [
+                  14.934697675997352,
+                  15.634697675997351
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.077631175497913,
+                "protected_window_s": [
+                  18.727631175497912,
+                  19.427631175497915
+                ],
+                "position_error_m": 1.0007415106216802e-16,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.152047911729042,
+                "protected_window_s": [
+                  21.80204791172904,
+                  22.502047911729044
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.09677003308367459,
+            "base_reference_speed_upper_bound_m_s": 0.07930648380382443,
+            "residual_speed_upper_bound_m_s": 0.017463549279850155,
+            "reference_speed_sampled_max_m_s": 0.07930648377134084,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.01508253545921795,
+            "reference_offset_analytic_peak_m": 0.015082548668669548,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "b2_continuum_route_test_001",
+      "E1": {
+        "plan_path": "learned_candidates/b2_continuum_route_test_001/E1/plan.json",
+        "status": "DECLARED",
+        "method": "E1",
+        "source_task_id": "b2_continuum_route_train_005",
+        "candidate_index": 0,
+        "source_plan_sha256": "9b4b807ebc865a9001302b48b4559e89a14504383e45b71a89a4d6222951ba12",
+        "squared_condition_distance": 82.79961535304874,
+        "tie_rule": "distance,task_id,candidate_index,plan_sha256",
+        "z_modified": false
+      },
+      "E2": [
+        {
+          "slot": 0,
+          "seed": 2026100711,
+          "plan_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_001",
+            "task_sha256": "fa07e652d46fb97b123529a13c884a2f65260c3861079c462ad57d5c6d683d2f",
+            "plan_sha256": "a20d268481fba884f78980d0872ae7334b198476be139382f452bbaba8839bce",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.042890366399245,
+                "protected_window_s": [
+                  7.692890366399245,
+                  8.392890366399245
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.892932227824465,
+                "protected_window_s": [
+                  11.542932227824465,
+                  12.242932227824465
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.445201779513205,
+                "protected_window_s": [
+                  15.095201779513205,
+                  15.795201779513205
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.564894312034973,
+                "protected_window_s": [
+                  18.21489431203497,
+                  18.914894312034974
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.59074953368824,
+                "protected_window_s": [
+                  21.240749533688238,
+                  21.94074953368824
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10429779684349186,
+            "base_reference_speed_upper_bound_m_s": 0.08969517876932614,
+            "residual_speed_upper_bound_m_s": 0.014602618074165711,
+            "reference_speed_sampled_max_m_s": 0.08969517841114907,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.011009095033810527,
+            "reference_offset_analytic_peak_m": 0.011009100065478582,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 1,
+          "seed": 2026100712,
+          "plan_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/reference_precheck.json",
+          "finite_format_amplitude_passed": false,
+          "precheck": {
+            "passed": false,
+            "reference_task_passed": false,
+            "reference_velocity_passed": false,
+            "errors": [
+              {
+                "message": "coefficient two-dimensional norm exceeds 0.020 m"
+              }
+            ],
+            "whole_body_geometry": "NOT_RUN",
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION"
+          }
+        },
+        {
+          "slot": 2,
+          "seed": 2026100713,
+          "plan_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_001",
+            "task_sha256": "fa07e652d46fb97b123529a13c884a2f65260c3861079c462ad57d5c6d683d2f",
+            "plan_sha256": "2c244a5d9c4e837a1f9ee553ba05b01bf30e7ef96d7a26711631103ee6d0de9c",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.042890366399245,
+                "protected_window_s": [
+                  7.692890366399245,
+                  8.392890366399245
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.892932227824465,
+                "protected_window_s": [
+                  11.542932227824465,
+                  12.242932227824465
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.445201779513205,
+                "protected_window_s": [
+                  15.095201779513205,
+                  15.795201779513205
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.564894312034973,
+                "protected_window_s": [
+                  18.21489431203497,
+                  18.914894312034974
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.59074953368824,
+                "protected_window_s": [
+                  21.240749533688238,
+                  21.94074953368824
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10581600884175392,
+            "base_reference_speed_upper_bound_m_s": 0.08969517876932614,
+            "residual_speed_upper_bound_m_s": 0.016120830072427775,
+            "reference_speed_sampled_max_m_s": 0.0896951783991098,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.013387552608675024,
+            "reference_offset_analytic_peak_m": 0.013387569798107905,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 3,
+          "seed": 2026100714,
+          "plan_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_001",
+            "task_sha256": "fa07e652d46fb97b123529a13c884a2f65260c3861079c462ad57d5c6d683d2f",
+            "plan_sha256": "df4fc92919149759710705a3422b2b4c133988a4afdd431ebf4c1c56b5d41c03",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.042890366399245,
+                "protected_window_s": [
+                  7.692890366399245,
+                  8.392890366399245
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.892932227824465,
+                "protected_window_s": [
+                  11.542932227824465,
+                  12.242932227824465
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.445201779513205,
+                "protected_window_s": [
+                  15.095201779513205,
+                  15.795201779513205
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.564894312034973,
+                "protected_window_s": [
+                  18.21489431203497,
+                  18.914894312034974
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.59074953368824,
+                "protected_window_s": [
+                  21.240749533688238,
+                  21.94074953368824
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10514725200151405,
+            "base_reference_speed_upper_bound_m_s": 0.08969517876932614,
+            "residual_speed_upper_bound_m_s": 0.0154520732321879,
+            "reference_speed_sampled_max_m_s": 0.08969517839426924,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.011688553391884873,
+            "reference_offset_analytic_peak_m": 0.011688558734096972,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "b2_continuum_route_test_002",
+      "E1": {
+        "plan_path": "learned_candidates/b2_continuum_route_test_002/E1/plan.json",
+        "status": "DECLARED",
+        "method": "E1",
+        "source_task_id": "b2_continuum_route_train_004",
+        "candidate_index": 0,
+        "source_plan_sha256": "09c310c675bbdda34fa389a58af423048316896e4ea37830f742610d2e34fd26",
+        "squared_condition_distance": 111.22087208076906,
+        "tie_rule": "distance,task_id,candidate_index,plan_sha256",
+        "z_modified": false
+      },
+      "E2": [
+        {
+          "slot": 0,
+          "seed": 2026100711,
+          "plan_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_002",
+            "task_sha256": "8b9a7693fa8f5f87b468643b55a6f8a884ab41a9cbc781a16ca559684ac2642e",
+            "plan_sha256": "2841210af00bef9782005a69b58740c21f2243b81881a28c93c13a339c9956c5",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.811154706772488,
+                "protected_window_s": [
+                  7.461154706772488,
+                  8.161154706772487
+                ],
+                "position_error_m": 4.163336342344337e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.213976632891868,
+                "protected_window_s": [
+                  10.863976632891868,
+                  11.563976632891867
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 14.766497558057223,
+                "protected_window_s": [
+                  14.416497558057223,
+                  15.116497558057223
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.216250293569566,
+                "protected_window_s": [
+                  17.866250293569564,
+                  18.566250293569567
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.424817472915386,
+                "protected_window_s": [
+                  21.074817472915385,
+                  21.774817472915387
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.09899153457490338,
+            "base_reference_speed_upper_bound_m_s": 0.08321487061499921,
+            "residual_speed_upper_bound_m_s": 0.015776663959904166,
+            "reference_speed_sampled_max_m_s": 0.0832148677113737,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.012630842797395354,
+            "reference_offset_analytic_peak_m": 0.01263085065478095,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 1,
+          "seed": 2026100712,
+          "plan_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_002",
+            "task_sha256": "8b9a7693fa8f5f87b468643b55a6f8a884ab41a9cbc781a16ca559684ac2642e",
+            "plan_sha256": "e469aff8098a3ead9fe04a91e75977639632c1ff023571751580b5c7ec6d7b69",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.811154706772488,
+                "protected_window_s": [
+                  7.461154706772488,
+                  8.161154706772487
+                ],
+                "position_error_m": 4.163336342344337e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.213976632891868,
+                "protected_window_s": [
+                  10.863976632891868,
+                  11.563976632891867
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 14.766497558057223,
+                "protected_window_s": [
+                  14.416497558057223,
+                  15.116497558057223
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.216250293569566,
+                "protected_window_s": [
+                  17.866250293569564,
+                  18.566250293569567
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.424817472915386,
+                "protected_window_s": [
+                  21.074817472915385,
+                  21.774817472915387
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.11054122924947689,
+            "base_reference_speed_upper_bound_m_s": 0.08321487061499921,
+            "residual_speed_upper_bound_m_s": 0.027326358634477674,
+            "reference_speed_sampled_max_m_s": 0.08321486781983117,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.01995864464301816,
+            "reference_offset_analytic_peak_m": 0.01995865549111507,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 2,
+          "seed": 2026100713,
+          "plan_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_002",
+            "task_sha256": "8b9a7693fa8f5f87b468643b55a6f8a884ab41a9cbc781a16ca559684ac2642e",
+            "plan_sha256": "0240b9abd27592581c0f1758c040632fff045400f9fbb35bbdf4271506ccbc8d",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.811154706772488,
+                "protected_window_s": [
+                  7.461154706772488,
+                  8.161154706772487
+                ],
+                "position_error_m": 4.163336342344337e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.213976632891868,
+                "protected_window_s": [
+                  10.863976632891868,
+                  11.563976632891867
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 14.766497558057223,
+                "protected_window_s": [
+                  14.416497558057223,
+                  15.116497558057223
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.216250293569566,
+                "protected_window_s": [
+                  17.866250293569564,
+                  18.566250293569567
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.424817472915386,
+                "protected_window_s": [
+                  21.074817472915385,
+                  21.774817472915387
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10185134758947892,
+            "base_reference_speed_upper_bound_m_s": 0.08321487061499921,
+            "residual_speed_upper_bound_m_s": 0.018636476974479704,
+            "reference_speed_sampled_max_m_s": 0.08321486835370202,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.015478055591516795,
+            "reference_offset_analytic_peak_m": 0.01547805687469367,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 3,
+          "seed": 2026100714,
+          "plan_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_002",
+            "task_sha256": "8b9a7693fa8f5f87b468643b55a6f8a884ab41a9cbc781a16ca559684ac2642e",
+            "plan_sha256": "d40306a20ea585d01e8bb7571525233c4fcb563e48c1e7c7b5302639cbdf93b4",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 7.811154706772488,
+                "protected_window_s": [
+                  7.461154706772488,
+                  8.161154706772487
+                ],
+                "position_error_m": 4.163336342344337e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 11.213976632891868,
+                "protected_window_s": [
+                  10.863976632891868,
+                  11.563976632891867
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 14.766497558057223,
+                "protected_window_s": [
+                  14.416497558057223,
+                  15.116497558057223
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 18.216250293569566,
+                "protected_window_s": [
+                  17.866250293569564,
+                  18.566250293569567
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 21.424817472915386,
+                "protected_window_s": [
+                  21.074817472915385,
+                  21.774817472915387
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10032539337277782,
+            "base_reference_speed_upper_bound_m_s": 0.08321487061499921,
+            "residual_speed_upper_bound_m_s": 0.017110522757778614,
+            "reference_speed_sampled_max_m_s": 0.08321486769769475,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.013698734008914644,
+            "reference_offset_analytic_peak_m": 0.01369874253061324,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "b2_continuum_route_test_003",
+      "E1": {
+        "plan_path": "learned_candidates/b2_continuum_route_test_003/E1/plan.json",
+        "status": "DECLARED",
+        "method": "E1",
+        "source_task_id": "b2_continuum_route_train_000",
+        "candidate_index": 0,
+        "source_plan_sha256": "57add6cbee6f22a94ce4ef5a9be4a2968e46c5d1b50a6fa4dd9bfcc626ba1bb0",
+        "squared_condition_distance": 143.71125951987278,
+        "tie_rule": "distance,task_id,candidate_index,plan_sha256",
+        "z_modified": false
+      },
+      "E2": [
+        {
+          "slot": 0,
+          "seed": 2026100711,
+          "plan_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_003",
+            "task_sha256": "ea63f759c7a6dcb0c374c74309c7981c096aee84aca101c859e41f79daae2a1b",
+            "plan_sha256": "6dca1145d58a22869a5811d4da7420d8e885fe3ab8f4b73eecd5d6e248781b0e",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.48216364747735,
+                "protected_window_s": [
+                  8.13216364747735,
+                  8.83216364747735
+                ],
+                "position_error_m": 5.551115123125783e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 12.470035413788343,
+                "protected_window_s": [
+                  12.120035413788344,
+                  12.820035413788343
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.930388919223741,
+                "protected_window_s": [
+                  15.580388919223742,
+                  16.280388919223743
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.365886071367743,
+                "protected_window_s": [
+                  19.015886071367742,
+                  19.715886071367745
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.238866597459335,
+                "protected_window_s": [
+                  21.888866597459334,
+                  22.588866597459337
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10350731405876447,
+            "base_reference_speed_upper_bound_m_s": 0.08780512531143128,
+            "residual_speed_upper_bound_m_s": 0.01570218874733319,
+            "reference_speed_sampled_max_m_s": 0.08780512490136341,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.012506051979284323,
+            "reference_offset_analytic_peak_m": 0.012506052358428712,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 1,
+          "seed": 2026100712,
+          "plan_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_003",
+            "task_sha256": "ea63f759c7a6dcb0c374c74309c7981c096aee84aca101c859e41f79daae2a1b",
+            "plan_sha256": "9dc92d4f434703cc3fd50f7ac9f5db96d3531d126b770a60237d85625480b0a9",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.48216364747735,
+                "protected_window_s": [
+                  8.13216364747735,
+                  8.83216364747735
+                ],
+                "position_error_m": 5.551115123125783e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 12.470035413788343,
+                "protected_window_s": [
+                  12.120035413788344,
+                  12.820035413788343
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.930388919223741,
+                "protected_window_s": [
+                  15.580388919223742,
+                  16.280388919223743
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.365886071367743,
+                "protected_window_s": [
+                  19.015886071367742,
+                  19.715886071367745
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.238866597459335,
+                "protected_window_s": [
+                  21.888866597459334,
+                  22.588866597459337
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.1192897515015406,
+            "base_reference_speed_upper_bound_m_s": 0.08780512531143128,
+            "residual_speed_upper_bound_m_s": 0.03148462619010932,
+            "reference_speed_sampled_max_m_s": 0.08780512490845142,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.01991948020792255,
+            "reference_offset_analytic_peak_m": 0.01991948737753286,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 2,
+          "seed": 2026100713,
+          "plan_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_003",
+            "task_sha256": "ea63f759c7a6dcb0c374c74309c7981c096aee84aca101c859e41f79daae2a1b",
+            "plan_sha256": "098e64630bc2c7e6907fa7f85f9b96028df71a4430d5181d5acdc1debdf6b845",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.48216364747735,
+                "protected_window_s": [
+                  8.13216364747735,
+                  8.83216364747735
+                ],
+                "position_error_m": 5.551115123125783e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 12.470035413788343,
+                "protected_window_s": [
+                  12.120035413788344,
+                  12.820035413788343
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.930388919223741,
+                "protected_window_s": [
+                  15.580388919223742,
+                  16.280388919223743
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.365886071367743,
+                "protected_window_s": [
+                  19.015886071367742,
+                  19.715886071367745
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.238866597459335,
+                "protected_window_s": [
+                  21.888866597459334,
+                  22.588866597459337
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10629363709127324,
+            "base_reference_speed_upper_bound_m_s": 0.08780512531143128,
+            "residual_speed_upper_bound_m_s": 0.018488511779841958,
+            "reference_speed_sampled_max_m_s": 0.08780512489422651,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.014859028282894305,
+            "reference_offset_analytic_peak_m": 0.014859029336300627,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        },
+        {
+          "slot": 3,
+          "seed": 2026100714,
+          "plan_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/plan.json",
+          "raw_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/raw.json",
+          "precheck_path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/reference_precheck.json",
+          "finite_format_amplitude_passed": true,
+          "precheck": {
+            "schema": "task_anchored_reference_precheck_v1",
+            "task_id": "b2_continuum_route_test_003",
+            "task_sha256": "ea63f759c7a6dcb0c374c74309c7981c096aee84aca101c859e41f79daae2a1b",
+            "plan_sha256": "42e71b876052cabbe6b0f32fe128e7fab01b23552b8fa1645d61533e5b6b0f49",
+            "checks": {
+              "representation_applicable": true,
+              "definition_bound_to_TaskSpec": true,
+              "finite_format_mask_and_amplitude": true,
+              "reference_velocity_conservative_bound": true,
+              "reference_Task_at_declared_anchor_times": true,
+              "protected_closed_windows_and_hold_preserved": true
+            },
+            "errors": [],
+            "reference_task_requirements": [
+              {
+                "point_id": "continuum_00",
+                "arm": "continuum",
+                "nominal_time_s": 4.5,
+                "protected_window_s": [
+                  4.15,
+                  4.85
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_01",
+                "arm": "continuum",
+                "nominal_time_s": 8.48216364747735,
+                "protected_window_s": [
+                  8.13216364747735,
+                  8.83216364747735
+                ],
+                "position_error_m": 5.551115123125783e-17,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_02",
+                "arm": "continuum",
+                "nominal_time_s": 12.470035413788343,
+                "protected_window_s": [
+                  12.120035413788344,
+                  12.820035413788343
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_03",
+                "arm": "continuum",
+                "nominal_time_s": 15.930388919223741,
+                "protected_window_s": [
+                  15.580388919223742,
+                  16.280388919223743
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_04",
+                "arm": "continuum",
+                "nominal_time_s": 19.365886071367743,
+                "protected_window_s": [
+                  19.015886071367742,
+                  19.715886071367745
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_05",
+                "arm": "continuum",
+                "nominal_time_s": 22.238866597459335,
+                "protected_window_s": [
+                  21.888866597459334,
+                  22.588866597459337
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "continuum_06",
+                "arm": "continuum",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 0.0,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              },
+              {
+                "point_id": "rigid_terminal",
+                "arm": "rigid",
+                "nominal_time_s": 27.0,
+                "protected_window_s": [
+                  25.5,
+                  27.0
+                ],
+                "position_error_m": 0.0,
+                "orientation_error_rad": 9.185692672385244e-08,
+                "protected_window_residual_exact_zero": true,
+                "passed": true
+              }
+            ],
+            "joint_control_point_checks": "N/A_NEW_REPRESENTATION",
+            "nominal_joint_reference_geometry": "N/A_NO_JOINT_REFERENCE",
+            "whole_body_geometry": "NOT_RUN",
+            "physics_steps": 0,
+            "native_distance_queries": 0,
+            "future_actual_trace_read": false,
+            "reference_check_is_actual_Task_or_safety_acceptance": false,
+            "cartesian_speed_limit_m_s": 0.24,
+            "reference_speed_upper_bound_m_s": 0.10456450165917638,
+            "base_reference_speed_upper_bound_m_s": 0.08780512531143128,
+            "residual_speed_upper_bound_m_s": 0.016759376347745103,
+            "reference_speed_sampled_max_m_s": 0.08780512487645477,
+            "reference_velocity_check_scope": "analytic triangle-inequality upper bound, with 13501 physical-time grid diagnostics; not joint velocity feasibility",
+            "reference_offset_peak_sampled_m": 0.013348051989305327,
+            "reference_offset_analytic_peak_m": 0.013348052393976522,
+            "nonzero_reference": true,
+            "grid_count": 13501,
+            "reference_task_passed": true,
+            "reference_velocity_passed": true,
+            "passed": true,
+            "status": "REFERENCE_ACCEPTED"
+          }
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E1/plan.json",
+      "sha256": "c9784fbee25d8e95336dc79ae3ebf7f6a53ce000a4e37a4e00ca706a92fd6ed2"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/started.json",
+      "sha256": "2594ec1f174d259db706ae1c5e906adc3ce5680b84c3b8a6758382c35f8c8779"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/raw.json",
+      "sha256": "40c03896830ceb99dd1caeeca3a0f8c570a1ccdc5c4745aeac1cb31c2a236abc"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/plan.json",
+      "sha256": "8ba67096ee5c36ba3a5d6305690a9508443b96e65f561430d7eff865955a39d6"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_00/reference_precheck.json",
+      "sha256": "b56a8538351f217bf93d338ce3e8644bc68028f4bf0592e22eb4884be9e9280b"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/started.json",
+      "sha256": "f9eafc81cd19ed9895dd1757d46600e2b03a97e61772ba5a39b100be4f27d9f8"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/raw.json",
+      "sha256": "608a8addb05776ef80e411e71d52d69dfd28d196fee7f62d2c55c8be044b2451"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/plan.json",
+      "sha256": "dedde9ae44d02652e54a7bc1564cb82fd8be56650baa49fc12d52caa03f30150"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_01/reference_precheck.json",
+      "sha256": "2125a05b2d48068257885f9038030b66580f0a640d6f272dbc4539a318c135d9"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/started.json",
+      "sha256": "a264dac4f932961a0bbc361098faed6f604ab1cf29c7638b6cacfe8bac4984b4"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/raw.json",
+      "sha256": "03e562fec556857e5b55bb44bfcfd75f45248d59e6747ca45c1166379d495d21"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/plan.json",
+      "sha256": "326a443d62acc3fb8dfb892c6a63f32004acd2d1babdf250326a13949874c785"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_02/reference_precheck.json",
+      "sha256": "064eba36c57f8de459a0ac0d1379bd208722adc8a6da118c5d707885aa314178"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/started.json",
+      "sha256": "11c8b94e0b4d8cccd0a1b8a803e244da7c5e82d8807e33b14475cc501f2148ca"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/raw.json",
+      "sha256": "1f0e9c30658a1e7d89289b1a7a4b86fc917cab79a564b5554e367e7a2a1be1d8"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/plan.json",
+      "sha256": "20821d996daf13a42c6311b792385ad923a38bb790a31a204273b6c53247fc29"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_000/E2/slot_03/reference_precheck.json",
+      "sha256": "4af84cc9a99481b922c2d6bbcff3e2118a1c5ae2e3b7340fce6f3e0152489ec9"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E1/plan.json",
+      "sha256": "058dfa65a1fdc2112a110f2cf4be58f8bad32e5c3d95b534a6317ea11be3bdd1"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/started.json",
+      "sha256": "27c64234b0753710f85290a2b885ee6e89166ad49775c1e8fadf76230b055e9f"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/raw.json",
+      "sha256": "e55b643715d6591325f4505ebc21d4092c5d499106c04f46eb4ebc3e61bbb33c"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/plan.json",
+      "sha256": "05b263d39274d8ff9ca463a3fa073e0c04e62caf1444ed5ad00baf18b2c3602f"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_00/reference_precheck.json",
+      "sha256": "0573f6560a17346475576171cc71d6d47a032b216ffd7156c87a2d3e268ed94a"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/started.json",
+      "sha256": "94faf1d02468ca563e3ad7592e7dfb2e9519ab229913ea5689d39e8b1d9d1be1"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/raw.json",
+      "sha256": "412fef814e0783f375c4e0877693743b0c5659d9df520bafe1789e5780b4f2e6"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/plan.json",
+      "sha256": "a2c07681ed6c983ffa0294ec5213f8a1d1873ae41a430aa3dbcacae19d7ae534"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_01/reference_precheck.json",
+      "sha256": "2125a05b2d48068257885f9038030b66580f0a640d6f272dbc4539a318c135d9"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/started.json",
+      "sha256": "86f62f200d9d509d7ffb5ddbdf0fcc19c838e8ae8d0c6c5d28722bb18ff95d7d"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/raw.json",
+      "sha256": "4864cc76eb163606a70d373c823e9a1d898b9b4a602a38c0c242ca1473f4abbf"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/plan.json",
+      "sha256": "c13469aca414bdea26552bfb2b4aacf550be38a131b9c0ec3edbc6c24c5619bc"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_02/reference_precheck.json",
+      "sha256": "ce0ba47d80e1e2fc03f09437246385b14a524ccd9366f4da4a664860f3ecf337"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/started.json",
+      "sha256": "80d789a8d4b63d2d05db8a50cd8ce2b0368f13e0b2a1633fb9f655bb9a54e3fd"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/raw.json",
+      "sha256": "75984c5e31a0ad7a3b3c6652dc94cf35b0a9f312d3ee62c57b4531149596d45f"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/plan.json",
+      "sha256": "17489194ec4dda2fc61beddeb0460ca0c747b0859fac1249ce2e0b0592747666"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_001/E2/slot_03/reference_precheck.json",
+      "sha256": "35ac0db8cf87309767c0442d7d4b01a686186202f549227b62cba9730ac82f52"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E1/plan.json",
+      "sha256": "4f9e32f4e9994499f3d74472e446a773c95c4de4de32e34e6405286e7f3557c0"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/started.json",
+      "sha256": "23bfd409e5f913d0f8938846f2b8ae7d15b56a85455cb3bcf0aede4d5b185f68"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/raw.json",
+      "sha256": "1d4871da6c0ac06acc7118cde03d6b32c350221c4cbe0f8b0f8233cf6152f8cc"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/plan.json",
+      "sha256": "de3c172751e41a34ff35de966f9679af46a0d6f6774eee2369bee4cc026d1bb8"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_00/reference_precheck.json",
+      "sha256": "1a73015b063b4b5e857a61156624d498262b3a0cebb472c534cd000cbfad36bd"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/started.json",
+      "sha256": "68b912942d98e12bfad8a864784a08e725e57dc925d5b1c3a576dbfa738b5dfd"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/raw.json",
+      "sha256": "25fb4f782e36caf9f4952d4089a49ed89d8bb619d9d5e0091f1e6450d4a135cf"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/plan.json",
+      "sha256": "08e2492db34c2bfe2e7ce8c01d14b156cfdafc2d07605a19d5c279388baadd49"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_01/reference_precheck.json",
+      "sha256": "e95d7ccd7e43723e47a2f5078fe591c9af5f25dc194775a0c46c82e2f30ed02f"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/started.json",
+      "sha256": "f1f781b69e7c573daaff3babbed2bfd6e8462590806781dc38ac80b5e96fa122"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/raw.json",
+      "sha256": "b133193634fb637c3831f409851c2a64df11b626b7214df7b2c2bfea83e0f6fc"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/plan.json",
+      "sha256": "02aa2988d302c61c55354fc954569a4e4c9b1fece6122c39e94f46b9fb0b8334"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_02/reference_precheck.json",
+      "sha256": "35c1f8d3773473b5087619ffd4d7c82cbecc286f813e49b55515896f1031a5f8"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/started.json",
+      "sha256": "fb3baf4f895102effa9bb600e81d58979726d2fd3be7ea6584254ba67ce63b6a"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/raw.json",
+      "sha256": "0aed26da904ae7f27546975746d609afe3543b8ce65923a4933adee56a244a18"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/plan.json",
+      "sha256": "715819058c43e292f5c0301df452bddeaafe9c9f402739e285c0a2f64eb4d368"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_002/E2/slot_03/reference_precheck.json",
+      "sha256": "7f57ed0e9e864b456d267064fda4ba03be543d87763980353c78d33dbde5df06"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E1/plan.json",
+      "sha256": "11ae1674734a55f61193409dd5a76bedd98c38a4e446d32dac8b0f35db113358"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/started.json",
+      "sha256": "f992bcf501de968bffd2864fe3840660003fdc4c72e551e7ac1cd79a94b296ae"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/raw.json",
+      "sha256": "6bb2d46b58d3a22af67fb5d05e4651fbf34a75798c9754b9ef5f4eb54898adc0"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/plan.json",
+      "sha256": "06a6e0052c6a5bacdbba41356dfee84cb2ce9d3da3f50ccd56e150293a76a531"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_00/reference_precheck.json",
+      "sha256": "afa3c48e5489d47df44ba15c4d6bed046ea7a3bf460f00baf12e750d4a779e22"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/started.json",
+      "sha256": "a1d9a43146f167a62ea127a930739231d1a6c014963936a32c57b4e74a08d327"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/raw.json",
+      "sha256": "19ec009abefc11c1cdc9fda5d4f360b84306549e83a15d7c4bedc26967d86388"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/plan.json",
+      "sha256": "6811989a0595fe9117b868a0830226c1f042772c4031a1a7a5ce7f46852f6a53"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_01/reference_precheck.json",
+      "sha256": "7b3b73a550fe79f7e8eb476c31cf617acc7c65c9de0dfc1b48e5d44de2c3a5a0"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/started.json",
+      "sha256": "b778da94d7c9b5fb052691d0c2c12d1a55b7c0296853632a9dd0c46b68c078fc"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/raw.json",
+      "sha256": "f0b38d7a353e12cdbcb250c47a6956e8bc9c431423a46d7f3f0d5258c7467a21"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/plan.json",
+      "sha256": "cd4a5aca8c9ae5f6655c50e7d97fa448dd93bfdb44adf0c923e64e3b0491e8bc"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_02/reference_precheck.json",
+      "sha256": "4913b7ae9b87c273fc1a0afc2d91696411de68c4f9b6f306e0e124ea32bfa06f"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/started.json",
+      "sha256": "5f8e779ce12927ed66b6dec273055bac44b0c4dfb12a79647945a167c36a16f6"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/raw.json",
+      "sha256": "29c390da9ac00b43d9972a9480327ede9acbb62f69043bc97df35be7d2d255af"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/plan.json",
+      "sha256": "6c5e859c09bd6dd0a07d62e0a554847f4d70febdf8560e5637ac38685c456e98"
+    },
+    {
+      "path": "learned_candidates/b2_continuum_route_test_003/E2/slot_03/reference_precheck.json",
+      "sha256": "0553762413c5fafb8ef63d267e810e6ae0bb3dbeaa7d0ac9bf52036df7f7bbe3"
+    }
+  ],
+  "checkpoint_path": "E:\\v64b2work_20261007_01\\v6_4\\output\\task_anchored_residual_20261007_01\\training\\model\\selected.pt",
+  "checkpoint_sha256": "9ace53f482253216cea7baabed7479d84f37a9e80e71231219c7e2f9d3c94ca1",
+  "source_identity_sha256": "6ea17c61af0a183c7ae94d53dbb05baad7f3e76e5c4a31840b44a6be1f92de3e",
+  "dataset_sha256": "5b026c0ffce400d7463800df41d512f9267bcba21fee4190b2d11dfc9ac142e1",
+  "training_config_sha256": "22a04539781ddefd3ee50a92591bcafffddb16cb9eb60297c3d286f6ea65269b",
+  "K1_slot": 0,
+  "K4_actual": "NOT_RUN",
+  "TEST_actual_observed_before_sampling": 0
+}

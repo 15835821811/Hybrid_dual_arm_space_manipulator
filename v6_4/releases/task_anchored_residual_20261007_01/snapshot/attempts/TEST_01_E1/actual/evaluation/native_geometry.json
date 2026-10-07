@@ -1,0 +1,98 @@
+{
+  "schema": "v64_a1_fresh_native_geometry_v1",
+  "evidence_available": true,
+  "task_id": "b2_continuum_route_test_001",
+  "task_sha256": "fa07e652d46fb97b123529a13c884a2f65260c3861079c462ad57d5c6d683d2f",
+  "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+  "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536",
+  "passed": true,
+  "robot_target_500hz": {
+    "state_count": 13501,
+    "pair_count": 75,
+    "query_count": 1012575,
+    "minimum_m": 0.014998782430875037,
+    "minimum_witness": {
+      "pair_class": "rigid_target",
+      "geom_a": "collision_0071",
+      "geom_b": "target_satellite_collision",
+      "body_a": "wrist_link",
+      "body_b": "target_satellite",
+      "state_index": 10173,
+      "actual_time_s": 20.346,
+      "signed_distance_m": 0.014998782430875037,
+      "fromto": [
+        1.1557400011282848,
+        -0.15659956983945073,
+        0.06652894770121653,
+        1.1561139794276794,
+        -0.1715891166125082,
+        0.06615867458765076
+      ]
+    },
+    "minimum_clearance_m": 0.005,
+    "below_5mm_states": 0,
+    "negative_states": 0,
+    "below_threshold_query_count": 0,
+    "negative_distance_query_count": 0,
+    "truncated_query_count": 0,
+    "minimum_is_censored_lower_bound": false,
+    "sampling_scope": "all saved native 2ms physical states including declared initial state"
+  },
+  "whole_body": {
+    "feasible": true,
+    "minimum_clearance": 0.014998782955801574,
+    "minimum_by_class": {
+      "base_obstacle": 0.6908866230015501,
+      "arm_obstacle": 0.025727864989647374,
+      "arm_base": 0.05134304477452075,
+      "base_target": 0.5077136595101099,
+      "continuum_self": 0.037686102300991106,
+      "arm_arm": 0.6489350243017217,
+      "continuum_target": 0.20865219198001345,
+      "rigid_self": 0.09368908485034123,
+      "rigid_target": 0.014998782955801574
+    },
+    "minimum_pair": {
+      "pair_class": "rigid_target",
+      "geom_a": "collision_0071",
+      "geom_b": "target_satellite_collision",
+      "body_a": "wrist_link",
+      "body_b": "target_satellite",
+      "state_index": 4068,
+      "source_interval_phase": 1017.0,
+      "signed_distance_m": 0.014998782955801574,
+      "fromto": [
+        1.1557499367377264,
+        -0.15661310771057452,
+        0.06653374429130184,
+        1.1561238042585544,
+        -0.17160266045398606,
+        0.0661635797541064
+      ]
+    },
+    "violation_count": 0,
+    "checked_state_count": 5401,
+    "supplied_sample_count": 1351,
+    "adaptive_subdivisions": 4,
+    "pair_count": 2927,
+    "query_count": 15808727,
+    "truncated_query_count": 0,
+    "time_scope": "dense_discrete_with_configuration_space_subdivision",
+    "continuous_time_certified": false,
+    "uses_mj_geom_distance": true,
+    "uses_contact_list": false,
+    "nativeccd_claimed": false,
+    "pair_policy_sha256": "2ebb874cdad4efd89a5d837a17f16d0ccd4ae48028b9c9edbb9991f12fa213f4",
+    "negative_distance_query_count": 0
+  },
+  "whole_body_count_scope": "pair queries over 50Hz boundary states plus configuration-space adaptive subdivisions; not all 500Hz states",
+  "whole_body_supplied_period_s": 0.02,
+  "whole_body_adaptive_subdivisions": 4,
+  "whole_body_policy": {
+    "path": "E:/v64b2work_20261007_01/v6_4/output/task_anchored_residual_20261007_01/attempts/TEST_01_E1/actual/evaluation/whole_body_policy.json",
+    "sha256": "ea6daefb78e1ffaec790632019721556a183b85160549a2d18c17363d4b6b712"
+  },
+  "query_distance_max_m": 2.5,
+  "continuous_time_certified": false,
+  "offline_state_copy_independent_of_execution": true
+}

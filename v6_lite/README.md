@@ -1,3 +1,5 @@
+> 本文件记录继承的 V6.2 控制器模块与历史研究。当前分支的 V6.4-B.2 全套图表和回放见[当前总览](../v6_4/visualization/task_anchored_residual_20261007_01/index.html)及[发布报告](../v6_4/releases/task_anchored_residual_20261007_01/report.md)。
+
 # V6-lite：确定性混合双臂跟踪与避障
 
 > 历史五场景产物合同：`v6_lite_6`（2026-09-21）。当前历史 trace schema：`v6_2_a1_ramp_aware_qp`；实际控制器为 `v6_2_c1_bounded_interval_pcc` 或历史 `v6_2_a1_legacy_pcc`，模式、伺服与模型身份分别记录。

@@ -110,3 +110,15 @@ v6_lite/runtime_command.py text eol=lf
 v6_4/** -text whitespace=cr-at-eol
 requirements-learning.txt -text whitespace=cr-at-eol
 MANIFEST.md -text whitespace=cr-at-eol
+
+# Portable publication and sealed review identities preserve checkout bytes.
+README.md -text whitespace=cr-at-eol
+docs/V6_2_LATEST_VISUALIZATION.md -text whitespace=cr-at-eol
+docs/V6_4_B2_VISUALIZATION.md -text whitespace=cr-at-eol
+v6_lite/README.md -text whitespace=cr-at-eol
+v6_4/releases/** -text whitespace=cr-at-eol
+# Frozen inputs are exact historical byte copies, including original whitespace.
+v6_4/releases/*/frozen_repository_inputs/** -text -whitespace
+findings.md -text whitespace=cr-at-eol
+paper/review-traces/experiment-result-to-claim/2026-10-07_run01/** -text whitespace=cr-at-eol
+v6_lite/visualization/index.html -text whitespace=cr-at-eol
