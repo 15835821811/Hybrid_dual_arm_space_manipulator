@@ -67,6 +67,16 @@ class OptimizerTests(unittest.TestCase):
         self.assertLessEqual(np.linalg.norm(p[:2]), .020)
         self.assertAlmostEqual(p[0], p[1]); self.assertEqual(p[3], -.020)
 
+    def test_non_axis_initial_20mm_seed_cannot_round_outside_disk(self):
+        direction = np.array([-.9999928938932474, -.0037699022545064796])
+        self.assertGreater(np.linalg.norm(.020 * direction), .020)
+        with patch("v6_4.route_optimizer_protocol.geometry_direction", return_value=(direction, False)):
+            seeds = initial_candidates(self.task)
+        for seed in seeds:
+            plan = parameter_plan(self.task, seed["family"], seed["x_m"])
+            self.assertTrue(np.all(np.linalg.norm(plan.z_m, axis=1) <= .020))
+        self.assertAlmostEqual(np.linalg.norm(seeds[3]["x_m"][-2:]), .020, places=16)
+
     def test_zero_is_canonical_and_original_protected_cutoff(self):
         first = parameter_plan(self.task, "v1", [0.] * 4)
         second = parameter_plan(self.task, "v2", [0.] * 4)

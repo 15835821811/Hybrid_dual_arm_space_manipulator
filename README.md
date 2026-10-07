@@ -16,6 +16,8 @@
 
 Producer `6f603437b300de882d24234130b6669b00f62bd6`；固定开发基点`cd288d7c2db74dc938903332400c7e97dd56bca8`。I_support是新窗口指标，不改旧B.3结论。30mm是质量偏好，不替换原硬安全距离。Diffusion收益、总体泛化、连续时间与硬件安全仍未建立；deployment=`NOT_MET`。
 
+当前源码另有[正式运行后的初值舍入维护](docs/V6_4_C1_MAINTENANCE.md)，46项测试通过，16个正式初值plan哈希未变。历史复现使用上述producer及发布包中的frozen_source；未对旧归档重算或改写源码黄金哈希。
+
 ```sh
 python -B -X utf8 -m v6_4.continuous_route_optimizer prepare --output v6_4/output/continuous_route_optimizer_20261007_01
 python -B -X utf8 -m v6_4.continuous_route_optimizer run-all --run v6_4/output/continuous_route_optimizer_20261007_01

@@ -147,6 +147,9 @@ def initial_candidates(task):
     result = []
     for family, amplitude in (("v1", 0.), ("v1", .012), ("v2", .012), ("v2", .020)):
         x = np.zeros(2 * len(active)); x[-2:] = away * amplitude
+        # A unit direction times 20 mm can exceed the disk by one float ULP.
+        # Use the existing inward proposal projection; keep the hard bound exact.
+        x = project_disks(x)
         result.append({"family": family, "x_m": x.tolist(), "source": "initial",
                        "geometric_direction_degenerate": degenerate})
     return result
