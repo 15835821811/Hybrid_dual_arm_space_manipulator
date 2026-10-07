@@ -18,6 +18,11 @@ from v6_lite.irregular_waypoints import IrregularWaypointTarget
 
 REPRESENTATION_VERSION = "task_anchored_cartesian_residual_v1"
 PLAN_SCHEMA = "task_anchored_residual_plan_v1"
+REPRESENTATION_VERSION_V2 = "task_anchored_cartesian_residual_v2"
+PLAN_SCHEMA_V2 = "task_anchored_residual_plan_v2"
+PLATEAU_REPRESENTATION_VERSION = REPRESENTATION_VERSION_V2
+PLATEAU_RISE_RATIO = .25
+PLATEAU_FALL_START_RATIO = .75
 BASE_REFERENCE_ID = "original_cartesian_passthrough_physical_time_home_v1"
 MAX_INTERVALS = 6
 LATENT_DIM = 12
@@ -25,6 +30,31 @@ COEFFICIENT_NORM_BOUND_M = .020
 SUPPORT_CUTOFF_S = 23.98
 FREE_PATH_POLICY = "free_intermediate_path_between_fixed_requirements"
 REFERENCE_MODE = REPRESENTATION_VERSION
+
+
+def _plateau_basis_contract():
+    return {"kind": "minimum_jerk_c2_plateau", "rise_ratio": PLATEAU_RISE_RATIO,
+            "fall_start_ratio": PLATEAU_FALL_START_RATIO,
+            "transition_polynomial": "10*v^3-15*v^4+6*v^5",
+            "support": "same_original_legal_reference_time_interval",
+            "transverse_basis": "original_fixed_world_basis",
+            "normalized_first_derivative_abs_bound": 7.5,
+            "normalized_second_derivative_abs_bound": float(160./np.sqrt(3.))}
+
+
+def _plateau_kinematics(u):
+    """Normalized psi, dpsi/du and d²psi/du² on the unit support."""
+    r, f = PLATEAU_RISE_RATIO, PLATEAU_FALL_START_RATIO
+    rising, falling = u < r, u > f
+    v = np.where(rising, u/r, np.where(falling, (1.-u)/(1.-f), 0.))
+    smooth = v**3*(10.+v*(-15.+6.*v))
+    first = 30.*v**2*(1.-v)**2
+    second = 60.*v*(1.-v)*(1.-2.*v)
+    value = np.where(rising | falling, smooth, 1.)
+    rate = np.where(rising, first/r, np.where(falling, -first/(1.-f), 0.))
+    acceleration = np.where(rising, second/r**2,
+                            np.where(falling, second/(1.-f)**2, 0.))
+    return value, rate, acceleration
 
 
 def _hash(value):
@@ -105,7 +135,7 @@ def _merge_closed(intervals):
     return merged
 
 
-def build_reference_definition(task: TaskSpec) -> dict:
+def build_reference_definition(task: TaskSpec, version=REPRESENTATION_VERSION) -> dict:
     """Derive a deterministic definition using declared inputs only.
 
     Every TaskPoint window is protected as a closed set. The earliest six
@@ -114,6 +144,8 @@ def build_reference_definition(task: TaskSpec) -> dict:
     """
     if not isinstance(task, TaskSpec):
         raise TypeError("a frozen TaskSpec is required")
+    if version not in (REPRESENTATION_VERSION, REPRESENTATION_VERSION_V2):
+        raise ValueError("unsupported Cartesian residual representation version")
     target = _target(task)
     hold = [float(target.path_end_s), task.duration_s]
     windows = [{"point_id": p.point_id, "arm": p.arm, "time_s": p.time_s,
@@ -171,7 +203,7 @@ def build_reference_definition(task: TaskSpec) -> dict:
                      "home_posture_dq": [0.]*17, "time_mapping": "identity_physical_time",
                      "joint_terminal_progress_repair": False,
                      "rigid_transport": "current_target_feedback_including_grasp_offset_twist"}
-    definition = {"schema": REPRESENTATION_VERSION, "representation_version": REPRESENTATION_VERSION,
+    definition = {"schema": version, "representation_version": version,
                   "task_id": task.task_id, "task_sha256": task.sha256(),
                   "base_reference_id": BASE_REFERENCE_ID, "base_reference_sha256": _hash(base_identity),
                   "base_reference_version": BASE_REFERENCE_ID,
@@ -184,6 +216,8 @@ def build_reference_definition(task: TaskSpec) -> dict:
                   "candidate_component_count": len(candidates), "disabled_intervals": disabled,
                   "applicable": bool(np.any(mask)), "status": "APPLICABLE" if np.any(mask) else "NOT_APPLICABLE",
                   "reasons": reasons}
+    if version == REPRESENTATION_VERSION_V2:
+        definition["basis_function"] = _plateau_basis_contract()
     definition["definition_sha256"] = _definition_hash(definition)
     return definition
 
@@ -192,8 +226,9 @@ def _validated_definition(value):
     if not isinstance(value, dict):
         raise ValueError("residual definition must be a JSON object")
     definition = json.loads(canonical_json(value))
-    if (definition.get("schema") != REPRESENTATION_VERSION
-            or definition.get("representation_version") != REPRESENTATION_VERSION
+    version = definition.get("representation_version")
+    if (version not in (REPRESENTATION_VERSION, REPRESENTATION_VERSION_V2)
+            or definition.get("schema") != version
             or definition.get("definition_sha256") != _definition_hash(definition)
             or definition.get("frame") != "world"
             or definition.get("time_mapping") != "identity_physical_time"
@@ -202,6 +237,9 @@ def _validated_definition(value):
             or definition.get("coefficient_norm_bound_m") != COEFFICIENT_NORM_BOUND_M
             or definition.get("support_cutoff_s") != SUPPORT_CUTOFF_S):
         raise ValueError("invalid residual definition schema, identity or frozen settings")
+    if (version == REPRESENTATION_VERSION_V2
+            and definition.get("basis_function") != _plateau_basis_contract()):
+        raise ValueError("invalid frozen v2 plateau basis settings")
     if definition.get("applicable") is not True or definition.get("status") != "APPLICABLE":
         raise ValueError("NOT_APPLICABLE: "+str(definition.get("reasons")))
     raw_mask = definition.get("interval_mask")
@@ -254,14 +292,20 @@ class TaskAnchoredResidualPlan:
     def from_dict(cls, value):
         if (not isinstance(value, dict)
                 or set(value) != {"schema", "representation_version", "definition", "z_m"}
-                or value.get("schema") != PLAN_SCHEMA
-                or value.get("representation_version") != REPRESENTATION_VERSION):
+                or (value.get("schema"), value.get("representation_version")) not in (
+                    (PLAN_SCHEMA, REPRESENTATION_VERSION), (PLAN_SCHEMA_V2, REPRESENTATION_VERSION_V2))
+                or not isinstance(value.get("definition"), dict)
+                or value["definition"].get("representation_version") != value["representation_version"]):
             raise ValueError("unsupported residual plan schema")
         return cls.from_definition(value["definition"], value["z_m"])
 
     @property
     def definition(self):
         return json.loads(self._definition_json)
+
+    @property
+    def representation_version(self):
+        return self.definition["representation_version"]
 
     @property
     def z_m(self):
@@ -276,7 +320,9 @@ class TaskAnchoredResidualPlan:
         return values
 
     def to_dict(self):
-        return {"schema": PLAN_SCHEMA, "representation_version": REPRESENTATION_VERSION,
+        version = self.representation_version
+        schema = PLAN_SCHEMA if version == REPRESENTATION_VERSION else PLAN_SCHEMA_V2
+        return {"schema": schema, "representation_version": version,
                 "definition": self.definition, "z_m": self.z_m.tolist()}
 
     def sha256(self):
@@ -295,9 +341,14 @@ class TaskAnchoredResidualPlan:
             duration = upper-lower
             inside = (times > lower) & (times < upper)
             u = np.where(inside, (times-lower)/duration, 0.)
-            phi = 64.*u**3*(1.-u)**3
-            rate = 192.*u**2*(1.-u)**2*(1.-2.*u)/duration
-            acceleration = 384.*u*(1.-u)*(1.-5.*u+5.*u**2)/duration**2
+            if definition["representation_version"] == REPRESENTATION_VERSION:
+                phi = 64.*u**3*(1.-u)**3
+                rate = 192.*u**2*(1.-u)**2*(1.-2.*u)/duration
+                acceleration = 384.*u*(1.-u)*(1.-5.*u+5.*u**2)/duration**2
+            else:
+                phi, normalized_rate, normalized_acceleration = _plateau_kinematics(u)
+                rate = normalized_rate/duration
+                acceleration = normalized_acceleration/duration**2
             delta = np.asarray(basis)@np.asarray(coefficients)
             for output, weight in zip(outputs, (phi, rate, acceleration)):
                 output += np.where(inside, weight, 0.)[..., None]*delta
@@ -308,7 +359,8 @@ class TaskAnchoredResidualReferenceProvider:
     def __init__(self, task: TaskSpec, plan: TaskAnchoredResidualPlan):
         if not isinstance(plan, TaskAnchoredResidualPlan):
             raise TypeError("a validated TaskAnchoredResidualPlan is required")
-        if canonical_json(plan.definition) != canonical_json(build_reference_definition(task)):
+        version = plan.representation_version
+        if canonical_json(plan.definition) != canonical_json(build_reference_definition(task, version=version)):
             raise ValueError("residual definition differs from the deterministic frozen TaskSpec")
         self.task, self.plan = task, plan
         self._target = _target(task)
@@ -318,12 +370,13 @@ class TaskAnchoredResidualReferenceProvider:
         # for whole-body geometry or old joint-control-point proposal gates.
         self.controls = self._base.controls
         self.prediction = dict(self._base.prediction)
-        self.prediction["reference_mode"] = np.asarray(REFERENCE_MODE)
+        self.prediction["reference_mode"] = np.asarray(version)
         self.prediction["residual_plan_json"] = np.asarray(canonical_json(plan.to_dict()))
-        self.metadata = {"schema": "task_anchored_residual_provider_v1",
+        schema = "task_anchored_residual_provider_v1" if version == REPRESENTATION_VERSION else "task_anchored_residual_provider_v2"
+        self.metadata = {"schema": schema,
             "task_sha256": task.sha256(), "plan_sha256": plan.sha256(),
             "definition_sha256": plan.definition["definition_sha256"],
-            "base_reference_id": BASE_REFERENCE_ID, "reference_mode": REFERENCE_MODE,
+            "base_reference_id": BASE_REFERENCE_ID, "reference_mode": version,
             "frame": "world", "time_mapping": "identity_physical_time",
             "joint_terminal_progress_repair": False, "home_posture_only": True,
             "nominal_joint_reference_geometry": "N/A_NEW_REPRESENTATION",
@@ -373,7 +426,8 @@ def reference_precheck(task, plan, cartesian_speed_limit_m_s=.24):
     try:
         if not np.isfinite(cartesian_speed_limit_m_s) or cartesian_speed_limit_m_s <= 0.:
             raise ValueError("reference Cartesian speed cap must be positive m/s")
-        definition = build_reference_definition(task)
+        version = plan.representation_version if isinstance(plan, TaskAnchoredResidualPlan) else REPRESENTATION_VERSION
+        definition = build_reference_definition(task, version=version)
         checks["representation_applicable"] = definition["applicable"]
         if not definition["applicable"]:
             raise ValueError("NOT_APPLICABLE: "+str(definition["reasons"]))
@@ -390,6 +444,8 @@ def reference_precheck(task, plan, cartesian_speed_limit_m_s=.24):
         residual = checked.z_m
         u = (5.-np.sqrt(5.))/10.
         max_phi_rate = 192.*u**2*(1.-u)**2*(1.-2.*u)
+        if version == REPRESENTATION_VERSION_V2:
+            max_phi_rate = 7.5
         deltas = np.vstack([target.waypoint_points_w[0]-target.initial_position_w,
                             np.diff(target.waypoint_points_w, axis=0)])
         durations = np.r_[target.transition_duration_s, target.segment_durations_s]
@@ -400,7 +456,7 @@ def reference_precheck(task, plan, cartesian_speed_limit_m_s=.24):
         upper_bound = base_bound+residual_bound  # supports are pairwise disjoint
         checks["reference_velocity_conservative_bound"] = upper_bound <= cartesian_speed_limit_m_s
         grid = np.arange(13501)*task.physics_period_s
-        positions, velocity, _ = provider.continuum_kinematics(grid)
+        positions, velocity, acceleration = provider.continuum_kinematics(grid)
         dp, _, _ = checked.offset_kinematics(grid)
         result.update({"cartesian_speed_limit_m_s": float(cartesian_speed_limit_m_s),
             "reference_speed_upper_bound_m_s": upper_bound,
@@ -411,6 +467,20 @@ def reference_precheck(task, plan, cartesian_speed_limit_m_s=.24):
             "reference_offset_peak_sampled_m": float(np.max(np.linalg.norm(dp, axis=1))),
             "reference_offset_analytic_peak_m": float(np.max(np.linalg.norm(residual, axis=1))),
             "nonzero_reference": bool(np.any(residual)), "grid_count": len(grid)})
+        if version == REPRESENTATION_VERSION_V2:
+            base_acceleration_bound = float(np.max((10./np.sqrt(3.))*np.linalg.norm(deltas, axis=1)/durations**2))
+            residual_acceleration_bound = max([float((160./np.sqrt(3.))*np.linalg.norm(z)/(b-a)**2)
+                for (a,b),z,mask in zip(definition["intervals_s"], residual, definition["interval_mask"])
+                if mask]+[0.])
+            result.update({"schema": "task_anchored_reference_precheck_v2",
+                "representation_version": version,
+                "normalized_residual_first_derivative_abs_bound": 7.5,
+                "normalized_residual_second_derivative_abs_bound": float(160./np.sqrt(3.)),
+                "base_reference_acceleration_upper_bound_m_s2": base_acceleration_bound,
+                "residual_acceleration_upper_bound_m_s2": residual_acceleration_bound,
+                "reference_acceleration_upper_bound_m_s2": base_acceleration_bound+residual_acceleration_bound,
+                "reference_acceleration_sampled_max_m_s2": float(np.max(np.linalg.norm(acceleration, axis=1))),
+                "reference_acceleration_check_scope": "analytic diagnostic only; no Cartesian acceleration cap exists in the original reference precheck; downstream original execution acceleration limits unchanged"})
         for point in task.requirements:
             if point.arm == "continuum" and point.frame == "world":
                 desired, _, _ = provider.continuum_kinematics(point.time_s)

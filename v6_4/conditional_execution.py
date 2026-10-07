@@ -74,7 +74,7 @@ class ExecutionCostLedger:
 
     def to_dict(self):
         phases = sorted({key[0] for key in self.counts} | {"actual", "private_preview", "independent_torque_replay"})
-        operations = ("mj_step", "mj_step2", "mj_geomDistance")
+        operations = ("mj_step", "mj_step2", "mj_geomDistance", "qp_solve")
         return {
             "schema": "v64_b3_execution_cost_ledger_v1",
             "phase_counts": {p: {op: {state: self.counts[(p, op, state)] for state in ("started", "returned", "raised")}
@@ -85,6 +85,9 @@ class ExecutionCostLedger:
             "preview_calls": len(self.preview_records), "preview_records": self.preview_records,
             "native_geometry_query_calls": sum(v for (p, op, state), v in self.counts.items()
                                                 if op == "mj_geomDistance" and state == "returned"),
+            "qp_solve_calls": sum(v for (p, op, state), v in self.counts.items()
+                                   if op == "qp_solve" and state == "returned"),
+            "qp_solve_scope": "One original 17D solve call per planner invocation; rejected result calls count; raised calls remain separate. Logging adds no alternative solver.",
             "geometry_query_scope": "Native mj_geomDistance calls, separated by phase; analytic PCC query work is reported by the original interval evidence, not mislabeled as native distance calls.",
             "instrumentation": "Transparent argument/return/exception forwarding; additional Python bookkeeping included in wall time.",
             "physics_step_count_scope": "Successfully returned mj_step or mj_step2 integrations; raised calls reported separately without assuming how far a native failure progressed.",
@@ -96,10 +99,12 @@ class ExecutionCostLedger:
     def installed(self):
         from v6_4 import residual_execution as execution
         from v6_lite import b2_interval_runtime
+        from v6_lite.hierarchical_qp import HierarchicalVelocityQP
         patches = [
             (mujoco, "mj_step", self.forward_counted(mujoco.mj_step, "mj_step")),
             (mujoco, "mj_step2", self.forward_counted(mujoco.mj_step2, "mj_step2")),
             (mujoco, "mj_geomDistance", self.forward_counted(mujoco.mj_geomDistance, "mj_geomDistance")),
+            (HierarchicalVelocityQP, "solve", self.forward_counted(HierarchicalVelocityQP.solve, "qp_solve")),
             (b2_interval_runtime, "preview_ramp", self.forward_preview(b2_interval_runtime.preview_ramp)),
             (execution, "run_synchronous_scenario", self.forward_scoped(execution.run_synchronous_scenario, "actual")),
             (execution, "_replay", self.forward_scoped(execution._replay, "independent_torque_replay")),

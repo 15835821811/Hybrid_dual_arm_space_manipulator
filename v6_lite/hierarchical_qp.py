@@ -222,6 +222,8 @@ class HierarchicalQPResult:
     pcc_closest_segment_id: int
     pcc_closest_arclength_m: float
     shape_clearance_latency_s: float
+    # Optional copies of this solve's existing data; never a second QP.
+    execution_diagnostics: dict | None = None
 
 
 @dataclass(frozen=True)
@@ -489,6 +491,7 @@ class HierarchicalVelocityQP:
         body_id: int,
         generalized_map: np.ndarray,
         local_offset: np.ndarray | None = None,
+        diagnostic_velocity_out: list[np.ndarray] | None = None,
     ) -> tuple[np.ndarray, np.ndarray]:
         rotation = np.asarray(data.xmat[body_id], dtype=np.float64).reshape(3, 3)
         offset = (
@@ -509,6 +512,8 @@ class HierarchicalVelocityQP:
             position,
             body_id,
         )
+        if diagnostic_velocity_out is not None:
+            diagnostic_velocity_out.append(position_jacobian @ data.qvel)
         return (
             position_jacobian @ generalized_map,
             rotation_jacobian @ generalized_map,
@@ -1039,6 +1044,8 @@ class HierarchicalVelocityQP:
         prepared_state: bool = False,
         posture_reference_q: np.ndarray | None = None,
         posture_reference_dq: np.ndarray | None = None,
+        execution_diagnostics: bool = False,
+        diagnostic_obstacle_name: str | None = None,
     ) -> HierarchicalQPResult:
         started = time.perf_counter()
         if not prepared_state:
@@ -1085,11 +1092,14 @@ class HierarchicalVelocityQP:
         rigid_jacobian, rigid_rotation_jacobian = self._task_jacobians(
             data, self.rigid_body_id, generalized_map
         )
+        continuum_actual_velocity = [] if execution_diagnostics else None
         continuum_jacobian, continuum_rotation_jacobian = self._task_jacobians(
             data,
             self.continuum_body_id,
             generalized_map,
             CONTINUUM_EE_OFFSET_M,
+            **({"diagnostic_velocity_out": continuum_actual_velocity}
+               if execution_diagnostics else {}),
         )
         low_level_q = np.asarray(data.qpos[self.qpos_ids], dtype=np.float64)
         planner_q = self.spec.low_level_to_planner @ low_level_q
@@ -1143,7 +1153,8 @@ class HierarchicalVelocityQP:
         degenerate = clearance_block.degenerate_gradient_count
         clearance_sources = np.asarray(clearance_block.sources, dtype=object)
         lower, upper = self._velocity_bounds(planner_q)
-        unconstrained = np.clip(-self._unconstrained_solve(hessian, linear), lower, upper)
+        raw_unconstrained = -self._unconstrained_solve(hessian, linear)
+        unconstrained = np.clip(raw_unconstrained, lower, upper)
         initial = np.clip(self.previous_velocity, lower, upper)
 
         pcc_row_mask = np.asarray(
@@ -1307,6 +1318,67 @@ class HierarchicalVelocityQP:
             )
         else:
             capsule_gradient_error = float("nan")
+        diagnostics = None
+        if execution_diagnostics:
+            # These products use only this solve's frozen rows. No geometry
+            # query, alternative constraints, or additional solve is invoked.
+            selected = validation.selected_command
+            selected_slacks = (None if selected is None else
+                               clearance_matrix @ selected - clearance_lower)
+            selected_lookahead = (None if selected is None else
+                                 lookahead_matrix @ selected - lookahead_lower)
+            def matches_obstacle(geom_name):
+                return (geom_name == diagnostic_obstacle_name or
+                        (geom_name.startswith("v5_workspace_sphere_")
+                         and geom_name.endswith("_" + diagnostic_obstacle_name)))
+            rows = []
+            for index, source in enumerate(clearance_sources):
+                if (diagnostic_obstacle_name is not None
+                        and not any(matches_obstacle(token) for token in str(source).split(":"))):
+                    continue
+                rows.append({
+                    "source": str(source), "active": True,
+                    "distance_m": float(clearance_block.distances_m[index]),
+                    "candidate_residual_m_s": float(slacks[index]),
+                    "candidate_binding": bool(slacks[index] <= 2e-5),
+                    "candidate_lookahead_residual_m_s": float(lookahead_slacks[index]),
+                    "candidate_lookahead_binding": bool(lookahead_slacks[index] <= 2e-5),
+                    "selected_residual_m_s": (None if selected_slacks is None else float(selected_slacks[index])),
+                    "selected_binding": (None if selected_slacks is None else bool(selected_slacks[index] <= 2e-5)),
+                    "selected_lookahead_residual_m_s": (None if selected_lookahead is None else float(selected_lookahead[index])),
+                    "selected_lookahead_binding": (None if selected_lookahead is None else bool(selected_lookahead[index] <= 2e-5)),
+                })
+            active_row_count = len(rows)
+            if diagnostic_obstacle_name is not None:
+                active_sources = {row["source"] for row in rows}
+                for pair in self.collision_pairs:
+                    if not any(matches_obstacle(name) for name in (pair.geom_a_name, pair.geom_b_name)):
+                        continue
+                    source = f"mujoco:{pair.pair_class}:{pair.geom_a_name}:{pair.geom_b_name}"
+                    if source not in active_sources:
+                        rows.append({"source": source, "active": False,
+                                     "selected_binding": False,
+                                     "selected_lookahead_binding": False,
+                                     "residual_scope": "no active row; no additional distance query"})
+            diagnostics = {
+                "schema": "v64_b31_single_qp_diagnostics_v1",
+                "raw_unconstrained_velocity": raw_unconstrained.copy(),
+                "box_nominal_velocity": unconstrained.copy(),
+                "selected_velocity": (np.full(17, np.nan) if selected is None else selected.copy()),
+                "continuum_target_position_m": np.asarray(continuum_target_position).copy(),
+                "continuum_actual_position_m": continuum_position.copy(),
+                "continuum_position_error_m": continuum_error_vector.copy(),
+                "continuum_reference_velocity_m_s": np.asarray(continuum_target_velocity).copy(),
+                "continuum_desired_velocity_m_s": continuum_command.copy(),
+                "continuum_actual_velocity_m_s": continuum_actual_velocity[0].copy(),
+                "continuum_selected_task_velocity_m_s": (np.full(3, np.nan) if selected is None else continuum_jacobian @ selected),
+                "obstacle_name": diagnostic_obstacle_name,
+                "obstacle_rows": rows,
+                "obstacle_active_row_count": active_row_count,
+                "row_scope": "existing active clearance and lookahead rows; absent rows are inactive or screened, not missing distance witnesses",
+                "binding_threshold_m_s": 2e-5,
+                "additional_qp_solves": 0, "additional_geometry_queries": 0,
+            }
         return HierarchicalQPResult(
             planner_velocity=validation.selected_command,
             solver_candidate=candidate.copy(),
@@ -1386,4 +1458,5 @@ class HierarchicalVelocityQP:
             shape_clearance_latency_s=(
                 clearance_block.shape_clearance_latency_s
             ),
+            execution_diagnostics=diagnostics,
         )

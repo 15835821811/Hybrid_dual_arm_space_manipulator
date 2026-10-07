@@ -94,6 +94,35 @@ def timing_evidence(trace_path):
         'real_calculation_delay_execution_validity':'NOT_VERIFIED',
         'continuous_time_or_hard_realtime_certification':False}
 
+def consumed_reference_identity_binding(plan, trace, ticks):
+    """Bind new source fields; never invent version/components for old traces."""
+    expected={
+        'task_consumed_reference_version':plan.definition['representation_version'],
+        'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+        'task_consumed_reference_plan_sha256':plan.sha256(),
+    }
+    keys=(*expected, 'task_consumed_reference_z_m')
+    present=[key in trace for key in keys]
+    version=plan.definition['representation_version']
+    if not any(present):
+        if version!='task_anchored_cartesian_residual_v1':
+            raise ValueError('new reference version lacks actual consumed version/z identity fields')
+        return {'available':False,'scope':'historical v1 trace has no version/z log; reference samples remain independently bound',
+            'representation_version':version,'plan_sha256':plan.sha256(),
+            'definition_sha256':plan.definition['definition_sha256']}
+    if not all(present):raise ValueError('incomplete consumed reference identity fields')
+    for key,value in expected.items():
+        observed=np.asarray(trace[key])[:ticks]
+        if observed.shape!=(ticks,) or not np.all(observed==value):
+            raise ValueError('actual consumed reference identity mismatch: '+key)
+    observed=_finite(np.asarray(trace[keys[-1]])[:ticks],(ticks,6,2),keys[-1])
+    if not np.array_equal(observed,np.broadcast_to(plan.z_m,(ticks,6,2))):
+        raise ValueError('actual consumed residual coefficients differ from bound plan')
+    return {'available':True,'passed':True,'planning_inputs_bound':ticks,
+        'representation_version':version,'plan_sha256':plan.sha256(),
+        'definition_sha256':plan.definition['definition_sha256'],
+        'z_m':plan.z_m.tolist(),'physics_steps_added':0,'geometry_queries_added':0}
+
 def reference_consumption_binding(task,plan,trace,state,spec):
     from model_test.whole_body_verifier_v5 import WholeBodyCollisionVerifier,WholeBodyVerificationConfig
     scene=scenario_from_task(task)
@@ -106,6 +135,7 @@ def reference_consumption_binding(task,plan,trace,state,spec):
     provider=TaskAnchoredResidualReferenceProvider(task,plan).prepare(spec,model,observed,scene)
     base=CartesianPassThroughReferenceProvider(task).prepare(spec,model,observed,scene)
     n=len(trace['torque']);ticks=n//10;inputs={};errors={};zero_errors={};peaks=[]
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
     _finite(trace['actual_full_qpos'],(n,81),'actual_full_qpos')
     _finite(trace['actual_full_qvel'],(n,79),'actual_full_qvel')
     for arm in ('rigid','continuum'):
@@ -152,6 +182,9 @@ def reference_consumption_binding(task,plan,trace,state,spec):
     if max(errors.values())>1e-9 or max(zero_errors.values())!=0.:
         raise ValueError('actual consumed reference differs from frozen Cartesian residual or retained fields')
     return {'passed':True,'component_maximum_absolute_residual':errors,
+        'consumed_reference_identity':consumed_identity,
+        'representation_version':plan.definition['representation_version'],
+        'definition_sha256':plan.definition['definition_sha256'],'plan_sha256':plan.sha256(),
         'retained_field_maximum_residual':zero_errors,'comparison_threshold':1e-9,
         'planning_inputs_bound':ticks,'QP_reference_fields_bound':list(REFERENCE_KEYS),
         'generated_continuum_and_posture_poststep_samples_bound':n,
@@ -220,13 +253,16 @@ def evaluate_residual(task,plan,trace_path,*,scenario_result,qp_config,output):
     write(output/'manifest.json',{p.relative_to(output).as_posix():sha(p) for p in sorted(output.rglob('*')) if p.is_file()})
     return report
 
-def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slot_id,reuse_completed=False):
+def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slot_id,reuse_completed=False,
+                             execution_diagnostics=False,diagnostic_obstacle_name=None):
     output=Path(output);before=source_guard(identity_path)
     identity=json.loads(Path(identity_path).read_text(encoding='utf8'))
     config_path=str(Path(qp_config_path).resolve());config_sha=sha(qp_config_path)
     if identity.get('protected_artifacts',{}).get(config_path)!=config_sha:
         raise ValueError('execution QP configuration is not frozen in source identity')
     task_hash=task.sha256();plan_dict=plan.to_dict()
+    if plan.definition['representation_version']!='task_anchored_cartesian_residual_v1' and not execution_diagnostics:
+        raise ValueError('new reference execution requires version/z and QP diagnostic logging')
     plan_hash=hashlib.sha256(json.dumps(plan_dict,sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False).encode()).hexdigest()
     if output.exists():
         retained=output/'attempt_result.json'
@@ -254,6 +290,10 @@ def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slo
         'source_identity_sha256':sha(identity_path),'status':'STARTED','actual_steps':0,
         'entered_actual':False,'full_task_success':False,'full_27s_success':False,
         'fallback_used':False,'postprocessing':[],'deployment':'NOT_MET','evaluation':None}
+    result.update(representation_version=plan.definition['representation_version'],
+        reference_definition_sha256=plan.definition['definition_sha256'],
+        reference_plan_sha256=plan.sha256(),execution_diagnostics_enabled=bool(execution_diagnostics),
+        diagnostic_obstacle_name=diagnostic_obstacle_name)
     actual=output/'actual';metadata=None
     try:
         precheck=reference_precheck(task,plan,cartesian_speed_limit_m_s=.24)
@@ -270,7 +310,9 @@ def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slo
             print(json.dumps({'event':'B2_ACTUAL_STARTED','slot_id':slot_id,'task':task.task_id}),flush=True)
             scene_result=None
             try:
-                scene_result=run_synchronous_scenario(spec,config,qp,scene,actual/'traces',reference_provider=provider)
+                scene_result=run_synchronous_scenario(spec,config,qp,scene,actual/'traces',reference_provider=provider,
+                    **({'execution_diagnostics':True,'diagnostic_obstacle_name':diagnostic_obstacle_name}
+                       if execution_diagnostics else {}))
                 write(actual/'historical_metric_observations.json',scene_result)
                 trace_path=actual/'traces'/f'{scene.scenario_id}.npz'
             except Exception as error:

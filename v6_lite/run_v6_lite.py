@@ -193,6 +193,78 @@ def _config_sha256(run_config: V6LiteRunConfig, qp_config: HierarchicalQPConfig)
     return hashlib.sha256(payload).hexdigest()
 
 
+QP_DIAGNOSTIC_VECTOR_KEYS = (
+    "raw_unconstrained_velocity", "box_nominal_velocity", "selected_velocity",
+    "continuum_target_position_m", "continuum_actual_position_m", "continuum_position_error_m",
+    "continuum_reference_velocity_m_s", "continuum_desired_velocity_m_s",
+    "continuum_actual_velocity_m_s", "continuum_selected_task_velocity_m_s",
+)
+REFERENCE_DIAGNOSTIC_KEYS = (
+    "consumed_reference_version", "consumed_reference_z_m",
+    "consumed_reference_definition_sha256", "consumed_reference_plan_sha256",
+)
+
+
+def reference_diagnostic_identity(provider) -> dict:
+    """Read the provider actually sampled by the runner, without changing it."""
+    plan = getattr(provider, "plan", None)
+    if plan is None:
+        raise ValueError("execution diagnostics require a task-anchored residual provider")
+    version = plan.definition["representation_version"]
+    if (provider.metadata.get("reference_mode") != version
+            or str(np.asarray(provider.prediction["reference_mode"]).item()) != version
+            or provider.metadata.get("plan_sha256") != plan.sha256()
+            or provider.metadata.get("definition_sha256") != plan.definition["definition_sha256"]):
+        raise ValueError("sampled reference provider version or content identity mismatch")
+    return {
+        "consumed_reference_version": version,
+        "consumed_reference_z_m": np.asarray(plan.z_m).copy(),
+        "consumed_reference_definition_sha256": plan.definition["definition_sha256"],
+        "consumed_reference_plan_sha256": plan.sha256(),
+    }
+
+
+def qp_diagnostic_trace_keys() -> tuple[str, ...]:
+    components = tuple(f"qp_{key}_{arm}" for key in QP_DIAGNOSTIC_VECTOR_KEYS[:3]
+                       for arm in ("continuum", "rigid"))
+    return (tuple(f"qp_{key}" for key in QP_DIAGNOSTIC_VECTOR_KEYS) + components
+            + ("qp_obstacle_name", "qp_obstacle_rows_json", "qp_obstacle_active_row_count")
+            + REFERENCE_DIAGNOSTIC_KEYS)
+
+
+def diagnostic_json_value(value):
+    """Failure receipts use JSON null rather than non-standard NaN literals."""
+    if isinstance(value, np.ndarray):
+        return diagnostic_json_value(value.tolist())
+    if isinstance(value, dict):
+        return {key: diagnostic_json_value(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [diagnostic_json_value(item) for item in value]
+    if isinstance(value, (float, np.floating)) and not np.isfinite(value):
+        return None
+    return value
+
+
+def append_qp_execution_diagnostics(task_log: dict, result, identity: dict) -> None:
+    diagnostics = result.execution_diagnostics
+    if diagnostics is None:
+        raise ValueError("requested QP execution diagnostics are absent")
+    for key in QP_DIAGNOSTIC_VECTOR_KEYS:
+        value = np.asarray(diagnostics[key]).copy()
+        task_log[f"qp_{key}"].append(value)
+        if key in QP_DIAGNOSTIC_VECTOR_KEYS[:3]:
+            task_log[f"qp_{key}_continuum"].append(value[:10].copy())
+            task_log[f"qp_{key}_rigid"].append(value[10:].copy())
+    task_log["qp_obstacle_name"].append(diagnostics["obstacle_name"] or "")
+    task_log["qp_obstacle_rows_json"].append(json.dumps(
+        diagnostic_json_value(diagnostics["obstacle_rows"]), sort_keys=True,
+        separators=(",", ":"), allow_nan=False))
+    task_log["qp_obstacle_active_row_count"].append(diagnostics["obstacle_active_row_count"])
+    for key in REFERENCE_DIAGNOSTIC_KEYS:
+        value = identity[key]
+        task_log[key].append(value.copy() if isinstance(value, np.ndarray) else value)
+
+
 def _constraint_snapshot(
     result: Any, data: mujoco.MjData, reference_q: np.ndarray,
     old_command: np.ndarray,
@@ -568,6 +640,8 @@ def run_synchronous_scenario(
     trace_dir: Path,
     *,
     reference_provider=None,
+    execution_diagnostics: bool = False,
+    diagnostic_obstacle_name: str | None = None,
 ) -> dict[str, Any]:
     scenario_initialization_started = time.perf_counter()
     verification_config = WholeBodyVerificationConfig(
@@ -615,6 +689,8 @@ def run_synchronous_scenario(
                 or not np.array_equal(data.ctrl, initial_ctrl)
                 or float(data.time) != initial_time):
             raise RuntimeError("reference provider modified the actual execution state")
+    reference_identity = (reference_diagnostic_identity(reference_provider)
+                          if execution_diagnostics else None)
     qpos_write_count_after_initialization = 0
     qvel_write_count_after_initialization = 0
 
@@ -751,6 +827,8 @@ def run_synchronous_scenario(
         "shape_clearance_latency": [],
     }
     task_qpos_trace: list[np.ndarray] = []
+    if execution_diagnostics:
+        task_log.update({key: [] for key in qp_diagnostic_trace_keys()})
     if reference_provider is not None:
         log.update({key: [] for key in (
             "generated_reference_q", "generated_reference_dq",
@@ -911,6 +989,9 @@ def run_synchronous_scenario(
                 target_timestamp_s=current_time,
                     ramp_start_velocity=command_velocity,
                     prepared_state=interval_admission is not None,
+                    **({"execution_diagnostics": True,
+                        "diagnostic_obstacle_name": diagnostic_obstacle_name}
+                       if execution_diagnostics else {}),
                     **posture_kwargs,
                 )
             except Exception as error:
@@ -939,6 +1020,10 @@ def run_synchronous_scenario(
                     "candidate_valid": result.action_validation.candidate_valid,
                     "ramp_valid": result.action_validation.ramp_valid,
                 })
+                if execution_diagnostics:
+                    interval_diagnostic["qp_execution_diagnostics"] = diagnostic_json_value(
+                        result.execution_diagnostics)
+                    interval_diagnostic["reference_consumption_identity"] = diagnostic_json_value(reference_identity)
             if interval_admission is not None and result.planner_velocity is not None:
                 # Simulate the exact requested ten-step torque ramp before its
                 # first servo step. A failed realized envelope or next-start
@@ -1027,6 +1112,8 @@ def run_synchronous_scenario(
             segment_step = 0
             task_qpos_trace.append(np.asarray(data.qpos).copy())
             task_log["time"].append(current_time)
+            if execution_diagnostics:
+                append_qp_execution_diagnostics(task_log, result, reference_identity)
             if reference_provider is not None:
                 task_log["generated_reference_q"].append(
                     np.asarray(planned["posture_reference_q"]).copy())
