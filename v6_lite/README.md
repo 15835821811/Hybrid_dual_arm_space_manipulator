@@ -1,4 +1,4 @@
-> 本文件记录继承的 V6.2 控制器模块与历史研究。当前分支的 V6.4-B.2 全套图表和回放见[当前总览](../v6_4/visualization/task_anchored_residual_20261007_01/index.html)及[发布报告](../v6_4/releases/task_anchored_residual_20261007_01/report.md)。
+> **当前分支为 V6.4-B.3**：固定 pilot 6/6 完整安全通过，非零方向相对零残差的干预改善为 2.79% / 3.81%，未达预声明 10% 门槛；新训练与五组正式 TEST 均未运行，部署仍为 `NOT_MET`。见[当前两图与方法表](../docs/V6_4_B3_VISUALIZATION.md)、[静态总览](../v6_4/visualization/conditional_route_value_20261007_01/index.html)及[研究报告](../v6_4/releases/conditional_route_value_20261007_01/report.md)。本文件以下记录继承的 **V6.2 历史控制器与研究**；[B.2 历史总览](../v6_4/visualization/task_anchored_residual_20261007_01/index.html)独立保留。
 
 # V6-lite：确定性混合双臂跟踪与避障
 

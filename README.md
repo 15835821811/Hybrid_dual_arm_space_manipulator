@@ -1,4 +1,43 @@
-# Hybrid Dual-Arm Space Manipulator — V6.4-B.2
+# Hybrid Dual-Arm Space Manipulator — V6.4-B.3
+
+本分支 `v6.4-b3-conditional-route-value` 收录场景依赖路线价值的固定预算补充研究。它从已发布 B.2 派生，使用原 12 维、20 mm 任务锚定残差和原执行/安全层；每对任务仅将一个既有球障碍换边。
+
+**六个 pilot 槽位全部完整安全通过，但路线价值未达到预声明门槛。** c+ 侧较好的非零方向为 z−，相对零残差的路线窗口干预 RMS 降低 **2.79%**；c− 侧为 z+，降低 **3.81%**。数值偏好随障碍换边反转，改善均未达到要求的 10%；全部成功也未满足“一条成功、另一条失败”的判据。因此按冻结停止规则结束，不追加位置搜索、候选、幅值、种子或网络。
+
+| 阶段 | 实际状态 |
+|---|---|
+| P0：旧 B.2 update250 固定噪声诊断 | 32 次 DDIM；16/16 对观察到条件响应，27/32 原始输出幅值合法；响应不证明正确适应 |
+| P1：两侧 z0 / z+ / z− | **6/6 完整 Task + 原独立安全门禁通过**，一个开发母场景、两个任务 |
+| P2 / P3：teacher 与新训练 | 按 pilot 停止规则未运行；optimizer 更新 0 |
+| P4：Z0 / R0 / U0 / D_true / D_swap | 全部 **`NOT_RUN_PILOT_STOP`**，不能写成 0/4 失败或某方法胜出 |
+| 路线价值 / 部署 | `ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION` / **`NOT_MET`** |
+
+当前已建立非学习可执行性见证；瓶颈是固定任务中的路线质量差额不足。本轮有限负结果不否定 Diffusion，也没有建立增加 Diffusion 优于简单检索的收益证据。
+
+## 当前 B.3 可视化与报告
+
+[两图与方法表说明](docs/V6_4_B3_VISUALIZATION.md) · [静态可视化总览](v6_4/visualization/conditional_route_value_20261007_01/index.html) · [可移植研究报告](v6_4/releases/conditional_route_value_20261007_01/report.md) · [方法表 CSV](v6_4/visualization/conditional_route_value_20261007_01/method_table.csv) · [方法表 Markdown](v6_4/visualization/conditional_route_value_20261007_01/method_table.md)
+
+![B.3 c+ 侧固定参考、实际路线与质量](v6_4/visualization/conditional_route_value_20261007_01/01_pilot_c_plus_routes.png)
+
+![B.3 c− 侧固定参考、实际路线与质量](v6_4/visualization/conditional_route_value_20261007_01/02_pilot_c_minus_routes.png)
+
+两张图对应开发 pilot 的两个障碍侧，分别提供 PNG / PDF；图中的端点路径投影不替代全连续体碰撞检查。刷新仅读取保存证据，没有新增物理执行、训练、采样或视频任务。静态 HTML 无外部依赖；GitHub 可直接查看本页两图及方法表。
+
+完整质量比较要求 27 s Task、执行合同、区间独立重算、原生几何与参考消费绑定全部通过。`I_route` 复用原 QP 日志中的 17 维名义速度与实际选中速度差的范数，在冻结关键区间内取 RMS；名义值包含原速度边界裁剪，两个源向量未保存。净空单独报告连续体与移动球的相关几何对。
+
+## 成本、身份与范围
+
+本轮消耗 6 个 actual 槽位，actual、私有预演、独立保存力矩重放各 81,000 物理步，分别计费。执行及证据流程的原生几何查询为 201,187,130 次，额外路线质量查询 5,022,372 次，输入几何预检 41,846 次，旧保存状态的接线检查另列 186 次；这些不算新的独立闭环。
+
+20 ms 规划、2 ms 物理、27 s 任务与原安全标准保持。墙钟 20 ms 不作研究门禁；robot-target 仍为原生 500 Hz，whole-body 为 50 Hz 边界加配置空间 subdivisions4。部署 `NOT_MET`，没有连续时间、硬实时或模型失配保证。
+
+B.3 实际执行 producer：`f5f1687f5ba0b119c91bbc385dfdc841b56d091e`；已发布 B.2 基点：`28ef7889be16b4a504d9449f52c50e3a99e82a31`；B.2 原算法 producer：`7d0a3fd4bd17f41b99b388c30c5ac4897ac4d31d`。发布、可视化及说明的后续提交不改写执行身份。完整五问回答、固定计划、独立门禁及成本见[报告](v6_4/releases/conditional_route_value_20261007_01/report.md)，原始与省略证据见[发布清单](v6_4/releases/conditional_route_value_20261007_01/release_manifest.json)。
+
+<details>
+<summary>展开已发布 B.2 的历史结果、可视化与复验说明</summary>
+
+# Hybrid Dual-Arm Space Manipulator — V6.4-B.2（历史归档）
 
 本分支 `v6.4-b2-task-anchored-residual` 发布任务锚定的低维 Cartesian 路线残差先导试验及全套当前可视化。它是 V6.4-B.1 之后的独立补充；原执行和安全控制层保持冻结，旧试验及失败不改写。
 
@@ -45,7 +84,11 @@ python -B -X utf8 -m v6_4.export_residual_release --verify --output v6_4/release
 
 原实验源码producer：`7d0a3fd4bd17f41b99b388c30c5ac4897ac4d31d`。当前分支后续提交仅增加发布、可视化和说明，不重写原实验身份。[原实现说明](v6_4/TASK_ANCHORED_RESIDUAL.md)与[独立结论审阅](paper/review-traces/experiment-result-to-claim/2026-10-07_run01/response.md)保留。
 
+</details>
+
 ## 历史归档
+
+[B.2 图表与 98 个保存状态回放](docs/V6_4_B2_VISUALIZATION.md) · [B.2 历史总览](v6_4/visualization/task_anchored_residual_20261007_01/index.html)。B.2 原结果、失败、媒体和 manifest 保持其原范围。
 
 [V6.2 历史可视化](docs/V6_2_LATEST_VISUALIZATION.md)保留原35视频与所有历史研究图，均为其原协议结果，不重标为V6.4新实验。
 

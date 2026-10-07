@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V6.4-B.3 · 固定配对路线价值</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f6f8;color:#1b2733;font:16px/1.65 system-ui,-apple-system,'Segoe UI','Microsoft YaHei',sans-serif}a{color:#155c8b;text-underline-offset:3px}main{max-width:1280px;margin:auto;padding:30px 24px 70px}header,section{background:white;border:1px solid #dde3e8;border-radius:14px;padding:26px;margin:18px 0;box-shadow:0 2px 12px #152d3a05}h1{font-size:clamp(25px,4vw,38px);line-height:1.25;margin:8px 0 18px}h2{font-size:23px;margin:0 0 14px}h3{font-size:19px;margin:8px 0}p{margin:10px 0}.eyebrow,.muted{color:#617180}.eyebrow{font-weight:700;letter-spacing:.08em;font-size:13px}.stop{background:#fff6df;border-left:5px solid #c48b24;padding:15px 18px;border-radius:6px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 0}.card{background:#f2f5f8;border-radius:9px;padding:16px}.value{font-size:27px;display:block;font-weight:750}.small{font-size:13px}.tag{padding:3px 9px;border-radius:20px;background:#e9eff5;white-space:nowrap;font-size:12px}.pass{background:#e3f1e9;color:#1d6440}.fail{background:#f8e9e8;color:#8c3330}nav{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid #e3e8ec;text-align:left;padding:11px 10px;vertical-align:top}th{background:#f1f5f8;color:#344859;white-space:nowrap}td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}code{font:13px/1.5 ui-monospace,Consolas,monospace;background:#edf1f4;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{font:12px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7f9;padding:15px;border-radius:8px}figure{margin:22px 0 32px}figure img{display:block;width:100%;height:auto;border:1px solid #e3e8ec;border-radius:8px}figcaption{font-size:14px;color:#526572;margin-top:10px}.questions article{padding:14px 0;border-bottom:1px solid #e3e8ec}.questions article:last-child{border:0}.costs{display:grid;grid-template-columns:1fr 1fr;gap:24px}details{margin:12px 0}summary{cursor:pointer;color:#466578}.identity{font-size:13px;overflow-wrap:anywhere}footer{font-size:13px;color:#617180;margin:20px 4px}@media(max-width:780px){main{padding:14px 10px 40px}header,section{padding:18px}.cards{grid-template-columns:1fr 1fr}.costs{grid-template-columns:1fr}table{font-size:12px}th,td{padding:9px 7px}}</style></head>
+<body><main><header><div class="eyebrow">V6.4-B.3 / CONDITIONAL ROUTE VALUE</div><h1>障碍换边后的路线价值：固定预算负结果</h1>
+<div class="stop"><strong>未建立满足预声明门槛的双侧路线价值。</strong><br>六个开发 pilot 槽位完成后按计划停止；teacher、主训练和正式新 TEST 未运行。有限负结果不否定 Diffusion。</div>
+<div class="cards"><div class="card"><span class="muted small">pilot 完整 Task + 原独立安全门禁</span><span class="value">6 / 6</span></div><div class="card"><span class="muted small">旧权重诊断</span><span class="value">32 DDIM</span></div><div class="card"><span class="muted small">新训练 / 正式 TEST</span><span class="value">未运行</span></div><div class="card"><span class="muted small">部署</span><span class="value">NOT_MET</span></div></div>
+<nav><a href="#routes">两侧路线图</a><a href="#pilot">六槽方法表</a><a href="#formal">五组新 TEST</a><a href="#answers">五问回答</a><a href="#cost">成本与证据</a></nav></header>
+<section id="routes"><h2>两张固定配对路线图</h2><p>仅一个开发母场景、两个障碍侧。参考与保存的实际路径分别标示，拒绝前缀止于保存末态；图中投影不替代全连续体碰撞检查。</p><figure><h3>c+ 障碍侧 · b3_mother_00_c_plus</h3><a href='01_pilot_c_plus_routes.png'><img src='01_pilot_c_plus_routes.png' alt='b3_mother_00_c_plus 固定路线参考与独立保存实际路径'></a><figcaption>I_route = RMS of the saved 17-D QP nominal-to-selected command norm over the frozen window. The nominal diagnostic includes the original velocity-bound clipping; source vectors were not logged. Clearance covers continuum collision geoms versus this moved sphere, at independently saved 2 ms states. No full quality value is credited to failed/ineligible prefixes. A projected endpoint path is not whole-arm clearance. Qualifying preferred direction for this side: none established. Deployment: NOT_MET. <a href='01_pilot_c_plus_routes.pdf'>PDF</a> · <a href='01_pilot_c_plus_routes.png'>PNG</a></figcaption></figure><figure><h3>c− 障碍侧 · b3_mother_00_c_minus</h3><a href='02_pilot_c_minus_routes.png'><img src='02_pilot_c_minus_routes.png' alt='b3_mother_00_c_minus 固定路线参考与独立保存实际路径'></a><figcaption>I_route = RMS of the saved 17-D QP nominal-to-selected command norm over the frozen window. The nominal diagnostic includes the original velocity-bound clipping; source vectors were not logged. Clearance covers continuum collision geoms versus this moved sphere, at independently saved 2 ms states. No full quality value is credited to failed/ineligible prefixes. A projected endpoint path is not whole-arm clearance. Qualifying preferred direction for this side: none established. Deployment: NOT_MET. <a href='02_pilot_c_minus_routes.pdf'>PDF</a> · <a href='02_pilot_c_minus_routes.png'>PNG</a></figcaption></figure></section>
+<section id="pilot"><h2>六槽实际记录与相关障碍净空</h2><p>仅完整 27 s、Task 与原独立门禁全部通过的记录进入完整质量比较。破折号表示未取得相应完整质量值，失败前缀没有补入完整均值。</p>
+<div class="scroll"><table><thead><tr><th>槽位 / 任务</th><th>候选</th><th>终态</th><th>保存时长/s</th><th>I_route<br>rad/s</th><th>全任务干预<br>rad/s</th><th>连续体路径/m</th><th>相关球窗口<br>最小净空/mm</th><th>相关球全时域<br>最小净空/mm</th></tr></thead><tbody><tr><td><code>PILOT_00</code><br><span class='small'>b3_mother_00_c_plus</span></td><td>z0</td><td><span class="tag pass">完整合格</span><br><span class='small'>TASK_COMPLETED</span></td><td class='num'>27.000</td><td class='num'>0.108602</td><td class='num'>0.094601</td><td class='num'>1.1103</td><td class='num'>25.884</td><td class='num'>25.884</td></tr><tr><td><code>PILOT_01</code><br><span class='small'>b3_mother_00_c_plus</span></td><td>z+</td><td><span class="tag pass">完整合格</span><br><span class='small'>TASK_COMPLETED</span></td><td class='num'>27.000</td><td class='num'>0.111963</td><td class='num'>0.095142</td><td class='num'>1.1177</td><td class='num'>25.778</td><td class='num'>25.778</td></tr><tr><td><code>PILOT_02</code><br><span class='small'>b3_mother_00_c_plus</span></td><td>z-</td><td><span class="tag pass">完整合格</span><br><span class='small'>TASK_COMPLETED</span></td><td class='num'>27.000</td><td class='num'>0.105570</td><td class='num'>0.094076</td><td class='num'>1.1055</td><td class='num'>25.861</td><td class='num'>25.861</td></tr><tr><td><code>PILOT_03</code><br><span class='small'>b3_mother_00_c_minus</span></td><td>z0</td><td><span class="tag pass">完整合格</span><br><span class='small'>TASK_COMPLETED</span></td><td class='num'>27.000</td><td class='num'>0.112070</td><td class='num'>0.095109</td><td class='num'>1.1103</td><td class='num'>25.878</td><td class='num'>25.878</td></tr><tr><td><code>PILOT_04</code><br><span class='small'>b3_mother_00_c_minus</span></td><td>z+</td><td><span class="tag pass">完整合格</span><br><span class='small'>TASK_COMPLETED</span></td><td class='num'>27.000</td><td class='num'>0.107797</td><td class='num'>0.094420</td><td class='num'>1.1055</td><td class='num'>25.900</td><td class='num'>25.900</td></tr><tr><td><code>PILOT_05</code><br><span class='small'>b3_mother_00_c_minus</span></td><td>z-</td><td><span class="tag pass">完整合格</span><br><span class='small'>TASK_COMPLETED</span></td><td class='num'>27.000</td><td class='num'>0.114338</td><td class='num'>0.095417</td><td class='num'>1.1177</td><td class='num'>25.766</td><td class='num'>25.766</td></tr></tbody></table></div>
+<p class="small">I_route = sqrt(mean(task_avoidance_intervention²))，使用完整预声明关键区间的闭区间 50 Hz 样本。原字段是 17 维 QP 名义速度与实际选中速度差的范数；名义值经过原速度边界裁剪，两个源向量未保存。相关净空仅计算连续体与移动球的几何对，不用 rigid-target 主导的整机最小值替代。</p>
+<p><a href="method_table.csv">原始方法表 CSV</a> · <a href="method_table.md">方法表 Markdown</a></p><details><summary>PILOT_00：独立门禁与前缀证据</summary><pre>{
+  &quot;safety&quot;: {
+    &quot;full_complete&quot;: true,
+    &quot;full_task_and_original_safety_passed&quot;: true,
+    &quot;gates&quot;: {
+      &quot;task_requirements&quot;: true,
+      &quot;execution_contract&quot;: true,
+      &quot;independent_interval&quot;: true,
+      &quot;native_geometry&quot;: true,
+      &quot;reference_binding&quot;: true
+    },
+    &quot;path_quality_comparison_eligible&quot;: true,
+    &quot;historical_runtime_reported_passed&quot;: false,
+    &quot;historical_strict_curve_is_success_gate&quot;: false
+  },
+  &quot;execution_failure&quot;: null,
+  &quot;evaluation_errors&quot;: [],
+  &quot;metric_unavailable&quot;: null,
+  &quot;failed_prefix_metrics&quot;: null
+}</pre></details><details><summary>PILOT_01：独立门禁与前缀证据</summary><pre>{
+  &quot;safety&quot;: {
+    &quot;full_complete&quot;: true,
+    &quot;full_task_and_original_safety_passed&quot;: true,
+    &quot;gates&quot;: {
+      &quot;task_requirements&quot;: true,
+      &quot;execution_contract&quot;: true,
+      &quot;independent_interval&quot;: true,
+      &quot;native_geometry&quot;: true,
+      &quot;reference_binding&quot;: true
+    },
+    &quot;path_quality_comparison_eligible&quot;: true,
+    &quot;historical_runtime_reported_passed&quot;: false,
+    &quot;historical_strict_curve_is_success_gate&quot;: false
+  },
+  &quot;execution_failure&quot;: null,
+  &quot;evaluation_errors&quot;: [],
+  &quot;metric_unavailable&quot;: null,
+  &quot;failed_prefix_metrics&quot;: null
+}</pre></details><details><summary>PILOT_02：独立门禁与前缀证据</summary><pre>{
+  &quot;safety&quot;: {
+    &quot;full_complete&quot;: true,
+    &quot;full_task_and_original_safety_passed&quot;: true,
+    &quot;gates&quot;: {
+      &quot;task_requirements&quot;: true,
+      &quot;execution_contract&quot;: true,
+      &quot;independent_interval&quot;: true,
+      &quot;native_geometry&quot;: true,
+      &quot;reference_binding&quot;: true
+    },
+    &quot;path_quality_comparison_eligible&quot;: true,
+    &quot;historical_runtime_reported_passed&quot;: false,
+    &quot;historical_strict_curve_is_success_gate&quot;: false
+  },
+  &quot;execution_failure&quot;: null,
+  &quot;evaluation_errors&quot;: [],
+  &quot;metric_unavailable&quot;: null,
+  &quot;failed_prefix_metrics&quot;: null
+}</pre></details><details><summary>PILOT_03：独立门禁与前缀证据</summary><pre>{
+  &quot;safety&quot;: {
+    &quot;full_complete&quot;: true,
+    &quot;full_task_and_original_safety_passed&quot;: true,
+    &quot;gates&quot;: {
+      &quot;task_requirements&quot;: true,
+      &quot;execution_contract&quot;: true,
+      &quot;independent_interval&quot;: true,
+      &quot;native_geometry&quot;: true,
+      &quot;reference_binding&quot;: true
+    },
+    &quot;path_quality_comparison_eligible&quot;: true,
+    &quot;historical_runtime_reported_passed&quot;: false,
+    &quot;historical_strict_curve_is_success_gate&quot;: false
+  },
+  &quot;execution_failure&quot;: null,
+  &quot;evaluation_errors&quot;: [],
+  &quot;metric_unavailable&quot;: null,
+  &quot;failed_prefix_metrics&quot;: null
+}</pre></details><details><summary>PILOT_04：独立门禁与前缀证据</summary><pre>{
+  &quot;safety&quot;: {
+    &quot;full_complete&quot;: true,
+    &quot;full_task_and_original_safety_passed&quot;: true,
+    &quot;gates&quot;: {
+      &quot;task_requirements&quot;: true,
+      &quot;execution_contract&quot;: true,
+      &quot;independent_interval&quot;: true,
+      &quot;native_geometry&quot;: true,
+      &quot;reference_binding&quot;: true
+    },
+    &quot;path_quality_comparison_eligible&quot;: true,
+    &quot;historical_runtime_reported_passed&quot;: false,
+    &quot;historical_strict_curve_is_success_gate&quot;: false
+  },
+  &quot;execution_failure&quot;: null,
+  &quot;evaluation_errors&quot;: [],
+  &quot;metric_unavailable&quot;: null,
+  &quot;failed_prefix_metrics&quot;: null
+}</pre></details><details><summary>PILOT_05：独立门禁与前缀证据</summary><pre>{
+  &quot;safety&quot;: {
+    &quot;full_complete&quot;: true,
+    &quot;full_task_and_original_safety_passed&quot;: true,
+    &quot;gates&quot;: {
+      &quot;task_requirements&quot;: true,
+      &quot;execution_contract&quot;: true,
+      &quot;independent_interval&quot;: true,
+      &quot;native_geometry&quot;: true,
+      &quot;reference_binding&quot;: true
+    },
+    &quot;path_quality_comparison_eligible&quot;: true,
+    &quot;historical_runtime_reported_passed&quot;: false,
+    &quot;historical_strict_curve_is_success_gate&quot;: false
+  },
+  &quot;execution_failure&quot;: null,
+  &quot;evaluation_errors&quot;: [],
+  &quot;metric_unavailable&quot;: null,
+  &quot;failed_prefix_metrics&quot;: null
+}</pre></details></section>
+<section id="formal"><h2>正式新 TEST：五组均未运行</h2><p>P1 未通过路线价值门槛，因此 P2/P3/P4 按停止规则保持未运行。没有把预留四个任务记为 0/4 失败，也没有依据未运行对照宣布检索或 Diffusion 胜出。</p><div class="scroll"><table><thead><tr><th>组别</th><th>预声明输入</th><th>状态</th><th>完整任务成功数</th></tr></thead><tbody><tr><td>Z0</td><td>零残差</td><td><code>NOT_RUN_PILOT_STOP</code></td><td>未评价</td></tr><tr><td>R0</td><td>TRAIN 高质量检索</td><td><code>NOT_RUN_PILOT_STOP</code></td><td>未评价</td></tr><tr><td>U0</td><td>TRAIN 高质量经验抽样</td><td><code>NOT_RUN_PILOT_STOP</code></td><td>未评价</td></tr><tr><td>D_true</td><td>正确条件 Diffusion</td><td><code>NOT_RUN_PILOT_STOP</code></td><td>未评价</td></tr><tr><td>D_swap</td><td>错配障碍条件 Diffusion</td><td><code>NOT_RUN_PILOT_STOP</code></td><td>未评价</td></tr></tbody></table></div></section>
+<section><h2>P0：条件响应与条件价值分别报告</h2><p>旧 B.2 update250 权重在固定噪声下仅交换障碍条件：16 / 16 对观察到条件响应，原始幅值合法 27 / 32。没有裁剪、替换、重训或新增物理执行。</p><p><strong>响应变化不证明路线选择正确。</strong>公开旧 TEST 仅用于诊断；本轮没有新模型的真条件、错条件、无条件经验抽样或检索 TEST 比较。</p></section>
+<section id="answers" class="questions"><h2>五个问题的直接回答</h2><article><h3>1. 零残差已经足够时，残差是否有可测收益？</h3><p>b3_mother_00_c_plus较好非零z-相对零残差I_route变化-2.791%；b3_mother_00_c_minus较好非零z+相对零残差I_route变化-3.813%。完整成功记录中未达到冻结的双侧A/B路线价值门槛。安全通过和非零运动变化不能代替可辨识的路线收益。</p></article><article><h3>2. 障碍换边后，正确路线是否随之改变？</h3><p>b3_mother_00_c_plus: z-；b3_mother_00_c_minus: z+。完整合格非零候选的数值排名随障碍换边反转，但未建立满足冻结门槛的双侧相反有利方向；数值排名与达到可辨识价值门槛分别报告。</p></article><article><h3>3. 真实条件是否比错条件/无条件经验抽样更好？</h3><p>未评价新模型的五组TEST。旧权重P0仅观察到条件响应，缺少可信偏好标签，不能据此称正确适应。</p></article><article><h3>4. 与简单检索相比是否值得增加Diffusion？</h3><p>本轮没有建立新增Diffusion的收益证据；维持B.2的非学习检索基线，不能将未运行对照写成检索胜出。</p></article><article><h3>5. 负结果下一步指向任务区分度、数据还是方法？</h3><p>当前已建立非学习可执行性见证；瓶颈是路线质量差额不足。优先评估任务区分度以及20mm残差经过安全执行层后的有效作用，再考虑高质量数据与学习方法。本轮停止，不追加障碍搜索、幅值、种子或网络。</p></article></section>
+<section id="cost"><h2>成本分账与结论边界</h2><div class="costs"><div><table><thead><tr><th>成本项</th><th>实测计数</th></tr></thead><tbody><tr><td>消耗的 pilot 槽位</td><td class='num'>6</td></tr><tr><td>进入 actual runner 的槽位</td><td class='num'>6</td></tr><tr><td>发生物理步的槽位</td><td class='num'>6</td></tr><tr><td>actual 物理步</td><td class='num'>81,000</td></tr><tr><td>私有预演物理步</td><td class='num'>81,000</td></tr><tr><td>独立保存力矩重放步</td><td class='num'>81,000</td></tr><tr><td>私有预演调用</td><td class='num'>8,100</td></tr><tr><td>执行与证据流程原生几何查询</td><td class='num'>201,187,130</td></tr><tr><td>额外路线质量几何查询</td><td class='num'>5,022,372</td></tr><tr><td>输入几何预检查询</td><td class='num'>41,846</td></tr><tr><td>旧状态场景绑定预检查询</td><td class='num'>186</td></tr><tr><td>旧权重诊断 DDIM</td><td class='num'>32</td></tr><tr><td>teacher actual 槽位</td><td class='num'>0</td></tr><tr><td>新模型 DDIM</td><td class='num'>0</td></tr><tr><td>新模型主训练次数</td><td class='num'>0</td></tr><tr><td>新模型 optimizer 更新</td><td class='num'>0</td></tr><tr><td>正式新 TEST actual 槽位</td><td class='num'>0</td></tr></tbody></table><p class="small">actual、私有预演、独立保存力矩重放分别计费；几何查询不算独立实验。异常前缀成本采用实际 ledger，不用缺失报告字段推定零成本。</p></div><div><table><thead><tr><th>独立状态</th><th>报告值</th></tr></thead><tbody><tr><td><code>research_execution_complete</code></td><td>True</td></tr><tr><td><code>research_delivery_complete</code></td><td>True</td></tr><tr><td><code>route_value_identifiable</code></td><td>False</td></tr><tr><td><code>training_executed</code></td><td>False</td></tr><tr><td><code>condition_response_observed</code></td><td>True</td></tr><tr><td><code>conditional_value_supported_in_pilot</code></td><td>False</td></tr><tr><td><code>advantage_over_retrieval</code></td><td>NOT_EVALUATED</td></tr><tr><td><code>deployment</code></td><td>NOT_MET</td></tr></tbody></table><p>20 ms 规划、2 ms 物理、27 s 任务、20 mm 残差范围与原控制/安全标准保持。墙钟 20 ms 不作研究门禁；无硬实时、连续时间或模型失配保证。</p><p>robot-target 原生 500 Hz；whole-body 50 Hz 边界加配置空间 subdivisions4，不声称所有几何对均在 500 Hz 验证。</p></div></div>
+<details><summary>完整成本字典与冻结指标定义</summary><pre>{
+  &quot;costs&quot;: {
+    &quot;actual_physics_steps&quot;: 81000,
+    &quot;private_preview_physics_steps&quot;: 81000,
+    &quot;independent_saved_torque_replay_steps&quot;: 81000,
+    &quot;native_geometry_query_calls&quot;: 201187130,
+    &quot;preview_calls&quot;: 8100,
+    &quot;additional_route_quality_geometry_queries&quot;: 5022372,
+    &quot;input_precheck_geometry_queries&quot;: 41846,
+    &quot;preflight_geometry_binding_check_queries&quot;: 186,
+    &quot;native_geometry_query_calls_by_phase&quot;: {
+      &quot;actual&quot;: 98469703,
+      &quot;independent_torque_replay&quot;: 102717427,
+      &quot;private_preview&quot;: 0
+    },
+    &quot;actual_slots_consumed&quot;: 6,
+    &quot;actual_runner_entries&quot;: 6,
+    &quot;slots_with_physics&quot;: 6,
+    &quot;old_checkpoint_ddim_calls&quot;: 32,
+    &quot;teacher_actual_slots&quot;: 0,
+    &quot;new_model_ddim_calls&quot;: 0,
+    &quot;new_training_runs&quot;: 0,
+    &quot;optimizer_updates&quot;: 0,
+    &quot;new_TEST_actual_slots&quot;: 0,
+    &quot;count_scope&quot;: &quot;actual, private previews and same-torque independent replays are distinct; geometry queries are not independent experiments&quot;
+  },
+  &quot;I_route_scope&quot;: {
+    &quot;T_route&quot;: &quot;the complete fixed key-slot-2 interval of each task, identically applied to every method&quot;,
+    &quot;sampling&quot;: &quot;closed [start,end] 50Hz consumed planning ticks&quot;,
+    &quot;descriptive_input_route_window_string_correction&quot;: &quot;route_pair_inputs.protocol says open_endpoints; this plan fixes CLOSED sampling before outcomes; numerical intervals and Task definitions unchanged&quot;,
+    &quot;primary&quot;: &quot;sqrt(mean(task_avoidance_intervention**2))&quot;,
+    &quot;producer_scope&quot;: &quot;norm of selected 17D QP command minus original Hessian-optimum nominal command after existing velocity-bound clipping; source vectors not logged&quot;,
+    &quot;raw_proposal_minus_selected_used&quot;: false,
+    &quot;local_clearance&quot;: &quot;all continuum geoms vs the single moved sphere, fresh saved 2ms states; full task and route window reported separately&quot;,
+    &quot;full_task_and_all_independent_gates_required_for_quality_comparison&quot;: true,
+    &quot;failed_prefix_excluded_from_full_means&quot;: true,
+    &quot;pilot_direction_rule&quot;: &quot;minimum I_route among full successful safe nonzero candidates; &lt;=1e-12 absolute I tie is unidentified; preferred must satisfy A or B versus zero or opposite; pair preferred qualifying directions must differ&quot;,
+    &quot;pilot_A&quot;: &quot;preferred nonzero full success and zero or opposite fails&quot;,
+    &quot;pilot_B&quot;: {
+      &quot;relative_reduction_min&quot;: 0.1,
+      &quot;absolute_reduction_min_rad_s&quot;: 0.001
+    },
+    &quot;pilot_negative_stop&quot;: &quot;ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION&quot;
+  }
+}</pre></details></section>
+<section><h2>证据与历史版本</h2><p><a href="../../releases/conditional_route_value_20261007_01/report.md">可移植研究报告</a> · <a href="../../releases/conditional_route_value_20261007_01/snapshot/report.json">机器可读 report</a> · <a href="../../releases/conditional_route_value_20261007_01/snapshot/paired_metrics.json">配对指标</a> · <a href="dashboard_manifest.json">本页与方法表哈希</a> · <a href="manifest.json">原两图 manifest</a> · <a href="plot_data.json">两图数据</a></p><p><a href="../task_anchored_residual_20261007_01/index.html">B.2 历史可视化</a> · <a href="../../../v6_lite/visualization/latest/index.html">V6.2 历史可视化</a>。历史媒体保留各自实验范围。</p>
+<p class="identity">本轮实际 producer：<code>f5f1687f5ba0b119c91bbc385dfdc841b56d091e</code><br>B.2 发布基点：<code>28ef7889be16b4a504d9449f52c50e3a99e82a31</code><br>B.2 原算法 producer：<code>7d0a3fd4bd17f41b99b388c30c5ac4897ac4d31d</code><br>plan SHA-256：<code>6ed9cd38ac284c9a57ad2bbf03a4b492380c83205fb5db4db81c9a6247922dd1</code><br>source identity SHA-256：<code>6a244ea853cf02efd3d452d8afd25339d36cec899691846e64f94d22199f4c0a</code></p></section>
+<footer>conditional_route_value_20261007_01 · 静态证据页，读取已保存结果生成，新增物理步 / DDIM / optimizer / 几何查询均为 0。</footer></main></body></html>

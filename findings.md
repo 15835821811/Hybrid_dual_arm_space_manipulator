@@ -27,3 +27,15 @@ Review route: end hypothesis / preserve baseline; next_experiments_needed=[]。�
 墙钟20ms不作本研究门禁；原20ms规划、2ms物理和27s时长保持，全部长尾记录。部署NOT_MET，真实计算延迟下状态演化的执行有效性未验证，非连续时间安全证明。旧B1封存4849产物/13external字节复核无差异。
 
 路由narrow_claim_and_stop；next_experiments_needed=[]。无paper claim audit，后续论文措辞provisional。完整审阅位于paper/review-traces/experiment-result-to-claim/2026-10-07_run01。报告与机器表在v6_4/output/task_anchored_residual_20261007_01，保持全部原始失败及checkpoint。
+
+## V6.4-B.3 — conditional_route_value_20261007_01
+
+独立result-to-claim判定no、confidence high、blocking_issues=[]。一母场景两任务z0/±12mm固定六槽均完整27s并通过原五项独立门禁。较好非零方向随障碍换边反转（c+ z-，c- z+），相对零干预减少2.791%/3.813%，相对反向5.710%/5.721%；绝对差通过0.001rad/s但相对改善不足10%，不满足冻结A/B路线价值门槛。不能称完全无数值收益，也不能推广为整个20mm表示或Diffusion无效。
+
+旧update250权重32次DDIM、16同噪声配对均观察条件数值响应；27/32幅值合法不等于参考或闭环合法。P2 teacher、P3训练、新模型采样和P4五组新TEST按P1停止规则均NOT_RUN_PILOT_STOP；不记为0/4。无检索胜出或条件学习优势结论。保留B.2基础参考与非学习基线，不扩大障碍搜索、幅值、网络、种子或预算。
+
+当前已建立非学习可执行性见证，限制是冻结三候选的路线质量差额不足；后续若另行授权，应先研究任务区分度及安全执行后有效残差作用。原因未由本轮唯一分离。I_route复算保存范数RMS；原名义向量经过速度界裁剪，两个源向量未保存，范围已披露。
+
+成本分开记actual81000、私有预演81000、独立保存力矩重放81000步，执行证据geometry201187130、路线质量5022372、输入预检41846、旧状态绑定预检186；旧权重DDIM32，新训练/新TEST为0。20ms墙钟非研究门禁；仿真20ms/2ms/27s及原安全检查保持，deployment NOT_MET。
+
+路由STOP_CURRENT_FINITE_STUDY_WITH_NEGATIVE_ROUTE_VALUE_RESULT，next_experiments_needed=[]；科学研究结束，发布收尾由root完成。完整审阅paper/review-traces/experiment-result-to-claim/2026-10-07_run02；无paper claim audit，后续论文verdict provisional。
