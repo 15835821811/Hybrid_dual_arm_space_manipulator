@@ -1,3 +1,13 @@
+<!-- 2026-10-07 B.3.1 保存状态媒体补充 -->
+
+**当前媒体已同步更新：全部 28 槽、196 个视频。** 五视角、连续体侧视、双臂末端轨迹、位置/姿态误差、基座漂移与保存的净空诊断均对应当前固定结果。仅读取保存状态，不新增闭环实验。
+
+[完整媒体目录：五视角、连续体侧视、末端轨迹与误差](v6_4/visualization/execution_aware_media_20261007_01/README.md) · [交互目录](v6_4/visualization/execution_aware_media_20261007_01/index.html) · [来源与验证说明](docs/V6_4_B31_MEDIA_SUPPLEMENT.md)
+
+原研究两图、报告、审查与冻结清单继续保留如下。新增媒体和当前入口的来源、校验另行记账。
+
+---
+
 # Hybrid Dual-Arm Space Manipulator — V6.4-B.3.1
 
 当前分支 `v6.4-b3-1-execution-aware-route-teacher` 交付控制器感知参考与有限质量教师补充：一个母场景、四个开发任务、七种固定参考，共 28 个固定槽位，其中六条复用旧 B.3 原件、22 条为新增槽位。

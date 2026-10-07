@@ -1,3 +1,13 @@
+<!-- 2026-10-07 B.3.1 保存状态媒体补充 -->
+
+**当前媒体已同步更新：全部 28 槽、196 个视频。** 五视角、连续体侧视、双臂末端轨迹、位置/姿态误差、基座漂移与保存的净空诊断均对应当前固定结果。仅读取保存状态，不新增闭环实验。
+
+[当前 B.3.1 全部视频与图表](../v6_4/visualization/execution_aware_media_20261007_01/README.md) · [交互目录](../v6_4/visualization/execution_aware_media_20261007_01/index.html) · [媒体补充说明](../docs/V6_4_B31_MEDIA_SUPPLEMENT.md)
+
+原研究两图、报告、审查与冻结清单继续保留如下。新增媒体和当前入口的来源、校验另行记账。
+
+---
+
 > 当前入口为 **V6.4-B.3.1**：[两图与全部候选](../v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html)、[可视化说明](../docs/V6_4_B31_VISUALIZATION.md)、[完整报告](../v6_4/releases/execution_aware_route_teacher_20261007_01/report.md)、[run03 审查](../paper/review-traces/experiment-result-to-claim/2026-10-07_run03/response.md)。
 >
 > 有限teacher较最佳常量低3.27%、较冻结几何规则低1.03%；同幅值v2没有一致优势，Diffusion收益未建立。 完整安全通过 28/28，质量可比 28/28。未训练、未模型采样、未运行独立泛化 TEST；deployment 为 `NOT_MET`。旧 B.3 的六槽负结果及五组 `NOT_RUN_PILOT_STOP` 保持。
