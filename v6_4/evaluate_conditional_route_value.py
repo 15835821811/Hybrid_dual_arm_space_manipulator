@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'v6_4/output/conditional_route_value_20261007_01'
@@ -65,6 +66,8 @@ def collect():
         'independent_saved_torque_replay_steps', 'native_geometry_query_calls', 'preview_calls')}
     cost['additional_route_quality_geometry_queries'] = sum(r['costs']['additional_route_quality_geometry_queries'] for r in records)
     cost['input_precheck_geometry_queries'] = read(OUT/'route_pair_inputs.json')['geometry_query_count']
+    preflight_path = OUT/'preflight_geometry_binding_check.json'
+    cost['preflight_geometry_binding_check_queries'] = read(preflight_path)['native_geometry_queries'] if preflight_path.exists() else 0
     phases = sorted({phase for ledger in ledgers for phase in ledger['phase_counts']})
     cost['native_geometry_query_calls_by_phase'] = {
         phase: sum(ledger['phase_counts'].get(phase, {}).get('mj_geomDistance', {}).get('returned', 0) for ledger in ledgers)
@@ -76,6 +79,29 @@ def collect():
                 new_training_runs=0, optimizer_updates=0, new_TEST_actual_slots=0,
                 count_scope='actual, private previews and same-torque independent replays are distinct; geometry queries are not independent experiments')
     complete = sum(a['full_task_success'] is True for a in attempts)
+    from .visualization.build_conditional_figures import minimum_jerk_reference
+    midpoint_diagnostic = []
+    for declared, attempt in zip(plan['pilot_slots'], attempts):
+        fresh_path = Path(attempt['evaluation_path']).parent/'fresh_replay.npz'
+        if not fresh_path.exists():
+            continue
+        midpoint = float(np.mean(declared['T_route_s']))
+        with np.load(fresh_path, allow_pickle=False) as data:
+            index = int(np.argmin(np.abs(data['time']-midpoint)))
+            actual_time = float(data['time'][index])
+            position = data['continuum_position'][index].copy()
+        task = read(OUT/f"tasks/{declared['task_id']}/task.json")
+        definition = read(OUT/f"tasks/{declared['task_id']}/definition.json")
+        first_axis = np.asarray(definition['transverse_bases'][2])[:,0]
+        base = minimum_jerk_reference(task, [actual_time])[0]
+        midpoint_diagnostic.append({'slot_id':attempt['slot_id'], 'task_id':attempt['task_id'],
+            'candidate_name':declared['candidate_name'], 'frozen_window_midpoint_s':midpoint,
+            'nearest_saved_time_s':actual_time, 'saved_state_index':index,
+            'actual_first_transverse_offset_from_base_mm':float((position-base)@first_axis*1000),
+            'fresh_replay_sha256':sha(fresh_path), 'new_physics_steps':0,'new_geometry_queries':0})
+    write(OUT/'pilot/actual_route_midpoint_diagnostic.json', {'records':midpoint_diagnostic,
+        'scope':'descriptive nearest native saved sample at the fixed route-window midpoint; not a selection metric or a causal intervention',
+        'new_physics_steps':0,'new_geometry_queries':0})
     timing = {'proposal_comparison': {'status':'NOT_RUN_PILOT_STOP','methods':plan['TEST']['methods']},
               'pilot': [{'slot_id':a['slot_id'], 'executor_and_independent_evidence_wall_s':a['elapsed_wall_s'],
                          'independent_evaluation_wall_s':(a.get('evaluation') or {}).get('evaluation_wall_s'),
@@ -101,7 +127,8 @@ def collect():
                             'predeclared_side_gate': side})
     pairs = {'schema': 'v64_b3_paired_metrics_v1', 'plan_sha256': sha(OUT/'plan.json'),
              'pilot': {'task_count': 2, 'mother_scene_count': 1, 'slots': rows, 'decision': decision,
-                       'complete_safe_nonzero_vs_zero': comparisons},
+                       'complete_safe_nonzero_vs_zero': comparisons,
+                       'actual_route_midpoint_diagnostic':midpoint_diagnostic},
              'new_independent_TEST': {'status': 'NOT_RUN_PILOT_STOP', 'success_by_method': {m: None for m in plan['TEST']['methods']}},
              'old_checkpoint_condition_probe': {k: v for k, v in probe.items() if k not in (
                  'records', 'same_noise_between_obstacle_conditions', 'different_noise_within_obstacle_condition')},
@@ -123,7 +150,7 @@ def collect():
         {'question': '障碍换边后，正确路线是否随之改变？', 'answer': preference_text+'。'+ordinal_text+'，但未建立满足冻结门槛的双侧相反有利方向；数值排名与达到可辨识价值门槛分别报告。'},
         {'question': '真实条件是否比错条件/无条件经验抽样更好？', 'answer': '未评价新模型的五组TEST。旧权重P0仅观察到条件响应，缺少可信偏好标签，不能据此称正确适应。'},
         {'question': '与简单检索相比是否值得增加Diffusion？', 'answer': '本轮没有建立新增Diffusion的收益证据；维持B.2的非学习检索基线，不能将未运行对照写成检索胜出。'},
-        {'question': '负结果下一步指向任务区分度、数据还是方法？', 'answer': '先解决固定任务族中的路线可区分性与非学习可执行性见证，再讨论质量数据或学习方法。本轮停止，不追加障碍搜索、幅值、种子或网络。'}]
+        {'question': '负结果下一步指向任务区分度、数据还是方法？', 'answer': ('当前已建立非学习可执行性见证；瓶颈是路线质量差额不足。优先评估任务区分度以及20mm残差经过安全执行层后的有效作用，再考虑高质量数据与学习方法。' if complete else '先取得固定任务族中的非学习可执行性见证，再评估路线区分度与质量数据。')+'本轮停止，不追加障碍搜索、幅值、种子或网络。'}]
     report = {'schema': 'v64_b3_conditional_route_value_report_v1', 'created_utc': datetime.now(timezone.utc).isoformat(),
               'run_id': OUT.name, 'source_producer_commit': identity['algorithm_producer_commit'],
               'B2_algorithm_producer': plan['B2_algorithm_producer'], 'published_B2_base': plan['published_B2_base'],
@@ -171,6 +198,11 @@ def collect():
     for i, entry in enumerate(questions, 1):
         content += f"{i}. **{entry['question']}** {entry['answer']}\n\n"
     content += '## 成本与边界\n\n```json\n'+json.dumps(cost, ensure_ascii=False, indent=2)+'\n```\n\n'
+    content += '## 固定窗口中点的保存轨迹诊断\n\n'
+    content += '以下是距预声明窗口中点最近的原生保存样本，描述实际端点相对基础参考的第一横向偏置；不用于选择或修改pilot门槛，也不构成独立因果证明。\n\n'
+    for row in midpoint_diagnostic:
+        content += f"- {row['slot_id']} / {row['candidate_name']}，t={row['nearest_saved_time_s']:.3f}s：{row['actual_first_transverse_offset_from_base_mm']:+.3f}mm。\n"
+    content += '\n'
     content += 'I_route由原日志中17维名义速度与选中速度差的范数恢复；名义值经过原速度边界clipping，两个源向量未保存。固定T_route取完整预声明区间的闭区间50Hz样本。完整Task与原五项独立安全门禁通过后才作完整质量比较；相关连续体-球净空不被整机最小值替代。\n\n'
     content += '20ms规划、2ms物理、27s任务及原QP/67路力矩/私有预演/安全标准保持。20ms墙钟不作研究门禁，部署NOT_MET；无硬实时、连续时间或模型失配保证。正式TRAIN/VAL/TEST已冻结但未执行，不能将其计作独立测试成功。\n'
     with (OUT/'REPORT.md').open('x', encoding='utf-8') as file:
