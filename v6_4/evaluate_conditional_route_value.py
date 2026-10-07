@@ -65,12 +65,26 @@ def collect():
         'independent_saved_torque_replay_steps', 'native_geometry_query_calls', 'preview_calls')}
     cost['additional_route_quality_geometry_queries'] = sum(r['costs']['additional_route_quality_geometry_queries'] for r in records)
     cost['input_precheck_geometry_queries'] = read(OUT/'route_pair_inputs.json')['geometry_query_count']
+    phases = sorted({phase for ledger in ledgers for phase in ledger['phase_counts']})
+    cost['native_geometry_query_calls_by_phase'] = {
+        phase: sum(ledger['phase_counts'].get(phase, {}).get('mj_geomDistance', {}).get('returned', 0) for ledger in ledgers)
+        for phase in phases}
+    assert sum(cost['native_geometry_query_calls_by_phase'].values()) == cost['native_geometry_query_calls']
     cost.update(actual_slots_consumed=6, actual_runner_entries=sum(a.get('actual_runner_started') is True for a in attempts),
                 slots_with_physics=sum(a['actual_steps']>0 for a in attempts),
                 old_checkpoint_ddim_calls=32, teacher_actual_slots=0, new_model_ddim_calls=0,
                 new_training_runs=0, optimizer_updates=0, new_TEST_actual_slots=0,
                 count_scope='actual, private previews and same-torque independent replays are distinct; geometry queries are not independent experiments')
     complete = sum(a['full_task_success'] is True for a in attempts)
+    timing = {'proposal_comparison': {'status':'NOT_RUN_PILOT_STOP','methods':plan['TEST']['methods']},
+              'pilot': [{'slot_id':a['slot_id'], 'executor_and_independent_evidence_wall_s':a['elapsed_wall_s'],
+                         'independent_evaluation_wall_s':(a.get('evaluation') or {}).get('evaluation_wall_s'),
+                         'dispatch_timing':(a.get('evaluation') or {}).get('dispatch_timing'),
+                         'original_planning_latency':((a.get('evaluation') or {}).get('metrics') or {}).get('planning_algorithm_wall_latency_s'),
+                         'original_torque_latency':((a.get('evaluation') or {}).get('metrics') or {}).get('torque_preparation_wall_latency_s')}
+                        for a in attempts],
+              'nested_times_or_quantiles_added':False, 'wall_20ms_is_research_gate':False,
+              'wrapper_bookkeeping_included_in_wall_time':True}
     comparisons = []
     for side in decision['sides']:
         local = {r['method']: r for r in rows if r['task_id'] == side['task_id']}
@@ -91,7 +105,7 @@ def collect():
              'new_independent_TEST': {'status': 'NOT_RUN_PILOT_STOP', 'success_by_method': {m: None for m in plan['TEST']['methods']}},
              'old_checkpoint_condition_probe': {k: v for k, v in probe.items() if k not in (
                  'records', 'same_noise_between_obstacle_conditions', 'different_noise_within_obstacle_condition')},
-             'costs': cost}
+             'costs': cost, 'timing_summary':timing}
     write(OUT/'paired_metrics.json', pairs)
     if complete == 0:
         diagnosis = 'NO_COMPLETE_SAFE_NONLEARNING_EXECUTABILITY_WITNESS_IN_FIXED_PILOT'
@@ -122,6 +136,7 @@ def collect():
               'independent_test_task_success_by_method': {m: 'NOT_RUN_PILOT_STOP' for m in plan['TEST']['methods']},
               'pilot_full_task_success': {'numerator': complete, 'denominator': 6},
               'diagnosis': diagnosis, 'decision': decision, 'five_questions': questions, 'costs': cost,
+              'timing_summary':timing,
               'not_run': {'teacher': 'PILOT_NEGATIVE_STOP', 'training': 'PILOT_NEGATIVE_STOP',
                           'new_model_sampling': 'PILOT_NEGATIVE_STOP', 'new_TEST': 'PILOT_NEGATIVE_STOP', 'K4_actual': 'NOT_RUN'},
               'deployment': 'NOT_MET', 'continuous_time_certified': False,
