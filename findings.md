@@ -15,3 +15,15 @@
 墙钟20ms不作当前仿真研究前置门槛；20ms仿真控制周期与2ms物理保持。实际50Hz部署需另行运行时验证，当前NOT_MET。有限实验结果已足以结束本轮判定，不追加C.1或控制器修补。
 
 Review route: end hypothesis / preserve baseline; next_experiments_needed=[]。无PAPER_CLAIM_AUDIT，后续论文措辞provisional。有限交叉复核角色及输入/输出哈希已记录于paper/review-traces/experiment-result-to-claim/2026-10-06_run01。
+
+## V6.4-B.2 — task_anchored_residual_20261007_01
+
+独立result-to-claim判定partial、confidence high。有限研发交付完成，非零Cartesian残差表示能力在冻结补充TaskSpec及声明离散安全范围内建立；学习收益not_established。TEST E0=4/4、E1=4/4、E2固定K1=3/4，K4 actual NOT_RUN。保留基础Cartesian与TRAIN-only检索，E2仅研究产物，停止本轮，不扩网络、seed、候选或actual。
+
+固定37次实际尝试488260步，35完整成功、30非零完整成功（非独立任务数）；teacher23/24，TRAIN17参考/6任务、VAL6参考/2任务。真实新训练4000更新/128000曝光，selected250/8000，VAL训练曝光0；raw16有限非零、合法14，2幅值拒绝保留。两个执行失败为teacher_17 14.900s及TEST_01_E2 16.620s的原工作域拒绝，无fallback/重试。
+
+全部30条完整非零运行仍保留历史runtime continuum_irregular_waypoint_path_rmse失败；本轮完整成功仅指预声明允许中间绕行的end_effector_detour TaskSpec以及原合同/区间/native/binding，不改写旧严格全曲线路径协议或B1原0/24、0/6与A1修复2/4。锚点接受主要来自解析表示，实际路径改变不等于学习质量优势。
+
+墙钟20ms不作本研究门禁；原20ms规划、2ms物理和27s时长保持，全部长尾记录。部署NOT_MET，真实计算延迟下状态演化的执行有效性未验证，非连续时间安全证明。旧B1封存4849产物/13external字节复核无差异。
+
+路由narrow_claim_and_stop；next_experiments_needed=[]。无paper claim audit，后续论文措辞provisional。完整审阅位于paper/review-traces/experiment-result-to-claim/2026-10-07_run01。报告与机器表在v6_4/output/task_anchored_residual_20261007_01，保持全部原始失败及checkpoint。
