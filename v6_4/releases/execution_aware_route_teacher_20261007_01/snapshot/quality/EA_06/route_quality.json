@@ -1,0 +1,1041 @@
+{
+  "schema": "v64_b3_route_quality_v1",
+  "slot_id": "EA_06",
+  "task_id": "b3_mother_00_c_plus",
+  "task_sha256": "fbc092e092d4abbcbb8a9424d7046607358803c3b5fa16b1f99c6e8cb089c937",
+  "split": "train",
+  "candidate_name": "v2_minus20",
+  "status": "TASK_COMPLETED",
+  "route_intervals_s": [
+    [
+      8.461298845015024,
+      11.977496008196567
+    ]
+  ],
+  "route_obstacle_name": "continuum_side_00",
+  "z_m": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      -0.02,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ]
+  ],
+  "safety": {
+    "full_complete": true,
+    "full_task_and_original_safety_passed": true,
+    "gates": {
+      "task_requirements": true,
+      "execution_contract": true,
+      "independent_interval": true,
+      "native_geometry": true,
+      "reference_binding": true
+    },
+    "path_quality_comparison_eligible": true,
+    "historical_runtime_reported_passed": false,
+    "historical_strict_curve_is_success_gate": false
+  },
+  "independent_safety_and_task_metrics": {
+    "task_requirements": {
+      "passed": true,
+      "requirements": [
+        {
+          "point_id": "continuum_00",
+          "arm": "continuum",
+          "kind": "waypoint",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 351,
+          "best_time_s": 4.388,
+          "position_error_m": 6.228061089915152e-07,
+          "orientation_error_rad": 2.9876735293512787e-07,
+          "position_tolerance_m": 0.002,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "continuum_01",
+          "arm": "continuum",
+          "kind": "waypoint",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 350,
+          "best_time_s": 8.0,
+          "position_error_m": 2.478454594302495e-06,
+          "orientation_error_rad": 5.930587274471727e-07,
+          "position_tolerance_m": 0.002,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "continuum_02",
+          "arm": "continuum",
+          "kind": "waypoint",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 350,
+          "best_time_s": 12.214,
+          "position_error_m": 5.60619982529335e-06,
+          "orientation_error_rad": 7.447599768400245e-07,
+          "position_tolerance_m": 0.002,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "continuum_03",
+          "arm": "continuum",
+          "kind": "waypoint",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 350,
+          "best_time_s": 15.972,
+          "position_error_m": 2.1694240394021124e-06,
+          "orientation_error_rad": 2.046944477736708e-06,
+          "position_tolerance_m": 0.002,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "continuum_04",
+          "arm": "continuum",
+          "kind": "waypoint",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 350,
+          "best_time_s": 19.224,
+          "position_error_m": 9.67960352147283e-07,
+          "orientation_error_rad": 9.180856824368182e-07,
+          "position_tolerance_m": 0.002,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "continuum_05",
+          "arm": "continuum",
+          "kind": "waypoint",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 350,
+          "best_time_s": 22.006,
+          "position_error_m": 3.734953301739533e-06,
+          "orientation_error_rad": 2.835139273172693e-07,
+          "position_tolerance_m": 0.002,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "continuum_06",
+          "arm": "continuum",
+          "kind": "terminal",
+          "frame": "world",
+          "passed": true,
+          "eligible_state_count": 1,
+          "best_time_s": 27.0,
+          "position_error_m": 1.8727589512123437e-06,
+          "orientation_error_rad": 2.0431442857983876e-07,
+          "position_tolerance_m": 0.00018,
+          "orientation_tolerance_rad": 0.004363323129985824
+        },
+        {
+          "point_id": "rigid_terminal",
+          "arm": "rigid",
+          "kind": "terminal",
+          "frame": "target",
+          "passed": true,
+          "eligible_state_count": 1,
+          "best_time_s": 27.0,
+          "position_error_m": 1.126754740120373e-06,
+          "orientation_error_rad": 3.902852789672875e-07,
+          "position_tolerance_m": 0.0001,
+          "orientation_tolerance_rad": 0.004363323129985824
+        }
+      ],
+      "definition": "same_time_position_and_orientation_with_frozen_windows_terminal_at_final_state",
+      "old_curve_rmse_is_success_gate": false
+    },
+    "execution_contract": {
+      "passed": true,
+      "checks": {
+        "actual_selected_commands_consumed": true,
+        "shared_ten_step_reference_exact": true,
+        "reference_velocity_error_recorded": true,
+        "no_uncertified_consumed_steps": true,
+        "all_actual_torques_within_original_limits": true
+      },
+      "shared_ramp_max_errors": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reference_velocity_error_rad_s": {
+        "count": 13500,
+        "mean": 0.00023680713297239927,
+        "rms": 0.0010950611125725796,
+        "maximum": 0.0313036225178187,
+        "p95": 0.001403075485640537
+      },
+      "joint_limit_clips": 0,
+      "measured_window_clips": 0,
+      "acceleration_clips": 0,
+      "torque_saturations": 0
+    },
+    "independent_interval": {
+      "passed": true,
+      "boundary_count": 1351,
+      "row_count": 2565,
+      "mismatch_count": 0,
+      "boundary_sha256": "d3d50655c35b47b82154e1f8d9f06286cdc06c3290243e7040f6e96e3152e48e",
+      "rows_sha256": "228f86f4e4ffe356397545c6b55a3e2c39d92623aebe22d663db7f6b7672c682"
+    },
+    "native_geometry": {
+      "schema": "v64_a1_fresh_native_geometry_v1",
+      "evidence_available": true,
+      "task_id": "b3_mother_00_c_plus",
+      "task_sha256": "fbc092e092d4abbcbb8a9424d7046607358803c3b5fa16b1f99c6e8cb089c937",
+      "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+      "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536",
+      "passed": true,
+      "robot_target_500hz": {
+        "state_count": 13501,
+        "pair_count": 75,
+        "query_count": 1012575,
+        "minimum_m": 0.014999006652266765,
+        "minimum_witness": {
+          "pair_class": "rigid_target",
+          "geom_a": "collision_0071",
+          "geom_b": "target_satellite_collision",
+          "body_a": "wrist_link",
+          "body_b": "target_satellite",
+          "state_index": 10602,
+          "actual_time_s": 21.204,
+          "signed_distance_m": 0.014999006652266765,
+          "fromto": [
+            1.2050393206218035,
+            -0.17519390638683446,
+            0.06802719428538588,
+            1.2054133717658893,
+            -0.1901874668008663,
+            0.06818027076015662
+          ]
+        },
+        "minimum_clearance_m": 0.005,
+        "below_5mm_states": 0,
+        "negative_states": 0,
+        "below_threshold_query_count": 0,
+        "negative_distance_query_count": 0,
+        "truncated_query_count": 0,
+        "minimum_is_censored_lower_bound": false,
+        "sampling_scope": "all saved native 2ms physical states including declared initial state"
+      },
+      "whole_body": {
+        "feasible": true,
+        "minimum_clearance": 0.01499900858468377,
+        "minimum_by_class": {
+          "base_obstacle": 0.7847227095690829,
+          "arm_obstacle": 0.02591285118314581,
+          "arm_base": 0.051478208685095866,
+          "base_target": 0.5614852003930274,
+          "continuum_self": 0.03793510694218849,
+          "arm_arm": 0.6470731880677317,
+          "continuum_target": 0.2080964346972328,
+          "rigid_self": 0.09368908485034123,
+          "rigid_target": 0.01499900858468377
+        },
+        "minimum_pair": {
+          "pair_class": "rigid_target",
+          "geom_a": "collision_0071",
+          "geom_b": "target_satellite_collision",
+          "body_a": "wrist_link",
+          "body_b": "target_satellite",
+          "state_index": 4240,
+          "source_interval_phase": 1060.0,
+          "signed_distance_m": 0.01499900858468377,
+          "fromto": [
+            1.2050345777098312,
+            -0.1751980893987182,
+            0.06802951563511717,
+            1.2054085580632157,
+            -0.19019165379887207,
+            0.06818256398413752
+          ]
+        },
+        "violation_count": 0,
+        "checked_state_count": 5401,
+        "supplied_sample_count": 1351,
+        "adaptive_subdivisions": 4,
+        "pair_count": 2927,
+        "query_count": 15808727,
+        "truncated_query_count": 0,
+        "time_scope": "dense_discrete_with_configuration_space_subdivision",
+        "continuous_time_certified": false,
+        "uses_mj_geom_distance": true,
+        "uses_contact_list": false,
+        "nativeccd_claimed": false,
+        "pair_policy_sha256": "b9502fb695d5fc23be57cb09ec865269c9f0a907c9378968043141f52ad5e23a",
+        "negative_distance_query_count": 0
+      },
+      "whole_body_count_scope": "pair queries over 50Hz boundary states plus configuration-space adaptive subdivisions; not all 500Hz states",
+      "whole_body_supplied_period_s": 0.02,
+      "whole_body_adaptive_subdivisions": 4,
+      "whole_body_policy": {
+        "path": "E:/v64b31work_20261007_01/v6_4/output/execution_aware_route_teacher_20261007_01/attempts/EA_06/actual/evaluation/whole_body_policy.json",
+        "sha256": "b4addea267dd8033f7d9a248f090767e736f37b4dcfb0d4f3e7032ef8689f093"
+      },
+      "query_distance_max_m": 2.5,
+      "continuous_time_certified": false,
+      "offline_state_copy_independent_of_execution": true
+    },
+    "reference_binding": {
+      "passed": true,
+      "component_maximum_absolute_residual": {
+        "QP_rigid_target_position": 0.0,
+        "QP_rigid_target_velocity": 0.0,
+        "QP_rigid_target_rotation": 0.0,
+        "QP_rigid_target_angular_velocity": 0.0,
+        "QP_continuum_target_position": 1.504213420489009e-13,
+        "QP_continuum_target_velocity": 1.6646753420168636e-13,
+        "QP_continuum_target_rotation": 0.0,
+        "QP_continuum_target_angular_velocity": 0.0,
+        "QP_posture_reference_q": 0.0,
+        "QP_posture_reference_dq": 0.0,
+        "generated_continuum_position": 1.505184865635556e-13,
+        "generated_continuum_rotation": 0.0,
+        "posture_q": 0.0,
+        "posture_dq": 0.0
+      },
+      "consumed_reference_identity": {
+        "available": true,
+        "passed": true,
+        "planning_inputs_bound": 1350,
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "plan_sha256": "4a6454e69e6ec839f877af4af47669995f9c6b5bbe2a023b43d584cd5d0195df",
+        "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+        "z_m": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            -0.02,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "physics_steps_added": 0,
+        "geometry_queries_added": 0
+      },
+      "representation_version": "task_anchored_cartesian_residual_v2",
+      "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+      "plan_sha256": "4a6454e69e6ec839f877af4af47669995f9c6b5bbe2a023b43d584cd5d0195df",
+      "retained_field_maximum_residual": {
+        "rigid_target_position": 0.0,
+        "rigid_target_velocity": 0.0,
+        "rigid_target_rotation": 0.0,
+        "rigid_target_angular_velocity": 0.0,
+        "continuum_target_rotation": 0.0,
+        "continuum_target_angular_velocity": 0.0,
+        "posture_reference_q": 0.0,
+        "posture_reference_dq": 0.0
+      },
+      "comparison_threshold": 1e-09,
+      "planning_inputs_bound": 1350,
+      "QP_reference_fields_bound": [
+        "rigid_target_position",
+        "rigid_target_velocity",
+        "rigid_target_rotation",
+        "rigid_target_angular_velocity",
+        "continuum_target_position",
+        "continuum_target_velocity",
+        "continuum_target_rotation",
+        "continuum_target_angular_velocity",
+        "posture_reference_q",
+        "posture_reference_dq"
+      ],
+      "generated_continuum_and_posture_poststep_samples_bound": 13500,
+      "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+      "zero_residual_all_10_fields_exact_base_parity": false,
+      "consumed_QP_reference_offset_peak_m": 0.02000000000000002,
+      "nonzero_reference_consumed": true,
+      "peak_at_least_5mm": true,
+      "target_feedback_source": "independent same-torque current physical-state replay",
+      "new_physics_steps_by_binding": 0,
+      "new_distance_queries_by_binding": 0,
+      "future_actual_trace_is_online_input": false,
+      "joint_codec_check": "N/A/new-representation"
+    }
+  },
+  "full_metrics": {
+    "I_route_rad_s": 0.10656230612260097,
+    "I_full_rad_s": 0.09400401390511655,
+    "route_planning_sample_count": 175,
+    "consumed_planning_sample_count": 1350,
+    "definition": "sqrt(mean(||u_unconstrained-u_selected||^2))",
+    "producer_field": "task_avoidance_intervention",
+    "source_vectors_available": false,
+    "source_scope": "saved scalar norm of 17-D QP nominal diagnostic minus actual selected command",
+    "nominal_diagnostic": "np.clip(-_unconstrained_solve(hessian,linear),velocity_lower,velocity_upper); original producer semantics",
+    "producer": "v6_lite/hierarchical_qp.py:HierarchicalVelocityQP.solve -> unconstrained_to_command_norm; v6_lite/run_v6_lite.py -> task_avoidance_intervention",
+    "proposal_minus_selected_is_used": false,
+    "window_sampling": "50 Hz consumed planning ticks in frozen closed [start,end] interval union",
+    "continuum_path_length_m": 1.1162524345421414,
+    "continuum_route_window_path_length_m": 0.20528846293364678,
+    "base_translation_peak_m": 0.007251695196853883,
+    "base_rotation_peak_rad": 0.053819970322049666,
+    "base_translation_route_peak_m": 0.006551139702544073,
+    "base_rotation_route_peak_rad": 0.048584322848410216,
+    "saved_horizon_s": 27.0,
+    "saved_native_state_count": 13501,
+    "continuum_route_obstacle_clearance": {
+      "obstacle_name": "continuum_side_00",
+      "obstacle_geom_name": "v5_workspace_sphere_001_continuum_side_00",
+      "pair_scope": "continuum collision geoms versus the declared route sphere only",
+      "pair_count": 62,
+      "pairs": [
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 15,
+          "geom_b": 1,
+          "geom_a_name": "collision_0003",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "base_link",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 17,
+          "geom_b": 1,
+          "geom_a_name": "collision_0004",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_1",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 19,
+          "geom_b": 1,
+          "geom_a_name": "collision_0005",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_1",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 21,
+          "geom_b": 1,
+          "geom_a_name": "collision_0006",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_2",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 23,
+          "geom_b": 1,
+          "geom_a_name": "collision_0007",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_2",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 25,
+          "geom_b": 1,
+          "geom_a_name": "collision_0008",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_3",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 27,
+          "geom_b": 1,
+          "geom_a_name": "collision_0009",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_3",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 29,
+          "geom_b": 1,
+          "geom_a_name": "collision_0010",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_4",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 31,
+          "geom_b": 1,
+          "geom_a_name": "collision_0011",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_4",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 33,
+          "geom_b": 1,
+          "geom_a_name": "collision_0012",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_5",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 35,
+          "geom_b": 1,
+          "geom_a_name": "collision_0013",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_5",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 37,
+          "geom_b": 1,
+          "geom_a_name": "collision_0014",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_6",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 39,
+          "geom_b": 1,
+          "geom_a_name": "collision_0015",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_6",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 41,
+          "geom_b": 1,
+          "geom_a_name": "collision_0016",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_7",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 43,
+          "geom_b": 1,
+          "geom_a_name": "collision_0017",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_7",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 45,
+          "geom_b": 1,
+          "geom_a_name": "collision_0018",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_8",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 47,
+          "geom_b": 1,
+          "geom_a_name": "collision_0019",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_8",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 49,
+          "geom_b": 1,
+          "geom_a_name": "collision_0020",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_9",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 51,
+          "geom_b": 1,
+          "geom_a_name": "collision_0021",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_9",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 53,
+          "geom_b": 1,
+          "geom_a_name": "collision_0022",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_10",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 55,
+          "geom_b": 1,
+          "geom_a_name": "collision_0023",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_10",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 57,
+          "geom_b": 1,
+          "geom_a_name": "collision_0024",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_11",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 59,
+          "geom_b": 1,
+          "geom_a_name": "collision_0025",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_11",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 61,
+          "geom_b": 1,
+          "geom_a_name": "collision_0026",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_12",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 63,
+          "geom_b": 1,
+          "geom_a_name": "collision_0027",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_12",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 65,
+          "geom_b": 1,
+          "geom_a_name": "collision_0028",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_13",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 67,
+          "geom_b": 1,
+          "geom_a_name": "collision_0029",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_13",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 69,
+          "geom_b": 1,
+          "geom_a_name": "collision_0030",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_14",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 71,
+          "geom_b": 1,
+          "geom_a_name": "collision_0031",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_14",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 73,
+          "geom_b": 1,
+          "geom_a_name": "collision_0032",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_15",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 75,
+          "geom_b": 1,
+          "geom_a_name": "collision_0033",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_15",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 77,
+          "geom_b": 1,
+          "geom_a_name": "collision_0034",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_16",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 79,
+          "geom_b": 1,
+          "geom_a_name": "collision_0035",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_16",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 81,
+          "geom_b": 1,
+          "geom_a_name": "collision_0036",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_17",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 83,
+          "geom_b": 1,
+          "geom_a_name": "collision_0037",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_17",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 85,
+          "geom_b": 1,
+          "geom_a_name": "collision_0038",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_18",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 87,
+          "geom_b": 1,
+          "geom_a_name": "collision_0039",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_18",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 89,
+          "geom_b": 1,
+          "geom_a_name": "collision_0040",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_19",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 91,
+          "geom_b": 1,
+          "geom_a_name": "collision_0041",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_19",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 93,
+          "geom_b": 1,
+          "geom_a_name": "collision_0042",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_20",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 95,
+          "geom_b": 1,
+          "geom_a_name": "collision_0043",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_20",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 97,
+          "geom_b": 1,
+          "geom_a_name": "collision_0044",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_21",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 99,
+          "geom_b": 1,
+          "geom_a_name": "collision_0045",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_21",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 101,
+          "geom_b": 1,
+          "geom_a_name": "collision_0046",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_22",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 103,
+          "geom_b": 1,
+          "geom_a_name": "collision_0047",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_22",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 105,
+          "geom_b": 1,
+          "geom_a_name": "collision_0048",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_23",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 107,
+          "geom_b": 1,
+          "geom_a_name": "collision_0049",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_23",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 109,
+          "geom_b": 1,
+          "geom_a_name": "collision_0050",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_24",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 111,
+          "geom_b": 1,
+          "geom_a_name": "collision_0051",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_24",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 113,
+          "geom_b": 1,
+          "geom_a_name": "collision_0052",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_25",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 115,
+          "geom_b": 1,
+          "geom_a_name": "collision_0053",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_25",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 117,
+          "geom_b": 1,
+          "geom_a_name": "collision_0054",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_26",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 119,
+          "geom_b": 1,
+          "geom_a_name": "collision_0055",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_26",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 121,
+          "geom_b": 1,
+          "geom_a_name": "collision_0056",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_27",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 123,
+          "geom_b": 1,
+          "geom_a_name": "collision_0057",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_27",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 125,
+          "geom_b": 1,
+          "geom_a_name": "collision_0058",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_28",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 127,
+          "geom_b": 1,
+          "geom_a_name": "collision_0059",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_28",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 129,
+          "geom_b": 1,
+          "geom_a_name": "collision_0060",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_29",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 131,
+          "geom_b": 1,
+          "geom_a_name": "collision_0061",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_29",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 133,
+          "geom_b": 1,
+          "geom_a_name": "collision_0062",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "joint_30",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 135,
+          "geom_b": 1,
+          "geom_a_name": "collision_0063",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_30",
+          "body_b_name": "world"
+        },
+        {
+          "pair_class": "arm_obstacle",
+          "geom_a": 136,
+          "geom_b": 1,
+          "geom_a_name": "collision_0064",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "end_effector",
+          "body_b_name": "world"
+        }
+      ],
+      "full_saved_horizon_minimum_m": 0.02591835260187969,
+      "route_window_minimum_m": 0.02591835260187969,
+      "minimum_witness": {
+        "state_index": 5189,
+        "time_s": 10.378,
+        "signed_distance_m": 0.02591835260187969,
+        "pair": {
+          "pair_class": "arm_obstacle",
+          "geom_a": 135,
+          "geom_b": 1,
+          "geom_a_name": "collision_0063",
+          "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+          "body_a_name": "link_30",
+          "body_b_name": "world"
+        }
+      },
+      "native_period_s": 0.002,
+      "query_count": 837062,
+      "state_count": 13501,
+      "minimum_censored": false,
+      "source_compiled_model_sha256": "bdaf0e07882fbd2ee5141dbe78fdc6459a3ea238f28ff451eb15146b81fa4d44",
+      "scene_identity_definition": "runtime_command.model_id binds robot contract and mutable compiled dynamics/geometry; not a serialized MJB-file hash",
+      "scene_identity_sources": {
+        "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\actual\\historical_metric_observations.json": "437d33d6959a15f1b6fd8e74932f84b9d3dc8a4f73b6b2f99e966197b8b421e3",
+        "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\actual\\timing\\b3_mother_00_c_plus.jsonl": "f87fe0492c0dda1a166372bb934e6838a9ecb69382cb69b1933a65eea34b5d9b"
+      },
+      "actual_model_certificates_checked": 1350,
+      "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+      "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536",
+      "new_physics_steps": 0,
+      "new_optimizer_updates": 0,
+      "clearance_query_role": "additional route-quality description; original independent safety gates unchanged",
+      "continuous_time_certified": false
+    }
+  },
+  "failed_prefix_metrics": null,
+  "quality_label_eligible": true,
+  "metric_unavailable": null,
+  "sources": {
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\attempt_result.json": "cac81d8fe36b1abce18cd0ba6c528b62891db3ecc6786490cf281d0afa1a2c06",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\task.json": "f34fda380cf128f580293dc4ca384209af10788b0e2795d0e033607f7ed46737",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\plan.json": "8f828eca948b386da94813af5567b149d2245739b1c0e1ed3b74e2f7d44a0f83",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\actual\\evaluation\\report.json": "20fd03fd06a51c23e560893cca05cdb5268e34e1619b12a1b40f42002c8dcb4d",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\actual\\traces\\b3_mother_00_c_plus.npz": "07b65f208a8cdf4f425edbeff74bc0d3dfc14ece91b2b2ccfaf23c7953c33948",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\actual\\evaluation\\manifest.json": "7fccc1b96fdb21bce15d3e46a4f742e2da1c72b7e44fa17e856fdb08987cd987",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_06\\actual\\evaluation\\fresh_replay.npz": "3b748d5da9c8b77801bd5700c64a3071d0a273f2d03bf536612d594b08c24e2e"
+  },
+  "deployment": "NOT_MET",
+  "costs": {
+    "actual_physics_steps": 13500,
+    "independent_saved_torque_replay_steps": 13500,
+    "independent_robot_target_geometry_queries": 1012575,
+    "independent_whole_body_geometry_queries": 15808727,
+    "additional_route_quality_geometry_queries": 837062,
+    "additional_route_quality_physics_steps": 0,
+    "private_preview": {
+      "status": "NOT_COUNTED_BY_THIS_MODULE",
+      "steps": null,
+      "reason": "retain executor instrumentation; trace alone omits rejected/unconsumed previews"
+    }
+  }
+}

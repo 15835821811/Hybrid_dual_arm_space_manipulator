@@ -1,0 +1,479 @@
+{
+  "schema": "v64_b2_residual_independent_evaluation_v1",
+  "task_id": "b3_mother_00_c_minus",
+  "task_sha256": "d76bc0af5c1844cc528e468eb03fe8fe63a51ad267f7d36923cf3313b6227052",
+  "complete": true,
+  "evidence_valid": true,
+  "task_success": true,
+  "full_task_success": true,
+  "errors": [],
+  "joint_codec_checks": "N/A/new-representation",
+  "nominal_q_ref_whole_body_precheck": "N/A/no_joint_reference",
+  "deployment": "NOT_MET",
+  "continuous_time_certified": false,
+  "actual_physics_steps": 13500,
+  "actual_saved_horizon_s": 26.999999999995914,
+  "native_geometry": {
+    "schema": "v64_a1_fresh_native_geometry_v1",
+    "evidence_available": true,
+    "task_id": "b3_mother_00_c_minus",
+    "task_sha256": "d76bc0af5c1844cc528e468eb03fe8fe63a51ad267f7d36923cf3313b6227052",
+    "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+    "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536",
+    "passed": true,
+    "robot_target_500hz": {
+      "state_count": 13501,
+      "pair_count": 75,
+      "query_count": 1012575,
+      "minimum_m": 0.01499904163996992,
+      "minimum_witness": {
+        "pair_class": "rigid_target",
+        "geom_a": "collision_0071",
+        "geom_b": "target_satellite_collision",
+        "body_a": "wrist_link",
+        "body_b": "target_satellite",
+        "state_index": 10631,
+        "actual_time_s": 21.262,
+        "signed_distance_m": 0.01499904163996992,
+        "fromto": [
+          1.2051063687341559,
+          -0.17513330675784233,
+          0.06799243152165364,
+          1.2054814479281406,
+          -0.1901268723143714,
+          0.06814591643249873
+        ]
+      },
+      "minimum_clearance_m": 0.005,
+      "below_5mm_states": 0,
+      "negative_states": 0,
+      "below_threshold_query_count": 0,
+      "negative_distance_query_count": 0,
+      "truncated_query_count": 0,
+      "minimum_is_censored_lower_bound": false,
+      "sampling_scope": "all saved native 2ms physical states including declared initial state"
+    },
+    "whole_body": {
+      "feasible": true,
+      "minimum_clearance": 0.014999041819940037,
+      "minimum_by_class": {
+        "base_obstacle": 0.7847227095690829,
+        "arm_obstacle": 0.02572924647824982,
+        "arm_base": 0.051511312856872465,
+        "base_target": 0.5614852003930274,
+        "continuum_self": 0.03784831771911813,
+        "arm_arm": 0.6452684323813196,
+        "continuum_target": 0.206926324365702,
+        "rigid_self": 0.09368908485034123,
+        "rigid_target": 0.014999041819940037
+      },
+      "minimum_pair": {
+        "pair_class": "rigid_target",
+        "geom_a": "collision_0071",
+        "geom_b": "target_satellite_collision",
+        "body_a": "wrist_link",
+        "body_b": "target_satellite",
+        "state_index": 4252,
+        "source_interval_phase": 1063.0,
+        "signed_distance_m": 0.014999041819940037,
+        "fromto": [
+          1.205103996213002,
+          -0.17513539831938582,
+          0.0679935913053108,
+          1.2054790399912303,
+          -0.19012896508588228,
+          0.06814706214728107
+        ]
+      },
+      "violation_count": 0,
+      "checked_state_count": 5401,
+      "supplied_sample_count": 1351,
+      "adaptive_subdivisions": 4,
+      "pair_count": 2927,
+      "query_count": 15808727,
+      "truncated_query_count": 0,
+      "time_scope": "dense_discrete_with_configuration_space_subdivision",
+      "continuous_time_certified": false,
+      "uses_mj_geom_distance": true,
+      "uses_contact_list": false,
+      "nativeccd_claimed": false,
+      "pair_policy_sha256": "b9502fb695d5fc23be57cb09ec865269c9f0a907c9378968043141f52ad5e23a",
+      "negative_distance_query_count": 0
+    },
+    "whole_body_count_scope": "pair queries over 50Hz boundary states plus configuration-space adaptive subdivisions; not all 500Hz states",
+    "whole_body_supplied_period_s": 0.02,
+    "whole_body_adaptive_subdivisions": 4,
+    "whole_body_policy": {
+      "path": "E:/v64b31work_20261007_01/v6_4/output/execution_aware_route_teacher_20261007_01/attempts/EA_13/actual/evaluation/whole_body_policy.json",
+      "sha256": "b4addea267dd8033f7d9a248f090767e736f37b4dcfb0d4f3e7032ef8689f093"
+    },
+    "query_distance_max_m": 2.5,
+    "continuous_time_certified": false,
+    "offline_state_copy_independent_of_execution": true
+  },
+  "independent_interval": {
+    "passed": true,
+    "boundary_count": 1351,
+    "row_count": 2551,
+    "mismatch_count": 0,
+    "boundary_sha256": "302bb218d8887386fc712fe5d119c14018923d716bae76c40e3b7205fb23cf74",
+    "rows_sha256": "72ecd72fbba61b6f0ea34136992a768c54361b09fba079d2e05bf3c0b51efe54"
+  },
+  "fresh_replay_sha256": "e8f7c3088fead39a5aebce72f91bbcd9a44caff5afe12878df1105e5e775620d",
+  "replayed_physics_steps": 13500,
+  "dispatch_timing": {
+    "status": "MEASURED",
+    "records": [
+      {
+        "path": "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_13\\actual\\timing\\b3_mother_00_c_minus.jsonl",
+        "sha256": "df226a77bd84c76e5ee36738378853cd2559656f8e6501f44ba14450035a1d8c",
+        "cycle_count": 1350,
+        "dispatch_latency": {
+          "count": 1350,
+          "p50_ms": 16.7743,
+          "p95_ms": 19.331855,
+          "p99_ms": 24.031356999999996,
+          "max_ms": 34.9857,
+          "over_deadline_count": 52,
+          "longest_consecutive_over_deadline": 15,
+          "first_cycle_ms": 19.771300000000004,
+          "steady_after_first_cycle": {
+            "count": 1349,
+            "p50_ms": 16.774,
+            "p95_ms": 19.32186,
+            "p99_ms": 24.03646399999999,
+            "max_ms": 34.9857,
+            "over_deadline_count": 52,
+            "longest_consecutive_over_deadline": 15,
+            "first_cycle_ms": 18.437,
+            "steady_after_first_cycle": null,
+            "passed": true
+          },
+          "passed": true
+        },
+        "accepted_cycle_count": 1350,
+        "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+      }
+    ],
+    "wall_20ms_is_research_gate": false,
+    "deployment": "NOT_MET",
+    "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+    "continuous_time_or_hard_realtime_certification": false
+  },
+  "execution_contract": {
+    "passed": true,
+    "checks": {
+      "actual_selected_commands_consumed": true,
+      "shared_ten_step_reference_exact": true,
+      "reference_velocity_error_recorded": true,
+      "no_uncertified_consumed_steps": true,
+      "all_actual_torques_within_original_limits": true
+    },
+    "shared_ramp_max_errors": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "reference_velocity_error_rad_s": {
+      "count": 13500,
+      "mean": 0.0002592525715241961,
+      "rms": 0.0011223036663794883,
+      "maximum": 0.0313036225178187,
+      "p95": 0.0015778146036693637
+    },
+    "joint_limit_clips": 0,
+    "measured_window_clips": 0,
+    "acceleration_clips": 0,
+    "torque_saturations": 0
+  },
+  "reference_binding": {
+    "passed": true,
+    "component_maximum_absolute_residual": {
+      "QP_rigid_target_position": 0.0,
+      "QP_rigid_target_velocity": 0.0,
+      "QP_rigid_target_rotation": 0.0,
+      "QP_rigid_target_angular_velocity": 0.0,
+      "QP_continuum_target_position": 1.504213420489009e-13,
+      "QP_continuum_target_velocity": 1.6646753420168636e-13,
+      "QP_continuum_target_rotation": 0.0,
+      "QP_continuum_target_angular_velocity": 0.0,
+      "QP_posture_reference_q": 0.0,
+      "QP_posture_reference_dq": 0.0,
+      "generated_continuum_position": 1.505184865635556e-13,
+      "generated_continuum_rotation": 0.0,
+      "posture_q": 0.0,
+      "posture_dq": 0.0
+    },
+    "consumed_reference_identity": {
+      "available": true,
+      "passed": true,
+      "planning_inputs_bound": 1350,
+      "representation_version": "task_anchored_cartesian_residual_v2",
+      "plan_sha256": "52ebc362017c0b29ad562bf77b98d0bc6b78bbe3a96d82e684dc04cd8fa00d7f",
+      "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+      "z_m": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -0.02,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "physics_steps_added": 0,
+      "geometry_queries_added": 0
+    },
+    "representation_version": "task_anchored_cartesian_residual_v2",
+    "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+    "plan_sha256": "52ebc362017c0b29ad562bf77b98d0bc6b78bbe3a96d82e684dc04cd8fa00d7f",
+    "retained_field_maximum_residual": {
+      "rigid_target_position": 0.0,
+      "rigid_target_velocity": 0.0,
+      "rigid_target_rotation": 0.0,
+      "rigid_target_angular_velocity": 0.0,
+      "continuum_target_rotation": 0.0,
+      "continuum_target_angular_velocity": 0.0,
+      "posture_reference_q": 0.0,
+      "posture_reference_dq": 0.0
+    },
+    "comparison_threshold": 1e-09,
+    "planning_inputs_bound": 1350,
+    "QP_reference_fields_bound": [
+      "rigid_target_position",
+      "rigid_target_velocity",
+      "rigid_target_rotation",
+      "rigid_target_angular_velocity",
+      "continuum_target_position",
+      "continuum_target_velocity",
+      "continuum_target_rotation",
+      "continuum_target_angular_velocity",
+      "posture_reference_q",
+      "posture_reference_dq"
+    ],
+    "generated_continuum_and_posture_poststep_samples_bound": 13500,
+    "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+    "zero_residual_all_10_fields_exact_base_parity": false,
+    "consumed_QP_reference_offset_peak_m": 0.02000000000000002,
+    "nonzero_reference_consumed": true,
+    "peak_at_least_5mm": true,
+    "target_feedback_source": "independent same-torque current physical-state replay",
+    "new_physics_steps_by_binding": 0,
+    "new_distance_queries_by_binding": 0,
+    "future_actual_trace_is_online_input": false,
+    "joint_codec_check": "N/A/new-representation"
+  },
+  "task_requirements": {
+    "passed": true,
+    "requirements": [
+      {
+        "point_id": "continuum_00",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 351,
+        "best_time_s": 4.388,
+        "position_error_m": 6.228061089915152e-07,
+        "orientation_error_rad": 2.9876735293512787e-07,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_01",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 350,
+        "best_time_s": 8.0,
+        "position_error_m": 1.9900496624218164e-06,
+        "orientation_error_rad": 6.179941103854194e-07,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_02",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 350,
+        "best_time_s": 12.214,
+        "position_error_m": 5.609471904975361e-06,
+        "orientation_error_rad": 8.118056340144044e-07,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_03",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 350,
+        "best_time_s": 15.974,
+        "position_error_m": 1.392417801943553e-06,
+        "orientation_error_rad": 2.9137009840938817e-06,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_04",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 350,
+        "best_time_s": 19.224,
+        "position_error_m": 8.924820885397147e-07,
+        "orientation_error_rad": 1.042016371312611e-06,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_05",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 350,
+        "best_time_s": 22.006,
+        "position_error_m": 3.803727409054456e-06,
+        "orientation_error_rad": 3.6071891894669146e-07,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_06",
+        "arm": "continuum",
+        "kind": "terminal",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 1,
+        "best_time_s": 27.0,
+        "position_error_m": 1.6359215041346094e-06,
+        "orientation_error_rad": 2.1283115233608674e-07,
+        "position_tolerance_m": 0.00018,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "rigid_terminal",
+        "arm": "rigid",
+        "kind": "terminal",
+        "frame": "target",
+        "passed": true,
+        "eligible_state_count": 1,
+        "best_time_s": 27.0,
+        "position_error_m": 1.132723879587787e-06,
+        "orientation_error_rad": 3.874301910400415e-07,
+        "position_tolerance_m": 0.0001,
+        "orientation_tolerance_rad": 0.004363323129985824
+      }
+    ],
+    "definition": "same_time_position_and_orientation_with_frozen_windows_terminal_at_final_state",
+    "old_curve_rmse_is_success_gate": false
+  },
+  "metrics": {
+    "actual_tip_path_length_m": {
+      "continuum": 1.148590202053366,
+      "rigid": 0.44535074862797325
+    },
+    "actual_joint_path_length_rad": 5.225762379120231,
+    "soft_home_preference_error": {
+      "definition": "e_k = fresh replay decoded actual q(t_k) - frozen selected posture reference q_ref(t_k)",
+      "unit": "rad",
+      "reference_scope": "unchanged Cartesian home posture preference, not generated joint reference",
+      "sample_count": 13501,
+      "includes_initial_state": true,
+      "first_time_s": 0.0,
+      "last_time_s": 27.0,
+      "time_alignment": "both vectors at the same actual simulation time; no time shift or future-state input",
+      "RMS_L2_17": 1.6008515423837004,
+      "RMS_L2_continuum_10": 1.4543509943077222,
+      "RMS_L2_rigid_7": 0.6690208114165147,
+      "coordinate_rmse_17": {
+        "theta1": 0.41293399684063775,
+        "theta2": 0.6640531396894369,
+        "theta3": 0.4175751643002534,
+        "theta4": 0.37887797068070844,
+        "theta5": 0.367954384992803,
+        "theta6": 0.7536101227725592,
+        "theta7": 0.22771438140555406,
+        "theta8": 0.1453415127961281,
+        "theta9": 0.4052103577883758,
+        "theta10": 0.49522333000141916,
+        "theta_R1": 0.052960187282406,
+        "theta_R2": 0.5613149417287621,
+        "theta_R3": 0.015298331125557141,
+        "theta_R4": 0.27363478396776925,
+        "theta_R5": 0.015397779017438117,
+        "theta_R6": 0.22961472848000689,
+        "theta_R7": 0.040491379298928876
+      },
+      "is_end_effector_task_error": false,
+      "is_single_coordinate_rmse": false
+    },
+    "command_intervention_rad_s": {
+      "count": 1350,
+      "mean": 0.08376283041851824,
+      "rms": 0.09692681949319785,
+      "maximum": 0.3352008220237792,
+      "p95": 0.17615370648145703
+    },
+    "physics_steps": 13500,
+    "planning_ticks": 1350,
+    "actual_saved_horizon_s": 26.999999999995914,
+    "planning_algorithm_wall_latency_s": {
+      "count": 1350,
+      "mean": 0.016116231772013836,
+      "rms": 0.016202818301035374,
+      "maximum": 0.03353960020467639,
+      "p95": 0.018334000138565898,
+      "p99": 0.022688541146926578,
+      "period_s": 0.02,
+      "over_period_count": 40,
+      "longest_over_period_run": 13,
+      "is_task_success_gate": false,
+      "hard_realtime_certified": false
+    },
+    "torque_preparation_wall_latency_s": {
+      "count": 13500,
+      "mean": 0.0003896887390701859,
+      "rms": 0.00039376557692491514,
+      "maximum": 0.0011817999184131622,
+      "p95": 0.000526099931448698,
+      "p99": 0.0006126998923718929,
+      "period_s": 0.002,
+      "over_period_count": 0,
+      "longest_over_period_run": 0,
+      "is_task_success_gate": false,
+      "hard_realtime_certified": false
+    },
+    "path_quality_comparison_eligible": true
+  },
+  "trace_path": "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_13\\actual\\traces\\b3_mother_00_c_minus.npz",
+  "trace_sha256": "028681d3e9871724551ad5016e9b5d0510aa1c166e48520f555ac648b16d023a",
+  "evidence_view_path": "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\attempts\\EA_13\\actual\\traces\\b3_mother_00_c_minus.npz",
+  "runtime_reported_passed": false,
+  "runtime_report_is_Task_gate": false,
+  "old_curve_rmse_is_success_gate": false,
+  "whole_body_scope": "original 50Hz boundary + configuration subdivisions4; robot-target native500Hz",
+  "evaluation_wall_s": 63.68981389980763
+}

@@ -1,0 +1,66 @@
+{
+  "additional_physics_steps": 0,
+  "inference_device": "cuda",
+  "optimizer_updates": 0,
+  "plan": {
+    "bytes": 35247,
+    "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\plan.json",
+    "sha256": "6ed9cd38ac284c9a57ad2bbf03a4b492380c83205fb5db4db81c9a6247922dd1"
+  },
+  "postprocessing": "inverse frozen TRAIN residual scaler only; no clamp/project/repair/fallback",
+  "protocol": {
+    "checkpoint_sha256": "9ace53f482253216cea7baabed7479d84f37a9e80e71231219c7e2f9d3c94ca1",
+    "condition_change_alone_proves_correct_adaptation": false,
+    "enabled": true,
+    "maximum_ddim_calls": 32,
+    "noise_pairs_per_task": 4,
+    "noise_seeds": [
+      2026100711,
+      2026100712,
+      2026100713,
+      2026100714
+    ],
+    "observed_response_threshold_m": 1e-10,
+    "obstacle_swap": {
+      "fields": [
+        "center_w"
+      ],
+      "mode": "matching_obstacle_fields",
+      "name_prefix": "continuum_side"
+    },
+    "old_public_TEST_role": "DIAGNOSTIC_ONLY_NOT_NEW_INDEPENDENT_TEST",
+    "reference_time_grid_s": {
+      "period": 0.02,
+      "start": 0,
+      "stop": 27
+    },
+    "selected_training_exposures": 8000,
+    "selected_update": 250,
+    "signed_probe": {
+      "basis_axis": 0,
+      "interval_selection": "first_active",
+      "time_fraction": 0.5,
+      "world_direction_rule": "selected_task_world_transverse_basis_column_0"
+    },
+    "task_pairs": [
+      [
+        "b2_continuum_route_test_000",
+        "b2_continuum_route_test_001"
+      ],
+      [
+        "b2_continuum_route_test_002",
+        "b2_continuum_route_test_003"
+      ]
+    ]
+  },
+  "random_stream_rule": "original B.2 np.random.default_rng(seed).standard_normal(12).astype(float32) for four fixed seeds; same values for each task; inactive dims zero per frozen mask; each true/swap pair shares exact noise",
+  "sampler": "inherited deterministic DDIM20, eta=0",
+  "sampler_random_terms_after_initial_noise": 0,
+  "schema": "v6_4_b3_old_checkpoint_obstacle_response_v1",
+  "task_order": [
+    "b2_continuum_route_test_000",
+    "b2_continuum_route_test_001",
+    "b2_continuum_route_test_002",
+    "b2_continuum_route_test_003"
+  ]
+}

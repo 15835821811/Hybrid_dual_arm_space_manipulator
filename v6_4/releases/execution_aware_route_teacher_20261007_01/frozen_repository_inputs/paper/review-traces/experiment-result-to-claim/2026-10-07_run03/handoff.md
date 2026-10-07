@@ -1,0 +1,15 @@
+# B.3.1 executor handoff
+
+本记录对应科学输入交审及本地发布准备阶段。独立审阅为 partial / high、无 blocking；只确认固定开发集合的有限路线差异与回顾性条件选择潜力。下游论文写作因未提供 paper claim audit 保持 provisional，不阻止诚实的研究交付。
+
+执行：28固定槽位全部完整Task/五门禁通过且质量可比；6旧原件严格复用，22新增actual。actual/preview/replay各297000物理步，原QP29700次；执行、路线与初态几何总756102929次。日志检查4约束QP与4既有名义计算另列。无训练、模型采样、seed搜索、重试或补候选。
+
+验证：三份独立raw审计覆盖全部28槽；最终26项review inputs及快照SHA精确绑定。reducer/plot均为保存数据后处理，新增物理/几何/模型调用0。仅两张2790×2325 PNG，root目视检查通过；静态dashboard72项无缺陷，28行全部值与来源一致。预导出只允许三个未来release控制链接；导出后必须执行严格全链接audit，其结果由publication_receipts记录。
+
+七问的科学内容保持原字节。final_conclusions.json中的PENDING创建期marker和scientific_input_sha256的原report SHA，均指交审时的精确输入；该report可在本trace reviewed_inputs/report.json读取。最终当前review状态以verdict.json及report.json为准。后者只允许research_delivery_complete和independent_review_status两个元数据字段改变，科学projection必须与所审快照完全一致。
+
+当前README、两处visualization入口、V6.2历史提示和新B.3.1说明均指向本补充。旧B.3/B.2媒体、原件、停止结论保留；旧B.3六槽不能因补充而重判通过。实际producer d4464c8ae2aa7913a730ebbd775917e7a3b1af71与后处理producer 43dd1d739990b0c6bacf8e3ccc0b30f50b963155分开。封存/便携导出/远端提交核验在此后执行，最终状态及观察到的commit由publication_receipts独立收据记录，不在此写未来commit号。
+
+限制：一个母场景、四开发任务；无独立TEST、统计保证、Diffusion优势或生成模型必要性证据。相关球路线最低净空有时刻/保存状态，但几何对witness未保存，明确NOT_SAVED_FOR_ROUTE_WINDOW_MINIMUM；不以全程global witness代替。旧六条缺失向量/球行活动不反算。20ms规划/2ms物理保持；墙钟诊断、部署NOT_MET，无硬实时或连续时间安全证明。没有追加实验填补这些范围缺口；本轮结束，保留非学习基线。
+
+浏览器预览限制：启动临时本地HTTP预览服务曾被自动审批拒绝，原因blocked by policy；未尝试替代浏览器/服务。浏览器渲染状态NOT_VERIFIED_TOOL_POLICY，PNG目视与静态链接/来源字节检查已完成。

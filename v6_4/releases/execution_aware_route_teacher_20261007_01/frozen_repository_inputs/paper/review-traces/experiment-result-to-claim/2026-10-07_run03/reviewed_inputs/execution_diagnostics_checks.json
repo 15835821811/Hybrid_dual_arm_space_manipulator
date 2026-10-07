@@ -1,0 +1,51 @@
+{
+  "schema": "v64_b31_execution_diagnostic_preflight_checks_v1",
+  "passed": true,
+  "unique_tests_passed": 9,
+  "test_invocations": 10,
+  "tests": [
+    "v6_4.tests.test_execution_diagnostics: 4 tests",
+    "v6_4.tests.test_residual_execution: 3 tests",
+    "v6_4.tests.test_conditional_execution: 2 tests"
+  ],
+  "targeted_rerun": "test_actual_provider_identity_logs_arrays_and_rejects_wrong_version_or_z after enabling exact Task short sphere name matching",
+  "numeric_parity": {
+    "input_scope": "Same declared fixed numeric QP matrices and input state; geometry assembly replaced by fixed data, optimized ADMM and original action validator are real",
+    "geometry_scene_or_rollout_claim": false,
+    "logging_disabled_vs_enabled": "exact array/value parity",
+    "fields_compared": ["planner_velocity", "solver_candidate", "clearance_matrix", "clearance_lower", "lookahead_matrix", "lookahead_lower", "success", "solver_status", "solver_iterations", "objective", "unconstrained_to_command_norm", "action_validation.mode", "action_validation.failure_reason"],
+    "original_constrained_solve_calls_per_invocation": 1,
+    "original_unconstrained_nominal_solve_calls_per_invocation": 1,
+    "additional_counterfactual_or_logging_solve_calls": 0
+  },
+  "real_v1_v2_provider_identity_test": {
+    "source_task": "v6_4/releases/conditional_route_value_20261007_01/snapshot/tasks/b3_mother_00_c_plus/task.json",
+    "MjData_created": 0,
+    "version_plan_definition_and_z_bound": true
+  },
+  "total_check_cost": {
+    "original_constrained_qp_calls": 4,
+    "original_existing_unconstrained_nominal_calls": 4,
+    "diagnostic_parity_qp_calls": 2,
+    "logging_roundtrip_qp_calls_including_targeted_rerun": 2,
+    "new_actual_slots": 0,
+    "actual_physics_steps": 0,
+    "private_preview_physics_steps": 0,
+    "independent_saved_torque_replay_steps": 0,
+    "native_geometry_queries": 0,
+    "additional_jacobian_queries": 0,
+    "DDIM_samples": 0,
+    "training_runs": 0,
+    "optimizer_updates": 0,
+    "mock_cost_forwarding_sentinels_are_physics": false
+  },
+  "compile_import_and_diff_check": "PASS",
+  "commit_created": false,
+  "source_sha256": {
+    "v6_lite/hierarchical_qp.py": "90dc05c490f4a574d74754bf659eea48915aa5d705f5fe83819876e152993ed2",
+    "v6_lite/run_v6_lite.py": "2a0ec116d82a9aa2f20b62162c1c829db6fdbd264a4ac461dac41b2733d1e239",
+    "v6_4/residual_execution.py": "5b44c5af11ffa1b90445f467d38d52b6db723738cc9f0970845bee2e32666310",
+    "v6_4/conditional_execution.py": "667b76e3561432c429279d33e6a5dd26485a98362c6cfe7c8603d2b78329221f",
+    "v6_4/tests/test_execution_diagnostics.py": "3b78f525bc92c9101fcd852d61fc44d2016dc232c041c9860acaf87b8425b5ca"
+  }
+}

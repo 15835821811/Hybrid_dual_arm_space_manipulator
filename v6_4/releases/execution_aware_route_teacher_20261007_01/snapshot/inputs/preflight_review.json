@@ -1,0 +1,169 @@
+{
+  "schema": "v64_b31_independent_preflight_review_v1",
+  "reviewed_utc": "2026-10-07T11:20:04.610233+00:00",
+  "reviewer": "independent paper architect/reviewer subagent b3_final_claim_review",
+  "passed": true,
+  "blocking_issues": [],
+  "scope": "B3.1 pre-actual source/protocol/evidence review; T3 reducer/plot/export excluded. No physical experiment, model, geometry or optimizer run by reviewer; one explicitly authorized mocked failure-path check only.",
+  "git_head_at_review": "bdd6df6b4c68a6c95872f4639b8b8269fb6856c7",
+  "base_publication_commit": "bdd6df6b4c68a6c95872f4639b8b8269fb6856c7",
+  "checks": [
+    {
+      "id": "inherited_source_scope",
+      "passed": true,
+      "evidence": "330 old producer source files authenticated; exactly the five declared inherited modules differ after newline normalization; remaining325 unchanged, none missing."
+    },
+    {
+      "id": "control_decisions",
+      "passed": true,
+      "evidence": "Original optimization, velocity clipping, action validation, preview, servo, safety thresholds and configuration preserved. Diagnostics read already-computed values after selection; no extra solver or geometry query in logging. Existing exact fixed-matrix optimized-QP parity receipt matches current source SHA."
+    },
+    {
+      "id": "reference_v2",
+      "passed": true,
+      "evidence": "Independent v2 schema/version/hash; fixed world basis and original intervals; analytic position/velocity/acceleration scaling and C2 joins; v1 default serialization/numeric path preserved; six pure-reference tests passed in their sole authorized invocation."
+    },
+    {
+      "id": "consumed_reference_identity",
+      "passed": true,
+      "evidence": "Actual logging binds version/z/definition/plan hashes; independent v2 evaluation rejects missing or mismatched identity. Historical v1 missing new vectors remains NOT_MEASURED; consumed physical-time p/v are independently checked by original binding."
+    },
+    {
+      "id": "frozen_slots_and_tasks",
+      "passed": true,
+      "evidence": "64 frozen artifacts hash-match;4tasks/28slots in fixed order;seven modes per task;43mm originals exact;55mm changes only declared IDs/layout/route sphere center. All28 reference checks and4 saved declaration geometry prechecks pass. No feasibility claim is inferred."
+    },
+    {
+      "id": "strict_reuse",
+      "passed": true,
+      "evidence": "Six old attempt/task/plan/trace/evaluation/quality sources authenticated and exact prospective task+plan bytes checked; source PILOT IDs retained under new EA wrapper aliases. All314 old manifest payload files hash-match pinned old manifest."
+    },
+    {
+      "id": "refusals_and_continuation",
+      "passed": true,
+      "evidence": "Reference/geometry/execution refusals consume fixed slots; no replacement or automatic retry. Captured execution/evaluation failures continue. Quality exceptions now save ineligible null-metric failure records with spent query costs, preserve actual verdict, and return to loop. Integrity/source changes remain hard stops."
+    },
+    {
+      "id": "cost_and_budget",
+      "passed": true,
+      "evidence": "6reuse/22new fixed slots; maximum297000 new actual physics steps if all22 run27s. Preview, independent torque replay, native geometry and additional route-quality queries are separated.5978 new declaration-check geometry queries already recorded; no training/model sampling/seed search."
+    },
+    {
+      "id": "pre_actual_interpretation",
+      "passed": true,
+      "evidence": "Canonical clarification binds unchanged plan SHA, candidate_ID=mode, original A/B against zero OR opposite, both comparators reported, old negative verdict immutable; quality unavailability cannot earn complete-vs-physical-failure evidence."
+    },
+    {
+      "id": "mock_quality_failure",
+      "passed": true,
+      "evidence": "One mock check, three query sentinels before exception, one quality call/no retry, null full/prefix metrics, ineligible label, original status and source evidence unchanged; actual/preview/replay/real geometry/real solve/model allocation/DDIM/training cost0. Receipt source SHA matches final runner."
+    }
+  ],
+  "resolved_issues": [
+    {
+      "issue": "Unexpected route-quality exception previously aborted the fixed loop and lost partial geometry accounting.",
+      "resolution": "_quality_with_retained_failure catches quality exceptions, retains independent ledger, ineligible failure receipt, original actual verdict, and continues; source/evidence integrity still hard stops.",
+      "verification": "preflight_quality_failure_check.json PASS; final source SHA matches test receipt."
+    },
+    {
+      "issue": "Old-gate AND/OR and candidate-ID wording could change interpretation.",
+      "resolution": "Pre-actual canonical protocol_clarifications.json explicitly preserves OR, reports both comparators, freezes candidate_ID=mode, and preserves old negative status."
+    }
+  ],
+  "counts": {
+    "inherited_source_files": 330,
+    "changed_inherited_files": 5,
+    "other_inherited_files_same_after_newline_normalization": 325,
+    "frozen_task_candidate_artifacts": 64,
+    "authenticated_old_payload_files": 314,
+    "tasks": 4,
+    "mother_scenes": 1,
+    "slots": 28,
+    "reused_old_slots": 6,
+    "new_fixed_slots": 22,
+    "reference_prechecks_passed": 28,
+    "saved_declaration_geometry_prechecks_passed": 4,
+    "new_declaration_geometry_queries_already_recorded": 5978,
+    "maximum_new_actual_physics_steps": 297000
+  },
+  "reuse_map": {
+    "EA_00": "PILOT_00",
+    "EA_01": "PILOT_01",
+    "EA_02": "PILOT_02",
+    "EA_07": "PILOT_03",
+    "EA_08": "PILOT_04",
+    "EA_09": "PILOT_05"
+  },
+  "frozen_route_window_s": [
+    8.461298845015024,
+    11.977496008196567
+  ],
+  "reference_speed_upper_bound_max_m_s": 0.12664496902083272,
+  "review_execution_cost": {
+    "actual_physics_steps": 0,
+    "private_preview_physics_steps": 0,
+    "independent_saved_torque_replay_steps": 0,
+    "real_geometry_queries": 0,
+    "real_qp_solves": 0,
+    "model_allocations": 0,
+    "DDIM_calls": 0,
+    "optimizer_updates": 0,
+    "mock_native_geometry_sentinels": 3
+  },
+  "check_environment": {
+    "interpreter": "E:\\v64cuda_20261002\\Scripts\\python.exe",
+    "completed_mock_check_invocations": 1,
+    "initial_system_python_import_failed_before_fixture_or_test": true
+  },
+  "limits": [
+    "Preflight establishes protocol/source readiness, not new closed-loop safety, route improvement, successful v2 consumption, or any Diffusion benefit; these require future retained actual evidence.",
+    "Current4tasks share one mother scene.55mm is a predeclared development distribution change, not independent generalization TEST.",
+    "Fixed-matrix logging parity is a necessary numeric fixture check, not a scene rollout or universal equivalence proof; no existing reference/diagnostic tests were rerun by this reviewer.",
+    "Mock query sentinels are not real native geometry queries; synthetic fixture actual_steps=13500 is input data and is not a measured trajectory.",
+    "T3 reducer, final teacher comparisons, figures, release/export and final delivery seal are excluded from this pre-actual review.",
+    "Source commit/freeze and final source_guard must precede actual. At review there is no source_identity/actual slots directory; this is the intended pre-actual phase and not scientific failure. Any reviewed execution-source/frozen-input change requires renewed review of affected evidence.",
+    "Wall latency remains research_simulation performance data; deployment NOT_MET; continuous-time safety and hard real-time are not certified.",
+    "Old missing nominal velocity vectors cannot support reconstructed10D/7D or single-sphere causal contribution; old results remain immutable."
+  ],
+  "key_sha256": {
+    "plan.json": "92b62e02f3310169cdb6d336f09d3a834cd3c70d9eec8c4e8695accc86198ea0",
+    "task_manifest.json": "2f2647173e9a0eb91a6501a659ff7d8cb4bac1b50d98f4c98c1e4c896469a154",
+    "frozen_execution_config.json": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "old_B3_manifest.json": "57ba4bbf31ca3ff106d93d1ade0d1700bb4ab50840075847d5299878cf429033",
+    "protocol_clarifications.json": "b17c73d3556a67df0f7f3ef1fbefcb63d0d8b63e475313e52bcf9d3b35a833cb",
+    "final_execution_aware_route_teacher.py": "b68f388703e43a00f1260c7dbab057a5b1686ef87b40672c280f8ff2e549aed5",
+    "quality_failure_helper_text": "ab06905266dfbf177b9bf9bdcc03fdc7370a0c8aa92fbfee8c0e1d1e427d2764",
+    "reference_tests.json": "99c81929c8e3df4c8d939f795a80371528c750581e8efe44c3b25e3721f11936",
+    "execution_diagnostics_checks.json": "917700a7f32793acf0d1de8ac603dcf7b3026b6d5bd1f5f062855b3fac4cbdfb",
+    "preflight_quality_failure_check.json": "710c48496087da5cdcb43b29542bb45677e8f2c014d1322df60910d227165490"
+  },
+  "read_input_files_sha256": {
+    "E:\\v64b31work_20261007_01\\v6_4\\task_anchored_reference.py": "e8c0c82a742fa720a24f7accf67d0acafb836b117dba7738174799ab389f2db1",
+    "E:\\v64b31work_20261007_01\\v6_4\\residual_execution.py": "5b44c5af11ffa1b90445f467d38d52b6db723738cc9f0970845bee2e32666310",
+    "E:\\v64b31work_20261007_01\\v6_4\\conditional_execution.py": "667b76e3561432c429279d33e6a5dd26485a98362c6cfe7c8603d2b78329221f",
+    "E:\\v64b31work_20261007_01\\v6_lite\\hierarchical_qp.py": "90dc05c490f4a574d74754bf659eea48915aa5d705f5fe83819876e152993ed2",
+    "E:\\v64b31work_20261007_01\\v6_lite\\run_v6_lite.py": "2a0ec116d82a9aa2f20b62162c1c829db6fdbd264a4ac461dac41b2733d1e239",
+    "E:\\v64b31work_20261007_01\\v6_4\\execution_aware_route_teacher.py": "b68f388703e43a00f1260c7dbab057a5b1686ef87b40672c280f8ff2e549aed5",
+    "E:\\v64b31work_20261007_01\\v6_4\\execution_aware_baseline.py": "272d789508bf45cccfd0472708707a259843d6509e5d4b8da5bda3dbd2f42cc4",
+    "E:\\v64b31work_20261007_01\\v6_4\\route_quality_dataset.py": "3393dad45e1e333eb807c36eb5a4469e64bc440dad3ab746e5514c0a64faa66d",
+    "E:\\v64b31work_20261007_01\\v6_4\\tests\\test_execution_aware_reference.py": "7c0d148b6509adf4cc249d46ba9af352039dada9966ca91bdc2847d820012add",
+    "E:\\v64b31work_20261007_01\\v6_4\\tests\\test_execution_diagnostics.py": "3b78f525bc92c9101fcd852d61fc44d2016dc232c041c9860acaf87b8425b5ca",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\plan.json": "92b62e02f3310169cdb6d336f09d3a834cd3c70d9eec8c4e8695accc86198ea0",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\task_manifest.json": "2f2647173e9a0eb91a6501a659ff7d8cb4bac1b50d98f4c98c1e4c896469a154",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\frozen_execution_config.json": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\baseline_diagnosis.json": "09941dec83a3b8f45d4c86de3aadeedb98241e73c26efced6a5733ab9f840fec",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\baseline_inputs_manifest.json": "fad151bdbb2a256b2180d56b04fb97a30798aad5de7ba4d333444d5943d46606",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\protocol_clarifications.json": "b17c73d3556a67df0f7f3ef1fbefcb63d0d8b63e475313e52bcf9d3b35a833cb",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\reference_tests.json": "99c81929c8e3df4c8d939f795a80371528c750581e8efe44c3b25e3721f11936",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\execution_diagnostics_checks.json": "917700a7f32793acf0d1de8ac603dcf7b3026b6d5bd1f5f062855b3fac4cbdfb",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\execution_diagnostics_interface.md": "6dafc27af4ec8cb585bab95b691968dd00289bce4f1f9f568e5e6349778530ff",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\inputs\\EXECUTION_TARGET.md": "c98f053be614d51ab8584e1433698e3aebc1f46bc7a752b6bf346459aa5359ff",
+    "E:\\v64b31work_20261007_01\\v6_4\\output\\execution_aware_route_teacher_20261007_01\\inputs\\protocol_clarifications_draft_01.json": "7cbfc81b9021c59b1170acee6e533aaf7e3758896f6e9db3b42ea5ffcb7143d7",
+    "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\manifest.json": "57ba4bbf31ca3ff106d93d1ade0d1700bb4ab50840075847d5299878cf429033",
+    "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\verification.json": "ec6a0fe281f44d55ecccc8237da872e3201199f2b2ca7bd911c0a2b6da457578",
+    "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\source_identity.json": "6a244ea853cf02efd3d452d8afd25339d36cec899691846e64f94d22199f4c0a",
+    "E:\\v64b31_staging_20261007_01\\preflight_quality_failure_check.json": "710c48496087da5cdcb43b29542bb45677e8f2c014d1322df60910d227165490",
+    "E:\\v64b31_staging_20261007_01\\preflight_quality_failure_check.py": "45be15bc3101913c5f63293357d848abb95e33114724960f7d32c5572c770f56"
+  },
+  "manifest_verification_note": "Read/hashes also covered each64 frozen artifact, each314 old payload, all330 old source identities, and each6 reuse source binding; lists are addressed by their authenticated manifests rather than duplicated here."
+}

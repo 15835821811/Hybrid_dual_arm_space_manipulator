@@ -1,0 +1,4422 @@
+{
+  "schema": "v64_b31_execution_aware_teacher_report_v1",
+  "run_id": "execution_aware_route_teacher_20261007_01",
+  "source_producer_commit": "d4464c8ae2aa7913a730ebbd775917e7a3b1af71",
+  "postprocessing_source_sha256": "043b9134e7c6fb3e08dc7ad68314f89b10b870e81fc0920f02c7b3d8e1fb05cd",
+  "postprocessing_source_path": "v6_4/evaluate_execution_aware_teacher.py",
+  "plan_sha256": "92b62e02f3310169cdb6d336f09d3a834cd3c70d9eec8c4e8695accc86198ea0",
+  "research_protocol_execution_complete": true,
+  "research_delivery_complete": true,
+  "independent_review_status": "COMPLETE",
+  "development_tasks": 4,
+  "mother_scenes": 1,
+  "total_slots": 28,
+  "reused_slots": 6,
+  "new_slots": 22,
+  "complete_safe_slots": 28,
+  "quality_comparable_slots": 28,
+  "failed_original_Task_or_safety_slots": [],
+  "quality_unavailable_after_safe_actual_slots": [],
+  "failed_or_unqualified_slots": [],
+  "source_status_counts": {
+    "TASK_COMPLETED": 28
+  },
+  "quality_stage_status_counts": {
+    "QUALITY_METRICS_AVAILABLE": 28
+  },
+  "new_costs": {
+    "actual_physics_steps": 297000,
+    "private_preview_physics_steps": 297000,
+    "independent_saved_torque_replay_steps": 297000,
+    "native_geometry_query_calls": 737681587,
+    "additional_route_quality_geometry_queries": 18415364,
+    "qp_solve_calls": 29700,
+    "preview_calls": 29700,
+    "initial_and_anchor_geometry_queries": 5978,
+    "phase_counts": {
+      "actual": {
+        "mj_step": {
+          "started": 297000,
+          "returned": 297000,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 361052677,
+          "returned": 361052677,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 29700,
+          "returned": 29700,
+          "raised": 0
+        }
+      },
+      "independent_torque_replay": {
+        "mj_step": {
+          "started": 297000,
+          "returned": 297000,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 376628910,
+          "returned": 376628910,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "private_preview": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 297000,
+          "returned": 297000,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      }
+    },
+    "route_quality_phase_counts": {
+      "actual": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "independent_torque_replay": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "private_preview": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "route_quality": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 18415364,
+          "returned": 18415364,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      }
+    },
+    "total_new_native_geometry_query_calls_including_initial_and_route_quality": 756102929,
+    "route_quality_phase_counts_are_separate_from_execution_phase_counts": true,
+    "training_runs": 0,
+    "model_sampling": 0,
+    "seed_search": 0,
+    "reducer_physics_steps": 0,
+    "reducer_geometry_queries": 0,
+    "reducer_qp_solves": 0,
+    "reducer_DDIM_calls": 0,
+    "reducer_optimizer_updates": 0
+  },
+  "policy_comparisons": {
+    "policies": [
+      {
+        "policy": "z0",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_00",
+          "EA_07",
+          "EA_14",
+          "EA_21"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.10830520387170461,
+        "successful_subset_mean_I_route_rad_s": 0.10830520387170461,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.10830520387170461,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "v1_plus12",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_01",
+          "EA_08",
+          "EA_15",
+          "EA_22"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.1080888544006151,
+        "successful_subset_mean_I_route_rad_s": 0.1080888544006151,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.1080888544006151,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "v1_minus12",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_02",
+          "EA_09",
+          "EA_16",
+          "EA_23"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.10936109642199299,
+        "successful_subset_mean_I_route_rad_s": 0.10936109642199299,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.10936109642199299,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "v2_plus12",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_03",
+          "EA_10",
+          "EA_17",
+          "EA_24"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.10786733022218851,
+        "successful_subset_mean_I_route_rad_s": 0.10786733022218851,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.10786733022218851,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "v2_minus12",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_04",
+          "EA_11",
+          "EA_18",
+          "EA_25"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.10963714795064484,
+        "successful_subset_mean_I_route_rad_s": 0.10963714795064484,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.10963714795064484,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "v2_plus20",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_05",
+          "EA_12",
+          "EA_19",
+          "EA_26"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.11081226876408926,
+        "successful_subset_mean_I_route_rad_s": 0.11081226876408926,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.11081226876408926,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "v2_minus20",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_06",
+          "EA_13",
+          "EA_20",
+          "EA_27"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.11175599418440432,
+        "successful_subset_mean_I_route_rad_s": 0.11175599418440432,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.11175599418440432,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "geometric_rule_v2_away12",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_04",
+          "EA_10",
+          "EA_18",
+          "EA_24"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.10542694957725102,
+        "successful_subset_mean_I_route_rad_s": 0.10542694957725102,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.10542694957725102,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "finite_teacher_minimum",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_02",
+          "EA_12",
+          "EA_14",
+          "EA_26"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.10434478303282016,
+        "successful_subset_mean_I_route_rad_s": 0.10434478303282016,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.10434478303282016,
+        "failure_cost_imputed": false
+      },
+      {
+        "policy": "finite_teacher_tie_selected",
+        "successful_safe_tasks": 4,
+        "total_tasks": 4,
+        "success_rate": 1.0,
+        "quality_comparable_tasks": 4,
+        "selected_slot_ids": [
+          "EA_02",
+          "EA_12",
+          "EA_16",
+          "EA_22"
+        ],
+        "all_tasks_mean_I_route_rad_s": 0.1045064725403211,
+        "successful_subset_mean_I_route_rad_s": 0.1045064725403211,
+        "successful_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "successful_subset_mean_is_cross_policy_comparable": true,
+        "common_complete_task_subset_task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ],
+        "common_complete_task_subset_mean_I_route_rad_s": 0.1045064725403211,
+        "failure_cost_imputed": false
+      }
+    ],
+    "common_complete_subset_direct_comparisons": {
+      "task_ids": [
+        "b3_mother_00_c_plus",
+        "b3_mother_00_c_minus",
+        "b31_mother_00_d055_c_plus",
+        "b31_mother_00_d055_c_minus"
+      ],
+      "best_constant_mode": "v2_plus12",
+      "best_constant_mean_I_route_rad_s": 0.10786733022218851,
+      "zero_mean_I_route_rad_s": 0.10830520387170461,
+      "geometric_rule_mean_I_route_rad_s": 0.10542694957725102,
+      "finite_teacher_minimum_mean_I_route_rad_s": 0.10434478303282016,
+      "finite_teacher_tie_selected_mean_I_route_rad_s": 0.1045064725403211,
+      "geometric_rule_minus_teacher_minimum_rad_s": 0.001082166544430857,
+      "best_constant_minus_teacher_tie_selected_rad_s": 0.0033608576818674185,
+      "all_means_use_identical_tasks": true,
+      "failure_cost_imputed": false
+    },
+    "best_constant_signed_modes_on_common_complete_subset": {
+      "positive": {
+        "mode": "v2_plus12",
+        "mean_I_route_rad_s": 0.10786733022218851,
+        "task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ]
+      },
+      "negative": {
+        "mode": "v1_minus12",
+        "mean_I_route_rad_s": 0.10936109642199299,
+        "task_ids": [
+          "b3_mother_00_c_plus",
+          "b3_mother_00_c_minus",
+          "b31_mother_00_d055_c_plus",
+          "b31_mother_00_d055_c_minus"
+        ]
+      }
+    },
+    "best_constant_among_all_seven": "v2_plus12",
+    "selection_scope": "constant policies use one mode for every task; finite teacher is a retrospective development-set oracle; geometric rule is frozen and performs no outcome selection"
+  },
+  "conditional_selection_potential": {
+    "formula": "min_z mean_c J(z,c) - mean_c min_z J(z,c)",
+    "modes": [
+      "z0",
+      "v1_plus12",
+      "v1_minus12",
+      "v2_plus12",
+      "v2_minus12",
+      "v2_plus20",
+      "v2_minus20"
+    ],
+    "full_development_matrix": {
+      "status": "AVAILABLE",
+      "task_ids": [
+        "b3_mother_00_c_plus",
+        "b3_mother_00_c_minus",
+        "b31_mother_00_d055_c_plus",
+        "b31_mother_00_d055_c_minus"
+      ],
+      "task_count": 4,
+      "constant_mean_costs_rad_s": {
+        "z0": 0.10830520387170461,
+        "v1_plus12": 0.1080888544006151,
+        "v1_minus12": 0.10936109642199299,
+        "v2_plus12": 0.10786733022218851,
+        "v2_minus12": 0.10963714795064484,
+        "v2_plus20": 0.11081226876408926,
+        "v2_minus20": 0.11175599418440432
+      },
+      "best_constant_mode": "v2_plus12",
+      "best_constant_mean_I_route_rad_s": 0.10786733022218851,
+      "mean_taskwise_minimum_I_route_rad_s": 0.10434478303282016,
+      "V_cond_rad_s": 0.003522547189368355,
+      "failure_cost_imputation": false
+    },
+    "common_complete_task_subset": {
+      "status": "AVAILABLE",
+      "task_ids": [
+        "b3_mother_00_c_plus",
+        "b3_mother_00_c_minus",
+        "b31_mother_00_d055_c_plus",
+        "b31_mother_00_d055_c_minus"
+      ],
+      "task_count": 4,
+      "constant_mean_costs_rad_s": {
+        "z0": 0.10830520387170461,
+        "v1_plus12": 0.1080888544006151,
+        "v1_minus12": 0.10936109642199299,
+        "v2_plus12": 0.10786733022218851,
+        "v2_minus12": 0.10963714795064484,
+        "v2_plus20": 0.11081226876408926,
+        "v2_minus20": 0.11175599418440432
+      },
+      "best_constant_mode": "v2_plus12",
+      "best_constant_mean_I_route_rad_s": 0.10786733022218851,
+      "mean_taskwise_minimum_I_route_rad_s": 0.10434478303282016,
+      "V_cond_rad_s": 0.003522547189368355,
+      "failure_cost_imputation": false
+    },
+    "scope": "finite fixed candidate set on development tasks, with one mother scene; offline conditional selection potential only; not a policy, continuous optimum, generalization TEST, or statistical guarantee"
+  },
+  "v2_actual_reference_binding": [
+    {
+      "slot_id": "EA_03",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "6b9466a4a665451bcf6b3f4a21db1ffa53cf47dcd570f0aafbc137ffcba65ae0",
+          "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+        "plan_sha256": "6b9466a4a665451bcf6b3f4a21db1ffa53cf47dcd570f0aafbc137ffcba65ae0",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.01200000000000003,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_04",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "9c133457ae40b74349b7762f88f4e7a035b5640c2abd38a495c53ef22f7dcb43",
+          "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+        "plan_sha256": "9c133457ae40b74349b7762f88f4e7a035b5640c2abd38a495c53ef22f7dcb43",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.012000000000000033,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_05",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "b2c8a130908bbf859a86d8406e8579853bd3a40e2983cd4f80327342f051e880",
+          "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+        "plan_sha256": "b2c8a130908bbf859a86d8406e8579853bd3a40e2983cd4f80327342f051e880",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.020000000000000018,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_06",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "4a6454e69e6ec839f877af4af47669995f9c6b5bbe2a023b43d584cd5d0195df",
+          "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "6a0a8483bfe46c62762d87af2b67fb5df9813e9080bae0d113db238516959685",
+        "plan_sha256": "4a6454e69e6ec839f877af4af47669995f9c6b5bbe2a023b43d584cd5d0195df",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.02000000000000002,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_10",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "a8efa182a5574e3c63be76ab8c9877d184057cda585f2fafc64ac22e3e8a07b8",
+          "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+        "plan_sha256": "a8efa182a5574e3c63be76ab8c9877d184057cda585f2fafc64ac22e3e8a07b8",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.01200000000000003,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_11",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "829dbc7066ae07beddd5845ffa5fe18951f370fd79b6f2a5a0c6d3a12f8f0bbe",
+          "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+        "plan_sha256": "829dbc7066ae07beddd5845ffa5fe18951f370fd79b6f2a5a0c6d3a12f8f0bbe",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.012000000000000033,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_12",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "f1f19bdebf9bcfdd4771c4639d5b780dd543310168b369421faa48fff231f5f6",
+          "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+        "plan_sha256": "f1f19bdebf9bcfdd4771c4639d5b780dd543310168b369421faa48fff231f5f6",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.020000000000000018,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_13",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "52ebc362017c0b29ad562bf77b98d0bc6b78bbe3a96d82e684dc04cd8fa00d7f",
+          "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "3ce218c9b54fb4fa31fcfd247382e594945f5fe6ef82fee91473539dab371538",
+        "plan_sha256": "52ebc362017c0b29ad562bf77b98d0bc6b78bbe3a96d82e684dc04cd8fa00d7f",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.02000000000000002,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_17",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "8767e0c70d2bae2b330a33523b50ca0a4fb763aef4602e4ce54b88ca0bf42de9",
+          "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+        "plan_sha256": "8767e0c70d2bae2b330a33523b50ca0a4fb763aef4602e4ce54b88ca0bf42de9",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.01200000000000003,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_18",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "584a4dae6410fe2a15bf730bb151aebbc7d837a6fb89eddd5dc30debf7302c4f",
+          "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+        "plan_sha256": "584a4dae6410fe2a15bf730bb151aebbc7d837a6fb89eddd5dc30debf7302c4f",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.012000000000000033,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_19",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "8b02de0f4b0604715abc2f4095f84bf93a5d7814af99dccae122200cb8ce797e",
+          "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+        "plan_sha256": "8b02de0f4b0604715abc2f4095f84bf93a5d7814af99dccae122200cb8ce797e",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.020000000000000018,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_20",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "962ce9799fab8b269ba826385ef1886341b0b83716a634e64273c3aed5e78c2d",
+          "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "f5b9dfee78f006ca6f8f486ac5519cbd070ab1b7f21693e84aba80b1e8353d5e",
+        "plan_sha256": "962ce9799fab8b269ba826385ef1886341b0b83716a634e64273c3aed5e78c2d",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.02000000000000002,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_24",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "25bcecd1e9a17c7252bbf08f0a6d2178a3d9df4c1dcf08068a7136a6ab98d811",
+          "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+        "plan_sha256": "25bcecd1e9a17c7252bbf08f0a6d2178a3d9df4c1dcf08068a7136a6ab98d811",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.01200000000000003,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_25",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "1750d4e04841e69ff0d0d5970569a329f05210560e60c557608ebc31db0cc7f7",
+          "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.012,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+        "plan_sha256": "1750d4e04841e69ff0d0d5970569a329f05210560e60c557608ebc31db0cc7f7",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.012000000000000033,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_26",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "8dc5e7aa37d020352dcacd8a92a6874b289ceef9b98689b95391759ccc97a585",
+          "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+        "plan_sha256": "8dc5e7aa37d020352dcacd8a92a6874b289ceef9b98689b95391759ccc97a585",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.020000000000000018,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    },
+    {
+      "slot_id": "EA_27",
+      "eligible": true,
+      "binding": {
+        "passed": true,
+        "component_maximum_absolute_residual": {
+          "QP_rigid_target_position": 0.0,
+          "QP_rigid_target_velocity": 0.0,
+          "QP_rigid_target_rotation": 0.0,
+          "QP_rigid_target_angular_velocity": 0.0,
+          "QP_continuum_target_position": 1.504213420489009e-13,
+          "QP_continuum_target_velocity": 1.6646753420168636e-13,
+          "QP_continuum_target_rotation": 0.0,
+          "QP_continuum_target_angular_velocity": 0.0,
+          "QP_posture_reference_q": 0.0,
+          "QP_posture_reference_dq": 0.0,
+          "generated_continuum_position": 1.505184865635556e-13,
+          "generated_continuum_rotation": 0.0,
+          "posture_q": 0.0,
+          "posture_dq": 0.0
+        },
+        "consumed_reference_identity": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "3fc61d1d0b2bf35238bf0513db61afd6a9bec623f4636f046f6e10adbd9926b5",
+          "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.02,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition_sha256": "9c44a030e162d5fb11a140345d2942c7429395dcf2f710116ad9cf9445e2ac39",
+        "plan_sha256": "3fc61d1d0b2bf35238bf0513db61afd6a9bec623f4636f046f6e10adbd9926b5",
+        "retained_field_maximum_residual": {
+          "rigid_target_position": 0.0,
+          "rigid_target_velocity": 0.0,
+          "rigid_target_rotation": 0.0,
+          "rigid_target_angular_velocity": 0.0,
+          "continuum_target_rotation": 0.0,
+          "continuum_target_angular_velocity": 0.0,
+          "posture_reference_q": 0.0,
+          "posture_reference_dq": 0.0
+        },
+        "comparison_threshold": 1e-09,
+        "planning_inputs_bound": 1350,
+        "QP_reference_fields_bound": [
+          "rigid_target_position",
+          "rigid_target_velocity",
+          "rigid_target_rotation",
+          "rigid_target_angular_velocity",
+          "continuum_target_position",
+          "continuum_target_velocity",
+          "continuum_target_rotation",
+          "continuum_target_angular_velocity",
+          "posture_reference_q",
+          "posture_reference_dq"
+        ],
+        "generated_continuum_and_posture_poststep_samples_bound": 13500,
+        "generated_rigid_poststep_pose_scope": "finite cached MuJoCo diagnostic; not same-time fresh QP input, no freshness claim",
+        "zero_residual_all_10_fields_exact_base_parity": false,
+        "consumed_QP_reference_offset_peak_m": 0.02000000000000002,
+        "nonzero_reference_consumed": true,
+        "peak_at_least_5mm": true,
+        "target_feedback_source": "independent same-torque current physical-state replay",
+        "new_physics_steps_by_binding": 0,
+        "new_distance_queries_by_binding": 0,
+        "future_actual_trace_is_online_input": false,
+        "joint_codec_check": "N/A/new-representation"
+      }
+    }
+  ],
+  "same_z_v1_v2_comparisons": {
+    "b3_mother_00_c_plus": [
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_03",
+        "baseline_slot": "EA_01",
+        "I_route_reduction_rad_s": -0.0005802012189470296,
+        "I_route_relative_reduction": -0.005182073390432757,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.011911093589754396,
+          "route_clearance_m": -7.035871284831463e-06,
+          "base_translation_peak_m": -4.0754444050571104e-07,
+          "base_rotation_peak_rad": -1.2264214865054246e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": true,
+          "larger_base_translation": false,
+          "larger_base_rotation": false
+        }
+      },
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_04",
+        "baseline_slot": "EA_02",
+        "I_route_reduction_rad_s": -0.00022371511976779224,
+        "I_route_relative_reduction": -0.0021191068754202306,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.0036275190227483822,
+          "route_clearance_m": 1.0171394374029752e-05,
+          "base_translation_peak_m": -2.14393821927443e-07,
+          "base_rotation_peak_rad": -2.6629653797696773e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": false,
+          "larger_base_translation": false,
+          "larger_base_rotation": false
+        }
+      }
+    ],
+    "b3_mother_00_c_minus": [
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_10",
+        "baseline_slot": "EA_08",
+        "I_route_reduction_rad_s": 0.001013347141710419,
+        "I_route_relative_reduction": 0.009400552591008486,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.0036165905718503755,
+          "route_clearance_m": -2.2503887593131044e-05,
+          "base_translation_peak_m": 1.923947484400862e-07,
+          "base_rotation_peak_rad": 3.5794545252126886e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": true,
+          "larger_base_translation": true,
+          "larger_base_rotation": true
+        }
+      },
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_11",
+        "baseline_slot": "EA_09",
+        "I_route_reduction_rad_s": -0.0008474766830364744,
+        "I_route_relative_reduction": -0.007412026010511932,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.011918187351737553,
+          "route_clearance_m": 7.058080411855017e-06,
+          "base_translation_peak_m": -3.0862121454429403e-07,
+          "base_rotation_peak_rad": -2.1014256651949448e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": false,
+          "larger_base_translation": false,
+          "larger_base_rotation": false
+        }
+      }
+    ],
+    "b31_mother_00_d055_c_plus": [
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_17",
+        "baseline_slot": "EA_15",
+        "I_route_reduction_rad_s": -1.9208246579194288e-05,
+        "I_route_relative_reduction": -0.000176720419889856,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.009323985414579017,
+          "route_clearance_m": -1.4378232904219135e-05,
+          "base_translation_peak_m": -5.1757774070966545e-08,
+          "base_rotation_peak_rad": 8.319144108523413e-07
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "AVAILABLE",
+          "candidate_minus_baseline": {
+            "torque_saturated_actuator_step_count_full": 0,
+            "continuum_desired_minus_actual_velocity_RMS_m_s": 0.0011686841298441802,
+            "I_route_continuum_10D_rad_s": 9.400209319554431e-07,
+            "I_route_rigid_7D_rad_s": 0.0001911743568580801
+          }
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": true,
+          "larger_base_translation": false,
+          "larger_base_rotation": true
+        }
+      },
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_18",
+        "baseline_slot": "EA_16",
+        "I_route_reduction_rad_s": -0.0003309186818478138,
+        "I_route_relative_reduction": -0.003140576409730398,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.0054045568371039465,
+          "route_clearance_m": 2.798190279274665e-05,
+          "base_translation_peak_m": -2.4161672910073123e-07,
+          "base_rotation_peak_rad": -3.2449046040161633e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "AVAILABLE",
+          "candidate_minus_baseline": {
+            "torque_saturated_actuator_step_count_full": 0,
+            "continuum_desired_minus_actual_velocity_RMS_m_s": 1.2470255886768908e-05,
+            "I_route_continuum_10D_rad_s": 0.00032247771312232665,
+            "I_route_rigid_7D_rad_s": 0.00016599822535679626
+          }
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": false,
+          "larger_base_translation": false,
+          "larger_base_rotation": false
+        }
+      }
+    ],
+    "b31_mother_00_d055_c_minus": [
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_24",
+        "baseline_slot": "EA_22",
+        "I_route_reduction_rad_s": 0.00047215903752219346,
+        "I_route_relative_reduction": 0.004544234695033827,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.005405325630693403,
+          "route_clearance_m": 5.600769034318914e-05,
+          "base_translation_peak_m": 2.091396310421184e-07,
+          "base_rotation_peak_rad": 3.864801287577213e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "AVAILABLE",
+          "candidate_minus_baseline": {
+            "torque_saturated_actuator_step_count_full": 0,
+            "continuum_desired_minus_actual_velocity_RMS_m_s": 1.1710789614858587e-05,
+            "I_route_continuum_10D_rad_s": -0.00046285450139528506,
+            "I_route_rigid_7D_rad_s": -0.00018105077639918917
+          }
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": false,
+          "larger_base_translation": true,
+          "larger_base_rotation": true
+        }
+      },
+      {
+        "status": "AVAILABLE",
+        "candidate_slot": "EA_25",
+        "baseline_slot": "EA_23",
+        "I_route_reduction_rad_s": 0.0002979043700446632,
+        "I_route_relative_reduction": 0.0026558984935814724,
+        "candidate_minus_baseline": {
+          "continuum_path_length_m": 0.009338120545291817,
+          "route_clearance_m": -2.340537462975495e-05,
+          "base_translation_peak_m": -2.1602441545483242e-07,
+          "base_rotation_peak_rad": -2.713786006074137e-06
+        },
+        "additional_new_vector_cost_differences": {
+          "status": "AVAILABLE",
+          "candidate_minus_baseline": {
+            "torque_saturated_actuator_step_count_full": 0,
+            "continuum_desired_minus_actual_velocity_RMS_m_s": 0.0011664332454097634,
+            "I_route_continuum_10D_rad_s": -0.0003073480510220883,
+            "I_route_rigid_7D_rad_s": 0.0001917035796584277
+          }
+        },
+        "cost_conflicts": {
+          "longer_path": true,
+          "smaller_related_sphere_clearance": true,
+          "larger_base_translation": false,
+          "larger_base_rotation": false
+        }
+      }
+    ]
+  },
+  "old_B3_thresholds_on_supplement": {
+    "b3_mother_00_c_plus": {
+      "thresholds": {
+        "relative_reduction": 0.1,
+        "absolute_reduction_rad_s": 0.001,
+        "require_comparison_with_zero_and_opposite": true
+      },
+      "candidates": [
+        {
+          "mode": "v1_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_01",
+              "baseline_slot": "EA_00",
+              "I_route_reduction_rad_s": -0.0033615097045731485,
+              "I_route_relative_reduction": -0.030952662801177196,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.007438453458792349,
+                "route_clearance_m": -0.00010647756231072641,
+                "base_translation_peak_m": 7.996846086337842e-07,
+                "base_rotation_peak_rad": 7.501998382758446e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v1_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_01",
+              "baseline_slot": "EA_02",
+              "I_route_reduction_rad_s": -0.006392666848347522,
+              "I_route_relative_reduction": -0.06055354812256415,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01218479860758026,
+                "route_clearance_m": -8.346411146296223e-05,
+                "base_translation_peak_m": 3.429517759284337e-07,
+                "base_rotation_peak_rad": 3.814852970442095e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v1_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_02",
+              "baseline_slot": "EA_00",
+              "I_route_reduction_rad_s": 0.003031157143774374,
+              "I_route_relative_reduction": 0.02791078807268871,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.004746345148787912,
+                "route_clearance_m": -2.3013450847764183e-05,
+                "base_translation_peak_m": 4.567328327053505e-07,
+                "base_rotation_peak_rad": 3.6871454123163505e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v1_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_02",
+              "baseline_slot": "EA_01",
+              "I_route_reduction_rad_s": 0.006392666848347522,
+              "I_route_relative_reduction": 0.05709617230526318,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.01218479860758026,
+                "route_clearance_m": 8.346411146296223e-05,
+                "base_translation_peak_m": -3.429517759284337e-07,
+                "base_rotation_peak_rad": -3.814852970442095e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_03",
+              "baseline_slot": "EA_00",
+              "I_route_reduction_rad_s": -0.003941710923520178,
+              "I_route_relative_reduction": -0.03629513516187497,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.019349547048546745,
+                "route_clearance_m": -0.00011351343359555788,
+                "base_translation_peak_m": 3.921401681280731e-07,
+                "base_rotation_peak_rad": 6.275576896253021e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_03",
+              "baseline_slot": "EA_04",
+              "I_route_reduction_rad_s": -0.00674915294752676,
+              "I_route_relative_reduction": -0.06379511889293464,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.020468373174586274,
+                "route_clearance_m": -0.00010067137712182345,
+                "base_translation_peak_m": 1.4980115735016564e-07,
+                "base_rotation_peak_rad": 5.251396863706348e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.024276138757006273,
+                  "I_route_continuum_10D_rad_s": 0.006347525848940938,
+                  "I_route_rigid_7D_rad_s": 0.004675138549858123
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_04",
+              "baseline_slot": "EA_00",
+              "I_route_reduction_rad_s": 0.0028074420240065817,
+              "I_route_relative_reduction": 0.02585082714017171,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.0011188261260395294,
+                "route_clearance_m": -1.2842056473734431e-05,
+                "base_translation_peak_m": 2.423390107779075e-07,
+                "base_rotation_peak_rad": 1.0241800325466732e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_04",
+              "baseline_slot": "EA_03",
+              "I_route_reduction_rad_s": 0.00674915294752676,
+              "I_route_relative_reduction": 0.05996936605549069,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.020468373174586274,
+                "route_clearance_m": 0.00010067137712182345,
+                "base_translation_peak_m": -1.4980115735016564e-07,
+                "base_rotation_peak_rad": -5.251396863706348e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.024276138757006273,
+                  "I_route_continuum_10D_rad_s": -0.006347525848940938,
+                  "I_route_rigid_7D_rad_s": -0.004675138549858123
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_05",
+              "baseline_slot": "EA_00",
+              "I_route_reduction_rad_s": -0.01665334642805788,
+              "I_route_relative_reduction": -0.15334342655551522,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.038276596361132675,
+                "route_clearance_m": -0.00016281373455744041,
+                "base_translation_peak_m": 1.0780522372995718e-05,
+                "base_rotation_peak_rad": 4.991205511900576e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_minus20",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_05",
+              "baseline_slot": "EA_06",
+              "I_route_reduction_rad_s": -0.018692672616241593,
+              "I_route_relative_reduction": -0.1754154287420872,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.03230050513697513,
+                "route_clearance_m": -0.00019687345382989746,
+                "base_translation_peak_m": 1.0234049314579788e-05,
+                "base_rotation_peak_rad": 4.726374441783171e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.04012096283389409,
+                  "I_route_continuum_10D_rad_s": 0.015126248800269068,
+                  "I_route_rigid_7D_rad_s": 0.024302997633204735
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_06",
+              "baseline_slot": "EA_00",
+              "I_route_reduction_rad_s": 0.0020393261881837127,
+              "I_route_relative_reduction": 0.018778043614922697,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.005976091224157543,
+                "route_clearance_m": 3.4059719272457045e-05,
+                "base_translation_peak_m": 5.464730584159305e-07,
+                "base_rotation_peak_rad": 2.6483107011740503e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_plus20",
+              "quality_threshold_passed": true,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_06",
+              "baseline_slot": "EA_05",
+              "I_route_reduction_rad_s": 0.018692672616241593,
+              "I_route_relative_reduction": 0.1492369629092025,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.03230050513697513,
+                "route_clearance_m": 0.00019687345382989746,
+                "base_translation_peak_m": -1.0234049314579788e-05,
+                "base_rotation_peak_rad": -4.726374441783171e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.04012096283389409,
+                  "I_route_continuum_10D_rad_s": -0.015126248800269068,
+                  "I_route_rigid_7D_rad_s": -0.024302997633204735
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": true,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        }
+      ],
+      "favorable_comparator_semantics": "zero OR opposite; report both, then original preferred-direction and cross-side reversal checks",
+      "old_B3_sealed_result_changed": false,
+      "scope": "same predeclared thresholds reported on this supplementary development set; AND is explicitly a stricter supplementary summary; cannot rewrite the old B.3 decision"
+    },
+    "b3_mother_00_c_minus": {
+      "thresholds": {
+        "relative_reduction": 0.1,
+        "absolute_reduction_rad_s": 0.001,
+        "require_comparison_with_zero_and_opposite": true
+      },
+      "candidates": [
+        {
+          "mode": "v1_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_08",
+              "baseline_slot": "EA_07",
+              "I_route_reduction_rad_s": 0.004273204414839235,
+              "I_route_relative_reduction": 0.03812986313466161,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.004749763549761532,
+                "route_clearance_m": 2.245407286769613e-05,
+                "base_translation_peak_m": 3.2237987196166024e-07,
+                "base_rotation_peak_rad": 3.0929971692184033e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v1_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_08",
+              "baseline_slot": "EA_09",
+              "I_route_reduction_rad_s": 0.006541510665101349,
+              "I_route_relative_reduction": 0.0572120132250124,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.01219838725645861,
+                "route_clearance_m": 0.00013373991200776175,
+                "base_translation_peak_m": 1.6463368441178156e-07,
+                "base_rotation_peak_rad": 8.975691402832164e-07
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v1_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_09",
+              "baseline_slot": "EA_07",
+              "I_route_reduction_rad_s": -0.0022683062502621143,
+              "I_route_relative_reduction": -0.020240128595216247,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.007448623706697077,
+                "route_clearance_m": -0.00011128583914006562,
+                "base_translation_peak_m": 1.5774618754987868e-07,
+                "base_rotation_peak_rad": 2.195428028935187e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v1_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_09",
+              "baseline_slot": "EA_08",
+              "I_route_reduction_rad_s": -0.006541510665101349,
+              "I_route_relative_reduction": -0.06068385896676366,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01219838725645861,
+                "route_clearance_m": -0.00013373991200776175,
+                "base_translation_peak_m": -1.6463368441178156e-07,
+                "base_rotation_peak_rad": -8.975691402832164e-07
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_10",
+              "baseline_slot": "EA_07",
+              "I_route_reduction_rad_s": 0.005286551556549654,
+              "I_route_relative_reduction": 0.04717197394198475,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.0011331729779111566,
+                "route_clearance_m": -4.981472543491572e-08,
+                "base_translation_peak_m": 5.147746204017464e-07,
+                "base_rotation_peak_rad": 6.672451694431092e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_10",
+              "baseline_slot": "EA_11",
+              "I_route_reduction_rad_s": 0.008402334489848243,
+              "I_route_relative_reduction": 0.07294608897849986,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.020499984036345786,
+                "route_clearance_m": 0.00010417794400277569,
+                "base_translation_peak_m": 6.656496473961618e-07,
+                "base_rotation_peak_rad": 6.57844933069085e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.024279298381824525,
+                  "I_route_continuum_10D_rad_s": -0.00828487460088645,
+                  "I_route_rigid_7D_rad_s": -0.0023524839811449056
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_11",
+              "baseline_slot": "EA_07",
+              "I_route_reduction_rad_s": -0.0031157829332985887,
+              "I_route_relative_reduction": -0.02780217496533203,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01936681105843463,
+                "route_clearance_m": -0.0001042277587282106,
+                "base_translation_peak_m": -1.5087502699441535e-07,
+                "base_rotation_peak_rad": 9.400236374024207e-08
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_11",
+              "baseline_slot": "EA_10",
+              "I_route_reduction_rad_s": -0.008402334489848243,
+              "I_route_relative_reduction": -0.07868591902937142,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.020499984036345786,
+                "route_clearance_m": -0.00010417794400277569,
+                "base_translation_peak_m": -6.656496473961618e-07,
+                "base_rotation_peak_rad": -6.57844933069085e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.024279298381824525,
+                  "I_route_continuum_10D_rad_s": 0.00828487460088645,
+                  "I_route_rigid_7D_rad_s": 0.0023524839811449056
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_12",
+              "baseline_slot": "EA_07",
+              "I_route_reduction_rad_s": 0.008885984940175909,
+              "I_route_relative_reduction": 0.07928976868248383,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.005969753969017333,
+                "route_clearance_m": 4.918901328120062e-05,
+                "base_translation_peak_m": 6.288657692322605e-07,
+                "base_rotation_peak_rad": 8.655583336826533e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_minus20",
+              "quality_threshold_passed": true,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_12",
+              "baseline_slot": "EA_13",
+              "I_route_reduction_rad_s": 0.016639199404863914,
+              "I_route_relative_reduction": 0.1388648561861545,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.03232933319388698,
+                "route_clearance_m": 0.00019538447836389694,
+                "base_translation_peak_m": -7.376652526237815e-06,
+                "base_rotation_peak_rad": -5.191991618281461e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.04008771554805781,
+                  "I_route_continuum_10D_rad_s": -0.01645110672312361,
+                  "I_route_rigid_7D_rad_s": -0.003379788332992427
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": true,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_13",
+              "baseline_slot": "EA_07",
+              "I_route_reduction_rad_s": -0.007753214464688005,
+              "I_route_relative_reduction": -0.06918204178710097,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.03829908716290431,
+                "route_clearance_m": -0.00014619546508269632,
+                "base_translation_peak_m": 8.005518295470075e-06,
+                "base_rotation_peak_rad": 6.057549951964114e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "NOT_MEASURED_BOTH_CANDIDATES_WITH_NEW_VECTORS"
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_plus20",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_13",
+              "baseline_slot": "EA_12",
+              "I_route_reduction_rad_s": -0.016639199404863914,
+              "I_route_relative_reduction": -0.16125791309728893,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.03232933319388698,
+                "route_clearance_m": -0.00019538447836389694,
+                "base_translation_peak_m": 7.376652526237815e-06,
+                "base_rotation_peak_rad": 5.191991618281461e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.04008771554805781,
+                  "I_route_continuum_10D_rad_s": 0.01645110672312361,
+                  "I_route_rigid_7D_rad_s": 0.003379788332992427
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        }
+      ],
+      "favorable_comparator_semantics": "zero OR opposite; report both, then original preferred-direction and cross-side reversal checks",
+      "old_B3_sealed_result_changed": false,
+      "scope": "same predeclared thresholds reported on this supplementary development set; AND is explicitly a stricter supplementary summary; cannot rewrite the old B.3 decision"
+    },
+    "b31_mother_00_d055_c_plus": {
+      "thresholds": {
+        "relative_reduction": 0.1,
+        "absolute_reduction_rad_s": 0.001,
+        "require_comparison_with_zero_and_opposite": true
+      },
+      "candidates": [
+        {
+          "mode": "v1_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_15",
+              "baseline_slot": "EA_14",
+              "I_route_reduction_rad_s": -0.0034035886595858017,
+              "I_route_relative_reduction": -0.03232607510926121,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.006513226353241919,
+                "route_clearance_m": 2.586561098932849e-05,
+                "base_translation_peak_m": -4.1618420847794324e-07,
+                "base_rotation_peak_rad": -2.7762248792709276e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.016862617918390433,
+                  "I_route_continuum_10D_rad_s": 0.0031816217458464358,
+                  "I_route_rigid_7D_rad_s": 0.002806135846093889
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v1_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_15",
+              "baseline_slot": "EA_16",
+              "I_route_reduction_rad_s": -0.0033240800674918386,
+              "I_route_relative_reduction": -0.03154710814671059,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.00835244944659097,
+                "route_clearance_m": -0.00042163866569049774,
+                "base_translation_peak_m": -8.598458854786051e-07,
+                "base_rotation_peak_rad": -5.060977261044097e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.03172167573986326,
+                  "I_route_continuum_10D_rad_s": 0.002983284430874353,
+                  "I_route_rigid_7D_rad_s": 0.004715559570404095
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v1_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_16",
+              "baseline_slot": "EA_14",
+              "I_route_reduction_rad_s": -7.95085920939631e-05,
+              "I_route_relative_reduction": -0.0007551443423171596,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.0018392230933490517,
+                "route_clearance_m": 0.00044750427667982623,
+                "base_translation_peak_m": 4.4366167700066184e-07,
+                "base_rotation_peak_rad": 2.2847523817731696e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.014859057821472826,
+                  "I_route_continuum_10D_rad_s": 0.00019833731497208296,
+                  "I_route_rigid_7D_rad_s": -0.001909423724310206
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v1_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_16",
+              "baseline_slot": "EA_15",
+              "I_route_reduction_rad_s": 0.0033240800674918386,
+              "I_route_relative_reduction": 0.030582324256027908,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.00835244944659097,
+                "route_clearance_m": 0.00042163866569049774,
+                "base_translation_peak_m": 8.598458854786051e-07,
+                "base_rotation_peak_rad": 5.060977261044097e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.03172167573986326,
+                  "I_route_continuum_10D_rad_s": -0.002983284430874353,
+                  "I_route_rigid_7D_rad_s": -0.004715559570404095
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_17",
+              "baseline_slot": "EA_14",
+              "I_route_reduction_rad_s": -0.003422796906164996,
+              "I_route_relative_reduction": -0.03250850820671776,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.015837211767820936,
+                "route_clearance_m": 1.1487378085109357e-05,
+                "base_translation_peak_m": -4.679419825489098e-07,
+                "base_rotation_peak_rad": -1.9443104684185863e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.018031302048234613,
+                  "I_route_continuum_10D_rad_s": 0.003182561766778391,
+                  "I_route_rigid_7D_rad_s": 0.002997310202951969
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v2_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_17",
+              "baseline_slot": "EA_18",
+              "I_route_reduction_rad_s": -0.003012369632223219,
+              "I_route_relative_reduction": -0.028499322873956807,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01227187802406604,
+                "route_clearance_m": -0.0004639988013874635,
+                "base_translation_peak_m": -6.699869304488404e-07,
+                "base_rotation_peak_rad": -9.841582461755927e-07
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.03287788961382067,
+                  "I_route_continuum_10D_rad_s": 0.0026617467386839816,
+                  "I_route_rigid_7D_rad_s": 0.004740735701905379
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_18",
+              "baseline_slot": "EA_14",
+              "I_route_reduction_rad_s": -0.0004104272739417769,
+              "I_route_relative_reduction": -0.00389809234055498,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.003565333743754895,
+                "route_clearance_m": 0.0004754861794725729,
+                "base_translation_peak_m": 2.020449478999306e-07,
+                "base_rotation_peak_rad": -9.601522222429937e-07
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.014846587565586057,
+                  "I_route_continuum_10D_rad_s": 0.0005208150280944096,
+                  "I_route_rigid_7D_rad_s": -0.0017434254989534097
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v2_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_18",
+              "baseline_slot": "EA_17",
+              "I_route_reduction_rad_s": 0.003012369632223219,
+              "I_route_relative_reduction": 0.027709617537054438,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.01227187802406604,
+                "route_clearance_m": 0.0004639988013874635,
+                "base_translation_peak_m": 6.699869304488404e-07,
+                "base_rotation_peak_rad": 9.841582461755927e-07
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.03287788961382067,
+                  "I_route_continuum_10D_rad_s": -0.0026617467386839816,
+                  "I_route_rigid_7D_rad_s": -0.004740735701905379
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_19",
+              "baseline_slot": "EA_14",
+              "I_route_reduction_rad_s": -0.006185439353244115,
+              "I_route_relative_reduction": -0.05874710404666887,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.03379896094153234,
+                "route_clearance_m": -6.94087506482588e-05,
+                "base_translation_peak_m": -1.1010520910605115e-06,
+                "base_rotation_peak_rad": -5.604541820608544e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.02257046475107582,
+                  "I_route_continuum_10D_rad_s": 0.005802317565933565,
+                  "I_route_rigid_7D_rad_s": 0.004530032900822217
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v2_minus20",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_19",
+              "baseline_slot": "EA_20",
+              "I_route_reduction_rad_s": -0.004805964843842492,
+              "I_route_relative_reduction": -0.045055045239777096,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01993076600955379,
+                "route_clearance_m": -0.008424017598341688,
+                "base_translation_peak_m": -1.0273224679939463e-06,
+                "base_rotation_peak_rad": -1.7301693390481265e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.037408413719290275,
+                  "I_route_continuum_10D_rad_s": 0.004313655856791762,
+                  "I_route_rigid_7D_rad_s": 0.0062250500382482485
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_20",
+              "baseline_slot": "EA_14",
+              "I_route_reduction_rad_s": -0.0013794745094016236,
+              "I_route_relative_reduction": -0.01310175848560233,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01386819493197855,
+                "route_clearance_m": 0.008354608847693429,
+                "base_translation_peak_m": -7.372962306656516e-08,
+                "base_rotation_peak_rad": -3.8743724815604175e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.014837948968214455,
+                  "I_route_continuum_10D_rad_s": 0.001488661709141803,
+                  "I_route_rigid_7D_rad_s": -0.0016950171374260315
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v2_plus20",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_20",
+              "baseline_slot": "EA_19",
+              "I_route_reduction_rad_s": 0.004805964843842492,
+              "I_route_relative_reduction": 0.04311260487665478,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.01993076600955379,
+                "route_clearance_m": 0.008424017598341688,
+                "base_translation_peak_m": 1.0273224679939463e-06,
+                "base_rotation_peak_rad": 1.7301693390481265e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.037408413719290275,
+                  "I_route_continuum_10D_rad_s": -0.004313655856791762,
+                  "I_route_rigid_7D_rad_s": -0.0062250500382482485
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        }
+      ],
+      "favorable_comparator_semantics": "zero OR opposite; report both, then original preferred-direction and cross-side reversal checks",
+      "old_B3_sealed_result_changed": false,
+      "scope": "same predeclared thresholds reported on this supplementary development set; AND is explicitly a stricter supplementary summary; cannot rewrite the old B.3 decision"
+    },
+    "b31_mother_00_d055_c_minus": {
+      "thresholds": {
+        "relative_reduction": 0.1,
+        "absolute_reduction_rad_s": 0.001,
+        "require_comparison_with_zero_and_opposite": true
+      },
+      "candidates": [
+        {
+          "mode": "v1_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_22",
+              "baseline_slot": "EA_21",
+              "I_route_reduction_rad_s": 0.003357291833677778,
+              "I_route_relative_reduction": 0.03130045398222111,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.00183542484223298,
+                "route_clearance_m": 0.00043117085612071754,
+                "base_translation_peak_m": 7.824246677206464e-08,
+                "base_rotation_peak_rad": 1.0090505541335282e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.014879589093648764,
+                  "I_route_continuum_10D_rad_s": -0.003405314424323555,
+                  "I_route_rigid_7D_rad_s": 0.0008513679218335622
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v1_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_22",
+              "baseline_slot": "EA_23",
+              "I_route_reduction_rad_s": 0.008264204336249553,
+              "I_route_relative_reduction": 0.07367762965009202,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.0083525620740863,
+                "route_clearance_m": 0.0004097545625650484,
+                "base_translation_peak_m": 7.751482149825559e-07,
+                "base_rotation_peak_rad": 6.5174827119582335e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.03175641982248213,
+                  "I_route_continuum_10D_rad_s": -0.008306021129481658,
+                  "I_route_rigid_7D_rad_s": 0.0006038855577439311
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v1_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_23",
+              "baseline_slot": "EA_21",
+              "I_route_reduction_rad_s": -0.004906912502571775,
+              "I_route_relative_reduction": -0.04574776236037936,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.0065171372318533205,
+                "route_clearance_m": 2.1416293555669152e-05,
+                "base_translation_peak_m": -6.969057482104912e-07,
+                "base_rotation_peak_rad": -5.508432157824705e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.016876830728833364,
+                  "I_route_continuum_10D_rad_s": 0.004900706705158103,
+                  "I_route_rigid_7D_rad_s": 0.0002474823640896311
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v1_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_23",
+              "baseline_slot": "EA_22",
+              "I_route_reduction_rad_s": -0.008264204336249553,
+              "I_route_relative_reduction": -0.07953778512577767,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.0083525620740863,
+                "route_clearance_m": -0.0004097545625650484,
+                "base_translation_peak_m": -7.751482149825559e-07,
+                "base_rotation_peak_rad": -6.5174827119582335e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.03175641982248213,
+                  "I_route_continuum_10D_rad_s": 0.008306021129481658,
+                  "I_route_rigid_7D_rad_s": -0.0006038855577439311
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_24",
+              "baseline_slot": "EA_21",
+              "I_route_reduction_rad_s": 0.0038294508711999714,
+              "I_route_relative_reduction": 0.03570245206829861,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.003569900788460423,
+                "route_clearance_m": 0.0004871785464639067,
+                "base_translation_peak_m": 2.8738209781418306e-07,
+                "base_rotation_peak_rad": 4.873851841710741e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.014867878304033907,
+                  "I_route_continuum_10D_rad_s": -0.00386816892571884,
+                  "I_route_rigid_7D_rad_s": 0.000670317145434373
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_minus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_24",
+              "baseline_slot": "EA_25",
+              "I_route_reduction_rad_s": 0.008438459003727083,
+              "I_route_relative_reduction": 0.07543149580672225,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.012285356988684715,
+                "route_clearance_m": 0.0004891676275379925,
+                "base_translation_peak_m": 1.2003122614795067e-06,
+                "base_rotation_peak_rad": 1.3096070005609584e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.03291114227827703,
+                  "I_route_continuum_10D_rad_s": -0.008461527579854855,
+                  "I_route_rigid_7D_rad_s": 0.00023113120168631422
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus12",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_25",
+              "baseline_slot": "EA_21",
+              "I_route_reduction_rad_s": -0.004609008132527112,
+              "I_route_relative_reduction": -0.04297036245366023,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.015855257777145138,
+                "route_clearance_m": -1.9890810740857967e-06,
+                "base_translation_peak_m": -9.129301636653236e-07,
+                "base_rotation_peak_rad": -8.222218163898842e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.018043263974243128,
+                  "I_route_continuum_10D_rad_s": 0.004593358654136015,
+                  "I_route_rigid_7D_rad_s": 0.0004391859437480588
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v2_plus12",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_25",
+              "baseline_slot": "EA_24",
+              "I_route_reduction_rad_s": -0.008438459003727083,
+              "I_route_relative_reduction": -0.08158562125425112,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.012285356988684715,
+                "route_clearance_m": -0.0004891676275379925,
+                "base_translation_peak_m": -1.2003122614795067e-06,
+                "base_rotation_peak_rad": -1.3096070005609584e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.03291114227827703,
+                  "I_route_continuum_10D_rad_s": 0.008461527579854855,
+                  "I_route_rigid_7D_rad_s": -0.00023113120168631422
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_plus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_26",
+              "baseline_slot": "EA_21",
+              "I_route_reduction_rad_s": 0.003924541271587562,
+              "I_route_relative_reduction": 0.03658899182978913,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.01387735570565285,
+                "route_clearance_m": 0.008323748090837496,
+                "base_translation_peak_m": 7.683088705783686e-08,
+                "base_rotation_peak_rad": 5.669229422425315e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.014857670424199679,
+                  "I_route_continuum_10D_rad_s": -0.003966469100886841,
+                  "I_route_rigid_7D_rad_s": 0.0007261367623470601
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            },
+            {
+              "comparator_mode": "v2_minus20",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_26",
+              "baseline_slot": "EA_27",
+              "I_route_reduction_rad_s": 0.010634339736480522,
+              "I_route_relative_reduction": 0.09330826726440525,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": -0.019991045992939327,
+                "route_clearance_m": 0.008407820389942235,
+                "base_translation_peak_m": 8.391121158511997e-07,
+                "base_rotation_peak_rad": 1.1010287338818203e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": -0.03744510408190271,
+                  "I_route_continuum_10D_rad_s": -0.010593508018582234,
+                  "I_route_rigid_7D_rad_s": -0.0010178846969475077
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": false,
+                "smaller_related_sphere_clearance": false,
+                "larger_base_translation": true,
+                "larger_base_rotation": true
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        },
+        {
+          "mode": "v2_minus20",
+          "comparison_evidence": [
+            {
+              "comparator_mode": "z0",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_27",
+              "baseline_slot": "EA_21",
+              "I_route_reduction_rad_s": -0.00670979846489296,
+              "I_route_relative_reduction": -0.06255629492009092,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.033868401698592177,
+                "route_clearance_m": -8.407229910473851e-05,
+                "base_translation_peak_m": -7.622812287933628e-07,
+                "base_rotation_peak_rad": -5.341057916392888e-06
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.022587433657703028,
+                  "I_route_continuum_10D_rad_s": 0.006627038917695394,
+                  "I_route_rigid_7D_rad_s": 0.0017440214592945678
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            },
+            {
+              "comparator_mode": "v2_plus20",
+              "quality_threshold_passed": false,
+              "complete_safe_vs_failure": false,
+              "comparator_metric_unavailable_after_safe_actual": false,
+              "status": "AVAILABLE",
+              "candidate_slot": "EA_27",
+              "baseline_slot": "EA_26",
+              "I_route_reduction_rad_s": -0.010634339736480522,
+              "I_route_relative_reduction": -0.10291068496112049,
+              "candidate_minus_baseline": {
+                "continuum_path_length_m": 0.019991045992939327,
+                "route_clearance_m": -0.008407820389942235,
+                "base_translation_peak_m": -8.391121158511997e-07,
+                "base_rotation_peak_rad": -1.1010287338818203e-05
+              },
+              "additional_new_vector_cost_differences": {
+                "status": "AVAILABLE",
+                "candidate_minus_baseline": {
+                  "torque_saturated_actuator_step_count_full": 0,
+                  "continuum_desired_minus_actual_velocity_RMS_m_s": 0.03744510408190271,
+                  "I_route_continuum_10D_rad_s": 0.010593508018582234,
+                  "I_route_rigid_7D_rad_s": 0.0010178846969475077
+                }
+              },
+              "cost_conflicts": {
+                "longer_path": true,
+                "smaller_related_sphere_clearance": true,
+                "larger_base_translation": false,
+                "larger_base_rotation": false
+              }
+            }
+          ],
+          "legacy_OR_advantage_vs_zero_or_opposite": false,
+          "stricter_supplemental_AND_quality_threshold_passed": false
+        }
+      ],
+      "favorable_comparator_semantics": "zero OR opposite; report both, then original preferred-direction and cross-side reversal checks",
+      "old_B3_sealed_result_changed": false,
+      "scope": "same predeclared thresholds reported on this supplementary development set; AND is explicitly a stricter supplementary summary; cannot rewrite the old B.3 decision"
+    }
+  },
+  "original_OR_gate_by_distance_and_same_amplitude_reference_family": [
+    {
+      "distance_m": 0.043,
+      "reference_family": "v1_12mm",
+      "status": "AVAILABLE",
+      "route_value_identifiable_under_original_rule": false,
+      "metric_unavailable_slot_ids": [],
+      "exact_original_function_result": {
+        "route_value_identifiable": false,
+        "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+        "sides": [
+          {
+            "task_id": "b3_mother_00_c_plus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z-",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.006392666848347522,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          },
+          {
+            "task_id": "b3_mother_00_c_minus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z+",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.006541510665101349,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          }
+        ],
+        "thresholds": {
+          "relative_reduction": 0.1,
+          "absolute_difference_rad_s": 0.001
+        },
+        "training_authorized_by_pilot": false,
+        "additional_pilot_slots_authorized": false
+      },
+      "unavailable_scope": null,
+      "raw_original_function_training_authorized_field_is_historical_only": true,
+      "B31_training_authorized": false
+    },
+    {
+      "distance_m": 0.043,
+      "reference_family": "v2_12mm",
+      "status": "AVAILABLE",
+      "route_value_identifiable_under_original_rule": false,
+      "metric_unavailable_slot_ids": [],
+      "exact_original_function_result": {
+        "route_value_identifiable": false,
+        "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+        "sides": [
+          {
+            "task_id": "b3_mother_00_c_plus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z-",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.00674915294752676,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          },
+          {
+            "task_id": "b3_mother_00_c_minus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z+",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.008402334489848243,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          }
+        ],
+        "thresholds": {
+          "relative_reduction": 0.1,
+          "absolute_difference_rad_s": 0.001
+        },
+        "training_authorized_by_pilot": false,
+        "additional_pilot_slots_authorized": false
+      },
+      "unavailable_scope": null,
+      "raw_original_function_training_authorized_field_is_historical_only": true,
+      "B31_training_authorized": false
+    },
+    {
+      "distance_m": 0.043,
+      "reference_family": "v2_20mm",
+      "status": "AVAILABLE",
+      "route_value_identifiable_under_original_rule": true,
+      "metric_unavailable_slot_ids": [],
+      "exact_original_function_result": {
+        "route_value_identifiable": true,
+        "status": "ROUTE_VALUE_IDENTIFIABLE",
+        "sides": [
+          {
+            "task_id": "b3_mother_00_c_plus",
+            "favorable_nonzero_directions": [
+              "z-"
+            ],
+            "preferred_nonzero_direction": "z-",
+            "preferred_qualifying_direction": "z-",
+            "nonzero_intervention_absolute_difference_rad_s": 0.018692672616241593,
+            "preferred_direct_opposite_meets_A_or_B": true,
+            "preferred_direct_opposite_evidence": [
+              {
+                "direction": "z-",
+                "comparator": "z+",
+                "criterion": "B_intervention_gain",
+                "absolute_difference_rad_s": 0.018692672616241593,
+                "relative_reduction": 0.1492369629092025
+              }
+            ],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": [
+              {
+                "direction": "z-",
+                "comparator": "z+",
+                "criterion": "B_intervention_gain",
+                "absolute_difference_rad_s": 0.018692672616241593,
+                "relative_reduction": 0.1492369629092025
+              }
+            ]
+          },
+          {
+            "task_id": "b3_mother_00_c_minus",
+            "favorable_nonzero_directions": [
+              "z+"
+            ],
+            "preferred_nonzero_direction": "z+",
+            "preferred_qualifying_direction": "z+",
+            "nonzero_intervention_absolute_difference_rad_s": 0.016639199404863914,
+            "preferred_direct_opposite_meets_A_or_B": true,
+            "preferred_direct_opposite_evidence": [
+              {
+                "direction": "z+",
+                "comparator": "z-",
+                "criterion": "B_intervention_gain",
+                "absolute_difference_rad_s": 0.016639199404863914,
+                "relative_reduction": 0.1388648561861545
+              }
+            ],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": [
+              {
+                "direction": "z+",
+                "comparator": "z-",
+                "criterion": "B_intervention_gain",
+                "absolute_difference_rad_s": 0.016639199404863914,
+                "relative_reduction": 0.1388648561861545
+              }
+            ]
+          }
+        ],
+        "thresholds": {
+          "relative_reduction": 0.1,
+          "absolute_difference_rad_s": 0.001
+        },
+        "training_authorized_by_pilot": true,
+        "additional_pilot_slots_authorized": false
+      },
+      "unavailable_scope": null,
+      "raw_original_function_training_authorized_field_is_historical_only": true,
+      "B31_training_authorized": false
+    },
+    {
+      "distance_m": 0.055,
+      "reference_family": "v1_12mm",
+      "status": "AVAILABLE",
+      "route_value_identifiable_under_original_rule": false,
+      "metric_unavailable_slot_ids": [],
+      "exact_original_function_result": {
+        "route_value_identifiable": false,
+        "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+        "sides": [
+          {
+            "task_id": "b31_mother_00_d055_c_plus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z-",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.0033240800674918386,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          },
+          {
+            "task_id": "b31_mother_00_d055_c_minus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z+",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.008264204336249553,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          }
+        ],
+        "thresholds": {
+          "relative_reduction": 0.1,
+          "absolute_difference_rad_s": 0.001
+        },
+        "training_authorized_by_pilot": false,
+        "additional_pilot_slots_authorized": false
+      },
+      "unavailable_scope": null,
+      "raw_original_function_training_authorized_field_is_historical_only": true,
+      "B31_training_authorized": false
+    },
+    {
+      "distance_m": 0.055,
+      "reference_family": "v2_12mm",
+      "status": "AVAILABLE",
+      "route_value_identifiable_under_original_rule": false,
+      "metric_unavailable_slot_ids": [],
+      "exact_original_function_result": {
+        "route_value_identifiable": false,
+        "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+        "sides": [
+          {
+            "task_id": "b31_mother_00_d055_c_plus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z-",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.003012369632223219,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          },
+          {
+            "task_id": "b31_mother_00_d055_c_minus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z+",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.008438459003727083,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          }
+        ],
+        "thresholds": {
+          "relative_reduction": 0.1,
+          "absolute_difference_rad_s": 0.001
+        },
+        "training_authorized_by_pilot": false,
+        "additional_pilot_slots_authorized": false
+      },
+      "unavailable_scope": null,
+      "raw_original_function_training_authorized_field_is_historical_only": true,
+      "B31_training_authorized": false
+    },
+    {
+      "distance_m": 0.055,
+      "reference_family": "v2_20mm",
+      "status": "AVAILABLE",
+      "route_value_identifiable_under_original_rule": false,
+      "metric_unavailable_slot_ids": [],
+      "exact_original_function_result": {
+        "route_value_identifiable": false,
+        "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+        "sides": [
+          {
+            "task_id": "b31_mother_00_d055_c_plus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z-",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.004805964843842492,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          },
+          {
+            "task_id": "b31_mother_00_d055_c_minus",
+            "favorable_nonzero_directions": [],
+            "preferred_nonzero_direction": "z+",
+            "preferred_qualifying_direction": null,
+            "nonzero_intervention_absolute_difference_rad_s": 0.010634339736480522,
+            "preferred_direct_opposite_meets_A_or_B": false,
+            "preferred_direct_opposite_evidence": [],
+            "direction_tie_tolerance_rad_s": 1e-12,
+            "direction_tie_does_not_use_path_or_slot": true,
+            "complete_safe_by_candidate": {
+              "z0": true,
+              "z+": true,
+              "z-": true
+            },
+            "evidence": []
+          }
+        ],
+        "thresholds": {
+          "relative_reduction": 0.1,
+          "absolute_difference_rad_s": 0.001
+        },
+        "training_authorized_by_pilot": false,
+        "additional_pilot_slots_authorized": false
+      },
+      "unavailable_scope": null,
+      "raw_original_function_training_authorized_field_is_historical_only": true,
+      "B31_training_authorized": false
+    }
+  ],
+  "old_B3_sealed_decision": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+  "old_B3_decision_rewritten": false,
+  "training_executed": false,
+  "model_sampling_executed": false,
+  "independent_generalization_TEST": "NOT_RUN_DEVELOPMENT_STUDY",
+  "learning_followup_status": "REFERENCE_VALUE_REQUIRES_COST_AND_GEOMETRIC_RULE_REVIEW_DIFFUSION_NECESSITY_UNESTABLISHED",
+  "deployment": "NOT_MET",
+  "20ms_wall_is_research_gate": false,
+  "continuous_time_certified": false,
+  "causal_obstacle_specific_intervention_claim": false,
+  "reducer_scope": "saved arrays and frozen analytic reference evaluated on saved clocks; no model allocation/forward/geometry/physics/solver/inference",
+  "generated_utc": "2026-10-07T12:15:46.610712+00:00",
+  "reducer_wall_s": 14.451207800302655,
+  "postprocessing_git_head": "43dd1d739990b0c6bacf8e3ccc0b30f50b963155"
+}
