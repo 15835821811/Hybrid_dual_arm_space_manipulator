@@ -1,0 +1,596 @@
+{
+  "schema": "v64_b3_conditional_route_value_report_v1",
+  "created_utc": "2026-10-07T08:24:09.666532+00:00",
+  "run_id": "conditional_route_value_20261007_01",
+  "source_producer_commit": "f5f1687f5ba0b119c91bbc385dfdc841b56d091e",
+  "B2_algorithm_producer": "7d0a3fd4bd17f41b99b388c30c5ac4897ac4d31d",
+  "published_B2_base": "28ef7889be16b4a504d9449f52c50e3a99e82a31",
+  "plan_sha256": "6ed9cd38ac284c9a57ad2bbf03a4b492380c83205fb5db4db81c9a6247922dd1",
+  "source_identity_sha256": "6a244ea853cf02efd3d452d8afd25339d36cec899691846e64f94d22199f4c0a",
+  "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+  "research_execution_complete": true,
+  "research_delivery_complete": false,
+  "route_value_identifiable": false,
+  "training_executed": false,
+  "condition_response_observed": true,
+  "conditional_value_supported_in_pilot": false,
+  "advantage_over_retrieval": "NOT_EVALUATED",
+  "independent_test_task_success_by_method": {
+    "Z0": "NOT_RUN_PILOT_STOP",
+    "R0": "NOT_RUN_PILOT_STOP",
+    "U0": "NOT_RUN_PILOT_STOP",
+    "D_true": "NOT_RUN_PILOT_STOP",
+    "D_swap": "NOT_RUN_PILOT_STOP"
+  },
+  "pilot_full_task_success": {
+    "numerator": 6,
+    "denominator": 6
+  },
+  "diagnosis": "PREDECLARED_PAIRED_ROUTE_VALUE_GATE_NOT_MET",
+  "decision": {
+    "route_value_identifiable": false,
+    "status": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION",
+    "sides": [
+      {
+        "task_id": "b3_mother_00_c_plus",
+        "favorable_nonzero_directions": [],
+        "preferred_nonzero_direction": "z-",
+        "preferred_qualifying_direction": null,
+        "nonzero_intervention_absolute_difference_rad_s": 0.006392666848347522,
+        "preferred_direct_opposite_meets_A_or_B": false,
+        "preferred_direct_opposite_evidence": [],
+        "direction_tie_tolerance_rad_s": 1e-12,
+        "direction_tie_does_not_use_path_or_slot": true,
+        "complete_safe_by_candidate": {
+          "z0": true,
+          "z+": true,
+          "z-": true
+        },
+        "evidence": []
+      },
+      {
+        "task_id": "b3_mother_00_c_minus",
+        "favorable_nonzero_directions": [],
+        "preferred_nonzero_direction": "z+",
+        "preferred_qualifying_direction": null,
+        "nonzero_intervention_absolute_difference_rad_s": 0.006541510665101349,
+        "preferred_direct_opposite_meets_A_or_B": false,
+        "preferred_direct_opposite_evidence": [],
+        "direction_tie_tolerance_rad_s": 1e-12,
+        "direction_tie_does_not_use_path_or_slot": true,
+        "complete_safe_by_candidate": {
+          "z0": true,
+          "z+": true,
+          "z-": true
+        },
+        "evidence": []
+      }
+    ],
+    "thresholds": {
+      "relative_reduction": 0.1,
+      "absolute_difference_rad_s": 0.001
+    },
+    "training_authorized_by_pilot": false,
+    "additional_pilot_slots_authorized": false
+  },
+  "five_questions": [
+    {
+      "question": "零残差已经足够时，残差是否有可测收益？",
+      "answer": "b3_mother_00_c_plus较好非零z-相对零残差I_route变化-2.791%；b3_mother_00_c_minus较好非零z+相对零残差I_route变化-3.813%。完整成功记录中未达到冻结的双侧A/B路线价值门槛。安全通过和非零运动变化不能代替可辨识的路线收益。"
+    },
+    {
+      "question": "障碍换边后，正确路线是否随之改变？",
+      "answer": "b3_mother_00_c_plus: z-；b3_mother_00_c_minus: z+。完整合格非零候选的数值排名随障碍换边反转，但未建立满足冻结门槛的双侧相反有利方向；数值排名与达到可辨识价值门槛分别报告。"
+    },
+    {
+      "question": "真实条件是否比错条件/无条件经验抽样更好？",
+      "answer": "未评价新模型的五组TEST。旧权重P0仅观察到条件响应，缺少可信偏好标签，不能据此称正确适应。"
+    },
+    {
+      "question": "与简单检索相比是否值得增加Diffusion？",
+      "answer": "本轮没有建立新增Diffusion的收益证据；维持B.2的非学习检索基线，不能将未运行对照写成检索胜出。"
+    },
+    {
+      "question": "负结果下一步指向任务区分度、数据还是方法？",
+      "answer": "先解决固定任务族中的路线可区分性与非学习可执行性见证，再讨论质量数据或学习方法。本轮停止，不追加障碍搜索、幅值、种子或网络。"
+    }
+  ],
+  "costs": {
+    "actual_physics_steps": 81000,
+    "private_preview_physics_steps": 81000,
+    "independent_saved_torque_replay_steps": 81000,
+    "native_geometry_query_calls": 201187130,
+    "preview_calls": 8100,
+    "additional_route_quality_geometry_queries": 5022372,
+    "input_precheck_geometry_queries": 41846,
+    "native_geometry_query_calls_by_phase": {
+      "actual": 98469703,
+      "independent_torque_replay": 102717427,
+      "private_preview": 0
+    },
+    "actual_slots_consumed": 6,
+    "actual_runner_entries": 6,
+    "slots_with_physics": 6,
+    "old_checkpoint_ddim_calls": 32,
+    "teacher_actual_slots": 0,
+    "new_model_ddim_calls": 0,
+    "new_training_runs": 0,
+    "optimizer_updates": 0,
+    "new_TEST_actual_slots": 0,
+    "count_scope": "actual, private previews and same-torque independent replays are distinct; geometry queries are not independent experiments"
+  },
+  "timing_summary": {
+    "proposal_comparison": {
+      "status": "NOT_RUN_PILOT_STOP",
+      "methods": [
+        "Z0",
+        "R0",
+        "U0",
+        "D_true",
+        "D_swap"
+      ]
+    },
+    "pilot": [
+      {
+        "slot_id": "PILOT_00",
+        "executor_and_independent_evidence_wall_s": 130.66991259995848,
+        "independent_evaluation_wall_s": 62.52081170026213,
+        "dispatch_timing": {
+          "status": "MEASURED",
+          "records": [
+            {
+              "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\pilot\\attempts\\PILOT_00\\actual\\timing\\b3_mother_00_c_plus.jsonl",
+              "sha256": "d97983aad33475162b9f6466cd65862b71489b67c2ffd6ca94055952e86ab144",
+              "cycle_count": 1350,
+              "dispatch_latency": {
+                "count": 1350,
+                "p50_ms": 15.198950000000002,
+                "p95_ms": 17.563825,
+                "p99_ms": 22.342356,
+                "max_ms": 29.9141,
+                "over_deadline_count": 24,
+                "longest_consecutive_over_deadline": 12,
+                "first_cycle_ms": 21.3973,
+                "steady_after_first_cycle": {
+                  "count": 1349,
+                  "p50_ms": 15.1963,
+                  "p95_ms": 17.556160000000002,
+                  "p99_ms": 22.345111999999997,
+                  "max_ms": 29.9141,
+                  "over_deadline_count": 23,
+                  "longest_consecutive_over_deadline": 12,
+                  "first_cycle_ms": 16.3546,
+                  "steady_after_first_cycle": null,
+                  "passed": true
+                },
+                "passed": true
+              },
+              "accepted_cycle_count": 1350,
+              "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+            }
+          ],
+          "wall_20ms_is_research_gate": false,
+          "deployment": "NOT_MET",
+          "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+          "continuous_time_or_hard_realtime_certification": false
+        },
+        "original_planning_latency": {
+          "count": 1350,
+          "mean": 0.014700377333081431,
+          "rms": 0.014781049330831067,
+          "maximum": 0.029112699907273054,
+          "p95": 0.016810889937914908,
+          "p99": 0.021649457984603937,
+          "period_s": 0.02,
+          "over_period_count": 22,
+          "longest_over_period_run": 6,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        },
+        "original_torque_latency": {
+          "count": 13500,
+          "mean": 0.00038404099149974406,
+          "rms": 0.0003887502852565749,
+          "maximum": 0.0015696999616920948,
+          "p95": 0.000522315129637718,
+          "p99": 0.0006161056924611332,
+          "period_s": 0.002,
+          "over_period_count": 0,
+          "longest_over_period_run": 0,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        }
+      },
+      {
+        "slot_id": "PILOT_01",
+        "executor_and_independent_evidence_wall_s": 132.78899820009246,
+        "independent_evaluation_wall_s": 63.843146100174636,
+        "dispatch_timing": {
+          "status": "MEASURED",
+          "records": [
+            {
+              "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\pilot\\attempts\\PILOT_01\\actual\\timing\\b3_mother_00_c_plus.jsonl",
+              "sha256": "a6146336480fe92a1fc278249290c7ccac6ea1adff74c7ff3727b54f44574c3e",
+              "cycle_count": 1350,
+              "dispatch_latency": {
+                "count": 1350,
+                "p50_ms": 15.542800000000002,
+                "p95_ms": 18.087574999999998,
+                "p99_ms": 22.121612000000002,
+                "max_ms": 33.3267,
+                "over_deadline_count": 29,
+                "longest_consecutive_over_deadline": 14,
+                "first_cycle_ms": 18.2393,
+                "steady_after_first_cycle": {
+                  "count": 1349,
+                  "p50_ms": 15.5417,
+                  "p95_ms": 18.0566,
+                  "p99_ms": 22.121824,
+                  "max_ms": 33.3267,
+                  "over_deadline_count": 29,
+                  "longest_consecutive_over_deadline": 14,
+                  "first_cycle_ms": 16.3892,
+                  "steady_after_first_cycle": null,
+                  "passed": true
+                },
+                "passed": true
+              },
+              "accepted_cycle_count": 1350,
+              "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+            }
+          ],
+          "wall_20ms_is_research_gate": false,
+          "deployment": "NOT_MET",
+          "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+          "continuous_time_or_hard_realtime_certification": false
+        },
+        "original_planning_latency": {
+          "count": 1350,
+          "mean": 0.014984356514695618,
+          "rms": 0.015066240728013712,
+          "maximum": 0.03259769966825843,
+          "p95": 0.017255279817618426,
+          "p99": 0.0213746678782627,
+          "period_s": 0.02,
+          "over_period_count": 24,
+          "longest_over_period_run": 7,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        },
+        "original_torque_latency": {
+          "count": 13500,
+          "mean": 0.000393719222224145,
+          "rms": 0.00039765823123035025,
+          "maximum": 0.0013150000013411045,
+          "p95": 0.0005219101207330822,
+          "p99": 0.000615703146904707,
+          "period_s": 0.002,
+          "over_period_count": 0,
+          "longest_over_period_run": 0,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        }
+      },
+      {
+        "slot_id": "PILOT_02",
+        "executor_and_independent_evidence_wall_s": 131.60421290015802,
+        "independent_evaluation_wall_s": 63.08451490011066,
+        "dispatch_timing": {
+          "status": "MEASURED",
+          "records": [
+            {
+              "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\pilot\\attempts\\PILOT_02\\actual\\timing\\b3_mother_00_c_plus.jsonl",
+              "sha256": "22040c16ff3f8f4a921b0d6f7c9b7ace6308e5ff137c9058884e29ee7271302b",
+              "cycle_count": 1350,
+              "dispatch_latency": {
+                "count": 1350,
+                "p50_ms": 15.568750000000001,
+                "p95_ms": 17.975035000000002,
+                "p99_ms": 22.377939,
+                "max_ms": 34.6763,
+                "over_deadline_count": 26,
+                "longest_consecutive_over_deadline": 13,
+                "first_cycle_ms": 17.879800000000003,
+                "steady_after_first_cycle": {
+                  "count": 1349,
+                  "p50_ms": 15.568200000000001,
+                  "p95_ms": 17.97572,
+                  "p99_ms": 22.379428,
+                  "max_ms": 34.6763,
+                  "over_deadline_count": 26,
+                  "longest_consecutive_over_deadline": 13,
+                  "first_cycle_ms": 16.5621,
+                  "steady_after_first_cycle": null,
+                  "passed": true
+                },
+                "passed": true
+              },
+              "accepted_cycle_count": 1350,
+              "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+            }
+          ],
+          "wall_20ms_is_research_gate": false,
+          "deployment": "NOT_MET",
+          "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+          "continuous_time_or_hard_realtime_certification": false
+        },
+        "original_planning_latency": {
+          "count": 1350,
+          "mean": 0.015011558591698606,
+          "rms": 0.015087191618080245,
+          "maximum": 0.03382619982585311,
+          "p95": 0.017177540180273353,
+          "p99": 0.02162192203104496,
+          "period_s": 0.02,
+          "over_period_count": 22,
+          "longest_over_period_run": 6,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        },
+        "original_torque_latency": {
+          "count": 13500,
+          "mean": 0.0003968312462653827,
+          "rms": 0.00040127214808422857,
+          "maximum": 0.0010806997306644917,
+          "p95": 0.0005319998832419515,
+          "p99": 0.0006346089439466597,
+          "period_s": 0.002,
+          "over_period_count": 0,
+          "longest_over_period_run": 0,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        }
+      },
+      {
+        "slot_id": "PILOT_03",
+        "executor_and_independent_evidence_wall_s": 129.71283650025725,
+        "independent_evaluation_wall_s": 62.04240809986368,
+        "dispatch_timing": {
+          "status": "MEASURED",
+          "records": [
+            {
+              "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\pilot\\attempts\\PILOT_03\\actual\\timing\\b3_mother_00_c_minus.jsonl",
+              "sha256": "7097bcf054b07061219ac9b53aebec08b477b4fad3d03924d8a725e73230d044",
+              "cycle_count": 1350,
+              "dispatch_latency": {
+                "count": 1350,
+                "p50_ms": 15.547950000000002,
+                "p95_ms": 17.991225,
+                "p99_ms": 22.270657,
+                "max_ms": 33.5009,
+                "over_deadline_count": 28,
+                "longest_consecutive_over_deadline": 12,
+                "first_cycle_ms": 17.541300000000003,
+                "steady_after_first_cycle": {
+                  "count": 1349,
+                  "p50_ms": 15.5478,
+                  "p95_ms": 17.992,
+                  "p99_ms": 22.271264,
+                  "max_ms": 33.5009,
+                  "over_deadline_count": 28,
+                  "longest_consecutive_over_deadline": 12,
+                  "first_cycle_ms": 16.520400000000002,
+                  "steady_after_first_cycle": null,
+                  "passed": true
+                },
+                "passed": true
+              },
+              "accepted_cycle_count": 1350,
+              "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+            }
+          ],
+          "wall_20ms_is_research_gate": false,
+          "deployment": "NOT_MET",
+          "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+          "continuous_time_or_hard_realtime_certification": false
+        },
+        "original_planning_latency": {
+          "count": 1350,
+          "mean": 0.015006063475997911,
+          "rms": 0.015092081688366068,
+          "maximum": 0.03255539992824197,
+          "p95": 0.017187255062162874,
+          "p99": 0.021533321808092296,
+          "period_s": 0.02,
+          "over_period_count": 21,
+          "longest_over_period_run": 6,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        },
+        "original_torque_latency": {
+          "count": 13500,
+          "mean": 0.0003920767128950468,
+          "rms": 0.00039764583460572195,
+          "maximum": 0.001935299951583147,
+          "p95": 0.0005476049613207578,
+          "p99": 0.0006430060043931009,
+          "period_s": 0.002,
+          "over_period_count": 0,
+          "longest_over_period_run": 0,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        }
+      },
+      {
+        "slot_id": "PILOT_04",
+        "executor_and_independent_evidence_wall_s": 132.61792649980634,
+        "independent_evaluation_wall_s": 63.18788510002196,
+        "dispatch_timing": {
+          "status": "MEASURED",
+          "records": [
+            {
+              "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\pilot\\attempts\\PILOT_04\\actual\\timing\\b3_mother_00_c_minus.jsonl",
+              "sha256": "06ddf30831304298123672ab8b96d914030f0853e7386aee1f59a27b3a1fece6",
+              "cycle_count": 1350,
+              "dispatch_latency": {
+                "count": 1350,
+                "p50_ms": 15.709800000000003,
+                "p95_ms": 18.249585,
+                "p99_ms": 21.624886999999998,
+                "max_ms": 29.4225,
+                "over_deadline_count": 29,
+                "longest_consecutive_over_deadline": 14,
+                "first_cycle_ms": 19.6704,
+                "steady_after_first_cycle": {
+                  "count": 1349,
+                  "p50_ms": 15.7078,
+                  "p95_ms": 18.24876,
+                  "p99_ms": 21.626324,
+                  "max_ms": 29.4225,
+                  "over_deadline_count": 29,
+                  "longest_consecutive_over_deadline": 14,
+                  "first_cycle_ms": 17.416300000000003,
+                  "steady_after_first_cycle": null,
+                  "passed": true
+                },
+                "passed": true
+              },
+              "accepted_cycle_count": 1350,
+              "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+            }
+          ],
+          "wall_20ms_is_research_gate": false,
+          "deployment": "NOT_MET",
+          "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+          "continuous_time_or_hard_realtime_certification": false
+        },
+        "original_planning_latency": {
+          "count": 1350,
+          "mean": 0.015157944075763225,
+          "rms": 0.015235478500588751,
+          "maximum": 0.028647399973124266,
+          "p95": 0.017450609942898154,
+          "p99": 0.020801260066218675,
+          "period_s": 0.02,
+          "over_period_count": 21,
+          "longest_over_period_run": 12,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        },
+        "original_torque_latency": {
+          "count": 13500,
+          "mean": 0.0004018366434438913,
+          "rms": 0.00040896521919129355,
+          "maximum": 0.004054199904203415,
+          "p95": 0.0005549051333218813,
+          "p99": 0.0006514056120067837,
+          "period_s": 0.002,
+          "over_period_count": 2,
+          "longest_over_period_run": 1,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        }
+      },
+      {
+        "slot_id": "PILOT_05",
+        "executor_and_independent_evidence_wall_s": 132.07030590018257,
+        "independent_evaluation_wall_s": 63.28347889985889,
+        "dispatch_timing": {
+          "status": "MEASURED",
+          "records": [
+            {
+              "path": "E:\\v64b3work_20261007_01\\v6_4\\output\\conditional_route_value_20261007_01\\pilot\\attempts\\PILOT_05\\actual\\timing\\b3_mother_00_c_minus.jsonl",
+              "sha256": "eb9b6f695372c0111264f7d1bfd19b01dc86bcd3e8518f8757f4bba2ac692b12",
+              "cycle_count": 1350,
+              "dispatch_latency": {
+                "count": 1350,
+                "p50_ms": 15.7382,
+                "p95_ms": 18.070240000000002,
+                "p99_ms": 22.673742999999998,
+                "max_ms": 36.109300000000005,
+                "over_deadline_count": 32,
+                "longest_consecutive_over_deadline": 14,
+                "first_cycle_ms": 17.522,
+                "steady_after_first_cycle": {
+                  "count": 1349,
+                  "p50_ms": 15.738000000000001,
+                  "p95_ms": 18.07238,
+                  "p99_ms": 22.673935999999998,
+                  "max_ms": 36.109300000000005,
+                  "over_deadline_count": 32,
+                  "longest_consecutive_over_deadline": 14,
+                  "first_cycle_ms": 16.823600000000003,
+                  "steady_after_first_cycle": null,
+                  "passed": true
+                },
+                "passed": true
+              },
+              "accepted_cycle_count": 1350,
+              "scope": "existing instrumented state acquisition to torque publication; research_simulation admission, no real delayed-state deployment validation"
+            }
+          ],
+          "wall_20ms_is_research_gate": false,
+          "deployment": "NOT_MET",
+          "real_calculation_delay_execution_validity": "NOT_VERIFIED",
+          "continuous_time_or_hard_realtime_certification": false
+        },
+        "original_planning_latency": {
+          "count": 1350,
+          "mean": 0.015123223999377202,
+          "rms": 0.015205757462334452,
+          "maximum": 0.03527680039405823,
+          "p95": 0.017272274778224527,
+          "p99": 0.021865714020095767,
+          "period_s": 0.02,
+          "over_period_count": 24,
+          "longest_over_period_run": 12,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        },
+        "original_torque_latency": {
+          "count": 13500,
+          "mean": 0.0004003754601020504,
+          "rms": 0.00040615618350316754,
+          "maximum": 0.0015428997576236725,
+          "p95": 0.0005575099494308232,
+          "p99": 0.0006515011843293906,
+          "period_s": 0.002,
+          "over_period_count": 0,
+          "longest_over_period_run": 0,
+          "is_task_success_gate": false,
+          "hard_realtime_certified": false
+        }
+      }
+    ],
+    "nested_times_or_quantiles_added": false,
+    "wall_20ms_is_research_gate": false,
+    "wrapper_bookkeeping_included_in_wall_time": true
+  },
+  "not_run": {
+    "teacher": "PILOT_NEGATIVE_STOP",
+    "training": "PILOT_NEGATIVE_STOP",
+    "new_model_sampling": "PILOT_NEGATIVE_STOP",
+    "new_TEST": "PILOT_NEGATIVE_STOP",
+    "K4_actual": "NOT_RUN"
+  },
+  "deployment": "NOT_MET",
+  "continuous_time_certified": false,
+  "20ms_wall_is_research_gate": false,
+  "timing_scope": "proposal/precheck generation in frozen inputs; existing instrumented dispatch timelines retained; no new-method timing because P2/P3/P4 NOT_RUN",
+  "I_route_scope": {
+    "T_route": "the complete fixed key-slot-2 interval of each task, identically applied to every method",
+    "sampling": "closed [start,end] 50Hz consumed planning ticks",
+    "descriptive_input_route_window_string_correction": "route_pair_inputs.protocol says open_endpoints; this plan fixes CLOSED sampling before outcomes; numerical intervals and Task definitions unchanged",
+    "primary": "sqrt(mean(task_avoidance_intervention**2))",
+    "producer_scope": "norm of selected 17D QP command minus original Hessian-optimum nominal command after existing velocity-bound clipping; source vectors not logged",
+    "raw_proposal_minus_selected_used": false,
+    "local_clearance": "all continuum geoms vs the single moved sphere, fresh saved 2ms states; full task and route window reported separately",
+    "full_task_and_all_independent_gates_required_for_quality_comparison": true,
+    "failed_prefix_excluded_from_full_means": true,
+    "pilot_direction_rule": "minimum I_route among full successful safe nonzero candidates; <=1e-12 absolute I tie is unidentified; preferred must satisfy A or B versus zero or opposite; pair preferred qualifying directions must differ",
+    "pilot_A": "preferred nonzero full success and zero or opposite fails",
+    "pilot_B": {
+      "relative_reduction_min": 0.1,
+      "absolute_reduction_min_rad_s": 0.001
+    },
+    "pilot_negative_stop": "ROUTE_VALUE_NOT_IDENTIFIABLE_WITHIN_CURRENT_REPRESENTATION"
+  },
+  "old_B2_conclusions_rewritten": false,
+  "interpretation": "Negative finite study of one paired mother scene and the existing 20mm residual representation; not a refutation of Diffusion.",
+  "sources": {
+    "paired_metrics.json": "d2ff6bf87c27e953655f450e7290c0df2472626704147fd8841fb49f5f3d7029",
+    "pilot/quality_records.json": "8e01f9f3ff933c3cdb93cd037936c727888cabb73a87b57de031368558be8c5f",
+    "pilot/decision.json": "7f1eeefe8918cab1ca3be005bce8d5d57bb770086c531171015d23f2a23eb9bf",
+    "old_checkpoint_probe/report.json": "08530b51a43e4679e767e2cffed611076a2c8a54b2c305152bfb1b8df6e16ce3"
+  }
+}
