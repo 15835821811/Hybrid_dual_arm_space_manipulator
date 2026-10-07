@@ -1,0 +1,460 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V6.4-C.1 连续路线优化</title>
+<style>body{font:15px/1.65 system-ui,sans-serif;margin:0;color:#22384a;background:#f2f6f8}main{max-width:1450px;margin:auto;padding:36px}h1{font-size:38px;margin:6px 0}h2{margin-top:32px}.eyebrow{letter-spacing:.14em;color:#177f80;font-weight:700}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:25px 0}article,.panel{background:white;border:1px solid #dce5ea;border-radius:14px;padding:20px}article span,article b,article small{display:block}article b{font-size:36px;color:#177f80}.scroll{overflow:auto}table{border-collapse:collapse;white-space:nowrap;font-variant-numeric:tabular-nums;width:100%;font-size:13px}th,td{text-align:left;padding:9px;border-bottom:1px solid #e0e8ec}th{background:#eaf1f5}img{width:100%;height:auto;border-radius:12px}a{color:#136f8a}.missing{color:#999}.badge{display:inline-block;background:#fff0cf;padding:4px 12px;border-radius:20px}code{background:#e8eff4;padding:2px 5px}details pre{white-space:pre-wrap;word-break:break-word}@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}main{padding:18px}h1{font-size:28px}}</style><main>
+<div class="eyebrow">HYBRID DUAL-ARM SPACE MANIPULATOR · V6.4-C.1</div><h1>连续路线优化与两种质量偏好</h1>
+<p>4个冻结任务 · 2个新母场景 · 每任务12候选共享池 · 非学习模型搜索</p><span class="badge">部署 NOT_MET</span>
+<p>工程完成、完整执行、偏好达标与相对基线收益分别判定。30mm是新增质量要求；未达到不表示碰撞。没有训练或Diffusion采样。</p>
+<p><a href="../../releases/continuous_route_optimizer_20261007_01/report.md">证据说明与原报告</a> · <a href="actual_methods.csv">16槽完整质量CSV</a> · <a href="search_contribution.csv">两偏好搜索贡献</a> · <a href="failed_prefix_quality.json">失败前缀另表</a> · <a href="teacher_records.jsonl">场景与资格完整的有限教师</a> · <a href="summary.json">全部机器结论</a></p>
+<div class="cards"><article><span>Z0</span><b>3/4</b><small>完整Task与原门禁 · 30mm 0/4</small></article><article><span>G0</span><b>3/4</b><small>完整Task与原门禁 · 30mm 1/4</small></article><article><span>OI</span><b>4/4</b><small>完整Task与原门禁 · 30mm 0/4</small></article><article><span>OC</span><b>3/4</b><small>完整Task与原门禁 · 30mm 3/4</small></article></div><section class="panel"><h2>全部方法槽（每方法固定分母4）</h2><p>Z0零参考；G0冻结v2远离12mm；OI偏好A低干预；OC偏好B净空≥30mm后短路径。NO_PLAN不执行fallback。失败行完整质量留空，前缀另存。</p><div class="scroll"><table><thead><tr><th>任务</th><th>方法</th><th>状态</th><th>完整Task</th><th>原独立门禁</th><th>I_support rad/s</th><th>I_key legacy</th><th>I_full</th><th>L_full m</th><th>d_support mm</th><th>30mm</th><th>actual别名</th></tr></thead><tbody><tr><td>c1_mother_00_minus</td><td>G0</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.09864263</td><td>0.1100431</td><td>0.09307244</td><td>1.178384</td><td>26.47234</td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_00_minus</td><td>OC</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.09885595</td><td>0.1103985</td><td>0.09309937</td><td>1.175069</td><td>31.26148</td><td>True</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_00_minus</td><td>OI</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.09864263</td><td>0.1100431</td><td>0.09307244</td><td>1.178384</td><td>26.47234</td><td>False</td><td>G0</td></tr><tr><td>c1_mother_00_minus</td><td>Z0</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.1000774</td><td>0.1124264</td><td>0.09352489</td><td>1.175276</td><td>25.97094</td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_00_plus</td><td>G0</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.100804</td><td>0.1136144</td><td>0.09338126</td><td>1.178375</td><td>26.43115</td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_00_plus</td><td>OC</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.1005266</td><td>0.1131564</td><td>0.09288782</td><td>1.188211</td><td>33.46264</td><td>True</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_00_plus</td><td>OI</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.09743411</td><td>0.1080092</td><td>0.09220179</td><td>1.175241</td><td>25.93534</td><td>False</td><td>Z0</td></tr><tr><td>c1_mother_00_plus</td><td>Z0</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.09743411</td><td>0.1080092</td><td>0.09220179</td><td>1.175241</td><td>25.93534</td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_minus</td><td>G0</td><td>EXECUTION_REFUSED</td><td>False</td><td>False</td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_minus</td><td>OC</td><td>NO_PLAN</td><td>False</td><td>False</td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_minus</td><td>OI</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.1136341</td><td>0.1409672</td><td>0.09953077</td><td>1.204141</td><td>25.61086</td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_minus</td><td>Z0</td><td>EXECUTION_REFUSED</td><td>False</td><td>False</td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td><span class="missing">—</span></td><td>False</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_plus</td><td>G0</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.1021195</td><td>0.1220771</td><td>0.1028388</td><td>1.151485</td><td>41.71919</td><td>True</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_plus</td><td>OC</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.1007689</td><td>0.1198458</td><td>0.1026007</td><td>1.146166</td><td>41.51866</td><td>True</td><td><span class="missing">—</span></td></tr><tr><td>c1_mother_01_plus</td><td>OI</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.0997908</td><td>0.1182224</td><td>0.1023213</td><td>1.144198</td><td>29.71864</td><td>False</td><td>Z0</td></tr><tr><td>c1_mother_01_plus</td><td>Z0</td><td>TASK_COMPLETED</td><td>True</td><td>True</td><td>0.0997908</td><td>0.1182224</td><td>0.1023213</td><td>1.144198</td><td>29.71864</td><td>False</td><td><span class="missing">—</span></td></tr></tbody></table></div></section>
+<h2>参考与实际路线</h2><img src="routes.png" alt="四新任务参考与实际路线"><p>固定世界投影；虚线为参考、实线为实际；失败轨迹仅到拒绝时刻。相关连续体几何—球净空由原生碰撞对计算，不由图中点距代替。</p>
+<h2>成功、质量与计算成本</h2><img src="quality_cost.png" alt="两偏好质量与计算成本"><p>仅完整合格轨迹进入质量柱图。48/48候选槽，31个非历史连续点评价；16逻辑方法槽、12个唯一actual。十步私有预演与独立力矩重放另计。</p>
+<section class="panel"><h2>同任务完整成功子集的配对差值</h2><p>优化−基线，缺失不填惩罚常数；原全4任务成功率同时见上表。额外预测成本属于优化器，不作equal-compute优势声明。</p><div class="scroll"><table><thead><tr><th>方法</th><th>基线</th><th>完整配对数</th><th>ΔI_support</th><th>ΔL_full m</th><th>Δd_support mm</th></tr></thead><tbody><tr><td>OI</td><td>Z0</td><td>3</td><td>-0.000478268</td><td>0.0010357</td><td>0.1671324</td></tr><tr><td>OC</td><td>Z0</td><td>3</td><td>0.0009497129</td><td>0.00490997</td><td>8.205952</td></tr><tr><td>OI</td><td>G0</td><td>3</td><td>-0.001899522</td><td>-0.003473504</td><td>-4.165455</td></tr><tr><td>OC</td><td>G0</td><td>3</td><td>-0.0004715416</td><td>0.0004007654</td><td>3.873365</td></tr></tbody></table></div></section>
+<h2>有限结论</h2><p>I_support使用固定前驱与关键区间并集；旧I_key保留，不能改判旧B.3门槛或把旧1.03%与新窗口直接比较。A严格最低与工程tie-selected分开。B无合格计划返回null；预算耗尽不表示全局最优或物理不可行。</p><p>收益如有，来自本轮非学习搜索。四任务是两母场景成对产生；总体泛化、Diffusion优势、硬实时、模型误差鲁棒性、连续时间及硬件安全均未建立。原全身验收50Hz/subdivisions4、robot-target原生500Hz。</p>
+<details><summary>查看预算、搜索贡献与全部机器状态</summary><pre>{
+  &quot;research_delivery_complete&quot;: true,
+  &quot;optimizer_implemented&quot;: true,
+  &quot;continuous_candidates_constructed&quot;: 33,
+  &quot;continuous_candidates_evaluated&quot;: 31,
+  &quot;candidate_slots_consumed&quot;: 48,
+  &quot;prediction_rollouts_started&quot;: 48,
+  &quot;predicted_admissible_plan_found&quot;: {
+    &quot;c1_mother_00_plus&quot;: true,
+    &quot;c1_mother_00_minus&quot;: true,
+    &quot;c1_mother_01_plus&quot;: true,
+    &quot;c1_mother_01_minus&quot;: true
+  },
+  &quot;predicted_preference_plan_found&quot;: {
+    &quot;c1_mother_00_plus&quot;: {
+      &quot;A&quot;: true,
+      &quot;B&quot;: true
+    },
+    &quot;c1_mother_00_minus&quot;: {
+      &quot;A&quot;: true,
+      &quot;B&quot;: true
+    },
+    &quot;c1_mother_01_plus&quot;: {
+      &quot;A&quot;: true,
+      &quot;B&quot;: true
+    },
+    &quot;c1_mother_01_minus&quot;: {
+      &quot;A&quot;: true,
+      &quot;B&quot;: false
+    }
+  },
+  &quot;actual_method_slots&quot;: 16,
+  &quot;actual_unique_runs&quot;: 12,
+  &quot;full_task_success_by_method&quot;: {
+    &quot;Z0&quot;: 3,
+    &quot;G0&quot;: 3,
+    &quot;OI&quot;: 4,
+    &quot;OC&quot;: 3
+  },
+  &quot;original_independent_gate_pass_by_method&quot;: {
+    &quot;Z0&quot;: 3,
+    &quot;G0&quot;: 3,
+    &quot;OI&quot;: 4,
+    &quot;OC&quot;: 3
+  },
+  &quot;preferred_clearance_30mm_met_by_method&quot;: {
+    &quot;Z0&quot;: 0,
+    &quot;G0&quot;: 1,
+    &quot;OI&quot;: 0,
+    &quot;OC&quot;: 3
+  },
+  &quot;actual_preference_condition_confirmed&quot;: {
+    &quot;c1_mother_00_plus&quot;: {
+      &quot;A_prediction_reproduced&quot;: true,
+      &quot;B_full_success_and_30mm&quot;: true
+    },
+    &quot;c1_mother_00_minus&quot;: {
+      &quot;A_prediction_reproduced&quot;: true,
+      &quot;B_full_success_and_30mm&quot;: true
+    },
+    &quot;c1_mother_01_plus&quot;: {
+      &quot;A_prediction_reproduced&quot;: true,
+      &quot;B_full_success_and_30mm&quot;: true
+    },
+    &quot;c1_mother_01_minus&quot;: {
+      &quot;A_prediction_reproduced&quot;: true,
+      &quot;B_full_success_and_30mm&quot;: false
+    }
+  },
+  &quot;improvement_over_zero&quot;: [
+    {
+      &quot;method&quot;: &quot;OI&quot;,
+      &quot;baseline&quot;: &quot;Z0&quot;,
+      &quot;paired_complete_count&quot;: 3,
+      &quot;method_full_success_over_4&quot;: 4,
+      &quot;baseline_full_success_over_4&quot;: 3,
+      &quot;paired_mean_difference&quot;: {
+        &quot;I_support&quot;: -0.0004782679532346808,
+        &quot;I_route_key_legacy&quot;: -0.000794420787200457,
+        &quot;I_full&quot;: -0.00015081750369179414,
+        &quot;L_full&quot;: 0.0010357000161028325,
+        &quot;L_support&quot;: 0.0010347340531863813,
+        &quot;d_support&quot;: 0.0001671324190735494,
+        &quot;base_translation_peak_m&quot;: 6.301976996208695e-07,
+        &quot;base_rotation_peak_rad&quot;: 5.941619054865288e-06,
+        &quot;torque_saturation_count&quot;: 0.0
+      },
+      &quot;tasks&quot;: [
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_plus&quot;,
+          &quot;I_support&quot;: 0.0,
+          &quot;I_route_key_legacy&quot;: 0.0,
+          &quot;I_full&quot;: 0.0,
+          &quot;L_full&quot;: 0.0,
+          &quot;L_support&quot;: 0.0,
+          &quot;d_support&quot;: 0.0,
+          &quot;base_translation_peak_m&quot;: 0.0,
+          &quot;base_rotation_peak_rad&quot;: 0.0,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_minus&quot;,
+          &quot;I_support&quot;: -0.0014348038597040425,
+          &quot;I_route_key_legacy&quot;: -0.002383262361601371,
+          &quot;I_full&quot;: -0.0004524525110753824,
+          &quot;L_full&quot;: 0.0031071000483084976,
+          &quot;L_support&quot;: 0.003104202159559144,
+          &quot;d_support&quot;: 0.0005013972572206482,
+          &quot;base_translation_peak_m&quot;: 1.8905930988626085e-06,
+          &quot;base_rotation_peak_rad&quot;: 1.7824857164595864e-05,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_01_plus&quot;,
+          &quot;I_support&quot;: 0.0,
+          &quot;I_route_key_legacy&quot;: 0.0,
+          &quot;I_full&quot;: 0.0,
+          &quot;L_full&quot;: 0.0,
+          &quot;L_support&quot;: 0.0,
+          &quot;d_support&quot;: 0.0,
+          &quot;base_translation_peak_m&quot;: 0.0,
+          &quot;base_rotation_peak_rad&quot;: 0.0,
+          &quot;torque_saturation_count&quot;: 0
+        }
+      ]
+    },
+    {
+      &quot;method&quot;: &quot;OC&quot;,
+      &quot;baseline&quot;: &quot;Z0&quot;,
+      &quot;paired_complete_count&quot;: 3,
+      &quot;method_full_success_over_4&quot;: 3,
+      &quot;baseline_full_success_over_4&quot;: 3,
+      &quot;paired_mean_difference&quot;: {
+        &quot;I_support&quot;: 0.0009497129316185654,
+        &quot;I_route_key_legacy&quot;: 0.001580929044775863,
+        &quot;I_full&quot;: 0.00017996394087047932,
+        &quot;L_full&quot;: 0.004909969594550627,
+        &quot;L_support&quot;: 0.0049070261753397975,
+        &quot;d_support&quot;: 0.00820595209386618,
+        &quot;base_translation_peak_m&quot;: 2.752838967236502e-07,
+        &quot;base_rotation_peak_rad&quot;: 2.346131557859806e-06,
+        &quot;torque_saturation_count&quot;: 0.0
+      },
+      &quot;tasks&quot;: [
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_plus&quot;,
+          &quot;I_support&quot;: 0.0030924734221197264,
+          &quot;I_route_key_legacy&quot;: 0.005147250601384629,
+          &quot;I_full&quot;: 0.0006860236935980479,
+          &quot;L_full&quot;: 0.0129696030586266,
+          &quot;L_support&quot;: 0.012960867628475037,
+          &quot;d_support&quot;: 0.007527293937580962,
+          &quot;base_translation_peak_m&quot;: 1.3394415680680755e-07,
+          &quot;base_rotation_peak_rad&quot;: -5.783657416047472e-07,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_minus&quot;,
+          &quot;I_support&quot;: -0.0012214839497371455,
+          &quot;I_route_key_legacy&quot;: -0.0020278685739370805,
+          &quot;I_full&quot;: -0.00042552629062701797,
+          &quot;L_full&quot;: -0.00020786125915117637,
+          &quot;L_support&quot;: -0.0002079310742620355,
+          &quot;d_support&quot;: 0.005290535735383531,
+          &quot;base_translation_peak_m&quot;: 6.79756278099998e-07,
+          &quot;base_rotation_peak_rad&quot;: 7.051728655393941e-06,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_01_plus&quot;,
+          &quot;I_support&quot;: 0.0009781493224731153,
+          &quot;I_route_key_legacy&quot;: 0.001623405106880041,
+          &quot;I_full&quot;: 0.000279394419640408,
+          &quot;L_full&quot;: 0.001968166984176456,
+          &quot;L_support&quot;: 0.001968141971806392,
+          &quot;d_support&quot;: 0.011800026608634044,
+          &quot;base_translation_peak_m&quot;: 1.2151255264145067e-08,
+          &quot;base_rotation_peak_rad&quot;: 5.650317597902244e-07,
+          &quot;torque_saturation_count&quot;: 0
+        }
+      ]
+    }
+  ],
+  &quot;improvement_over_geometric_rule&quot;: [
+    {
+      &quot;method&quot;: &quot;OI&quot;,
+      &quot;baseline&quot;: &quot;G0&quot;,
+      &quot;paired_complete_count&quot;: 3,
+      &quot;method_full_success_over_4&quot;: 4,
+      &quot;baseline_full_success_over_4&quot;: 3,
+      &quot;paired_mean_difference&quot;: {
+        &quot;I_support&quot;: -0.0018995224657895095,
+        &quot;I_route_key_legacy&quot;: -0.0031533266491013587,
+        &quot;I_full&quot;: -0.0005656433842642083,
+        &quot;L_full&quot;: -0.0034735041639919473,
+        &quot;L_support&quot;: -0.0034716164313168263,
+        &quot;d_support&quot;: -0.004165454844742879,
+        &quot;base_translation_peak_m&quot;: -5.973583962025122e-07,
+        &quot;base_rotation_peak_rad&quot;: -3.4719702592343285e-06,
+        &quot;torque_saturation_count&quot;: 0.0
+      },
+      &quot;tasks&quot;: [
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_plus&quot;,
+          &quot;I_support&quot;: -0.003369891269777936,
+          &quot;I_route_key_legacy&quot;: -0.005605249964911879,
+          &quot;I_full&quot;: -0.001179469955241888,
+          &quot;L_full&quot;: -0.003133993889205433,
+          &quot;L_support&quot;: -0.003131114072564667,
+          &quot;d_support&quot;: -0.0004958107083495589,
+          &quot;base_translation_peak_m&quot;: -2.609341614395397e-06,
+          &quot;base_rotation_peak_rad&quot;: -1.7597341281511136e-05,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_minus&quot;,
+          &quot;I_support&quot;: 0.0,
+          &quot;I_route_key_legacy&quot;: 0.0,
+          &quot;I_full&quot;: 0.0,
+          &quot;L_full&quot;: 0.0,
+          &quot;L_support&quot;: 0.0,
+          &quot;d_support&quot;: 0.0,
+          &quot;base_translation_peak_m&quot;: 0.0,
+          &quot;base_rotation_peak_rad&quot;: 0.0,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_01_plus&quot;,
+          &quot;I_support&quot;: -0.0023286761275905926,
+          &quot;I_route_key_legacy&quot;: -0.0038547299823921966,
+          &quot;I_full&quot;: -0.000517460197550737,
+          &quot;L_full&quot;: -0.007286518602770409,
+          &quot;L_support&quot;: -0.007283735221385812,
+          &quot;d_support&quot;: -0.012000553825879078,
+          &quot;base_translation_peak_m&quot;: 8.172664257878604e-07,
+          &quot;base_rotation_peak_rad&quot;: 7.1814305038081505e-06,
+          &quot;torque_saturation_count&quot;: 0
+        }
+      ]
+    },
+    {
+      &quot;method&quot;: &quot;OC&quot;,
+      &quot;baseline&quot;: &quot;G0&quot;,
+      &quot;paired_complete_count&quot;: 3,
+      &quot;method_full_success_over_4&quot;: 3,
+      &quot;baseline_full_success_over_4&quot;: 3,
+      &quot;paired_mean_difference&quot;: {
+        &quot;I_support&quot;: -0.0004715415809362633,
+        &quot;I_route_key_legacy&quot;: -0.0007779768171250386,
+        &quot;I_full&quot;: -0.0002348619397019349,
+        &quot;L_full&quot;: 0.0004007654144558466,
+        &quot;L_support&quot;: 0.0004006756908365901,
+        &quot;d_support&quot;: 0.0038733648300497505,
+        &quot;base_translation_peak_m&quot;: -9.522721990997315e-07,
+        &quot;base_rotation_peak_rad&quot;: -7.0674577562398104e-06,
+        &quot;torque_saturation_count&quot;: 0.0
+      },
+      &quot;tasks&quot;: [
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_plus&quot;,
+          &quot;I_support&quot;: -0.00027741784765820954,
+          &quot;I_route_key_legacy&quot;: -0.00045799936352725057,
+          &quot;I_full&quot;: -0.0004934462616438401,
+          &quot;L_full&quot;: 0.009835609169421167,
+          &quot;L_support&quot;: 0.00982975355591037,
+          &quot;d_support&quot;: 0.007031483229231403,
+          &quot;base_translation_peak_m&quot;: -2.4753974575885893e-06,
+          &quot;base_rotation_peak_rad&quot;: -1.8175707023115883e-05,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_00_minus&quot;,
+          &quot;I_support&quot;: 0.00021331990996689698,
+          &quot;I_route_key_legacy&quot;: 0.0003553937876642904,
+          &quot;I_full&quot;: 2.6926220448364457e-05,
+          &quot;L_full&quot;: -0.003314961307459674,
+          &quot;L_support&quot;: -0.0033121332338211795,
+          &quot;d_support&quot;: 0.004789138478162883,
+          &quot;base_translation_peak_m&quot;: -1.2108368207626105e-06,
+          &quot;base_rotation_peak_rad&quot;: -1.0773128509201924e-05,
+          &quot;torque_saturation_count&quot;: 0
+        },
+        {
+          &quot;task_id&quot;: &quot;c1_mother_01_plus&quot;,
+          &quot;I_support&quot;: -0.0013505268051174774,
+          &quot;I_route_key_legacy&quot;: -0.0022313248755121556,
+          &quot;I_full&quot;: -0.000238065777910329,
+          &quot;L_full&quot;: -0.005318351618593953,
+          &quot;L_support&quot;: -0.00531559324957942,
+          &quot;d_support&quot;: -0.00020052721724503342,
+          &quot;base_translation_peak_m&quot;: 8.294176810520054e-07,
+          &quot;base_rotation_peak_rad&quot;: 7.746462263598375e-06,
+          &quot;torque_saturation_count&quot;: 0
+        }
+      ]
+    }
+  ],
+  &quot;selected_seed_vs_optimized&quot;: [
+    {
+      &quot;task_id&quot;: &quot;c1_mother_00_plus&quot;,
+      &quot;seed_strict&quot;: &quot;C00&quot;,
+      &quot;seed_I_support&quot;: 0.09743410513673958,
+      &quot;all_strict&quot;: &quot;C06&quot;,
+      &quot;tie_selected&quot;: &quot;C00&quot;,
+      &quot;OI_source&quot;: &quot;C00&quot;,
+      &quot;OC_source&quot;: &quot;C11&quot;,
+      &quot;strict_I_support&quot;: 0.09739026205145301,
+      &quot;strict_gain_vs_four_seeds&quot;: 4.3843085286571215e-05,
+      &quot;selected_OI_is_seed&quot;: true,
+      &quot;candidate_budget&quot;: 12,
+      &quot;slots_consumed&quot;: 12,
+      &quot;proposal_attempts&quot;: 12,
+      &quot;proposal_limit&quot;: 128,
+      &quot;cache_hits&quot;: 0,
+      &quot;prediction_rollouts_started&quot;: 12,
+      &quot;continuous_candidates_constructed&quot;: 8,
+      &quot;non_historical_continuous_candidates_evaluated&quot;: 7,
+      &quot;shared_A_B_pool&quot;: true,
+      &quot;stop_reason&quot;: &quot;CANDIDATE_BUDGET_EXHAUSTED&quot;,
+      &quot;poll_truncated&quot;: true,
+      &quot;completed_sweeps&quot;: [],
+      &quot;current_step_m&quot;: 0.005
+    },
+    {
+      &quot;task_id&quot;: &quot;c1_mother_00_minus&quot;,
+      &quot;seed_strict&quot;: &quot;C03&quot;,
+      &quot;seed_I_support&quot;: 0.09803154171334336,
+      &quot;all_strict&quot;: &quot;C10&quot;,
+      &quot;tie_selected&quot;: &quot;C02&quot;,
+      &quot;OI_source&quot;: &quot;C02&quot;,
+      &quot;OC_source&quot;: &quot;C11&quot;,
+      &quot;strict_I_support&quot;: 0.0978388349127168,
+      &quot;strict_gain_vs_four_seeds&quot;: 0.000192706800626552,
+      &quot;selected_OI_is_seed&quot;: true,
+      &quot;candidate_budget&quot;: 12,
+      &quot;slots_consumed&quot;: 12,
+      &quot;proposal_attempts&quot;: 13,
+      &quot;proposal_limit&quot;: 128,
+      &quot;cache_hits&quot;: 1,
+      &quot;prediction_rollouts_started&quot;: 12,
+      &quot;continuous_candidates_constructed&quot;: 9,
+      &quot;non_historical_continuous_candidates_evaluated&quot;: 8,
+      &quot;shared_A_B_pool&quot;: true,
+      &quot;stop_reason&quot;: &quot;CANDIDATE_BUDGET_EXHAUSTED&quot;,
+      &quot;poll_truncated&quot;: false,
+      &quot;completed_sweeps&quot;: [
+        {
+          &quot;step_m&quot;: 0.005,
+          &quot;improved&quot;: true,
+          &quot;slots_after&quot;: 12,
+          &quot;complete&quot;: true
+        }
+      ],
+      &quot;current_step_m&quot;: 0.005
+    },
+    {
+      &quot;task_id&quot;: &quot;c1_mother_01_plus&quot;,
+      &quot;seed_strict&quot;: &quot;C00&quot;,
+      &quot;seed_I_support&quot;: 0.09979079870141531,
+      &quot;all_strict&quot;: &quot;C08&quot;,
+      &quot;tie_selected&quot;: &quot;C00&quot;,
+      &quot;OI_source&quot;: &quot;C00&quot;,
+      &quot;OC_source&quot;: &quot;C01&quot;,
+      &quot;strict_I_support&quot;: 0.09947829430461953,
+      &quot;strict_gain_vs_four_seeds&quot;: 0.0003125043967957819,
+      &quot;selected_OI_is_seed&quot;: true,
+      &quot;candidate_budget&quot;: 12,
+      &quot;slots_consumed&quot;: 12,
+      &quot;proposal_attempts&quot;: 12,
+      &quot;proposal_limit&quot;: 128,
+      &quot;cache_hits&quot;: 0,
+      &quot;prediction_rollouts_started&quot;: 12,
+      &quot;continuous_candidates_constructed&quot;: 8,
+      &quot;non_historical_continuous_candidates_evaluated&quot;: 8,
+      &quot;shared_A_B_pool&quot;: true,
+      &quot;stop_reason&quot;: &quot;CANDIDATE_BUDGET_EXHAUSTED&quot;,
+      &quot;poll_truncated&quot;: true,
+      &quot;completed_sweeps&quot;: [],
+      &quot;current_step_m&quot;: 0.005
+    },
+    {
+      &quot;task_id&quot;: &quot;c1_mother_01_minus&quot;,
+      &quot;seed_strict&quot;: null,
+      &quot;seed_I_support&quot;: null,
+      &quot;all_strict&quot;: &quot;C11&quot;,
+      &quot;tie_selected&quot;: &quot;C11&quot;,
+      &quot;OI_source&quot;: &quot;C11&quot;,
+      &quot;OC_source&quot;: null,
+      &quot;strict_I_support&quot;: 0.11363408960929994,
+      &quot;strict_gain_vs_four_seeds&quot;: null,
+      &quot;selected_OI_is_seed&quot;: false,
+      &quot;candidate_budget&quot;: 12,
+      &quot;slots_consumed&quot;: 12,
+      &quot;proposal_attempts&quot;: 12,
+      &quot;proposal_limit&quot;: 128,
+      &quot;cache_hits&quot;: 0,
+      &quot;prediction_rollouts_started&quot;: 12,
+      &quot;continuous_candidates_constructed&quot;: 8,
+      &quot;non_historical_continuous_candidates_evaluated&quot;: 8,
+      &quot;shared_A_B_pool&quot;: true,
+      &quot;stop_reason&quot;: &quot;CANDIDATE_BUDGET_EXHAUSTED&quot;,
+      &quot;poll_truncated&quot;: true,
+      &quot;completed_sweeps&quot;: [],
+      &quot;current_step_m&quot;: 0.005
+    }
+  ],
+  &quot;prediction_actual_consistency&quot;: {
+    &quot;c1_mother_00_plus/Z0&quot;: true,
+    &quot;c1_mother_00_plus/G0&quot;: true,
+    &quot;c1_mother_00_plus/OI&quot;: true,
+    &quot;c1_mother_00_plus/OC&quot;: true,
+    &quot;c1_mother_00_minus/Z0&quot;: true,
+    &quot;c1_mother_00_minus/G0&quot;: true,
+    &quot;c1_mother_00_minus/OI&quot;: true,
+    &quot;c1_mother_00_minus/OC&quot;: true,
+    &quot;c1_mother_01_plus/Z0&quot;: true,
+    &quot;c1_mother_01_plus/G0&quot;: true,
+    &quot;c1_mother_01_plus/OI&quot;: true,
+    &quot;c1_mother_01_plus/OC&quot;: true,
+    &quot;c1_mother_01_minus/Z0&quot;: true,
+    &quot;c1_mother_01_minus/G0&quot;: true,
+    &quot;c1_mother_01_minus/OI&quot;: true,
+    &quot;c1_mother_01_minus/OC&quot;: null
+  },
+  &quot;finite_teacher_available&quot;: true,
+  &quot;teacher_rows&quot;: 96,
+  &quot;validated_execution_example_rows&quot;: 20,
+  &quot;costs&quot;: {
+    &quot;main_physics_steps&quot;: 706480,
+    &quot;private_preview_physics_steps&quot;: 706610,
+    &quot;preview_calls&quot;: 70661,
+    &quot;independent_saved_torque_replay_steps&quot;: 145940,
+    &quot;native_geometry_query_calls&quot;: 971330465,
+    &quot;qp_solve_calls&quot;: 70661,
+    &quot;elapsed_wall_s&quot;: 4866.3827999019995,
+    &quot;initial_geometry_queries&quot;: 11956,
+    &quot;phase_nesting&quot;: &quot;main prediction/actual, nested private ten-step preview, independent final torque replay, and quality geometry are separate integrations/queries; native geometry total includes quality&quot;
+  },
+  &quot;new_training_runs&quot;: 0,
+  &quot;neural_sampling_calls&quot;: 0,
+  &quot;optimizer_updates&quot;: 0,
+  &quot;deployment&quot;: &quot;NOT_MET&quot;,
+  &quot;continuous_time_safety&quot;: &quot;NOT_ESTABLISHED&quot;,
+  &quot;hardware_safety&quot;: &quot;NOT_ESTABLISHED&quot;,
+  &quot;task_structure&quot;: &quot;four tasks paired from two mother scenes; no population/generalization guarantee&quot;,
+  &quot;algorithm_producer_commit&quot;: &quot;6f603437b300de882d24234130b6669b00f62bd6&quot;,
+  &quot;base_publication_commit&quot;: &quot;cd288d7c2db74dc938903332400c7e97dd56bca8&quot;
+}</pre></details>
+<p><a href="../execution_aware_route_teacher_20261007_01/index.html">B.3.1历史</a> · <a href="../conditional_route_value_20261007_01/index.html">B.3历史</a> · <a href="../task_anchored_residual_20261007_01/index.html">B.2历史</a> · <a href="../../../v6_lite/visualization/latest/index.html">V6.2历史</a></p></main></html>

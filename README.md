@@ -1,3 +1,31 @@
+# Hybrid Dual-Arm Space Manipulator — V6.4-C.1
+
+已实现可调用的连续Cartesian路线优化器。四个新冻结任务来自两个母场景；两偏好共享每任务12候选槽，未训练或采样网络。工程完成不等于优化优越。
+
+|方法|完整Task与原独立门禁/4|完整且净空≥30mm/4|
+|---|---:|---:|
+|Z0|3|0|
+|G0|3|1|
+|OI|4|0|
+|OC|3|3|
+
+
+[当前两图与16槽可读总表](v6_4/visualization/continuous_route_optimizer_20261007_01/index.html) · [portable证据说明](v6_4/releases/continuous_route_optimizer_20261007_01/report.md) · [完整封存报告](v6_4/releases/continuous_route_optimizer_20261007_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/continuous_route_optimizer_20261007_01/snapshot/summary.json) · [有限教师](v6_4/visualization/continuous_route_optimizer_20261007_01/teacher_records.jsonl) · [冻结协议](docs/V6_4_C1_PROTOCOL.md)
+
+内部预测48，非历史连续点评价31；最终逻辑方法槽16，唯一actual 12。搜索、十步预演、独立重放、几何与QP分别计账。B未满足时返回NO_PLAN，不替换成基线。完整质量配对只用同任务双方完整成功子集。
+
+Producer `6f603437b300de882d24234130b6669b00f62bd6`；固定开发基点`cd288d7c2db74dc938903332400c7e97dd56bca8`。I_support是新窗口指标，不改旧B.3结论。30mm是质量偏好，不替换原硬安全距离。Diffusion收益、总体泛化、连续时间与硬件安全仍未建立；deployment=`NOT_MET`。
+
+```sh
+python -B -X utf8 -m v6_4.continuous_route_optimizer prepare --output v6_4/output/continuous_route_optimizer_20261007_01
+python -B -X utf8 -m v6_4.continuous_route_optimizer run-all --run v6_4/output/continuous_route_optimizer_20261007_01
+```
+
+上列命令已执行；完整记录、原冻结环境与路径见发布快照。大型原生状态/力矩日志留在本地；clone提供逐文件遗漏账本，字节核验不冒充物理重放。
+
+<details>
+<summary>历史：B.3.1及更早发布记录（原结论保留）</summary>
+
 <!-- 2026-10-07 B.3.1 保存状态媒体补充 -->
 
 **当前媒体已同步更新：全部 28 槽、196 个视频。** 五视角、连续体侧视、双臂末端轨迹、位置/姿态误差、基座漂移与保存的净空诊断均对应当前固定结果。仅读取保存状态，不新增闭环实验。
@@ -314,5 +342,7 @@ GitHub 可直接显示 Markdown 中的 PNG/GIF；MP4 点击查看或下载，交
 
 </details>
 
+
+</details>
 
 </details>

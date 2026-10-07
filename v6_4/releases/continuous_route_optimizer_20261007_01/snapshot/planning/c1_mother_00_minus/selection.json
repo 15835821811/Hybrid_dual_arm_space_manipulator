@@ -1,0 +1,944 @@
+{
+  "schema": "v64_c1_selection_v1",
+  "task_id": "c1_mother_00_minus",
+  "task_sha256": "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73",
+  "input_sha256": "96d0687403f677bf0a38f9be2793bea7901be67f437e0639c7d5bc056f6ffc43",
+  "execution_identity": {
+    "source_identity_sha256": "dc30d038f80de799212ae921295e4fd5dc50fa9182aa68f98b1055a319d613f0",
+    "config_sha256": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "run_config_sha256": "37c822b6a94d4e3e380b83b15f937ad6d44e151a2cf0502969e2c5b7694fd5f1",
+    "task_sha256": "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73",
+    "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f"
+  },
+  "active_intervals": [
+    1,
+    2
+  ],
+  "active_dim": 4,
+  "preferences": {
+    "A": {
+      "status": "BUDGET_EXHAUSTED_WITH_INCUMBENT",
+      "selected_plan": {
+        "schema": "task_anchored_residual_plan_v2",
+        "representation_version": "task_anchored_cartesian_residual_v2",
+        "definition": {
+          "applicable": true,
+          "base_reference_id": "original_cartesian_passthrough_physical_time_home_v1",
+          "base_reference_sha256": "47374dada8d583641f2f0b4ec80dc0619e36ee002ff28f14a816f60302dd3525",
+          "base_reference_version": "original_cartesian_passthrough_physical_time_home_v1",
+          "basis_function": {
+            "fall_start_ratio": 0.75,
+            "kind": "minimum_jerk_c2_plateau",
+            "normalized_first_derivative_abs_bound": 7.5,
+            "normalized_second_derivative_abs_bound": 92.37604307034013,
+            "rise_ratio": 0.25,
+            "support": "same_original_legal_reference_time_interval",
+            "transition_polynomial": "10*v^3-15*v^4+6*v^5",
+            "transverse_basis": "original_fixed_world_basis"
+          },
+          "candidate_component_count": 7,
+          "coefficient_norm_bound_m": 0.02,
+          "definition_sha256": "d93f259e2aef368dea8de6cd9ec6f3344653c77cad720587653f2b2bdb9c3b94",
+          "disabled_intervals": [],
+          "frame": "world",
+          "interval_mask": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "interval_selection": "earliest_six_complement_components_then_disable_degenerate_without_replacement",
+          "intervals_s": [
+            [
+              0.0,
+              4.15
+            ],
+            [
+              4.85,
+              7.900294541545902
+            ],
+            [
+              8.600294541545901,
+              12.173543238432229
+            ],
+            [
+              12.873543238432228,
+              15.760690240866714
+            ],
+            [
+              16.460690240866715,
+              18.940159426105485
+            ],
+            [
+              19.640159426105487,
+              21.896989040998413
+            ]
+          ],
+          "partition_kind": "reference_time_not_PCC_arc_length",
+          "protected_time_contract": {
+            "additional_hold_intervals_s": null,
+            "additional_specified_velocity_requirements": null,
+            "additional_strict_path_intervals_s": null,
+            "base_reference_hold_intervals_s": [
+              [
+                25.5,
+                27.0
+              ]
+            ],
+            "extra_requirements_status": "NONE_IN_SUPPORTED_TASKSPEC_V1",
+            "final_reference_freeze_s": [
+              23.98,
+              27.0
+            ],
+            "initial_time_s": 0.0,
+            "path_freedom": "free_intermediate_path_between_fixed_requirements",
+            "schema": "task_derived_protected_time_contract_v1",
+            "task_point_windows": [
+              {
+                "arm": "continuum",
+                "point_id": "continuum_00",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 4.5,
+                "time_window_s": [
+                  4.15,
+                  4.85
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_01",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 8.250294541545902,
+                "time_window_s": [
+                  7.900294541545902,
+                  8.600294541545901
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_02",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 12.523543238432229,
+                "time_window_s": [
+                  12.173543238432229,
+                  12.873543238432228
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_03",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 16.110690240866713,
+                "time_window_s": [
+                  15.760690240866714,
+                  16.460690240866715
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_04",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 19.290159426105486,
+                "time_window_s": [
+                  18.940159426105485,
+                  19.640159426105487
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_05",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 22.246989040998415,
+                "time_window_s": [
+                  21.896989040998413,
+                  22.596989040998416
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_06",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              },
+              {
+                "arm": "rigid",
+                "point_id": "rigid_terminal",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              }
+            ],
+            "task_sha256": "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73"
+          },
+          "protected_time_intervals_s": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.15,
+              4.85
+            ],
+            [
+              7.900294541545902,
+              8.600294541545901
+            ],
+            [
+              12.173543238432229,
+              12.873543238432228
+            ],
+            [
+              15.760690240866714,
+              16.460690240866715
+            ],
+            [
+              18.940159426105485,
+              19.640159426105487
+            ],
+            [
+              21.896989040998413,
+              22.596989040998416
+            ],
+            [
+              23.98,
+              27.0
+            ]
+          ],
+          "reasons": [],
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "schema": "task_anchored_cartesian_residual_v2",
+          "status": "APPLICABLE",
+          "support_cutoff_s": 23.98,
+          "task_id": "c1_mother_00_minus",
+          "task_sha256": "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73",
+          "time_mapping": "identity_physical_time",
+          "transverse_bases": [
+            [
+              [
+                -2.4117035153884034e-09,
+                0.5723943554115435
+              ],
+              [
+                1.6835142857137662e-09,
+                0.8199784764815499
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ],
+            [
+              [
+                0.9924000098237166,
+                -6.938893903907228e-18
+              ],
+              [
+                -0.047237610533598054,
+                0.9233838524971549
+              ],
+              [
+                0.11362582740276728,
+                0.3838779245378825
+              ]
+            ],
+            [
+              [
+                0.003222119012937855,
+                -0.9870450221430982
+              ],
+              [
+                -0.01982240517582872,
+                -0.16044352359173186
+              ],
+              [
+                0.9997983247646055,
+                -4.336808689942018e-19
+              ]
+            ],
+            [
+              [
+                0.9909060539001121,
+                6.938893903907228e-18
+              ],
+              [
+                -0.03745724999186061,
+                -0.9604717072884335
+              ],
+              [
+                -0.12923678565778143,
+                0.27837762032613544
+              ]
+            ],
+            [
+              [
+                0.9940033888344857,
+                0.0
+              ],
+              [
+                0.03983296034739724,
+                -0.9312923053985795
+              ],
+              [
+                -0.10183613433119326,
+                -0.3642727575669074
+              ]
+            ],
+            [
+              [
+                0.9999844105588175,
+                0.0
+              ],
+              [
+                0.005575126828114244,
+                0.05566220408561505
+              ],
+              [
+                0.00031080570252570313,
+                -0.9984496577376004
+              ]
+            ]
+          ]
+        },
+        "z_m": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.012,
+            -2.230034234053211e-17
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "source_candidate_id": "C02",
+      "prediction_task_passed": true,
+      "online_guards_passed": true,
+      "preference_met": true,
+      "prediction_metrics": {
+        "I_support": 0.0986426297182408,
+        "I_support_10D": 0.09851447020684811,
+        "I_support_7D": 0.005026684552863595,
+        "I_support_sample_count": 331,
+        "I_route_key_legacy": 0.11004309615870182,
+        "I_route_key_legacy_10D": 0.10983867782837922,
+        "I_route_key_legacy_7D": 0.006704316900834059,
+        "I_route_key_legacy_sample_count": 178,
+        "I_full": 0.09307244040589828,
+        "I_full_10D": 0.08076538296414267,
+        "I_full_7D": 0.04625399526273229,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.1783835441664263,
+        "L_support": 0.3901831715806144,
+        "base_translation_peak_m": 0.0076366798983368775,
+        "base_rotation_peak_rad": 0.05640234296413911,
+        "d_support": 0.02647234044849049,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 5208,
+          "time_s": 10.416000000000148,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 135,
+            "geom_b": 1,
+            "geom_a_name": "collision_0063",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_30",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.02647234044849049,
+          "fromto": [
+            1.7986748702937725,
+            0.5405416264170958,
+            0.13380678448666636,
+            1.7963817557836597,
+            0.5387400441622583,
+            0.1601180128130549
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 205344,
+        "source_compiled_model_sha256": "c9bd6c5641d4c13961d136ff3ce6ca1bf352fcde19bcf7bdc8157722a30d9316",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v2",
+          "plan_sha256": "85b3baa2718cd9a47cae0b8cca122518857de166e25f44aaf21e29b676ba1c34",
+          "definition_sha256": "d93f259e2aef368dea8de6cd9ec6f3344653c77cad720587653f2b2bdb9c3b94",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.012,
+              -2.230034234053211e-17
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.88743398836191,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "formal_actual_validation": "NOT_RUN",
+      "best_safe_diagnostic": null
+    },
+    "B": {
+      "status": "BUDGET_EXHAUSTED_WITH_INCUMBENT",
+      "selected_plan": {
+        "schema": "task_anchored_residual_plan_v1",
+        "representation_version": "task_anchored_cartesian_residual_v1",
+        "definition": {
+          "applicable": true,
+          "base_reference_id": "original_cartesian_passthrough_physical_time_home_v1",
+          "base_reference_sha256": "47374dada8d583641f2f0b4ec80dc0619e36ee002ff28f14a816f60302dd3525",
+          "base_reference_version": "original_cartesian_passthrough_physical_time_home_v1",
+          "candidate_component_count": 7,
+          "coefficient_norm_bound_m": 0.02,
+          "definition_sha256": "cb93e15caa4d7d5e2130897afb43513708c00e5e4a4405e0cb3aae52ecdf495b",
+          "disabled_intervals": [],
+          "frame": "world",
+          "interval_mask": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "interval_selection": "earliest_six_complement_components_then_disable_degenerate_without_replacement",
+          "intervals_s": [
+            [
+              0.0,
+              4.15
+            ],
+            [
+              4.85,
+              7.900294541545902
+            ],
+            [
+              8.600294541545901,
+              12.173543238432229
+            ],
+            [
+              12.873543238432228,
+              15.760690240866714
+            ],
+            [
+              16.460690240866715,
+              18.940159426105485
+            ],
+            [
+              19.640159426105487,
+              21.896989040998413
+            ]
+          ],
+          "partition_kind": "reference_time_not_PCC_arc_length",
+          "protected_time_contract": {
+            "additional_hold_intervals_s": null,
+            "additional_specified_velocity_requirements": null,
+            "additional_strict_path_intervals_s": null,
+            "base_reference_hold_intervals_s": [
+              [
+                25.5,
+                27.0
+              ]
+            ],
+            "extra_requirements_status": "NONE_IN_SUPPORTED_TASKSPEC_V1",
+            "final_reference_freeze_s": [
+              23.98,
+              27.0
+            ],
+            "initial_time_s": 0.0,
+            "path_freedom": "free_intermediate_path_between_fixed_requirements",
+            "schema": "task_derived_protected_time_contract_v1",
+            "task_point_windows": [
+              {
+                "arm": "continuum",
+                "point_id": "continuum_00",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 4.5,
+                "time_window_s": [
+                  4.15,
+                  4.85
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_01",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 8.250294541545902,
+                "time_window_s": [
+                  7.900294541545902,
+                  8.600294541545901
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_02",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 12.523543238432229,
+                "time_window_s": [
+                  12.173543238432229,
+                  12.873543238432228
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_03",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 16.110690240866713,
+                "time_window_s": [
+                  15.760690240866714,
+                  16.460690240866715
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_04",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 19.290159426105486,
+                "time_window_s": [
+                  18.940159426105485,
+                  19.640159426105487
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_05",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 22.246989040998415,
+                "time_window_s": [
+                  21.896989040998413,
+                  22.596989040998416
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_06",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              },
+              {
+                "arm": "rigid",
+                "point_id": "rigid_terminal",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              }
+            ],
+            "task_sha256": "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73"
+          },
+          "protected_time_intervals_s": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.15,
+              4.85
+            ],
+            [
+              7.900294541545902,
+              8.600294541545901
+            ],
+            [
+              12.173543238432229,
+              12.873543238432228
+            ],
+            [
+              15.760690240866714,
+              16.460690240866715
+            ],
+            [
+              18.940159426105485,
+              19.640159426105487
+            ],
+            [
+              21.896989040998413,
+              22.596989040998416
+            ],
+            [
+              23.98,
+              27.0
+            ]
+          ],
+          "reasons": [],
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "schema": "task_anchored_cartesian_residual_v1",
+          "status": "APPLICABLE",
+          "support_cutoff_s": 23.98,
+          "task_id": "c1_mother_00_minus",
+          "task_sha256": "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73",
+          "time_mapping": "identity_physical_time",
+          "transverse_bases": [
+            [
+              [
+                -2.4117035153884034e-09,
+                0.5723943554115435
+              ],
+              [
+                1.6835142857137662e-09,
+                0.8199784764815499
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ],
+            [
+              [
+                0.9924000098237166,
+                -6.938893903907228e-18
+              ],
+              [
+                -0.047237610533598054,
+                0.9233838524971549
+              ],
+              [
+                0.11362582740276728,
+                0.3838779245378825
+              ]
+            ],
+            [
+              [
+                0.003222119012937855,
+                -0.9870450221430982
+              ],
+              [
+                -0.01982240517582872,
+                -0.16044352359173186
+              ],
+              [
+                0.9997983247646055,
+                -4.336808689942018e-19
+              ]
+            ],
+            [
+              [
+                0.9909060539001121,
+                6.938893903907228e-18
+              ],
+              [
+                -0.03745724999186061,
+                -0.9604717072884335
+              ],
+              [
+                -0.12923678565778143,
+                0.27837762032613544
+              ]
+            ],
+            [
+              [
+                0.9940033888344857,
+                0.0
+              ],
+              [
+                0.03983296034739724,
+                -0.9312923053985795
+              ],
+              [
+                -0.10183613433119326,
+                -0.3642727575669074
+              ]
+            ],
+            [
+              [
+                0.9999844105588175,
+                0.0
+              ],
+              [
+                0.005575126828114244,
+                0.05566220408561505
+              ],
+              [
+                0.00031080570252570313,
+                -0.9984496577376004
+              ]
+            ]
+          ]
+        },
+        "z_m": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.017,
+            -2.230034234053211e-17
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "source_candidate_id": "C11",
+      "prediction_task_passed": true,
+      "online_guards_passed": true,
+      "preference_met": true,
+      "prediction_metrics": {
+        "I_support": 0.09885594962820769,
+        "I_support_10D": 0.09872071786389522,
+        "I_support_7D": 0.005169007770543065,
+        "I_support_sample_count": 331,
+        "I_route_key_legacy": 0.11039848994636611,
+        "I_route_key_legacy_10D": 0.11018248660177804,
+        "I_route_key_legacy_7D": 0.006902624767934712,
+        "I_route_key_legacy_sample_count": 178,
+        "I_full": 0.09309936662634664,
+        "I_full_10D": 0.0807946341474373,
+        "I_full_7D": 0.04625709847373338,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.1750685828589666,
+        "L_support": 0.3868710383467932,
+        "base_translation_peak_m": 0.007635469061516115,
+        "base_rotation_peak_rad": 0.05639156983562991,
+        "d_support": 0.031261478926653374,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 5200,
+          "time_s": 10.400000000000142,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 135,
+            "geom_b": 1,
+            "geom_a_name": "collision_0063",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_30",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.031261478926653374,
+          "fromto": [
+            1.7987753037192808,
+            0.5412714436430338,
+            0.13385454288452095,
+            1.796192927389079,
+            0.5400565419131214,
+            0.1649854826544261
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 205344,
+        "source_compiled_model_sha256": "c9bd6c5641d4c13961d136ff3ce6ca1bf352fcde19bcf7bdc8157722a30d9316",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "plan_sha256": "5b02557622ca60f56c6b5ca4e1caae784b932c3691f23f848977ba4939912472",
+          "definition_sha256": "cb93e15caa4d7d5e2130897afb43513708c00e5e4a4405e0cb3aae52ecdf495b",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.017,
+              -2.230034234053211e-17
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.88743398836191,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "formal_actual_validation": "NOT_RUN",
+      "best_safe_diagnostic": null
+    }
+  },
+  "strict_winner": "C10",
+  "tie_selected_winner": "C02",
+  "tie_group_ids": [
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C10"
+  ],
+  "B_available_ids": [
+    "C03",
+    "C05",
+    "C07",
+    "C08",
+    "C09",
+    "C11"
+  ],
+  "finite_non_dominated_ids": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11"
+  ],
+  "comparable_candidate_ids": [
+    "C00",
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11"
+  ],
+  "seed_only_selection": {
+    "strict": "C03",
+    "tie_selected": "C02",
+    "B": "C03",
+    "best_safe_diagnostic": "C03",
+    "tie_group_ids": [
+      "C02",
+      "C03"
+    ],
+    "B_available_ids": [
+      "C03"
+    ]
+  },
+  "budget": {
+    "candidate_budget": 12,
+    "slots_consumed": 12,
+    "proposal_attempts": 13,
+    "proposal_limit": 128,
+    "cache_hits": 1,
+    "prediction_rollouts_started": 12,
+    "continuous_candidates_constructed": 9,
+    "non_historical_continuous_candidates_evaluated": 8,
+    "shared_A_B_pool": true,
+    "stop_reason": "CANDIDATE_BUDGET_EXHAUSTED",
+    "poll_truncated": false,
+    "completed_sweeps": [
+      {
+        "step_m": 0.005,
+        "improved": true,
+        "slots_after": 12,
+        "complete": true
+      }
+    ],
+    "current_step_m": 0.005
+  },
+  "formal_actual_validation": "NOT_RUN",
+  "selection_reads_final_actual": false,
+  "registry_content_sha256": "fe1220cb793bf4e810e9bad7457df53406f69f6cd2033f87dc6ffe1eb3f8be90"
+}
