@@ -1,0 +1,4325 @@
+{
+  "schema": "v64_c2_reviewable_results_interpretation_v1",
+  "created_utc": "2026-10-08T02:28:52.728594+00:00",
+  "model_freeze_sha256": "fa4cb98f158f291316c4215106af436d741cfd008b7f631d4635ce5d5f1e7a9a",
+  "review_status": "REVIEWED_PILOT_INTERPRETATION",
+  "scope": {
+    "TEST_tasks": 4,
+    "new_TEST_mothers": 2,
+    "training_seeds": 1
+  },
+  "data": {
+    "physical_candidates": 96,
+    "new_candidates": 48,
+    "label_views": 77,
+    "zero_label_views": 4,
+    "evidence_tiers_unique": {
+      "FAILED_OR_INCOMPLETE": 22,
+      "VALIDATED_EXECUTION": 10,
+      "PREDICTED_COMPLETE": 64
+    },
+    "supported_conditions": [
+      {
+        "preference": "A",
+        "reference_family": "v1",
+        "train_labels": 19,
+        "val_labels": 8,
+        "train_mothers": [
+          "c1_mother_00",
+          "c1_mother_01",
+          "c2_new_train"
+        ],
+        "status": "SUPPORTED"
+      },
+      {
+        "preference": "B",
+        "reference_family": "v2",
+        "train_labels": 10,
+        "val_labels": 12,
+        "train_mothers": [
+          "c1_mother_00",
+          "c1_mother_01",
+          "c2_new_train"
+        ],
+        "status": "SUPPORTED"
+      }
+    ],
+    "empty_teacher_buckets": [
+      {
+        "bucket_id": "f7e4d8dfc6fc38eaa2978e0043b6a905b6c45e2cff904c598760738e6d9e0aab",
+        "task_id": "c1_mother_00_plus",
+        "task_sha256": "557e5da614ee7afcfd65960b1d77e135dde3dc2ea3c3f0b2eac47ff6bbefa317",
+        "mother_id": "c1_mother_00",
+        "split": "train",
+        "preference": "B",
+        "reference_family": "v1",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "b894749858e76d73ee4704435aae33cbf45c5b678e93d65763f148d6f99cfd01",
+        "task_id": "c1_mother_01_minus",
+        "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+        "mother_id": "c1_mother_01",
+        "split": "train",
+        "preference": "A",
+        "reference_family": "v2",
+        "near_optimal_metric": "I_support",
+        "near_optimal_band": 0.001,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "1a603698e611d520a459a082b84684bf37be744a90982dea5e17668b37685236",
+        "task_id": "c1_mother_01_minus",
+        "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+        "mother_id": "c1_mother_01",
+        "split": "train",
+        "preference": "B",
+        "reference_family": "v1",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "ca500ddca9a439c5212b0d2689bfea70a8c9872095900d0f73da753e73cd1017",
+        "task_id": "c1_mother_01_minus",
+        "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+        "mother_id": "c1_mother_01",
+        "split": "train",
+        "preference": "B",
+        "reference_family": "v2",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "1f45fd84e6d12b87d944bb04d6d808b9ca984bc9cad253115cf6714f5f2f2acd",
+        "task_id": "c2_new_train_minus",
+        "task_sha256": "dca0b99a685c1b1927dadb7cf6d3b51b99fb1fc9a6957ef699b29e8b2352410d",
+        "mother_id": "c2_new_train",
+        "split": "train",
+        "preference": "A",
+        "reference_family": "v2",
+        "near_optimal_metric": "I_support",
+        "near_optimal_band": 0.001,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "2b9a2b007edd727d950da3501f0395dbf31884f66ab6cc6a988572a5a6abedb6",
+        "task_id": "c2_new_train_minus",
+        "task_sha256": "dca0b99a685c1b1927dadb7cf6d3b51b99fb1fc9a6957ef699b29e8b2352410d",
+        "mother_id": "c2_new_train",
+        "split": "train",
+        "preference": "B",
+        "reference_family": "v1",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "d1ff79d0ddd7c432cb0e118ae4aca4da56dd7e9133d9e467d366aa9444ae5cfa",
+        "task_id": "c2_new_train_minus",
+        "task_sha256": "dca0b99a685c1b1927dadb7cf6d3b51b99fb1fc9a6957ef699b29e8b2352410d",
+        "mother_id": "c2_new_train",
+        "split": "train",
+        "preference": "B",
+        "reference_family": "v2",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "5f968d08db523a81981753a39d55db7234bb4c90bda6e643a9cbbe9c9be2ad7c",
+        "task_id": "c2_new_val_plus",
+        "task_sha256": "1d79ddc67a7cf296eb1294f754cddfd3aaa1e8ddf19731d67ba131d148f63cbb",
+        "mother_id": "c2_new_val",
+        "split": "val",
+        "preference": "B",
+        "reference_family": "v1",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      },
+      {
+        "bucket_id": "b1d2466da92a7b00ccbf058536aa611b916ad8e466bd19a361efd27b56530489",
+        "task_id": "c2_new_val_minus",
+        "task_sha256": "bf5eaa2a33351e97e1e2a5aa1d00c22df56a407b74b5717decaa8def21ddb092",
+        "mother_id": "c2_new_val",
+        "split": "val",
+        "preference": "B",
+        "reference_family": "v1",
+        "near_optimal_metric": "L_full",
+        "near_optimal_band": 0.005,
+        "family_minimum": null,
+        "qualified_pool_unique": 0,
+        "label_count_unique": 0,
+        "status": "NO_PREFERENCE_LABEL_WITHIN_TEACHER_BUDGET"
+      }
+    ]
+  },
+  "training": {
+    "optimizer_updates_total": 4000,
+    "selected_checkpoint_update": 250,
+    "selected_checkpoint_updates_experienced": 250,
+    "sample_exposures_total": 128000,
+    "validation_checkpoint_count": 16,
+    "validation_ddim_sample_units": 128,
+    "selected_validation": {
+      "ddim_sample_units": 8,
+      "declared_sample_units": 8,
+      "decoded_position_rms_by_task_m": {
+        "c2_new_val_minus": 0.013700682611419091,
+        "c2_new_val_plus": 0.0061315035571781916
+      },
+      "decoded_position_rms_m": 0.009916093084298642,
+      "distance_scope": "50Hz frozen W_support decoded position supervision, no actual quality",
+      "fixed_v_mse": 1.347877860069275,
+      "fixed_v_mse_by_task": {
+        "c2_new_val_minus": 1.4268641471862793,
+        "c2_new_val_plus": 1.2688915729522705
+      },
+      "legal_count": 7,
+      "physics_steps": 0,
+      "test_read": false,
+      "units": [
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.008061194891180635,
+          "draw": 0,
+          "legal": true,
+          "noise_sha256": "f4da8ed387093c6c4e5f515ed4d23db39ebf09a324f92dc072cedb6c11213a09",
+          "plan_sha256": "c3ac6baecc194b6937eb8711d0cc5a00d25ff3b6a2af81bdf0ec4e6217cd071f",
+          "preference": "A",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.002123834460320101,
+              0.0013889876509715704
+            ],
+            [
+              -0.006208709443249342,
+              -0.0003829651831404119
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v1",
+          "reference_indices": [
+            65,
+            66
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_minus",
+          "unit_id": "c2_new_val_minus/A/v1/0"
+        },
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.014050726153768388,
+          "draw": 1,
+          "legal": true,
+          "noise_sha256": "7d3a6b6e491105476d713b66c42a8680a02069712c8d8e204c7583fa20fec3c3",
+          "plan_sha256": "d188fc31f8cf9fbb8ed520d9d2b47e304da7afb3e54cfa9ba32d12fd496e6be8",
+          "preference": "A",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.008523682405438958,
+              0.0011355745181258153
+            ],
+            [
+              -0.018872862225582786,
+              -0.0036859277179140887
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v1",
+          "reference_indices": [
+            65,
+            66
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_minus",
+          "unit_id": "c2_new_val_minus/A/v1/1"
+        },
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.016240584506946674,
+          "draw": 0,
+          "legal": true,
+          "noise_sha256": "4b31024071fce2d384f7eaacdf3b791052ab77eaf38afe5a11b0302ff847c752",
+          "plan_sha256": "95d20a406a6a277b8accf20b0dc60ac610aff1e8ecba872242ea7b1a5abfb322",
+          "preference": "B",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0064468385467998,
+              -0.003129128692363567
+            ],
+            [
+              -0.005682239825081603,
+              -0.006026241454262371
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v2",
+          "reference_indices": [
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_minus",
+          "unit_id": "c2_new_val_minus/B/v2/0"
+        },
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.01645022489378067,
+          "draw": 1,
+          "legal": true,
+          "noise_sha256": "dac5d6aaf32473894cd3c9ec836484a4cfeaa34d9a6c158ea5c41ff60fe0ae21",
+          "plan_sha256": "4a269a5edba0ca78a6e9737bd80ef23a38eb323875dd421c85b6484af9284a8a",
+          "preference": "B",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.004504288252431482,
+              0.0011973785617218546
+            ],
+            [
+              -0.006220518153198409,
+              -0.001131489895417217
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v2",
+          "reference_indices": [
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_minus",
+          "unit_id": "c2_new_val_minus/B/v2/1"
+        },
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.0032430642830427437,
+          "draw": 0,
+          "legal": true,
+          "noise_sha256": "babde82558cea54d41abef8f3fac905914a2fd057873d7295904d8d5c8123238",
+          "plan_sha256": "fa78a02c2960e5ddb58f80568409a483a13aed1c5bb5bfe6c1880d03fe5ddeb8",
+          "preference": "A",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0007982754668082035,
+              0.0036115136656616003
+            ],
+            [
+              -0.017263759171427792,
+              -0.004055260047494368
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v1",
+          "reference_indices": [
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_plus",
+          "unit_id": "c2_new_val_plus/A/v1/0"
+        },
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.0029065710177050936,
+          "draw": 1,
+          "legal": true,
+          "noise_sha256": "80e369f919335504527288341acfdf2d0acfc2091351f9966815a8f8fa394f69",
+          "plan_sha256": "145b2c9884479f9748e198a4e56bf99b4a8f4c9ebacf668668cfc34b3f527dd0",
+          "preference": "A",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.003284093393751225,
+              0.0028338383110983172
+            ],
+            [
+              -0.00396972461175161,
+              -0.0037150866598136185
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v1",
+          "reference_indices": [
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_plus",
+          "unit_id": "c2_new_val_plus/A/v1/1"
+        },
+        {
+          "ddim_generated": true,
+          "decoded_position_rms_m": null,
+          "draw": 0,
+          "legal": false,
+          "noise_sha256": "357ca224c7d1a6155e51709b54992beda6fe4cca718f79ede0cd6e3a9b4fdaaf",
+          "preference": "B",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.005410967368602265,
+              -0.004125238001265277
+            ],
+            [
+              -0.026984761566853165,
+              -0.0003385250903837555
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "RAW_AMPLITUDE_EXCEEDS_20MM",
+          "reference_family": "v2",
+          "reference_indices": [
+            60,
+            61,
+            62,
+            63,
+            64
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_plus",
+          "unit_id": "c2_new_val_plus/B/v2/0"
+        },
+        {
+          "checks": {
+            "definition_bound_to_TaskSpec": true,
+            "finite_format_mask_and_amplitude": true,
+            "protected_closed_windows_and_hold_preserved": true,
+            "reference_Task_at_declared_anchor_times": true,
+            "reference_velocity_conservative_bound": true,
+            "representation_applicable": true
+          },
+          "ddim_generated": true,
+          "decoded_position_rms_m": 0.012244875370786739,
+          "draw": 1,
+          "legal": true,
+          "noise_sha256": "f2ef3fe21ed230a93e129ed7c1be4a77da6f566bc13e1075971b3c64ce6d67a1",
+          "plan_sha256": "596d029f48cef1d2585376ba721d7518d36a787617b9dcac8d241c72771b7ec1",
+          "preference": "B",
+          "raw_z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.008898221919009953,
+              0.0014004159119450862
+            ],
+            [
+              -0.0008413779423440754,
+              0.0007257234453933563
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "reason": "REFERENCE_ACCEPTED",
+          "reference_family": "v2",
+          "reference_indices": [
+            60,
+            61,
+            62,
+            63,
+            64
+          ],
+          "search_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "status": "READY",
+          "task_id": "c2_new_val_plus",
+          "unit_id": "c2_new_val_plus/B/v2/1"
+        }
+      ]
+    },
+    "test_used_for_selection": false
+  },
+  "endpoint_status": [
+    {
+      "endpoint": "R8",
+      "preference": "A",
+      "denominator": 4,
+      "full_task": 2,
+      "original_five_gates": 2,
+      "full_and_B30mm": 0,
+      "NO_PLAN": 2,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 0,
+      "unique_actual": 2
+    },
+    {
+      "endpoint": "R8",
+      "preference": "B",
+      "denominator": 4,
+      "full_task": 2,
+      "original_five_gates": 2,
+      "full_and_B30mm": 2,
+      "NO_PLAN": 2,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 0,
+      "unique_actual": 2
+    },
+    {
+      "endpoint": "R12",
+      "preference": "A",
+      "denominator": 4,
+      "full_task": 4,
+      "original_five_gates": 4,
+      "full_and_B30mm": 0,
+      "NO_PLAN": 0,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 2,
+      "unique_actual": 2
+    },
+    {
+      "endpoint": "R12",
+      "preference": "B",
+      "denominator": 4,
+      "full_task": 2,
+      "original_five_gates": 2,
+      "full_and_B30mm": 2,
+      "NO_PLAN": 2,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 2,
+      "unique_actual": 0
+    },
+    {
+      "endpoint": "N8",
+      "preference": "A",
+      "denominator": 4,
+      "full_task": 4,
+      "original_five_gates": 4,
+      "full_and_B30mm": 0,
+      "NO_PLAN": 0,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 4,
+      "unique_actual": 0
+    },
+    {
+      "endpoint": "N8",
+      "preference": "B",
+      "denominator": 4,
+      "full_task": 2,
+      "original_five_gates": 2,
+      "full_and_B30mm": 2,
+      "NO_PLAN": 2,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 0,
+      "unique_actual": 2
+    },
+    {
+      "endpoint": "D8",
+      "preference": "A",
+      "denominator": 4,
+      "full_task": 4,
+      "original_five_gates": 4,
+      "full_and_B30mm": 0,
+      "NO_PLAN": 0,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 2,
+      "unique_actual": 2
+    },
+    {
+      "endpoint": "D8",
+      "preference": "B",
+      "denominator": 4,
+      "full_task": 2,
+      "original_five_gates": 2,
+      "full_and_B30mm": 2,
+      "NO_PLAN": 2,
+      "actual_failed": 0,
+      "rejected_before_actual": 0,
+      "aliases": 0,
+      "unique_actual": 2
+    }
+  ],
+  "first_hits": [
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "R8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "R12",
+      "declared_budget": 12,
+      "slots_consumed": 12,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "N8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "RIGHT_CENSORED",
+          "right_censored_budget": 8,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "D8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 3,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 4,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "R8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": null,
+          "status": "RIGHT_CENSORED",
+          "right_censored_budget": 8,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "R12",
+      "declared_budget": 12,
+      "slots_consumed": 12,
+      "N_first_admissible": {
+        "slot": 12,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 12
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 12,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "N8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "D8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": null,
+          "status": "RIGHT_CENSORED",
+          "right_censored_budget": 8,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "R8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "R12",
+      "declared_budget": 12,
+      "slots_consumed": 12,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "N8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "D8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 1,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 1,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "R8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": null,
+          "status": "RIGHT_CENSORED",
+          "right_censored_budget": 8,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "R12",
+      "declared_budget": 12,
+      "slots_consumed": 12,
+      "N_first_admissible": {
+        "slot": 12,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 12
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 12,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "N8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 2,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 2,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "D8",
+      "declared_budget": 8,
+      "slots_consumed": 8,
+      "N_first_admissible": {
+        "slot": 4,
+        "status": "HIT",
+        "right_censored_budget": null
+      },
+      "N_first_B": {
+        "slot": null,
+        "status": "RIGHT_CENSORED",
+        "right_censored_budget": 8
+      },
+      "N_match_R12": {
+        "A": {
+          "slot": 4,
+          "status": "HIT",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        },
+        "B": {
+          "slot": null,
+          "status": "N/A_R12_NO_PLAN",
+          "right_censored_budget": null,
+          "posthoc_only_not_online_or_checkpoint_input": true
+        }
+      },
+      "qualification_scope": "prediction_only"
+    }
+  ],
+  "comparisons": [
+    {
+      "method": "D8",
+      "baseline": "N8",
+      "task_denominator": 4,
+      "logical_preference_denominator": 8,
+      "near_quality_rule_scope": "diagnostic_reuse_of_thresholds_not_formal_noninferiority",
+      "complete_paired_preferences": 6,
+      "near_quality_preferences": 5,
+      "rows": [
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "baseline_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 673.6759420996532,
+          "baseline_cold_planning_s": 670.5693242000416,
+          "cold_planning_delta_s": 3.1066178996115923,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -3.71581680001691,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 672.7940580993891,
+          "baseline_warm_path_decomposition_estimate_s": 670.5693247998133,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09673629203845724,
+            "L_full": 1.190545547948696,
+            "d_support": 0.03572386784936247,
+            "base_translation_peak_m": 0.008647972729565679,
+            "base_rotation_peak_rad": 0.06211716252206455
+          },
+          "baseline_quality": {
+            "I_support": 0.09660489078280166,
+            "L_full": 1.1939934473550124,
+            "d_support": 0.04194344821462701,
+            "base_translation_peak_m": 0.008647618422953434,
+            "base_rotation_peak_rad": 0.06211617369311127
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.00013140125565558325,
+            "L_full": -0.0034478994063165125,
+            "d_support": -0.006219580365264543,
+            "base_translation_peak_m": 3.543066122452948e-07,
+            "base_rotation_peak_rad": 9.888289532744565e-07
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 673.6759420996532,
+          "baseline_cold_planning_s": 670.5693242000416,
+          "cold_planning_delta_s": 3.1066178996115923,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -3.71581680001691,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 672.7940580993891,
+          "baseline_warm_path_decomposition_estimate_s": 670.5693247998133,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.11664801598168131,
+            "L_full": 1.2488091988571868,
+            "d_support": 0.02564326121753107,
+            "base_translation_peak_m": 0.008592497448253189,
+            "base_rotation_peak_rad": 0.061646675315250456
+          },
+          "baseline_quality": {
+            "I_support": 0.11306187690692782,
+            "L_full": 1.2462525136407188,
+            "d_support": 0.02564373938627925,
+            "base_translation_peak_m": 0.008596006908505014,
+            "base_rotation_peak_rad": 0.06165268962157036
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.003586139074753497,
+            "L_full": 0.002556685216468013,
+            "d_support": -4.781687481802965e-07,
+            "base_translation_peak_m": -3.5094602518249973e-06,
+            "base_rotation_peak_rad": -6.014306319905571e-06
+          },
+          "within_near_quality_band": false,
+          "method_cold_planning_s": 573.8745955997147,
+          "baseline_cold_planning_s": 596.8348538000137,
+          "cold_planning_delta_s": -22.960258200298995,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 22.362692799884826,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 573.0005343998782,
+          "baseline_warm_path_decomposition_estimate_s": 596.8348542000167,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 573.8745955997147,
+          "baseline_cold_planning_s": 596.8348538000137,
+          "cold_planning_delta_s": -22.960258200298995,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 22.362692799884826,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 573.0005343998782,
+          "baseline_warm_path_decomposition_estimate_s": 596.8348542000167,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "baseline_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 589.4188902997412,
+          "baseline_cold_planning_s": 671.280379800126,
+          "cold_planning_delta_s": -81.86148950038478,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 81.26560589997098,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 588.5508995996788,
+          "baseline_warm_path_decomposition_estimate_s": 671.280380200129,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.1031574814076167,
+            "L_full": 1.1533718080669735,
+            "d_support": 0.03463460491985918,
+            "base_translation_peak_m": 0.008010480370698816,
+            "base_rotation_peak_rad": 0.05979538213500751
+          },
+          "baseline_quality": {
+            "I_support": 0.10529048371033793,
+            "L_full": 1.154537074937492,
+            "d_support": 0.040841370562522857,
+            "base_translation_peak_m": 0.008008336125501869,
+            "base_rotation_peak_rad": 0.059784110276644355
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": -0.002133002302721232,
+            "L_full": -0.0011652668705184333,
+            "d_support": -0.006206765642663675,
+            "base_translation_peak_m": 2.1442451969468784e-06,
+            "base_rotation_peak_rad": 1.1271858363158527e-05
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 589.4188902997412,
+          "baseline_cold_planning_s": 671.280379800126,
+          "cold_planning_delta_s": -81.86148950038478,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 81.26560589997098,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 588.5508995996788,
+          "baseline_warm_path_decomposition_estimate_s": 671.280380200129,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.11600734734235797,
+            "L_full": 1.2127680625412216,
+            "d_support": 0.02563441133092232,
+            "base_translation_peak_m": 0.007987434838260393,
+            "base_rotation_peak_rad": 0.0595706546536646
+          },
+          "baseline_quality": {
+            "I_support": 0.1152421269268129,
+            "L_full": 1.2131142864027784,
+            "d_support": 0.025659110944303905,
+            "base_translation_peak_m": 0.007938009940874579,
+            "base_rotation_peak_rad": 0.059177019431649214
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0007652204155450676,
+            "L_full": -0.00034622386155680474,
+            "d_support": -2.4699613381584662e-05,
+            "base_translation_peak_m": 4.9424897385814265e-05,
+            "base_rotation_peak_rad": 0.00039363522201538853
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 497.58982370002195,
+          "baseline_cold_planning_s": 498.42080109985545,
+          "cold_planning_delta_s": -0.8309773998335004,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 0.2780973999761045,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 496.7366604004055,
+          "baseline_warm_path_decomposition_estimate_s": 498.4208014998585,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 497.58982370002195,
+          "baseline_cold_planning_s": 498.42080109985545,
+          "cold_planning_delta_s": -0.8309773998335004,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 0.2780973999761045,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 496.7366604004055,
+          "baseline_warm_path_decomposition_estimate_s": 498.4208014998585,
+          "warm_is_observed_repeat": false
+        }
+      ]
+    },
+    {
+      "method": "D8",
+      "baseline": "R8",
+      "task_denominator": 4,
+      "logical_preference_denominator": 8,
+      "near_quality_rule_scope": "diagnostic_reuse_of_thresholds_not_formal_noninferiority",
+      "complete_paired_preferences": 4,
+      "near_quality_preferences": 4,
+      "rows": [
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "baseline_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 673.6759420996532,
+          "baseline_cold_planning_s": 665.7153801000677,
+          "cold_planning_delta_s": 7.9605619995854795,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -8.569760899990797,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 672.7940580993891,
+          "baseline_warm_path_decomposition_estimate_s": 665.7153801000677,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09673629203845724,
+            "L_full": 1.190545547948696,
+            "d_support": 0.03572386784936247,
+            "base_translation_peak_m": 0.008647972729565679,
+            "base_rotation_peak_rad": 0.06211716252206455
+          },
+          "baseline_quality": {
+            "I_support": 0.0965141783236339,
+            "L_full": 1.1887246637395454,
+            "d_support": 0.04173419200846227,
+            "base_translation_peak_m": 0.008648009555928432,
+            "base_rotation_peak_rad": 0.062120007809448465
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.00022211371482333542,
+            "L_full": 0.0018208842091504973,
+            "d_support": -0.0060103241590998,
+            "base_translation_peak_m": -3.682636275266493e-08,
+            "base_rotation_peak_rad": -2.845287383916595e-06
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 673.6759420996532,
+          "baseline_cold_planning_s": 665.7153801000677,
+          "cold_planning_delta_s": 7.9605619995854795,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -8.569760899990797,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 672.7940580993891,
+          "baseline_warm_path_decomposition_estimate_s": 665.7153801000677,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": false,
+          "method_quality": {
+            "I_support": 0.11664801598168131,
+            "L_full": 1.2488091988571868,
+            "d_support": 0.02564326121753107,
+            "base_translation_peak_m": 0.008592497448253189,
+            "base_rotation_peak_rad": 0.061646675315250456
+          },
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 573.8745955997147,
+          "baseline_cold_planning_s": 239.93899350007996,
+          "cold_planning_delta_s": 333.9356020996347,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -334.5331675000489,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 573.0005343998782,
+          "baseline_warm_path_decomposition_estimate_s": 239.93899350007996,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 573.8745955997147,
+          "baseline_cold_planning_s": 239.93899350007996,
+          "cold_planning_delta_s": 333.9356020996347,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -334.5331675000489,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 573.0005343998782,
+          "baseline_warm_path_decomposition_estimate_s": 239.93899350007996,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "baseline_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 589.4188902997412,
+          "baseline_cold_planning_s": 673.8601150000468,
+          "cold_planning_delta_s": -84.44122470030561,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 83.84534109989181,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 588.5508995996788,
+          "baseline_warm_path_decomposition_estimate_s": 673.8601150000468,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.1031574814076167,
+            "L_full": 1.1533718080669735,
+            "d_support": 0.03463460491985918,
+            "base_translation_peak_m": 0.008010480370698816,
+            "base_rotation_peak_rad": 0.05979538213500751
+          },
+          "baseline_quality": {
+            "I_support": 0.10390200872976114,
+            "L_full": 1.1541870543951425,
+            "d_support": 0.040845756421237646,
+            "base_translation_peak_m": 0.0080103802015619,
+            "base_rotation_peak_rad": 0.059798086999773764
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": -0.0007445273221444448,
+            "L_full": -0.0008152463281689837,
+            "d_support": -0.006211151501378465,
+            "base_translation_peak_m": 1.001691369156843e-07,
+            "base_rotation_peak_rad": -2.7048647662508696e-06
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 589.4188902997412,
+          "baseline_cold_planning_s": 673.8601150000468,
+          "cold_planning_delta_s": -84.44122470030561,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 83.84534109989181,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 588.5508995996788,
+          "baseline_warm_path_decomposition_estimate_s": 673.8601150000468,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": false,
+          "method_quality": {
+            "I_support": 0.11600734734235797,
+            "L_full": 1.2127680625412216,
+            "d_support": 0.02563441133092232,
+            "base_translation_peak_m": 0.007987434838260393,
+            "base_rotation_peak_rad": 0.0595706546536646
+          },
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 497.58982370002195,
+          "baseline_cold_planning_s": 237.90484589990228,
+          "cold_planning_delta_s": 259.68497780011967,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -260.23785779997706,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 496.7366604004055,
+          "baseline_warm_path_decomposition_estimate_s": 237.90484589990228,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 497.58982370002195,
+          "baseline_cold_planning_s": 237.90484589990228,
+          "cold_planning_delta_s": 259.68497780011967,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -260.23785779997706,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 496.7366604004055,
+          "baseline_warm_path_decomposition_estimate_s": 237.90484589990228,
+          "warm_is_observed_repeat": false
+        }
+      ]
+    },
+    {
+      "method": "D8",
+      "baseline": "R12",
+      "task_denominator": 4,
+      "logical_preference_denominator": 8,
+      "near_quality_rule_scope": "predeclared_R12_near_quality_band",
+      "complete_paired_preferences": 6,
+      "near_quality_preferences": 5,
+      "rows": [
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "baseline_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 673.6759420996532,
+          "baseline_cold_planning_s": 1000.1376571003348,
+          "cold_planning_delta_s": -326.4617150006816,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 325.85251610027626,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 672.7940580993891,
+          "baseline_warm_path_decomposition_estimate_s": 1000.1376575003378,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09673629203845724,
+            "L_full": 1.190545547948696,
+            "d_support": 0.03572386784936247,
+            "base_translation_peak_m": 0.008647972729565679,
+            "base_rotation_peak_rad": 0.06211716252206455
+          },
+          "baseline_quality": {
+            "I_support": 0.0965141783236339,
+            "L_full": 1.1887246637395454,
+            "d_support": 0.04173419200846227,
+            "base_translation_peak_m": 0.008648009555928432,
+            "base_rotation_peak_rad": 0.062120007809448465
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.00022211371482333542,
+            "L_full": 0.0018208842091504973,
+            "d_support": -0.0060103241590998,
+            "base_translation_peak_m": -3.682636275266493e-08,
+            "base_rotation_peak_rad": -2.845287383916595e-06
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 673.6759420996532,
+          "baseline_cold_planning_s": 1000.1376571003348,
+          "cold_planning_delta_s": -326.4617150006816,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 325.85251610027626,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 672.7940580993891,
+          "baseline_warm_path_decomposition_estimate_s": 1000.1376575003378,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.11664801598168131,
+            "L_full": 1.2488091988571868,
+            "d_support": 0.02564326121753107,
+            "base_translation_peak_m": 0.008592497448253189,
+            "base_rotation_peak_rad": 0.061646675315250456
+          },
+          "baseline_quality": {
+            "I_support": 0.11306187690692782,
+            "L_full": 1.2462525136407188,
+            "d_support": 0.02564373938627925,
+            "base_translation_peak_m": 0.008596006908505014,
+            "base_rotation_peak_rad": 0.06165268962157036
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.003586139074753497,
+            "L_full": 0.002556685216468013,
+            "d_support": -4.781687481802965e-07,
+            "base_translation_peak_m": -3.5094602518249973e-06,
+            "base_rotation_peak_rad": -6.014306319905571e-06
+          },
+          "within_near_quality_band": false,
+          "method_cold_planning_s": 573.8745955997147,
+          "baseline_cold_planning_s": 469.9464010000229,
+          "cold_planning_delta_s": 103.92819459969178,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -104.52576000010595,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 573.0005343998782,
+          "baseline_warm_path_decomposition_estimate_s": 469.9464015001431,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 573.8745955997147,
+          "baseline_cold_planning_s": 469.9464010000229,
+          "cold_planning_delta_s": 103.92819459969178,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -104.52576000010595,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 573.0005343998782,
+          "baseline_warm_path_decomposition_estimate_s": 469.9464015001431,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "baseline_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 589.4188902997412,
+          "baseline_cold_planning_s": 1008.3903005002066,
+          "cold_planning_delta_s": -418.97141020046547,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 418.37552660005167,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 588.5508995996788,
+          "baseline_warm_path_decomposition_estimate_s": 1008.3903010003269,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.1031574814076167,
+            "L_full": 1.1533718080669735,
+            "d_support": 0.03463460491985918,
+            "base_translation_peak_m": 0.008010480370698816,
+            "base_rotation_peak_rad": 0.05979538213500751
+          },
+          "baseline_quality": {
+            "I_support": 0.10390200872976114,
+            "L_full": 1.1541870543951425,
+            "d_support": 0.040845756421237646,
+            "base_translation_peak_m": 0.0080103802015619,
+            "base_rotation_peak_rad": 0.059798086999773764
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": -0.0007445273221444448,
+            "L_full": -0.0008152463281689837,
+            "d_support": -0.006211151501378465,
+            "base_translation_peak_m": 1.001691369156843e-07,
+            "base_rotation_peak_rad": -2.7048647662508696e-06
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 589.4188902997412,
+          "baseline_cold_planning_s": 1008.3903005002066,
+          "cold_planning_delta_s": -418.97141020046547,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 418.37552660005167,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 588.5508995996788,
+          "baseline_warm_path_decomposition_estimate_s": 1008.3903010003269,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.11600734734235797,
+            "L_full": 1.2127680625412216,
+            "d_support": 0.02563441133092232,
+            "base_translation_peak_m": 0.007987434838260393,
+            "base_rotation_peak_rad": 0.0595706546536646
+          },
+          "baseline_quality": {
+            "I_support": 0.1152421269268129,
+            "L_full": 1.2131142864027784,
+            "d_support": 0.025659110944303905,
+            "base_translation_peak_m": 0.007938009940874579,
+            "base_rotation_peak_rad": 0.059177019431649214
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0007652204155450676,
+            "L_full": -0.00034622386155680474,
+            "d_support": -2.4699613381584662e-05,
+            "base_translation_peak_m": 4.9424897385814265e-05,
+            "base_rotation_peak_rad": 0.00039363522201538853
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 497.58982370002195,
+          "baseline_cold_planning_s": 409.86653929995373,
+          "cold_planning_delta_s": 87.72328440006822,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -88.27616439992562,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 496.7366604004055,
+          "baseline_warm_path_decomposition_estimate_s": 409.8665396999568,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 497.58982370002195,
+          "baseline_cold_planning_s": 409.86653929995373,
+          "cold_planning_delta_s": 87.72328440006822,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -88.27616439992562,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 496.7366604004055,
+          "baseline_warm_path_decomposition_estimate_s": 409.8665396999568,
+          "warm_is_observed_repeat": false
+        }
+      ]
+    },
+    {
+      "method": "N8",
+      "baseline": "R8",
+      "task_denominator": 4,
+      "logical_preference_denominator": 8,
+      "near_quality_rule_scope": "diagnostic_reuse_of_thresholds_not_formal_noninferiority",
+      "complete_paired_preferences": 4,
+      "near_quality_preferences": 3,
+      "rows": [
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "baseline_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 670.5693242000416,
+          "baseline_cold_planning_s": 665.7153801000677,
+          "cold_planning_delta_s": 4.853944099973887,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -5.3448323998600245,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 670.5693247998133,
+          "baseline_warm_path_decomposition_estimate_s": 665.7153801000677,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09660489078280166,
+            "L_full": 1.1939934473550124,
+            "d_support": 0.04194344821462701,
+            "base_translation_peak_m": 0.008647618422953434,
+            "base_rotation_peak_rad": 0.06211617369311127
+          },
+          "baseline_quality": {
+            "I_support": 0.0965141783236339,
+            "L_full": 1.1887246637395454,
+            "d_support": 0.04173419200846227,
+            "base_translation_peak_m": 0.008648009555928432,
+            "base_rotation_peak_rad": 0.062120007809448465
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 9.071245916775217e-05,
+            "L_full": 0.00526878361546701,
+            "d_support": 0.00020925620616474294,
+            "base_translation_peak_m": -3.9113297499795974e-07,
+            "base_rotation_peak_rad": -3.834116337191051e-06
+          },
+          "within_near_quality_band": false,
+          "method_cold_planning_s": 670.5693242000416,
+          "baseline_cold_planning_s": 665.7153801000677,
+          "cold_planning_delta_s": 4.853944099973887,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -5.3448323998600245,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 670.5693247998133,
+          "baseline_warm_path_decomposition_estimate_s": 665.7153801000677,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": false,
+          "method_quality": {
+            "I_support": 0.11306187690692782,
+            "L_full": 1.2462525136407188,
+            "d_support": 0.02564373938627925,
+            "base_translation_peak_m": 0.008596006908505014,
+            "base_rotation_peak_rad": 0.06165268962157036
+          },
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 596.8348538000137,
+          "baseline_cold_planning_s": 239.93899350007996,
+          "cold_planning_delta_s": 356.8958602999337,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -357.3402924002148,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 596.8348542000167,
+          "baseline_warm_path_decomposition_estimate_s": 239.93899350007996,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 596.8348538000137,
+          "baseline_cold_planning_s": 239.93899350007996,
+          "cold_planning_delta_s": 356.8958602999337,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -357.3402924002148,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 596.8348542000167,
+          "baseline_warm_path_decomposition_estimate_s": 239.93899350007996,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "baseline_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 671.280379800126,
+          "baseline_cold_planning_s": 673.8601150000468,
+          "cold_planning_delta_s": -2.579735199920833,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 2.1124100000597537,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 671.280380200129,
+          "baseline_warm_path_decomposition_estimate_s": 673.8601150000468,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10529048371033793,
+            "L_full": 1.154537074937492,
+            "d_support": 0.040841370562522857,
+            "base_translation_peak_m": 0.008008336125501869,
+            "base_rotation_peak_rad": 0.059784110276644355
+          },
+          "baseline_quality": {
+            "I_support": 0.10390200872976114,
+            "L_full": 1.1541870543951425,
+            "d_support": 0.040845756421237646,
+            "base_translation_peak_m": 0.0080103802015619,
+            "base_rotation_peak_rad": 0.059798086999773764
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.001388474980576787,
+            "L_full": 0.00035002054234944957,
+            "d_support": -4.385858714789359e-06,
+            "base_translation_peak_m": -2.044076060031194e-06,
+            "base_rotation_peak_rad": -1.3976723129409396e-05
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 671.280379800126,
+          "baseline_cold_planning_s": 673.8601150000468,
+          "cold_planning_delta_s": -2.579735199920833,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 2.1124100000597537,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 671.280380200129,
+          "baseline_warm_path_decomposition_estimate_s": 673.8601150000468,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": false,
+          "method_quality": {
+            "I_support": 0.1152421269268129,
+            "L_full": 1.2131142864027784,
+            "d_support": 0.025659110944303905,
+            "base_translation_peak_m": 0.007938009940874579,
+            "base_rotation_peak_rad": 0.059177019431649214
+          },
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 498.42080109985545,
+          "baseline_cold_planning_s": 237.90484589990228,
+          "cold_planning_delta_s": 260.51595519995317,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -260.96044020028785,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 498.4208014998585,
+          "baseline_warm_path_decomposition_estimate_s": 237.90484589990228,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 498.42080109985545,
+          "baseline_cold_planning_s": 237.90484589990228,
+          "cold_planning_delta_s": 260.51595519995317,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -260.96044020028785,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 498.4208014998585,
+          "baseline_warm_path_decomposition_estimate_s": 237.90484589990228,
+          "warm_is_observed_repeat": false
+        }
+      ]
+    },
+    {
+      "method": "N8",
+      "baseline": "R12",
+      "task_denominator": 4,
+      "logical_preference_denominator": 8,
+      "near_quality_rule_scope": "predeclared_R12_near_quality_band",
+      "complete_paired_preferences": 6,
+      "near_quality_preferences": 5,
+      "rows": [
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "baseline_quality": {
+            "I_support": 0.09618984175634475,
+            "L_full": 1.1867350554320435,
+            "d_support": 0.029936976772942582,
+            "base_translation_peak_m": 0.008648447536940579,
+            "base_rotation_peak_rad": 0.06212177875941844
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 670.5693242000416,
+          "baseline_cold_planning_s": 1000.1376571003348,
+          "cold_planning_delta_s": -329.56833290029317,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 329.07744460040703,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 670.5693247998133,
+          "baseline_warm_path_decomposition_estimate_s": 1000.1376575003378,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.09660489078280166,
+            "L_full": 1.1939934473550124,
+            "d_support": 0.04194344821462701,
+            "base_translation_peak_m": 0.008647618422953434,
+            "base_rotation_peak_rad": 0.06211617369311127
+          },
+          "baseline_quality": {
+            "I_support": 0.0965141783236339,
+            "L_full": 1.1887246637395454,
+            "d_support": 0.04173419200846227,
+            "base_translation_peak_m": 0.008648009555928432,
+            "base_rotation_peak_rad": 0.062120007809448465
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 9.071245916775217e-05,
+            "L_full": 0.00526878361546701,
+            "d_support": 0.00020925620616474294,
+            "base_translation_peak_m": -3.9113297499795974e-07,
+            "base_rotation_peak_rad": -3.834116337191051e-06
+          },
+          "within_near_quality_band": false,
+          "method_cold_planning_s": 670.5693242000416,
+          "baseline_cold_planning_s": 1000.1376571003348,
+          "cold_planning_delta_s": -329.56833290029317,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 329.07744460040703,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 670.5693247998133,
+          "baseline_warm_path_decomposition_estimate_s": 1000.1376575003378,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.11306187690692782,
+            "L_full": 1.2462525136407188,
+            "d_support": 0.02564373938627925,
+            "base_translation_peak_m": 0.008596006908505014,
+            "base_rotation_peak_rad": 0.06165268962157036
+          },
+          "baseline_quality": {
+            "I_support": 0.11306187690692782,
+            "L_full": 1.2462525136407188,
+            "d_support": 0.02564373938627925,
+            "base_translation_peak_m": 0.008596006908505014,
+            "base_rotation_peak_rad": 0.06165268962157036
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 596.8348538000137,
+          "baseline_cold_planning_s": 469.9464010000229,
+          "cold_planning_delta_s": 126.88845279999077,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -127.33288490027189,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 596.8348542000167,
+          "baseline_warm_path_decomposition_estimate_s": 469.9464015001431,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 596.8348538000137,
+          "baseline_cold_planning_s": 469.9464010000229,
+          "cold_planning_delta_s": 126.88845279999077,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -127.33288490027189,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 596.8348542000167,
+          "baseline_warm_path_decomposition_estimate_s": 469.9464015001431,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "baseline_quality": {
+            "I_support": 0.10303605121167843,
+            "L_full": 1.1521949823266193,
+            "d_support": 0.029055839657470536,
+            "base_translation_peak_m": 0.008010237129125873,
+            "base_rotation_peak_rad": 0.05979743246372311
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 671.280379800126,
+          "baseline_cold_planning_s": 1008.3903005002066,
+          "cold_planning_delta_s": -337.1099207000807,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 336.6425955002196,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 671.280380200129,
+          "baseline_warm_path_decomposition_estimate_s": 1008.3903010003269,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preference": "B",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.10529048371033793,
+            "L_full": 1.154537074937492,
+            "d_support": 0.040841370562522857,
+            "base_translation_peak_m": 0.008008336125501869,
+            "base_rotation_peak_rad": 0.059784110276644355
+          },
+          "baseline_quality": {
+            "I_support": 0.10390200872976114,
+            "L_full": 1.1541870543951425,
+            "d_support": 0.040845756421237646,
+            "base_translation_peak_m": 0.0080103802015619,
+            "base_rotation_peak_rad": 0.059798086999773764
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.001388474980576787,
+            "L_full": 0.00035002054234944957,
+            "d_support": -4.385858714789359e-06,
+            "base_translation_peak_m": -2.044076060031194e-06,
+            "base_rotation_peak_rad": -1.3976723129409396e-05
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 671.280379800126,
+          "baseline_cold_planning_s": 1008.3903005002066,
+          "cold_planning_delta_s": -337.1099207000807,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": 336.6425955002196,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "method_warm_path_decomposition_estimate_s": 671.280380200129,
+          "baseline_warm_path_decomposition_estimate_s": 1008.3903010003269,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "A",
+          "method_status": "TASK_COMPLETED",
+          "baseline_status": "TASK_COMPLETED",
+          "method_full_and_gates": true,
+          "baseline_full_and_gates": true,
+          "method_quality": {
+            "I_support": 0.1152421269268129,
+            "L_full": 1.2131142864027784,
+            "d_support": 0.025659110944303905,
+            "base_translation_peak_m": 0.007938009940874579,
+            "base_rotation_peak_rad": 0.059177019431649214
+          },
+          "baseline_quality": {
+            "I_support": 0.1152421269268129,
+            "L_full": 1.2131142864027784,
+            "d_support": 0.025659110944303905,
+            "base_translation_peak_m": 0.007938009940874579,
+            "base_rotation_peak_rad": 0.059177019431649214
+          },
+          "quality_delta_method_minus_baseline": {
+            "I_support": 0.0,
+            "L_full": 0.0,
+            "d_support": 0.0,
+            "base_translation_peak_m": 0.0,
+            "base_rotation_peak_rad": 0.0
+          },
+          "within_near_quality_band": true,
+          "method_cold_planning_s": 498.42080109985545,
+          "baseline_cold_planning_s": 409.86653929995373,
+          "cold_planning_delta_s": 88.55426179990172,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -88.9987468002364,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 498.4208014998585,
+          "baseline_warm_path_decomposition_estimate_s": 409.8665396999568,
+          "warm_is_observed_repeat": false
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preference": "B",
+          "method_status": "NO_PLAN",
+          "baseline_status": "NO_PLAN",
+          "method_full_and_gates": false,
+          "baseline_full_and_gates": false,
+          "method_quality": null,
+          "baseline_quality": null,
+          "quality_delta_method_minus_baseline": null,
+          "within_near_quality_band": null,
+          "method_cold_planning_s": 498.42080109985545,
+          "baseline_cold_planning_s": 409.86653929995373,
+          "cold_planning_delta_s": 88.55426179990172,
+          "cold_planning_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+          "conservative_cold_saving_lower_bound_s": -88.9987468002364,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "method_warm_path_decomposition_estimate_s": 498.4208014998585,
+          "baseline_warm_path_decomposition_estimate_s": 409.8665396999568,
+          "warm_is_observed_repeat": false
+        }
+      ]
+    }
+  ],
+  "endpoint_cold_cost_brackets": [
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "R8",
+      "planner_internal_cold_s": 665.7153801000677,
+      "cold_lower_bound_s": 665.7153801000677,
+      "cold_upper_bound_s": 666.1681680995971,
+      "outer_worker_elapsed_s": 1000.5904450998642,
+      "stream_internal_cold_s": 1000.1376571003348,
+      "final_selection_elapsed_s": 999.5491317999549,
+      "prefix08_elapsed_s": 665.1268547996879,
+      "startup_and_tail_residual_s": 0.4527879995293915,
+      "bound_width_s": 0.4527879995293915,
+      "upper_bound_formula": "outer_R_worker_elapsed - R_final_selection_elapsed + R_prefix08_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_plus/R/planning_cost.json",
+        "benchmark_search/c2_test0_plus/R/planning/c2_test0_plus/selection.json",
+        "benchmark_search/c2_test0_plus/R/planning/c2_test0_plus/prefix_08.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "R12",
+      "planner_internal_cold_s": 1000.1376571003348,
+      "cold_lower_bound_s": 1000.1376571003348,
+      "cold_upper_bound_s": 1000.5904450998642,
+      "outer_worker_elapsed_s": 1000.5904450998642,
+      "stream_internal_cold_s": 1000.1376571003348,
+      "final_selection_elapsed_s": 999.5491317999549,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.4527879995293915,
+      "bound_width_s": 0.4527879995293915,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_plus/R/planning_cost.json",
+        "benchmark_search/c2_test0_plus/R/planning/c2_test0_plus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "N8",
+      "planner_internal_cold_s": 670.5693242000416,
+      "cold_lower_bound_s": 670.5693242000416,
+      "cold_upper_bound_s": 671.0602124999277,
+      "outer_worker_elapsed_s": 671.0602124999277,
+      "stream_internal_cold_s": 670.5693242000416,
+      "final_selection_elapsed_s": 669.8461086000316,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.49088829988613725,
+      "bound_width_s": 0.49088829988613725,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_plus/N/planning_cost.json",
+        "benchmark_search/c2_test0_plus/N/planning/c2_test0_plus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "D8",
+      "planner_internal_cold_s": 673.6759420996532,
+      "cold_lower_bound_s": 673.6759420996532,
+      "cold_upper_bound_s": 674.2851410000585,
+      "outer_worker_elapsed_s": 674.2851410000585,
+      "stream_internal_cold_s": 673.6759420996532,
+      "final_selection_elapsed_s": 672.1113164001144,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.6091989004053175,
+      "bound_width_s": 0.6091989004053175,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_plus/D/planning_cost.json",
+        "benchmark_search/c2_test0_plus/D/planning/c2_test0_plus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "R8",
+      "planner_internal_cold_s": 239.93899350007996,
+      "cold_lower_bound_s": 239.93899350007996,
+      "cold_upper_bound_s": 240.3787819002755,
+      "outer_worker_elapsed_s": 470.3861894002184,
+      "stream_internal_cold_s": 469.9464010000229,
+      "final_selection_elapsed_s": 469.4256601999514,
+      "prefix08_elapsed_s": 239.41825270000845,
+      "startup_and_tail_residual_s": 0.439788400195539,
+      "bound_width_s": 0.439788400195539,
+      "upper_bound_formula": "outer_R_worker_elapsed - R_final_selection_elapsed + R_prefix08_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_minus/R/planning_cost.json",
+        "benchmark_search/c2_test0_minus/R/planning/c2_test0_minus/selection.json",
+        "benchmark_search/c2_test0_minus/R/planning/c2_test0_minus/prefix_08.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "R12",
+      "planner_internal_cold_s": 469.9464010000229,
+      "cold_lower_bound_s": 469.9464010000229,
+      "cold_upper_bound_s": 470.3861894002184,
+      "outer_worker_elapsed_s": 470.3861894002184,
+      "stream_internal_cold_s": 469.9464010000229,
+      "final_selection_elapsed_s": 469.4256601999514,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.439788400195539,
+      "bound_width_s": 0.439788400195539,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_minus/R/planning_cost.json",
+        "benchmark_search/c2_test0_minus/R/planning/c2_test0_minus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "N8",
+      "planner_internal_cold_s": 596.8348538000137,
+      "cold_lower_bound_s": 596.8348538000137,
+      "cold_upper_bound_s": 597.2792859002948,
+      "outer_worker_elapsed_s": 597.2792859002948,
+      "stream_internal_cold_s": 596.8348538000137,
+      "final_selection_elapsed_s": 596.1344647002406,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.44443210028111935,
+      "bound_width_s": 0.44443210028111935,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_minus/N/planning_cost.json",
+        "benchmark_search/c2_test0_minus/N/planning/c2_test0_minus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "D8",
+      "planner_internal_cold_s": 573.8745955997147,
+      "cold_lower_bound_s": 573.8745955997147,
+      "cold_upper_bound_s": 574.4721610001288,
+      "outer_worker_elapsed_s": 574.4721610001288,
+      "stream_internal_cold_s": 573.8745955997147,
+      "final_selection_elapsed_s": 572.3336580996402,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.5975654004141688,
+      "bound_width_s": 0.5975654004141688,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test0_minus/D/planning_cost.json",
+        "benchmark_search/c2_test0_minus/D/planning/c2_test0_minus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "R8",
+      "planner_internal_cold_s": 673.8601150000468,
+      "cold_lower_bound_s": 673.8601150000468,
+      "cold_upper_bound_s": 674.3184511996806,
+      "outer_worker_elapsed_s": 1008.8486366998404,
+      "stream_internal_cold_s": 1008.3903005002066,
+      "final_selection_elapsed_s": 1007.7977185002528,
+      "prefix08_elapsed_s": 673.267533000093,
+      "startup_and_tail_residual_s": 0.45833619963377714,
+      "bound_width_s": 0.45833619963377714,
+      "upper_bound_formula": "outer_R_worker_elapsed - R_final_selection_elapsed + R_prefix08_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_plus/R/planning_cost.json",
+        "benchmark_search/c2_test1_plus/R/planning/c2_test1_plus/selection.json",
+        "benchmark_search/c2_test1_plus/R/planning/c2_test1_plus/prefix_08.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "R12",
+      "planner_internal_cold_s": 1008.3903005002066,
+      "cold_lower_bound_s": 1008.3903005002066,
+      "cold_upper_bound_s": 1008.8486366998404,
+      "outer_worker_elapsed_s": 1008.8486366998404,
+      "stream_internal_cold_s": 1008.3903005002066,
+      "final_selection_elapsed_s": 1007.7977185002528,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.45833619963377714,
+      "bound_width_s": 0.45833619963377714,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_plus/R/planning_cost.json",
+        "benchmark_search/c2_test1_plus/R/planning/c2_test1_plus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "N8",
+      "planner_internal_cold_s": 671.280379800126,
+      "cold_lower_bound_s": 671.280379800126,
+      "cold_upper_bound_s": 671.747704999987,
+      "outer_worker_elapsed_s": 671.747704999987,
+      "stream_internal_cold_s": 671.280379800126,
+      "final_selection_elapsed_s": 670.5226023001596,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.46732519986107945,
+      "bound_width_s": 0.46732519986107945,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_plus/N/planning_cost.json",
+        "benchmark_search/c2_test1_plus/N/planning/c2_test1_plus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "D8",
+      "planner_internal_cold_s": 589.4188902997412,
+      "cold_lower_bound_s": 589.4188902997412,
+      "cold_upper_bound_s": 590.014773900155,
+      "outer_worker_elapsed_s": 590.014773900155,
+      "stream_internal_cold_s": 589.4188902997412,
+      "final_selection_elapsed_s": 587.8900693999603,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.5958836004137993,
+      "bound_width_s": 0.5958836004137993,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_plus/D/planning_cost.json",
+        "benchmark_search/c2_test1_plus/D/planning/c2_test1_plus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "R8",
+      "planner_internal_cold_s": 237.90484589990228,
+      "cold_lower_bound_s": 237.90484589990228,
+      "cold_upper_bound_s": 238.364793300163,
+      "outer_worker_elapsed_s": 410.32648670021445,
+      "stream_internal_cold_s": 409.86653929995373,
+      "final_selection_elapsed_s": 409.34024049993604,
+      "prefix08_elapsed_s": 237.3785470998846,
+      "startup_and_tail_residual_s": 0.4599474002607167,
+      "bound_width_s": 0.4599474002607167,
+      "upper_bound_formula": "outer_R_worker_elapsed - R_final_selection_elapsed + R_prefix08_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_minus/R/planning_cost.json",
+        "benchmark_search/c2_test1_minus/R/planning/c2_test1_minus/selection.json",
+        "benchmark_search/c2_test1_minus/R/planning/c2_test1_minus/prefix_08.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "R12",
+      "planner_internal_cold_s": 409.86653929995373,
+      "cold_lower_bound_s": 409.86653929995373,
+      "cold_upper_bound_s": 410.32648670021445,
+      "outer_worker_elapsed_s": 410.32648670021445,
+      "stream_internal_cold_s": 409.86653929995373,
+      "final_selection_elapsed_s": 409.34024049993604,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.4599474002607167,
+      "bound_width_s": 0.4599474002607167,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_minus/R/planning_cost.json",
+        "benchmark_search/c2_test1_minus/R/planning/c2_test1_minus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "N8",
+      "planner_internal_cold_s": 498.42080109985545,
+      "cold_lower_bound_s": 498.42080109985545,
+      "cold_upper_bound_s": 498.86528610019013,
+      "outer_worker_elapsed_s": 498.86528610019013,
+      "stream_internal_cold_s": 498.42080109985545,
+      "final_selection_elapsed_s": 497.73251290014014,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.4444850003346801,
+      "bound_width_s": 0.4444850003346801,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_minus/N/planning_cost.json",
+        "benchmark_search/c2_test1_minus/N/planning/c2_test1_minus/selection.json"
+      ]
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "D8",
+      "planner_internal_cold_s": 497.58982370002195,
+      "cold_lower_bound_s": 497.58982370002195,
+      "cold_upper_bound_s": 498.14270369987935,
+      "outer_worker_elapsed_s": 498.14270369987935,
+      "stream_internal_cold_s": 497.58982370002195,
+      "final_selection_elapsed_s": 496.08905579987913,
+      "prefix08_elapsed_s": null,
+      "startup_and_tail_residual_s": 0.5528799998573959,
+      "bound_width_s": 0.5528799998573959,
+      "upper_bound_formula": "outer_worker_elapsed",
+      "not_exact_process_start_to_seal_measurement": true,
+      "source_receipts": [
+        "tables/D_endpoint_planning_costs.json",
+        "search_phase.json",
+        "benchmark_search/c2_test1_minus/D/planning_cost.json",
+        "benchmark_search/c2_test1_minus/D/planning/c2_test1_minus/selection.json"
+      ]
+    }
+  ],
+  "search_timing_context": {
+    "workers": 4,
+    "phase_makespan_s": 2155.824690700043,
+    "cumulative_worker_service_s": 7666.019027000759,
+    "lower_scope": "planner_internal_timer_excludes_worker_startup_and_common_input_checks",
+    "upper_scope": "outer_worker_bracket_includes_startup_common_checks_and_tail_not_exact_process_start_to_selection_seal",
+    "shared_resources_nonisolated": true,
+    "limitation": "concurrent_workers_share_resources; recorded_bounds_do_not_establish_isolated_or_repeated_Task_latency",
+    "warm_path_scope": "decomposition estimate; no observed repeated warm planning"
+  },
+  "raw_initializer_diagnostics": [
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_plus/N/planning/c2_test0_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_plus/N/planning/c2_test0_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_plus/D/planning/c2_test0_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_plus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_plus/D/planning/c2_test0_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_minus/N/planning/c2_test0_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_minus/N/planning/c2_test0_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_minus/D/planning/c2_test0_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test0_minus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test0_minus/D/planning/c2_test0_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_plus/N/planning/c2_test1_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_plus/N/planning/c2_test1_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_plus/D/planning/c2_test1_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_plus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": false,
+      "rejection_reason": "raw seed exceeds the original 20mm interval disk",
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_plus/D/planning/c2_test1_plus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_minus/N/planning/c2_test1_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "N8",
+      "source": "retrieval",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 0,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_minus/N/planning/c2_test1_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "A",
+      "family": "v1",
+      "initializer_slot": 1,
+      "proposal_index": 1,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_minus/D/planning/c2_test1_minus/proposals.json"
+    },
+    {
+      "task_id": "c2_test1_minus",
+      "endpoint": "D8",
+      "source": "diffusion",
+      "preference": "B",
+      "family": "v2",
+      "initializer_slot": 3,
+      "proposal_index": 3,
+      "raw_legal": true,
+      "rejection_reason": null,
+      "raw_repaired": false,
+      "resampled": false,
+      "ddim_sample_units": 1,
+      "raw_seed_acceptance_is_actual_success": false,
+      "source_receipt": "benchmark_search/c2_test1_minus/D/planning/c2_test1_minus/proposals.json"
+    }
+  ],
+  "offline_costs": {
+    "teacher_phase_makespan_s": 1005.7178168999963,
+    "teacher_worker_cumulative_service_s": 3476.4139505000785,
+    "teacher_candidate_service_s": 3443.1009927997366,
+    "training_elapsed_service_s": 26.95999850006774,
+    "teacher_work": {
+      "actual_physics_steps": 0,
+      "prediction_physics_steps": 564810,
+      "private_preview_physics_steps": 564910,
+      "independent_saved_torque_replay_steps": 0,
+      "preview_calls": 56491,
+      "native_geometry_query_calls": 634423060,
+      "qp_solve_calls": 56491,
+      "cumulative_service_elapsed_s": 3443.1009927997366,
+      "nested_elapsed_not_added": true,
+      "phase_counts": {
+        "actual": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        },
+        "independent_torque_replay": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        },
+        "prediction": {
+          "mj_step": 564810,
+          "mj_step2": 0,
+          "mj_geomDistance": 625874872,
+          "qp_solve": 56491
+        },
+        "prediction_quality": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 8548188,
+          "qp_solve": 0
+        },
+        "private_preview": {
+          "mj_step": 0,
+          "mj_step2": 564910,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        }
+      }
+    },
+    "test_prediction_work": {
+      "actual_physics_steps": 0,
+      "prediction_physics_steps": 1254630,
+      "private_preview_physics_steps": 1254940,
+      "independent_saved_torque_replay_steps": 0,
+      "preview_calls": 125494,
+      "native_geometry_query_calls": 1340609953,
+      "qp_solve_calls": 125494,
+      "cumulative_service_elapsed_s": 7579.766226500273,
+      "nested_elapsed_not_added": true,
+      "phase_counts": {
+        "actual": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        },
+        "independent_torque_replay": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        },
+        "prediction": {
+          "mj_step": 1254630,
+          "mj_step2": 0,
+          "mj_geomDistance": 1320329009,
+          "qp_solve": 125494
+        },
+        "prediction_quality": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 20280944,
+          "qp_solve": 0
+        },
+        "private_preview": {
+          "mj_step": 0,
+          "mj_step2": 1254940,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        }
+      }
+    },
+    "actual_replay_and_geometry_work": {
+      "actual_physics_steps": 162000,
+      "prediction_physics_steps": 0,
+      "private_preview_physics_steps": 162000,
+      "independent_saved_torque_replay_steps": 162000,
+      "preview_calls": 16200,
+      "native_geometry_query_calls": 404514786,
+      "qp_solve_calls": 16200,
+      "cumulative_service_elapsed_s": 1768.810449601151,
+      "nested_elapsed_not_added": true,
+      "phase_counts": {
+        "actual": {
+          "mj_step": 162000,
+          "mj_step2": 0,
+          "mj_geomDistance": 196864613,
+          "qp_solve": 16200
+        },
+        "actual_quality": {
+          "mj_step": 0,
+          "mj_step2": 0,
+          "mj_geomDistance": 2256180,
+          "qp_solve": 0
+        },
+        "independent_torque_replay": {
+          "mj_step": 162000,
+          "mj_step2": 0,
+          "mj_geomDistance": 205393993,
+          "qp_solve": 0
+        },
+        "private_preview": {
+          "mj_step": 0,
+          "mj_step2": 162000,
+          "mj_geomDistance": 0,
+          "qp_solve": 0
+        }
+      }
+    },
+    "overlapping_nested_times_not_added": true,
+    "historical_reuse_additional_physics": 0
+  },
+  "amortization": [
+    {
+      "method": "D8",
+      "baseline": "R12",
+      "all_four_tasks_jointly_preserved_and_cheaper": false,
+      "eligibility_convention": "extra_conservative_all_four_both_preferences_and_each_Task_positive_not_predeclared_protocol_gate",
+      "tasks": [
+        {
+          "task_id": "c2_test0_plus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": true,
+          "measured_cold_saving_s": 326.4617150006816,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": 325.85251610027626,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "qualifies": true
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "A_full_gates_and_R12_band": false,
+          "B_full_gates_30mm_and_R12_band": null,
+          "measured_cold_saving_s": -103.92819459969178,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": -104.52576000010595,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "qualifies": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": true,
+          "measured_cold_saving_s": 418.97141020046547,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": 418.37552660005167,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "qualifies": true
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": null,
+          "measured_cold_saving_s": -87.72328440006822,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": -88.27616439992562,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "qualifies": false
+        }
+      ],
+      "mean_cold_saving_per_task_s": null,
+      "mean_cold_saving_scope": "mean_of_four_Task_conservative_cold_saving_lower_bounds_shared_A_B_cost_once",
+      "new_teacher_elapsed_makespan_s": 1005.7178168999963,
+      "new_teacher_cumulative_service_s": 3476.4139505000785,
+      "training_elapsed_service_s": 26.95999850006774,
+      "break_even_tasks": "NOT_ESTABLISHED",
+      "break_even_tasks_upper_bound": "NOT_ESTABLISHED",
+      "break_even_elapsed_basis": "(new_teacher_phase_makespan + measured_training_elapsed) / mean_Task_conservative_cold_saving_lower_bound",
+      "break_even_scope": "conditional_upper_bound_in_recorded_shared_resource_timing_context_not_observed_repeated_Task_amortization",
+      "cumulative_service_cost_per_observed_wall_saving_ratio": null,
+      "service_ratio_is_not_elapsed_makespan": true,
+      "reason": "至少一个Task未同时保留A/B完整actual、原门禁、R12近质量带及正的cold节省下界，或计时间隔/离线成本证据缺失。",
+      "benefit_verdict_requires_review": true
+    },
+    {
+      "method": "N8",
+      "baseline": "R12",
+      "all_four_tasks_jointly_preserved_and_cheaper": false,
+      "eligibility_convention": "extra_conservative_all_four_both_preferences_and_each_Task_positive_not_predeclared_protocol_gate",
+      "tasks": [
+        {
+          "task_id": "c2_test0_plus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": false,
+          "measured_cold_saving_s": 329.56833290029317,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": 329.07744460040703,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "qualifies": false
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": null,
+          "measured_cold_saving_s": -126.88845279999077,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": -127.33288490027189,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "qualifies": false
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": true,
+          "measured_cold_saving_s": 337.1099207000807,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": 336.6425955002196,
+          "guaranteed_cheaper_within_recorded_bounds": true,
+          "qualifies": true
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "A_full_gates_and_R12_band": true,
+          "B_full_gates_30mm_and_R12_band": null,
+          "measured_cold_saving_s": -88.55426179990172,
+          "measured_cold_saving_scope": "planner_internal_timer_partial_scope_only",
+          "conservative_cold_saving_lower_bound_s": -88.9987468002364,
+          "guaranteed_cheaper_within_recorded_bounds": false,
+          "qualifies": false
+        }
+      ],
+      "mean_cold_saving_per_task_s": null,
+      "mean_cold_saving_scope": "mean_of_four_Task_conservative_cold_saving_lower_bounds_shared_A_B_cost_once",
+      "new_teacher_elapsed_makespan_s": 1005.7178168999963,
+      "new_teacher_cumulative_service_s": 3476.4139505000785,
+      "training_elapsed_service_s": 26.95999850006774,
+      "break_even_tasks": "NOT_ESTABLISHED",
+      "break_even_tasks_upper_bound": "NOT_ESTABLISHED",
+      "break_even_elapsed_basis": "(new_teacher_phase_makespan + measured_training_elapsed) / mean_Task_conservative_cold_saving_lower_bound",
+      "break_even_scope": "conditional_upper_bound_in_recorded_shared_resource_timing_context_not_observed_repeated_Task_amortization",
+      "cumulative_service_cost_per_observed_wall_saving_ratio": null,
+      "service_ratio_is_not_elapsed_makespan": true,
+      "reason": "至少一个Task未同时保留A/B完整actual、原门禁、R12近质量带及正的cold节省下界，或计时间隔/离线成本证据缺失。",
+      "benefit_verdict_requires_review": true
+    }
+  ],
+  "observed_mixture_amortization_sensitivity": [
+    {
+      "method": "D8",
+      "baseline": "R12",
+      "descriptive_sensitivity_only": true,
+      "scope": "observed_four_Task_empirical_mixture_not_predeclared_protocol_gate_or_population_claim",
+      "coverage": {
+        "Task_denominator": 4,
+        "logical_preference_denominator": 8,
+        "R12_observed_complete_gated_preferences": 6,
+        "method_complete_gated_preferences": 6,
+        "R12_NO_PLAN_N_A_preferences": 2,
+        "R12_incomplete_gated_N_A_preferences": 0,
+        "preserved_observed_ability_and_quality_preferences": 5,
+        "lost_observed_baseline_abilities": 0,
+        "lost_predeclared_quality_preferences": 1,
+        "unchanged_missing_capability_preferences": 2,
+        "added_full_gated_method_capability_preferences": 0,
+        "added_B30mm_method_capability_preferences": 0
+      },
+      "tasks": [
+        {
+          "task_id": "c2_test0_plus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": 326.4617150006816,
+          "conservative_cold_saving_lower_bound_s": 325.85251610027626,
+          "negative_Task_saving_retained": false,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test0_plus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_plus/D/planning/c2_test0_plus/proposals.json"
+            },
+            {
+              "task_id": "c2_test0_plus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_plus/D/planning/c2_test0_plus/proposals.json"
+            }
+          ]
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": false,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": true,
+              "preserved_observed_ability_and_quality": false,
+              "comparison_status": "LOST_NEAR_QUALITY",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "NO_PLAN",
+              "baseline_status": "NO_PLAN",
+              "baseline_observed_complete_gated": false,
+              "method_complete_gated": false,
+              "required_observed_baseline_ability": false,
+              "within_predeclared_R12_band": null,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": null,
+              "comparison_status": "N/A_R12_NO_PLAN",
+              "unchanged_missing_capability": true,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": -103.92819459969178,
+          "conservative_cold_saving_lower_bound_s": -104.52576000010595,
+          "negative_Task_saving_retained": true,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test0_minus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_minus/D/planning/c2_test0_minus/proposals.json"
+            },
+            {
+              "task_id": "c2_test0_minus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_minus/D/planning/c2_test0_minus/proposals.json"
+            }
+          ]
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": 418.97141020046547,
+          "conservative_cold_saving_lower_bound_s": 418.37552660005167,
+          "negative_Task_saving_retained": false,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test1_plus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_plus/D/planning/c2_test1_plus/proposals.json"
+            },
+            {
+              "task_id": "c2_test1_plus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": false,
+              "rejection_reason": "raw seed exceeds the original 20mm interval disk",
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_plus/D/planning/c2_test1_plus/proposals.json"
+            }
+          ]
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "NO_PLAN",
+              "baseline_status": "NO_PLAN",
+              "baseline_observed_complete_gated": false,
+              "method_complete_gated": false,
+              "required_observed_baseline_ability": false,
+              "within_predeclared_R12_band": null,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": null,
+              "comparison_status": "N/A_R12_NO_PLAN",
+              "unchanged_missing_capability": true,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": -87.72328440006822,
+          "conservative_cold_saving_lower_bound_s": -88.27616439992562,
+          "negative_Task_saving_retained": true,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test1_minus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_minus/D/planning/c2_test1_minus/proposals.json"
+            },
+            {
+              "task_id": "c2_test1_minus",
+              "endpoint": "D8",
+              "source": "diffusion",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 1,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_minus/D/planning/c2_test1_minus/proposals.json"
+            }
+          ]
+        }
+      ],
+      "no_observed_R12_ability_or_quality_lost": false,
+      "mean_conservative_cold_saving_per_task_s": 137.8565295750741,
+      "negative_Task_savings_included": true,
+      "shared_A_B_search_cost_counted_once_per_Task": true,
+      "conditional_empirical_mixture_break_even_tasks_upper_bound": "NOT_ESTABLISHED",
+      "new_teacher_elapsed_makespan_s": 1005.7178168999963,
+      "training_elapsed_service_s": 26.95999850006774,
+      "new_teacher_cumulative_service_s": 3476.4139505000785,
+      "cumulative_service_cost_per_observed_wall_saving_ratio": null,
+      "service_ratio_is_not_elapsed_makespan": true,
+      "break_even_basis": "(teacher_phase_makespan + training_elapsed) / mean_of_all_four_Task_(R12_lower-method_upper)",
+      "ineligibility_reasons": [
+        "LOST_OBSERVED_R12_ABILITY_OR_PREDECLARED_QUALITY"
+      ],
+      "reason": "观察混合未保留全部已观察R12能力/近质量，或四Task平均节省下界非正，或计时/成本证据不足。",
+      "invalid_initializer_slot_credited_as_neural_benefit": false,
+      "benefit_verdict_requires_fresh_review": true
+    },
+    {
+      "method": "N8",
+      "baseline": "R12",
+      "descriptive_sensitivity_only": true,
+      "scope": "observed_four_Task_empirical_mixture_not_predeclared_protocol_gate_or_population_claim",
+      "coverage": {
+        "Task_denominator": 4,
+        "logical_preference_denominator": 8,
+        "R12_observed_complete_gated_preferences": 6,
+        "method_complete_gated_preferences": 6,
+        "R12_NO_PLAN_N_A_preferences": 2,
+        "R12_incomplete_gated_N_A_preferences": 0,
+        "preserved_observed_ability_and_quality_preferences": 5,
+        "lost_observed_baseline_abilities": 0,
+        "lost_predeclared_quality_preferences": 1,
+        "unchanged_missing_capability_preferences": 2,
+        "added_full_gated_method_capability_preferences": 0,
+        "added_B30mm_method_capability_preferences": 0
+      },
+      "tasks": [
+        {
+          "task_id": "c2_test0_plus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": false,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": true,
+              "preserved_observed_ability_and_quality": false,
+              "comparison_status": "LOST_NEAR_QUALITY",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": 329.56833290029317,
+          "conservative_cold_saving_lower_bound_s": 329.07744460040703,
+          "negative_Task_saving_retained": false,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test0_plus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_plus/N/planning/c2_test0_plus/proposals.json"
+            },
+            {
+              "task_id": "c2_test0_plus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_plus/N/planning/c2_test0_plus/proposals.json"
+            }
+          ]
+        },
+        {
+          "task_id": "c2_test0_minus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "NO_PLAN",
+              "baseline_status": "NO_PLAN",
+              "baseline_observed_complete_gated": false,
+              "method_complete_gated": false,
+              "required_observed_baseline_ability": false,
+              "within_predeclared_R12_band": null,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": null,
+              "comparison_status": "N/A_R12_NO_PLAN",
+              "unchanged_missing_capability": true,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": -126.88845279999077,
+          "conservative_cold_saving_lower_bound_s": -127.33288490027189,
+          "negative_Task_saving_retained": true,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test0_minus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_minus/N/planning/c2_test0_minus/proposals.json"
+            },
+            {
+              "task_id": "c2_test0_minus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test0_minus/N/planning/c2_test0_minus/proposals.json"
+            }
+          ]
+        },
+        {
+          "task_id": "c2_test1_plus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": 337.1099207000807,
+          "conservative_cold_saving_lower_bound_s": 336.6425955002196,
+          "negative_Task_saving_retained": false,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test1_plus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_plus/N/planning/c2_test1_plus/proposals.json"
+            },
+            {
+              "task_id": "c2_test1_plus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_plus/N/planning/c2_test1_plus/proposals.json"
+            }
+          ]
+        },
+        {
+          "task_id": "c2_test1_minus",
+          "preferences": [
+            {
+              "preference": "A",
+              "method_status": "TASK_COMPLETED",
+              "baseline_status": "TASK_COMPLETED",
+              "baseline_observed_complete_gated": true,
+              "method_complete_gated": true,
+              "required_observed_baseline_ability": true,
+              "within_predeclared_R12_band": true,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": true,
+              "comparison_status": "PRESERVED",
+              "unchanged_missing_capability": false,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            },
+            {
+              "preference": "B",
+              "method_status": "NO_PLAN",
+              "baseline_status": "NO_PLAN",
+              "baseline_observed_complete_gated": false,
+              "method_complete_gated": false,
+              "required_observed_baseline_ability": false,
+              "within_predeclared_R12_band": null,
+              "lost_observed_baseline_ability": false,
+              "lost_predeclared_quality": false,
+              "preserved_observed_ability_and_quality": null,
+              "comparison_status": "N/A_R12_NO_PLAN",
+              "unchanged_missing_capability": true,
+              "added_full_gated_method_capability": false,
+              "added_B30mm_method_capability": false,
+              "N_A_is_quality_success": false,
+              "capability_attribution": "whole_initializer_plus_C1_search_plus_original_control_pipeline_not_raw_neural_seed"
+            }
+          ],
+          "planner_internal_cold_saving_s": -88.55426179990172,
+          "conservative_cold_saving_lower_bound_s": -88.9987468002364,
+          "negative_Task_saving_retained": true,
+          "raw_initializer_diagnostics": [
+            {
+              "task_id": "c2_test1_minus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "A",
+              "family": "v1",
+              "initializer_slot": 1,
+              "proposal_index": 1,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_minus/N/planning/c2_test1_minus/proposals.json"
+            },
+            {
+              "task_id": "c2_test1_minus",
+              "endpoint": "N8",
+              "source": "retrieval",
+              "preference": "B",
+              "family": "v2",
+              "initializer_slot": 3,
+              "proposal_index": 3,
+              "raw_legal": true,
+              "rejection_reason": null,
+              "raw_repaired": false,
+              "resampled": false,
+              "ddim_sample_units": 0,
+              "raw_seed_acceptance_is_actual_success": false,
+              "source_receipt": "benchmark_search/c2_test1_minus/N/planning/c2_test1_minus/proposals.json"
+            }
+          ]
+        }
+      ],
+      "no_observed_R12_ability_or_quality_lost": false,
+      "mean_conservative_cold_saving_per_task_s": 112.34710210002959,
+      "negative_Task_savings_included": true,
+      "shared_A_B_search_cost_counted_once_per_Task": true,
+      "conditional_empirical_mixture_break_even_tasks_upper_bound": "NOT_ESTABLISHED",
+      "new_teacher_elapsed_makespan_s": 1005.7178168999963,
+      "training_elapsed_service_s": 26.95999850006774,
+      "new_teacher_cumulative_service_s": 3476.4139505000785,
+      "cumulative_service_cost_per_observed_wall_saving_ratio": null,
+      "service_ratio_is_not_elapsed_makespan": true,
+      "break_even_basis": "(teacher_phase_makespan + training_elapsed) / mean_of_all_four_Task_(R12_lower-method_upper)",
+      "ineligibility_reasons": [
+        "LOST_OBSERVED_R12_ABILITY_OR_PREDECLARED_QUALITY"
+      ],
+      "reason": "观察混合未保留全部已观察R12能力/近质量，或四Task平均节省下界非正，或计时/成本证据不足。",
+      "invalid_initializer_slot_credited_as_neural_benefit": false,
+      "benefit_verdict_requires_fresh_review": true
+    }
+  ],
+  "warm_path_scope": "decomposition estimate; no observed repeated warm planning",
+  "physics_steps_added": 0,
+  "training_updates_added": 0,
+  "inference_samples_added": 0,
+  "scientific_review": {
+    "reviewed": true,
+    "model_freeze_sha256": "fa4cb98f158f291316c4215106af436d741cfd008b7f631d4635ce5d5f1e7a9a",
+    "source_sha256": {
+      "validation/validation.json": "6798cf7a837dd3f1a990d82ae773ade7d0a02370ed27a0ef1d461f8ffa6b1b66",
+      "model/training_summary.json": "e6cfc22a8694f25c4e02ce5805ca16a89b3e104d7c82087eca7c986a363fee9e",
+      "dataset/dataset_manifest.json": "4497032017d04ebf529669c463ea592540c828338db9d801bce118242f6023e9",
+      "tables/B_first_hits.json": "9978e19109ea9326b2a8c3b3ad2ed877c70907adfab3d05c3475b4df86000f1b",
+      "tables/B_final_attribution.csv": "fc9a7e6ebfd87e29034ad52fefe9a34c8b191ee1f2153db9c1e733c54bd240da",
+      "tables/C_actual_status.csv": "81981f6877a145160c1b15579f126792db9ca3c5f55eb5db46fa15fa8bb243df",
+      "tables/C_actual_quality.csv": "b195b2e5360415da30bd986d4c80302d21da71bbf1cf1f5acc082016a90e6587",
+      "tables/D_actual_pairing.json": "a8c086bc4945a7b5d3c9b192305e5b2a113ff9b781a419bee7477c87cafb38d4",
+      "tables/D_planning_costs.json": "bdbde372208d663e279bcf3eb0c710f6b35f1ceb5e78d0d36278c93095407587",
+      "tables/D_endpoint_planning_costs.json": "465a3abd626bf8610ca9c1096bd8be449bca96ef3f8d232ef027e07ccc04fa1d",
+      "search_phase.json": "c63629d60aa05a022ecc21badf647417c64bba92809fadf63bca9a284a013384",
+      "teacher_phase.json": "e1dc35e1c84d2bcbe4b8f8a1bc5a855b9a27d055e6c0aebe5b776b74bdbfb95f",
+      "actual_complete.json": "17d6454fadd62407896da3c5b282a7233df70a97c91d1b4864bf4138b57eaf96",
+      "sealed_selections/all_selections.json": "9ab09ebdc34156b5135d4bf1d963f656754ae6c005b8c57ac7162096a01fbad5",
+      "benchmark_search/c2_test0_plus/R/planning/c2_test0_plus/selection.json": "fdf447f7d949e5f89cde619b350edbcad92a8266ef8050e478788752dffaa541",
+      "benchmark_search/c2_test0_plus/R/planning/c2_test0_plus/prefix_08.json": "fcfeccbe47a9b7876557cb21dc4e8df8518eb48af37fffb977e525fba7403cfe",
+      "benchmark_search/c2_test0_plus/D/planning/c2_test0_plus/proposals.json": "8566e4d5308b8181d9921d0f46a3e96a1aab938b2bd02010ce808e816246894e",
+      "benchmark_search/c2_test0_minus/R/planning/c2_test0_minus/selection.json": "8ea0fbed260038058a0c5301e2e6e115d608bfb2bc66044a6fcfa3687bdfabdf",
+      "benchmark_search/c2_test0_minus/R/planning/c2_test0_minus/prefix_08.json": "1fd791875db2170088a060d6e7408ab7fd6410b42b97f0c7c5b5d36998b05a08",
+      "benchmark_search/c2_test0_minus/D/planning/c2_test0_minus/proposals.json": "cfb15adc71e6a87081d3e4d3a29317034d5f0abc6c3f09722ae53e5aced2a1b1",
+      "benchmark_search/c2_test1_plus/R/planning/c2_test1_plus/selection.json": "d98b83a6d3cbaac7c2380034abafc42f6fafe4fb17a0a7bb205f349cc1a32f93",
+      "benchmark_search/c2_test1_plus/R/planning/c2_test1_plus/prefix_08.json": "8ba5f90ae58a9288255247802390aea36b44aae634c6506a67e87560d21ee25c",
+      "benchmark_search/c2_test1_plus/D/planning/c2_test1_plus/proposals.json": "1447ba4cf00b8e0f1968f792cbdbba34b2d05de1dab20737526437a1d2a4a0a7",
+      "benchmark_search/c2_test1_minus/R/planning/c2_test1_minus/selection.json": "28cf63669c4e9420fad9e3f019c66d6ec0b241573da71bc8083f53dcd1625e06",
+      "benchmark_search/c2_test1_minus/R/planning/c2_test1_minus/prefix_08.json": "9874d5bb230c9cd0a3972587a32cd184744aface1f2c451f15e6841f82828d8b",
+      "benchmark_search/c2_test1_minus/D/planning/c2_test1_minus/proposals.json": "03d4bdf61a3eec447aba2c071e300cc4c68cd8c210f165195faf2cc9447a3c2c"
+    },
+    "learning_benefit_established_in_pilot": "NOT_ESTABLISHED",
+    "default_initializer_decision": "retain_C1_rule",
+    "scientific_interpretation_zh": [
+      "本轮工程与有限实验已完成，学习初始化已真实运行：训练4000步，按VAL选择第250步checkpoint，TEST恰好生成8个Diffusion初值，其中7个raw合法；48个新教师槽、112个TEST槽和32个逻辑actual槽均已终结。32槽中12次唯一actual、10个严格alias、10个NO_PLAN，不能把alias或A/B视图当成独立样本。结果只代表四个TEST任务、两个新母场景和一个训练种子。",
+      "同为八槽时，D8的A完整actual及原五门禁为4/4，R8为2/4，新增覆盖来自两个minus任务；N8也达到4/4。B的actual且30mm合格覆盖在R8、R12、N8、D8均为2/4，两个minus均NO_PLAN。D8相对R8有局部覆盖改善，但覆盖没有超出TRAIN-only检索。D8的六个完整逻辑结果中四个是Diffusion搜索后代、两个来自共同零初值；这不等于raw Diffusion实际成功率。",
+      "与R12比，D8的A近质量为3/4；test0_minus的ΔI=+0.003586139 rad/s超过0.001，虽ΔL=+2.556685mm仍不能通过。B在两个可比较plus任务均通过，另外两项为N/A而非通过；D8净空为35.723868/34.634605mm。N8则A为4/4、B为1项通过、1项失败、2项N/A：test0_plus的ΔL=+5.268784mm超过5mm。两方法都保留R12已观察的完整任务能力，但各丢失一项预声明近质量。",
+      "相对N8，D8在两个B成功任务的路径缩短3.447899/1.165267mm，同时净空减少6.219580/6.206766mm但仍超过30mm；这是局部偏好取舍，并非Pareto支配。D8在test0_minus的A明显差于N8。预测首个完整可接受槽在两个minus上R为12/12、N为2/2、D为2/4，D没有比检索更早；四槽数据仅为预测。",
+      "冻结规划器内计时漏掉worker启动和部分输入检查，因此采用内计时至worker外计时的实测夹逼区间。以baseline.lower−method.upper计，四任务含负值平均节省为D8对R12 +137.856530s、对N8 +25.047645s、对R8 −129.873861s。D8对N8逐任务为−3.715817/+22.362693/+81.265606/+0.278097s；最大节省任务恰有一个非法神经槽，实际仅7次预测而N8为8次，这种少跑物理不能单独算学习收益。四worker共享负载、无隔离重复，warm只为分解估计。",
+      "新教师phase makespan为1005.717817s，训练26.959999s，合计1032.677815s；累计worker服务加训练为3503.373949s，两者不可混称。仅用该已记录阶段成本与四任务经验均值做算术，D/R12比值为7.490960个任务，但D丢失一项A近质量，因此质量保持的摊销仍为NOT_ESTABLISHED；N同样丢失一项B近质量，且检索本身不需要Diffusion训练。建议learning_benefit_established_in_pilot=NOT_ESTABLISHED、默认保留C.1规则；允许报告上述局部正结果。当前有界研究必须停止，不追加实验。"
+    ],
+    "schema": "v64_c2_pilot_scientific_review_v1",
+    "independent_review_trace": "paper/review-traces/experiment-result-to-claim/2026-10-08_run01",
+    "independent_verdict_sha256": "6f433ae96199b80b30ca7be4668e4ac4e0bca146cb375b03cd790a6ef3a5e04c",
+    "independent_response_sha256": "71592420d962226dba3e7aacec28010abc7c2072743b9264de040b83443f334a",
+    "claim_supported": "partial",
+    "confidence": "medium",
+    "next_experiments_needed": [],
+    "review_file_sha256": "e6414e2072d1152430003899f40b262972bd77c3da34ae1c2ade16df6633316a"
+  }
+}

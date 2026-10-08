@@ -54,3 +54,16 @@ Review route: end hypothesis / preserve baseline; next_experiments_needed=[]。�
 证据：[完整报告](v6_4/releases/execution_aware_route_teacher_20261007_01/report.md)、[全部候选](v6_4/visualization/execution_aware_route_teacher_20261007_01/all_candidates.csv)、[两图](v6_4/visualization/execution_aware_route_teacher_20261007_01/index.html)、[run03](paper/review-traces/experiment-result-to-claim/2026-10-07_run03/response.md)。
 
 独立审查：run03为partial / high，blocking_issues=[]；支持有限开发集结论，下游论文写作因缺少paper claim audit保持provisional。 发布状态：研究结论已独立审阅；本地封存、便携导出和远端提交验证由publication_receipts中的收据记录。
+
+
+## V6.4-C.2 — preference_warmstart_20261008_01
+
+独立result-to-claim判定 partial、confidence medium；有限工程交付无阻塞。真实偏好/family条件Diffusion完成4000更新，VAL选中250；TEST生成8个初值、7个raw合法、1个幅值原样拒绝。历史48候选复用，新教师48槽、TEST112槽，DDIM共136样本，未追加seed、候选、训练或actual。32逻辑actual中22完整并通过原五门禁、10NO_PLAN；12唯一执行、10严格alias，零actual失败、零工具错误。
+
+同八槽A actual：R8=2/4，N8=D8=4/4；B actual且30mm均2/4。D8保留R12完整任务覆盖，但A近质量3/4，test0_minus ΔI=+0.003586139rad/s超0.001；B两项通过、两项N/A。N8 A4/4，B一项通过、一项失败、两项N/A，test0_plus ΔL=+5.268784mm超5mm。D8相对N8两项B路径短3.447899/1.165267mm，净空各少约6.2mm仍大于30mm；这是局部取舍，无总体优越结论。
+
+四Task含负值的实测cold节省下界均值：D8/R12 +137.856530s，D8/N8 +25.047645s，D8/R8 −129.873861s。内外计时夹逼、四worker共享负载与warm分解估计均披露；最大D/N节省含非法初值少跑一次物理，不能单独归因学习。两种八槽方法各失一项R12近质量，质量保持摊销NOT_ESTABLISHED；阶段成本仅记录新教师与训练，不代表完整生命周期。
+
+learning_benefit_established_in_pilot=NOT_ESTABLISHED，default_initializer_decision=retain_C1_rule。研究停止，next_experiments_needed=[]；不扩大模型或预算。deployment=NOT_MET，连续时间/硬件安全NOT_ESTABLISHED。四Task来自两个新母场景、单seed，无总体非劣或广泛泛化结论。无paper claim audit，下游论文措辞provisional；不阻塞本有限研发交付。
+
+完整独立审阅：paper/review-traces/experiment-result-to-claim/2026-10-08_run01；最终报告、对照表及heldout teacher更新位于v6_4/releases/preference_warmstart_20261008_01/snapshot。TEST更新禁止回流本轮训练。

@@ -9,7 +9,6 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime, timezone
-import html
 import json
 from pathlib import Path
 import shutil
@@ -36,6 +35,22 @@ SCHEMA = "v64_c2_saved_actual_media_v1"
 COLORS = {"R": "#586b89", "N": "#d08a26", "D": "#0f947b"}
 
 
+class C2RenderOnly(RenderOnly):
+    """Also forbid the actual controller's custom ADMM entry points."""
+
+    def __enter__(self):
+        super().__enter__()
+        from v6_lite.hierarchical_qp import HierarchicalVelocityQP
+        for name in ("solve", "_solve_qp_admm"):
+            old = getattr(HierarchicalVelocityQP, name)
+            self.restore.append((HierarchicalVelocityQP, name, old))
+            def reject(*args, _name=name, **kwargs):
+                self.forbidden_attempts.append("HierarchicalVelocityQP." + _name)
+                raise RuntimeError("saved C.2 renderer forbids QP " + _name)
+            setattr(HierarchicalVelocityQP, name, reject)
+        return self
+
+
 def write(path, value):
     path = Path(path); path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf8", newline="\n") as stream:
@@ -53,6 +68,13 @@ def terminal_slots(run):
     run = Path(run).resolve()
     if not (run / "actual_complete.json").is_file():
         raise ValueError("all actual endpoints must be terminal before media generation")
+    complete = read(run / "actual_complete.json")
+    sealed = read(run / "sealed_selections" / "all_selections.json")
+    for relative, expected in sealed["files"].items():
+        if sha(run / relative) != expected:
+            raise ValueError("sealed search/selection evidence changed")
+    if sha(run / "model_freeze.json") != sealed["model_freeze_sha256"]:
+        raise ValueError("model freeze differs from pre-actual selection seal")
     plan = read(run / "plan.json")
     tasks = [r for r in plan["tasks"] if r.get("learning_split", r.get("split")) == "test"]
     if len(tasks) != 4:
@@ -66,6 +88,8 @@ def terminal_slots(run):
                 path = run / "actual" / task["task_id"] / f"{endpoint}_{preference}" / "slot.json"
                 verify_seal(path.parent)
                 slot = read(path)
+                if complete["slot_hashes"].get(path.relative_to(run).as_posix()) != sha(path):
+                    raise ValueError("actual terminal receipt does not bind logical slot")
                 if (slot["task_sha256"] != task["task_sha256"] or slot["selection_sha256"] != sha(selection_path)
                         or slot["endpoint"] != endpoint or slot["preference"] != preference):
                     raise ValueError("actual logical slot differs from its sealed endpoint")
@@ -104,6 +128,35 @@ def _local_path(run, attempt, value, name):
     return matches[0].resolve()
 
 
+def execution_model_binding(run, attempt, sources):
+    """Bind the renderer to a saved actual model, including failed prefixes."""
+    hashes = []
+    observation = attempt / "actual" / "historical_metric_observations.json"
+    if observation.exists():
+        compiled = (read(observation).get("execution_contract") or {}).get("source_compiled_model_sha256")
+        if compiled:
+            hashes.append(compiled)
+            sources["execution_model_observation"] = record(observation, run)
+    for path in sorted((attempt / "actual").rglob("timing/*.jsonl")):
+        with path.open(encoding="utf8") as stream:
+            for line in stream:
+                certificate = json.loads(line).get("certificate")
+                if certificate and certificate.get("source_model_hash"):
+                    hashes.append(certificate["source_model_hash"])
+                    sources["execution_model_certificate"] = record(path, run)
+                    break
+        if "execution_model_certificate" in sources:
+            break
+    if not hashes or len(set(hashes)) != 1:
+        raise ValueError("saved actual execution compiled-model identity missing or inconsistent")
+    return hashes[0]
+
+
+def verify_render_model(compiled, parity):
+    if compiled != parity["saved_execution_compiled_model_sha256"]:
+        raise ValueError("compiled render model differs from saved actual execution model")
+
+
 def load_actual(run, slot):
     run = Path(run).resolve()
     directory = run / "actual" / slot["task_id"] / slot["method"]
@@ -114,15 +167,18 @@ def load_actual(run, slot):
     evaluation_path = attempt / "actual" / "evaluation" / "report.json"
     replay_path = evaluation_path.parent / "fresh_replay.npz"
     task = TaskSpec.from_dict(read(task_path)); plan = TaskAnchoredResidualPlan.from_dict(read(plan_path))
+    executed_plan = TaskAnchoredResidualPlan.from_dict(read(attempt / "plan.json"))
     result, evaluation = read(result_path), read(evaluation_path)
     trace_path = _local_path(run, attempt, result.get("trace_path"), "trace.npz")
     if (task.sha256() != slot["task_sha256"] or plan.sha256() != slot["plan_sha256"]
+            or executed_plan.sha256() != plan.sha256() or result["plan_content_sha256"] != plan.sha256()
             or result["task_sha256"] != task.sha256() or result["plan_file_sha256"] != sha(attempt / "plan.json")
-            or result["trace_sha256"] != sha(trace_path) or evaluation["fresh_replay_sha256"] != sha(replay_path)):
+            or result["trace_sha256"] != sha(trace_path) or evaluation["fresh_replay_sha256"] != sha(replay_path)
+            or result["evaluation_sha256"] != sha(evaluation_path)):
         raise ValueError("actual rendering evidence bindings differ")
     with np.load(trace_path, allow_pickle=False) as archive:
         actual = {k: archive[k].copy() for k in
-            ("initial_qpos", "initial_qvel", "actual_full_qpos", "actual_full_qvel", "time")}
+            ("initial_qpos", "initial_qvel", "actual_full_qpos", "actual_full_qvel", "time", "generated_continuum_position")}
     needed = ("time", "qpos", "qvel", "base_pose", "target_position", "target_rotation",
         "rigid_position", "rigid_rotation", "continuum_position", "continuum_rotation")
     with np.load(replay_path, allow_pickle=False) as archive:
@@ -131,8 +187,13 @@ def load_actual(run, slot):
     qpos = np.vstack((actual["initial_qpos"], actual["actual_full_qpos"][:n]))
     qvel = np.vstack((actual["initial_qvel"], actual["actual_full_qvel"][:n]))
     times = np.r_[0., actual["time"][:n]]
-    if (n <= 0 or qpos.shape != (n + 1, 81) or qvel.shape != (n + 1, 79)
+    shapes = {"time": (n + 1,), "base_pose": (n + 1, 7),
+        **{k: (n + 1, 3) for k in ("target_position", "rigid_position", "continuum_position")},
+        **{k: (n + 1, 3, 3) for k in ("target_rotation", "rigid_rotation", "continuum_rotation")}}
+    if (n <= 0 or n != slot["actual_steps"] or (slot.get("full_task_success") and n != 13500)
+            or qpos.shape != (n + 1, 81) or qvel.shape != (n + 1, 79)
             or replay["qpos"].shape != qpos.shape or replay["qvel"].shape != qvel.shape
+            or any(replay[k].shape != shape for k, shape in shapes.items())
             or not np.array_equal(qpos[0], task.initial_qpos) or not np.array_equal(qvel[0], task.initial_qvel)
             or not all(np.isfinite(v).all() for v in (*actual.values(), *replay.values()))
             or not np.allclose(times, np.arange(n + 1) * .002, atol=1e-9, rtol=0.)
@@ -147,12 +208,20 @@ def load_actual(run, slot):
         "qvel_bit_exact": bool(np.array_equal(qvel, replay["qvel"])), "initial_state_matches_Task": True}
     replay["qpos"], replay["qvel"], replay["time"] = qpos, qvel, times
     reference, _, _ = TaskAnchoredResidualReferenceProvider(task, plan).continuum_kinematics(times)
+    generated = actual["generated_continuum_position"][:n]
+    if generated.shape != (n, 3):
+        raise ValueError("saved generated continuum reference shape differs")
+    reference_error = float(np.max(np.abs(reference[1:] - generated)))
+    if reference_error > 1e-12:
+        raise ValueError("frozen continuum reference differs from saved actual generated reference")
+    parity["generated_continuum_reference_max_abs_difference_m"] = reference_error
     offset, _, _ = plan.offset_kinematics(times)
     base = reference - offset
     sources = {name: record(path, run) for name, path in (
-        ("slot", directory / "slot.json"), ("task", task_path), ("plan", plan_path),
+        ("slot", directory / "slot.json"), ("task", task_path), ("plan", plan_path), ("executed_plan", attempt / "plan.json"),
         ("attempt_result", result_path), ("evaluation", evaluation_path), ("actual_trace", trace_path),
         ("fresh_replay", replay_path))}
+    parity["saved_execution_compiled_model_sha256"] = execution_model_binding(run, attempt, sources)
     return task, plan, result, evaluation, replay, reference, base, parity, sources
 
 
@@ -249,10 +318,11 @@ def render_actual(run, output, slot, fps=15., width=640, height=480, focus_width
     requested, indices = legacy.schedule(replay["time"], fps)
     views = (*legacy.VIEWS, "continuum_focus"); paths = {v: folder / f"{sid}_{v}.mp4" for v in views}
     ffmpeg = shutil.which("ffmpeg"); writers, renderers, last_frames = {}, {}, {}
-    with RenderOnly() as guard:
+    with C2RenderOnly() as guard:
         # Same model contract and native pair geometry as the existing renderer;
         # no pair is queried under the render-only guard.
         spec, verifier, data, compiled = legacy.make_model(task, evaluation, run, sid)
+        verify_render_model(compiled, parity)
         model = verifier.model
         lookat, distance = legacy._framing(model, data, replay["qpos"][::10])
         cameras = legacy._make_cameras(lookat, distance * 1.22)
@@ -330,20 +400,74 @@ def render_actual(run, output, slot, fps=15., width=640, height=480, focus_width
     return metadata
 
 
+def cold_cost_bracket(run, task_id, endpoint, jobs, workers):
+    """Measured inner timer and enclosing worker interval; never a fake exact cold time."""
+    run = Path(run)
+    stream = run / "benchmark_search" / task_id / endpoint[0]
+    planning = stream / "planning" / task_id
+    cost_path = stream / "planning_cost.json"; final_path = planning / "selection.json"
+    cost, final = read(cost_path), read(final_path)
+    job = jobs[(task_id, endpoint[0])]
+    stream_inner, final_elapsed, worker = [float(v) for v in
+        (cost["end_to_end_cold_planning_s"], final["elapsed_wall_s"], job["elapsed_wall_s"])]
+    if not all(np.isfinite(v) for v in (stream_inner, final_elapsed, worker)) or not 0. <= final_elapsed <= stream_inner <= worker:
+        raise ValueError("cold timing bracket requires finite final <= inner <= worker intervals")
+    prefix_elapsed = None
+    sources = {"search_phase": record(run / "search_phase.json", run),
+        "planning_cost": record(cost_path, run), "final_selection": record(final_path, run)}
+    if endpoint == "R8":
+        prefix_path = planning / "prefix_08.json"
+        prefix_elapsed = float(read(prefix_path)["elapsed_wall_s"])
+        if not np.isfinite(prefix_elapsed) or not 0. <= prefix_elapsed <= final_elapsed:
+            raise ValueError("R8 prefix elapsed must lie within final search elapsed")
+        lower = stream_inner - final_elapsed + prefix_elapsed
+        upper = worker - final_elapsed + prefix_elapsed
+        formula = "outer_worker_elapsed_s - final_selection_elapsed_s + prefix08_elapsed_s"
+        sources["prefix08_selection"] = record(prefix_path, run)
+    else:
+        lower, upper, formula = stream_inner, worker, "outer_worker_elapsed_s"
+    if not np.isfinite(lower) or not np.isfinite(upper) or upper < lower:
+        raise ValueError("cold timing bracket upper bound is below lower bound")
+    value = {"task_id": task_id, "endpoint": endpoint, "planner_internal_cold_s": lower,
+        "cold_lower_bound_s": lower, "cold_upper_bound_s": upper, "outer_worker_elapsed_s": worker,
+        "stream_internal_cold_s": stream_inner, "final_selection_elapsed_s": final_elapsed,
+        "prefix08_elapsed_s": prefix_elapsed, "startup_and_tail_residual_s": worker - stream_inner,
+        "bound_width_s": upper - lower, "upper_bound_formula": formula, "source_receipts": sources,
+        "worker_count": workers,
+        "timing_scope": "inner endpoint timer through enclosing worker dispatch-to-return; startup and post-selection tail are bracketed, not separately measured",
+        "execution_context": "shared worker-resource load; no isolated repeated-task latency experiment",
+        "warm_path_is_decomposition_estimate": True,
+        "warm_resident_model_path_estimate_s": None if endpoint == "R8" else cost.get("warm_resident_model_path_estimate_s"),
+        "warm_estimate_scope": "R8 prefix warm estimate unavailable; full-stream estimate belongs to R12" if endpoint == "R8" else "full-stream decomposition estimate"}
+    table = run / "tables" / "report_interpretation" / "endpoint_cold_cost_brackets.json"
+    if table.exists():
+        rows = read(table)
+        match = next((r for r in rows if r["task_id"] == task_id and r["endpoint"] == endpoint), None)
+        if match is None or any(not np.isclose(value[k], match[k], atol=1e-9, rtol=0.) for k in
+                ("cold_lower_bound_s", "cold_upper_bound_s", "outer_worker_elapsed_s", "bound_width_s")):
+            raise ValueError("media cold bracket differs from final report interpretation")
+        value["report_interpretation_receipt"] = record(table, run)
+    return value
+
+
 def core_charts(run, output, slots):
     tasks = list(dict.fromkeys(row["task_id"] for row in slots)); prefixes = []
+    phase = read(Path(run) / "search_phase.json")
+    jobs = {(row["task_id"], row["method"]): row for row in phase["jobs"]}
+    if (phase.get("passed") is not True or len(jobs) != len(tasks) * 3 or len(phase["jobs"]) != len(jobs)
+            or any(row["exit_code"] != 0 for row in phase["jobs"])):
+        raise ValueError("terminal search worker receipts are required for cold timing brackets")
     costs = {}
     for task_id in tasks:
         for method in ("R", "N", "D"):
             stream = Path(run) / "benchmark_search" / task_id / method
             planning = stream / "planning" / task_id
-            cost = read(stream / "planning_cost.json")
             for budget in ((4, 8, 12) if method == "R" else (4, 8)):
                 prefix = read(planning / f"prefix_{budget:02d}.json")
                 prefixes.append({"task_id": task_id, "method": method, "budget": budget, "snapshot": prefix})
                 endpoint = f"{method}{budget}"
                 if endpoint in ENDPOINTS:
-                    costs[(task_id, endpoint)] = prefix["elapsed_wall_s"] if endpoint == "R8" else cost["end_to_end_cold_planning_s"]
+                    costs[(task_id, endpoint)] = cold_cost_bracket(run, task_id, endpoint, jobs, phase["workers"])
     folder = Path(output) / "figures"; folder.mkdir(parents=True, exist_ok=True)
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
     for column, pref in enumerate(PREFERENCES):
@@ -364,11 +488,17 @@ def core_charts(run, output, slots):
     fig.suptitle("C.2 sealed search prefixes | 4-slot points are prediction only; quality means exclude NO_PLAN")
     budget_chart = folder / "budget_quality_coverage.png"; fig.savefig(budget_chart, dpi=155); plt.close(fig)
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), constrained_layout=True)
-    x = np.arange(len(ENDPOINTS)); means = [np.mean([costs[(tid, ep)] for tid in tasks]) for ep in ENDPOINTS]
-    axes[0].bar(x, means, color=[COLORS[ep[0]] for ep in ENDPOINTS], alpha=.65)
+    x = np.arange(len(ENDPOINTS))
+    means = np.asarray([np.mean([costs[(tid, ep)]["cold_lower_bound_s"] for tid in tasks]) for ep in ENDPOINTS])
+    upper_means = np.asarray([np.mean([costs[(tid, ep)]["cold_upper_bound_s"] for tid in tasks]) for ep in ENDPOINTS])
+    axes[0].bar(x, means, color=[COLORS[ep[0]] for ep in ENDPOINTS], alpha=.65, label="Mean inner timer (lower)")
+    axes[0].errorbar(x, means, yerr=[np.zeros(len(x)), upper_means - means], fmt="none", color="#253249", capsize=5,
+        label="Mean enclosing worker bound (upper)")
     for j, tid in enumerate(tasks):
-        axes[0].plot(x + (j - 1.5) * .04, [costs[(tid, ep)] for ep in ENDPOINTS], "o", label=tid, markersize=4)
-    axes[0].set(xticks=x, xticklabels=ENDPOINTS, ylabel="Measured cold planning wall time [s]", title="End-to-end planning, including inference")
+        lower = np.asarray([costs[(tid, ep)]["cold_lower_bound_s"] for ep in ENDPOINTS])
+        upper = np.asarray([costs[(tid, ep)]["cold_upper_bound_s"] for ep in ENDPOINTS])
+        axes[0].errorbar(x + (j - 1.5) * .055, lower, yerr=[np.zeros(len(x)), upper - lower], fmt="o", label=tid, markersize=3, linewidth=.8, alpha=.65)
+    axes[0].set(xticks=x, xticklabels=ENDPOINTS, ylabel="Observed cold planning bracket [s]", title="Inner timer lower / worker enclosing upper")
     axes[0].legend(fontsize=6); axes[0].grid(axis="y", alpha=.2)
     for j, pref in enumerate(PREFERENCES):
         counts = [sum(r["full_task_success"] and r["original_independent_gates_passed"] and
@@ -376,7 +506,7 @@ def core_charts(run, output, slots):
         axes[1].bar(x + (j - .5) * .35, counts, width=.35, label=f"{pref}: actual Task + 5 gates" + (" + 30mm" if pref == "B" else ""))
     axes[1].set(xticks=x, xticklabels=ENDPOINTS, ylabel="Qualifying actual Tasks / 4", ylim=(0, 4.5), yticks=range(5), title="All failures and NO_PLAN retained in denominator")
     axes[1].legend(fontsize=8); axes[1].grid(axis="y", alpha=.2)
-    fig.suptitle("Protocol budgets are not measured speedup; paired actual quality and costs govern benefit")
+    fig.suptitle(f"Worker startup/tail bracket under shared {phase['workers']}-worker load; no isolated repeat | warm path is an estimate")
     cost_chart = folder / "planning_cost_actual_results.png"; fig.savefig(cost_chart, dpi=155); plt.close(fig)
     return {"budget_quality_coverage": budget_chart.relative_to(output).as_posix(),
         "planning_cost_actual_results": cost_chart.relative_to(output).as_posix()}, costs
@@ -389,17 +519,20 @@ def dashboard(output, payload):
 body{font:15px system-ui,sans-serif;background:#f4f6fa;color:#253249;max-width:1400px;margin:auto;padding:24px}h1{font-size:28px;margin-bottom:8px}p{line-height:1.6}section{background:white;border:1px solid #dce2eb;border-radius:12px;padding:20px;margin:20px 0}.charts,.figures{display:grid;grid-template-columns:1fr 1fr;gap:15px}img{width:100%;height:auto}video{width:100%;max-height:760px;background:#111827}select{padding:8px;margin:5px;max-width:40vw;border:1px solid #aabbcc;border-radius:6px}table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:9px;text-align:left;border-bottom:1px solid #e5eaf1}.pass{color:#148067}.fail{color:#b25c25}.badge{background:#e7edf5;padding:3px 8px;border-radius:6px}.scroll{overflow:auto}#status{font-size:16px;padding:12px 0}@media(max-width:800px){.charts,.figures{grid-template-columns:1fr}body{padding:12px}}
 </style><h1>V6.4-C.2 · Preference-conditioned initialization</h1>
 <p>R8 / R12: frozen rule search. N8: TRAIN-only retrieval. D8: trained Diffusion initialization + C.1 search + original control. Four TEST Tasks; A/B share each search pool. Prefix predictions, final actual execution and independent replay remain separate evidence.</p>
+<p id="conclusion"></p>
 <p><span class="badge">deployment NOT_MET</span> <span class="badge">continuous-time safety NOT_ESTABLISHED</span> <span class="badge">hardware safety NOT_ESTABLISHED</span></p>
-<section><div class="charts"><img id="budget"><img id="cost"></div></section>
+<section><div class="charts"><img id="budget"><img id="cost"></div><p>Cold planning is an observed bracket: the inner planner timer is the lower bound; the enclosing worker dispatch-to-return interval supplies the upper bound, including startup and post-selection tail. R8 carries the measured R-worker residual around its sealed eighth-slot prefix. Runs share four workers and hardware resources; these are not isolated repeated-task latency measurements. Warm paths are decomposition estimates. Protocol budget reductions alone do not establish speedup.</p></section>
 <section><label>Task <select id="task"></select></label><label>Endpoint <select id="endpoint"></select></label><label>Preference <select id="preference"></select></label><label>View <select id="view"></select></label>
-<div id="status"></div><video id="video" controls preload="metadata"></video><p id="videoNote"></p><div id="downloads"></div><div class="figures"><img id="trajectory"><img id="tracking"></div></section>
-<section><h2>All 32 logical actual slots</h2><p>Aliases link the same unique actual media and contribute no second physical run. Failed prefixes end at their exact saved state; NO_PLAN has zero execution steps and no video. Tracking is descriptive and does not replace the original five independent gates.</p><div class="scroll"><table><thead><tr><th>Task</th><th>Endpoint / pref</th><th>Status</th><th>Steps</th><th>Task + five gates</th><th>B ≥30mm</th><th>I [rad/s]</th><th>L [m]</th><th>d [mm]</th><th>Media source</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<div id="status"></div><p id="costNote"></p><video id="video" controls preload="metadata"></video><p id="videoNote"></p><div id="downloads"></div><div class="figures"><img id="trajectory"><img id="tracking"></div></section>
+<section><h2>All 32 logical actual slots</h2><p>Aliases link the same unique actual media and contribute no second physical run. Failed prefixes end at their exact saved state; NO_PLAN has zero execution steps and no video. Tracking is descriptive and does not replace the original five independent gates.</p><div class="scroll"><table><thead><tr><th>Task</th><th>Endpoint / pref</th><th>Status</th><th>Steps</th><th>Task + five gates</th><th>B ≥30mm</th><th>I [rad/s]</th><th>L [m]</th><th>d [mm]</th><th>Cold bracket [s]</th><th>Media source</th></tr></thead><tbody id="rows"></tbody></table></div></section>
 <script>const D=__DATA__;const $=id=>document.getElementById(id);function esc(v){const p=document.createElement('span');p.textContent=String(v);return p.innerHTML}function fmt(x,d=4){return x==null?'—':Number(x).toFixed(d)}function options(id,values){$(id).innerHTML=values.map(v=>'<option>'+esc(v)+'</option>').join('')}
+$('conclusion').textContent='Research delivery complete: '+D.summary?.research_delivery_complete+'; trained initializer operational: '+D.summary?.learned_initializer_operational+'; learning benefit: '+D.summary?.learning_benefit_established_in_pilot+'; default: '+D.summary?.default_initializer_decision+'.';
 $('budget').src=D.charts.budget_quality_coverage;$('cost').src=D.charts.planning_cost_actual_results;options('task',D.tasks);options('endpoint',['R8','R12','N8','D8']);options('preference',['A','B']);options('view',['five_view_grid','continuum_focus','overview','front','side','top','iso']);
-function show(){const r=D.slots.find(r=>r.task_id===$('task').value&&r.endpoint===$('endpoint').value&&r.preference===$('preference').value);if(!r)return;const v=r.media?.videos?.[$('view').value];$('video').style.display=v?'block':'none';if(v){if(!$('video').src.endsWith(v)){$('video').src=v;$('video').poster=r.media.focus_preview||r.media.preview||''}}else{$('video').removeAttribute('src');$('video').load()}
+function show(){const r=D.slots.find(r=>r.task_id===$('task').value&&r.endpoint===$('endpoint').value&&r.preference===$('preference').value);if(!r)return;const v=r.media?.videos?.[$('view').value];$('video').style.display=v?'block':'none';if(v){if(!$('video').src.endsWith(v)){$('video').src=v;$('video').poster=($('view').value==='continuum_focus'?r.media.focus_preview:r.media.preview)||''}}else{$('video').removeAttribute('src');$('video').load()}
 $('status').textContent=r.status+' | '+r.actual_steps+' saved steps | '+(r.alias_of_method?'alias of '+r.alias_of_method:r.unique_run?'unique actual':'no physical run');$('status').className=r.full_task_success?'pass':'fail';$('videoNote').textContent=r.media?'Saved endpoint '+fmt(r.media.source_end_s,3)+' s; exact endpoint included. All frames use saved actual states.':r.actual_steps?'Video not rendered for this actual.':'No saved execution states: '+r.status;for(const name of ['trajectory','tracking']){$(name).style.display=r.figures?'block':'none';if(r.figures)$(name).src=r.figures[name]}
+$('costNote').textContent=r.planning_cold_bracket?'Observed cold planning bracket: '+fmt(r.planning_cold_bracket.cold_lower_bound_s,2)+'–'+fmt(r.planning_cold_bracket.cold_upper_bound_s,2)+' s (inner timer to enclosing worker interval; startup/tail bracketed). Shared '+r.planning_cold_bracket.worker_count+'-worker load; warm path is an estimate.':'Cold timing bracket unavailable.';
 $('downloads').innerHTML=Object.entries(r.media?.videos||{}).map(([name,path])=>'<a href="'+esc(path)+'">'+esc(name)+'</a>').join(' · ')+(r.figures?' · <a href="'+esc(r.figures.tracking_csv)+'">native tracking CSV</a>':'')}
-$('rows').innerHTML=D.slots.map(r=>{const q=r.full_task_success?r.quality||{}:{};return '<tr><td>'+esc(r.task_id)+'</td><td>'+esc(r.endpoint+' / '+r.preference)+'</td><td class="'+(r.full_task_success?'pass':'fail')+'">'+esc(r.status)+'</td><td>'+r.actual_steps+'</td><td>'+((r.full_task_success&&r.original_independent_gates_passed)?'PASS':'FAIL')+'</td><td>'+(r.clearance_30mm_met===true?'YES':r.clearance_30mm_met===false?'NO':'—')+'</td><td>'+fmt(q.I_support)+'</td><td>'+fmt(q.L_full)+'</td><td>'+fmt(q.d_support==null?null:q.d_support*1000,2)+'</td><td>'+esc(r.alias_of_method||r.method)+'</td></tr>'}).join('');for(const id of ['task','endpoint','preference','view'])$(id).addEventListener('change',show);show();</script></html>'''
+$('rows').innerHTML=D.slots.map(r=>{const q=r.full_task_success?r.quality||{}:{};const c=r.planning_cold_bracket;return '<tr><td>'+esc(r.task_id)+'</td><td>'+esc(r.endpoint+' / '+r.preference)+'</td><td class="'+(r.full_task_success?'pass':'fail')+'">'+esc(r.status)+'</td><td>'+r.actual_steps+'</td><td>'+((r.full_task_success&&r.original_independent_gates_passed)?'PASS':'FAIL')+'</td><td>'+(r.clearance_30mm_met===true?'YES':r.clearance_30mm_met===false?'NO':'—')+'</td><td>'+fmt(q.I_support)+'</td><td>'+fmt(q.L_full)+'</td><td>'+fmt(q.d_support==null?null:q.d_support*1000,2)+'</td><td>'+(c?fmt(c.cold_lower_bound_s,1)+'–'+fmt(c.cold_upper_bound_s,1):'—')+'</td><td>'+esc(r.alias_of_method||r.method)+'</td></tr>'}).join('');for(const id of ['task','endpoint','preference','view'])$(id).addEventListener('change',show);show();</script></html>'''
     (Path(output) / "index.html").write_text(page.replace("__DATA__", encoded), encoding="utf8")
 
 
@@ -409,6 +542,7 @@ def build(run, output, *, render=False, check_inputs=False, workers=2, fps=15., 
         raise ValueError("media output must be separate from frozen scientific run")
     slots = terminal_slots(run); output.mkdir(parents=True, exist_ok=True)
     request = {"schema": SCHEMA, "plan_sha256": sha(run / "plan.json"), "actual_complete_sha256": sha(run / "actual_complete.json"),
+        "search_phase_sha256": sha(run / "search_phase.json"),
         "fps": fps, "width": width, "height": height, "focus_width": focus_width, "focus_height": focus_height}
     request_path = output / "build_request.json"
     if request_path.exists() and read(request_path) != request:
@@ -444,7 +578,7 @@ def build(run, output, *, render=False, check_inputs=False, workers=2, fps=15., 
     for s in slots:
         original = resolve_unique(slots, s["task_id"], s["method"]); key = (original["task_id"], original["method"])
         display_slots.append({**s, "figures": figures.get(key), "media": videos.get(key),
-            "planning_cold_s": costs[(s["task_id"], s["endpoint"])], "media_source_method": original["method"]})
+            "planning_cold_bracket": costs[(s["task_id"], s["endpoint"])], "media_source_method": original["method"]})
     payload = {"schema": SCHEMA, "tasks": list(dict.fromkeys(s["task_id"] for s in slots)), "charts": charts,
         "slots": display_slots, "summary": read(run / "summary.json") if (run / "summary.json").exists() else None}
     write(output / "dashboard_data.json", payload); dashboard(output, payload)

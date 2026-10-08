@@ -1,0 +1,957 @@
+{
+  "schema": "v64_c1_selection_v1",
+  "task_id": "c2_test0_plus",
+  "task_sha256": "9622374eac2bf1aa517cabeb97f9f436c0f91245cd66d07ddf62f504762ea114",
+  "input_sha256": "db9c4b85deb354d23f9aacfe5df0756733b1cf1ae9173af3f0005db278df72b8",
+  "execution_identity": {
+    "source_identity_sha256": "856f9cc8eaf8654e2d2fa391edfc8dafb098f0718adf7fd9f4ad65ce2bf8a024",
+    "config_sha256": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "run_config_sha256": "37c822b6a94d4e3e380b83b15f937ad6d44e151a2cf0502969e2c5b7694fd5f1",
+    "task_sha256": "9622374eac2bf1aa517cabeb97f9f436c0f91245cd66d07ddf62f504762ea114",
+    "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f"
+  },
+  "active_intervals": [
+    1,
+    2
+  ],
+  "active_dim": 4,
+  "preferences": {
+    "A": {
+      "status": "BUDGET_EXHAUSTED_WITH_INCUMBENT",
+      "selected_plan": {
+        "schema": "task_anchored_residual_plan_v1",
+        "representation_version": "task_anchored_cartesian_residual_v1",
+        "definition": {
+          "applicable": true,
+          "base_reference_id": "original_cartesian_passthrough_physical_time_home_v1",
+          "base_reference_sha256": "49ee64d354a4f4bf577c7fc492864eef545b331823aa4d8b10e465cdf7057172",
+          "base_reference_version": "original_cartesian_passthrough_physical_time_home_v1",
+          "candidate_component_count": 7,
+          "coefficient_norm_bound_m": 0.02,
+          "definition_sha256": "d36c5f956e3d541741a9abeaf591ce55264e48f7270798dfd248f36ce844de5b",
+          "disabled_intervals": [],
+          "frame": "world",
+          "interval_mask": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "interval_selection": "earliest_six_complement_components_then_disable_degenerate_without_replacement",
+          "intervals_s": [
+            [
+              0.0,
+              4.15
+            ],
+            [
+              4.85,
+              7.487627965733751
+            ],
+            [
+              8.18762796573375,
+              11.318950620021392
+            ],
+            [
+              12.018950620021391,
+              14.777794078576395
+            ],
+            [
+              15.477794078576395,
+              18.56312274524279
+            ],
+            [
+              19.263122745242793,
+              21.99658326170999
+            ]
+          ],
+          "partition_kind": "reference_time_not_PCC_arc_length",
+          "protected_time_contract": {
+            "additional_hold_intervals_s": null,
+            "additional_specified_velocity_requirements": null,
+            "additional_strict_path_intervals_s": null,
+            "base_reference_hold_intervals_s": [
+              [
+                25.5,
+                27.0
+              ]
+            ],
+            "extra_requirements_status": "NONE_IN_SUPPORTED_TASKSPEC_V1",
+            "final_reference_freeze_s": [
+              23.98,
+              27.0
+            ],
+            "initial_time_s": 0.0,
+            "path_freedom": "free_intermediate_path_between_fixed_requirements",
+            "schema": "task_derived_protected_time_contract_v1",
+            "task_point_windows": [
+              {
+                "arm": "continuum",
+                "point_id": "continuum_00",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 4.5,
+                "time_window_s": [
+                  4.15,
+                  4.85
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_01",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 7.83762796573375,
+                "time_window_s": [
+                  7.487627965733751,
+                  8.18762796573375
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_02",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 11.668950620021391,
+                "time_window_s": [
+                  11.318950620021392,
+                  12.018950620021391
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_03",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 15.127794078576395,
+                "time_window_s": [
+                  14.777794078576395,
+                  15.477794078576395
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_04",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 18.91312274524279,
+                "time_window_s": [
+                  18.56312274524279,
+                  19.263122745242793
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_05",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 22.34658326170999,
+                "time_window_s": [
+                  21.99658326170999,
+                  22.696583261709993
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_06",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              },
+              {
+                "arm": "rigid",
+                "point_id": "rigid_terminal",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              }
+            ],
+            "task_sha256": "9622374eac2bf1aa517cabeb97f9f436c0f91245cd66d07ddf62f504762ea114"
+          },
+          "protected_time_intervals_s": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.15,
+              4.85
+            ],
+            [
+              7.487627965733751,
+              8.18762796573375
+            ],
+            [
+              11.318950620021392,
+              12.018950620021391
+            ],
+            [
+              14.777794078576395,
+              15.477794078576395
+            ],
+            [
+              18.56312274524279,
+              19.263122745242793
+            ],
+            [
+              21.99658326170999,
+              22.696583261709993
+            ],
+            [
+              23.98,
+              27.0
+            ]
+          ],
+          "reasons": [],
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "schema": "task_anchored_cartesian_residual_v1",
+          "status": "APPLICABLE",
+          "support_cutoff_s": 23.98,
+          "task_id": "c2_test0_plus",
+          "task_sha256": "9622374eac2bf1aa517cabeb97f9f436c0f91245cd66d07ddf62f504762ea114",
+          "time_mapping": "identity_physical_time",
+          "transverse_bases": [
+            [
+              [
+                -9.05161490330276e-09,
+                0.3259270789322051
+              ],
+              [
+                3.1205651398095503e-09,
+                0.9453949117795801
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ],
+            [
+              [
+                0.99627027504725,
+                0.0
+              ],
+              [
+                0.0191172485196621,
+                0.9751483687300203
+              ],
+              [
+                -0.08414315103627973,
+                0.2215528356017594
+              ]
+            ],
+            [
+              [
+                0.9999034363857646,
+                2.168404344971009e-19
+              ],
+              [
+                0.013825024242487185,
+                -0.10142497043786591
+              ],
+              [
+                0.0014094710475898518,
+                0.994843191348103
+              ]
+            ],
+            [
+              [
+                0.9959634214952645,
+                0.0
+              ],
+              [
+                -0.04722405198561131,
+                -0.8504137524320051
+              ],
+              [
+                -0.07633316420473116,
+                0.5261144834297157
+              ]
+            ],
+            [
+              [
+                0.9882351558607984,
+                -6.938893903907228e-18
+              ],
+              [
+                -0.05752186045747739,
+                -0.9265781556184186
+              ],
+              [
+                0.14171278097015091,
+                -0.3761022753597345
+              ]
+            ],
+            [
+              [
+                0.03924948129527603,
+                0.9743868112475382
+              ],
+              [
+                -0.17006595139591985,
+                0.22487850512410942
+              ],
+              [
+                0.9846507250765889,
+                6.938893903907228e-18
+              ]
+            ]
+          ]
+        },
+        "z_m": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "source_candidate_id": "C00",
+      "prediction_task_passed": true,
+      "online_guards_passed": true,
+      "preference_met": true,
+      "prediction_metrics": {
+        "I_support": 0.09618984175634475,
+        "I_support_10D": 0.09598883276976403,
+        "I_support_7D": 0.006215274781449277,
+        "I_support_sample_count": 288,
+        "I_route_key_legacy": 0.10830760172619545,
+        "I_route_key_legacy_10D": 0.10809933107691932,
+        "I_route_key_legacy_7D": 0.006713509693354135,
+        "I_route_key_legacy_sample_count": 156,
+        "I_full": 0.10535053817265538,
+        "I_full_10D": 0.09549050179450101,
+        "I_full_7D": 0.04450056134817312,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.1867350554320435,
+        "L_support": 0.345381060208956,
+        "base_translation_peak_m": 0.008648447536940579,
+        "base_rotation_peak_rad": 0.06212177875941844,
+        "d_support": 0.029936976772942582,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 4933,
+          "time_s": 9.865999999999964,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 135,
+            "geom_b": 1,
+            "geom_a_name": "collision_0063",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_30",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.029936976772942582,
+          "fromto": [
+            1.8309449589028526,
+            0.5470145965745539,
+            0.14921953206978086,
+            1.8010095703088334,
+            0.5467063727543794,
+            0.14921025276811486
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 178870,
+        "source_compiled_model_sha256": "f4cfe05a8713004acef6f4c81fe9cff01ca4882873bb3985ee28fbf0cf457d39",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "plan_sha256": "f8c073e5f01d8fd2439e8d5f1754131a03070dbfcdf33fb645a09df90ab8fe5b",
+          "definition_sha256": "d36c5f956e3d541741a9abeaf591ce55264e48f7270798dfd248f36ce844de5b",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.80008494080578,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "formal_actual_validation": "NOT_RUN",
+      "selected_origin_source": "zero",
+      "selected_lineage": [
+        {
+          "initial_position": 0,
+          "source": "zero"
+        }
+      ],
+      "source_attribution": "rule_seed_or_descendant",
+      "best_safe_diagnostic": null
+    },
+    "B": {
+      "status": "BUDGET_EXHAUSTED_WITH_INCUMBENT",
+      "selected_plan": {
+        "schema": "task_anchored_residual_plan_v1",
+        "representation_version": "task_anchored_cartesian_residual_v1",
+        "definition": {
+          "applicable": true,
+          "base_reference_id": "original_cartesian_passthrough_physical_time_home_v1",
+          "base_reference_sha256": "49ee64d354a4f4bf577c7fc492864eef545b331823aa4d8b10e465cdf7057172",
+          "base_reference_version": "original_cartesian_passthrough_physical_time_home_v1",
+          "candidate_component_count": 7,
+          "coefficient_norm_bound_m": 0.02,
+          "definition_sha256": "d36c5f956e3d541741a9abeaf591ce55264e48f7270798dfd248f36ce844de5b",
+          "disabled_intervals": [],
+          "frame": "world",
+          "interval_mask": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "interval_selection": "earliest_six_complement_components_then_disable_degenerate_without_replacement",
+          "intervals_s": [
+            [
+              0.0,
+              4.15
+            ],
+            [
+              4.85,
+              7.487627965733751
+            ],
+            [
+              8.18762796573375,
+              11.318950620021392
+            ],
+            [
+              12.018950620021391,
+              14.777794078576395
+            ],
+            [
+              15.477794078576395,
+              18.56312274524279
+            ],
+            [
+              19.263122745242793,
+              21.99658326170999
+            ]
+          ],
+          "partition_kind": "reference_time_not_PCC_arc_length",
+          "protected_time_contract": {
+            "additional_hold_intervals_s": null,
+            "additional_specified_velocity_requirements": null,
+            "additional_strict_path_intervals_s": null,
+            "base_reference_hold_intervals_s": [
+              [
+                25.5,
+                27.0
+              ]
+            ],
+            "extra_requirements_status": "NONE_IN_SUPPORTED_TASKSPEC_V1",
+            "final_reference_freeze_s": [
+              23.98,
+              27.0
+            ],
+            "initial_time_s": 0.0,
+            "path_freedom": "free_intermediate_path_between_fixed_requirements",
+            "schema": "task_derived_protected_time_contract_v1",
+            "task_point_windows": [
+              {
+                "arm": "continuum",
+                "point_id": "continuum_00",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 4.5,
+                "time_window_s": [
+                  4.15,
+                  4.85
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_01",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 7.83762796573375,
+                "time_window_s": [
+                  7.487627965733751,
+                  8.18762796573375
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_02",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 11.668950620021391,
+                "time_window_s": [
+                  11.318950620021392,
+                  12.018950620021391
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_03",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 15.127794078576395,
+                "time_window_s": [
+                  14.777794078576395,
+                  15.477794078576395
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_04",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 18.91312274524279,
+                "time_window_s": [
+                  18.56312274524279,
+                  19.263122745242793
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_05",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 22.34658326170999,
+                "time_window_s": [
+                  21.99658326170999,
+                  22.696583261709993
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_06",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              },
+              {
+                "arm": "rigid",
+                "point_id": "rigid_terminal",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              }
+            ],
+            "task_sha256": "9622374eac2bf1aa517cabeb97f9f436c0f91245cd66d07ddf62f504762ea114"
+          },
+          "protected_time_intervals_s": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.15,
+              4.85
+            ],
+            [
+              7.487627965733751,
+              8.18762796573375
+            ],
+            [
+              11.318950620021392,
+              12.018950620021391
+            ],
+            [
+              14.777794078576395,
+              15.477794078576395
+            ],
+            [
+              18.56312274524279,
+              19.263122745242793
+            ],
+            [
+              21.99658326170999,
+              22.696583261709993
+            ],
+            [
+              23.98,
+              27.0
+            ]
+          ],
+          "reasons": [],
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "schema": "task_anchored_cartesian_residual_v1",
+          "status": "APPLICABLE",
+          "support_cutoff_s": 23.98,
+          "task_id": "c2_test0_plus",
+          "task_sha256": "9622374eac2bf1aa517cabeb97f9f436c0f91245cd66d07ddf62f504762ea114",
+          "time_mapping": "identity_physical_time",
+          "transverse_bases": [
+            [
+              [
+                -9.05161490330276e-09,
+                0.3259270789322051
+              ],
+              [
+                3.1205651398095503e-09,
+                0.9453949117795801
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ],
+            [
+              [
+                0.99627027504725,
+                0.0
+              ],
+              [
+                0.0191172485196621,
+                0.9751483687300203
+              ],
+              [
+                -0.08414315103627973,
+                0.2215528356017594
+              ]
+            ],
+            [
+              [
+                0.9999034363857646,
+                2.168404344971009e-19
+              ],
+              [
+                0.013825024242487185,
+                -0.10142497043786591
+              ],
+              [
+                0.0014094710475898518,
+                0.994843191348103
+              ]
+            ],
+            [
+              [
+                0.9959634214952645,
+                0.0
+              ],
+              [
+                -0.04722405198561131,
+                -0.8504137524320051
+              ],
+              [
+                -0.07633316420473116,
+                0.5261144834297157
+              ]
+            ],
+            [
+              [
+                0.9882351558607984,
+                -6.938893903907228e-18
+              ],
+              [
+                -0.05752186045747739,
+                -0.9265781556184186
+              ],
+              [
+                0.14171278097015091,
+                -0.3761022753597345
+              ]
+            ],
+            [
+              [
+                0.03924948129527603,
+                0.9743868112475382
+              ],
+              [
+                -0.17006595139591985,
+                0.22487850512410942
+              ],
+              [
+                0.9846507250765889,
+                6.938893903907228e-18
+              ]
+            ]
+          ]
+        },
+        "z_m": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            -0.012,
+            -1.667700068950433e-18
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "source_candidate_id": "C01",
+      "prediction_task_passed": true,
+      "online_guards_passed": true,
+      "preference_met": true,
+      "prediction_metrics": {
+        "I_support": 0.0965141783236339,
+        "I_support_10D": 0.09631903676929589,
+        "I_support_7D": 0.006134311152952196,
+        "I_support_sample_count": 288,
+        "I_route_key_legacy": 0.10883897730163507,
+        "I_route_key_legacy_10D": 0.10864022126497107,
+        "I_route_key_legacy_7D": 0.006574595315603512,
+        "I_route_key_legacy_sample_count": 156,
+        "I_full": 0.10537255156267367,
+        "I_full_10D": 0.09551616768391323,
+        "I_full_7D": 0.044497599191494513,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.1887246637395454,
+        "L_support": 0.3473703288362862,
+        "base_translation_peak_m": 0.008648009555928432,
+        "base_rotation_peak_rad": 0.062120007809448465,
+        "d_support": 0.04173419200846227,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 4951,
+          "time_s": 9.901999999999976,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 135,
+            "geom_b": 1,
+            "geom_a_name": "collision_0063",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_30",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.04173419200846227,
+          "fromto": [
+            1.8309887719265447,
+            0.5457709251816328,
+            0.14918568763070567,
+            1.7893299339937934,
+            0.5432650952789041,
+            0.14911625283713142
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 178870,
+        "source_compiled_model_sha256": "f4cfe05a8713004acef6f4c81fe9cff01ca4882873bb3985ee28fbf0cf457d39",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "plan_sha256": "96bd6da9dc66861dfd8abdd268a37a213f3a67cbc1e7f693e8bbecca89931b77",
+          "definition_sha256": "d36c5f956e3d541741a9abeaf591ce55264e48f7270798dfd248f36ce844de5b",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              -0.012,
+              -1.667700068950433e-18
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.80008494080578,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "formal_actual_validation": "NOT_RUN",
+      "selected_origin_source": "geometry",
+      "selected_lineage": [
+        {
+          "initial_position": 1,
+          "source": "geometry"
+        }
+      ],
+      "source_attribution": "rule_seed_or_descendant",
+      "best_safe_diagnostic": null
+    }
+  },
+  "strict_winner": "C04",
+  "tie_selected_winner": "C00",
+  "tie_group_ids": [
+    "C00",
+    "C01",
+    "C02",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11"
+  ],
+  "B_available_ids": [
+    "C01",
+    "C02",
+    "C03",
+    "C05",
+    "C07",
+    "C09",
+    "C11"
+  ],
+  "finite_non_dominated_ids": [
+    "C00",
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C07",
+    "C09",
+    "C10",
+    "C11"
+  ],
+  "comparable_candidate_ids": [
+    "C00",
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11"
+  ],
+  "seed_only_selection": {
+    "strict": "C00",
+    "tie_selected": "C00",
+    "B": "C01",
+    "best_safe_diagnostic": "C01",
+    "tie_group_ids": [
+      "C00",
+      "C01",
+      "C02",
+      "C03"
+    ],
+    "B_available_ids": [
+      "C01",
+      "C02",
+      "C03"
+    ]
+  },
+  "budget": {
+    "candidate_budget": 12,
+    "slots_consumed": 12,
+    "proposal_attempts": 12,
+    "proposal_limit": 128,
+    "cache_hits": 0,
+    "prediction_rollouts_started": 12,
+    "continuous_candidates_constructed": 8,
+    "non_historical_continuous_candidates_evaluated": 8,
+    "shared_A_B_pool": true,
+    "stop_reason": "CANDIDATE_BUDGET_EXHAUSTED",
+    "poll_truncated": true,
+    "completed_sweeps": [],
+    "current_step_m": 0.005
+  },
+  "formal_actual_validation": "NOT_RUN",
+  "selection_reads_final_actual": false,
+  "elapsed_wall_s": 999.5491317999549,
+  "sealed_prefixes": {
+    "4": "prefix_04.json",
+    "8": "prefix_08.json",
+    "12": "prefix_12.json"
+  },
+  "registry_content_sha256": "0ceea0a3661962ce7dc6342f64fcf3dd00d20b6f273c3053fb7bde835698db8a"
+}

@@ -1,0 +1,474 @@
+{
+  "schema": "v64_c2_independent_dataset_review_v1",
+  "passed": true,
+  "created_utc": "2026-10-08T01:33:29.604240+00:00",
+  "dataset_manifest_sha256": "4497032017d04ebf529669c463ea592540c828338db9d801bce118242f6023e9",
+  "checks": {
+    "historical48_new48_max96": true,
+    "physical_identity_unique": true,
+    "new_predictions_never_actual": true,
+    "no_TEST_candidates_or_labels": true,
+    "TaskSHA_definition_plan_binding": true,
+    "historical_TaskSpec_bytes_unchanged": true,
+    "mother_and_mirror_split_disjoint": true,
+    "20validated_views_collapse10physical": true,
+    "historical_actual_strict_independent_binding": true,
+    "independent_family_label_recomputation": true,
+    "B_labels_measured_at_least30mm": true,
+    "inactive_search_coefficients_zero": true,
+    "reference_and_search_masks_distinct": true,
+    "condition_scaler_external_TRAIN_only": true,
+    "literal_mean0_std1": true,
+    "residual_scaler_unique_TRAIN_labels_open_dims": true,
+    "formal_conditions_globally_TRAIN_VAL_supported": true,
+    "both_VAL_tasks_support_formal_conditions": true,
+    "multiple_TRAIN_mothers_per_formal_condition": true,
+    "manifest_unchanged": true
+  },
+  "physical_candidates": {
+    "historical": 48,
+    "new": 48,
+    "total": 96
+  },
+  "legacy_validated_preference_views": 20,
+  "legacy_validated_physical_candidates": 10,
+  "evidence_tiers_unique": {
+    "FAILED_OR_INCOMPLETE": 22,
+    "VALIDATED_EXECUTION": 10,
+    "PREDICTED_COMPLETE": 64
+  },
+  "new_evidence_tiers_unique": {
+    "PREDICTED_COMPLETE": 37,
+    "FAILED_OR_INCOMPLETE": 11
+  },
+  "label_views": 77,
+  "zero_label_views": 4,
+  "zero_label_physical_unique": 4,
+  "conditions": [
+    {
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "label_views": 19,
+      "physical_unique": 19,
+      "mothers": [
+        "c1_mother_00",
+        "c1_mother_01",
+        "c2_new_train"
+      ],
+      "tasks": [
+        "c1_mother_00_minus",
+        "c1_mother_00_plus",
+        "c1_mother_01_minus",
+        "c1_mother_01_plus",
+        "c2_new_train_minus",
+        "c2_new_train_plus"
+      ]
+    },
+    {
+      "split": "val",
+      "preference": "A",
+      "family": "v1",
+      "label_views": 8,
+      "physical_unique": 8,
+      "mothers": [
+        "c2_new_val"
+      ],
+      "tasks": [
+        "c2_new_val_minus",
+        "c2_new_val_plus"
+      ]
+    },
+    {
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "label_views": 10,
+      "physical_unique": 10,
+      "mothers": [
+        "c1_mother_00",
+        "c1_mother_01",
+        "c2_new_train"
+      ],
+      "tasks": [
+        "c1_mother_00_minus",
+        "c1_mother_00_plus",
+        "c1_mother_01_plus",
+        "c2_new_train_plus"
+      ]
+    },
+    {
+      "split": "val",
+      "preference": "B",
+      "family": "v2",
+      "label_views": 12,
+      "physical_unique": 12,
+      "mothers": [
+        "c2_new_val"
+      ],
+      "tasks": [
+        "c2_new_val_minus",
+        "c2_new_val_plus"
+      ]
+    }
+  ],
+  "empty_teacher_task_buckets_for_formal_conditions": [
+    {
+      "task_id": "c1_mother_01_minus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_train_minus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    }
+  ],
+  "empty_bucket_interpretation": "Teacher-budget label absence only; both formal conditions supported globally in TRAIN/VAL. No physical infeasibility claim.",
+  "buckets": [
+    {
+      "task_id": "c1_mother_00_plus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 6,
+      "near_optimal_labels": 4,
+      "minimum": 0.09739026205145301
+    },
+    {
+      "task_id": "c1_mother_00_plus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 6,
+      "near_optimal_labels": 2,
+      "minimum": 0.10052657855885931
+    },
+    {
+      "task_id": "c1_mother_00_plus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c1_mother_00_plus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 5,
+      "near_optimal_labels": 5,
+      "minimum": 1.1882110962354446
+    },
+    {
+      "task_id": "c1_mother_00_minus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 3,
+      "near_optimal_labels": 2,
+      "minimum": 0.09885594962820769
+    },
+    {
+      "task_id": "c1_mother_00_minus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 9,
+      "near_optimal_labels": 8,
+      "minimum": 0.0978388349127168
+    },
+    {
+      "task_id": "c1_mother_00_minus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 1,
+      "near_optimal_labels": 1,
+      "minimum": 1.1750685828589666
+    },
+    {
+      "task_id": "c1_mother_00_minus",
+      "mother_id": "c1_mother_00",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 5,
+      "near_optimal_labels": 3,
+      "minimum": 1.1842189120949198
+    },
+    {
+      "task_id": "c1_mother_01_plus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 10,
+      "near_optimal_labels": 6,
+      "minimum": 0.09947829430461953
+    },
+    {
+      "task_id": "c1_mother_01_plus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 2,
+      "near_optimal_labels": 1,
+      "minimum": 0.10211947482900591
+    },
+    {
+      "task_id": "c1_mother_01_plus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 5,
+      "near_optimal_labels": 5,
+      "minimum": 1.1461664965962752
+    },
+    {
+      "task_id": "c1_mother_01_plus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 2,
+      "near_optimal_labels": 1,
+      "minimum": 1.1514848482148692
+    },
+    {
+      "task_id": "c1_mother_01_minus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 1,
+      "near_optimal_labels": 1,
+      "minimum": 0.11363408960929994
+    },
+    {
+      "task_id": "c1_mother_01_minus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c1_mother_01_minus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c1_mother_01_minus",
+      "mother_id": "c1_mother_01",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_train_plus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 10,
+      "near_optimal_labels": 5,
+      "minimum": 0.09289757525490515
+    },
+    {
+      "task_id": "c2_new_train_plus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 2,
+      "near_optimal_labels": 1,
+      "minimum": 0.09513530585446459
+    },
+    {
+      "task_id": "c2_new_train_plus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 5,
+      "near_optimal_labels": 5,
+      "minimum": 1.1810531964137676
+    },
+    {
+      "task_id": "c2_new_train_plus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 2,
+      "near_optimal_labels": 1,
+      "minimum": 1.186343414958682
+    },
+    {
+      "task_id": "c2_new_train_minus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 1,
+      "near_optimal_labels": 1,
+      "minimum": 0.11335476758286996
+    },
+    {
+      "task_id": "c2_new_train_minus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_train_minus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_train_minus",
+      "mother_id": "c2_new_train",
+      "split": "train",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_val_plus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 6,
+      "near_optimal_labels": 6,
+      "minimum": 0.09321977025627887
+    },
+    {
+      "task_id": "c2_new_val_plus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 6,
+      "near_optimal_labels": 2,
+      "minimum": 0.09235581773941902
+    },
+    {
+      "task_id": "c2_new_val_plus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_val_plus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 5,
+      "near_optimal_labels": 5,
+      "minimum": 1.1199854174870427
+    },
+    {
+      "task_id": "c2_new_val_minus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "A",
+      "family": "v1",
+      "qualified_pool": 3,
+      "near_optimal_labels": 2,
+      "minimum": 0.09235616083089991
+    },
+    {
+      "task_id": "c2_new_val_minus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "A",
+      "family": "v2",
+      "qualified_pool": 9,
+      "near_optimal_labels": 3,
+      "minimum": 0.09005193315815427
+    },
+    {
+      "task_id": "c2_new_val_minus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "B",
+      "family": "v1",
+      "qualified_pool": 0,
+      "near_optimal_labels": 0,
+      "minimum": null
+    },
+    {
+      "task_id": "c2_new_val_minus",
+      "mother_id": "c2_new_val",
+      "split": "val",
+      "preference": "B",
+      "family": "v2",
+      "qualified_pool": 7,
+      "near_optimal_labels": 7,
+      "minimum": 1.1199910288005046
+    }
+  ],
+  "condition_dimension": 896,
+  "condition_scaler_fit_task_sha256": [
+    "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+    "557e5da614ee7afcfd65960b1d77e135dde3dc2ea3c3f0b2eac47ff6bbefa317",
+    "55d00797eb426767afb866a273e261bf6f217bd591f26515bfc6cc4f166b1f4a",
+    "77f85fef99505f96337da141773d2c6eaae95a8c7d4806957674c3eca64f1e73",
+    "98f3c72891e56bd5a215ee6622f372d854232e99c6e27d58e0e8e2a1af3f31f1",
+    "dca0b99a685c1b1927dadb7cf6d3b51b99fb1fc9a6957ef699b29e8b2352410d"
+  ],
+  "residual_fit_unique_TRAIN_physical_labels": 45,
+  "review_physics_steps": 0,
+  "review_training_updates": 0,
+  "review_inference_samples": 0,
+  "frozen_source_modified": false
+}

@@ -1,3 +1,32 @@
+# Hybrid Dual-Arm Space Manipulator — V6.4-C.2
+
+固定预算的 C.2 数据、真实训练、搜索和最终 actual 协议已执行；独立审查支持有限工程完成与局部先导结果，判定 `claim_supported=partial`、置信度 medium。新模型完成 **4,000** 次更新，VAL 选中 update **250**；八个指定 Diffusion 初值中七个 raw 合法，一个原样拒绝占槽，无裁剪或补采样。默认保留 C.1 规则初始化，`learning_benefit_established_in_pilot=NOT_ESTABLISHED`。
+
+|端点|A：完整 Task + 原五门禁/4|B：完整 Task + 原五门禁 + 30mm/4|NO_PLAN/8|
+|---|---:|---:|---:|
+|R8|2|2|4|
+|R12|4|2|2|
+|N8|4|2|2|
+|D8|4|2|2|
+
+全部 **32** 个逻辑 actual 槽中，22 槽完整通过原五门禁、10 槽 `NO_PLAN`；实际执行 12 条唯一计划，另有 10 槽严格别名，actual 执行失败与工具错误均为零。N8-A 在全部四任务达到 R12-A 的预声明近质量带；D8-A 为三任务。B 的两个可配对任务中，D8 为 2/2 达带，N8 为 1/2，另两任务均为 N/A；N8 在 `test0_plus` 的路径增量为 5.26878mm，超过 5mm 带宽。两种八槽初始化均未建立保持整体质量的摊销收益。四任务、两新母场景与单训练 seed 的结果不构成广泛泛化或总体非劣保证。
+
+[C.2 当前查看器：R8 / R12 / N8 / D8、七种视图、末端轨迹与跟踪误差](v6_4/visualization/preference_warmstart_20261008_01/index.html) · [C.2 展示语义与来源说明](docs/V6_4_C2_VISUALIZATION.md) · [封存报告](v6_4/releases/preference_warmstart_20261008_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/preference_warmstart_20261008_01/snapshot/summary.json) · [独立科学审查](paper/review-traces/experiment-result-to-claim/2026-10-08_run01/response.md) · [GitHub 独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c2-preference-diffusion-warmstart)
+
+**媒体已完成刷新并核验：12 条唯一 actual、84 个视频。** [visualization_manifest.json](v6_4/visualization/preference_warmstart_20261008_01/visualization_manifest.json) 绑定七种视频视图、对应末端轨迹、跟踪误差和两张核心图；全部资产哈希与保存末状态核验通过。十个别名槽共用原媒体，十个 `NO_PLAN` 槽不生成虚构视频。冷规划成本展示内部计时到 worker 调用返回的实测区间，包含启动/收尾范围；四 worker 共享资源，未做隔离重复时延实验，warm 路径仅为分解估计。八槽少四个配额不自动构成实测加速。
+
+克隆本分支后，从仓库根目录检查便携数据、权重与来源绑定（不生成新候选、不运行物理）：
+
+```sh
+python -B -X utf8 -m v6_4.visualization.portable_preference_warmstart --release v6_4/releases/preference_warmstart_20261008_01 --action inspect
+```
+
+部署 `NOT_MET`，连续时间安全与硬件安全均为 `NOT_ESTABLISHED`。[交付核验](docs/C2_DELIVERY_CHECKS.json)记录预算与发布字节检查；[发布清单](v6_4/releases/preference_warmstart_20261008_01/release_manifest.json)逐项说明便携文件与保留本地的原生档案。
+
+以下保留 C.1 及更早版本的原始结论与历史入口。
+
+---
+
 # Hybrid Dual-Arm Space Manipulator — V6.4-C.1
 
 已实现可调用的连续Cartesian路线优化器。四个新冻结任务来自两个母场景；两偏好共享每任务12候选槽，未训练或采样网络。工程完成不等于优化优越。

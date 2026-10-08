@@ -1,0 +1,135 @@
+{
+  "method": "N",
+  "task_sha256": "c66606fcb08217c7976a2d76f1232907b9c7971116f35fa509b79a8149517027",
+  "model_freeze_sha256": "fa4cb98f158f291316c4215106af436d741cfd008b7f631d4635ce5d5f1e7a9a",
+  "proposals": {
+    "1": {
+      "source": "retrieval",
+      "family": "v1",
+      "preference": "A",
+      "raw_z_m": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -0.005
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "retrieval_rules": {
+        "dataset_manifest_sha256": "4497032017d04ebf529669c463ea592540c828338db9d801bce118242f6023e9",
+        "condition_scaler_sha256": "b7cf01045e80cfc18f85524aaee385c2cf0d3db3b483bf5afa276d216f34a785",
+        "schema": "v64_c2_train_retrieval_v1",
+        "distance": "mean_squared_all_train_normalized_condition_dimensions_v1",
+        "tie_order": [
+          "task_sha256",
+          "plan_sha256",
+          "sample_id"
+        ],
+        "train_labels_sha256": "a8918ff753b7eef0a89b8aef018aad08a43f6f74d50c6693c439dece407d1c45"
+      },
+      "retrieval_source": {
+        "sample_id": "b3ca50a36a8a087a80b25189cede3786d61e608f1cb489d343fc39e340d4533d",
+        "task_id": "c2_new_train_minus",
+        "task_sha256": "dca0b99a685c1b1927dadb7cf6d3b51b99fb1fc9a6957ef699b29e8b2352410d",
+        "mother_id": "c2_new_train",
+        "plan_sha256": "5eab7a9feb66eb0e7b4a575a68a000a8b263f5ad2fe4b8fa7530de68b481a987",
+        "reference_family": "v1"
+      },
+      "retrieval_distance": 0.056516923384748056,
+      "matched_search_interval_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    "3": {
+      "source": "retrieval",
+      "family": "v2",
+      "preference": "B",
+      "raw_z_m": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -0.012,
+          -2.6257405340921656e-18
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "retrieval_rules": {
+        "dataset_manifest_sha256": "4497032017d04ebf529669c463ea592540c828338db9d801bce118242f6023e9",
+        "condition_scaler_sha256": "b7cf01045e80cfc18f85524aaee385c2cf0d3db3b483bf5afa276d216f34a785",
+        "schema": "v64_c2_train_retrieval_v1",
+        "distance": "mean_squared_all_train_normalized_condition_dimensions_v1",
+        "tie_order": [
+          "task_sha256",
+          "plan_sha256",
+          "sample_id"
+        ],
+        "train_labels_sha256": "a8918ff753b7eef0a89b8aef018aad08a43f6f74d50c6693c439dece407d1c45"
+      },
+      "retrieval_source": {
+        "sample_id": "bb643aa06e5b1ddc040fd8a2c1ecf7622c9e21434aac623ce16268730e7cc669",
+        "task_id": "c2_new_train_plus",
+        "task_sha256": "98f3c72891e56bd5a215ee6622f372d854232e99c6e27d58e0e8e2a1af3f31f1",
+        "mother_id": "c2_new_train",
+        "plan_sha256": "9b8c62fb5ee17ef4865789b9f73cac0287cc177de6e8e9fd954b4ddf01f78485",
+        "reference_family": "v2"
+      },
+      "retrieval_distance": 0.0639673221361952,
+      "matched_search_interval_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "timing": {
+    "condition_scaler_prepare_s": 0.07230240013450384,
+    "retrieval_s": 0.08451389987021685,
+    "model_load_s": 0.0,
+    "warm_inference_s": 0.0
+  },
+  "generated_once": true,
+  "test_quality_read": false
+}

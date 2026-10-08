@@ -1,0 +1,3780 @@
+{
+  "candidate_id": "C10",
+  "content_key": "16f2d2ffbaf46f4ef25f6c19e6b75ad2915124c131731d830035f2bd47affad9",
+  "prediction_rollout_started": true,
+  "prediction_steps": 5640,
+  "prediction_task_passed": false,
+  "online_guards_passed": false,
+  "prediction_admissible": false,
+  "prediction_metrics": {
+    "I_support": 0.1131295468059994,
+    "I_support_10D": 0.11296205385593876,
+    "I_support_7D": 0.006153758947082524,
+    "I_support_sample_count": 286,
+    "I_route_key_legacy": 0.14046346777942878,
+    "I_route_key_legacy_10D": 0.14018486517683681,
+    "I_route_key_legacy_7D": 0.008842474539104327,
+    "I_route_key_legacy_sample_count": 129,
+    "I_full": 0.13818241128072284,
+    "I_full_10D": 0.11476602754300169,
+    "I_full_7D": 0.07696192376333774,
+    "I_full_sample_count": 564,
+    "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+    "component_square_identity_checked": true,
+    "L_full": 0.4164065412754392,
+    "L_support": 0.26597829651527194,
+    "base_translation_peak_m": 0.006916688271738798,
+    "base_rotation_peak_rad": 0.051192457106969534,
+    "d_support": 0.025609122104540062,
+    "clearance_status": "MEASURED",
+    "clearance_is_censored_lower_bound": false,
+    "clearance_witness": {
+      "state_index": 5377,
+      "time_s": 10.75400000000026,
+      "pair": {
+        "pair_class": "arm_obstacle",
+        "geom_a": 131,
+        "geom_b": 1,
+        "geom_a_name": "collision_0061",
+        "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+        "body_a_name": "link_29",
+        "body_b_name": "world"
+      },
+      "signed_distance_m": 0.025609122104540062,
+      "fromto": [
+        1.7335588666105388,
+        0.570664185781512,
+        0.1508181469137922,
+        1.729898056117055,
+        0.590195519606555,
+        0.16697217429122257
+      ],
+      "censored_lower_bound": false
+    },
+    "related_pair_count": 62,
+    "clearance_query_count": 177692,
+    "source_compiled_model_sha256": "8875b85896917cd61f74010683cb2893d8c5efe531805ac663afbdf98ebb65c8",
+    "command_certificates_checked": 565,
+    "consumed_reference_binding": {
+      "available": true,
+      "passed": true,
+      "planning_inputs_bound": 564,
+      "representation_version": "task_anchored_cartesian_residual_v1",
+      "plan_sha256": "4d037394675ae37aaa8977aa3be9b73edb51ee974023180e1109f4a120518345",
+      "definition_sha256": "c88d97b000905f43264f586bba0c7ca9139b0549c2bf4d3a9e72dced8b27f16f",
+      "z_m": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.005
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "physics_steps_added": 0,
+      "geometry_queries_added": 0
+    },
+    "native_state_count": 5641,
+    "saved_horizon_s": 11.280000000000436,
+    "torque_saturation_count": 0,
+    "peak_torque_abs_nm": 19.88083970168526,
+    "state_source": "own_saved_native_prediction_states"
+  },
+  "status": "EXECUTION_REFUSED",
+  "formal_actual_validation": "NOT_RUN",
+  "independent_validation": "NOT_RUN_SEARCH_SCREENING",
+  "plan_sha256": "4d037394675ae37aaa8977aa3be9b73edb51ee974023180e1109f4a120518345",
+  "execution_identity": {
+    "source_identity_sha256": "856f9cc8eaf8654e2d2fa391edfc8dafb098f0718adf7fd9f4ad65ce2bf8a024",
+    "config_sha256": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "run_config_sha256": "37c822b6a94d4e3e380b83b15f937ad6d44e151a2cf0502969e2c5b7694fd5f1",
+    "task_sha256": "9a7325c78786b54074eb9b86333d2852c9756292f94f15e6cfe5a9c0a38a7407",
+    "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f"
+  },
+  "trace_relative_path": "private_prediction/failures/c2_test1_minus_interval_partial_trace.npz",
+  "task_requirements": {
+    "passed": false,
+    "requirements": [
+      {
+        "point_id": "continuum_00",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 351,
+        "best_time_s": 4.387999999999739,
+        "position_error_m": 5.528103480541473e-07,
+        "orientation_error_rad": 8.68368284960623e-07,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_01",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": true,
+        "eligible_state_count": 350,
+        "best_time_s": 8.231999999999418,
+        "position_error_m": 2.4116543179284666e-06,
+        "orientation_error_rad": 8.156259169223539e-07,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_02",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": false,
+        "eligible_state_count": 0,
+        "best_time_s": null,
+        "position_error_m": null,
+        "orientation_error_rad": null,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_03",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": false,
+        "eligible_state_count": 0,
+        "best_time_s": null,
+        "position_error_m": null,
+        "orientation_error_rad": null,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_04",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": false,
+        "eligible_state_count": 0,
+        "best_time_s": null,
+        "position_error_m": null,
+        "orientation_error_rad": null,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_05",
+        "arm": "continuum",
+        "kind": "waypoint",
+        "frame": "world",
+        "passed": false,
+        "eligible_state_count": 0,
+        "best_time_s": null,
+        "position_error_m": null,
+        "orientation_error_rad": null,
+        "position_tolerance_m": 0.002,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "continuum_06",
+        "arm": "continuum",
+        "kind": "terminal",
+        "frame": "world",
+        "passed": false,
+        "eligible_state_count": 0,
+        "best_time_s": null,
+        "position_error_m": null,
+        "orientation_error_rad": null,
+        "position_tolerance_m": 0.00018,
+        "orientation_tolerance_rad": 0.004363323129985824
+      },
+      {
+        "point_id": "rigid_terminal",
+        "arm": "rigid",
+        "kind": "terminal",
+        "frame": "target",
+        "passed": false,
+        "eligible_state_count": 0,
+        "best_time_s": null,
+        "position_error_m": null,
+        "orientation_error_rad": null,
+        "position_tolerance_m": 0.0001,
+        "orientation_tolerance_rad": 0.004363323129985824
+      }
+    ],
+    "definition": "same_time_position_and_orientation_with_frozen_windows_terminal_at_final_state",
+    "old_curve_rmse_is_success_gate": false
+  },
+  "online_execution_checks": {
+    "passed": true,
+    "checks": {
+      "actual_selected_commands_consumed": true,
+      "shared_ten_step_reference_exact": true,
+      "reference_velocity_error_recorded": true,
+      "no_uncertified_consumed_steps": true,
+      "all_actual_torques_within_original_limits": true
+    },
+    "shared_ramp_max_errors": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "reference_velocity_error_rad_s": {
+      "count": 5640,
+      "mean": 0.0006631426596825142,
+      "rms": 0.0018158472594003504,
+      "maximum": 0.031149680363312053,
+      "p95": 0.003406397449950492
+    },
+    "joint_limit_clips": 0,
+    "measured_window_clips": 0,
+    "acceleration_clips": 0,
+    "torque_saturations": 0
+  },
+  "execution_failure": {
+    "type": "UncertifiedExecutionError",
+    "message": "c2_test1_minus at 11.280s: RAMP_MICROSTATE_OUTSIDE_DECLARED_DOMAIN; no further servo step executed",
+    "traceback": "Traceback (most recent call last):\n  File \"E:\\v64c2\\v6_4\\route_candidate_evaluator.py\", line 254, in __call__\n    scene_result = run_synchronous_scenario(spec, cfg, qp, scene, physical / \"traces\",\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\v64c2\\v6_lite\\run_v6_lite.py\", line 1081, in run_synchronous_scenario\n    reject_interval(\"RAMP_MICROSTATE_OUTSIDE_DECLARED_DOMAIN\", {\n  File \"E:\\v64c2\\v6_lite\\run_v6_lite.py\", line 910, in reject_interval\n    raise UncertifiedExecutionError(\nv6_lite.run_v6_lite.UncertifiedExecutionError: c2_test1_minus at 11.280s: RAMP_MICROSTATE_OUTSIDE_DECLARED_DOMAIN; no further servo step executed\n"
+  },
+  "failure_receipts": [
+    "private_prediction/failures/c2_test1_minus_interval_failure.json"
+  ],
+  "costs": {
+    "schema": "v64_b3_execution_cost_ledger_v1",
+    "phase_counts": {
+      "actual": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "independent_torque_replay": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "prediction": {
+        "mj_step": {
+          "started": 5640,
+          "returned": 5640,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 255748,
+          "returned": 255748,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 565,
+          "returned": 565,
+          "raised": 0
+        }
+      },
+      "prediction_quality": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 177692,
+          "returned": 177692,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      },
+      "private_preview": {
+        "mj_step": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "mj_step2": {
+          "started": 5650,
+          "returned": 5650,
+          "raised": 0
+        },
+        "mj_geomDistance": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        },
+        "qp_solve": {
+          "started": 0,
+          "returned": 0,
+          "raised": 0
+        }
+      }
+    },
+    "actual_physics_steps": 0,
+    "private_preview_physics_steps": 5650,
+    "independent_saved_torque_replay_steps": 0,
+    "preview_calls": 565,
+    "preview_records": [
+      {
+        "call_index": 0,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 1,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 2,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 3,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 4,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 5,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 6,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 7,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 8,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 9,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 10,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 11,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 12,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 13,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 14,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 15,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 16,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 17,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 18,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 19,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 20,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 21,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 22,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 23,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 24,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 25,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 26,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 27,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 28,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 29,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 30,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 31,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 32,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 33,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 34,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 35,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 36,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 37,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 38,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 39,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 40,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 41,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 42,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 43,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 44,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 45,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 46,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 47,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 48,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 49,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 50,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 51,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 52,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 53,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 54,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 55,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 56,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 57,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 58,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 59,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 60,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 61,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 62,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 63,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 64,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 65,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 66,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 67,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 68,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 69,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 70,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 71,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 72,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 73,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 74,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 75,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 76,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 77,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 78,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 79,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 80,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 81,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 82,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 83,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 84,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 85,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 86,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 87,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 88,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 89,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 90,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 91,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 92,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 93,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 94,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 95,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 96,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 97,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 98,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 99,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 100,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 101,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 102,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 103,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 104,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 105,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 106,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 107,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 108,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 109,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 110,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 111,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 112,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 113,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 114,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 115,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 116,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 117,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 118,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 119,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 120,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 121,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 122,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 123,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 124,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 125,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 126,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 127,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 128,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 129,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 130,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 131,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 132,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 133,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 134,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 135,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 136,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 137,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 138,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 139,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 140,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 141,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 142,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 143,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 144,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 145,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 146,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 147,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 148,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 149,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 150,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 151,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 152,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 153,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 154,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 155,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 156,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 157,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 158,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 159,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 160,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 161,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 162,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 163,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 164,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 165,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 166,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 167,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 168,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 169,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 170,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 171,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 172,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 173,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 174,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 175,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 176,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 177,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 178,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 179,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 180,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 181,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 182,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 183,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 184,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 185,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 186,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 187,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 188,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 189,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 190,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 191,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 192,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 193,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 194,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 195,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 196,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 197,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 198,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 199,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 200,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 201,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 202,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 203,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 204,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 205,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 206,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 207,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 208,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 209,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 210,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 211,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 212,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 213,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 214,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 215,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 216,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 217,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 218,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 219,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 220,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 221,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 222,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 223,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 224,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 225,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 226,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 227,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 228,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 229,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 230,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 231,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 232,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 233,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 234,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 235,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 236,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 237,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 238,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 239,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 240,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 241,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 242,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 243,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 244,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 245,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 246,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 247,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 248,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 249,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 250,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 251,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 252,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 253,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 254,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 255,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 256,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 257,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 258,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 259,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 260,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 261,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 262,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 263,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 264,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 265,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 266,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 267,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 268,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 269,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 270,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 271,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 272,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 273,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 274,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 275,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 276,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 277,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 278,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 279,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 280,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 281,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 282,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 283,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 284,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 285,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 286,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 287,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 288,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 289,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 290,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 291,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 292,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 293,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 294,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 295,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 296,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 297,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 298,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 299,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 300,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 301,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 302,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 303,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 304,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 305,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 306,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 307,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 308,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 309,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 310,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 311,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 312,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 313,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 314,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 315,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 316,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 317,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 318,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 319,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 320,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 321,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 322,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 323,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 324,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 325,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 326,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 327,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 328,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 329,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 330,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 331,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 332,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 333,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 334,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 335,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 336,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 337,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 338,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 339,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 340,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 341,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 342,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 343,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 344,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 345,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 346,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 347,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 348,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 349,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 350,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 351,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 352,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 353,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 354,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 355,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 356,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 357,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 358,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 359,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 360,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 361,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 362,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 363,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 364,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 365,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 366,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 367,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 368,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 369,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 370,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 371,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 372,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 373,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 374,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 375,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 376,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 377,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 378,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 379,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 380,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 381,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 382,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 383,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 384,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 385,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 386,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 387,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 388,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 389,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 390,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 391,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 392,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 393,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 394,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 395,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 396,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 397,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 398,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 399,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 400,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 401,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 402,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 403,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 404,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 405,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 406,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 407,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 408,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 409,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 410,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 411,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 412,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 413,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 414,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 415,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 416,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 417,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 418,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 419,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 420,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 421,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 422,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 423,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 424,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 425,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 426,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 427,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 428,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 429,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 430,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 431,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 432,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 433,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 434,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 435,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 436,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 437,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 438,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 439,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 440,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 441,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 442,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 443,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 444,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 445,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 446,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 447,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 448,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 449,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 450,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 451,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 452,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 453,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 454,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 455,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 456,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 457,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 458,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 459,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 460,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 461,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 462,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 463,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 464,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 465,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 466,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 467,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 468,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 469,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 470,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 471,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 472,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 473,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 474,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 475,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 476,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 477,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 478,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 479,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 480,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 481,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 482,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 483,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 484,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 485,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 486,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 487,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 488,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 489,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 490,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 491,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 492,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 493,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 494,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 495,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 496,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 497,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 498,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 499,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 500,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 501,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 502,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 503,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 504,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 505,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 506,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 507,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 508,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 509,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 510,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 511,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 512,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 513,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 514,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 515,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 516,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 517,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 518,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 519,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 520,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 521,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 522,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 523,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 524,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 525,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 526,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 527,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 528,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 529,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 530,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 531,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 532,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 533,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 534,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 535,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 536,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 537,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 538,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 539,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 540,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 541,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 542,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 543,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 544,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 545,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 546,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 547,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 548,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 549,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 550,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 551,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 552,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 553,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 554,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 555,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 556,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 557,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 558,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 559,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 560,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 561,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 562,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 563,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      },
+      {
+        "call_index": 564,
+        "status": "RETURNED",
+        "coverage_states": 11,
+        "completed_physics_steps": 10
+      }
+    ],
+    "native_geometry_query_calls": 433440,
+    "qp_solve_calls": 565,
+    "qp_solve_scope": "One original 17D solve call per planner invocation; rejected result calls count; raised calls remain separate. Logging adds no alternative solver.",
+    "geometry_query_scope": "Native mj_geomDistance calls, separated by phase; analytic PCC query work is reported by the original interval evidence, not mislabeled as native distance calls.",
+    "instrumentation": "Transparent argument/return/exception forwarding; additional Python bookkeeping included in wall time.",
+    "physics_step_count_scope": "Successfully returned mj_step or mj_step2 integrations; raised calls reported separately without assuming how far a native failure progressed.",
+    "control_behavior_modified": false,
+    "wall_20ms_is_gate": false,
+    "elapsed_wall_s": 28.60638190014288,
+    "prediction_physics_steps": 5640
+  },
+  "elapsed_wall_s": 28.60638319980353,
+  "ended_utc": "2026-10-08T01:59:38.726507+00:00"
+}
