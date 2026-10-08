@@ -210,18 +210,26 @@ def _run_original(task, plan, directory, *, execution_run, frozen, slot_id, qual
     from .residual_execution import execute_residual_attempt
     from .route_candidate_evaluator import fresh_quality
     run = Path(execution_run); ledger = ExecutionCostLedger(); before = time.perf_counter()
-    with ledger.installed():
-        result = execute_residual_attempt(task, plan, directory / "attempt",
-            qp_config_path=run / "frozen_execution_config.json", identity_path=run / "source_identity.json",
-            slot_id=slot_id, execution_diagnostics=True, diagnostic_obstacle_name=frozen["obstacle_name"])
-        replay = directory / "attempt" / "actual" / "evaluation" / "fresh_replay.npz"
-        quality = None
-        if quality_reader is not None:
-            quality = quality_reader(task, plan, result, frozen, directory)
-        elif result.get("trace_path") and result.get("actual_steps") and replay.exists():
-            with ledger.scope("actual_quality"):
-                quality, _ = fresh_quality(task, plan, result["trace_path"], frozen,
-                    directory / "quality", evidence_root=directory / "attempt" / "actual", replay_path=replay)
+    result = {}; quality = None
+    try:
+        with ledger.installed():
+            result = execute_residual_attempt(task, plan, directory / "attempt",
+                qp_config_path=run / "frozen_execution_config.json", identity_path=run / "source_identity.json",
+                slot_id=slot_id, execution_diagnostics=True, diagnostic_obstacle_name=frozen["obstacle_name"])
+            replay = directory / "attempt" / "actual" / "evaluation" / "fresh_replay.npz"
+            if quality_reader is not None:
+                quality = quality_reader(task, plan, result, frozen, directory)
+            elif result.get("trace_path") and result.get("actual_steps") and replay.exists():
+                with ledger.scope("actual_quality"):
+                    quality, _ = fresh_quality(task, plan, result["trace_path"], frozen,
+                        directory / "quality", evidence_root=directory / "attempt" / "actual", replay_path=replay)
+    except Exception as error:
+        # Preserve already-consumed work if a later evidence/quality tool fails.
+        # No replay, alternative candidate, or second feedback execution follows.
+        steps = result.get("actual_steps", ledger.physics_steps("actual"))
+        result.update(status="PIPELINE_FAILURE", actual_steps=steps, entered_actual=steps > 0,
+            actual_runner_started=result.get("actual_runner_started", (directory / "attempt" / "actual").exists()),
+            pipeline_failure={"type": type(error).__name__, "message": str(error), "traceback": traceback.format_exc()})
     return {**result, "quality": quality, "costs": ledger.to_dict(),
             "elapsed_wall_s": time.perf_counter() - before}
 

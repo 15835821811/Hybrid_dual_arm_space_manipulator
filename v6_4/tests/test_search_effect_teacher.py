@@ -16,8 +16,8 @@ from v6_4.route_initializers import FrozenSeedInitializer, search_mask
 from v6_4.route_optimizer_protocol import (PreferenceSpec, SearchSpec, VERSIONS,
     active_intervals, build_reference_definition, digest, parameter_plan, read, sha, write)
 from v6_4.search_effect_teacher import (BoundArchive, C2_RELEASE, compare_teacher_pairs,
-    deduplicate_physical_facts, deduplicate_supervision, freeze_teacher_pairs, preference_qualified,
-    summarize_teacher_pair)
+    build_dataset, deduplicate_physical_facts, deduplicate_supervision,
+    freeze_teacher_pairs, preference_qualified, run_teacher_search, summarize_teacher_pair)
 from v6_4.task_protocol import TaskSpec
 
 
@@ -178,6 +178,50 @@ class SearchEffectTeacherTests(unittest.TestCase):
             self.assertLessEqual(selection["budget"]["slots_consumed"], 8)
             self.assertTrue(selection["budget"]["shared_A_B_pool"])
             self.assertEqual(selection["formal_actual_validation"], "NOT_RUN")
+
+    def test_mock_teacher_dataset_and_resume_do_not_need_VAL_labels(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()), patch.object(mujoco, "mj_step", side_effect=AssertionError("no physics")):
+            run = Path(tmp)
+            write(run / "learning_split_manifest.json", self.old_manifest)
+            write(run / "plan.json", {"tasks": self.old_manifest["tasks"]})
+            for row in self.old_manifest["tasks"]:
+                write(run / row["task_path"], read(C2_RELEASE / "snapshot" / row["task_path"]))
+            train = [r for r in self.old_manifest["tasks"] if r["split"] == "train"]
+            labels, buckets = preference_labels(self.facts, train)
+            for s in labels:
+                s.update(source_types=["route_quality_example"], source_refs=[{"source_type": "route_quality_example"}])
+            history = {"original_train_tasks": train, "candidates": self.facts, "route_quality_labels": labels,
+                "buckets": buckets, "files": {}}
+            write(run / "historical_import/history.json", history)
+            freeze_teacher_pairs(run, history)
+            calls = []
+            def stream_runner(run, frozen, name, budget, proposals, stage):
+                calls.append((frozen["task_id"], name, budget))
+                task = TaskSpec.from_dict(read(run / frozen["task_path"]))
+                definition = build_reference_definition(task); active = active_intervals(definition)
+                prefs = [PreferenceSpec(p, task.sha256(), (tuple(definition["intervals_s"][2]),),
+                    tuple(tuple(definition["intervals_s"][i]) for i in active), "sphere", (("body", "sphere"),)) for p in ("A", "B")]
+                identity = {"source_identity_sha256": "source", "config_sha256": "config", "task_sha256": task.sha256(),
+                    "model_contract_sha256": task.model_contract_sha256}
+                root = run / "teacher_search" / frozen["task_id"] / name
+                def evidence(plan, cid):
+                    return {**complete_row(cid, I=.1 + float(np.sum(plan.z_m))), "prediction_rollout_started": True,
+                        "costs": {"prediction_physics_steps": 13500}, "status": "PREDICTION_ADMISSIBLE"}
+                selection = optimize(task, prefs, identity, evidence, root / "planning" / task.task_id,
+                    search_spec=SearchSpec(candidate_budget=budget), initializer=FrozenSeedInitializer(proposals))
+                return {"path": str(root), "selection": selection}
+            result = run_teacher_search(run, stream_runner)
+            self.assertEqual(len(calls), 12)
+            self.assertLessEqual(result["slots_consumed"], 96)
+            run_teacher_search(run, lambda *a, **k: self.fail("completed search reran"))
+            dataset = build_dataset(run)
+            self.assertTrue(all(s["split"] == "train" for s in dataset.samples))
+            self.assertEqual(len(dataset.indices("val")), 0)
+            self.assertEqual(dataset.z_m.shape[1:], (6, 2))
+            self.assertEqual(dataset.search_masks.shape[1:], (6,))
+            self.assertEqual(set(dataset.condition_scaler.fit_task_sha256), {r["task_sha256"] for r in train})
+            self.assertTrue(dataset.manifest["D_S_N_identical_pool"])
+            self.assertEqual(build_dataset(run).manifest, dataset.manifest)
 
 
 if __name__ == "__main__":

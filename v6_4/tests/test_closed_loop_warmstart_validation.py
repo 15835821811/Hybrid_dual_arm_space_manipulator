@@ -54,7 +54,7 @@ class ClosedLoopValidationTests(unittest.TestCase):
     def tearDown(self):
         self.physics.assert_not_called()
 
-    def entry(self, task_id, endpoint, *, plan=True, raw=0, first=1, work=10, duration=2.):
+    def entry(self, task_id, endpoint, *, plan=True, raw=0, first=1, work=10, duration=2., distinct=False):
         directory = self.root / "search" / task_id / endpoint; directory.mkdir(parents=True)
         metrics = {"I_support": .01, "L_full": .3, "d_support": .031}
         rows = [{"candidate_id": "C00", "prediction_admissible": first == 1,
@@ -63,7 +63,7 @@ class ClosedLoopValidationTests(unittest.TestCase):
                            "native_geometry_query_calls": work}}]
         if first == 2:
             rows.append({**rows[0], "candidate_id": "C01", "status": "PREDICTED_COMPLETE", "prediction_admissible": True})
-        selected = {"selected_plan": {"z": [0., 0.]} if plan else None,
+        selected = {"selected_plan": ({"endpoint": endpoint} if distinct else {"z": [0., 0.]}) if plan else None,
                     "source_candidate_id": "C00" if plan else None, "prediction_metrics": metrics if plan else None}
         selection = {"task_id": task_id, "task_sha256": MockTask(task_id).sha256(),
             "preferences": {"A": selected, "B": selected}, "selection_reads_final_actual": False,
@@ -149,6 +149,16 @@ class ClosedLoopValidationTests(unittest.TestCase):
         self.assertEqual(saved["actual_steps"], 0)
         with self.assertRaises(RuntimeError): self.execute()
 
+    def test_late_quality_tool_failure_retains_consumed_actual_count(self):
+        result = self.runner(None, None, None)
+        def broken_quality(*args): raise FileNotFoundError("quality artifact unavailable")
+        with patch("v6_4.residual_execution.execute_residual_attempt", return_value=result):
+            saved = validation._run_original(MockTask("val_a"), MockPlan({}), self.root / "attempt_slot",
+                execution_run=self.run, frozen={"obstacle_name": "mock"}, slot_id="mock", quality_reader=broken_quality)
+        self.assertEqual(saved["actual_steps"], 13500)
+        self.assertTrue(saved["entered_actual"]); self.assertTrue(saved["actual_runner_started"])
+        self.assertEqual(validation._diagnostic_category(saved), "TOOL_ERROR")
+
     def test_refusal_precheck_and_actual_failure_are_distinct(self):
         self.assertEqual(validation._diagnostic_category({"status": "REFERENCE_PRECHECK_REJECTED", "actual_steps": 0}), "ACTUAL_PRECHECK_REJECTED")
         self.assertEqual(validation._diagnostic_category({"status": "EXECUTION_REFUSED", "actual_steps": 10,
@@ -207,6 +217,48 @@ class ClosedLoopValidationTests(unittest.TestCase):
                            first=2 if endpoint == "D4000" else 1)
         self.freeze(); self.execute(); self.execute("val_b")
         self.assertEqual(validation.score_checkpoints(self.phase)["selected_checkpoint_D"], "D4000")
+
+    def test_B30_and_near_quality_precede_raw_and_cost(self):
+        for task in ("val_a", "val_b"):
+            for endpoint in validation.VAL_ENDPOINTS:
+                self.entry(task, endpoint, distinct=True, raw=endpoint in ("D4000", "S4000"),
+                           work=100 if endpoint in ("D4000", "S4000") else 0)
+        self.freeze()
+        def runner(*args, **kwargs):
+            result = self.runner(*args, **kwargs); endpoint = args[1].value["endpoint"]
+            if endpoint == "D250": result["quality"]["d_support"] = .029
+            if endpoint == "S250": result["quality"]["I_support"] = .020
+            return result
+        self.execute(executor=runner); self.execute("val_b", executor=runner)
+        result = validation.score_checkpoints(self.phase)
+        self.assertEqual(result["selected_checkpoint_D"], "D4000")
+        self.assertEqual(result["selected_checkpoint_S"], "S4000")
+
+    def test_missing_reference_quality_is_na_and_shared_reference_set(self):
+        self.assertIsNone(validation.actual_near_quality({}, {
+            "full_task_success": True, "original_independent_gates_passed": True, "quality": {"L_full": .3}}, "A"))
+        for task in ("val_a", "val_b"):
+            for endpoint in validation.VAL_ENDPOINTS: self.entry(task, endpoint, distinct=True)
+        self.freeze()
+        def runner(*args, **kwargs):
+            result = self.runner(*args, **kwargs)
+            if args[1].value["endpoint"] == "R12": result["quality"]["d_support"] = None
+            return result
+        self.execute(executor=runner); self.execute("val_b", executor=runner)
+        result = validation.score_checkpoints(self.phase)
+        self.assertEqual(len(result["R12_qualified_reference_set"]), 2)
+        self.assertTrue(all(row["preference"] == "A" for row in result["R12_qualified_reference_set"]))
+        for score in result["scores"].values():
+            b_rows = [r for r in score["near_quality_by_endpoint"] if r["preference"] == "B"]
+            self.assertTrue(all(r["near_quality"] is None for r in b_rows))
+
+    def test_missing_formal_workload_cannot_win_by_omission(self):
+        self.freeze()
+        # Byte-bound files must change the phase seal if omitted *after* freeze.
+        entry = next(e for e in self.entries if e["endpoint"] == "D250")
+        rows = validation._read(entry["candidate_registry_path"]); del rows[0]["costs"]["native_geometry_query_calls"]
+        Path(entry["candidate_registry_path"]).write_text(json.dumps(rows), encoding="utf8")
+        with self.assertRaises(ValueError): validation.score_checkpoints(self.phase)
 
     def test_test_phase_cannot_select_checkpoint(self):
         self.entry("test_a", "R8")
