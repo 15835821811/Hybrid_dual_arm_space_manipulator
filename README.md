@@ -10,6 +10,8 @@
 |OC|3|3|
 
 
+**C.1 可视化已同步：84段视频、48张诊断图。** [五视角、连续体侧视与末端跟踪诊断](v6_4/visualization/continuous_route_media_20261008_01/README.md) · [HTML媒体目录](v6_4/visualization/continuous_route_media_20261008_01/index.html) · [来源与验证](docs/V6_4_C1_MEDIA_SUPPLEMENT.md)。覆盖全部16槽；失败前缀、3个别名和NO_PLAN明确标注，不新增物理实验。
+
 [当前两图与16槽可读总表](v6_4/visualization/continuous_route_optimizer_20261007_01/index.html) · [portable证据说明](v6_4/releases/continuous_route_optimizer_20261007_01/report.md) · [完整封存报告](v6_4/releases/continuous_route_optimizer_20261007_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/continuous_route_optimizer_20261007_01/snapshot/summary.json) · [有限教师](v6_4/visualization/continuous_route_optimizer_20261007_01/teacher_records.jsonl) · [冻结协议](docs/V6_4_C1_PROTOCOL.md)
 
 内部预测48，非历史连续点评价31；最终逻辑方法槽16，唯一actual 12。搜索、十步预演、独立重放、几何与QP分别计账。B未满足时返回NO_PLAN，不替换成基线。完整质量配对只用同任务双方完整成功子集。

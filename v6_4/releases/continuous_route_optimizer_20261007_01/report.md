@@ -1,6 +1,6 @@
 # V6.4-C.1 portable evidence
 
-[完整封存原报告](snapshot/REPORT.md) · [机器结论](snapshot/summary.json) · [可读可视化](../../visualization/continuous_route_optimizer_20261007_01/index.html)
+[完整封存原报告](snapshot/REPORT.md) · [机器结论](snapshot/summary.json) · [可读可视化](../../visualization/continuous_route_optimizer_20261007_01/index.html) · [C.1五视角、连续体侧视与跟踪诊断](../../visualization/continuous_route_media_20261008_01/README.md)
 
 ## 本轮实际结论
 
@@ -29,6 +29,6 @@ OC在以下任务预算内未达到偏好并返回NO_PLAN：c1_mother_01_minus�
 
 ![质量与成本](../../visualization/continuous_route_optimizer_20261007_01/quality_cost.png)
 
-轨迹图的失败方法仅绘制到拒绝时刻；完整质量柱图排除失败前缀。原runner自动生成的PCC监视图保留在本地归档，本次发布只增加两张核心图，无视频或PDF。
+轨迹图的失败方法仅绘制到拒绝时刻；完整质量柱图排除失败前缀。原runner自动生成的PCC监视图保留在本地归档。初次发布提供两张核心图；2026-10-08按用户追加要求，另提供84段保存状态视频、48张诊断图和36个CSV，覆盖全部16逻辑槽。3个别名共享原实际证据，NO_PLAN留空，两条失败前缀保留原拒绝终点。详见[媒体补充说明](../../../docs/V6_4_C1_MEDIA_SUPPLEMENT.md)，新增物理步为0。
 
 命令/环境/producer、并行调度与0物理步的包装脚本导入修复见snapshot/RUN_NOTES.md和相应收据。优化算法与逐任务预算未改动。
