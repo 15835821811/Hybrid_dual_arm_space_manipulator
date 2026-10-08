@@ -26,4 +26,4 @@ python -B -X utf8 -m v6_4.visualization.portable_preference_warmstart --release 
 
 该检查核验发布副本并重建 dataset/scaler/sampler，不执行采样或物理。大型原生状态和力矩日志按发布遗漏账本保留本地；便携检查与字节校验不等于重新完成物理认证。可视化构建入口为 [build_preference_warmstart_media.py](../v6_4/visualization/build_preference_warmstart_media.py)。
 
-发布复核将一个可选 R8 warm 诊断字段改为 null，避免沿用 R12 全流估计；原展示文件和绑定已保留在 `metadata_revision_01` 及发布目录的 prior metadata binding 中，实验报告、cold 区间、模型和全部视频字节不变。查看器的内嵌 JavaScript 语法、全部 32 槽、154 个视频引用、66 个轨迹/误差/CSV 引用及别名/NO_PLAN 关系通过[静态复核](C2_VIEWER_STATIC_CHECKS.json)。Tabbit 浏览器连接未能创建页面，因此真实浏览器点击检查记为不可用，不冒称通过。
+发布复核将一个可选 R8 warm 诊断字段改为 null，避免沿用 R12 全流估计；原展示文件和绑定已保留在 `metadata_revision_01` 及发布目录的 prior metadata binding 中，实验报告、cold 区间、模型和全部视频字节不变。查看器的内嵌 JavaScript 语法、全部 32 槽、154 个视频引用、66 个轨迹/误差/CSV 引用及别名/NO_PLAN 关系通过[静态复核](C2_VIEWER_STATIC_CHECKS.json)。初次 Tabbit 连接故障导致浏览器点击检查不可用；后续已恢复内置浏览器交互连接，并完成全部 32 组合、十二条唯一执行媒体、七种代表视角、播放/暂停/起止跳转及 CSV 实际点击下载的[浏览器复核](C2_BROWSER_REVIEW.md)。当前交互状态为 PASS，原连接失败记录保留；不声称逐一播放了全部 84 个视频。本次无需修改查看器、实验或媒体文件。
