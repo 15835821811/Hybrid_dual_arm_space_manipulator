@@ -57,8 +57,8 @@ def raw_seed_plan(task, proposal, slot):
         diagnostics["rejection_reason"] = proposal["initializer_rejection"]
         return None, diagnostics
     try:
-        if proposal.get("source") not in ("diffusion", "retrieval"):
-            raise ValueError("initializer source must be diffusion or retrieval")
+        if proposal.get("source") not in ("diffusion", "retrieval", "regression"):
+            raise ValueError("initializer source must be diffusion, retrieval or regression")
         if proposal.get("family") != family or proposal.get("preference") != preference:
             raise ValueError("initializer preference/family differs from fixed slot")
         z = np.asarray(raw, dtype=float)

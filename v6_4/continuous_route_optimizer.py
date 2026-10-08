@@ -76,8 +76,8 @@ def _preference_selection(rows, active, reason, tie_band=.001):
             "formal_actual_validation": "NOT_RUN",
             "selected_origin_source": winner.get("origin_source") if winner else None,
             "selected_lineage": winner.get("proposal_lineage") if winner else None,
-            "source_attribution": ("direct_learning_seed" if winner.get("source") in ("diffusion", "retrieval") else
-                "learning_seed_descendant" if winner.get("origin_source") in ("diffusion", "retrieval") else
+            "source_attribution": ("direct_learning_seed" if winner.get("source") in ("diffusion", "retrieval", "regression") else
+                "learning_seed_descendant" if winner.get("origin_source") in ("diffusion", "retrieval", "regression") else
                 "rule_seed_or_descendant") if winner else "no_plan",
             "best_safe_diagnostic": ranks["best_safe_diagnostic"]["candidate_id"] if name == "B" and not winner and ranks["best_safe_diagnostic"] else None}
     return result
@@ -251,7 +251,7 @@ def optimize(task, preferences, execution_identity, evaluator, run_root, *, sear
         if len(proposals) >= spec.proposal_limit:
             reason = "PROPOSAL_LIMIT"; break
         source = seed.get("source", "initializer_unknown")
-        origin = source if source in ("diffusion", "retrieval") else "zero" if i == 0 else "geometry" if "initializer_slot" not in seed else "initializer_unknown"
+        origin = source if source in ("diffusion", "retrieval", "regression") else "zero" if i == 0 else "geometry" if "initializer_slot" not in seed else "initializer_unknown"
         row = evaluate({**seed, "source": source, "parent_candidate_id": None, "preference_center": None,
             "origin_source": origin, "proposal_lineage": [{"initial_position": i, "source": origin}]})
         if row and row.get("tool_error"):
