@@ -318,6 +318,8 @@ def run_stream(run, frozen, stream_id, budget, proposals=None, stage="teacher"):
             path / "planning" / task.task_id, search_spec=SearchSpec(candidate_budget=budget), initializer=initializer)
         if sha(path / "planning" / task.task_id / "selection.json") != read(complete)["selection_sha256"]:
             raise ValueError("retained selection changed")
+        if result["budget"]["stop_reason"] == "TOOL_ERROR":
+            raise RuntimeError("retained technical search failure; no physical retry")
         return {"path": str(path), "selection": result}
     if (path / "planning" / task.task_id / "selection.json").exists():
         raise RuntimeError("selection exists without original planning timer; technical incomplete, no replacement timing")
@@ -346,6 +348,16 @@ def _initializers(run, frozen, stream_id, stage):
     retained = path / "initializer_proposals.json"
     if retained.exists():
         value = read(retained)
+        body = {k: v for k, v in value.items() if k != "content_sha256"}
+        if digest(body) != value.get("content_sha256") or value["task_sha256"] != frozen["task_sha256"]:
+            raise ValueError("retained initializer content/task changed")
+        if value.get("dataset_manifest_sha256") != sha(run / "dataset" / "manifest.json"):
+            raise ValueError("retained initializer TRAIN pool changed")
+        if value.get("checkpoint") and sha(value["checkpoint"]) != value["checkpoint_sha256"]:
+            raise ValueError("retained initializer checkpoint changed")
+        if stage == "test" and stream_id in ("S", "D"):
+            if value["checkpoint"] != verify_model_freeze(run)["selected_checkpoints"][stream_id]:
+                raise ValueError("retained TEST initializer uses a different selected checkpoint")
         return {int(k): v for k, v in value["proposals"].items()}
     begun = time.perf_counter(); task, _ = load_task(run, frozen)
     if (path / "initializer_started.json").exists():
@@ -373,11 +385,14 @@ def _initializers(run, frozen, stream_id, stage):
         sampler = SearchAwareSampler(checkpoint, device="cpu")
         seeds = sampler.initializer_proposals(task, noise_seed=SEEDS["val_noise" if stage == "val" else "test_noise"])
     value = {"task_sha256": task.sha256(), "stream_id": stream_id, "stage": stage,
+        "dataset_manifest_sha256": sha(run / "dataset" / "manifest.json"),
         "checkpoint": str(checkpoint) if checkpoint else None, "checkpoint_sha256": sha(checkpoint) if checkpoint else None,
         "proposals": {str(k): v for k, v in seeds.items()},
         "timing": {"total_setup_s": time.perf_counter() - begun}, "generated_once": True,
         "candidate_quality_read": False}
-    write(retained, json_raw(value))
+    value = json_raw(value)
+    value["content_sha256"] = digest(value)
+    write(retained, value)
     return seeds
 
 
@@ -391,6 +406,34 @@ def _selection_entry(run, frozen, stream_id, endpoint, stage, prefix=None):
         "planning_cost_path": str(path / "planning_cost.json")}
 
 
+def run_formal_stream(run, frozen, stream_id, stage):
+    """Sequential fresh processes record startup and complete request timing."""
+    run = Path(run).resolve(); path = stream_path(run, frozen, stream_id, stage)
+    receipt = path / "outer_process.json"
+    if receipt.exists():
+        retained = read(receipt)
+        if retained["exit_code"] != 0:
+            raise RuntimeError("retained worker failure; no automatic physical retry")
+        seeds = None if stream_id == "R" else _initializers(run, frozen, stream_id, stage)
+        return run_stream(run, frozen, stream_id, 12 if stream_id == "R" else 8, seeds, stage)
+    if (path / "planning_cost.json").exists():
+        raise RuntimeError("completed request lacks outer timer; technical incomplete")
+    path.mkdir(parents=True, exist_ok=True)
+    command = [sys.executable, "-B", "-X", "utf8", "-m", "v6_4.search_aware_warmstart_experiment", "_worker",
+        "--run", str(run), "--stage", stage, "--task", frozen["task_id"], "--stream", stream_id]
+    started = now(); before = time.perf_counter()
+    env = os.environ.copy()
+    env.update(OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1", NUMBA_NUM_THREADS="1")
+    with (path / "command.log").open("a", encoding="utf8") as output:
+        completed = subprocess.run(command, cwd=ROOT, env=env, stdout=output, stderr=subprocess.STDOUT)
+    write(receipt, {"argv": command, "started_utc": started, "ended_utc": now(),
+        "elapsed_wall_s": time.perf_counter() - before, "exit_code": completed.returncode,
+        "load": "sequential fresh interpreter, cold model weights; no concurrent heavy workloads"})
+    if completed.returncode:
+        raise RuntimeError("formal request tool failure retained: " + str(path / "command.log"))
+    return {"path": str(path), "selection": read(path / "planning" / frozen["task_id"] / "selection.json")}
+
+
 def closed_loop_val(run):
     from .closed_loop_warmstart_validation import freeze_phase_selections, execute_frozen_task, score_checkpoints
     run = Path(run); verify_run(run)
@@ -402,8 +445,7 @@ def closed_loop_val(run):
     for index, frozen in enumerate(task_rows(run, "val")):
         for endpoint in order[index:] + order[:index]:
             stream_id = "R" if endpoint == "R12" else endpoint
-            seeds = None if stream_id == "R" else _initializers(run, frozen, stream_id, "val")
-            run_stream(run, frozen, stream_id, 12 if stream_id == "R" else 8, seeds, "val")
+            run_formal_stream(run, frozen, stream_id, "val")
             entries.append(_selection_entry(run, frozen, stream_id, endpoint, "val"))
     files = {name: str(run / "models" / name[0] / f"checkpoint_{int(name[1:]):04d}.pt") for name in CHECKPOINTS}
     freeze_phase_selections(phase, entries, phase="VAL", checkpoint_files=files,
@@ -459,8 +501,7 @@ def test_search(run):
     for index, frozen in enumerate(task_rows(run, "test")):
         order = list(METHODS[index:] + METHODS[:index])
         for method in order:
-            seeds = None if method == "R" else _initializers(run, frozen, method, "test")
-            run_stream(run, frozen, method, 12 if method == "R" else 8, seeds, "test")
+            run_formal_stream(run, frozen, method, "test")
         entries.append(_selection_entry(run, frozen, "R", "R8", "test", prefix=8))
         entries.append(_selection_entry(run, frozen, "R", "R12", "test"))
         entries.extend(_selection_entry(run, frozen, m, m + "8", "test") for m in ("N", "S", "D"))
@@ -490,7 +531,8 @@ def train(run):
     run = Path(run); verify_run(run)
     for model in ("D", "S"):
         BudgetLedger(run).reserve(model + "_training_runs", model, 1, {"updates": 4000, "batch": 32})
-    prepare_training_pair(run / "dataset", run / "models", device="cpu")
+    if not (run / "models" / "training_config.json").exists():
+        prepare_training_pair(run / "dataset", run / "models", device="cpu")
     return train_model_pair(run / "models")
 
 
@@ -548,14 +590,23 @@ def run_all(run):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("prepare", "import-history", "teacher-search", "build-dataset", "train",
-        "closed-loop-val", "freeze-models", "test-search", "execute-test", "validate", "report", "run-all"))
+        "closed-loop-val", "freeze-models", "test-search", "execute-test", "validate", "report", "run-all", "_worker"))
     parser.add_argument("--output"); parser.add_argument("--run")
+    parser.add_argument("--stage", choices=("val", "test")); parser.add_argument("--task"); parser.add_argument("--stream")
     args = parser.parse_args()
     os.environ.setdefault("OMP_NUM_THREADS", "1")
     os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
     os.environ.setdefault("MKL_NUM_THREADS", "1")
     os.environ.setdefault("NUMBA_NUM_THREADS", "1")
-    if args.command == "prepare":
+    if args.command == "_worker":
+        if not all((args.run, args.stage, args.task, args.stream)):
+            parser.error("worker requires run/stage/task/stream")
+        frozen = next(t for t in task_rows(args.run, args.stage) if t["task_id"] == args.task)
+        if args.stage == "test":
+            verify_model_freeze(args.run)
+        proposals = None if args.stream == "R" else _initializers(args.run, frozen, args.stream, args.stage)
+        value = run_stream(args.run, frozen, args.stream, 12 if args.stream == "R" else 8, proposals, args.stage)
+    elif args.command == "prepare":
         if not args.output:
             parser.error("prepare requires --output")
         value = prepare(args.output)
