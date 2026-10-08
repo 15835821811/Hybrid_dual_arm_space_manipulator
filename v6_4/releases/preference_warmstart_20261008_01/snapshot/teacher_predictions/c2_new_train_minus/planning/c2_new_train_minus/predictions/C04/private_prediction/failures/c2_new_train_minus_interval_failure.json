@@ -1,0 +1,843 @@
+{
+  "schema": "v6_2_b2_bounded_interval_execution_reject_v1",
+  "pcc_mode": "bounded_interval_pcc",
+  "scenario_id": "c2_new_train_minus",
+  "time_s": 10.42000000000015,
+  "failure_reason": "RAMP_MICROSTATE_OUTSIDE_DECLARED_DOMAIN",
+  "diagnostic": {
+    "time_s": 10.42000000000015,
+    "point_evaluations": 5,
+    "query_budget_exhausted": false,
+    "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+    "proxy_lower_m": 0.10494455696772463,
+    "proxy_upper_m": 0.2549445589677247,
+    "subspace_residual_linf_rad": 2.7755575615628914e-17,
+    "current_envelope_status": "COVERED_AT_THIS_STATE",
+    "current_envelope_margin_m": 0.022185094450008665,
+    "velocity_box_valid": true,
+    "selected_interval_count": 1,
+    "excluded_interval_count": 5,
+    "interval_count": 5,
+    "preflight_latency_s": 0.0009117000736296177,
+    "solver_status": "solved",
+    "solver_candidate": [
+      0.3337120238189835,
+      -0.06195884664366973,
+      -0.5599999692966716,
+      0.0012266161924514459,
+      0.3812462157449779,
+      -0.10873126115003261,
+      -0.5600000154983793,
+      0.39665828444320683,
+      0.369514437859054,
+      -0.2300094137076522,
+      -0.0014534782778189744,
+      0.0053942970429600836,
+      0.003462013191952807,
+      -0.006067014448230736,
+      -0.0070921454476867984,
+      0.0001790170997381422,
+      0.006042495495296284
+    ],
+    "validated_command": [
+      0.3337120238189835,
+      -0.06195884664366973,
+      -0.5599999692966716,
+      0.0012266161924514459,
+      0.3812462157449779,
+      -0.10873126115003261,
+      -0.5600000154983793,
+      0.39665828444320683,
+      0.369514437859054,
+      -0.2300094137076522,
+      -0.0014534782778189744,
+      0.0053942970429600836,
+      0.003462013191952807,
+      -0.006067014448230736,
+      -0.0070921454476867984,
+      0.0001790170997381422,
+      0.006042495495296284
+    ],
+    "execution_mode": "TRACK",
+    "action_failure_reason": "none",
+    "candidate_valid": true,
+    "ramp_valid": true,
+    "qp_execution_diagnostics": {
+      "schema": "v64_b31_single_qp_diagnostics_v1",
+      "raw_unconstrained_velocity": [
+        -0.16102562581193555,
+        0.03239358961389372,
+        -0.004176222680697898,
+        0.03977771148565901,
+        -0.18045078587714333,
+        -0.03324956050612052,
+        0.0016230611755828014,
+        -0.060381025515656675,
+        0.2944683228682639,
+        0.019059971224545166,
+        -0.0015565933065329702,
+        0.0027330458328387354,
+        0.002529096719950337,
+        -0.0034987665211325416,
+        -0.005427397575647947,
+        -0.0011328120352286247,
+        0.0047570509276197515
+      ],
+      "box_nominal_velocity": [
+        0.2830536295640869,
+        -0.00648962334443666,
+        -0.5099999799841441,
+        0.03977771148565901,
+        0.3312939061952906,
+        -0.06918775893439394,
+        -0.5099999715705228,
+        0.3508822999261463,
+        0.31882942879527837,
+        -0.17773860782934886,
+        -0.0015565933065329702,
+        0.0027330458328387354,
+        0.002529096719950337,
+        -0.0034987665211325416,
+        -0.005427397575647947,
+        -0.0011328120352286247,
+        0.0047570509276197515
+      ],
+      "selected_velocity": [
+        0.3337120238189835,
+        -0.06195884664366973,
+        -0.5599999692966716,
+        0.0012266161924514459,
+        0.3812462157449779,
+        -0.10873126115003261,
+        -0.5600000154983793,
+        0.39665828444320683,
+        0.369514437859054,
+        -0.2300094137076522,
+        -0.0014534782778189744,
+        0.0053942970429600836,
+        0.003462013191952807,
+        -0.006067014448230736,
+        -0.0070921454476867984,
+        0.0001790170997381422,
+        0.006042495495296284
+      ],
+      "continuum_target_position_m": [
+        1.7824017426006284,
+        0.5082983954438299,
+        0.1423983550974062
+      ],
+      "continuum_actual_position_m": [
+        1.7765463393864624,
+        0.6147192847250099,
+        0.1561091110217783
+      ],
+      "continuum_position_error_m": [
+        0.0058554032141659995,
+        -0.10642088928117999,
+        -0.013710755924372098
+      ],
+      "continuum_reference_velocity_m_s": [
+        -0.0013310066707236923,
+        -0.07923843025471705,
+        -0.012144355106415164
+      ],
+      "continuum_desired_velocity_m_s": [
+        0.012080552778725712,
+        -0.23768767271462307,
+        -0.030961758413672782
+      ],
+      "continuum_actual_velocity_m_s": [
+        -0.0062556810924129565,
+        -0.0007831211906580253,
+        -0.0035504469474833857
+      ],
+      "continuum_selected_task_velocity_m_s": [
+        -0.0041680890621887835,
+        -0.00023933736449222292,
+        -0.003683816684713912
+      ],
+      "obstacle_name": "continuum_side_00",
+      "obstacle_rows": [
+        {
+          "source": "mujoco:arm_obstacle:collision_0059:v5_workspace_sphere_001_continuum_side_00",
+          "active": true,
+          "distance_m": 0.04790635882340615,
+          "candidate_residual_m_s": 0.18815757324418883,
+          "candidate_binding": false,
+          "candidate_lookahead_residual_m_s": 0.18401667428687785,
+          "candidate_lookahead_binding": false,
+          "selected_residual_m_s": 0.18815757324418883,
+          "selected_binding": false,
+          "selected_lookahead_residual_m_s": 0.18401667428687785,
+          "selected_lookahead_binding": false
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0060:v5_workspace_sphere_001_continuum_side_00",
+          "active": true,
+          "distance_m": 0.05077036736783105,
+          "candidate_residual_m_s": 0.21091340322127836,
+          "candidate_binding": false,
+          "candidate_lookahead_residual_m_s": 0.20674327408581358,
+          "candidate_lookahead_binding": false,
+          "selected_residual_m_s": 0.21091340322127836,
+          "selected_binding": false,
+          "selected_lookahead_residual_m_s": 0.20674327408581358,
+          "selected_lookahead_binding": false
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0061:v5_workspace_sphere_001_continuum_side_00",
+          "active": true,
+          "distance_m": 0.0255667739078732,
+          "candidate_residual_m_s": 0.004991508358255637,
+          "candidate_binding": false,
+          "candidate_lookahead_residual_m_s": 4.8985998798139335e-05,
+          "candidate_lookahead_binding": false,
+          "selected_residual_m_s": 0.004991508358255637,
+          "selected_binding": false,
+          "selected_lookahead_residual_m_s": 4.8985998798139335e-05,
+          "selected_lookahead_binding": false
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0062:v5_workspace_sphere_001_continuum_side_00",
+          "active": true,
+          "distance_m": 0.03442532854872895,
+          "candidate_residual_m_s": 0.0747253504066684,
+          "candidate_binding": false,
+          "candidate_lookahead_residual_m_s": 0.0695759132287566,
+          "candidate_lookahead_binding": false,
+          "selected_residual_m_s": 0.0747253504066684,
+          "selected_binding": false,
+          "selected_lookahead_residual_m_s": 0.0695759132287566,
+          "selected_lookahead_binding": false
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0063:v5_workspace_sphere_001_continuum_side_00",
+          "active": true,
+          "distance_m": 0.02581875814540436,
+          "candidate_residual_m_s": 0.00522929703696442,
+          "candidate_binding": false,
+          "candidate_lookahead_residual_m_s": -4.876802761669867e-05,
+          "candidate_lookahead_binding": true,
+          "selected_residual_m_s": 0.00522929703696442,
+          "selected_binding": false,
+          "selected_lookahead_residual_m_s": -4.876802761669867e-05,
+          "selected_lookahead_binding": true
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0064:v5_workspace_sphere_001_continuum_side_00",
+          "active": true,
+          "distance_m": 0.04432384599451782,
+          "candidate_residual_m_s": 0.15695622241530824,
+          "candidate_binding": false,
+          "candidate_lookahead_residual_m_s": 0.15245212492461813,
+          "candidate_lookahead_binding": false,
+          "selected_residual_m_s": 0.15695622241530824,
+          "selected_binding": false,
+          "selected_lookahead_residual_m_s": 0.15245212492461813,
+          "selected_lookahead_binding": false
+        },
+        {
+          "source": "mujoco:base_obstacle:collision_0001:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:base_obstacle:collision_0002:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:base_obstacle:collision_0002_part_02:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:base_obstacle:collision_0002_part_03:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:base_obstacle:collision_0002_part_04:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:base_obstacle:collision_0002_part_05:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0003:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0004:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0005:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0006:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0007:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0008:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0009:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0010:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0011:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0012:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0013:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0014:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0015:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0016:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0017:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0018:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0019:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0020:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0021:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0022:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0023:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0024:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0025:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0026:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0027:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0028:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0029:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0030:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0031:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0032:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0033:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0034:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0035:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0036:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0037:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0038:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0039:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0040:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0041:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0042:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0043:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0044:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0045:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0046:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0047:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0048:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0049:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0050:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0051:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0052:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0053:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0054:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0055:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0056:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0057:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0058:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0065:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0066:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0067:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0068:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0069:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0070:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0071:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0072:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        },
+        {
+          "source": "mujoco:arm_obstacle:collision_0073:v5_workspace_sphere_001_continuum_side_00",
+          "active": false,
+          "selected_binding": false,
+          "selected_lookahead_binding": false,
+          "residual_scope": "no active row; no additional distance query"
+        }
+      ],
+      "obstacle_active_row_count": 6,
+      "row_scope": "existing active clearance and lookahead rows; absent rows are inactive or screened, not missing distance witnesses",
+      "binding_threshold_m_s": 2e-05,
+      "additional_qp_solves": 0,
+      "additional_geometry_queries": 0
+    },
+    "reference_consumption_identity": {
+      "consumed_reference_version": "task_anchored_cartesian_residual_v1",
+      "consumed_reference_z_m": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.005,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "consumed_reference_definition_sha256": "0766b9d04176bf31dde98680a3da440c2b556fcad97cc70a1552ecb7e08f8ddb",
+      "consumed_reference_plan_sha256": "edea1b3595d5c58190ca9a42eff37c13540331d26d59e7988e3fcbab25542dfd"
+    },
+    "ramp_minimum_envelope_margin_m": 0.022185094450008665,
+    "preview_latency_s": 0.009580000303685665,
+    "branch_latency_s": 0.006232399959117174,
+    "next_start_latency_s": 0.003347800113260746,
+    "realized_next_start": {
+      "proxy_status": "PROXY_CLEARANCE_AT_LEAST_GATE",
+      "proxy_lower_m": 0.10584255795573509,
+      "proxy_upper_m": 0.2558425599557352,
+      "point_evaluations": 5,
+      "budget_exhausted": false,
+      "query_failure_reason": null,
+      "interval_count": 5,
+      "subspace_residual_linf_rad": 5.551115123125783e-17,
+      "frozen_rows_status": "START_ROWS_SATISFIED",
+      "selected_interval_count": 1,
+      "reaction_map_residual": 2.84540305513748e-15,
+      "interval_coverage_complete": true,
+      "interval_well_formed": true,
+      "analytic_bound_assumptions_satisfied": true,
+      "row_count": 44,
+      "worst_source": "mujoco:arm_obstacle:collision_0063:v5_workspace_sphere_001_continuum_side_00",
+      "minimum_start_slack_m_s": 0.004248015144038438
+    },
+    "failed_microstate": {
+      "servo_substep": 2,
+      "time_s": 10.42400000000015,
+      "status": "COVERED_AT_THIS_STATE",
+      "minimum_margin_m": 0.022189458905430122,
+      "subspace_residual_linf_rad": 2.7755575615628914e-17,
+      "shape_q": [
+        0.033061987502495616,
+        0.833162411574529,
+        -0.04196208454212693,
+        -1.0000003328651217,
+        0.25117243832498976,
+        -0.7959325957886192,
+        -0.24627193425450905,
+        0.7038223146850476,
+        0.05046256112019407,
+        0.2626430915334053
+      ]
+    }
+  },
+  "command_certificate": {
+    "command_id": 520,
+    "source_state_id": "b5d3e7d29238abf85c79d5a012e8707c8044846b12ff3549113c6ac74997d327",
+    "source_model_hash": "4c9cbf4030fa7b9b340731296182a8defdeeb349c707a0b674ff972e7b0d9e5d",
+    "source_partition_id": "908e55ec05cda3474d815a323317a424c8ee3f503ec1e266f2bf9076cce72323",
+    "command_sha256": "175095eb1b39f3dedf91bdbc78d8fd2741aebb907ae47107dd6cccebfa2e7864",
+    "state_acquisition_time": 3196255.8880841,
+    "target_acquisition_time": 3196255.8880841,
+    "planned_execution_start": 3196255.8880841,
+    "planned_execution_start_simulation_s": 10.400000000000142,
+    "solve_finished_time": 3196255.8978139004,
+    "validation_finished_time": 3196255.9082027003,
+    "valid_until": 3196255.9080841,
+    "maximum_supported_state_age": 0.02,
+    "scope": "exact_source_start_then_ten_declared_model_microstates",
+    "clock": "simulation seconds for admission; monotonic seconds for compute diagnostics",
+    "validity_clock": "simulation_time",
+    "simulation_valid_until": 10.420000000000142
+  },
+  "continuation_guaranteed": false,
+  "simulation_stop_is_safe_backup": false,
+  "next_servo_step_executed": false,
+  "partial_trace": {
+    "path": "E:/v64c2/v6_4/output/preference_warmstart_20261008_01/teacher_predictions/c2_new_train_minus/planning/c2_new_train_minus/predictions/C04/private_prediction/failures/c2_new_train_minus_interval_partial_trace.npz",
+    "sha256": "974db38437b7d9f30174ac8cf28e607081a73c2d310cd9258b2a850953f6d459"
+  }
+}

@@ -1,0 +1,325 @@
+{
+  "schema": "task_anchored_residual_plan_v2",
+  "representation_version": "task_anchored_cartesian_residual_v2",
+  "definition": {
+    "applicable": true,
+    "base_reference_id": "original_cartesian_passthrough_physical_time_home_v1",
+    "base_reference_sha256": "8b18848c53970c9739c9bc01c356aa00fd0e7befa35545f911e7deef253dd93b",
+    "base_reference_version": "original_cartesian_passthrough_physical_time_home_v1",
+    "basis_function": {
+      "fall_start_ratio": 0.75,
+      "kind": "minimum_jerk_c2_plateau",
+      "normalized_first_derivative_abs_bound": 7.5,
+      "normalized_second_derivative_abs_bound": 92.37604307034013,
+      "rise_ratio": 0.25,
+      "support": "same_original_legal_reference_time_interval",
+      "transition_polynomial": "10*v^3-15*v^4+6*v^5",
+      "transverse_basis": "original_fixed_world_basis"
+    },
+    "candidate_component_count": 7,
+    "coefficient_norm_bound_m": 0.02,
+    "definition_sha256": "12d34f81e1ee752c91dddd590214aab15a81a07f397a9848a717c0bbeb4e489f",
+    "disabled_intervals": [],
+    "frame": "world",
+    "interval_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "interval_selection": "earliest_six_complement_components_then_disable_degenerate_without_replacement",
+    "intervals_s": [
+      [
+        0.0,
+        4.15
+      ],
+      [
+        4.85,
+        7.420852667475916
+      ],
+      [
+        8.120852667475916,
+        11.521915186294448
+      ],
+      [
+        12.221915186294448,
+        15.271314441452663
+      ],
+      [
+        15.971314441452662,
+        18.486349694955067
+      ],
+      [
+        19.18634969495507,
+        21.267346050098567
+      ]
+    ],
+    "partition_kind": "reference_time_not_PCC_arc_length",
+    "protected_time_contract": {
+      "additional_hold_intervals_s": null,
+      "additional_specified_velocity_requirements": null,
+      "additional_strict_path_intervals_s": null,
+      "base_reference_hold_intervals_s": [
+        [
+          25.5,
+          27.0
+        ]
+      ],
+      "extra_requirements_status": "NONE_IN_SUPPORTED_TASKSPEC_V1",
+      "final_reference_freeze_s": [
+        23.98,
+        27.0
+      ],
+      "initial_time_s": 0.0,
+      "path_freedom": "free_intermediate_path_between_fixed_requirements",
+      "schema": "task_derived_protected_time_contract_v1",
+      "task_point_windows": [
+        {
+          "arm": "continuum",
+          "point_id": "continuum_00",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 4.5,
+          "time_window_s": [
+            4.15,
+            4.85
+          ]
+        },
+        {
+          "arm": "continuum",
+          "point_id": "continuum_01",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 7.770852667475916,
+          "time_window_s": [
+            7.420852667475916,
+            8.120852667475916
+          ]
+        },
+        {
+          "arm": "continuum",
+          "point_id": "continuum_02",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 11.871915186294448,
+          "time_window_s": [
+            11.521915186294448,
+            12.221915186294448
+          ]
+        },
+        {
+          "arm": "continuum",
+          "point_id": "continuum_03",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 15.621314441452663,
+          "time_window_s": [
+            15.271314441452663,
+            15.971314441452662
+          ]
+        },
+        {
+          "arm": "continuum",
+          "point_id": "continuum_04",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 18.836349694955068,
+          "time_window_s": [
+            18.486349694955067,
+            19.18634969495507
+          ]
+        },
+        {
+          "arm": "continuum",
+          "point_id": "continuum_05",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 21.61734605009857,
+          "time_window_s": [
+            21.267346050098567,
+            21.96734605009857
+          ]
+        },
+        {
+          "arm": "continuum",
+          "point_id": "continuum_06",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 27.0,
+          "time_window_s": [
+            25.5,
+            27.0
+          ]
+        },
+        {
+          "arm": "rigid",
+          "point_id": "rigid_terminal",
+          "position_and_orientation_required": true,
+          "specified_velocity_requirement": null,
+          "time_s": 27.0,
+          "time_window_s": [
+            25.5,
+            27.0
+          ]
+        }
+      ],
+      "task_sha256": "bf5eaa2a33351e97e1e2a5aa1d00c22df56a407b74b5717decaa8def21ddb092"
+    },
+    "protected_time_intervals_s": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.15,
+        4.85
+      ],
+      [
+        7.420852667475916,
+        8.120852667475916
+      ],
+      [
+        11.521915186294448,
+        12.221915186294448
+      ],
+      [
+        15.271314441452663,
+        15.971314441452662
+      ],
+      [
+        18.486349694955067,
+        19.18634969495507
+      ],
+      [
+        21.267346050098567,
+        21.96734605009857
+      ],
+      [
+        23.98,
+        27.0
+      ]
+    ],
+    "reasons": [],
+    "representation_version": "task_anchored_cartesian_residual_v2",
+    "schema": "task_anchored_cartesian_residual_v2",
+    "status": "APPLICABLE",
+    "support_cutoff_s": 23.98,
+    "task_id": "c2_new_val_minus",
+    "task_sha256": "bf5eaa2a33351e97e1e2a5aa1d00c22df56a407b74b5717decaa8def21ddb092",
+    "time_mapping": "identity_physical_time",
+    "transverse_bases": [
+      [
+        [
+          -1.0494877645337016e-08,
+          0.27856711812128665
+        ],
+        [
+          3.0440199818211733e-09,
+          0.9604167640673508
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          0.9903423836365439,
+          0.0
+        ],
+        [
+          -0.04063396812754447,
+          0.9560870562906725
+        ],
+        [
+          0.13255505953111768,
+          0.2930828224127721
+        ]
+      ],
+      [
+        [
+          -0.013713765344043762,
+          -0.986951080865288
+        ],
+        [
+          0.08405653504798638,
+          -0.16102038373709002
+        ],
+        [
+          0.9963666150347548,
+          1.734723475976807e-18
+        ]
+      ],
+      [
+        [
+          0.9999200568295403,
+          8.673617379884035e-19
+        ],
+        [
+          0.00437467645878964,
+          -0.9382424918889205
+        ],
+        [
+          0.011863479923266715,
+          0.3459783611933974
+        ]
+      ],
+      [
+        [
+          0.9999723741920166,
+          0.0
+        ],
+        [
+          0.0036725921753724233,
+          -0.8694126055326048
+        ],
+        [
+          -0.006462423654868934,
+          -0.49408675487307613
+        ]
+      ],
+      [
+        [
+          0.014202309117165555,
+          0.9922895098858943
+        ],
+        [
+          -0.11370515241386853,
+          0.12394163372495766
+        ],
+        [
+          0.9934130222270491,
+          1.734723475976807e-18
+        ]
+      ]
+    ]
+  },
+  "z_m": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      -0.005,
+      0.005
+    ],
+    [
+      0.02,
+      4.1431378633329414e-17
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ]
+  ]
+}

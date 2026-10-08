@@ -1,0 +1,260 @@
+{
+  "batch_size": 32,
+  "curve_every": 50,
+  "data_status": "SUPPORTED",
+  "dataset_manifest_path": "E:\\v64c2\\v6_4\\output\\preference_warmstart_20261008_01\\dataset\\dataset_manifest.json",
+  "dataset_manifest_sha256": "4497032017d04ebf529669c463ea592540c828338db9d801bce118242f6023e9",
+  "device": "cpu",
+  "draw_seed": 64222,
+  "extra_ddim_smoke_sample_units_limit": 8,
+  "fresh_initialization": true,
+  "model": {
+    "beta_cap": 0.999,
+    "beta_end": 0.02,
+    "beta_start": 0.0001,
+    "condition_dim": 896,
+    "cosine_s": 0.008,
+    "ddim_steps": 20,
+    "diffusion_steps": 100,
+    "hidden_dim": 128,
+    "hidden_layers": 2,
+    "latent_dim": 12,
+    "noise_schedule": "cosine",
+    "objective": "v_mse",
+    "parameterization": "epsilon_residual"
+  },
+  "noise": {
+    "alpha_bars_sha256": "bf0561b8e9e3389c93d4046f9e43e7ee40a63f99f9a040b3acaa51a7ac048817",
+    "beta_cap": 0.999,
+    "betas_sha256": "101ff0c0af0c8a6aceb59b87b82cc38bc3154a819d83d0e299b4c98e4cec70eb",
+    "buffer_dtype": "float32",
+    "cosine_s": 0.008,
+    "diffusion_steps": 100,
+    "hash_encoding": "schema+NUL+100 little-endian float32 betas+100 little-endian float32 alpha_bars",
+    "linear_beta_end": null,
+    "linear_beta_start": null,
+    "noise_schedule": "cosine",
+    "prediction_type": "epsilon",
+    "schedule_calculation": "float64 betas/cumprod then float32",
+    "schedule_sha256": "bd9e32157a559d91bbe36c64b5b8e7e4fd31cbf79a8afacb9413c5fa50343589",
+    "schema": "v6_4_ddpm_effective_f32_schedule_v1",
+    "terminal_alpha_bar": 2.428572258850181e-07,
+    "terminal_alpha_exact_zero": false,
+    "terminal_signal_coefficient": 0.0004928054645445991,
+    "terminal_snr": 2.428572848646646e-07
+  },
+  "normalizer_sha256": {
+    "condition_normalizer.json": "bbcdb54be95e06b0c1fd822838f05b813ea7c7d55e09876436e7675447a47074",
+    "condition_schema.json": "c17796213286d903d62f053c88ec52af955ca9e04ce78b9a98c314d3cd4517b5",
+    "residual_normalizer.json": "d47f8c11dac4442b5b4fc8aee42b23db8c9e556579b7a6726a0a08f60e4b12ff"
+  },
+  "objective": {
+    "additional_losses": [],
+    "epsilon_timestep_weight_of_v_mse": "1/alpha_bar",
+    "is_basic_epsilon_mse": false,
+    "loss": "mean_squared_error",
+    "objective": "v_mse",
+    "objective_sha256": "b70945a5baaa61ed8bcc26a2df40ea6526f1331dc6b0b6db9f38aa31fa23c45a",
+    "residual_error_relation": "L_epsilon_per_example=alpha_bar*L_v;L_x0_per_example=(1-alpha_bar)*L_v",
+    "sampling_prediction": "epsilon_and_unclipped_x0",
+    "schema": "v6_4_explicit_training_objective_v1",
+    "target": "sqrt(alpha_bar)*epsilon-sqrt(1-alpha_bar)*x0"
+  },
+  "old_weights_loaded": false,
+  "optimizer": {
+    "gradient_norm_clip": 1.0,
+    "lr": 0.0001,
+    "name": "AdamW",
+    "weight_decay": 0.01
+  },
+  "optimizer_updates": 4000,
+  "parameterization": {
+    "epsilon_formula": "sqrt(1-alpha_bar)*xt+sqrt(alpha_bar)*r_net",
+    "equivalent_internal_residual_mse_weight": "1",
+    "loss": "basic_v_mean_squared_error",
+    "loss_target": "true_forward_v",
+    "network_output": "internal_v_residual",
+    "parameterization": "epsilon_residual",
+    "parameterization_sha256": "bd7e5d36c51523e76ffe9e33fb62c53f4f641e7d777974fffbbb11a969584936",
+    "postprocessing_clipping_projection_or_reference_optimization": false,
+    "requires_parameterization_specific_training": true,
+    "schema": "v6_4_v_parameterization_v2",
+    "terminal_residual_supervision_weight": "1",
+    "terminal_risk": "v MSE changes timestep weighting; finite fit does not establish task or physical success",
+    "x0_formula": "sqrt(alpha_bar)*xt-sqrt(1-alpha_bar)*r_net"
+  },
+  "physics_steps": 0,
+  "postprocessing": "inverse TRAIN residual scaler only; no clipping/projection/resampling/fallback",
+  "runtime": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "cuda_runtime": null,
+    "cudnn": null,
+    "cudnn_allow_tf32": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "deterministic_algorithms": true,
+    "device": "cpu",
+    "gpu": null,
+    "matmul_allow_tf32": false,
+    "torch": "2.6.0+cpu"
+  },
+  "sampling_distribution": "uniform mother, uniform Task, uniform labeled preference/family bucket, uniform near-optimal reference",
+  "schema": "v6_4_preference_training_protocol_v1",
+  "seed": 64221,
+  "selection": "maximum raw-amplitude-and-analytic-reference-legal sample count; then minimum task-balanced nearest matching-label decoded position RMS at 50Hz on frozen W_support; then fixed task-balanced VAL v-MSE; then earlier update; missing labels are not passes",
+  "source_files": {
+    "E:\\v64c2\\v6_4\\diffusion_model.py": "023fc2324e96e58b2cb4775270935462d9674f260e674b97e6e66d802b2a86d8",
+    "E:\\v64c2\\v6_4\\preference_diffusion_warmstart.py": "731b71c5b107f54bce77a6aa126afcd5e2833e6b3bbd5c6e89f6c13fc8082126",
+    "E:\\v64c2\\v6_4\\preference_teacher_dataset.py": "f611aac822e06cee069c7dba4364d1b9f0185d56af7e7c275224c7cc456af3ef",
+    "E:\\v64c2\\v6_4\\residual_dataset.py": "4af034fc2a9ee2740b5d04e46de6b71b5477869bccc6f1c786fbd1d9add1e4cd",
+    "E:\\v64c2\\v6_4\\residual_diffusion.py": "af358576ccefed97e1613fb029d0ad7f00f1380d8ccb7460fdb7ce0781fe8d45",
+    "E:\\v64c2\\v6_4\\route_optimizer_protocol.py": "85bcbeb6a31a5de7f9bc150cf79b58e1bb13936f73d95da2ebd64652ae63ed79",
+    "E:\\v64c2\\v6_4\\task_anchored_reference.py": "e8c0c82a742fa720a24f7accf67d0acafb836b117dba7738174799ab389f2db1"
+  },
+  "supported_conditions": {
+    "A/v1/011000": {
+      "mother_ids": [
+        "c1_mother_00",
+        "c1_mother_01",
+        "c2_new_train"
+      ],
+      "preference": "A",
+      "reference_family": "v1",
+      "sample_ids": [
+        "0a6985879ab708cdbb5fae0662cb02cdeb0f1c0ad9f6895686c1f9de034fc776",
+        "0e2d4952acc1c9f7026dea049f773ac7e1d507b12cea52f6a264e87645b24601",
+        "15ddcbd85dfa4a9ad60398db97ed6937c501a6e94b6355cece01ba7b2555d37c",
+        "160093e647979c9eb9ddb1f35a5b61f28022742f1e3a1cc56b669d011051e1d1",
+        "16aa4ed135e1527958b915232bdb25b9625ddb9532ace00c3bb6cf070fd4b348",
+        "23edf0d4ec69585e288c7757699e939ed2dfd8dce6979112caae2b508a20e40e",
+        "29f36c1a7050920fab30c95582a5ac9dadab8e9cd8031b6138f17b752104d518",
+        "37384ddc8d938d23d2948be3b7dc3a304fbd02ce7629bb18eb2e2ff8d6c8f087",
+        "43459470a07e78fcd8f238abadd14f24e622eaa66cc5a8e925481f1ea727b816",
+        "616d0d7d0377a267fe711914580a5b329798c3fde32195794b3aa8438ee16a88",
+        "7190cc0201b6a2a29715669d44bd7e2e9ecb7e56efe72a5e093311229f0fd396",
+        "80c52b198fa565bd9489c8068b4d26ed67ee360ad3c7b09f9eea1a9f151b8519",
+        "92e6afccb314aff5ee41c043cf539436e8521c2a0a74a0f4d8ccfa16909b085c",
+        "a02e24d074d0b03b13d8d402adf4b319d17a6e62fb760c26c65a9a040bf705cb",
+        "a19fdeaae7fbc392a8f2eeb1d7d22481be453eeeb0a0c68edeb9e58a46ea26c1",
+        "a2f830240bdf02555d110d097d18734d0a10dd3f6015b27eace43e03b4e5b64a",
+        "b3ca50a36a8a087a80b25189cede3786d61e608f1cb489d343fc39e340d4533d",
+        "be76fc955d819821a6680531122a65d6181fe8c67fc86ec84f4dcb15a60de95c",
+        "c3e644178234c202dc1a6455d3f31611a677016abfe8a7bfc5f1890d12444475"
+      ],
+      "search_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    "A/v2/011000": {
+      "mother_ids": [
+        "c1_mother_00",
+        "c1_mother_01",
+        "c2_new_train"
+      ],
+      "preference": "A",
+      "reference_family": "v2",
+      "sample_ids": [
+        "1c3522d5d91a46fa65b37d85055fb4f8e4d04cfeec407f437b00e33048c527a6",
+        "1db06d3373c51daac116d52a726fa9f2587c9803fe522bab79c8277e2aa7185f",
+        "2796284b648004119b978705725441e644a94723847ce1f2d865de29bc381b3a",
+        "3db007df440aa2b9c75467e66bd96ea59fb1a5e3ec4e40d7b8a7d5294cfc4d96",
+        "4abef7a95881ae3c760c04fd902cbf329d7012e0a98d022697ab6df5bb1cc212",
+        "54eb36818e704536be5bc6f1446524689391e6f982d8587cce19bbe0e1d497a3",
+        "572d5dffec8df7420c7292f45fd7e3661d50d5b9852fc76eb6329a04ce6bb669",
+        "adf779c11fa224d73915ea1c143b1f69a2d8327db58091973ce9333542afb3fd",
+        "f15c3a0c79f2982124b588d774e75bf1a30dc328e5d4bb066e0ddb178b31f263",
+        "f174cf3694261fb2045430677d8e9d98727c443e014b239154897a1be9a8792b",
+        "f184f02e5d8e91c45147c3c27b02a14c450271d2e51dc23f1b043472a14df80d",
+        "f5efe88b56e34aa334da12ad7968794207053b1cfcd6e5af4a1b78eacafa8c13"
+      ],
+      "search_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    "B/v1/011000": {
+      "mother_ids": [
+        "c1_mother_00",
+        "c1_mother_01",
+        "c2_new_train"
+      ],
+      "preference": "B",
+      "reference_family": "v1",
+      "sample_ids": [
+        "63a36aae2526b76bd3b5107ea7707817a9714b5362e796bf786b497ad128cf2c",
+        "6f828a180a6fa4b328514e39ea2f68678294bfe2eed2746fcf1d8be008fd7b77",
+        "7ef353c38fdbb137aa92273529e8d66bd085436ca00fc112c817f56a4fe8db22",
+        "890e038935a0acf6e8f3963a019a55afe2bc00d882d9ce146e21017e5aa5e8fd",
+        "89250b7176497d42fd3c2e5877c87331e151d4f3a4cbf19a00f123c0dcc68b5b",
+        "9243b4565ab1922a1848ee0f88d0d471426f92c93b0cbeffae637b62b74aa84b",
+        "a78b8fe6bb1081c263af01bbb1b7398954bd0eab18d4f32aec84714e117491b2",
+        "ba27ea0ac5b93c085e7127d5073fcfd76fb94ce5072e3e97e183c718ca9c07bc",
+        "be7497155a4c5d1318b69d45475da35dad878266c6ae8063a959e90b97d9583f",
+        "c8d58cffeeb2c451845e7b773c48350e62dad49f88997f1ac7d30ad522c3c878",
+        "d81ec29a8b8bebe7e5b156515d961f9c608d48661495c626c43110597aa0aff8"
+      ],
+      "search_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    "B/v2/011000": {
+      "mother_ids": [
+        "c1_mother_00",
+        "c1_mother_01",
+        "c2_new_train"
+      ],
+      "preference": "B",
+      "reference_family": "v2",
+      "sample_ids": [
+        "0451f0d0a5c41721ac4a4e624232994bd4f9a2848564ed01d4479ae5a3a7626c",
+        "1265fea2833b968a896e43c1b70ba79fc8bb38c16caa00e75e3f93010b8671e4",
+        "18e20b560681fa090c176844776ebbe04407005fbdaaf440d054e21854b6dc4e",
+        "32337b75bd1f1a32b5aec9b9cb40a10202690e1a04a63e5dc9459ea8e66c8f3b",
+        "3c2d4002725b0a8c200ac8c2e29fcb970b6abd546d93ca8f821a7c040b01ac60",
+        "ac3e272914e17fa007aec5dd09eb6dc03ea4abcc76f5ed046059e3be986fdf49",
+        "b25174128ece4a687d90caebdf5ccb0824c7b4163c78ae29a6a4c9fe6817fa65",
+        "bb643aa06e5b1ddc040fd8a2c1ecf7622c9e21434aac623ce16268730e7cc669",
+        "ec4fbab639f311981d5576d1daf2318a09d5dac6e185ea9140a3a52157dba178",
+        "fd3a62ad6f9f88fd8dbbc91b2affaeff18c3c0339c2e892ffc7850227935f011"
+      ],
+      "search_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "test_noise_seed": 64224,
+  "validate_every": 250,
+  "validation_conditions": [
+    [
+      "A",
+      "v1"
+    ],
+    [
+      "B",
+      "v2"
+    ]
+  ],
+  "validation_draws_sha256": "d80958f8d8025e9286dab83657694575bcae9d96f34aac01a8547908c420ac2b",
+  "validation_noise_per_condition": 2,
+  "validation_sample_units_limit": 128,
+  "validation_seed": 64223
+}
