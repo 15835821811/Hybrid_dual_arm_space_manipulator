@@ -1,3 +1,29 @@
+# Hybrid Dual-Arm Space Manipulator — V6.4-C.3
+
+本轮固定研究程序已经完成：96 槽教师搜索、D/S 各一次 4000 更新、88 槽闭环 VAL 和 144 槽独立 TEST。两个模型均由 VAL 选中 **update 4000**。Diffusion 未建立相对规则、TRAIN-only 检索或简单回归的整体收益；默认保留 **C.1 规则初始化**。
+
+|端点|A：完整 27s + 原五门禁 /4|B：完整 27s + 原五门禁 + 30mm /4|A 近 R12 /4|B 近 R12 /4|
+|---|---:|---:|---:|---:|
+|R8|4|4|3|2|
+|R12|4|4|4|4|
+|N8|4|3|3|1|
+|S8|4|2|3|1|
+|D8|4|1|2|1|
+
+TEST 共 40 个逻辑 actual 槽：34 槽完整通过、6 槽 NO_PLAN，其中 28 次独立实际执行、6 个严格别名。主预测物理步 4,058,970 / 4,428,000，VAL+TEST 主 actual 步 526,500 / 810,000；预演、重放和几何另计。三 TRAIN、两 TEST 母场景及单训练 seed 仅支持 DATA_LIMITED 先导，deployment=NOT_MET，连续时间与硬件安全均未建立。
+
+[C.3 封存研究报告](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/summary.json) · [当前查看器：五视角、连续体侧视、末端轨迹与误差](v6_4/visualization/search_aware_warmstart_20261008_01/index.html) · [展示与来源说明](docs/V6_4_C3_VISUALIZATION.md) · [最终逐项验收](docs/C3_FINAL_COMPLETION_AUDIT.md) · [最终 TEST 审计](docs/C3_FINAL_TEST_METADATA_AUDIT.md) · [软件测试](docs/C3_FINAL_MOCK_EXECUTION.md) · [独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c3-search-aware-closed-loop-val)
+
+便携包包含真实权重、统一 TRAIN 数据、VAL/TEST 实际 trace 与独立重放数组、命令与验收文件，以及实验 producer `9f39b42775283432eb933f63a9047c488ba22070` 的完整冻结源码。大型私有预测/计时/几何档案的遗漏项逐文件列出 SHA 与本地保留原因，不冒充已随 clone 携带。发布代码另含不影响本轮结果的[空初值身份维护](docs/V6_4_C3_MAINTENANCE.md)。字节验证不运行新实验：
+
+```sh
+python -B -X utf8 -m v6_4.visualization.export_search_aware_release verify --release v6_4/releases/search_aware_warmstart_20261008_01
+```
+
+以下保留 C.2 及更早版本的原始结果与历史入口。
+
+---
+
 # Hybrid Dual-Arm Space Manipulator — V6.4-C.2
 
 固定预算的 C.2 数据、真实训练、搜索和最终 actual 协议已执行；独立审查支持有限工程完成与局部先导结果，判定 `claim_supported=partial`、置信度 medium。新模型完成 **4,000** 次更新，VAL 选中 update **250**；八个指定 Diffusion 初值中七个 raw 合法，一个原样拒绝占槽，无裁剪或补采样。默认保留 C.1 规则初始化，`learning_benefit_established_in_pilot=NOT_ESTABLISHED`。

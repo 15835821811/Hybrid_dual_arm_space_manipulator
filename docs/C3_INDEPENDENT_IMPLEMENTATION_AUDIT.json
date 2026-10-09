@@ -1,0 +1,110 @@
+{
+  "schema": "v64_c3_independent_implementation_audit_v1",
+  "audit_date_local": "2026-10-08",
+  "timezone": "Asia/Shanghai",
+  "workspace": "E:/v64c3",
+  "run": "v6_4/output/search_aware_warmstart_20261008_01",
+  "base_commit": "1758e13b01735b80c5a512b81cbc1d5e47a07ec9",
+  "reviewed_algorithm_producer": "9f39b42775283432eb933f63a9047c488ba22070",
+  "verdict": "NO_CONFIRMED_FROZEN_CURRENT_STUDY_IMPLEMENTATION_INVALIDATION",
+  "execution_state_at_review": "FORMAL_TEACHER_ACTIVE_LATER_STAGES_NOT_YET_AVAILABLE",
+  "result_audit_completed": false,
+  "physics_steps_for_audit": 0,
+  "training_updates_for_audit": 0,
+  "ddim_samples_for_audit": 0,
+  "tests_run_for_audit": 0,
+  "source_modified": false,
+  "writes": [
+    "docs/C3_INDEPENDENT_IMPLEMENTATION_AUDIT.md",
+    "docs/C3_INDEPENDENT_IMPLEMENTATION_AUDIT.json"
+  ],
+  "independently_verified": {
+    "frozen_source_file_count": 430,
+    "protected_artifact_count": 37,
+    "frozen_hash_mismatches": [],
+    "execution_and_run_configs_equal_C2_publication": true,
+    "original_numeric_backend_diff": "UNCHANGED",
+    "inherited_file_changes": [
+      "route_initializers.py: source allowlist accepts regression",
+      "continuous_route_optimizer.py: regression source attribution only"
+    ],
+    "teacher_pair_count": 12,
+    "teacher_raw_input_count": 24,
+    "teacher_raw_legal_count": 24,
+    "explicit_local_B_rule_construction_count": 2,
+    "train_val_test_task_counts": [6, 2, 4],
+    "train_val_test_mother_counts": [3, 1, 2],
+    "new_val_test_mother_seeds": [2027985823, 2028090552, 2028195281]
+  },
+  "historical_import_record": {
+    "unique_physical_candidates": 72,
+    "evidence_tier_counts": {
+      "VALIDATED_EXECUTION": 10,
+      "PREDICTED_COMPLETE": 40,
+      "FAILED_OR_INCOMPLETE": 22
+    },
+    "excluded_C2_VAL_TEST_facts": 24,
+    "historical_label_views": 52,
+    "portable_sha_verified_inventory_entries": 845,
+    "local_archive_sha_verified_inventory_entries": 637,
+    "missing_evidence": 0,
+    "all_large_raw_traces_independently_rehashed_for_this_audit": false
+  },
+  "findings": [
+    {
+      "id": "A1",
+      "priority": 3,
+      "title": "Conservative seed-ID fallback ambiguity after a rejected raw input",
+      "file": "v6_4/search_effect_teacher.py",
+      "lines": [382, 384],
+      "mechanism": "A missing proposal plan hash can equal a rejected row null plan hash before the real content-key match is reached.",
+      "possible_effect": "Suppress valid direct-seed evidence or misrecord seed candidate ID when independently valid selected-descendant evidence qualifies a label.",
+      "positive_label_gates_still_apply": true,
+      "can_fabricate_illegal_raw_or_unqualified_B_success": false,
+      "frozen_current_study_triggered": false,
+      "frozen_current_study_effect": "NONE_OBSERVED_ALL_24_RAW_INPUTS_LEGAL",
+      "action": "Future non-null identity guards and unsupported-slot test; preserve current frozen producer."
+    }
+  ],
+  "protocol_checks": {
+    "train_boundary_and_historical_task_bytes": "PASS_STATIC_AND_FROZEN_INPUT_CHECK",
+    "teacher_pairs_before_search_and_leave_one_mother": "PASS_STATIC_AND_FROZEN_INPUT_CHECK",
+    "teacher_qualified_labels_and_original_seed_z": "PASS_STATIC_REVIEW",
+    "paired_D_S_supervision_scalers_and_exposures": "PASS_STATIC_REVIEW_EXECUTION_PENDING",
+    "raw_generation_no_repair_no_resampling": "PASS_STATIC_REVIEW_EXECUTION_PENDING",
+    "VAL_whitelist_seal_before_actual_lexicographic_selection": "PASS_STATIC_REVIEW_EXECUTION_PENDING",
+    "TEST_model_freeze_and_R8_prefix": "PASS_STATIC_REVIEW_EXECUTION_PENDING",
+    "actual_original_runner_five_gates_and_strict_alias": "PASS_STATIC_REVIEW_EXECUTION_PENDING",
+    "budgets_recovery_and_cold_cost_accounting": "PASS_STATIC_REVIEW_SERIAL_SCHEDULE_REQUIRED"
+  },
+  "caps": {
+    "candidate_slots": 328,
+    "actual_logical_slots": 60,
+    "main_prediction_physics_steps": 4428000,
+    "main_actual_physics_steps": 810000,
+    "ddim_samples_total": 32,
+    "optimizer_updates_per_model": 4000,
+    "sample_exposures_per_model": 128000,
+    "checkpoint_updates": [250, 4000]
+  },
+  "evidence_sha256": {
+    "v6_4/search_effect_teacher.py": "98e1ab1d8a0b8ac8497492bf2be0cf8dbe584f40b1095612c90da49faf4b0734",
+    "v6_4/simple_warmstart_regression.py": "7a80e29851f347ac7492bd28fd6b70ceff9350b8325076277ea303ab5bd99213",
+    "v6_4/closed_loop_warmstart_validation.py": "26db6c940490a7ca7eb934524e5941ad2ae419bcb8b93d3882272ab0caa7fcd9",
+    "v6_4/search_aware_warmstart_experiment.py": "818b7655124a94f59822407d2de92b2985d15683d7bc397cc0683bef80376ead",
+    "plan.json": "616c2fea6879ccdc1b9bdadba57c7e1e8862af6cabf32fbbb510133c8847c6ad",
+    "source_identity.json": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+    "teacher_search/frozen_seed_pairs.json": "0f13b3d3d6e70abacf4aa54c098eb8c149d5584e48af65e19d14c77e27078a79",
+    "historical_import/history.json": "76bc20a081e3280a442de8b02c4168b2a14977bcd6135f91c4060ed4c9e0a0fc"
+  },
+  "limitations": [
+    "Implementation audit only; final study results are not yet available.",
+    "No physics or tests rerun for this audit.",
+    "Large historical trace SHA verification is importer evidence, not repeated independent trace hashing here.",
+    "Budget reservations rely on the declared serial orchestration and are not a concurrency-safe scheduler.",
+    "Three TRAIN mothers, one VAL mother, two TEST mothers, one training seed per model."
+  ],
+  "deployment": "NOT_MET",
+  "continuous_time_safety": "NOT_ESTABLISHED",
+  "hardware_safety": "NOT_ESTABLISHED"
+}

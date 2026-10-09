@@ -1,0 +1,1617 @@
+{
+  "schema": "v64_c3_final_teacher_dataset_training_audit_v1",
+  "audit_start_utc": "2026-10-08T10:00:39.161075+00:00",
+  "audit_end_utc": "2026-10-08T10:00:40.215424+00:00",
+  "argv": [
+    "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+    "C:\\Users\\admin\\AppData\\Local\\Temp\\c3_final_teacher_dataset_audit_20261008.py"
+  ],
+  "exit_code": 0,
+  "audit_script_identity": {
+    "path": "C:\\Users\\admin\\AppData\\Local\\Temp\\c3_final_teacher_dataset_audit_20261008.py",
+    "sha256": "470a6c3124c9ba3f3ef1150172eaddf7e2e4d564660c0c6c04bd709afc51a533",
+    "imports_repository_core": false,
+    "imports_torch": false,
+    "retained_repository_relative_path": "docs/audit_scripts/c3_teacher_dataset_metadata_audit.py",
+    "retained_sha256": "470a6c3124c9ba3f3ef1150172eaddf7e2e4d564660c0c6c04bd709afc51a533",
+    "retention_only_no_rerun": true
+  },
+  "audit_tooling_note": "An initial overlength command failed before process creation (Windows os error206). The first temporary-script pass exited1 at receipt lookup because build/train receipts are under command_logs,not run root;all prior metadata checks emitted no discrepancy and no audit artifacts had been written. The corrected final pass is recorded here. No experiment terminal/cost records were modified by any audit attempt.",
+  "run": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01",
+  "source_identity_sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+  "frozen_producer": "9f39b42775283432eb933f63a9047c488ba22070",
+  "verdict": "NO_DISCREPANCY_IN_REVIEWED_EVIDENCE",
+  "prior_interim_scope": {
+    "path": "docs/C3_TEACHER_EVIDENCE_AUDIT_10_STREAMS.json",
+    "streams": 10,
+    "is_final_dataset_or_training_audit": false
+  },
+  "scope": "Final12 teacher streams,TRAIN-only shared D/S/N pool,TRAIN scaler refits,paired draw indices and four small checkpoint metadata/weights;VAL/TEST pending.",
+  "teacher": {
+    "streams": 12,
+    "slots": 96,
+    "formal_actual_validation": "NOT_RUN_TEACHER_SEARCH",
+    "endpoint_label_status_counts": {
+      "RULE_ONLY": 7,
+      "INITIALIZER_EFFECT_EVIDENCED": 12,
+      "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL": 5
+    },
+    "qualified_endpoints": 19,
+    "near_historical_endpoints": 14,
+    "selected_teacher_pair_ids": {
+      "c1_mother_00_plus": [
+        "8d4ffca45ec522610429736d100a722f429e5e28a50b0527234289cc678367c1"
+      ],
+      "c1_mother_00_minus": [
+        "f1cfddac0284fda0a2295a644b853b18c2253853a8911d54fba0ec0313d37ce9"
+      ],
+      "c1_mother_01_plus": [
+        "bc166c6ddba75a5c209056412c2c0e6427132395e6a9e21c6e30662793c72aa7",
+        "9c0cb9ff9a0f53c9bb92a132d0ffa09b6c9e6ab5d6fdd9c8bc10e5cbc247838f"
+      ],
+      "c1_mother_01_minus": [
+        "b1c765dc94a8fcb55ee5d27306d26d10327045ffc5efe941dfdc708324a0f252",
+        "ff0c89cbc48f468051857e9b6c64f378b0b64104234de7ec87eb59f426ceae5e"
+      ],
+      "c2_new_train_plus": [
+        "907b1274d56775419357b4f0f980113f59454a55b21760b109fdb9525901fb09"
+      ],
+      "c2_new_train_minus": [
+        "cecba526053d91f6fcd65ff3717827ab15730941b740a18ce716e81bd0682ea0",
+        "02146dcbbd667029d38de6339fb35b189ce90e85e6e86b898057bbb16112b40d"
+      ]
+    },
+    "raw_inputs": [
+      {
+        "task_id": "c1_mother_00_plus",
+        "combination": "T_local",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_00_plus",
+        "combination": "T_local",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_00_plus",
+        "combination": "T_transfer",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_00_plus",
+        "combination": "T_transfer",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_00_minus",
+        "combination": "T_local",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_00_minus",
+        "combination": "T_local",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_00_minus",
+        "combination": "T_transfer",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_00_minus",
+        "combination": "T_transfer",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_01_plus",
+        "combination": "T_local",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_01_plus",
+        "combination": "T_local",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_01_plus",
+        "combination": "T_transfer",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_01_plus",
+        "combination": "T_transfer",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_01_minus",
+        "combination": "T_local",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_01_minus",
+        "combination": "T_local",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "RULE_CONSTRUCTION_NO_MATCHING_TEACHER"
+      },
+      {
+        "task_id": "c1_mother_01_minus",
+        "combination": "T_transfer",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c1_mother_01_minus",
+        "combination": "T_transfer",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c2_new_train_plus",
+        "combination": "T_local",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c2_new_train_plus",
+        "combination": "T_local",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c2_new_train_plus",
+        "combination": "T_transfer",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c2_new_train_plus",
+        "combination": "T_transfer",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "combination": "T_local",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "LOCAL_QUALIFIED_ROUTE_TEACHER"
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "combination": "T_local",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "RULE_CONSTRUCTION_NO_MATCHING_TEACHER"
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "combination": "T_transfer",
+        "slot": 1,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "combination": "T_transfer",
+        "slot": 3,
+        "raw_legal": true,
+        "construction": "TRANSFER_LEAVE_ONE_MOTHER"
+      }
+    ],
+    "rule_construction_fallbacks": [
+      {
+        "task_id": "c1_mother_01_minus",
+        "slot": 3
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "slot": 3
+      }
+    ],
+    "streams_detail": [
+      {
+        "task_id": "c1_mother_00_plus",
+        "combination": "T_local",
+        "slots": 8,
+        "proposals": 9,
+        "cache_hits": 1,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C00",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 1,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C02",
+            "first_qualified_slot": 3,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 3,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_00_plus",
+        "combination": "T_transfer",
+        "slots": 8,
+        "proposals": 8,
+        "cache_hits": 0,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C00",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 1,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": false,
+            "near_historical_reference": false,
+            "historical_reference_available": true,
+            "selected_candidate_id": null,
+            "first_qualified_slot": null,
+            "first_qualified_right_censored_budget": 8,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "RIGHT_CENSORED",
+            "first_near_quality_right_censored_budget": 8,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": false,
+            "label_status": "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_00_minus",
+        "combination": "T_local",
+        "slots": 8,
+        "proposals": 8,
+        "cache_hits": 0,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 2,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": false,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C03",
+            "first_qualified_slot": 4,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "RIGHT_CENSORED",
+            "first_near_quality_right_censored_budget": 8,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_00_minus",
+        "combination": "T_transfer",
+        "slots": 8,
+        "proposals": 9,
+        "cache_hits": 1,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C02",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 3,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": false,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C07",
+            "first_qualified_slot": 8,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "RIGHT_CENSORED",
+            "first_near_quality_right_censored_budget": 8,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_01_plus",
+        "combination": "T_local",
+        "slots": 8,
+        "proposals": 10,
+        "cache_hits": 2,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C00",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 1,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": false,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "RIGHT_CENSORED",
+            "first_near_quality_right_censored_budget": 8,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_01_plus",
+        "combination": "T_transfer",
+        "slots": 8,
+        "proposals": 9,
+        "cache_hits": 1,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C00",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 1,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": false,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C02",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "RIGHT_CENSORED",
+            "first_near_quality_right_censored_budget": 8,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_01_minus",
+        "combination": "T_local",
+        "slots": 8,
+        "proposals": 9,
+        "cache_hits": 1,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 2,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": false,
+            "near_historical_reference": false,
+            "historical_reference_available": false,
+            "selected_candidate_id": null,
+            "first_qualified_slot": null,
+            "first_qualified_right_censored_budget": 8,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "N/A_NO_HISTORICAL_REFERENCE",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": false,
+            "label_status": "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL"
+          }
+        }
+      },
+      {
+        "task_id": "c1_mother_01_minus",
+        "combination": "T_transfer",
+        "slots": 8,
+        "proposals": 9,
+        "cache_hits": 1,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 2,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": false,
+            "near_historical_reference": false,
+            "historical_reference_available": false,
+            "selected_candidate_id": null,
+            "first_qualified_slot": null,
+            "first_qualified_right_censored_budget": 8,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "N/A_NO_HISTORICAL_REFERENCE",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": false,
+            "label_status": "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL"
+          }
+        }
+      },
+      {
+        "task_id": "c2_new_train_plus",
+        "combination": "T_local",
+        "slots": 8,
+        "proposals": 10,
+        "cache_hits": 2,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C00",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 1,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": false,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "RIGHT_CENSORED",
+            "first_near_quality_right_censored_budget": 8,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": true,
+            "positive_supervision": false,
+            "label_status": "RULE_ONLY"
+          }
+        }
+      },
+      {
+        "task_id": "c2_new_train_plus",
+        "combination": "T_transfer",
+        "slots": 8,
+        "proposals": 8,
+        "cache_hits": 0,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C05",
+            "first_qualified_slot": 1,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 1,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 2,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          }
+        }
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "combination": "T_local",
+        "slots": 8,
+        "proposals": 8,
+        "cache_hits": 0,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 2,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": false,
+            "near_historical_reference": false,
+            "historical_reference_available": false,
+            "selected_candidate_id": null,
+            "first_qualified_slot": null,
+            "first_qualified_right_censored_budget": 8,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "N/A_NO_HISTORICAL_REFERENCE",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": false,
+            "label_status": "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL"
+          }
+        }
+      },
+      {
+        "task_id": "c2_new_train_minus",
+        "combination": "T_transfer",
+        "slots": 8,
+        "proposals": 8,
+        "cache_hits": 0,
+        "endpoints": {
+          "A": {
+            "qualified_endpoint": true,
+            "near_historical_reference": true,
+            "historical_reference_available": true,
+            "selected_candidate_id": "C01",
+            "first_qualified_slot": 2,
+            "first_qualified_right_censored_budget": null,
+            "first_near_quality_slot": 2,
+            "first_near_quality_status": "HIT",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": true,
+            "selected_seed_or_descendant": true,
+            "rule_only": false,
+            "positive_supervision": true,
+            "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+          },
+          "B": {
+            "qualified_endpoint": false,
+            "near_historical_reference": false,
+            "historical_reference_available": false,
+            "selected_candidate_id": null,
+            "first_qualified_slot": null,
+            "first_qualified_right_censored_budget": 8,
+            "first_near_quality_slot": null,
+            "first_near_quality_status": "N/A_NO_HISTORICAL_REFERENCE",
+            "first_near_quality_right_censored_budget": null,
+            "raw_legal": true,
+            "direct_seed_qualified": false,
+            "selected_seed_or_descendant": false,
+            "rule_only": false,
+            "positive_supervision": false,
+            "label_status": "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL"
+          }
+        }
+      }
+    ],
+    "recorded_work_totals": {
+      "actual_physics_steps": 0,
+      "private_preview_physics_steps": 1198170,
+      "independent_saved_torque_replay_steps": 0,
+      "preview_calls": 119817,
+      "native_geometry_query_calls": 1399791908,
+      "qp_solve_calls": 119817,
+      "prediction_physics_steps": 1198050
+    }
+  },
+  "historical_import": {
+    "physical_candidates": 72,
+    "excluded_old_VAL_TEST": 24,
+    "evidence_tier_counts": {
+      "FAILED_OR_INCOMPLETE": 22,
+      "VALIDATED_EXECUTION": 10,
+      "PREDICTED_COMPLETE": 40
+    },
+    "raw_archives_rehashed_by_this_audit": false
+  },
+  "dataset": {
+    "unique_labels": 55,
+    "route_quality_labels": 52,
+    "initializer_effect_labels": 8,
+    "both_source_labels": 5,
+    "zero_labels": 3,
+    "pre_hierarchy_effect_rows": 12,
+    "selected_pair_effect_rows": 10,
+    "train_tasks": [
+      "c1_mother_00_minus",
+      "c1_mother_00_plus",
+      "c1_mother_01_minus",
+      "c1_mother_01_plus",
+      "c2_new_train_minus",
+      "c2_new_train_plus"
+    ],
+    "train_mothers": [
+      "c1_mother_00",
+      "c1_mother_01",
+      "c2_new_train"
+    ],
+    "condition_unique_rows": 17,
+    "condition_dim": 896,
+    "residual_unique_parameters": 48,
+    "residual_active_intervals": 96,
+    "pool_manifest_sha256": "94e3cae0b8319a5c18b7f08c9f86cf352a40e663fa51663564101114e3f304a7",
+    "condition_scaler_sha256": "b8e3f13422b39d605e7169476ce172b1e89e342d48c5523c5e8832e6744a8cc5",
+    "residual_scaler_sha256": "a37ac40b070b4709c6152955c8d560715942bbe7c87fdf1154214f469e60d3eb",
+    "D_S_N_shared_pool_identity_verified": true,
+    "TRAIN_only_scaler_refit_verified": true,
+    "supported_condition_ID_groups_verified": true
+  },
+  "training": {
+    "models": {
+      "D": {
+        "status": "COMPLETED",
+        "optimizer_updates_total": 4000,
+        "sample_exposures_total": 128000,
+        "initialization_seed": 64321,
+        "effective_parameter_count": 152332,
+        "elapsed_s": 9.794224900193512,
+        "initial_state_sha256": "7928c26497bac4eac42b3ceb80edf06f981f8d227c8ec32c1c71a1c5876d1c53",
+        "final_state_sha256": "7a2e52951c211820669f2c08c4a0fab8ffcb3d2bdd71728c91a7709adcc367eb",
+        "paired_reference_indices_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+        "selected_checkpoint_update": null
+      },
+      "S": {
+        "status": "COMPLETED",
+        "optimizer_updates_total": 4000,
+        "sample_exposures_total": 128000,
+        "initialization_seed": 64331,
+        "effective_parameter_count": 134412,
+        "elapsed_s": 8.694569500163198,
+        "initial_state_sha256": "e4081086ce26efe2cacbe3245c3113b47669d231c58e4a0bfb183be2019c0499",
+        "final_state_sha256": "c0b8d58011c236465b9dee5a4dfd7984c7addd26909145386fa529317f58d1e4",
+        "paired_reference_indices_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+        "selected_checkpoint_update": null
+      }
+    },
+    "paired_index_shape": [
+      4000,
+      32
+    ],
+    "paired_draw_file_sha256": "e923fd67c1eed9d3b661a0d3154c6217cf1f35e92dfd587ffc371f9491ad271a",
+    "paired_index_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+    "checkpoint_whitelist": [
+      250,
+      4000
+    ],
+    "checkpoints": [
+      {
+        "model": "D",
+        "update": 250,
+        "bytes": 736224,
+        "file_sha256": "e4df12dd5713ba65f697d99b6a123e9470048cb4a88f9e284ebcc851b708413e",
+        "state_sha256": "acb3a505ca798eb2f132fb290b8836a7172b469e48ede01df010dacf898cca58",
+        "initial_state_sha256": "7928c26497bac4eac42b3ceb80edf06f981f8d227c8ec32c1c71a1c5876d1c53",
+        "parameter_count": 152332,
+        "sample_exposures": 8000,
+        "paired_reference_prefix_sha256": "2f757cf60d5d756826075043986e772eef5c1664e37a9c415568fcae08145ea3",
+        "tensor_shapes": {
+          "alpha_bars": [
+            100
+          ],
+          "betas": [
+            100
+          ],
+          "denoiser.0.bias": [
+            128
+          ],
+          "denoiser.0.weight": [
+            128,
+            1048
+          ],
+          "denoiser.2.bias": [
+            128
+          ],
+          "denoiser.2.weight": [
+            128,
+            128
+          ],
+          "denoiser.4.bias": [
+            12
+          ],
+          "denoiser.4.weight": [
+            12,
+            128
+          ]
+        }
+      },
+      {
+        "model": "D",
+        "update": 4000,
+        "bytes": 736288,
+        "file_sha256": "70113f31ff0c4675840ee4ebe0268c4425d7094d3a9889f70266de2b5137ece8",
+        "state_sha256": "7a2e52951c211820669f2c08c4a0fab8ffcb3d2bdd71728c91a7709adcc367eb",
+        "initial_state_sha256": "7928c26497bac4eac42b3ceb80edf06f981f8d227c8ec32c1c71a1c5876d1c53",
+        "parameter_count": 152332,
+        "sample_exposures": 128000,
+        "paired_reference_prefix_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+        "tensor_shapes": {
+          "alpha_bars": [
+            100
+          ],
+          "betas": [
+            100
+          ],
+          "denoiser.0.bias": [
+            128
+          ],
+          "denoiser.0.weight": [
+            128,
+            1048
+          ],
+          "denoiser.2.bias": [
+            128
+          ],
+          "denoiser.2.weight": [
+            128,
+            128
+          ],
+          "denoiser.4.bias": [
+            12
+          ],
+          "denoiser.4.weight": [
+            12,
+            128
+          ]
+        }
+      },
+      {
+        "model": "S",
+        "update": 250,
+        "bytes": 663192,
+        "file_sha256": "038560cf328b03db27a2c58f7f37fed210fa9f616ff1bccfdad1a3879feeb860",
+        "state_sha256": "60a40f826ae8266ae628cdb17b96805113d12ba82fbdc26f2fa4047082beafab",
+        "initial_state_sha256": "e4081086ce26efe2cacbe3245c3113b47669d231c58e4a0bfb183be2019c0499",
+        "parameter_count": 134412,
+        "sample_exposures": 8000,
+        "paired_reference_prefix_sha256": "2f757cf60d5d756826075043986e772eef5c1664e37a9c415568fcae08145ea3",
+        "tensor_shapes": {
+          "network.0.bias": [
+            128
+          ],
+          "network.0.weight": [
+            128,
+            908
+          ],
+          "network.2.bias": [
+            128
+          ],
+          "network.2.weight": [
+            128,
+            128
+          ],
+          "network.4.bias": [
+            12
+          ],
+          "network.4.weight": [
+            12,
+            128
+          ]
+        }
+      },
+      {
+        "model": "S",
+        "update": 4000,
+        "bytes": 663256,
+        "file_sha256": "11a15e68f681a4993746077dc507abb669b1f5c3b144fe5d43596aafaff293d0",
+        "state_sha256": "c0b8d58011c236465b9dee5a4dfd7984c7addd26909145386fa529317f58d1e4",
+        "initial_state_sha256": "e4081086ce26efe2cacbe3245c3113b47669d231c58e4a0bfb183be2019c0499",
+        "parameter_count": 134412,
+        "sample_exposures": 128000,
+        "paired_reference_prefix_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+        "tensor_shapes": {
+          "network.0.bias": [
+            128
+          ],
+          "network.0.weight": [
+            128,
+            908
+          ],
+          "network.2.bias": [
+            128
+          ],
+          "network.2.weight": [
+            128,
+            128
+          ],
+          "network.4.bias": [
+            12
+          ],
+          "network.4.weight": [
+            12,
+            128
+          ]
+        }
+      }
+    ],
+    "model_selection_performed_by_this_audit": false
+  },
+  "phase_receipts": {
+    "teacher_phase.json": {
+      "stage": "teacher-search",
+      "started_utc": "2026-10-08T07:46:43.8288337Z",
+      "ended_utc": "2026-10-08T09:45:53.2546955Z",
+      "elapsed_wall_s": 7149.3209185,
+      "exit_code": 0
+    },
+    "command_logs/phase_build-dataset.json": {
+      "automatic_retry": false,
+      "started_utc": "2026-10-08T09:45:57.0584292Z",
+      "exit_code": 0,
+      "stage": "build-dataset",
+      "argv": [
+        "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "v6_4.search_aware_warmstart_experiment",
+        "build-dataset",
+        "--run",
+        "v6_4/output/search_aware_warmstart_20261008_01"
+      ],
+      "ended_utc": "2026-10-08T09:45:58.4348020Z",
+      "elapsed_wall_s": 1.3737582
+    },
+    "command_logs/phase_train.json": {
+      "automatic_retry": false,
+      "started_utc": "2026-10-08T09:45:58.4451213Z",
+      "exit_code": 0,
+      "stage": "train",
+      "argv": [
+        "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+        "-u",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "v6_4.search_aware_warmstart_experiment",
+        "train",
+        "--run",
+        "v6_4/output/search_aware_warmstart_20261008_01"
+      ],
+      "ended_utc": "2026-10-08T09:46:27.3251105Z",
+      "elapsed_wall_s": 28.8795864
+    }
+  },
+  "checks": {
+    "external_split": 2,
+    "identity": 1,
+    "self_seal": 3,
+    "teacher_terminal": 1,
+    "history": 1,
+    "physical_dedup": 72,
+    "history_train_only": 72,
+    "history_metadata": 72,
+    "history_complete": 50,
+    "history_actual_metadata": 10,
+    "historical_reference": 12,
+    "route_quality": 1,
+    "route_provenance": 52,
+    "pair_identity": 12,
+    "frozen_raw": 24,
+    "local_source": 10,
+    "local_teacher_ranking": 10,
+    "central_effect": 12,
+    "teacher_source_seal": 36,
+    "teacher_stream": 12,
+    "candidate_metadata": 96,
+    "lineage": 54,
+    "lineage_inheritance": 54,
+    "prefix": 24,
+    "teacher_endpoint": 24,
+    "backend_ranking": 24,
+    "effect_eligibility": 24,
+    "raw_consumed": 24,
+    "effect_original_seed": 12,
+    "transfer_exclusion": 12,
+    "transfer_schema": 12,
+    "local_fallback": 2,
+    "pair_hierarchy": 6,
+    "pool_union": 1,
+    "label_identity": 55,
+    "pool_provenance": 55,
+    "dataset_seal": 7,
+    "dataset_counts": 1,
+    "scaler_identity": 1,
+    "condition_consistency": 55,
+    "condition_refit": 1,
+    "condition_transform": 55,
+    "transfer_full_pool_identity": 12,
+    "residual_refit": 1,
+    "model_schema": 1,
+    "supported_condition_IDs": 1,
+    "model_architecture": 1,
+    "training_config": 1,
+    "training_normalizer_seal": 3,
+    "training_source_seal": 12,
+    "paired_draw_seal": 1,
+    "paired_draws": 1,
+    "training_terminal": 2,
+    "training_status": 2,
+    "training_curves": 2,
+    "checkpoint_file": 4,
+    "checkpoint_tensor": 56,
+    "checkpoint_metadata": 4,
+    "checkpoint_paired_exposure": 4,
+    "checkpoint_weights": 4,
+    "paired_models": 1,
+    "checkpoint_progress": 2,
+    "phase_exit": 3
+  },
+  "check_total": 1182,
+  "errors": [],
+  "source_inventory": {
+    "E:\\v64c3\\docs\\C3_TEACHER_EVIDENCE_AUDIT_10_STREAMS.json": {
+      "sha256": "d02d05e4369249064e028aa95275e177b2aad0e6e0570c5873c95bf9048d2d74",
+      "bytes": 240486
+    },
+    "E:\\v64c3\\docs\\C3_TEACHER_EVIDENCE_AUDIT_10_STREAMS.md": {
+      "sha256": "e87f8bff1eb2a0ff9d4aaf955d611451d903e769bcf7a277d2a6413a71db0989",
+      "bytes": 4258
+    },
+    "C:\\Users\\admin\\.codex\\attachments\\1917d637-236f-4883-8674-4c3f5a6ff3e0\\goal-objective.md": {
+      "sha256": "bcd7a46bd90aa28050737d2fe2ef18dcc0f3b71548ae8867774ac23e35c1fdd9",
+      "bytes": 32337
+    },
+    "C:\\Users\\admin\\AppData\\Local\\Temp\\c3_final_teacher_dataset_audit_20261008.py": {
+      "sha256": "470a6c3124c9ba3f3ef1150172eaddf7e2e4d564660c0c6c04bd709afc51a533",
+      "bytes": 45687
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\plan.json": {
+      "sha256": "616c2fea6879ccdc1b9bdadba57c7e1e8862af6cabf32fbbb510133c8847c6ad",
+      "bytes": 212216
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\source_identity.json": {
+      "sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+      "bytes": 57666
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\learning_split_manifest.json": {
+      "sha256": "df96adae6dc46fcaf0215b6b72b1eb1b36f1c5eed75c85f7b2fe26dabfb8d105",
+      "bytes": 106307
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\historical_import\\history.json": {
+      "sha256": "76bc20a081e3280a442de8b02c4168b2a14977bcd6135f91c4060ed4c9e0a0fc",
+      "bytes": 18273497
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\frozen_seed_pairs.json": {
+      "sha256": "0f13b3d3d6e70abacf4aa54c098eb8c149d5584e48af65e19d14c77e27078a79",
+      "bytes": 349932
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\results.json": {
+      "sha256": "b1ded86c6a3e0235b6e598c8f7d06828cb917bf5130ea9f35c2d76ff17517f0e",
+      "bytes": 195277
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\manifest.json": {
+      "sha256": "94e3cae0b8319a5c18b7f08c9f86cf352a40e663fa51663564101114e3f304a7",
+      "bytes": 115595
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\labels.json": {
+      "sha256": "c453bdb22948657be55d08d49446ed0c86d109372a5abc6e6efdca37ad5d660d",
+      "bytes": 1833145
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\candidate_facts.json": {
+      "sha256": "0df133e4ca1ac8e1d6e902c2b706af3e59c2ac00e97edb01d72cd4c2233011fa",
+      "bytes": 16781768
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\condition_scaler.json": {
+      "sha256": "b8e3f13422b39d605e7169476ce172b1e89e342d48c5523c5e8832e6744a8cc5",
+      "bytes": 80313
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\residual_scaler.json": {
+      "sha256": "a37ac40b070b4709c6152955c8d560715942bbe7c87fdf1154214f469e60d3eb",
+      "bytes": 375
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\condition_schema.json": {
+      "sha256": "3eae85e092f9eeb050f4274cff1e6df9646b1cb26b698b62c5185a41adeec6e0",
+      "bytes": 47322
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\training_config.json": {
+      "sha256": "59096b22bd526c849706024c1adfc608b6d690471eb736e5cd06009c8642c626",
+      "bytes": 16646
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\condition_normalizer.json": {
+      "sha256": "bbcdb54be95e06b0c1fd822838f05b813ea7c7d55e09876436e7675447a47074",
+      "bytes": 80313
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\residual_normalizer.json": {
+      "sha256": "508c8df36362638890621809747afc4161ebabec8f0b586458037cf11a30ce04",
+      "bytes": 375
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\condition_schema.json": {
+      "sha256": "02eade4decf665c01fe1187ba1a2b9a403824a657f8a04229feaed34ee1a0c33",
+      "bytes": 47478
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\training_summary.json": {
+      "sha256": "6ce3f0b7fc6755ccbef6ac9a701c20cbc2223b1632b8eaf8b1f591a9407012a1",
+      "bytes": 13495
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_local\\planning\\c1_mother_00_plus\\candidate_registry.json": {
+      "sha256": "ae559247fbdea3bf114017a61c3c910699e0c15624e21809447de116af2a4509",
+      "bytes": 1933538
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_local\\planning\\c1_mother_00_plus\\proposals.json": {
+      "sha256": "411bf17faea9631a518f88e97cc7ff15c947e7b98a343fa1e079bd0e3b0dd815",
+      "bytes": 20863
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_local\\planning\\c1_mother_00_plus\\selection.json": {
+      "sha256": "f2371f0378c38d0f3e81cdbc8ca34dd3a726cfb7078e49c7c8f4d18c49628ed8",
+      "bytes": 29458
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_local\\teacher_effect.json": {
+      "sha256": "09d76de09dcbba4bbbfaead8c6b58b76f2e36363e61781d28e66455b1cd9642b",
+      "bytes": 15144
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_local\\planning\\c1_mother_00_plus\\prefix_04.json": {
+      "sha256": "b76a5bce867e9ead4b80f1dc868897491a90de1dee6d7e7d2e26315fd6900c5c",
+      "bytes": 915115
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_local\\planning\\c1_mother_00_plus\\prefix_08.json": {
+      "sha256": "166bc5b97b27ff67a87bc32febee6d4d8bcf5872ad944c08dd940c554c4cb235",
+      "bytes": 1801201
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_transfer\\planning\\c1_mother_00_plus\\candidate_registry.json": {
+      "sha256": "63620e36a1df0d67186cd452a25ab3b7f1c1cb49b55b49432bf862523cc6ee8c",
+      "bytes": 1941906
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_transfer\\planning\\c1_mother_00_plus\\proposals.json": {
+      "sha256": "ddc7b53a998df8274001a67395756029c45d0d2a51e304600469a9a51c4a14f2",
+      "bytes": 22002
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_transfer\\planning\\c1_mother_00_plus\\selection.json": {
+      "sha256": "e76313c847f6c142305ea010e9eec8613ed23b40c452d988c337474519328240",
+      "bytes": 15996
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_transfer\\teacher_effect.json": {
+      "sha256": "93d8d3e6441aa11d19c3edc5c30e1d81b59392f79f676842f67da683baded8c7",
+      "bytes": 13174
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_transfer\\planning\\c1_mother_00_plus\\prefix_04.json": {
+      "sha256": "80af29a9d06beed0b05c14f9be03ca4c862c58966b01dd4dd1ea049f8a7f43d4",
+      "bytes": 901685
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_plus\\T_transfer\\planning\\c1_mother_00_plus\\prefix_08.json": {
+      "sha256": "b6d8be62f32ed5e952e3a9c5d9973f113bdf407b6fbdc3773402998d59285616",
+      "bytes": 1787761
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_local\\planning\\c1_mother_00_minus\\candidate_registry.json": {
+      "sha256": "ad119ace3821e7c6fdbcb6a6a64948dc614ffece220dde1efb589da9a6c5e5fc",
+      "bytes": 1940075
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_local\\planning\\c1_mother_00_minus\\proposals.json": {
+      "sha256": "360a6ef240d90a4554fb6a0a71e3f90780e05a5ba0813ed9cfecac6f18ddc279",
+      "bytes": 20036
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_local\\planning\\c1_mother_00_minus\\selection.json": {
+      "sha256": "93b80b2886ef60bd1bfd8e0684ddd2752fec8a095d2dc7dc177a5f0f2894f75b",
+      "bytes": 29557
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_local\\teacher_effect.json": {
+      "sha256": "c0193591606b52e0a3dd8b9d19568fe4c24c68d7932356e31f713509ef72843a",
+      "bytes": 21060
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_local\\planning\\c1_mother_00_minus\\prefix_04.json": {
+      "sha256": "82cb0b9cacb2dbfa3958dbf64dbb42388cbcbf90ea952a76cd77a50eb4b281a1",
+      "bytes": 915139
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_local\\planning\\c1_mother_00_minus\\prefix_08.json": {
+      "sha256": "c4d036dd8c617b2c392bb66e1dc635848632c428d830dff2e663382d3472aeb1",
+      "bytes": 1801273
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_transfer\\planning\\c1_mother_00_minus\\candidate_registry.json": {
+      "sha256": "143cbb208d6846d275dcd30b2f8c9f754f913356746bcdb002aa13ffce054438",
+      "bytes": 1943229
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_transfer\\planning\\c1_mother_00_minus\\proposals.json": {
+      "sha256": "d871385a60e1710ce3b17a6d3049adae5681335366dede4d475538e44f6936f8",
+      "bytes": 23312
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_transfer\\planning\\c1_mother_00_minus\\selection.json": {
+      "sha256": "429b1ffd0818e9d01597839e59cadbe552d7f4752863b577c6c7b5afa2bb9bad",
+      "bytes": 30243
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_transfer\\teacher_effect.json": {
+      "sha256": "81bc595d0db62dd2d69329a200e25a1e56f16e6446dc6d4921851166aa23540f",
+      "bytes": 16474
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_transfer\\planning\\c1_mother_00_minus\\prefix_04.json": {
+      "sha256": "0be508164a0aedc9b2b379222e78fec9ad229ae92acba863ad3b48abd9079ffe",
+      "bytes": 902206
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_00_minus\\T_transfer\\planning\\c1_mother_00_minus\\prefix_08.json": {
+      "sha256": "6ffdc9522e6ae14e9cdc5c209a9d3a5b49e7a7846bf54295e61f7c378900efe9",
+      "bytes": 1802005
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_local\\planning\\c1_mother_01_plus\\candidate_registry.json": {
+      "sha256": "8bf70acf496bcd685b7a7959a6d9c44d30100b62a261f030cfc50666c52c0539",
+      "bytes": 1925736
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_local\\planning\\c1_mother_01_plus\\proposals.json": {
+      "sha256": "6c144bbc4a69c29325de180c405c350eacb5894ed479ec27652da9eb3d35a4c8",
+      "bytes": 21679
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_local\\planning\\c1_mother_01_plus\\selection.json": {
+      "sha256": "25381b1236ae11bbb72540f734529ec9e711e0000a291fac38e5c58b1f2d2889",
+      "bytes": 29351
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_local\\teacher_effect.json": {
+      "sha256": "5677191acb020f84b130656c4d18f35003d7ead0a36b2b44c9ef133189e253ab",
+      "bytes": 9234
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_local\\planning\\c1_mother_01_plus\\prefix_04.json": {
+      "sha256": "c658bc0367118ccb85448be43e0cf43fc1bf07a6dfc0be707f84eaa2bf50cbd8",
+      "bytes": 914971
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_local\\planning\\c1_mother_01_plus\\prefix_08.json": {
+      "sha256": "45386b2ec0a0fa81e1ec7d0d33643da2047bdb608de69eece186ec92b1f8f09b",
+      "bytes": 1801095
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_transfer\\planning\\c1_mother_01_plus\\candidate_registry.json": {
+      "sha256": "bad0b8fcf04df256834d32dfcb46cf88edde72e1c6cd46681c726c673c50f277",
+      "bytes": 1933916
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_transfer\\planning\\c1_mother_01_plus\\proposals.json": {
+      "sha256": "1ba9b7372a348cf6df8425896a1d2b0a8b0e95b1bb66a6fb84664c6006be829b",
+      "bytes": 22782
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_transfer\\planning\\c1_mother_01_plus\\selection.json": {
+      "sha256": "90c102a528c00fce498b8029a222bcb4de28de7820769e6a8cd115dc94d32af2",
+      "bytes": 29368
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_transfer\\teacher_effect.json": {
+      "sha256": "df45e26e9a3e8e28ce1919b678b50e1a2976f93d233d1558be7e3f44559d50f4",
+      "bytes": 16412
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_transfer\\planning\\c1_mother_01_plus\\prefix_04.json": {
+      "sha256": "0b579777fa508f41bd6ab23fa3e13030674817e49c217d76693bf676025bad74",
+      "bytes": 914989
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_plus\\T_transfer\\planning\\c1_mother_01_plus\\prefix_08.json": {
+      "sha256": "4d187a9fce40339f06d83d31c2134769dcbcd8084c7223deb51cae01586239d4",
+      "bytes": 1801100
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_local\\planning\\c1_mother_01_minus\\candidate_registry.json": {
+      "sha256": "52753b071b7c170e51c059fd14dac572c799c909860482ac91cbf963c88e1762",
+      "bytes": 1422599
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_local\\planning\\c1_mother_01_minus\\proposals.json": {
+      "sha256": "204cfa453e8c7af460365cfe1b9dccc676497c989a4926b334df8c2164ebef41",
+      "bytes": 20970
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_local\\planning\\c1_mother_01_minus\\selection.json": {
+      "sha256": "a865598a0dfcd5cfe05db1da8affcea32d7130f7f6f847389e1a6a771afffd52",
+      "bytes": 15883
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_local\\teacher_effect.json": {
+      "sha256": "dedd4c7bcc8d487f3e7012dbcbf5b9eec50fd15c893d5744c0cf2305ebe7c175",
+      "bytes": 11676
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_local\\planning\\c1_mother_01_minus\\prefix_04.json": {
+      "sha256": "5f68919036468c14826100ea2013bb81eca13185318be52b452ba0050d05df31",
+      "bytes": 511985
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_local\\planning\\c1_mother_01_minus\\prefix_08.json": {
+      "sha256": "7b579bb68b3974c9e6569b1447695e28bafc8f95fc9e652b9a874d77a4219d2a",
+      "bytes": 1268734
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer\\planning\\c1_mother_01_minus\\candidate_registry.json": {
+      "sha256": "3abcc80c88d3940b0698c5923ab212206014258118de53a2051a69912d27a656",
+      "bytes": 1554681
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer\\planning\\c1_mother_01_minus\\proposals.json": {
+      "sha256": "420b269e501aacb165269b6aa17e7783b5255e50473e0fd1a55981d8a5f3a0d8",
+      "bytes": 23215
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer\\planning\\c1_mother_01_minus\\selection.json": {
+      "sha256": "c09fb2fb1d866e3cfdd7dbf1badc6395eb5c7bdfdfff1cbe301345ad8dbab4e7",
+      "bytes": 15883
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer\\teacher_effect.json": {
+      "sha256": "94f3d081c7ecdbec677b834591db7eeba250f32ad437b831ca9323ed8c7aa9bf",
+      "bytes": 13183
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer\\planning\\c1_mother_01_minus\\prefix_04.json": {
+      "sha256": "0239ef89c93f0e48ee83fff8f7a5b0ac44a210da953e8669be29a2c626aa1000",
+      "bytes": 642596
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer\\planning\\c1_mother_01_minus\\prefix_08.json": {
+      "sha256": "5e0d3a6fe31cbcc0272008e27a76291902ae29910262e68b5b1a9b701c0f8156",
+      "bytes": 1399344
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_local\\planning\\c2_new_train_plus\\candidate_registry.json": {
+      "sha256": "7a57acd67b08157e1dd2f175005b79bf4d539fd939fe972a2d881cb4463e7764",
+      "bytes": 1926047
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_local\\planning\\c2_new_train_plus\\proposals.json": {
+      "sha256": "d677b2e6b34fbf8e92ee6d1d9ab7c3c384069768a4fd082ae10c9670e92ba842",
+      "bytes": 21669
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_local\\planning\\c2_new_train_plus\\selection.json": {
+      "sha256": "a32200405632e19c2cc8cd90cc6b871f0cd5f5ced1a49375ce2bea0b07f0beae",
+      "bytes": 29399
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_local\\teacher_effect.json": {
+      "sha256": "6ccb46e5ca253792ebd96a2efb5fd6d2526ce5c2d90ed81c40d3fb8f5f3ba81d",
+      "bytes": 9246
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_local\\planning\\c2_new_train_plus\\prefix_04.json": {
+      "sha256": "fe6446a4dc23d6bd41f8799bcca54d1dd0cdaf385a38567f9d67cfbcb24b25d7",
+      "bytes": 915045
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_local\\planning\\c2_new_train_plus\\prefix_08.json": {
+      "sha256": "69a276d9b78dc3623aee95a6bbc2df3d41204ec740c40acdbbae8f39cd9dccc4",
+      "bytes": 1801145
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_transfer\\planning\\c2_new_train_plus\\candidate_registry.json": {
+      "sha256": "d2d75cd071416cf577f7d73546416cfa9b1eee6d440e3de3f2f7562e049fed10",
+      "bytes": 1940779
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_transfer\\planning\\c2_new_train_plus\\proposals.json": {
+      "sha256": "b2311d3ba4f95098f9225a6e9b606ae8abf40e586dd8a5648e9f21cd6b783227",
+      "bytes": 21969
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_transfer\\planning\\c2_new_train_plus\\selection.json": {
+      "sha256": "7546a3f551ef76787de573adb3fdfe747a7556e81e2605f903768f67d77807f7",
+      "bytes": 29160
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_transfer\\teacher_effect.json": {
+      "sha256": "f22df41f59e240514b58fbf25d2b06d0cae08c49c56ba48844d82c25ad801a5d",
+      "bytes": 23643
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_transfer\\planning\\c2_new_train_plus\\prefix_04.json": {
+      "sha256": "f8dd323b83b8c5ccf9eeeadbc0ea5703ecab6012d0bf74f50040ccb6dc1f517a",
+      "bytes": 914566
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_plus\\T_transfer\\planning\\c2_new_train_plus\\prefix_08.json": {
+      "sha256": "d22b934d80d93583a8283fe9594c9f70003ba2da00f0038514a8e62d652aff14",
+      "bytes": 1800878
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_local\\planning\\c2_new_train_minus\\candidate_registry.json": {
+      "sha256": "3336bc16f3abb155a027492f110560f2545b469c72e8832a23726644cbf5a288",
+      "bytes": 1537079
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_local\\planning\\c2_new_train_minus\\proposals.json": {
+      "sha256": "f31e6d20f24f11a01d4f1973d20d82ca08c748429bb9813a22e3549e150f5038",
+      "bytes": 19608
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_local\\planning\\c2_new_train_minus\\selection.json": {
+      "sha256": "c78c1de3ee955d677705d3afe8cad5f39d1560f8882f02044b1d79c747693470",
+      "bytes": 15947
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_local\\teacher_effect.json": {
+      "sha256": "b5de0022a03291550f1e2e65c4363eb177cb406b9dcc3ee8c210de657d540472",
+      "bytes": 11674
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_local\\planning\\c2_new_train_minus\\prefix_04.json": {
+      "sha256": "e13cd22dc222af2a37a59c4fb2d39f1ade782db1aca254e04e6495006a89cc13",
+      "bytes": 498005
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_local\\planning\\c2_new_train_minus\\prefix_08.json": {
+      "sha256": "9e54ce2dafe12798ddf85cb30a4b70cc18ff170cbc5b6f30250d2301f9641e99",
+      "bytes": 1384116
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_transfer\\planning\\c2_new_train_minus\\candidate_registry.json": {
+      "sha256": "dcb22bdb071c046ea13100d00a30b7c33c56a2e351c404360aae2bf40b53a236",
+      "bytes": 1673510
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_transfer\\planning\\c2_new_train_minus\\proposals.json": {
+      "sha256": "eeec08560d359e8a2589b77bc5b83eed9b14aada99b7ba7cca2a8c7a86313c04",
+      "bytes": 21853
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_transfer\\planning\\c2_new_train_minus\\selection.json": {
+      "sha256": "9c4a9cb54a5992a66dbea3d460373c327c0b52fd0a99fba2af3bc86ef27f133b",
+      "bytes": 15946
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_transfer\\teacher_effect.json": {
+      "sha256": "f1907846f668bc2ae692b35ce1f30fbbbb27673716d5bc63e3b8aea887585eda",
+      "bytes": 13180
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_transfer\\planning\\c2_new_train_minus\\prefix_04.json": {
+      "sha256": "f8b4b92f3cc8f286cbba392a277a688e44e778aaf99961ede40c694c5e03d58f",
+      "bytes": 632967
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c2_new_train_minus\\T_transfer\\planning\\c2_new_train_minus\\prefix_08.json": {
+      "sha256": "b6672508daa8df9ee11efbd4b932bc954e42f92de3ae54a020d3cd99565084ca",
+      "bytes": 1519078
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\bucket_coverage.json": {
+      "sha256": "f1c03ae6c5940504dd5935fce69ad3a37e7c56c948eec08376d33ebb7962fb0e",
+      "bytes": 13101
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\dataset\\dataset_manifest.json": {
+      "sha256": "94e3cae0b8319a5c18b7f08c9f86cf352a40e663fa51663564101114e3f304a7",
+      "bytes": 115595
+    },
+    "E:\\v64c3\\v6_4\\dataset.py": {
+      "sha256": "9bea87a43be0b68ef9c9460517995d2d0a8d93b887e2a109992b8c000f2a5bd5",
+      "bytes": 23574
+    },
+    "E:\\v64c3\\v6_4\\diffusion_model.py": {
+      "sha256": "023fc2324e96e58b2cb4775270935462d9674f260e674b97e6e66d802b2a86d8",
+      "bytes": 19037
+    },
+    "E:\\v64c3\\v6_4\\preference_diffusion_warmstart.py": {
+      "sha256": "731b71c5b107f54bce77a6aa126afcd5e2833e6b3bbd5c6e89f6c13fc8082126",
+      "bytes": 36186
+    },
+    "E:\\v64c3\\v6_4\\preference_teacher_dataset.py": {
+      "sha256": "f611aac822e06cee069c7dba4364d1b9f0185d56af7e7c275224c7cc456af3ef",
+      "bytes": 33055
+    },
+    "E:\\v64c3\\v6_4\\residual_dataset.py": {
+      "sha256": "4af034fc2a9ee2740b5d04e46de6b71b5477869bccc6f1c786fbd1d9add1e4cd",
+      "bytes": 22779
+    },
+    "E:\\v64c3\\v6_4\\residual_diffusion.py": {
+      "sha256": "af358576ccefed97e1613fb029d0ad7f00f1380d8ccb7460fdb7ce0781fe8d45",
+      "bytes": 23937
+    },
+    "E:\\v64c3\\v6_4\\route_initializers.py": {
+      "sha256": "1226f52284550ee6e7510823a29ffc8ff2461f7b8d3e9ea10b2295bbf293e49a",
+      "bytes": 8000
+    },
+    "E:\\v64c3\\v6_4\\route_optimizer_protocol.py": {
+      "sha256": "85bcbeb6a31a5de7f9bc150cf79b58e1bb13936f73d95da2ebd64652ae63ed79",
+      "bytes": 15225
+    },
+    "E:\\v64c3\\v6_4\\search_effect_teacher.py": {
+      "sha256": "98e1ab1d8a0b8ac8497492bf2be0cf8dbe584f40b1095612c90da49faf4b0734",
+      "bytes": 36121
+    },
+    "E:\\v64c3\\v6_4\\simple_warmstart_regression.py": {
+      "sha256": "7a80e29851f347ac7492bd28fd6b70ceff9350b8325076277ea303ab5bd99213",
+      "bytes": 31005
+    },
+    "E:\\v64c3\\v6_4\\task_anchored_reference.py": {
+      "sha256": "e8c0c82a742fa720a24f7accf67d0acafb836b117dba7738174799ab389f2db1",
+      "bytes": 28533
+    },
+    "E:\\v64c3\\v6_4\\task_protocol.py": {
+      "sha256": "7746550a5cc80b59c5c6f083fe4416d5943581100bc62189a408763363a17150",
+      "bytes": 18844
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\paired_reference_draws.npz": {
+      "sha256": "e923fd67c1eed9d3b661a0d3154c6217cf1f35e92dfd587ffc371f9491ad271a",
+      "bytes": 1024288
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\D\\training_report.json": {
+      "sha256": "f26ee86285161d81d1aa70c2dc1f6e29ac0faf9ac27e0c45706c4ff8ca2781fb",
+      "bytes": 6213
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\D\\training_status.json": {
+      "sha256": "2f06999f34590e26e411802f93ecf4fc39c3cdeb7ec84ade9ada5e3d353dac31",
+      "bytes": 400
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\D\\curves.jsonl": {
+      "sha256": "3be5c55642553e249a7a8229c78243b3ab1cabe0cbc4157bc9e5921b634c5f17",
+      "bytes": 10144
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\D\\checkpoint_0250.pt": {
+      "sha256": "e4df12dd5713ba65f697d99b6a123e9470048cb4a88f9e284ebcc851b708413e",
+      "bytes": 736224
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\D\\checkpoint_4000.pt": {
+      "sha256": "70113f31ff0c4675840ee4ebe0268c4425d7094d3a9889f70266de2b5137ece8",
+      "bytes": 736288
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\S\\training_report.json": {
+      "sha256": "213225cfa9e461cc07a2300e34a2fb6c1ad65289777700e198caa8e1cc2f1102",
+      "bytes": 6150
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\S\\training_status.json": {
+      "sha256": "c0a10b621baeaa909b4597714ba4e626da2cc6d28d390a4dc4438a19425331a3",
+      "bytes": 400
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\S\\curves.jsonl": {
+      "sha256": "d4b5908b18d09f92b4f62a4e5d3a2f7985cb756acbd74b4723670d40e6cc78ee",
+      "bytes": 10196
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\S\\checkpoint_0250.pt": {
+      "sha256": "038560cf328b03db27a2c58f7f37fed210fa9f616ff1bccfdad1a3879feeb860",
+      "bytes": 663192
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\S\\checkpoint_4000.pt": {
+      "sha256": "11a15e68f681a4993746077dc507abb669b1f5c3b144fe5d43596aafaff293d0",
+      "bytes": 663256
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_phase.json": {
+      "sha256": "93f9c1c593eacd393e1fda39efea6a7eaa75baf75e45bca9014460bce8b4ca2d",
+      "bytes": 187
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\command_logs\\phase_build-dataset.json": {
+      "sha256": "1dcd8318161fe50ea01f36045e6443529db35d5931527b2385c9c6d761308a7e",
+      "bytes": 474
+    },
+    "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\command_logs\\phase_train.json": {
+      "sha256": "42e1b89bea1812c400a39448ec68c606ec7adf077d888bc0d37a4ce336c28596",
+      "bytes": 459
+    }
+  },
+  "limitations": [
+    "No core imports,tests,physics,DDIM,training,rendering or export.",
+    "No large physical NPZ/archive reads or hashes;historical saved seals are metadata evidence,not renewed byte-level physical verification.",
+    "Teacher effects are nominal finite shared-search evidence,not final actual validation or independent causal necessity.",
+    "Small checkpoint tensor bytes and paired draw arrays were read without torch/core imports;optimizer execution was not replayed.",
+    "One seed per model and3 TRAIN mothers remain DATA_LIMITED;VAL/TEST completion and learning benefit are pending."
+  ],
+  "added_physics_steps": 0,
+  "added_training_updates": 0,
+  "added_DDIM_samples": 0,
+  "added_tests": 0,
+  "research_completion_claim": false
+}

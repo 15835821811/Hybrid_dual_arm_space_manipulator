@@ -1,0 +1,1591 @@
+{
+  "schema": "v64_c3_state_isolation_audit_v1",
+  "objective_sections": [
+    "5.3",
+    "8.3",
+    "13.13",
+    "7.4",
+    "8.4"
+  ],
+  "objective_path": "C:/Users/admin/.codex/attachments/1917d637-236f-4883-8674-4c3f5a6ff3e0/goal-objective.md",
+  "objective_sha256": "bcd7a46bd90aa28050737d2fe2ef18dcc0f3b71548ae8867774ac23e35c1fdd9",
+  "repository": "E:/v64c3",
+  "run": "v6_4/output/search_aware_warmstart_20261008_01",
+  "base_commit": "1758e13b01735b80c5a512b81cbc1d5e47a07ec9",
+  "producer_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+  "observation_time": "2026-10-08T17:56:30.8425148+08:00",
+  "verdict": "FROZEN_SOURCE_SUPPORTS_ISOLATION_AND_WITHIN_CANDIDATE_HISTORY; RECORDED_RESET_BINDINGS_OBSERVED; FINAL_ACTUAL_RUNTIME_VERIFICATION_PENDING",
+  "constraints": {
+    "new_documentation_only": true,
+    "existing_source_edited": false,
+    "tests_executed": false,
+    "core_imported": false,
+    "physics_executed": false,
+    "training_or_DDIM_executed": false,
+    "large_archives_accessed_or_hashed": false,
+    "render_or_export_executed": false
+  },
+  "evidence_semantics": {
+    "FROZEN_SOURCE": "Inspected current text matches the recorded frozen raw SHA and producer normalized Git blob. Conclusions are static control-flow/invariant findings.",
+    "OBSERVED_METADATA": "Existing small JSON bytes/fields were read; their producer declarations are observations, not direct object-identity/dual telemetry.",
+    "UNCHANGED_BASE": "Exact Git blob equality proves base/producer repository content equality after Git normalization; current raw SHA equality independently binds current checkout bytes to formal freeze.",
+    "FINAL_RUNTIME_PENDING": "No claim that all formal requests, actuals, aliases or independent gates are complete."
+  },
+  "identity_summary": {
+    "source_files_checked": 17,
+    "all_current_raw_sha_match_frozen": true,
+    "all_current_normalized_blobs_match_producer": true,
+    "producer_git_blobs_equal_base": 14,
+    "optimizer_only_diff": "Added regression to source-attribution sets at lines79–80 and initializer-origin set at254; no numerical/cache/state behavior changes.",
+    "new_C3_modules_absent_base": [
+      "v6_4/search_aware_warmstart_experiment.py",
+      "v6_4/closed_loop_warmstart_validation.py"
+    ],
+    "source_identity_sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+    "source_identity_recorded_file_count": 430,
+    "frozen_execution_config_sha256": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "frozen_run_config_sha256": "37c822b6a94d4e3e380b83b15f937ad6d44e151a2cf0502969e2c5b7694fd5f1"
+  },
+  "source_inventory": [
+    {
+      "path": "v6_4/continuous_route_optimizer.py",
+      "bytes": 23139,
+      "current_sha256": "f0cb8d79817802a2c307cedef526d021c7679095174fb04ae6ec30c9e06b42b3",
+      "frozen_sha256": "f0cb8d79817802a2c307cedef526d021c7679095174fb04ae6ec30c9e06b42b3",
+      "matches_frozen": true,
+      "git_normalized_blob": "8a32d712ac38a83b6b1532dda3dbf1c43a143526",
+      "producer_blob": "8a32d712ac38a83b6b1532dda3dbf1c43a143526",
+      "current_content_matches_producer": true,
+      "base_blob": "47699b80c86c3321c4bfc6e5e8881ec8035da068",
+      "producer_content_matches_base": false
+    },
+    {
+      "path": "v6_4/route_candidate_evaluator.py",
+      "bytes": 19203,
+      "current_sha256": "876758eab7c2177160ef90442c76e9aab83ebb0a6de2c544c6485f993ba44694",
+      "frozen_sha256": "876758eab7c2177160ef90442c76e9aab83ebb0a6de2c544c6485f993ba44694",
+      "matches_frozen": true,
+      "git_normalized_blob": "66b4b197218277773169331993468195780c3a6d",
+      "producer_blob": "66b4b197218277773169331993468195780c3a6d",
+      "current_content_matches_producer": true,
+      "base_blob": "66b4b197218277773169331993468195780c3a6d",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_4/route_optimizer_protocol.py",
+      "bytes": 15225,
+      "current_sha256": "85bcbeb6a31a5de7f9bc150cf79b58e1bb13936f73d95da2ebd64652ae63ed79",
+      "frozen_sha256": "85bcbeb6a31a5de7f9bc150cf79b58e1bb13936f73d95da2ebd64652ae63ed79",
+      "matches_frozen": true,
+      "git_normalized_blob": "5fe546dd4f9302a91c0b0dc8a68959ce17e6669a",
+      "producer_blob": "5fe546dd4f9302a91c0b0dc8a68959ce17e6669a",
+      "current_content_matches_producer": true,
+      "base_blob": "5fe546dd4f9302a91c0b0dc8a68959ce17e6669a",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_4/residual_execution.py",
+      "bytes": 24073,
+      "current_sha256": "5b44c5af11ffa1b90445f467d38d52b6db723738cc9f0970845bee2e32666310",
+      "frozen_sha256": "5b44c5af11ffa1b90445f467d38d52b6db723738cc9f0970845bee2e32666310",
+      "matches_frozen": true,
+      "git_normalized_blob": "b4bb57c420fe457719a47bfbbf85c5b7173a202a",
+      "producer_blob": "b4bb57c420fe457719a47bfbbf85c5b7173a202a",
+      "current_content_matches_producer": true,
+      "base_blob": "b4bb57c420fe457719a47bfbbf85c5b7173a202a",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_4/reference_adapter.py",
+      "bytes": 18111,
+      "current_sha256": "6f767b6f4425a37d53d16cb6694139c288f99ff18ceeefd40baee6761941d72a",
+      "frozen_sha256": "6f767b6f4425a37d53d16cb6694139c288f99ff18ceeefd40baee6761941d72a",
+      "matches_frozen": true,
+      "git_normalized_blob": "44049c3d04d771e82f02cccf66f334c4e32bba5a",
+      "producer_blob": "44049c3d04d771e82f02cccf66f334c4e32bba5a",
+      "current_content_matches_producer": true,
+      "base_blob": "44049c3d04d771e82f02cccf66f334c4e32bba5a",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_4/task_anchored_reference.py",
+      "bytes": 28533,
+      "current_sha256": "e8c0c82a742fa720a24f7accf67d0acafb836b117dba7738174799ab389f2db1",
+      "frozen_sha256": "e8c0c82a742fa720a24f7accf67d0acafb836b117dba7738174799ab389f2db1",
+      "matches_frozen": true,
+      "git_normalized_blob": "23814fc313de6e75510b1ca53d5d2291ee81113f",
+      "producer_blob": "23814fc313de6e75510b1ca53d5d2291ee81113f",
+      "current_content_matches_producer": true,
+      "base_blob": "23814fc313de6e75510b1ca53d5d2291ee81113f",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_4/search_aware_warmstart_experiment.py",
+      "bytes": 34751,
+      "current_sha256": "818b7655124a94f59822407d2de92b2985d15683d7bc397cc0683bef80376ead",
+      "frozen_sha256": "818b7655124a94f59822407d2de92b2985d15683d7bc397cc0683bef80376ead",
+      "matches_frozen": true,
+      "git_normalized_blob": "516876327b1cab0b71a955e726d0276aae6c5765",
+      "producer_blob": "516876327b1cab0b71a955e726d0276aae6c5765",
+      "current_content_matches_producer": true,
+      "base_blob": null,
+      "producer_content_matches_base": false
+    },
+    {
+      "path": "v6_4/closed_loop_warmstart_validation.py",
+      "bytes": 30464,
+      "current_sha256": "26db6c940490a7ca7eb934524e5941ad2ae419bcb8b93d3882272ab0caa7fcd9",
+      "frozen_sha256": "26db6c940490a7ca7eb934524e5941ad2ae419bcb8b93d3882272ab0caa7fcd9",
+      "matches_frozen": true,
+      "git_normalized_blob": "f84e3e5c7acd542cc215366f9fc9b3d1de9d1160",
+      "producer_blob": "f84e3e5c7acd542cc215366f9fc9b3d1de9d1160",
+      "current_content_matches_producer": true,
+      "base_blob": null,
+      "producer_content_matches_base": false
+    },
+    {
+      "path": "v6_lite/run_v6_lite.py",
+      "bytes": 110226,
+      "current_sha256": "2a0ec116d82a9aa2f20b62162c1c829db6fdbd264a4ac461dac41b2733d1e239",
+      "frozen_sha256": "2a0ec116d82a9aa2f20b62162c1c829db6fdbd264a4ac461dac41b2733d1e239",
+      "matches_frozen": true,
+      "git_normalized_blob": "40325201b1257098029b1740329fe94026e97852",
+      "producer_blob": "40325201b1257098029b1740329fe94026e97852",
+      "current_content_matches_producer": true,
+      "base_blob": "40325201b1257098029b1740329fe94026e97852",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "bytes": 65135,
+      "current_sha256": "90dc05c490f4a574d74754bf659eea48915aa5d705f5fe83819876e152993ed2",
+      "frozen_sha256": "90dc05c490f4a574d74754bf659eea48915aa5d705f5fe83819876e152993ed2",
+      "matches_frozen": true,
+      "git_normalized_blob": "e3ebd8f083fc5555f339756546d53b1368915200",
+      "producer_blob": "e3ebd8f083fc5555f339756546d53b1368915200",
+      "current_content_matches_producer": true,
+      "base_blob": "e3ebd8f083fc5555f339756546d53b1368915200",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_lite/b2_interval_online.py",
+      "bytes": 10343,
+      "current_sha256": "99eaddf24d87f64f5cd739b819a81bc6a5b7110533fdb440e0bebfd16fbdbac8",
+      "frozen_sha256": "99eaddf24d87f64f5cd739b819a81bc6a5b7110533fdb440e0bebfd16fbdbac8",
+      "matches_frozen": true,
+      "git_normalized_blob": "30a7dae76ef4aafe9cacf75ce7c880edba21292c",
+      "producer_blob": "30a7dae76ef4aafe9cacf75ce7c880edba21292c",
+      "current_content_matches_producer": true,
+      "base_blob": "30a7dae76ef4aafe9cacf75ce7c880edba21292c",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_lite/b2_interval_online_optimized.py",
+      "bytes": 10425,
+      "current_sha256": "a928efcf1578821d457844e47e6c07b9ae65da846f927c69c98f9878eb46cfa0",
+      "frozen_sha256": "a928efcf1578821d457844e47e6c07b9ae65da846f927c69c98f9878eb46cfa0",
+      "matches_frozen": true,
+      "git_normalized_blob": "cd8494ca076761b263f883ad4b6e00a1605ffaeb",
+      "producer_blob": "cd8494ca076761b263f883ad4b6e00a1605ffaeb",
+      "current_content_matches_producer": true,
+      "base_blob": "cd8494ca076761b263f883ad4b6e00a1605ffaeb",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_lite/execution_ramp.py",
+      "bytes": 3000,
+      "current_sha256": "9fa43b2a35f7755eb942b435e8e1fd81dcce49bc80a18c1a851acdf0ddc8b74c",
+      "frozen_sha256": "9fa43b2a35f7755eb942b435e8e1fd81dcce49bc80a18c1a851acdf0ddc8b74c",
+      "matches_frozen": true,
+      "git_normalized_blob": "edc735c95b8a9ade21fa760d6dc9cd5f6c3f87e7",
+      "producer_blob": "edc735c95b8a9ade21fa760d6dc9cd5f6c3f87e7",
+      "current_content_matches_producer": true,
+      "base_blob": "edc735c95b8a9ade21fa760d6dc9cd5f6c3f87e7",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_lite/b2_interval_runtime.py",
+      "bytes": 12670,
+      "current_sha256": "7ac1d260b211e07d5a80393c53ea88dcae5e6cbcd749b1c10b179b2f5db01a48",
+      "frozen_sha256": "7ac1d260b211e07d5a80393c53ea88dcae5e6cbcd749b1c10b179b2f5db01a48",
+      "matches_frozen": true,
+      "git_normalized_blob": "127db5ea82a82095f3c7b17742fdc47070bb69db",
+      "producer_blob": "127db5ea82a82095f3c7b17742fdc47070bb69db",
+      "current_content_matches_producer": true,
+      "base_blob": "127db5ea82a82095f3c7b17742fdc47070bb69db",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "v6_lite/run_evidence.py",
+      "bytes": 10197,
+      "current_sha256": "a28b081810ff30759a678e0c302031c6b397ad9758dcf77a66de979b42b7463a",
+      "frozen_sha256": "a28b081810ff30759a678e0c302031c6b397ad9758dcf77a66de979b42b7463a",
+      "matches_frozen": true,
+      "git_normalized_blob": "38a62d4861e8ab4c016e35d93e104c710f1ba049",
+      "producer_blob": "38a62d4861e8ab4c016e35d93e104c710f1ba049",
+      "current_content_matches_producer": true,
+      "base_blob": "38a62d4861e8ab4c016e35d93e104c710f1ba049",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "model_test/whole_body_verifier_v5.py",
+      "bytes": 27721,
+      "current_sha256": "ef657623d59ab813afa86fe8a0c4524459fc11b84ed3a740789ebf6c3990d4b1",
+      "frozen_sha256": "ef657623d59ab813afa86fe8a0c4524459fc11b84ed3a740789ebf6c3990d4b1",
+      "matches_frozen": true,
+      "git_normalized_blob": "0cf820fcb62a1f62c2e6c6dcf6002fcf58e92357",
+      "producer_blob": "0cf820fcb62a1f62c2e6c6dcf6002fcf58e92357",
+      "current_content_matches_producer": true,
+      "base_blob": "0cf820fcb62a1f62c2e6c6dcf6002fcf58e92357",
+      "producer_content_matches_base": true
+    },
+    {
+      "path": "model_test/robot_model_spec_v5.py",
+      "bytes": 17360,
+      "current_sha256": "34068777f5b93809d273388b2232d026f730734bf9963d1b7070f6698278919d",
+      "frozen_sha256": "34068777f5b93809d273388b2232d026f730734bf9963d1b7070f6698278919d",
+      "matches_frozen": true,
+      "git_normalized_blob": "67d4389bf1d06ca77afbc81e4488229398fd13e6",
+      "producer_blob": "67d4389bf1d06ca77afbc81e4488229398fd13e6",
+      "current_content_matches_producer": true,
+      "base_blob": "67d4389bf1d06ca77afbc81e4488229398fd13e6",
+      "producer_content_matches_base": true
+    }
+  ],
+  "source_facts": [
+    {
+      "id": "S01",
+      "level": "FROZEN_SOURCE",
+      "claim": "Each stage/task/stream has a distinct output root, evaluator and optimizer invocation; only plan/source/config files are copied, never a candidate pool.",
+      "anchors": [
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 290
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 294
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 303
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 327
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 328
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "level": "FROZEN_SOURCE",
+      "claim": "The exact reference cache is a local dict inside optimize; its key includes plan SHA and execution identity. A hit returns evidence alias semantics, never a final physics/controller object. Retained complete same-stream selections are verified and returned without evaluator work.",
+      "anchors": [
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 120
+        },
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 137
+        },
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 144
+        },
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 190
+        },
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 193
+        },
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 197
+        },
+        {
+          "path": "v6_4/continuous_route_optimizer.py",
+          "line": 203
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "level": "FROZEN_SOURCE",
+      "claim": "NominalCandidateEvaluator retains immutable identity/task references; a new noncached candidate gets new config/spec/scenario and a newly constructed TaskAnchoredResidualReferenceProvider. Existing unfinished candidate evidence blocks rerun.",
+      "anchors": [
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 194
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 198
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 203
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 213
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 215
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 224
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 243
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 246
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 254
+        },
+        {
+          "path": "v6_4/route_candidate_evaluator.py",
+          "line": 255
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "level": "FROZEN_SOURCE",
+      "claim": "run_synchronous_scenario constructs a new WholeBodyCollisionVerifier. Its constructor creates a new MjSpec and compiles a new model; the runner allocates a new live MjData.",
+      "anchors": [
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 635
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 654
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 655
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 662
+        },
+        {
+          "path": "model_test/whole_body_verifier_v5.py",
+          "line": 155
+        },
+        {
+          "path": "model_test/whole_body_verifier_v5.py",
+          "line": 156
+        },
+        {
+          "path": "model_test/whole_body_verifier_v5.py",
+          "line": 166
+        },
+        {
+          "path": "model_test/whole_body_verifier_v5.py",
+          "line": 167
+        },
+        {
+          "path": "model_test/whole_body_verifier_v5.py",
+          "line": 207
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "level": "FROZEN_SOURCE",
+      "claim": "Fresh live MjData uses the declared home/scenario initial state: planner home qpos, zero qvel except frozen scenario target twist, zero ctrl. Provider.prepare enforces exact Task qpos/qvel/time=0/home/dq and runner guards against provider mutation.",
+      "anchors": [
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 668
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 669
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 670
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 674
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 677
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 680
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 681
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 686
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 687
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 82
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 85
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 86
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 87
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 88
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 90
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 92
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 94
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "level": "FROZEN_SOURCE",
+      "claim": "Each bounded-interval run creates new evaluator/QP/admission/next-start checker/private workspace; QP constructor initializes previous_velocity=0, duals={}, solve_count=0; optimized reaction cache begins empty.",
+      "anchors": [
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 708
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 709
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 711
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 713
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 717
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 35
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 36
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 43
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 44
+        },
+        {
+          "path": "v6_lite/b2_interval_online.py",
+          "line": 49
+        },
+        {
+          "path": "v6_lite/b2_interval_online.py",
+          "line": 52
+        },
+        {
+          "path": "v6_lite/b2_interval_online.py",
+          "line": 53
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 327
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 351
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 352
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 353
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "level": "FROZEN_SOURCE",
+      "claim": "Controller/reference history is initialized once per runner invocation. The same local QP/provider/model/data persist through the physics loop; no per-tick qp.reset is called. Runner passes current command_velocity as ramp start and keeps previous segment velocity.",
+      "anchors": [
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 731
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 732
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 733
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 734
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 735
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 916
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 962
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 978
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 990
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1110
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1318
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "level": "FROZEN_SOURCE",
+      "claim": "Within-candidate QP warm start uses previous_velocity for acceleration bounds and primal initial vector, and persistent keyed constraint duals for ADMM initial_dual. Accepted commands update history; rejected commands clear duals according to original logic. Explicit reset clears the base QP history.",
+      "anchors": [
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 406
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 407
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 408
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 409
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 921
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 922
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1158
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1189
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1211
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1214
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1215
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1219
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1226
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1269
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1271
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1273
+        },
+        {
+          "path": "v6_lite/hierarchical_qp.py",
+          "line": 1276
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "level": "FROZEN_SOURCE",
+      "claim": "The provider retains a live feedback binding for one run and samples current state; it does not own a reference integral. The integral is runner-local reference_q_state, advanced and reassigned each servo step rather than rehomed each planning tick. Torque is computed from current feedback by original functions then consumed by mj_step.",
+      "anchors": [
+        {
+          "path": "v6_4/task_anchored_reference.py",
+          "line": 367
+        },
+        {
+          "path": "v6_4/task_anchored_reference.py",
+          "line": 386
+        },
+        {
+          "path": "v6_4/task_anchored_reference.py",
+          "line": 387
+        },
+        {
+          "path": "v6_4/task_anchored_reference.py",
+          "line": 390
+        },
+        {
+          "path": "v6_4/task_anchored_reference.py",
+          "line": 391
+        },
+        {
+          "path": "v6_4/task_anchored_reference.py",
+          "line": 394
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 94
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 97
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 100
+        },
+        {
+          "path": "v6_4/reference_adapter.py",
+          "line": 104
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 731
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1375
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1386
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1392
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1398
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1428
+        },
+        {
+          "path": "v6_lite/run_v6_lite.py",
+          "line": 1451
+        },
+        {
+          "path": "v6_lite/execution_ramp.py",
+          "line": 44
+        },
+        {
+          "path": "v6_lite/execution_ramp.py",
+          "line": 60
+        },
+        {
+          "path": "v6_lite/execution_ramp.py",
+          "line": 62
+        },
+        {
+          "path": "v6_lite/execution_ramp.py",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "id": "S10",
+      "level": "FROZEN_SOURCE",
+      "claim": "Within-run optimized caches are instance-local: reaction key includes time/qpos/qvel/qM; preview workspace owns a separate MjData and reloads full integration state from live source each preview; copied reference_start prevents preview integration from advancing the live reference integral.",
+      "anchors": [
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 43
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 50
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 53
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 54
+        },
+        {
+          "path": "v6_lite/b2_interval_online_optimized.py",
+          "line": 55
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 27
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 38
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 42
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 51
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 52
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 53
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 88
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 104
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 106
+        },
+        {
+          "path": "v6_lite/b2_interval_runtime.py",
+          "line": 110
+        }
+      ]
+    },
+    {
+      "id": "S11",
+      "level": "FROZEN_SOURCE_PLUS_PARTIAL_RECORDED_ARGV",
+      "claim": "Formal VAL/TEST search requests use sequential blocking subprocess.run with a fresh _worker interpreter per stream request and one-thread env. Receipt is written after worker exit. Teacher streams and actual endpoints are not claimed to have their own subprocess; they rely on fresh per-run construction.",
+      "anchors": [
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 409
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 412
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 419
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 422
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 423
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 426
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 428
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 429
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 431
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 444
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 446
+        },
+        {
+          "path": "v6_4/search_aware_warmstart_experiment.py",
+          "line": 448
+        }
+      ]
+    },
+    {
+      "id": "S12",
+      "level": "FROZEN_SOURCE_FINAL_RUNTIME_PENDING",
+      "claim": "Each unique final actual enters the original execute_residual_attempt, constructs fresh provider/spec/scenario/config and calls the same runner; no private prediction state is passed. NO_PLAN consumes no actual, and exact aliases copy original evidence with zero new actual work.",
+      "anchors": [
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 207
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 216
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 217
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 237
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 255
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 256
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 264
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 265
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 290
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 298
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 304
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 305
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 308
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 256
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 258
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 261
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 283
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 304
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 305
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 306
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 308
+        },
+        {
+          "path": "v6_4/residual_execution.py",
+          "line": 313
+        }
+      ]
+    },
+    {
+      "id": "S13",
+      "level": "FROZEN_SOURCE_FINAL_RUNTIME_PENDING",
+      "claim": "Strict actual alias identity includes Task/model contract/plan/full declared cold-history policy plus four initial arrays/source identity/config/run-config hashes. Alias lookup is local to one task call; retained slots must match binding and original seals. The cold-history hash is a declared policy binding, not measured QP/controller telemetry.",
+      "anchors": [
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 32
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 170
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 172
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 173
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 179
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 181
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 183
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 184
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 185
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 186
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 245
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 247
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 255
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 256
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 264
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 265
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 266
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 271
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 272
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 273
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 298
+        },
+        {
+          "path": "v6_4/closed_loop_warmstart_validation.py",
+          "line": 304
+        }
+      ]
+    }
+  ],
+  "runtime_observations": {
+    "observation_time": "2026-10-08T17:56:30.8425148+08:00",
+    "extra_sources": [
+      {
+        "path": "model_test/whole_body_verifier_v5.py",
+        "bytes": 27721,
+        "current_sha256": "ef657623d59ab813afa86fe8a0c4524459fc11b84ed3a740789ebf6c3990d4b1",
+        "frozen_sha256": "ef657623d59ab813afa86fe8a0c4524459fc11b84ed3a740789ebf6c3990d4b1",
+        "matches_frozen": true,
+        "git_normalized_blob": "0cf820fcb62a1f62c2e6c6dcf6002fcf58e92357",
+        "producer_blob": "0cf820fcb62a1f62c2e6c6dcf6002fcf58e92357",
+        "current_content_matches_producer": true,
+        "base_blob": "0cf820fcb62a1f62c2e6c6dcf6002fcf58e92357",
+        "producer_content_matches_base": true
+      },
+      {
+        "path": "model_test/robot_model_spec_v5.py",
+        "bytes": 17360,
+        "current_sha256": "34068777f5b93809d273388b2232d026f730734bf9963d1b7070f6698278919d",
+        "frozen_sha256": "34068777f5b93809d273388b2232d026f730734bf9963d1b7070f6698278919d",
+        "matches_frozen": true,
+        "git_normalized_blob": "67d4389bf1d06ca77afbc81e4488229398fd13e6",
+        "producer_blob": "67d4389bf1d06ca77afbc81e4488229398fd13e6",
+        "current_content_matches_producer": true,
+        "base_blob": "67d4389bf1d06ca77afbc81e4488229398fd13e6",
+        "producer_content_matches_base": true
+      }
+    ],
+    "teacher_started_record_count": 96,
+    "teacher_started_total_bytes": 59712,
+    "teacher_initial_state_groups": [
+      {
+        "task": "c1_mother_00_minus",
+        "stream": "T_local",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "7f7f3ebe8e03d975706cc32300f37a3d23a3a0ad82bad22095adc3d45caf1d90"
+        ]
+      },
+      {
+        "task": "c1_mother_00_minus",
+        "stream": "T_transfer",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "7f7f3ebe8e03d975706cc32300f37a3d23a3a0ad82bad22095adc3d45caf1d90"
+        ]
+      },
+      {
+        "task": "c1_mother_00_plus",
+        "stream": "T_local",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "7f7f3ebe8e03d975706cc32300f37a3d23a3a0ad82bad22095adc3d45caf1d90"
+        ]
+      },
+      {
+        "task": "c1_mother_00_plus",
+        "stream": "T_transfer",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "7f7f3ebe8e03d975706cc32300f37a3d23a3a0ad82bad22095adc3d45caf1d90"
+        ]
+      },
+      {
+        "task": "c1_mother_01_minus",
+        "stream": "T_local",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "29e8b17ced6984d36dc50b70059e5f3728efa171f9e551281314f45ee5ce785c"
+        ]
+      },
+      {
+        "task": "c1_mother_01_minus",
+        "stream": "T_transfer",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "29e8b17ced6984d36dc50b70059e5f3728efa171f9e551281314f45ee5ce785c"
+        ]
+      },
+      {
+        "task": "c1_mother_01_plus",
+        "stream": "T_local",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "29e8b17ced6984d36dc50b70059e5f3728efa171f9e551281314f45ee5ce785c"
+        ]
+      },
+      {
+        "task": "c1_mother_01_plus",
+        "stream": "T_transfer",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "29e8b17ced6984d36dc50b70059e5f3728efa171f9e551281314f45ee5ce785c"
+        ]
+      },
+      {
+        "task": "c2_new_train_minus",
+        "stream": "T_local",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "0f4caaa991cb82815f0394e1fc18c37a1ee0739f98ab44c2c58f7ea162f41e2c"
+        ]
+      },
+      {
+        "task": "c2_new_train_minus",
+        "stream": "T_transfer",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "0f4caaa991cb82815f0394e1fc18c37a1ee0739f98ab44c2c58f7ea162f41e2c"
+        ]
+      },
+      {
+        "task": "c2_new_train_plus",
+        "stream": "T_local",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "0f4caaa991cb82815f0394e1fc18c37a1ee0739f98ab44c2c58f7ea162f41e2c"
+        ]
+      },
+      {
+        "task": "c2_new_train_plus",
+        "stream": "T_transfer",
+        "candidate_started_records": 8,
+        "unique_initial_state_hashes": [
+          "0f4caaa991cb82815f0394e1fc18c37a1ee0739f98ab44c2c58f7ea162f41e2c"
+        ]
+      }
+    ],
+    "samples": [
+      {
+        "started_path": "v6_4/output/search_aware_warmstart_20261008_01/teacher_search/c1_mother_00_plus/T_local/planning/c1_mother_00_plus/predictions/C00/started.json",
+        "started_sha256": "0eb2e37ca3ce9dade74e68ba88a77d90e4cff730156f2530f2628302cc853e96",
+        "started": {
+          "content_key": "a2cdab0260a6aa478d47bc121393dfad2454cc11a837034e1bbf458d34e69354",
+          "argv": [
+            "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+            "E:\\v64c3\\v6_4\\search_aware_warmstart_experiment.py",
+            "teacher-search",
+            "--run",
+            "v6_4/output/search_aware_warmstart_20261008_01"
+          ],
+          "cwd": "E:\\v64c3",
+          "started_utc": "2026-10-08T15:46:50.322249+08:00",
+          "candidate_id": "C00",
+          "initial_state_sha256": "7f7f3ebe8e03d975706cc32300f37a3d23a3a0ad82bad22095adc3d45caf1d90",
+          "state_isolation": "new runner/model/MjData/controller/provider/integrator/QP and ADMM cache per candidate"
+        },
+        "metadata_path": "v6_4/output/search_aware_warmstart_20261008_01/teacher_search/c1_mother_00_plus/T_local/planning/c1_mother_00_plus/predictions/C00/private_prediction/run_metadata.json",
+        "metadata_sha256": "7960d208e1d3520353fb4a7dc3ad321017618cc5f6fefa5a633939f6b0205429",
+        "metadata_status": "PASSED",
+        "metadata_started_utc": "2026-10-08T15:46:55.045655+08:00",
+        "metadata_run_id": "private_prediction",
+        "metadata_role": "private_search_prediction",
+        "metadata_summary_status": "PREDICTION_ADMISSIBLE",
+        "metadata_git_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+        "metadata_tracked_worktree_dirty": false,
+        "configuration_sha256": "62c0714507401cf7aff9033c18cfb55d784cd3e6ee21d2da711021c07854af6b",
+        "runtime_identity": {
+          "trace_schema_version": "v6_2_a1_ramp_aware_qp",
+          "controller_version": "v6_2_research_simulation_bounded_interval_pcc",
+          "pcc_mode": "bounded_interval_pcc",
+          "execution_mode": "research_simulation",
+          "command_validity_clock": "simulation_time",
+          "performance_is_acceptance_gate": false,
+          "wall_deployment_certified": false,
+          "servo_law_version": "b2_implicitfast_compensated_torque_v1",
+          "integrator": 3,
+          "integrator_name": "implicitfast",
+          "model_runtime_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+          "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536"
+        }
+      },
+      {
+        "started_path": "v6_4/output/search_aware_warmstart_20261008_01/teacher_search/c1_mother_00_plus/T_transfer/planning/c1_mother_00_plus/predictions/C00/started.json",
+        "started_sha256": "91a954fa3f12300d28e7eef97cb0151564253720ce0ca328a661b0fd71b74686",
+        "started": {
+          "content_key": "a2cdab0260a6aa478d47bc121393dfad2454cc11a837034e1bbf458d34e69354",
+          "argv": [
+            "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+            "E:\\v64c3\\v6_4\\search_aware_warmstart_experiment.py",
+            "teacher-search",
+            "--run",
+            "v6_4/output/search_aware_warmstart_20261008_01"
+          ],
+          "cwd": "E:\\v64c3",
+          "started_utc": "2026-10-08T15:57:34.042978+08:00",
+          "candidate_id": "C00",
+          "initial_state_sha256": "7f7f3ebe8e03d975706cc32300f37a3d23a3a0ad82bad22095adc3d45caf1d90",
+          "state_isolation": "new runner/model/MjData/controller/provider/integrator/QP and ADMM cache per candidate"
+        },
+        "metadata_path": "v6_4/output/search_aware_warmstart_20261008_01/teacher_search/c1_mother_00_plus/T_transfer/planning/c1_mother_00_plus/predictions/C00/private_prediction/run_metadata.json",
+        "metadata_sha256": "2b7b736f90ca19c2a54a55bb56b97fac1d92f115b881979656c3c220bddd1f53",
+        "metadata_status": "PASSED",
+        "metadata_started_utc": "2026-10-08T15:57:37.501095+08:00",
+        "metadata_run_id": "private_prediction",
+        "metadata_role": "private_search_prediction",
+        "metadata_summary_status": "PREDICTION_ADMISSIBLE",
+        "metadata_git_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+        "metadata_tracked_worktree_dirty": false,
+        "configuration_sha256": "62c0714507401cf7aff9033c18cfb55d784cd3e6ee21d2da711021c07854af6b",
+        "runtime_identity": {
+          "trace_schema_version": "v6_2_a1_ramp_aware_qp",
+          "controller_version": "v6_2_research_simulation_bounded_interval_pcc",
+          "pcc_mode": "bounded_interval_pcc",
+          "execution_mode": "research_simulation",
+          "command_validity_clock": "simulation_time",
+          "performance_is_acceptance_gate": false,
+          "wall_deployment_certified": false,
+          "servo_law_version": "b2_implicitfast_compensated_torque_v1",
+          "integrator": 3,
+          "integrator_name": "implicitfast",
+          "model_runtime_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+          "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536"
+        }
+      },
+      {
+        "started_path": "v6_4/output/search_aware_warmstart_20261008_01/closed_loop_val/search/c3_val_plus/R/planning/c3_val_plus/predictions/C00/started.json",
+        "started_sha256": "49580f52cf3d9c6394facf7d04c0e51c10a39713aa4aabbb32ee4120889c5d42",
+        "started": {
+          "content_key": "731c92dd2220423c4d368863c2e1b85db42e0f77bc2546a8a3f8405bb5743552",
+          "argv": [
+            "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+            "E:\\v64c3\\v6_4\\search_aware_warmstart_experiment.py",
+            "_worker",
+            "--run",
+            "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01",
+            "--stage",
+            "val",
+            "--task",
+            "c3_val_plus",
+            "--stream",
+            "R"
+          ],
+          "cwd": "E:\\v64c3",
+          "started_utc": "2026-10-08T17:46:29.385527+08:00",
+          "candidate_id": "C00",
+          "initial_state_sha256": "af1e2c73f010faed53e1df75dfe426b0952237aacef56572420ca8896917584d",
+          "state_isolation": "new runner/model/MjData/controller/provider/integrator/QP and ADMM cache per candidate"
+        },
+        "metadata_path": "v6_4/output/search_aware_warmstart_20261008_01/closed_loop_val/search/c3_val_plus/R/planning/c3_val_plus/predictions/C00/private_prediction/run_metadata.json",
+        "metadata_sha256": "ab06701558334a2691d5c202bc7ed76d1061752e8149b01ce8a797e5d3b42944",
+        "metadata_status": "PASSED",
+        "metadata_started_utc": "2026-10-08T17:46:33.823156+08:00",
+        "metadata_run_id": "private_prediction",
+        "metadata_role": "private_search_prediction",
+        "metadata_summary_status": "PREDICTION_ADMISSIBLE",
+        "metadata_git_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+        "metadata_tracked_worktree_dirty": false,
+        "configuration_sha256": "62c0714507401cf7aff9033c18cfb55d784cd3e6ee21d2da711021c07854af6b",
+        "runtime_identity": {
+          "trace_schema_version": "v6_2_a1_ramp_aware_qp",
+          "controller_version": "v6_2_research_simulation_bounded_interval_pcc",
+          "pcc_mode": "bounded_interval_pcc",
+          "execution_mode": "research_simulation",
+          "command_validity_clock": "simulation_time",
+          "performance_is_acceptance_gate": false,
+          "wall_deployment_certified": false,
+          "servo_law_version": "b2_implicitfast_compensated_torque_v1",
+          "integrator": 3,
+          "integrator_name": "implicitfast",
+          "model_runtime_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+          "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536"
+        }
+      },
+      {
+        "started_path": "v6_4/output/search_aware_warmstart_20261008_01/closed_loop_val/search/c3_val_plus/R/planning/c3_val_plus/predictions/C01/started.json",
+        "started_sha256": "c14b4091980de70d6abf658c6e45749b1461035b5c1c60952adcbe194f0f35d4",
+        "started": {
+          "content_key": "f0e6b6f0fb6970df69c15c1c493a96a9c562a44f8baa96a14644cb5b6cc8acbd",
+          "argv": [
+            "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+            "E:\\v64c3\\v6_4\\search_aware_warmstart_experiment.py",
+            "_worker",
+            "--run",
+            "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01",
+            "--stage",
+            "val",
+            "--task",
+            "c3_val_plus",
+            "--stream",
+            "R"
+          ],
+          "cwd": "E:\\v64c3",
+          "started_utc": "2026-10-08T17:47:48.354436+08:00",
+          "candidate_id": "C01",
+          "initial_state_sha256": "af1e2c73f010faed53e1df75dfe426b0952237aacef56572420ca8896917584d",
+          "state_isolation": "new runner/model/MjData/controller/provider/integrator/QP and ADMM cache per candidate"
+        },
+        "metadata_path": "v6_4/output/search_aware_warmstart_20261008_01/closed_loop_val/search/c3_val_plus/R/planning/c3_val_plus/predictions/C01/private_prediction/run_metadata.json",
+        "metadata_sha256": "24ef17adf3b289bad28dcd6dda4fa29fff08838d44f17dc1798c2d9ba640c3c4",
+        "metadata_status": "PASSED",
+        "metadata_started_utc": "2026-10-08T17:47:51.835936+08:00",
+        "metadata_run_id": "private_prediction",
+        "metadata_role": "private_search_prediction",
+        "metadata_summary_status": "PREDICTION_ADMISSIBLE",
+        "metadata_git_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+        "metadata_tracked_worktree_dirty": false,
+        "configuration_sha256": "62c0714507401cf7aff9033c18cfb55d784cd3e6ee21d2da711021c07854af6b",
+        "runtime_identity": {
+          "trace_schema_version": "v6_2_a1_ramp_aware_qp",
+          "controller_version": "v6_2_research_simulation_bounded_interval_pcc",
+          "pcc_mode": "bounded_interval_pcc",
+          "execution_mode": "research_simulation",
+          "command_validity_clock": "simulation_time",
+          "performance_is_acceptance_gate": false,
+          "wall_deployment_certified": false,
+          "servo_law_version": "b2_implicitfast_compensated_torque_v1",
+          "integrator": 3,
+          "integrator_name": "implicitfast",
+          "model_runtime_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+          "model_source_bundle_sha256": "638cee34a2dca5c79d62f1898c99caa810510791faa0e8caca18dab5c7693536"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "task_id": "c1_mother_00_plus",
+        "task_sha256": "557e5da614ee7afcfd65960b1d77e135dde3dc2ea3c3f0b2eac47ff6bbefa317",
+        "task_path": "v6_4/output/search_aware_warmstart_20261008_01/frozen_tasks/c1_mother_00_plus/task.json",
+        "task_file_sha256": "900cd370ca557721bb7f94e286d1ca41b6959eb08a2bf5cf890712722f45256f",
+        "task_file_bytes": 14171,
+        "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+        "initial_qpos_length": 81,
+        "initial_qvel_length": 79,
+        "initial_planner_q": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.7853981633974483,
+          0,
+          1.5707963267948966,
+          0,
+          0.7853981633974483,
+          0
+        ],
+        "initial_planner_dq": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "task_id": "c3_val_plus",
+        "task_sha256": "831453a539790a2111a1fd089b3fc380b64d52e567ecbdc7000f4141a66ca321",
+        "task_path": "v6_4/output/search_aware_warmstart_20261008_01/frozen_tasks/c3_val_plus/task.json",
+        "task_file_sha256": "f432369d97980ce60e1f8085838c8d2d8215c52cd1556ce217773d7feaafadbd",
+        "task_file_bytes": 14130,
+        "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f",
+        "initial_qpos_length": 81,
+        "initial_qvel_length": 79,
+        "initial_planner_q": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.7853981633974483,
+          0,
+          1.5707963267948966,
+          0,
+          0.7853981633974483,
+          0
+        ],
+        "initial_planner_dq": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "val_outer_process_receipt_count": 0,
+    "val_actual_exists": false,
+    "test_search_exists": false,
+    "source_identity_sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+    "source_identity_file_count": 430,
+    "frozen_execution_config_sha256": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "frozen_run_config_sha256": "37c822b6a94d4e3e380b83b15f937ad6d44e151a2cf0502969e2c5b7694fd5f1"
+  },
+  "limitations": [
+    "96 teacher started records are candidate evaluator starts, not a new computation of terminal success, slot consumption or integrated-rollout count.",
+    "initial_state_sha256 hashes declared Task qpos/qvel, not live MjData, ctrl, integrator, reference integral or QP dual arrays.",
+    "state_isolation and cold-history policy are producer declarations, supported by the inspected source guard/constructor path; they are not direct measured object telemetry.",
+    "private_prediction is a directory-basename run_id repeated across candidates; distinct absolute paths, content keys and identity bindings distinguish records.",
+    "Successful sampled private prediction metadata supports that initial-state/provider guards did not abort those samples, but it does not certify all candidates or final actuals.",
+    "New subprocess per formal search request does not mean subprocess per candidate, teacher combination, or actual endpoint.",
+    "Same physical initial-state digest across mirrored Tasks does not permit cross-Task alias: Task SHA and plan/model/config/history identities remain in the alias key.",
+    "Actual execution uses original V6LiteRunConfig bounded_interval_pcc/research_simulation defaults; final metadata must still confirm its effective config matches the frozen identity.",
+    "No separate persistent torque-controller class or provider integral exists in this path; controller history is QP plus run-local ramp/reference/live data state.",
+    "Explicit QP reset clears base velocity/dual history; isolation between runs follows new object construction, not assuming reset clears every optimized cache."
+  ],
+  "existing_test_anchors": [
+    {
+      "path": "v6_4/tests/test_continuous_route_optimizer.py",
+      "line": 245,
+      "function": "test_candidate_calls_create_distinct_provider_and_config_objects",
+      "scope": "Distinct provider/config at evaluator boundary; runner construction is mocked."
+    },
+    {
+      "path": "v6_4/tests/test_search_aware_orchestrator.py",
+      "line": 49,
+      "function": "test_stream_directory_isolation",
+      "scope": "Distinct stream roots."
+    },
+    {
+      "path": "v6_4/tests/test_preference_warmstart_pipeline.py",
+      "line": 37,
+      "function": "test_streams_share_configuration_bytes_but_no_cache",
+      "scope": "Common config but separate persisted caches."
+    },
+    {
+      "path": "v6_4/tests/test_continuous_route_optimizer.py",
+      "line": 153,
+      "function": "test_exact_cache_hits_no_new_calls_and_proposal_cap",
+      "scope": "Local exact-cache semantics."
+    },
+    {
+      "path": "v6_4/tests/test_continuous_route_optimizer.py",
+      "line": 164,
+      "function": "test_resume_verifies_source_config_and_does_not_evaluate_again",
+      "scope": "Same-stream completed reuse."
+    },
+    {
+      "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+      "line": 116,
+      "function": "test_alias_same_task_config_plan_history_only_and_resume",
+      "scope": "Mock actual alias identity/history binding."
+    }
+  ],
+  "additional_verification": {
+    "path": "v6_4/tests/test_search_aware_additional_contracts.py",
+    "sha256": "7469570742e50dce0ae0d5631264008ef1bece1275bd7c3ae664842330e868c3",
+    "function": "test_same_candidate_retains_qp_history_and_explicit_reset_clears_it",
+    "line": 317,
+    "status": "AUTHORED_NOT_IMPORTED_NOT_EXECUTED",
+    "frozen_source_identity_member": false,
+    "role": "Post-freeze mock verification; does not alter/relabel producer. Exercises real base QP warm-history plumbing through mocked numerical solver/validator and reset; no proof of full runner object construction."
+  },
+  "remaining_verification": [
+    {
+      "id": "R01",
+      "requirement": "Complete formal VAL/TEST request identities",
+      "needed": "After workers exit, inspect original outer_process.json argv/exit/time and planning_cost.json measured_mode/cross_stream_cache/selection identities for every formal stream; do not create replacement receipts or timers."
+    },
+    {
+      "id": "R02",
+      "requirement": "Final actual cold-state evidence",
+      "needed": "Verify all original logical slots/unique attempts/strict aliases and selected-plan bindings. For unique attempts, compare saved trace initial_qpos/initial_qvel and original run metadata/config/controller/source identities to frozen Task and the original cold-history binding, using existing validation artifacts where available; do not run additional physics or retry failed consumed work."
+    },
+    {
+      "id": "R03",
+      "requirement": "Within-run history evidence",
+      "needed": "Run the authored small mocked QP test after formal timing ends and retain an identity-bound receipt. Existing source proves provider feedback/reference accumulator ownership; direct full-run object-identity/dual telemetry is not currently recorded and cannot be claimed from started.json."
+    },
+    {
+      "id": "R04",
+      "requirement": "Frozen identity completeness",
+      "needed": "Final independent source/config/protected artifact audit must check the full recorded identity; this lightweight audit checked 17 relevant source files, not all430, and did not access raw archives or validate full manifests."
+    },
+    {
+      "id": "R05",
+      "requirement": "Strict aliases and completion",
+      "needed": "Recompute original final alias identities/history hashes and follow alias source slot/manifest seals; count logical/unique/alias separately. No actual or independent five-gate completion follows from prediction metadata PASSED."
+    }
+  ],
+  "no_experiment_work_authorized_by_this_audit": true
+}

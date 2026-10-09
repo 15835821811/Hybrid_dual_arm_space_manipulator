@@ -1,0 +1,1347 @@
+................................................................... [ 41%]
+...................................FF.FF [ 66%]
+FF.....................................................     [100%]
+================================== FAILURES ===================================
+_ ResidualBindingTests.test_mismatched_actual_feedback_and_generated_continuum_are_rejected (key='actual_full_qpos') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_mismatched_actual_feedback_and_generated_continuum_are_rejected>
+
+    def test_mismatched_actual_feedback_and_generated_continuum_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("actual_full_qpos", "actual_full_qvel", "generated_continuum_position",
+                "generated_continuum_rotation", "generated_reference_q", "generated_reference_dq"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] += 1e-5
+                with self.assertRaises(ValueError):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_mismatched_actual_feedback_and_generated_continuum_are_rejected (key='actual_full_qvel') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_mismatched_actual_feedback_and_generated_continuum_are_rejected>
+
+    def test_mismatched_actual_feedback_and_generated_continuum_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("actual_full_qpos", "actual_full_qvel", "generated_continuum_position",
+                "generated_continuum_rotation", "generated_reference_q", "generated_reference_dq"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] += 1e-5
+                with self.assertRaises(ValueError):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_mismatched_actual_feedback_and_generated_continuum_are_rejected (key='generated_continuum_position') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_mismatched_actual_feedback_and_generated_continuum_are_rejected>
+
+    def test_mismatched_actual_feedback_and_generated_continuum_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("actual_full_qpos", "actual_full_qvel", "generated_continuum_position",
+                "generated_continuum_rotation", "generated_reference_q", "generated_reference_dq"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] += 1e-5
+                with self.assertRaises(ValueError):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_mismatched_actual_feedback_and_generated_continuum_are_rejected (key='generated_continuum_rotation') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_mismatched_actual_feedback_and_generated_continuum_are_rejected>
+
+    def test_mismatched_actual_feedback_and_generated_continuum_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("actual_full_qpos", "actual_full_qvel", "generated_continuum_position",
+                "generated_continuum_rotation", "generated_reference_q", "generated_reference_dq"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] += 1e-5
+                with self.assertRaises(ValueError):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_mismatched_actual_feedback_and_generated_continuum_are_rejected (key='generated_reference_q') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_mismatched_actual_feedback_and_generated_continuum_are_rejected>
+
+    def test_mismatched_actual_feedback_and_generated_continuum_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("actual_full_qpos", "actual_full_qvel", "generated_continuum_position",
+                "generated_continuum_rotation", "generated_reference_q", "generated_reference_dq"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] += 1e-5
+                with self.assertRaises(ValueError):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_mismatched_actual_feedback_and_generated_continuum_are_rejected (key='generated_reference_dq') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_mismatched_actual_feedback_and_generated_continuum_are_rejected>
+
+    def test_mismatched_actual_feedback_and_generated_continuum_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("actual_full_qpos", "actual_full_qvel", "generated_continuum_position",
+                "generated_continuum_rotation", "generated_reference_q", "generated_reference_dq"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] += 1e-5
+                with self.assertRaises(ValueError):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='actual_full_qpos') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='actual_full_qvel') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_rigid_position') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_rigid_rotation') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_continuum_position') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_continuum_rotation') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_reference_q') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_reference_dq') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='generated_reference_time_s') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='task_time') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_nonfinite_consumed_or_diagnostic_logs_are_rejected (key='task_input_reference_rigid_target_velocity') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_nonfinite_consumed_or_diagnostic_logs_are_rejected>
+
+    def test_nonfinite_consumed_or_diagnostic_logs_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        keys = ["actual_full_qpos", "actual_full_qvel", "generated_rigid_position",
+            "generated_rigid_rotation", "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_q", "generated_reference_dq", "generated_reference_time_s",
+            "task_time", "task_input_reference_rigid_target_velocity"]
+        for key in keys:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key].flat[0] = np.nan
+                with self.assertRaisesRegex(ValueError, "must be finite"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='rigid_target_position') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='rigid_target_velocity') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='rigid_target_rotation') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='rigid_target_angular_velocity') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='continuum_target_position') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='continuum_target_velocity') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='continuum_target_rotation') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='continuum_target_angular_velocity') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='posture_reference_q') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_perturbing_any_consumed_QP_field_is_rejected (key='posture_reference_dq') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_perturbing_any_consumed_QP_field_is_rejected>
+
+    def test_perturbing_any_consumed_QP_field_is_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in execution.REFERENCE_KEYS:
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace["task_input_reference_"+key].flat[0] += 1e-5
+                with self.assertRaisesRegex(ValueError, "consumed reference differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_rejected_unconsumed_tail_is_excluded_from_QP_binding _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_rejected_unconsumed_tail_is_excluded_from_QP_binding>
+
+    def test_rejected_unconsumed_tail_is_excluded_from_QP_binding(self):
+        task, plan, trace, state = binding_fixture()
+        for key in ["task_time", *["task_input_reference_"+k for k in execution.REFERENCE_KEYS]]:
+            shape = (1,)+trace[key].shape[1:]
+            trace[key] = np.concatenate((trace[key], np.full(shape, np.nan)))
+>       result = self.bind(task, plan, trace, state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+v6_4\tests\test_residual_binding.py:182: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+plan = namespace(z_m=array([[0.01, 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ]]))
+trace = {'torque': array([[0., 0., 0., ..., 0., 0., 0.],
+       [0., 0., 0., ..., 0., 0., 0.],
+       [0., 0., 0., ..., 0., 0.... 0.014, 0.016, 0.018,
+       0.02 , 0.022, 0.024, 0.026, 0.028, 0.03 , 0.032, 0.034, 0.036,
+       0.038, 0.04 ]), ...}
+ticks = 2
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_valid_feedback_dependent_nonzero_route_binds_all_QP_inputs _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_valid_feedback_dependent_nonzero_route_binds_all_QP_inputs>
+
+    def test_valid_feedback_dependent_nonzero_route_binds_all_QP_inputs(self):
+        task, plan, trace, state = binding_fixture()
+>       result = self.bind(task, plan, trace, state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+v6_4\tests\test_residual_binding.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+plan = namespace(z_m=array([[0.01, 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ],
+       [0.  , 0.  ]]))
+trace = {'torque': array([[0., 0., 0., ..., 0., 0., 0.],
+       [0., 0., 0., ..., 0., 0., 0.],
+       [0., 0., 0., ..., 0., 0.... 0.014, 0.016, 0.018,
+       0.02 , 0.022, 0.024, 0.026, 0.028, 0.03 , 0.032, 0.034, 0.036,
+       0.038, 0.04 ]), ...}
+ticks = 2
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_wrong_physical_clocks_are_rejected (key='task_time') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_wrong_physical_clocks_are_rejected>
+
+    def test_wrong_physical_clocks_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("task_time", "generated_reference_time_s"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key][0] += .001
+                with self.assertRaisesRegex(ValueError, "clock differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_wrong_physical_clocks_are_rejected (key='generated_reference_time_s') _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_wrong_physical_clocks_are_rejected>
+
+    def test_wrong_physical_clocks_are_rejected(self):
+        task, plan, original, state = binding_fixture()
+        for key in ("task_time", "generated_reference_time_s"):
+            with self.subTest(key=key):
+                trace = copy.deepcopy(original)
+                trace[key][0] += .001
+                with self.assertRaisesRegex(ValueError, "clock differs"):
+>                   self.bind(task, plan, trace, state)
+
+v6_4\tests\test_residual_binding.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualBindingTests.test_zero_route_has_exact_ten_field_parity_and_finite_cached_rigid_diagnostic _
+
+self = <v6_4.tests.test_residual_binding.ResidualBindingTests testMethod=test_zero_route_has_exact_ten_field_parity_and_finite_cached_rigid_diagnostic>
+
+    def test_zero_route_has_exact_ten_field_parity_and_finite_cached_rigid_diagnostic(self):
+        task, plan, trace, state = binding_fixture(0.)
+        # The frozen executor's poststep rigid cache is not a current-state QP
+        # input. A finite cache discrepancy must not falsify zero input parity.
+        trace["generated_rigid_position"] += .00002
+        trace["generated_rigid_rotation"] += .00001
+>       result = self.bind(task, plan, trace, state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+v6_4\tests\test_residual_binding.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:110: in bind
+    return execution.reference_consumption_binding(task, plan, trace, state, object())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+v6_4\residual_execution.py:138: in reference_consumption_binding
+    consumed_identity=consumed_reference_identity_binding(plan,trace,ticks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+plan = namespace(z_m=array([[0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.]]))
+trace = {'torque': array([[0., 0., 0., ..., 0., 0., 0.],
+       [0., 0., 0., ..., 0., 0., 0.],
+       [0., 0., 0., ..., 0., 0.... 0.014, 0.016, 0.018,
+       0.02 , 0.022, 0.024, 0.026, 0.028, 0.03 , 0.032, 0.034, 0.036,
+       0.038, 0.04 ]), ...}
+ticks = 2
+
+    def consumed_reference_identity_binding(plan, trace, ticks):
+        """Bind new source fields; never invent version/components for old traces."""
+        expected={
+>           'task_consumed_reference_version':plan.definition['representation_version'],
+                                              ^^^^^^^^^^^^^^^
+            'task_consumed_reference_definition_sha256':plan.definition['definition_sha256'],
+            'task_consumed_reference_plan_sha256':plan.sha256(),
+        }
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:100: AttributeError
+_ ResidualReuseTests.test_changed_or_unprotected_execution_config_refuses_before_actual _
+
+self = <v6_4.tests.test_residual_binding.ResidualReuseTests testMethod=test_changed_or_unprotected_execution_config_refuses_before_actual>
+
+    def test_changed_or_unprotected_execution_config_refuses_before_actual(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+>           task, plan, output, config, identity = self.prepare_rejected_slot(root)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+v6_4\tests\test_residual_binding.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:200: in prepare_rejected_slot
+    result = execution.execute_residual_attempt(task, plan, output,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = TaskSpec(task_id='case_01', group_id='group_01', split='train', family='end_effector_detour', seed=7, scenario_json='{...ediate_path_between_fixed_requirements', layout_json='{}', duration_s=27.0, task_period_s=0.02, physics_period_s=0.002)
+plan = namespace(to_dict=<function ResidualReuseTests.prepare_rejected_slot.<locals>.<lambda> at 0x000002876F14EAC0>)
+output = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmp5wv4wi33/slot')
+qp_config_path = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmp5wv4wi33/frozen_execution_config.json')
+identity_path = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmp5wv4wi33/source_identity.json')
+slot_id = 'declared_slot', reuse_completed = False
+execution_diagnostics = False, diagnostic_obstacle_name = None
+
+    def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slot_id,reuse_completed=False,
+                                 execution_diagnostics=False,diagnostic_obstacle_name=None):
+        output=Path(output);before=source_guard(identity_path)
+        identity=json.loads(Path(identity_path).read_text(encoding='utf8'))
+        config_path=str(Path(qp_config_path).resolve());config_sha=sha(qp_config_path)
+        if identity.get('protected_artifacts',{}).get(config_path)!=config_sha:
+            raise ValueError('execution QP configuration is not frozen in source identity')
+        task_hash=task.sha256();plan_dict=plan.to_dict()
+>       if plan.definition['representation_version']!='task_anchored_cartesian_residual_v1' and not execution_diagnostics:
+           ^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:264: AttributeError
+_ ResidualReuseTests.test_reuse_checks_trace_evaluation_and_evaluation_manifest _
+
+self = <v6_4.tests.test_residual_binding.ResidualReuseTests testMethod=test_reuse_checks_trace_evaluation_and_evaluation_manifest>
+
+    def test_reuse_checks_trace_evaluation_and_evaluation_manifest(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+>           args = self.prepare_rejected_slot(root)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+v6_4\tests\test_residual_binding.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:200: in prepare_rejected_slot
+    result = execution.execute_residual_attempt(task, plan, output,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = TaskSpec(task_id='case_01', group_id='group_01', split='train', family='end_effector_detour', seed=7, scenario_json='{...ediate_path_between_fixed_requirements', layout_json='{}', duration_s=27.0, task_period_s=0.02, physics_period_s=0.002)
+plan = namespace(to_dict=<function ResidualReuseTests.prepare_rejected_slot.<locals>.<lambda> at 0x000002876F1802C0>)
+output = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmpqbgli5jv/slot')
+qp_config_path = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmpqbgli5jv/frozen_execution_config.json')
+identity_path = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmpqbgli5jv/source_identity.json')
+slot_id = 'declared_slot', reuse_completed = False
+execution_diagnostics = False, diagnostic_obstacle_name = None
+
+    def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slot_id,reuse_completed=False,
+                                 execution_diagnostics=False,diagnostic_obstacle_name=None):
+        output=Path(output);before=source_guard(identity_path)
+        identity=json.loads(Path(identity_path).read_text(encoding='utf8'))
+        config_path=str(Path(qp_config_path).resolve());config_sha=sha(qp_config_path)
+        if identity.get('protected_artifacts',{}).get(config_path)!=config_sha:
+            raise ValueError('execution QP configuration is not frozen in source identity')
+        task_hash=task.sha256();plan_dict=plan.to_dict()
+>       if plan.definition['representation_version']!='task_anchored_cartesian_residual_v1' and not execution_diagnostics:
+           ^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:264: AttributeError
+_ ResidualReuseTests.test_valid_reuse_does_not_execute_and_wrong_slot_or_plan_hash_refuses _
+
+self = <v6_4.tests.test_residual_binding.ResidualReuseTests testMethod=test_valid_reuse_does_not_execute_and_wrong_slot_or_plan_hash_refuses>
+
+    def test_valid_reuse_does_not_execute_and_wrong_slot_or_plan_hash_refuses(self):
+        with tempfile.TemporaryDirectory() as temp:
+>           args = self.prepare_rejected_slot(Path(temp))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+v6_4\tests\test_residual_binding.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+v6_4\tests\test_residual_binding.py:200: in prepare_rejected_slot
+    result = execution.execute_residual_attempt(task, plan, output,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = TaskSpec(task_id='case_01', group_id='group_01', split='train', family='end_effector_detour', seed=7, scenario_json='{...ediate_path_between_fixed_requirements', layout_json='{}', duration_s=27.0, task_period_s=0.02, physics_period_s=0.002)
+plan = namespace(to_dict=<function ResidualReuseTests.prepare_rejected_slot.<locals>.<lambda> at 0x000002876F181F80>)
+output = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmpw1bkxgtw/slot')
+qp_config_path = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmpw1bkxgtw/frozen_execution_config.json')
+identity_path = WindowsPath('E:/v64c3/docs/audit_receipts/c3_final_mock_suite_04/tmp/tmpw1bkxgtw/source_identity.json')
+slot_id = 'declared_slot', reuse_completed = False
+execution_diagnostics = False, diagnostic_obstacle_name = None
+
+    def execute_residual_attempt(task,plan,output,*,qp_config_path,identity_path,slot_id,reuse_completed=False,
+                                 execution_diagnostics=False,diagnostic_obstacle_name=None):
+        output=Path(output);before=source_guard(identity_path)
+        identity=json.loads(Path(identity_path).read_text(encoding='utf8'))
+        config_path=str(Path(qp_config_path).resolve());config_sha=sha(qp_config_path)
+        if identity.get('protected_artifacts',{}).get(config_path)!=config_sha:
+            raise ValueError('execution QP configuration is not frozen in source identity')
+        task_hash=task.sha256();plan_dict=plan.to_dict()
+>       if plan.definition['representation_version']!='task_anchored_cartesian_residual_v1' and not execution_diagnostics:
+           ^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'definition'
+
+v6_4\residual_execution.py:264: AttributeError
+============================== warnings summary ===============================
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88
+  E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:88: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92
+  E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:92: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+..\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_mathtext.py:45
+  E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator\.venv\Lib\site-packages\matplotlib\_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SUBFAILED(key='actual_full_qpos') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_mismatched_actual_feedback_and_generated_continuum_are_rejected
+SUBFAILED(key='actual_full_qvel') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_mismatched_actual_feedback_and_generated_continuum_are_rejected
+SUBFAILED(key='generated_continuum_position') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_mismatched_actual_feedback_and_generated_continuum_are_rejected
+SUBFAILED(key='generated_continuum_rotation') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_mismatched_actual_feedback_and_generated_continuum_are_rejected
+SUBFAILED(key='generated_reference_q') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_mismatched_actual_feedback_and_generated_continuum_are_rejected
+SUBFAILED(key='generated_reference_dq') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_mismatched_actual_feedback_and_generated_continuum_are_rejected
+SUBFAILED(key='actual_full_qpos') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='actual_full_qvel') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_rigid_position') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_rigid_rotation') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_continuum_position') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_continuum_rotation') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_reference_q') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_reference_dq') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='generated_reference_time_s') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='task_time') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='task_input_reference_rigid_target_velocity') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected
+SUBFAILED(key='rigid_target_position') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='rigid_target_velocity') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='rigid_target_rotation') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='rigid_target_angular_velocity') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='continuum_target_position') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='continuum_target_velocity') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='continuum_target_rotation') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='continuum_target_angular_velocity') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='posture_reference_q') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+SUBFAILED(key='posture_reference_dq') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_perturbing_any_consumed_QP_field_is_rejected
+FAILED v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_rejected_unconsumed_tail_is_excluded_from_QP_binding
+FAILED v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_valid_feedback_dependent_nonzero_route_binds_all_QP_inputs
+SUBFAILED(key='task_time') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_wrong_physical_clocks_are_rejected
+SUBFAILED(key='generated_reference_time_s') v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_wrong_physical_clocks_are_rejected
+FAILED v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_zero_route_has_exact_ten_field_parity_and_finite_cached_rigid_diagnostic
+FAILED v6_4/tests/test_residual_binding.py::ResidualReuseTests::test_changed_or_unprotected_execution_config_refuses_before_actual
+FAILED v6_4/tests/test_residual_binding.py::ResidualReuseTests::test_reuse_checks_trace_evaluation_and_evaluation_manifest
+FAILED v6_4/tests/test_residual_binding.py::ResidualReuseTests::test_valid_reuse_does_not_execute_and_wrong_slot_or_plan_hash_refuses
+35 failed, 156 passed, 13 warnings, 21 subtests passed in 48.06s

@@ -1,0 +1,798 @@
+{
+  "schema": "c3_interim_raw_rejection_metadata_audit_v1",
+  "verdict": "CONSISTENT_WITH_ORIGINAL_RAW_REJECTION_PROTOCOL",
+  "scope": "Only two already observed S4000 raw-rejection events C01/A-v1 and C03/B-v2 in live TEST c3_test0_plus/S; not final S8 or TEST validation.",
+  "started_utc": "2026-10-08T12:26:14.101637+00:00",
+  "ended_utc": "2026-10-08T12:26:14.113682+00:00",
+  "checks_total": 68,
+  "checks_by_group": {
+    "observation": 4,
+    "identity": 15,
+    "accounting": 17,
+    "source": 6,
+    "raw": 26
+  },
+  "discrepancies": [],
+  "run": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01",
+  "objective_sha256": "bcd7a46bd90aa28050737d2fe2ef18dcc0f3b71548ae8867774ac23e35c1fdd9",
+  "source_identity": {
+    "algorithm_producer_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+    "source_identity_sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+    "reviewed_source_files_byte_checked": [
+      "route_initializers.py",
+      "continuous_route_optimizer.py",
+      "simple_warmstart_regression.py",
+      "search_aware_warmstart_experiment.py",
+      "route_candidate_evaluator.py",
+      "preference_diffusion_warmstart.py"
+    ],
+    "other_frozen_sources_and_protected_artifacts_rehashed": false
+  },
+  "frozen_checkpoint_identity": {
+    "model": "S",
+    "update": 4000,
+    "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\models\\S\\checkpoint_4000.pt",
+    "sha256_in_original_freeze_selection_training_and_initializer": "11a15e68f681a4993746077dc507abb669b1f5c3b144fe5d43596aafaff293d0",
+    "checkpoint_bytes_opened_or_hashed": false,
+    "model_freeze_utc": "2026-10-08T11:52:40.802152+00:00"
+  },
+  "execution": {
+    "argv": [
+      "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "E:\\v64c3\\docs\\audit_scripts\\c3_interim_raw_rejection_metadata_audit.py"
+    ],
+    "cwd": "E:\\v64c3",
+    "exit_code": 0,
+    "elapsed_wall_s": 0.0122894998639822,
+    "retained_script_relative_path": "docs/audit_scripts/c3_interim_raw_rejection_metadata_audit.py",
+    "retained_script_sha256": "68fa94dcf232d189e7111787962ec339a9c1cf09974a127c29a2599a84662dbd",
+    "core_imports_tests_inference_physics_training_DDIM_encoding_or_export": false,
+    "model_weight_NPZ_or_large_archive_read_or_hash": false
+  },
+  "live_registry_observation": {
+    "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\candidate_registry.jsonl",
+    "file_stat_before": {
+      "size_bytes": 588158,
+      "mtime_utc": "2026-10-08T12:25:21.368033+00:00"
+    },
+    "file_stat_after": {
+      "size_bytes": 588158,
+      "mtime_utc": "2026-10-08T12:25:21.368033+00:00"
+    },
+    "whole_file_hashed": false,
+    "other_candidate_rows_parsed_or_emitted": false,
+    "observed_candidates_only": [
+      "C01",
+      "C03"
+    ],
+    "is_final_seal": false
+  },
+  "live_command_log_observation": {
+    "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\command.log",
+    "file_stat_before": {
+      "size_bytes": 1266,
+      "mtime_utc": "2026-10-08T12:25:21.368033+00:00"
+    },
+    "file_stat_after": {
+      "size_bytes": 1266,
+      "mtime_utc": "2026-10-08T12:25:21.368033+00:00"
+    },
+    "whole_file_hashed": false,
+    "other_candidate_rows_parsed_or_emitted": false,
+    "observed_candidates_only": [
+      "C01",
+      "C03"
+    ],
+    "is_final_seal": false
+  },
+  "events": [
+    {
+      "candidate_id": "C01",
+      "initializer_slot": 1,
+      "preference": "A",
+      "family": "v1",
+      "raw_z_m": [
+        0.0,
+        0.0,
+        -0.0037338680344667025,
+        -0.0002731115545574801,
+        0.028969467798582997,
+        0.0034090092810564973,
+        -0.0,
+        -0.0,
+        -0.0,
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "search_interval_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "interval_norms_m_zero_based": [
+        0.0,
+        0.0037438430015219707,
+        0.02916935736027564,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offending_intervals_zero_based": [
+        2
+      ],
+      "largest_norm_m": 0.02916935736027564,
+      "excess_over_original_limit_m": 0.009169357360275639,
+      "raw_seed_diagnostics": {
+        "raw_z_m": [
+          0.0,
+          0.0,
+          -0.0037338680344667025,
+          -0.0002731115545574801,
+          0.028969467798582997,
+          0.0034090092810564973,
+          -0.0,
+          -0.0,
+          -0.0,
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "requested_preference": "A",
+        "requested_family": "v1",
+        "raw_legal": false,
+        "raw_repaired": false,
+        "resampled": false,
+        "search_interval_mask": [
+          false,
+          true,
+          true,
+          false,
+          false,
+          false
+        ],
+        "rejection_reason": "raw seed exceeds the original 20mm interval disk",
+        "error_type": "ValueError"
+      },
+      "consumed_slot_ordinal_one_based": 2,
+      "recorded_prediction_rollout_started": false,
+      "recorded_prediction_steps": 0,
+      "recorded_plan": null,
+      "recorded_costs": {
+        "prediction_physics_steps": 0
+      },
+      "prediction_directory_path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\predictions\\C01",
+      "prediction_directory_exists_at_observation": false,
+      "row_observation": {
+        "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\candidate_registry.jsonl",
+        "line_number": 2,
+        "byte_offset": 145580,
+        "byte_length_with_newline": 2216,
+        "terminated_by_newline": true,
+        "line_sha256_with_original_newline": "8baa1d34dec3c8c11722a7450c88bb0a86749e610a0159461f2316d7d0563006",
+        "canonical_content_sha256": "6335eba34510d1e8fd62d9e4ef672c944537d4b78368a0f3f8f5a93425e47e4c",
+        "scope": "only this observed complete line; not a final file seal"
+      },
+      "compact_terminal_event": {
+        "event": "C1_CANDIDATE_TERMINAL",
+        "task": "c3_test0_plus",
+        "candidate": "C01",
+        "source": "regression",
+        "status": "INITIALIZER_RAW_REJECTED",
+        "slots": 2,
+        "I_support": null,
+        "d_support": null
+      },
+      "terminal_event_observation": {
+        "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\command.log",
+        "line_number": 2,
+        "byte_offset": 217,
+        "byte_length_with_newline": 193,
+        "terminated_by_newline": true,
+        "line_sha256_with_original_newline": "3fb67c35cd88c1dba4d5523721ac5fc901d31ae84773a8aa92b5dbdc366f8bb9",
+        "canonical_content_sha256": "9aa2cbfc36afe319fd2f221e995fd0556e51a78cce636e5bf5782e1398dc6d47",
+        "scope": "only this observed complete line; not a final file seal"
+      },
+      "original_selected_registry_row": {
+        "source": "regression",
+        "preference": "A",
+        "family": "v1",
+        "checkpoint_sha256": "11a15e68f681a4993746077dc507abb669b1f5c3b144fe5d43596aafaff293d0",
+        "checkpoint_update": 4000,
+        "model": "S",
+        "training_config_sha256": "59096b22bd526c849706024c1adfc608b6d690471eb736e5cd06009c8642c626",
+        "condition_scaler_sha256": "b7cf01045e80cfc18f85524aaee385c2cf0d3db3b483bf5afa276d216f34a785",
+        "residual_scaler_sha256": "2e7c6487b3e32d0159187eda34f1f91f18ecd15d217338bb9a09e40d7de22ba6",
+        "condition_schema_sha256": "4c9dfc5d9e37f260d9cd12168a50024637d4c1efd1e9c6c784d11b0bf0592fa1",
+        "effective_parameter_count": 134412,
+        "physics_steps": 0,
+        "raw_postprocessing": "inverse TRAIN scaler only",
+        "raw_repaired": false,
+        "resampled": false,
+        "condition_prepare_wall_s": 0.001405899878591299,
+        "inference_wall_s": 0.0007197000086307526,
+        "ddim_sample_units": 0,
+        "regression_forward_units": 1,
+        "raw_z_m": [
+          0.0,
+          0.0,
+          -0.0037338680344667025,
+          -0.0002731115545574801,
+          0.028969467798582997,
+          0.0034090092810564973,
+          -0.0,
+          -0.0,
+          -0.0,
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "noise_seed": null,
+        "noise_id": null,
+        "noise_derivation": null,
+        "initializer_slot": 1,
+        "parent_candidate_id": null,
+        "preference_center": null,
+        "origin_source": "regression",
+        "proposal_lineage": [
+          {
+            "initial_position": 1,
+            "source": "regression"
+          }
+        ],
+        "raw_seed_diagnostics": {
+          "raw_z_m": [
+            0.0,
+            0.0,
+            -0.0037338680344667025,
+            -0.0002731115545574801,
+            0.028969467798582997,
+            0.0034090092810564973,
+            -0.0,
+            -0.0,
+            -0.0,
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "requested_preference": "A",
+          "requested_family": "v1",
+          "raw_legal": false,
+          "raw_repaired": false,
+          "resampled": false,
+          "search_interval_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "rejection_reason": "raw seed exceeds the original 20mm interval disk",
+          "error_type": "ValueError"
+        },
+        "proposal_index": 1,
+        "x_m": null,
+        "candidate_id": "C01",
+        "status": "INITIALIZER_RAW_REJECTED",
+        "prediction_rollout_started": false,
+        "prediction_steps": 0,
+        "prediction_admissible": false,
+        "prediction_task_passed": false,
+        "online_guards_passed": false,
+        "prediction_metrics": null,
+        "plan": null,
+        "plan_sha256": null,
+        "active_intervals": [
+          1,
+          2
+        ],
+        "coefficient_norm_m": null,
+        "non_historical_continuous_point": false,
+        "formal_actual_validation": "NOT_RUN",
+        "costs": {
+          "prediction_physics_steps": 0
+        }
+      }
+    },
+    {
+      "candidate_id": "C03",
+      "initializer_slot": 3,
+      "preference": "B",
+      "family": "v2",
+      "raw_z_m": [
+        0.0,
+        0.0,
+        -0.004075529526683081,
+        -0.000585481944292335,
+        0.02894793342483674,
+        0.0032327950136524734,
+        -0.0,
+        -0.0,
+        -0.0,
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "search_interval_mask": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "interval_norms_m_zero_based": [
+        0.0,
+        0.004117369309396226,
+        0.02912788720743536,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offending_intervals_zero_based": [
+        2
+      ],
+      "largest_norm_m": 0.02912788720743536,
+      "excess_over_original_limit_m": 0.009127887207435358,
+      "raw_seed_diagnostics": {
+        "raw_z_m": [
+          0.0,
+          0.0,
+          -0.004075529526683081,
+          -0.000585481944292335,
+          0.02894793342483674,
+          0.0032327950136524734,
+          -0.0,
+          -0.0,
+          -0.0,
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "requested_preference": "B",
+        "requested_family": "v2",
+        "raw_legal": false,
+        "raw_repaired": false,
+        "resampled": false,
+        "search_interval_mask": [
+          false,
+          true,
+          true,
+          false,
+          false,
+          false
+        ],
+        "rejection_reason": "raw seed exceeds the original 20mm interval disk",
+        "error_type": "ValueError"
+      },
+      "consumed_slot_ordinal_one_based": 4,
+      "recorded_prediction_rollout_started": false,
+      "recorded_prediction_steps": 0,
+      "recorded_plan": null,
+      "recorded_costs": {
+        "prediction_physics_steps": 0
+      },
+      "prediction_directory_path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\predictions\\C03",
+      "prediction_directory_exists_at_observation": false,
+      "row_observation": {
+        "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\candidate_registry.jsonl",
+        "line_number": 4,
+        "byte_offset": 293807,
+        "byte_length_with_newline": 2212,
+        "terminated_by_newline": true,
+        "line_sha256_with_original_newline": "b8c9b5f24624bd26d11c8ae625736c3e57140162f6b71ae2cb80abf08485567f",
+        "canonical_content_sha256": "50d278307c31fe2241d586ad9f17c0bc049688bd1e727b588db4be1263843fb3",
+        "scope": "only this observed complete line; not a final file seal"
+      },
+      "compact_terminal_event": {
+        "event": "C1_CANDIDATE_TERMINAL",
+        "task": "c3_test0_plus",
+        "candidate": "C03",
+        "source": "regression",
+        "status": "INITIALIZER_RAW_REJECTED",
+        "slots": 4,
+        "I_support": null,
+        "d_support": null
+      },
+      "terminal_event_observation": {
+        "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\command.log",
+        "line_number": 4,
+        "byte_offset": 627,
+        "byte_length_with_newline": 193,
+        "terminated_by_newline": true,
+        "line_sha256_with_original_newline": "b9170622b02186b40edf20995053bed88a68d04aecd5c7ed30099b00a127b4e1",
+        "canonical_content_sha256": "0637d3043dd46570ef84d56abd74eca3b2d4b8dced38955d720bfd5d87548c2b",
+        "scope": "only this observed complete line; not a final file seal"
+      },
+      "original_selected_registry_row": {
+        "source": "regression",
+        "preference": "B",
+        "family": "v2",
+        "checkpoint_sha256": "11a15e68f681a4993746077dc507abb669b1f5c3b144fe5d43596aafaff293d0",
+        "checkpoint_update": 4000,
+        "model": "S",
+        "training_config_sha256": "59096b22bd526c849706024c1adfc608b6d690471eb736e5cd06009c8642c626",
+        "condition_scaler_sha256": "b7cf01045e80cfc18f85524aaee385c2cf0d3db3b483bf5afa276d216f34a785",
+        "residual_scaler_sha256": "2e7c6487b3e32d0159187eda34f1f91f18ecd15d217338bb9a09e40d7de22ba6",
+        "condition_schema_sha256": "4c9dfc5d9e37f260d9cd12168a50024637d4c1efd1e9c6c784d11b0bf0592fa1",
+        "effective_parameter_count": 134412,
+        "physics_steps": 0,
+        "raw_postprocessing": "inverse TRAIN scaler only",
+        "raw_repaired": false,
+        "resampled": false,
+        "condition_prepare_wall_s": 0.0014388998970389366,
+        "inference_wall_s": 0.00015380000695586205,
+        "ddim_sample_units": 0,
+        "regression_forward_units": 1,
+        "raw_z_m": [
+          0.0,
+          0.0,
+          -0.004075529526683081,
+          -0.000585481944292335,
+          0.02894793342483674,
+          0.0032327950136524734,
+          -0.0,
+          -0.0,
+          -0.0,
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "noise_seed": null,
+        "noise_id": null,
+        "noise_derivation": null,
+        "initializer_slot": 3,
+        "parent_candidate_id": null,
+        "preference_center": null,
+        "origin_source": "regression",
+        "proposal_lineage": [
+          {
+            "initial_position": 3,
+            "source": "regression"
+          }
+        ],
+        "raw_seed_diagnostics": {
+          "raw_z_m": [
+            0.0,
+            0.0,
+            -0.004075529526683081,
+            -0.000585481944292335,
+            0.02894793342483674,
+            0.0032327950136524734,
+            -0.0,
+            -0.0,
+            -0.0,
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "requested_preference": "B",
+          "requested_family": "v2",
+          "raw_legal": false,
+          "raw_repaired": false,
+          "resampled": false,
+          "search_interval_mask": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "rejection_reason": "raw seed exceeds the original 20mm interval disk",
+          "error_type": "ValueError"
+        },
+        "proposal_index": 3,
+        "x_m": null,
+        "candidate_id": "C03",
+        "status": "INITIALIZER_RAW_REJECTED",
+        "prediction_rollout_started": false,
+        "prediction_steps": 0,
+        "prediction_admissible": false,
+        "prediction_task_passed": false,
+        "online_guards_passed": false,
+        "prediction_metrics": null,
+        "plan": null,
+        "plan_sha256": null,
+        "active_intervals": [
+          1,
+          2
+        ],
+        "coefficient_norm_m": null,
+        "non_historical_continuous_point": false,
+        "formal_actual_validation": "NOT_RUN",
+        "costs": {
+          "prediction_physics_steps": 0
+        }
+      }
+    }
+  ],
+  "source_anchors": {
+    "v6_4/route_initializers.py": [
+      {
+        "line": 45,
+        "text": "def raw_seed_plan(task, proposal, slot):"
+      },
+      {
+        "line": 54,
+        "text": "\"requested_family\": family, \"raw_legal\": False, \"raw_repaired\": False,"
+      },
+      {
+        "line": 55,
+        "text": "\"resampled\": False, \"search_interval_mask\": search_mask(task)}"
+      },
+      {
+        "line": 58,
+        "text": "return None, diagnostics"
+      },
+      {
+        "line": 73,
+        "text": "if np.any(np.linalg.norm(z, axis=1) > .020):"
+      },
+      {
+        "line": 86,
+        "text": "return None, diagnostics"
+      },
+      {
+        "line": 126,
+        "text": "for slot, (preference, family) in OVERRIDE_CONDITIONS.items():"
+      }
+    ],
+    "v6_4/continuous_route_optimizer.py": [
+      {
+        "line": 150,
+        "text": "def retain(row):"
+      },
+      {
+        "line": 151,
+        "text": "rows.append(row)"
+      },
+      {
+        "line": 171,
+        "text": "if plan is None:"
+      },
+      {
+        "line": 177,
+        "text": "\"status\": \"INITIALIZER_RAW_REJECTED\", \"prediction_rollout_started\": False,"
+      },
+      {
+        "line": 184,
+        "text": "retain(row)"
+      },
+      {
+        "line": 185,
+        "text": "return row"
+      },
+      {
+        "line": 197,
+        "text": "evidence = evaluator(plan, cid)"
+      },
+      {
+        "line": 203,
+        "text": "retain(row); cache[key] = row"
+      },
+      {
+        "line": 204,
+        "text": "return row"
+      }
+    ],
+    "v6_4/simple_warmstart_regression.py": [
+      {
+        "line": 157,
+        "text": "if z.shape != (6, 2) or not np.isfinite(z).all() or np.any(z[~mask] != 0) or np.any(np.linalg.norm(z, axis=1) > .020):"
+      },
+      {
+        "line": 462,
+        "text": "\"raw_postprocessing\": \"inverse TRAIN scaler only\", \"raw_repaired\": False, \"resampled\": False}"
+      },
+      {
+        "line": 482,
+        "text": "self.model(condition, mask_tensor))"
+      },
+      {
+        "line": 496,
+        "text": "for slot, (preference, family) in OVERRIDE_CONDITIONS.items():"
+      }
+    ],
+    "v6_4/search_aware_warmstart_experiment.py": [
+      {
+        "line": 77,
+        "text": "return row"
+      },
+      {
+        "line": 84,
+        "text": "return row"
+      },
+      {
+        "line": 159,
+        "text": "directory.mkdir(parents=True)"
+      },
+      {
+        "line": 169,
+        "text": "rows.append(row)"
+      },
+      {
+        "line": 349,
+        "text": "if retained.exists():"
+      },
+      {
+        "line": 361,
+        "text": "return {int(k): v for k, v in value[\"proposals\"].items()}"
+      },
+      {
+        "line": 364,
+        "text": "raise RuntimeError(\"unfinished initializer consumed; no silent regeneration\")"
+      }
+    ],
+    "v6_4/route_candidate_evaluator.py": [
+      {
+        "line": 213,
+        "text": "directory = self.run / \"planning\" / self.task.task_id / \"predictions\" / candidate_id"
+      },
+      {
+        "line": 223,
+        "text": "directory.mkdir(parents=True)"
+      }
+    ],
+    "v6_4/preference_diffusion_warmstart.py": [
+      {
+        "line": 258,
+        "text": "def inverse_raw(normalizer, latent, mask):"
+      },
+      {
+        "line": 266,
+        "text": "raw = x * normalizer.std_m"
+      },
+      {
+        "line": 267,
+        "text": "raw[m] += normalizer.mean_m"
+      }
+    ]
+  },
+  "interpretation": "Each illegal raw consumes a candidate slot and one already recorded S forward, with zero nominal rollout and null plan. Reduced physical work from rejection is a failure-accounting fact, never evidence of learning benefit.",
+  "pending": [
+    "The S8 request terminal selection/cost/outer receipt is outside this interim event audit",
+    "All other TEST requests and failures remain unaudited here",
+    "Whole TEST selection seal, actual execution, strict aliases and five independent gates remain pending",
+    "No checkpoint score, overall research-completion or benefit conclusion is supplied"
+  ],
+  "input_sha256_inventory": {
+    "C:\\Users\\admin\\.codex\\attachments\\1917d637-236f-4883-8674-4c3f5a6ff3e0\\goal-objective.md": {
+      "sha256": "bcd7a46bd90aa28050737d2fe2ef18dcc0f3b71548ae8867774ac23e35c1fdd9",
+      "size_bytes": 32337,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/continuous_route_optimizer.py": {
+      "sha256": "f0cb8d79817802a2c307cedef526d021c7679095174fb04ae6ec30c9e06b42b3",
+      "size_bytes": 23139,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/budget_ledger/8f1adf246ff2e622fbf334e8919c43fa48f6bc81110397148dd78d88bd1b8d0e.json": {
+      "sha256": "e025433e45911ff7affe67e3570328b87c2bce57b45d2c2445e6421c01255700",
+      "size_bytes": 324,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/dataset/manifest.json": {
+      "sha256": "94e3cae0b8319a5c18b7f08c9f86cf352a40e663fa51663564101114e3f304a7",
+      "size_bytes": 115595,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/model_freeze.json": {
+      "sha256": "3beb1bad5e86192ada207cdf161ced6cc32815f0016da860ba8469a31f7911ca",
+      "size_bytes": 5362,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/model_selection.json": {
+      "sha256": "fb10fd35a70a7cf03475949968d9384a18b5d0670220e6a8f8237cecd48ca1be",
+      "size_bytes": 14007,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/models/S/training_report.json": {
+      "sha256": "213225cfa9e461cc07a2300e34a2fb6c1ad65289777700e198caa8e1cc2f1102",
+      "size_bytes": 6150,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/plan.json": {
+      "sha256": "616c2fea6879ccdc1b9bdadba57c7e1e8862af6cabf32fbbb510133c8847c6ad",
+      "size_bytes": 212216,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/source_identity.json": {
+      "sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+      "size_bytes": 57666,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/command.log#line=2;candidate=C01": {
+      "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\command.log",
+      "line_number": 2,
+      "byte_offset": 217,
+      "byte_length_with_newline": 193,
+      "terminated_by_newline": true,
+      "line_sha256_with_original_newline": "3fb67c35cd88c1dba4d5523721ac5fc901d31ae84773a8aa92b5dbdc366f8bb9",
+      "canonical_content_sha256": "9aa2cbfc36afe319fd2f221e995fd0556e51a78cce636e5bf5782e1398dc6d47",
+      "scope": "only this observed complete line; not a final file seal"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/command.log#line=4;candidate=C03": {
+      "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\command.log",
+      "line_number": 4,
+      "byte_offset": 627,
+      "byte_length_with_newline": 193,
+      "terminated_by_newline": true,
+      "line_sha256_with_original_newline": "b9170622b02186b40edf20995053bed88a68d04aecd5c7ed30099b00a127b4e1",
+      "canonical_content_sha256": "0637d3043dd46570ef84d56abd74eca3b2d4b8dced38955d720bfd5d87548c2b",
+      "scope": "only this observed complete line; not a final file seal"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/initializer_proposals.json": {
+      "sha256": "1758de2f8d7400b88a405e9845759d326265bc9fccf51f0d916ef82e65e8463e",
+      "size_bytes": 3423,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/initializer_started.json": {
+      "sha256": "1734dd1bcbebedb860fb5e1240342348f0c4d986862b0cc05674c86c3fe81a82",
+      "size_bytes": 186,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/planning/c3_test0_plus/candidate_registry.jsonl#line=2;candidate=C01": {
+      "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\candidate_registry.jsonl",
+      "line_number": 2,
+      "byte_offset": 145580,
+      "byte_length_with_newline": 2216,
+      "terminated_by_newline": true,
+      "line_sha256_with_original_newline": "8baa1d34dec3c8c11722a7450c88bb0a86749e610a0159461f2316d7d0563006",
+      "canonical_content_sha256": "6335eba34510d1e8fd62d9e4ef672c944537d4b78368a0f3f8f5a93425e47e4c",
+      "scope": "only this observed complete line; not a final file seal"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/planning/c3_test0_plus/candidate_registry.jsonl#line=4;candidate=C03": {
+      "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\test_search\\c3_test0_plus\\S\\planning\\c3_test0_plus\\candidate_registry.jsonl",
+      "line_number": 4,
+      "byte_offset": 293807,
+      "byte_length_with_newline": 2212,
+      "terminated_by_newline": true,
+      "line_sha256_with_original_newline": "b8c9b5f24624bd26d11c8ae625736c3e57140162f6b71ae2cb80abf08485567f",
+      "canonical_content_sha256": "50d278307c31fe2241d586ad9f17c0bc049688bd1e727b588db4be1263843fb3",
+      "scope": "only this observed complete line; not a final file seal"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/planning/c3_test0_plus/optimizer_inputs.json": {
+      "sha256": "cbd0642141725691d16837a6534f501ccd37542a17afc1176fd7c9db1a01435c",
+      "size_bytes": 15694,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/output/search_aware_warmstart_20261008_01/test_search/c3_test0_plus/S/source_identity.json": {
+      "sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+      "size_bytes": 57666,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/preference_diffusion_warmstart.py": {
+      "sha256": "731b71c5b107f54bce77a6aa126afcd5e2833e6b3bbd5c6e89f6c13fc8082126",
+      "size_bytes": 36186,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/route_candidate_evaluator.py": {
+      "sha256": "876758eab7c2177160ef90442c76e9aab83ebb0a6de2c544c6485f993ba44694",
+      "size_bytes": 19203,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/route_initializers.py": {
+      "sha256": "1226f52284550ee6e7510823a29ffc8ff2461f7b8d3e9ea10b2295bbf293e49a",
+      "size_bytes": 8000,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/search_aware_warmstart_experiment.py": {
+      "sha256": "818b7655124a94f59822407d2de92b2985d15683d7bc397cc0683bef80376ead",
+      "size_bytes": 34751,
+      "scope": "whole stable small metadata/source file"
+    },
+    "v6_4/simple_warmstart_regression.py": {
+      "sha256": "7a80e29851f347ac7492bd28fd6b70ceff9350b8325076277ea303ab5bd99213",
+      "size_bytes": 31005,
+      "scope": "whole stable small metadata/source file"
+    }
+  }
+}

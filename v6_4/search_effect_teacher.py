@@ -380,8 +380,9 @@ def summarize_teacher_pair(pair, selection, rows, references, proposals=None):
         raw_legal = bool(seed and (seed.get("raw_seed_diagnostics") or {}).get("raw_legal"))
         seed_id = seed.get("cache_hit_candidate_id") or seed.get("candidate_id") if seed else None
         if seed_id is None and seed:
-            seed_id = next((r["candidate_id"] for r in rows if r.get("plan_sha256") == seed.get("plan_sha256") or
-                r.get("search_content_key") == seed.get("content_key")), None)
+            seed_id = next((r["candidate_id"] for r in rows if
+                (seed.get("plan_sha256") is not None and r.get("plan_sha256") == seed["plan_sha256"]) or
+                (seed.get("content_key") is not None and r.get("search_content_key") == seed["content_key"])), None)
         # An exact cache alias of common slot0/2 is still the common rule
         # candidate, not a separately tested initializer contribution.
         direct = (raw_legal and seed_id in by_id and

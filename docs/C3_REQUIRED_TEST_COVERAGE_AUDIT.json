@@ -1,0 +1,1300 @@
+{
+  "schema": "v64_c3_required_test_coverage_static_audit_v1",
+  "observed_at": "2026-10-08T17:39:18+08:00",
+  "workspace": "E:/v64c3",
+  "algorithm_producer_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+  "authoritative_objective": "C:/Users/admin/.codex/attachments/1917d637-236f-4883-8674-4c3f5a6ff3e0/goal-objective.md",
+  "objective_sha256": "bcd7a46bd90aa28050737d2fe2ef18dcc0f3b71548ae8867774ac23e35c1fdd9",
+  "evidence_matrix": "docs/C3_COMPLETION_EVIDENCE_MATRIX.md",
+  "evidence_matrix_sha256": "466d22c79cbad09182b5e8e9eb749674aad62b15c0e20f9e5970b10785da7f7b",
+  "audit_scope": "Static source and small-document reads only; no core import, tests, physics, training, DDIM, renderer, export or large NPZ access.",
+  "counts": {
+    "required_bullets": 18,
+    "covered_including_composed": 12,
+    "partial": 6,
+    "fully_missing": 0,
+    "new_tests_written": 6,
+    "new_tests_run": 0
+  },
+  "verdict": "INITIAL_SOURCE_REVIEW_PARTIAL_ASSERTION_COVERAGE; six post-freeze tests subsequently authored and statically reviewed but not imported or executed. Full physical-runner construction remains outside the new QP unit check.",
+  "prior_test_reports": {
+    "c3_plus_inherited_integration": 66,
+    "helper_tests": 34,
+    "identity_bound_receipts_observed": false,
+    "source_count_explanation": "4 C3 modules contain 45 functions; route initializers 10 plus inherited preference diffusion 11 gives a source inventory consistent with 66, not proof of prior argv or execution."
+  },
+  "aliases": {
+    "TT": [
+      "v6_4/tests/test_search_effect_teacher.py",
+      "SearchEffectTeacherTests"
+    ],
+    "TM": [
+      "v6_4/tests/test_search_aware_models.py",
+      "SearchAwareModelTests"
+    ],
+    "TV": [
+      "v6_4/tests/test_closed_loop_warmstart_validation.py",
+      "ClosedLoopValidationTests"
+    ],
+    "TO": [
+      "v6_4/tests/test_search_aware_orchestrator.py",
+      null
+    ],
+    "TI": [
+      "v6_4/tests/test_route_initializers.py",
+      "InitializerTests"
+    ],
+    "TC": [
+      "v6_4/tests/test_continuous_route_optimizer.py",
+      "OptimizerTests"
+    ],
+    "TP": [
+      "v6_4/tests/test_preference_warmstart_pipeline.py",
+      "PipelineTests"
+    ],
+    "TD": [
+      "v6_4/test_preference_teacher_dataset.py",
+      "PreferenceDatasetTests"
+    ],
+    "TB": [
+      "v6_4/tests/test_residual_binding.py",
+      "ResidualBindingTests"
+    ],
+    "TR": [
+      "v6_4/tests/test_residual_binding.py",
+      "ResidualReuseTests"
+    ],
+    "TE": [
+      "v6_4/tests/test_evaluate_planning.py",
+      "PlanningEvaluationTests"
+    ],
+    "TG": [
+      "v6_4/tests/test_a1_geometry_evidence.py",
+      "A1GeometryEvidenceTests"
+    ],
+    "TX": [
+      "v6_4/tests/test_execution_aware_reference.py",
+      "ExecutionAwareReferenceTests"
+    ],
+    "TL": [
+      "v6_4/tests/test_preference_diffusion_warmstart.py",
+      "PreferenceTrainingTests"
+    ],
+    "TH": [
+      "v6_4/visualization/test_report_search_aware_warmstart.py",
+      "ReportAuditTests"
+    ],
+    "TS": [
+      "v6_4/tests/test_residual_execution.py",
+      "ResidualExecutionTests"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "13.01",
+      "requirement": "物理候选去重、A/B视图与actual alias分离",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_physical_dedup_merges_preference_views_and_actual_alias",
+          "line": 72,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_physical_dedup_merges_preference_views_and_actual_alias"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_alias_same_task_config_plan_history_only_and_resume",
+          "line": 116,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_alias_same_task_config_plan_history_only_and_resume"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_report_keeps_denominators_aliases_cost_scope_and_failures",
+          "line": 175,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_report_keeps_denominators_aliases_cost_scope_and_failures"
+        }
+      ],
+      "established": "Same physical fact collapses while retaining preference IDs and actual bindings; execution/report tests separately count logical, unique and alias actuals.",
+      "limitation": "The dedup fixture is a positive merge case; it does not alone establish all real physical keys.",
+      "runtime_evidence_still_required": "Reconcile imported physical keys, preference-label views and logical/unique/alias actuals against original seals.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.02",
+      "requirement": "新外部分组不改历史TaskSpec，镜像母场景不跨组",
+      "static_coverage": "PARTIAL",
+      "tests": [
+        {
+          "alias": "TO",
+          "path": "v6_4/tests/test_search_aware_orchestrator.py",
+          "class_name": null,
+          "function": "test_exact_split_and_mother_isolation",
+          "line": 21,
+          "node_id": "v6_4/tests/test_search_aware_orchestrator.py::test_exact_split_and_mother_isolation"
+        },
+        {
+          "alias": "TP",
+          "path": "v6_4/tests/test_preference_warmstart_pipeline.py",
+          "class_name": "PipelineTests",
+          "function": "test_external_learning_split_drives_task_selection",
+          "line": 29,
+          "node_id": "v6_4/tests/test_preference_warmstart_pipeline.py::PipelineTests::test_external_learning_split_drives_task_selection"
+        },
+        {
+          "alias": "TD",
+          "path": "v6_4/test_preference_teacher_dataset.py",
+          "class_name": "PreferenceDatasetTests",
+          "function": "test_external_SHA_split_and_train_only_discrete_scaler",
+          "line": 79,
+          "node_id": "v6_4/test_preference_teacher_dataset.py::PreferenceDatasetTests::test_external_SHA_split_and_train_only_discrete_scaler"
+        },
+        {
+          "alias": "TL",
+          "path": "v6_4/tests/test_preference_diffusion_warmstart.py",
+          "class_name": "PreferenceTrainingTests",
+          "function": "test_prepare_never_trains_and_preserves_external_split",
+          "line": 171,
+          "node_id": "v6_4/tests/test_preference_diffusion_warmstart.py::PreferenceTrainingTests::test_prepare_never_trains_and_preserves_external_split"
+        }
+      ],
+      "established": "C3 validates exact split totals and mother-source leakage; inherited external-split/scaler tests retain embedded TaskSpec split=test and compare historical source bytes.",
+      "limitation": "No inspected test calls C3 prepare and verifies that its copied historical TaskSpec bytes and original files remain unchanged. The inherited byte assertion exercises the C2 scaler/split path, not C3 preparation.",
+      "runtime_evidence_still_required": "Compare each frozen historical task's bytes/SHA with C2 originals; reconcile 6/2/4 tasks and 3/1/2 mothers.",
+      "gap_ids": [
+        "G01"
+      ],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.03",
+      "requirement": "留一母场景检索确实排除同母场景",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_pairs_prefreeze_and_transfer_excludes_whole_mother",
+          "line": 144,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_pairs_prefreeze_and_transfer_excludes_whole_mother"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_retrieval_uses_train_same_mask_and_stable_ties_zero_allowed",
+          "line": 195,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_retrieval_uses_train_same_mask_and_stable_ties_zero_allowed"
+        }
+      ],
+      "established": "Every frozen transfer proposal excludes its whole query mother from eligible mothers and selected retrieval source; base retrieval test preserves TRAIN/same-mask/stable ties/zero labels.",
+      "limitation": "These are fixed-pair and synthetic-library checks, not proof that every later real pool is correctly bound.",
+      "runtime_evidence_still_required": "Bind every real transfer source to its frozen query mother and TRAIN library.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.04",
+      "requirement": "教师搜索效果与候选本身质量分层，rule-only/NO_PLAN不被伪造为神经成功",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_rule_only_and_common_cache_alias_are_not_effect_labels",
+          "line": 90,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_rule_only_and_common_cache_alias_are_not_effect_labels"
+        },
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_descendant_label_is_original_seed_not_final_z",
+          "line": 97,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_descendant_label_is_original_seed_not_final_z"
+        },
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_raw_rejection_cannot_receive_descendant_supervision",
+          "line": 109,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_raw_rejection_cannot_receive_descendant_supervision"
+        },
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_no_plan_preserves_right_censor_and_no_B_label",
+          "line": 115,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_no_plan_preserves_right_censor_and_no_B_label"
+        },
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_supervision_dedup_retains_route_and_pair_sources",
+          "line": 130,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_supervision_dedup_retains_route_and_pair_sources"
+        }
+      ],
+      "established": "Tests separate route/effect source types, forbid common-rule/cache-alias or raw-rejected credit, retain original initializer z and partner, and keep NO_PLAN/right-censor states. The descendant test's B=None and exactly one A label also checks no B effect credit.",
+      "limitation": "The dedicated NO_PLAN test asserts censor fields, not an explicit empty initializer_effect_labels list; adding that assertion is a useful small strengthening, not a separate unsatisfied software clause.",
+      "runtime_evidence_still_required": "Bind every final positive effect label to its original legal slot, pair/partner and qualifying seed/lineage; do not infer causality.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.05",
+      "requirement": "B标签不把仅有A成功或不足30mm的结果视作B已满足",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_B_never_uses_A_success_or_below_30mm",
+          "line": 81,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_B_never_uses_A_success_or_below_30mm"
+        },
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_descendant_label_is_original_seed_not_final_z",
+          "line": 97,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_descendant_label_is_original_seed_not_final_z"
+        },
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_exact_B_threshold_missing_clearance_and_failed_prefix_excluded",
+          "line": 138,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_exact_B_threshold_missing_clearance_and_failed_prefix_excluded"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_B30_and_near_quality_precede_raw_and_cost",
+          "line": 221,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_B30_and_near_quality_precede_raw_and_cost"
+        }
+      ],
+      "established": "A can qualify at 29.999mm while B cannot; B=None yields no B effect label; exact30mm/missing/failed-prefix and actual B30 priority are covered.",
+      "limitation": "Mock clearances do not establish actual clearance.",
+      "runtime_evidence_still_required": "Inspect B endpoint qualification, original five gates, measured d_support and B label provenance.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.06",
+      "requirement": "两个模型相同条件/schema、TRAIN-only scaler、相同监督范围",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_same_conditions_scalers_mask_and_honest_parameter_counts",
+          "line": 30,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_same_conditions_scalers_mask_and_honest_parameter_counts"
+        },
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_source_balancing_and_paired_draws_are_train_only",
+          "line": 66,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_source_balancing_and_paired_draws_are_train_only"
+        },
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_prepare_has_no_optimizer_no_sampling_and_seals_paired_references",
+          "line": 103,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_prepare_has_no_optimizer_no_sampling_and_seals_paired_references"
+        },
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_pair_wrapper_requires_identical_exposure_reports",
+          "line": 169,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_pair_wrapper_requires_identical_exposure_reports"
+        },
+        {
+          "alias": "TT",
+          "path": "v6_4/tests/test_search_effect_teacher.py",
+          "class_name": "SearchEffectTeacherTests",
+          "function": "test_mock_teacher_dataset_and_resume_do_not_need_VAL_labels",
+          "line": 182,
+          "node_id": "v6_4/tests/test_search_effect_teacher.py::SearchEffectTeacherTests::test_mock_teacher_dataset_and_resume_do_not_need_VAL_labels"
+        },
+        {
+          "alias": "TD",
+          "path": "v6_4/test_preference_teacher_dataset.py",
+          "class_name": "PreferenceDatasetTests",
+          "function": "test_external_SHA_split_and_train_only_discrete_scaler",
+          "line": 79,
+          "node_id": "v6_4/test_preference_teacher_dataset.py::PreferenceDatasetTests::test_external_SHA_split_and_train_only_discrete_scaler"
+        }
+      ],
+      "established": "Shared tensor/mask/architecture scope ignores poisoned VAL data; source-balanced deterministic TRAIN indices, 4000x32 paired draws, TRAIN scaler fitting and unequal exposure refusal are tested.",
+      "limitation": "Tests prepare/mocks do not prove real training executed or identical actual checkpoint inputs.",
+      "runtime_evidence_still_required": "Verify dataset/scaler/schema and paired-draw hashes in both real training reports; verify 4000 updates and 128000 exposures/model.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.07",
+      "requirement": "S source通过原raw检查，不能绕过inactive/范数/锚点/速度",
+      "static_coverage": "COVERED_COMPOSED",
+      "tests": [
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_regression_same_raw_qualifier_rejects_all_illegalities",
+          "line": 155,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_regression_same_raw_qualifier_rejects_all_illegalities"
+        },
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_regression_source_lineage_uses_original_shared_search",
+          "line": 178,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_regression_source_lineage_uses_original_shared_search"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_analytic_reference_rejection_never_reaches_evaluator",
+          "line": 168,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_analytic_reference_rejection_never_reaches_evaluator"
+        },
+        {
+          "alias": "TX",
+          "path": "v6_4/tests/test_execution_aware_reference.py",
+          "class_name": "ExecutionAwareReferenceTests",
+          "function": "test_analytic_derivatives_and_unchanged_speed_gate_with_conservative_bounds",
+          "line": 111,
+          "node_id": "v6_4/tests/test_execution_aware_reference.py::ExecutionAwareReferenceTests::test_analytic_derivatives_and_unchanged_speed_gate_with_conservative_bounds"
+        },
+        {
+          "alias": "TX",
+          "path": "v6_4/tests/test_execution_aware_reference.py",
+          "class_name": "ExecutionAwareReferenceTests",
+          "function": "test_protection_and_unchanged_two_dimensional_norm_limit",
+          "line": 139,
+          "node_id": "v6_4/tests/test_execution_aware_reference.py::ExecutionAwareReferenceTests::test_protection_and_unchanged_two_dimensional_norm_limit"
+        }
+      ],
+      "established": "Regression source is sent through raw_seed_plan: inactive/nonfinite/disk failures precede precheck and generic failed analytic precheck rejects. Inherited original-reference tests independently exercise speed rejection and protected anchor/cutoff/norm behavior.",
+      "limitation": "C3 regression test mocks precheck failed rather than producing a real anchor/speed violation. Coverage is compositional: same S wrapper plus independently tested original checker. It should not be described as a direct regression-speed integration test.",
+      "runtime_evidence_still_required": "Check real S source tags, original .24m/s precheck settings and raw/reference diagnostics. Static source shows .24 is passed unchanged.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.08",
+      "requirement": "12维容器与最多4维搜索mask一致",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_active_interval_nearest_legal_predecessor_and_disabled_key",
+          "line": 48,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_active_interval_nearest_legal_predecessor_and_disabled_key"
+        },
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_map_four_coordinates_inactive_exact_zero_separate_disks",
+          "line": 57,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_map_four_coordinates_inactive_exact_zero_separate_disks"
+        },
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_same_conditions_scalers_mask_and_honest_parameter_counts",
+          "line": 30,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_same_conditions_scalers_mask_and_honest_parameter_counts"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_illegal_raw_seeds_consume_slots_without_nominal_calls_or_repair",
+          "line": 109,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_illegal_raw_seeds_consume_slots_without_nominal_calls_or_repair"
+        }
+      ],
+      "established": "Legal predecessor/key mapping has at most two intervals, four coordinates in a 12-D container; inactive exact zero, per-interval disk norms and wrong-size raw rejection are checked.",
+      "limitation": "The concrete fixture has two intervals; inherited active-interval test also covers one/zero applicable intervals.",
+      "runtime_evidence_still_required": "Check all real frozen/generated masks and raw arrays.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.09",
+      "requirement": "D采样次数固定，非法raw不修复、不补抽",
+      "static_coverage": "PARTIAL",
+      "tests": [
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_sampler_preserves_invalid_raw_never_resamples_or_projects",
+          "line": 123,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_sampler_preserves_invalid_raw_never_resamples_or_projects"
+        },
+        {
+          "alias": "TO",
+          "path": "v6_4/tests/test_search_aware_orchestrator.py",
+          "class_name": null,
+          "function": "test_new_stage_budgets_and_fixed_ddim",
+          "line": 42,
+          "node_id": "v6_4/tests/test_search_aware_orchestrator.py::test_new_stage_budgets_and_fixed_ddim"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_illegal_raw_seeds_consume_slots_without_nominal_calls_or_repair",
+          "line": 109,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_illegal_raw_seeds_consume_slots_without_nominal_calls_or_repair"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_legal_zero_duplicates_cache_without_regeneration",
+          "line": 145,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_legal_zero_duplicates_cache_without_regeneration"
+        },
+        {
+          "alias": "TL",
+          "path": "v6_4/tests/test_preference_diffusion_warmstart.py",
+          "class_name": "PreferenceTrainingTests",
+          "function": "test_noise_exactly_two_fixed_task_bound_draws",
+          "line": 155,
+          "node_id": "v6_4/tests/test_preference_diffusion_warmstart.py::PreferenceTrainingTests::test_noise_exactly_two_fixed_task_bound_draws"
+        }
+      ],
+      "established": "One C3 sample invokes one mocked DDIM, preserves invalid raw and never repairs/resamples; invalid slots consume budget; C2 wrapper explicitly has two task-bound noise draws; C3 global sample caps are asserted.",
+      "limitation": "No inspected test exercises C3 SearchAwareSampler.initializer_proposals plus C3 persisted _initializers/resume to assert exactly slot1/3 once and zero extra generation on resume or raw rejection.",
+      "runtime_evidence_still_required": "Verify formal D generation ledger (VAL8, TEST8, total<=32) and two prefrozen proposals/stream, including unsupported/illegal cases.",
+      "gap_ids": [
+        "G02"
+      ],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.10",
+      "requirement": "两个checkpoint白名单与闭环VAL排序固定",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TM",
+          "path": "v6_4/tests/test_search_aware_models.py",
+          "class_name": "SearchAwareModelTests",
+          "function": "test_fixed_seeds_and_only_two_predeclared_checkpoints",
+          "line": 89,
+          "node_id": "v6_4/tests/test_search_aware_models.py::SearchAwareModelTests::test_fixed_seeds_and_only_two_predeclared_checkpoints"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_whitelist_and_complete_phase_before_any_actual",
+          "line": 103,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_whitelist_and_complete_phase_before_any_actual"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_B30_and_near_quality_precede_raw_and_cost",
+          "line": 221,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_B30_and_near_quality_precede_raw_and_cost"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_quality_capability_precedes_cheaper_failure",
+          "line": 194,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_quality_capability_precedes_cheaper_failure"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_raw_illegal_precedes_first_hit_and_cost",
+          "line": 213,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_raw_illegal_precedes_first_hit_and_cost"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_first_hit_and_workload_precede_update_tie",
+          "line": 204,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_first_hit_and_workload_precede_update_tie"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_score_ties_select_earlier_update_no_test_reads",
+          "line": 182,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_score_ties_select_earlier_update_no_test_reads"
+        }
+      ],
+      "established": "250/4000 whitelist, complete-phase gate and capability/B30/near/raw/first-hit/work/earlier-update order have direct positive/negative tests.",
+      "limitation": "Static test constants do not establish which real weights were selected.",
+      "runtime_evidence_still_required": "Recompute real D/S choices from sealed VAL only, with exact reference sets and cost/first-hit ordering.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.11",
+      "requirement": "VAL选择不读取TEST文件或字段",
+      "static_coverage": "PARTIAL",
+      "tests": [
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_score_ties_select_earlier_update_no_test_reads",
+          "line": 182,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_score_ties_select_earlier_update_no_test_reads"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_test_phase_cannot_select_checkpoint",
+          "line": 263,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_test_phase_cannot_select_checkpoint"
+        },
+        {
+          "alias": "TO",
+          "path": "v6_4/tests/test_search_aware_orchestrator.py",
+          "class_name": null,
+          "function": "test_test_search_requires_freeze_before_initialization",
+          "line": 57,
+          "node_id": "v6_4/tests/test_search_aware_orchestrator.py::test_test_search_requires_freeze_before_initialization"
+        }
+      ],
+      "established": "Scorer refuses phase=TEST; TEST search requires model freeze. Existing tie test leaves malformed root/test.json and asserts test_read=False.",
+      "limitation": "Malformed root/test.json is outside actual test_search/frozen_test locations. No inspected test enforces file-read scope or poisons TEST-derived fields; a literal test_read=False is not read instrumentation.",
+      "runtime_evidence_still_required": "Inspect real stage chronology/freeze, scorer inputs and exact source/config identity. Runtime chronology is distinct from the missing adversarial software test.",
+      "gap_ids": [
+        "G03"
+      ],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.12",
+      "requirement": "R8封存后不受R9—R12影响",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_r8_is_r12_prefix_and_sealed_before_ninth_evaluation",
+          "line": 81,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_r8_is_r12_prefix_and_sealed_before_ninth_evaluation"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_resume_detects_sealed_prefix_tampering",
+          "line": 234,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_resume_detects_sealed_prefix_tampering"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_prefix_digest_and_request_time_are_not_reconstructed_from_r12",
+          "line": 317,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_prefix_digest_and_request_time_are_not_reconstructed_from_r12"
+        }
+      ],
+      "established": "Adversarial late candidates change R12 winner while R8 prefix bytes/selection remain fixed before ninth call; prefix tamper and retrospective cost reconstruction are rejected.",
+      "limitation": "A mock's sealed prefix is not the real R8 receipt.",
+      "runtime_evidence_still_required": "Reconcile real R8 seals against first-eight registry bytes and sequence; retain actual/predicted and R8/R12 timing scope.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.13",
+      "requirement": "状态/控制器缓存隔离、同一候选内部热启动保留",
+      "static_coverage": "PARTIAL",
+      "tests": [
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_candidate_calls_create_distinct_provider_and_config_objects",
+          "line": 245,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_candidate_calls_create_distinct_provider_and_config_objects"
+        },
+        {
+          "alias": "TO",
+          "path": "v6_4/tests/test_search_aware_orchestrator.py",
+          "class_name": null,
+          "function": "test_stream_directory_isolation",
+          "line": 49,
+          "node_id": "v6_4/tests/test_search_aware_orchestrator.py::test_stream_directory_isolation"
+        },
+        {
+          "alias": "TP",
+          "path": "v6_4/tests/test_preference_warmstart_pipeline.py",
+          "class_name": "PipelineTests",
+          "function": "test_streams_share_configuration_bytes_but_no_cache",
+          "line": 37,
+          "node_id": "v6_4/tests/test_preference_warmstart_pipeline.py::PipelineTests::test_streams_share_configuration_bytes_but_no_cache"
+        },
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_exact_cache_hits_no_new_calls_and_proposal_cap",
+          "line": 153,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_exact_cache_hits_no_new_calls_and_proposal_cap"
+        }
+      ],
+      "established": "Distinct candidate provider/config instances and separate stream directories/cache files are tested; exact stream-local cache works.",
+      "limitation": "The candidate test aborts at runner entry, so it does not create/observe MjData/controller/QP history. No inspected test verifies retained previous_velocity/constraint-dual between two solves within one candidate.",
+      "runtime_evidence_still_required": "Source path shows fresh runner/MjData/QP and retained in-run velocity/dual history, but final source/config and runtime isolation identities still need verification.",
+      "gap_ids": [
+        "G04"
+      ],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.14",
+      "requirement": "工具/管线错误、真实无方案、预演拒绝、actual失败分别记录",
+      "static_coverage": "PARTIAL",
+      "tests": [
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_tool_error_is_saved_separately_and_never_retried",
+          "line": 143,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_tool_error_is_saved_separately_and_never_retried"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_late_quality_tool_failure_retains_consumed_actual_count",
+          "line": 152,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_late_quality_tool_failure_retains_consumed_actual_count"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_refusal_precheck_and_actual_failure_are_distinct",
+          "line": 162,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_refusal_precheck_and_actual_failure_are_distinct"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_no_plan_keeps_zero_steps_and_no_runner_call",
+          "line": 136,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_no_plan_keeps_zero_steps_and_no_runner_call"
+        },
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_tool_error_is_retained_distinct_from_research_negative",
+          "line": 173,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_tool_error_is_retained_distinct_from_research_negative"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_stream_nominal_failures_are_counted_and_unbound_registry_is_rejected",
+          "line": 298,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_stream_nominal_failures_are_counted_and_unbound_registry_is_rejected"
+        }
+      ],
+      "established": "Tests distinguish tool error, NO_PLAN, reference precheck, actual failure, positive-step nominal refusal and late quality-tool failure without retry.",
+      "limitation": "No inspected focused test constructs a private-preview rejection receipt and checks its original failure reason/stage is retained separately from NO_PLAN and actual failure. Generic EXECUTION_REFUSED does not prove preview provenance survived.",
+      "runtime_evidence_still_required": "Read original structured preview/action-guard failure receipts and reconcile terminal categories, consumed work and no-retry status.",
+      "gap_ids": [
+        "G05"
+      ],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.15",
+      "requirement": "消费非有限命令必须失败，未消费拒绝行不污染已有前缀",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_original_consumed_command_check_rejects_nan_but_ignores_refused_row",
+          "line": 268,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_original_consumed_command_check_rejects_nan_but_ignores_refused_row"
+        },
+        {
+          "alias": "TE",
+          "path": "v6_4/tests/test_evaluate_planning.py",
+          "class_name": "PlanningEvaluationTests",
+          "function": "test_consumed_command_nan_short_and_wrong_shape_still_fail",
+          "line": 52,
+          "node_id": "v6_4/tests/test_evaluate_planning.py::PlanningEvaluationTests::test_consumed_command_nan_short_and_wrong_shape_still_fail"
+        },
+        {
+          "alias": "TE",
+          "path": "v6_4/tests/test_evaluate_planning.py",
+          "class_name": "PlanningEvaluationTests",
+          "function": "test_unconsumed_refusal_command_tail_does_not_invalidate_consumed_ramp",
+          "line": 41,
+          "node_id": "v6_4/tests/test_evaluate_planning.py::PlanningEvaluationTests::test_unconsumed_refusal_command_tail_does_not_invalidate_consumed_ramp"
+        },
+        {
+          "alias": "TB",
+          "path": "v6_4/tests/test_residual_binding.py",
+          "class_name": "ResidualBindingTests",
+          "function": "test_nonfinite_consumed_or_diagnostic_logs_are_rejected",
+          "line": 136,
+          "node_id": "v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_nonfinite_consumed_or_diagnostic_logs_are_rejected"
+        },
+        {
+          "alias": "TB",
+          "path": "v6_4/tests/test_residual_binding.py",
+          "class_name": "ResidualBindingTests",
+          "function": "test_rejected_unconsumed_tail_is_excluded_from_QP_binding",
+          "line": 177,
+          "node_id": "v6_4/tests/test_residual_binding.py::ResidualBindingTests::test_rejected_unconsumed_tail_is_excluded_from_QP_binding"
+        },
+        {
+          "alias": "TS",
+          "path": "v6_4/tests/test_residual_execution.py",
+          "class_name": "ResidualExecutionTests",
+          "function": "test_missing_last_boundary_uses_saved_actual_state_and_preserves_source",
+          "line": 12,
+          "node_id": "v6_4/tests/test_residual_execution.py::ResidualExecutionTests::test_missing_last_boundary_uses_saved_actual_state_and_preserves_source"
+        }
+      ],
+      "established": "Consumed nonfinite/short/wrong-shape commands fail; unconsumed refused NaN tail is excluded from command and QP-input binding; consumed-prefix view preserves source bytes and adds no physics.",
+      "limitation": "Small saved-array tests exercise the checker, not final actual gate receipts.",
+      "runtime_evidence_still_required": "Inspect original independent reference/execution bindings and consumed length for each unique actual.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.16",
+      "requirement": "当前安全几何范围不升级，缺测NOT_RUN/null",
+      "static_coverage": "COVERED_COMPOSED",
+      "tests": [
+        {
+          "alias": "TG",
+          "path": "v6_4/tests/test_a1_geometry_evidence.py",
+          "class_name": "A1GeometryEvidenceTests",
+          "function": "test_geometry_survives_later_consumed_command_binding_failure",
+          "line": 33,
+          "node_id": "v6_4/tests/test_a1_geometry_evidence.py::A1GeometryEvidenceTests::test_geometry_survives_later_consumed_command_binding_failure"
+        },
+        {
+          "alias": "TG",
+          "path": "v6_4/tests/test_a1_geometry_evidence.py",
+          "class_name": "A1GeometryEvidenceTests",
+          "function": "test_whole_body_negative_queries_count_once_without_more_native_queries",
+          "line": 59,
+          "node_id": "v6_4/tests/test_a1_geometry_evidence.py::A1GeometryEvidenceTests::test_whole_body_negative_queries_count_once_without_more_native_queries"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_missing_reference_is_na_and_failure_cannot_be_near",
+          "line": 159,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_missing_reference_is_na_and_failure_cannot_be_near"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_full_method_or_r12_missing_quality_is_na_and_withholds_benefit",
+          "line": 235,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_full_method_or_r12_missing_quality_is_na_and_withholds_benefit"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_first_miss_right_censored_never_zero_or_slot9",
+          "line": 168,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_first_miss_right_censored_never_zero_or_slot9"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_missing_reference_quality_is_na_and_shared_reference_set",
+          "line": 237,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_missing_reference_quality_is_na_and_shared_reference_set"
+        }
+      ],
+      "established": "Original geometry tests retain pair policy/config, count queries without adding native queries and explicitly keep continuous_time_certified=False and limited whole-body scope. Reporter checks null geometry gate/missing quality, NOT_RUN/censor semantics and withholding benefit.",
+      "limitation": "C3 missing-quality tests alone do not test geometry scope. Scope coverage comes from inherited geometry contracts plus frozen-source audit; no mock certifies physical geometry or continuous time.",
+      "runtime_evidence_still_required": "Verify unchanged source/config/pairs, real native2ms related-pair saved-state evidence, five-gate nulls and exact scope language.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.17",
+      "requirement": "别名条件、预算恢复与完整日志终态",
+      "static_coverage": "PARTIAL",
+      "tests": [
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_alias_same_task_config_plan_history_only_and_resume",
+          "line": 116,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_alias_same_task_config_plan_history_only_and_resume"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_checkpoint_and_registry_bytes_are_bound",
+          "line": 111,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_checkpoint_and_registry_bytes_are_bound"
+        },
+        {
+          "alias": "TO",
+          "path": "v6_4/tests/test_search_aware_orchestrator.py",
+          "class_name": null,
+          "function": "test_budget_resume_does_not_grant_more_work",
+          "line": 29,
+          "node_id": "v6_4/tests/test_search_aware_orchestrator.py::test_budget_resume_does_not_grant_more_work"
+        },
+        {
+          "alias": "TC",
+          "path": "v6_4/tests/test_continuous_route_optimizer.py",
+          "class_name": "OptimizerTests",
+          "function": "test_resume_verifies_source_config_and_does_not_evaluate_again",
+          "line": 164,
+          "node_id": "v6_4/tests/test_continuous_route_optimizer.py::OptimizerTests::test_resume_verifies_source_config_and_does_not_evaluate_again"
+        },
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_normal_early_stop_and_tool_errors_have_distinct_prefix_receipts",
+          "line": 214,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_normal_early_stop_and_tool_errors_have_distinct_prefix_receipts"
+        },
+        {
+          "alias": "TR",
+          "path": "v6_4/tests/test_residual_binding.py",
+          "class_name": "ResidualReuseTests",
+          "function": "test_valid_reuse_does_not_execute_and_wrong_slot_or_plan_hash_refuses",
+          "line": 212,
+          "node_id": "v6_4/tests/test_residual_binding.py::ResidualReuseTests::test_valid_reuse_does_not_execute_and_wrong_slot_or_plan_hash_refuses"
+        },
+        {
+          "alias": "TR",
+          "path": "v6_4/tests/test_residual_binding.py",
+          "class_name": "ResidualReuseTests",
+          "function": "test_changed_or_unprotected_execution_config_refuses_before_actual",
+          "line": 222,
+          "node_id": "v6_4/tests/test_residual_binding.py::ResidualReuseTests::test_changed_or_unprotected_execution_config_refuses_before_actual"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_missing_seal_or_formal_process_receipt_keeps_report_incomplete",
+          "line": 278,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_missing_seal_or_formal_process_receipt_keeps_report_incomplete"
+        }
+      ],
+      "established": "Same-task/config/plan/history aliases and cross-task nonalias, byte seals, budget idempotence, complete-stage reuse, early stop versus tool-error prefixes and missing receipt incompleteness are directly checked.",
+      "limitation": "No inspected test exercises C3 unfinished initializer/candidate/actual paths or selection-without-original-timer/failed-outer-worker resume with strict zero rerun and unchanged original journal bytes/costs. Reporter rejection of a missing receipt is not executor no-retry coverage.",
+      "runtime_evidence_still_required": "Reconcile all actual/stream terminal records, original started/end times, outer receipts, logs and reservation-versus-consumption counts.",
+      "gap_ids": [
+        "G06"
+      ],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "13.18",
+      "requirement": "成本包含非法槽与NO_PLAN而不奖励提前失败",
+      "static_coverage": "COVERED",
+      "tests": [
+        {
+          "alias": "TI",
+          "path": "v6_4/tests/test_route_initializers.py",
+          "class_name": "InitializerTests",
+          "function": "test_illegal_raw_seeds_consume_slots_without_nominal_calls_or_repair",
+          "line": 109,
+          "node_id": "v6_4/tests/test_route_initializers.py::InitializerTests::test_illegal_raw_seeds_consume_slots_without_nominal_calls_or_repair"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_no_plan_keeps_zero_steps_and_no_runner_call",
+          "line": 136,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_no_plan_keeps_zero_steps_and_no_runner_call"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_quality_capability_precedes_cheaper_failure",
+          "line": 194,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_quality_capability_precedes_cheaper_failure"
+        },
+        {
+          "alias": "TV",
+          "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+          "class_name": "ClosedLoopValidationTests",
+          "function": "test_missing_formal_workload_cannot_win_by_omission",
+          "line": 255,
+          "node_id": "v6_4/tests/test_closed_loop_warmstart_validation.py::ClosedLoopValidationTests::test_missing_formal_workload_cannot_win_by_omission"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_report_keeps_denominators_aliases_cost_scope_and_failures",
+          "line": 175,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_report_keeps_denominators_aliases_cost_scope_and_failures"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_more_illegal_raw_cannot_win_on_saved_physics",
+          "line": 206,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_more_illegal_raw_cannot_win_on_saved_physics"
+        },
+        {
+          "alias": "TH",
+          "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+          "class_name": "ReportAuditTests",
+          "function": "test_full_comparator_missing_quality_cannot_hide_capability_loss_or_win",
+          "line": 217,
+          "node_id": "v6_4/visualization/test_report_search_aware_warmstart.py::ReportAuditTests::test_full_comparator_missing_quality_cannot_hide_capability_loss_or_win"
+        }
+      ],
+      "established": "Illegal slots consume evaluation budget despite zero rollout work; NO_PLAN remains a zero-step logical slot; cheap failed/no-quality methods cannot win and extra raw rejection confounds a cost benefit claim.",
+      "limitation": "Missing-formal-workload test tampers after sealing: it directly proves seal rejection, not the pre-seal missing-cost validator branch. No mock validates measured wall-clock coverage.",
+      "runtime_evidence_still_required": "Verify original request/outer timers include setup, illegal/NO_PLAN requests and sealing; A/B time once; offline, preview, replay, geometry and aliases separately.",
+      "gap_ids": [],
+      "execution_verdict": "NOT_RUN_BY_THIS_AUDIT"
+    }
+  ],
+  "focused_new_test_proposals": [
+    {
+      "id": "G01",
+      "requirement_ids": [
+        "13.02"
+      ],
+      "suggested_test": "test_c3_prepare_preserves_historical_TaskSpec_bytes_and_external_roles",
+      "meaningful_checks": [
+        "Use temporary copies of six existing small historical TaskSpec JSONs; record source and copied bytes before/after C3 prepare.",
+        "Mock git/source identity and new-scene/task/geometry seams; block mj_step, mj_forward, mj_geomDistance, model construction, training, DDIM and subprocess dispatch.",
+        "Assert external roles are TRAIN without rewriting embedded historical split or source/copy hashes; mirrored source IDs remain in one group; retain a mocked failed precheck without reseeding."
+      ],
+      "why_not_redundant": "C2 scaler immutability does not execute C3's file-copy/preparation path."
+    },
+    {
+      "id": "G02",
+      "requirement_ids": [
+        "13.09"
+      ],
+      "suggested_test": "test_c3_two_proposals_raw_rejection_and_retained_initializers_never_regenerate",
+      "meaningful_checks": [
+        "Mock SearchAwareSampler.sample and exercise real initializer_proposals: exactly A/v1 slot1 and B/v2 slot3; same frozen noise across checkpoint updates; no extra calls for invalid or unsupported raw.",
+        "Exercise _initializers with temporary dataset/checkpoint bytes and mocked sampler/loaders; assert reservation is two samples, persisted illegal raw is unchanged and second call loads retained proposals with zero sampler calls.",
+        "Block the real sample_ddim/AdamW.step/physics/runner entry points throughout."
+      ],
+      "why_not_redundant": "Existing tests exercise a single C3 sample and a C2 two-output wrapper, but not C3 paired wrapper plus persistence/resume."
+    },
+    {
+      "id": "G03",
+      "requirement_ids": [
+        "13.11"
+      ],
+      "suggested_test": "test_val_scoring_forbids_real_TEST_paths_and_ignores_TEST_fields",
+      "meaningful_checks": [
+        "Build the existing small VAL fixture and actual frozen_test/test_search trees with malformed or poison values.",
+        "Guard every scorer read/hash path against those TEST roots while allowing its explicit sealed VAL/checkpoint/config inputs; assert score and selected updates remain identical.",
+        "Poison extraneous TEST-derived fields in the synthetic VAL input schema, reseal through the fixture helper, and confirm they cannot affect ordering; keep phase=TEST refusal."
+      ],
+      "why_not_redundant": "A malformed root/test.json and reported test_read=False do not observe read scope or field influence."
+    },
+    {
+      "id": "G04",
+      "requirement_ids": [
+        "13.13"
+      ],
+      "suggested_test": "test_same_candidate_retains_qp_history_and_next_candidate_starts_cold",
+      "meaningful_checks": [
+        "Reuse a tiny fixed-QP fixture or fully mocked solver/validator and clearance matrices; no MuJoCo state, integration, native geometry or actual optimization workload.",
+        "Perform two mocked solves on the same QP instance; assert second initial velocity and initial_dual equal the first accepted selected command and returned dual keyed by original constraints.",
+        "Create a new candidate/controller fixture and assert velocity/dual/provider-integral history starts cold; do not reset between the first candidate's two calls."
+      ],
+      "why_not_redundant": "The existing evaluator test stops before runner/controller construction, so it cannot detect per-tick hot-state clearing or cross-candidate history leakage."
+    },
+    {
+      "id": "G05",
+      "requirement_ids": [
+        "13.14"
+      ],
+      "suggested_test": "test_preview_refusal_keeps_original_stage_reason_and_is_not_NO_PLAN_or_actual_failure",
+      "meaningful_checks": [
+        "Provide a tiny saved trace plus structured original preview/action-guard refusal JSON to the nominal evaluator with runner, fresh_quality, trace checks and all physics/geometry fully mocked.",
+        "Assert nominal refusal retains failure stage/reason and work already consumed; no actual started; absence of a structured receipt is TOOL_ERROR rather than a fabricated scientific failure.",
+        "Compare those records with existing NO_PLAN zero-step and actual-failure fixtures without introducing a new scientific success category."
+      ],
+      "why_not_redundant": "Generic EXECUTION_REFUSED/report status tests do not prove the source preview refusal receipt survives the candidate pipeline."
+    },
+    {
+      "id": "G06",
+      "requirement_ids": [
+        "13.17"
+      ],
+      "suggested_test": "test_incomplete_consumed_units_and_missing_original_timers_never_retry",
+      "meaningful_checks": [
+        "Construct temporary started-only initializer/candidate/actual directories; monkeypatch sampler/evaluator/executor/subprocess.run to fail if invoked; assert the documented technical-incomplete errors retain original bytes.",
+        "Construct selection.json without planning_cost.json and planning_cost.json without outer_process.json; assert no replacement timing or work is manufactured.",
+        "Construct a nonzero outer_process exit receipt and assert resume refuses without subprocess dispatch; successful retained receipts preserve original logical budget, journal/status and costs."
+      ],
+      "why_not_redundant": "Budget reservations, completed reuse and reporter missing-receipt detection do not exercise incomplete executor recovery."
+    }
+  ],
+  "inspected_test_sources": [
+    {
+      "path": "v6_4/tests/test_search_effect_teacher.py",
+      "sha256": "b28fff52010c88b5d793871b5b6b6268e2b8a7548f064865115359f33645f467",
+      "test_function_count": 13
+    },
+    {
+      "path": "v6_4/tests/test_search_aware_models.py",
+      "sha256": "8f5572fd377d30c6e739fd0ca2c1fff334e456a3df86340a14ea6c524a90796b",
+      "test_function_count": 9
+    },
+    {
+      "path": "v6_4/tests/test_closed_loop_warmstart_validation.py",
+      "sha256": "302f6f9110be25c430ef23f775d3a75d1da61678e37fc1257bc091b12a0e3600",
+      "test_function_count": 18
+    },
+    {
+      "path": "v6_4/tests/test_search_aware_orchestrator.py",
+      "sha256": "93c98a8b9310a7c493d7fbbc962a84e8017fb7ff2be8f3250ee4c8c2411e8f4b",
+      "test_function_count": 5
+    },
+    {
+      "path": "v6_4/tests/test_route_initializers.py",
+      "sha256": "f51a60c11732ce2e6443782861356ed14e2af8ba851dfad8f4f832b8f8ee6e41",
+      "test_function_count": 10
+    },
+    {
+      "path": "v6_4/tests/test_preference_diffusion_warmstart.py",
+      "sha256": "72681e666789ae3b16f94e18aecc395f18c968058ba64e038c1b164b304f364e",
+      "test_function_count": 11
+    },
+    {
+      "path": "v6_4/tests/test_continuous_route_optimizer.py",
+      "sha256": "319ebb1ff74f33cf88111300dfde16ac181f41bbee4e30455ae7e141802ce76c",
+      "test_function_count": 23
+    },
+    {
+      "path": "v6_4/tests/test_preference_warmstart_pipeline.py",
+      "sha256": "ac5df48e3061c8c6e98eedd266dbcb6b3ec3704655ef18288dca454e7a9fbfee",
+      "test_function_count": 5
+    },
+    {
+      "path": "v6_4/tests/test_evaluate_planning.py",
+      "sha256": "aa8e5e210cf12ed521a965b8414af33725d4eb3c097f79b5517d45f63b1ed6fa",
+      "test_function_count": 5
+    },
+    {
+      "path": "v6_4/tests/test_residual_binding.py",
+      "sha256": "98bfb12e0ae99550e0d2acb5f3804d1aaacd912eaef90f19815329bc4e2c155f",
+      "test_function_count": 10
+    },
+    {
+      "path": "v6_4/tests/test_a1_geometry_evidence.py",
+      "sha256": "e2c4dcb7b8ac9f0bc8ab0cfcf3506e595c0fdabb3839d87530853b1a8ca42aec",
+      "test_function_count": 4
+    },
+    {
+      "path": "v6_4/tests/test_execution_aware_reference.py",
+      "sha256": "7c0d148b6509adf4cc249d46ba9af352039dada9966ca91bdc2847d820012add",
+      "test_function_count": 6
+    },
+    {
+      "path": "v6_4/tests/test_residual_execution.py",
+      "sha256": "ba4d94b54f082d7b69e2d3a57f99e3452bcf09a92d02897ba939f9108a5e7b51",
+      "test_function_count": 3
+    },
+    {
+      "path": "v6_4/test_preference_teacher_dataset.py",
+      "sha256": "31ef0bbce07efd366acd0d09b45ba08e9362c498a3618cb29d3668f8d1ed3e30",
+      "test_function_count": 5
+    },
+    {
+      "path": "v6_4/visualization/test_report_search_aware_warmstart.py",
+      "sha256": "98ee954eda2f0691d4a4e1b6c89a1ecfe45baa0ed98ba03f5e2d1a0218f2db30",
+      "test_function_count": 12
+    },
+    {
+      "path": "v6_4/visualization/test_search_aware_warmstart_media.py",
+      "sha256": "0ca1f97887dc808dd15fb69c58a26c004d76ce14394d4e3cc5d6f31bea145430",
+      "test_function_count": 7
+    },
+    {
+      "path": "v6_4/visualization/test_export_search_aware_release.py",
+      "sha256": "00e8a55885872acfad517f0f25bd0c324a39eddcefcc1a2c2a5c0a3a025eb2d5",
+      "test_function_count": 15
+    },
+    {
+      "path": "v6_4/tests/test_search_aware_additional_contracts.py",
+      "sha256": "7469570742e50dce0ae0d5631264008ef1bece1275bd7c3ae664842330e868c3",
+      "test_function_count": 6,
+      "post_freeze_verification": true
+    }
+  ],
+  "proposed_final_mock_suite": {
+    "execute_now": false,
+    "safe_in_isolation_after_formal_timing": true,
+    "safe_to_schedule_during_formal_timing": false,
+    "expected_test_functions": 162,
+    "argv": [
+      "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "--import-mode=importlib",
+      "-p",
+      "no:cacheprovider",
+      "-q",
+      "v6_4/tests/test_search_effect_teacher.py",
+      "v6_4/tests/test_search_aware_models.py",
+      "v6_4/tests/test_closed_loop_warmstart_validation.py",
+      "v6_4/tests/test_search_aware_orchestrator.py",
+      "v6_4/tests/test_route_initializers.py",
+      "v6_4/tests/test_preference_diffusion_warmstart.py",
+      "v6_4/tests/test_continuous_route_optimizer.py",
+      "v6_4/tests/test_preference_warmstart_pipeline.py",
+      "v6_4/tests/test_evaluate_planning.py",
+      "v6_4/tests/test_residual_binding.py",
+      "v6_4/tests/test_a1_geometry_evidence.py",
+      "v6_4/tests/test_execution_aware_reference.py",
+      "v6_4/tests/test_residual_execution.py",
+      "v6_4/visualization/test_report_search_aware_warmstart.py",
+      "v6_4/visualization/test_search_aware_warmstart_media.py",
+      "v6_4/visualization/test_export_search_aware_release.py",
+      "v6_4/tests/test_search_aware_additional_contracts.py"
+    ],
+    "required_environment": {
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMBA_NUM_THREADS": "1",
+      "CUDA_VISIBLE_DEVICES": ""
+    },
+    "cwd": "E:/v64c3",
+    "rationale": "Explicit modules use small arrays/mock evaluators or synthetic saved evidence. No real DDIM/training/physics/render/encoding/export is requested. Torch import and tensor/source-hash work still impose load; run only after all formal VAL/TEST latency measurement. Six subsequently authored post-freeze verification tests are included in the updated argv; these have not been imported, compiled or run.",
+    "excluded_source": "v6_4/test_preference_teacher_dataset.py",
+    "exclusion_reason": "Its setUpClass calls import_c1/PortableEvidence, which hashes bound historical evidence including actual trace paths; do not access large archived bytes for this focused suite. Its inherited assertions are cited statically only.",
+    "receipt_requirements": [
+      "Exact argv, environment and interpreter identity",
+      "UTC start/end and actual exit code",
+      "HEAD plus per-test-source SHA256 from this inventory, and final implementation/helper source identities",
+      "Collected/passed/skipped/failed counts and retained output",
+      "Separate C3/inherited/helper identities; no historical hash/tolerance update",
+      "No claim that the proposed suite closes the six currently missing assertions unless focused tests are subsequently implemented and verified"
+    ],
+    "proposed_tests_not_in_suite": false
+  },
+  "runtime_evidence_scope": "All real teacher/search/training/checkpoint/VAL/TEST/actual, timing, five-gate, alias, terminal-log and publication evidence is still assessed by its own final audit; this audit adds no experiment evidence.",
+  "verification_additions": {
+    "path": "v6_4/tests/test_search_aware_additional_contracts.py",
+    "sha256": "7469570742e50dce0ae0d5631264008ef1bece1275bd7c3ae664842330e868c3",
+    "post_freeze_role": "Additional verification only; absent from the existing 430-file experiment source_identity hash keys. Existing producer/source/config/test bytes were not modified.",
+    "imported": false,
+    "executed": false,
+    "syntax_compilation_executed": false,
+    "tests": [
+      {
+        "gap": "G01",
+        "function": "test_c3_prepare_preserves_historical_TaskSpec_bytes_and_external_roles",
+        "line": 152
+      },
+      {
+        "gap": "G02",
+        "function": "test_c3_two_proposals_raw_rejection_and_retained_initializers_never_regenerate",
+        "line": 236
+      },
+      {
+        "gap": "G03",
+        "function": "test_val_scoring_forbids_real_TEST_paths_and_ignores_TEST_fields",
+        "line": 287
+      },
+      {
+        "gap": "G04",
+        "function": "test_same_candidate_retains_qp_history_and_explicit_reset_clears_it",
+        "line": 317
+      },
+      {
+        "gap": "G05",
+        "function": "test_preview_refusal_keeps_original_stage_reason_and_is_not_NO_PLAN_or_actual_failure",
+        "line": 351
+      },
+      {
+        "gap": "G06",
+        "function": "test_incomplete_consumed_units_and_missing_original_timers_never_retry",
+        "line": 412
+      }
+    ],
+    "boundary": "Autouse guards block MuJoCo model/data construction, step/forward/distance, real sample_ddim, AdamW.step and subprocess.run. Synthetic NPZ is only10x67 torque values. QP solve uses mocked numerical solver and validator; real velocity/dual history plumbing and reset are exercised. Full runner construction/per-candidate MjData/controller/integral history still requires unchanged-source/runtime evidence.",
+    "scientific_budget_consumed": 0,
+    "pass_claim": false
+  }
+}
+
