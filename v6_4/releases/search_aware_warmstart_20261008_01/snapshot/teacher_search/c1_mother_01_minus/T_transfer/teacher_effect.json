@@ -1,0 +1,374 @@
+{
+  "seed_pair_id": "ff0c89cbc48f468051857e9b6c64f378b0b64104234de7ec87eb59f426ceae5e",
+  "task_id": "c1_mother_01_minus",
+  "combination": "T_transfer",
+  "endpoints": {
+    "A": {
+      "qualified_endpoint": true,
+      "near_historical_reference": true,
+      "historical_reference_available": true,
+      "selected_candidate_id": "C01",
+      "prediction_metrics": {
+        "I_support": 0.11363408960929994,
+        "I_support_10D": 0.11329222873456406,
+        "I_support_7D": 0.008807793690228292,
+        "I_support_sample_count": 329,
+        "I_route_key_legacy": 0.14096717690284735,
+        "I_route_key_legacy_10D": 0.14043621934010858,
+        "I_route_key_legacy_7D": 0.012223471741513565,
+        "I_route_key_legacy_sample_count": 167,
+        "I_full": 0.0995307719127502,
+        "I_full_10D": 0.0869108442683818,
+        "I_full_7D": 0.04850649138110268,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.2041407364899892,
+        "L_support": 0.41137800572683514,
+        "base_translation_peak_m": 0.00772024954017353,
+        "base_rotation_peak_rad": 0.05844352225178152,
+        "d_support": 0.02561085747099673,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 5317,
+          "time_s": 10.63400000000022,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 131,
+            "geom_b": 1,
+            "geom_a_name": "collision_0061",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_29",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.02561085747099673,
+          "fromto": [
+            1.7293641067760919,
+            0.5759501175255758,
+            0.14379211655418234,
+            1.7272495741977434,
+            0.6014681655886444,
+            0.14431556227795606
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 203856,
+        "source_compiled_model_sha256": "c4c4287de9984eb8d165a33da85b75390dd1aa6c6a896a9ab6791f1bef9bca0e",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "plan_sha256": "0fc2dc780ebba79b682678905c3c40ff1dc420fe5e69a98bb6541fb2b8f6aee1",
+          "definition_sha256": "ad8a66b126d96153d989ed2db771bee56068faf61adf9aa0dab751ceaebb6a9a",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.005
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.86699427806859,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "first_qualified_slot": 2,
+      "first_qualified_right_censored_budget": null,
+      "first_near_quality_slot": 2,
+      "first_near_quality_status": "HIT",
+      "first_near_quality_right_censored_budget": null,
+      "raw_legal": true,
+      "direct_seed_qualified": true,
+      "selected_seed_or_descendant": true,
+      "rule_only": false,
+      "positive_supervision": true,
+      "label_status": "INITIALIZER_EFFECT_EVIDENCED"
+    },
+    "B": {
+      "qualified_endpoint": false,
+      "near_historical_reference": false,
+      "historical_reference_available": false,
+      "selected_candidate_id": null,
+      "prediction_metrics": null,
+      "first_qualified_slot": null,
+      "first_qualified_right_censored_budget": 8,
+      "first_near_quality_slot": null,
+      "first_near_quality_status": "N/A_NO_HISTORICAL_REFERENCE",
+      "first_near_quality_right_censored_budget": null,
+      "raw_legal": true,
+      "direct_seed_qualified": false,
+      "selected_seed_or_descendant": false,
+      "rule_only": false,
+      "positive_supervision": false,
+      "label_status": "NO_QUALIFIED_INITIALIZER_EFFECT_LABEL"
+    }
+  },
+  "initializer_effect_labels": [
+    {
+      "task_id": "c1_mother_01_minus",
+      "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+      "mother_id": "c1_mother_01",
+      "group_id": "c1_mother_01",
+      "split": "train",
+      "preference": "A",
+      "family": "v1",
+      "reference_family": "v1",
+      "reference_version": "task_anchored_cartesian_residual_v1",
+      "z_m": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -0.005
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "source_types": [
+        "initializer_effect_example"
+      ],
+      "source_refs": [
+        {
+          "source_type": "initializer_effect_example",
+          "seed_pair_id": "ff0c89cbc48f468051857e9b6c64f378b0b64104234de7ec87eb59f426ceae5e",
+          "combination": "T_transfer",
+          "slot": 1,
+          "seed_candidate_id": "C01",
+          "selected_candidate_id": "C01",
+          "direct_seed_qualified": true,
+          "selected_seed_or_descendant": true,
+          "fixed_partner": {
+            "source": "retrieval",
+            "family": "v2",
+            "preference": "B",
+            "raw_z_m": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                -0.012,
+                -2.6257405340921656e-18
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ],
+            "retrieval_rules": {
+              "leave_out_mother_id": "c1_mother_01",
+              "initial_historical_pool_only": true,
+              "schema": "v64_c2_train_retrieval_v1",
+              "distance": "mean_squared_all_train_normalized_condition_dimensions_v1",
+              "tie_order": [
+                "task_sha256",
+                "plan_sha256",
+                "sample_id"
+              ],
+              "train_labels_sha256": "e9edad65dfb94b8c977b43a0359a013aa6983dc42975ca9668741c3d9cbe436e",
+              "condition_scaler_sha256": "b7cf01045e80cfc18f85524aaee385c2cf0d3db3b483bf5afa276d216f34a785"
+            },
+            "retrieval_source": {
+              "sample_id": "bb643aa06e5b1ddc040fd8a2c1ecf7622c9e21434aac623ce16268730e7cc669",
+              "task_id": "c2_new_train_plus",
+              "task_sha256": "98f3c72891e56bd5a215ee6622f372d854232e99c6e27d58e0e8e2a1af3f31f1",
+              "mother_id": "c2_new_train",
+              "plan_sha256": "9b8c62fb5ee17ef4865789b9f73cac0287cc177de6e8e9fd954b4ddf01f78485",
+              "reference_family": "v2"
+            },
+            "retrieval_distance": 0.15696645683107227,
+            "matched_search_interval_mask": [
+              false,
+              true,
+              true,
+              false,
+              false,
+              false
+            ],
+            "teacher_construction": {
+              "construction_status": "TRANSFER_LEAVE_ONE_MOTHER",
+              "excluded_mother_id": "c1_mother_01",
+              "eligible_mothers": [
+                "c1_mother_00",
+                "c2_new_train"
+              ]
+            }
+          },
+          "shared_search_is_not_independent_counterfactuals": true
+        }
+      ],
+      "evidence_tier": "PREDICTED_COMPLETE",
+      "label_scope": "finite_shared_search_initializer_effect",
+      "prediction_metrics": {
+        "I_support": 0.11363408960929994,
+        "I_support_10D": 0.11329222873456406,
+        "I_support_7D": 0.008807793690228292,
+        "I_support_sample_count": 329,
+        "I_route_key_legacy": 0.14096717690284735,
+        "I_route_key_legacy_10D": 0.14043621934010858,
+        "I_route_key_legacy_7D": 0.012223471741513565,
+        "I_route_key_legacy_sample_count": 167,
+        "I_full": 0.0995307719127502,
+        "I_full_10D": 0.0869108442683818,
+        "I_full_7D": 0.04850649138110268,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.2041407364899892,
+        "L_support": 0.41137800572683514,
+        "base_translation_peak_m": 0.00772024954017353,
+        "base_rotation_peak_rad": 0.05844352225178152,
+        "d_support": 0.02561085747099673,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 5317,
+          "time_s": 10.63400000000022,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 131,
+            "geom_b": 1,
+            "geom_a_name": "collision_0061",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_29",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.02561085747099673,
+          "fromto": [
+            1.7293641067760919,
+            0.5759501175255758,
+            0.14379211655418234,
+            1.7272495741977434,
+            0.6014681655886444,
+            0.14431556227795606
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 203856,
+        "source_compiled_model_sha256": "c4c4287de9984eb8d165a33da85b75390dd1aa6c6a896a9ab6791f1bef9bca0e",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "plan_sha256": "0fc2dc780ebba79b682678905c3c40ff1dc420fe5e69a98bb6541fb2b8f6aee1",
+          "definition_sha256": "ad8a66b126d96153d989ed2db771bee56068faf61adf9aa0dab751ceaebb6a9a",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.005
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.86699427806859,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "formal_actual_validation": "NOT_RUN_TEACHER_SEARCH"
+    }
+  ],
+  "budget": {
+    "candidate_budget": 8,
+    "slots_consumed": 8,
+    "proposal_attempts": 9,
+    "proposal_limit": 128,
+    "cache_hits": 1,
+    "prediction_rollouts_started": 8,
+    "continuous_candidates_constructed": 5,
+    "non_historical_continuous_candidates_evaluated": 5,
+    "shared_A_B_pool": true,
+    "stop_reason": "CANDIDATE_BUDGET_EXHAUSTED",
+    "poll_truncated": true,
+    "completed_sweeps": [],
+    "current_step_m": 0.005
+  },
+  "protocol_completed": true,
+  "formal_actual_validation": "NOT_RUN_TEACHER_SEARCH",
+  "stream_path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\teacher_search\\c1_mother_01_minus\\T_transfer",
+  "source_files": {
+    "teacher_search/c1_mother_01_minus/T_transfer/planning/c1_mother_01_minus/candidate_registry.json": "3abcc80c88d3940b0698c5923ab212206014258118de53a2051a69912d27a656",
+    "teacher_search/c1_mother_01_minus/T_transfer/planning/c1_mother_01_minus/proposals.json": "420b269e501aacb165269b6aa17e7783b5255e50473e0fd1a55981d8a5f3a0d8",
+    "teacher_search/c1_mother_01_minus/T_transfer/planning/c1_mother_01_minus/selection.json": "c09fb2fb1d866e3cfdd7dbf1badc6395eb5c7bdfdfff1cbe301345ad8dbab4e7"
+  }
+}

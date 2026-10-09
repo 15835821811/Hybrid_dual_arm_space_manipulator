@@ -1,0 +1,98 @@
+{
+  "schema": "v64_c3_independent_teacher_protocol_audit_v1",
+  "audited_utc": "2026-10-08T07:49:43.874338+00:00",
+  "algorithm_producer_commit": "9f39b42775283432eb933f63a9047c488ba22070",
+  "source_identity_sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+  "sources_as_audited": {
+    "v6_4/search_effect_teacher.py": "98e1ab1d8a0b8ac8497492bf2be0cf8dbe584f40b1095612c90da49faf4b0734",
+    "v6_4/simple_warmstart_regression.py": "7a80e29851f347ac7492bd28fd6b70ceff9350b8325076277ea303ab5bd99213",
+    "v6_4/closed_loop_warmstart_validation.py": "26db6c940490a7ca7eb934524e5941ad2ae419bcb8b93d3882272ab0caa7fcd9",
+    "v6_4/search_aware_warmstart_experiment.py": "818b7655124a94f59822407d2de92b2985d15683d7bc397cc0683bef80376ead",
+    "v6_4/route_initializers.py": "1226f52284550ee6e7510823a29ffc8ff2461f7b8d3e9ea10b2295bbf293e49a",
+    "v6_4/continuous_route_optimizer.py": "f0cb8d79817802a2c307cedef526d021c7679095174fb04ae6ec30c9e06b42b3"
+  },
+  "checks": [
+    {
+      "check": "Original six TRAIN Tasks / three mother scenes only; old VAL and TEST excluded",
+      "status": "PASS",
+      "scope": "Real read-only C2 import smoke:72 candidates,24 oldVAL excluded,22 failed/10actual validated/40predicted complete; missing0; newphysics0"
+    },
+    {
+      "check": "Physical dedup and actual alias/source evidence retained",
+      "status": "PASS",
+      "scope": "physical task/model/config/family/plan identity; preference views not physical samples"
+    },
+    {
+      "check": "T_local/T_transfer simultaneously frozen; leave-one-mother excludes all source siblings",
+      "status": "PASS",
+      "scope": "12 pairs frozen before search;24 raw proposals legal in this formal run"
+    },
+    {
+      "check": "Route quality vs initializer effect layering; B30,NO_PLAN,rule-only,raw legality,lineage retained",
+      "status": "PASS_WITH_EDGE_CASE",
+      "scope": "Formal24raw legal unaffected; missing-bucket edge below"
+    },
+    {
+      "check": "Original raw seed z used for effect supervision, final winner never substituted",
+      "status": "PASS",
+      "scope": "Pair partner and shared-pool identity retained; no single-seed causal necessity claim"
+    },
+    {
+      "check": "D/S training conditions/scalers/source-balanced reference indices paired",
+      "status": "PASS_IMPLEMENTATION_ONLY",
+      "scope": "4000x32 presealed indices; same labels/scalers; two layers128; source1:1 if both; real training not yet audited"
+    },
+    {
+      "check": "VAL checkpoint whitelist/ordinal and TEST isolation",
+      "status": "PASS_IMPLEMENTATION_ONLY",
+      "scope": "D250,D4000,S250,S4000;full thenB30 thennear thenrawillegal thenfirsthit thenphysical/preview/geometry/coldtime thenupdate; noTEST scorer input"
+    },
+    {
+      "check": "TEST gated on model/data freeze;R8 sealed prefix;method-stream reset/cache isolation",
+      "status": "PASS_IMPLEMENTATION_ONLY",
+      "scope": "NewTask frozen beforeteacher;TEST only afterVAL selection;no crossstream reuse"
+    },
+    {
+      "check": "Strict sameTask/config/history/plan actual aliases and original fivegates",
+      "status": "PASS_IMPLEMENTATION_ONLY",
+      "scope": "Actual alias shares source receipt;logical slots distinct from independent execution"
+    },
+    {
+      "check": "Completed stage recovery and initializer immutability",
+      "status": "PASS_WITH_NONSCIENTIFIC_LIMIT",
+      "scope": "Root fixed train prepare skip,retained initializer digest,TOOL_ERROR recovery check;teacher results official selfseal/source verifies"
+    }
+  ],
+  "findings": [
+    {
+      "id": "TEACHER_NONE_BIND_EDGE",
+      "severity": "conservative_missing_bucket_label_omission",
+      "file": "v6_4/search_effect_teacher.py",
+      "line": 383,
+      "status": "DEFERRED_POST_EXPERIMENT",
+      "detail": "Seed-id fallback compares absent seed.plan_sha256(None) to an earlier raw-rejected row.plan_sha256(None), potentially binding a later legal seed to the wrong rejected row. This can omit a direct-qualified effect label or store an incorrect seed reference when an earlier teacher bucket is unsupported. It does not create a new positive label from rejected raw: raw_legal and selected preference qualification remain mandatory.",
+      "current_formal_run_affected": false,
+      "current_run_evidence": {
+        "frozen_pairs_sha256": "0f13b3d3d6e70abacf4aa54c098eb8c149d5584e48af65e19d14c77e27078a79",
+        "proposal_count": 24,
+        "all_proposals_raw_legal": true
+      },
+      "fix_after_evidence_sealed": "Guard plan SHA comparison with non-None seed.plan_sha256; otherwise match non-None seed.content_key to row.search_content_key. Preserve experiment producer9f39,raw selections and labels; do not rerun/relabel this formal run."
+    },
+    {
+      "id": "DUPLICATE_TEACHER_EFFECT_RECEIPT",
+      "severity": "metadata_integrity_limit",
+      "status": "DOCUMENTED",
+      "detail": "Official teacher_search/results.json is body-sealed and verifies planning registry/proposals/selection source hashes on resume. Duplicate teacher_effect.json is not separately rehashed on the completed-results fast path. Formal dataset uses results.json, so this duplicate does not control training labels. Export verifies original seals and preserves both exact bytes."
+    }
+  ],
+  "software_tests": {
+    "teacher_mock_tests_passed": 13,
+    "real_C2_readonly_import_passed": true,
+    "real_physics_started_by_auditor": 0,
+    "training_started_by_auditor": 0,
+    "DDIM_samples_by_auditor": 0
+  },
+  "research_outcomes_audited": false,
+  "deployment": "NOT_MET"
+}

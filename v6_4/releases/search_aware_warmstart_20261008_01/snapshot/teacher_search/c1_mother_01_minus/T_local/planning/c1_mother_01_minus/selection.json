@@ -1,0 +1,510 @@
+{
+  "schema": "v64_c1_selection_v1",
+  "task_id": "c1_mother_01_minus",
+  "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+  "input_sha256": "5290fd0efd741c618fc2cf042fabfd1b5c17ad1d502b8ad7838aa797d654e83f",
+  "execution_identity": {
+    "source_identity_sha256": "e00f9bac49a650b35c360dc7ce59bc37fa96a33209bce9758adf17753e3ce815",
+    "config_sha256": "25a8f4aa060fcc3bc1f8aa6e5c791541d1f30a92b32565b8868f24e7da9f291e",
+    "run_config_sha256": "37c822b6a94d4e3e380b83b15f937ad6d44e151a2cf0502969e2c5b7694fd5f1",
+    "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+    "model_contract_sha256": "ec36bd1e6c1f47e5dcfb94be8da4c147729f4ccd2ed62aaf1ce8cf505584ac3f"
+  },
+  "active_intervals": [
+    1,
+    2
+  ],
+  "active_dim": 4,
+  "preferences": {
+    "A": {
+      "status": "BUDGET_EXHAUSTED_WITH_INCUMBENT",
+      "selected_plan": {
+        "schema": "task_anchored_residual_plan_v1",
+        "representation_version": "task_anchored_cartesian_residual_v1",
+        "definition": {
+          "applicable": true,
+          "base_reference_id": "original_cartesian_passthrough_physical_time_home_v1",
+          "base_reference_sha256": "97608aa2fc87ddda68fb2934ad7fd476298253011f444a44b4d2db6dd09807b4",
+          "base_reference_version": "original_cartesian_passthrough_physical_time_home_v1",
+          "candidate_component_count": 7,
+          "coefficient_norm_bound_m": 0.02,
+          "definition_sha256": "ad8a66b126d96153d989ed2db771bee56068faf61adf9aa0dab751ceaebb6a9a",
+          "disabled_intervals": [],
+          "frame": "world",
+          "interval_mask": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "interval_selection": "earliest_six_complement_components_then_disable_degenerate_without_replacement",
+          "intervals_s": [
+            [
+              0.0,
+              4.15
+            ],
+            [
+              4.85,
+              8.080924304554753
+            ],
+            [
+              8.780924304554752,
+              12.125921738011685
+            ],
+            [
+              12.825921738011685,
+              15.187929154021672
+            ],
+            [
+              15.887929154021672,
+              18.395504901470336
+            ],
+            [
+              19.09550490147034,
+              21.430092096772107
+            ]
+          ],
+          "partition_kind": "reference_time_not_PCC_arc_length",
+          "protected_time_contract": {
+            "additional_hold_intervals_s": null,
+            "additional_specified_velocity_requirements": null,
+            "additional_strict_path_intervals_s": null,
+            "base_reference_hold_intervals_s": [
+              [
+                25.5,
+                27.0
+              ]
+            ],
+            "extra_requirements_status": "NONE_IN_SUPPORTED_TASKSPEC_V1",
+            "final_reference_freeze_s": [
+              23.98,
+              27.0
+            ],
+            "initial_time_s": 0.0,
+            "path_freedom": "free_intermediate_path_between_fixed_requirements",
+            "schema": "task_derived_protected_time_contract_v1",
+            "task_point_windows": [
+              {
+                "arm": "continuum",
+                "point_id": "continuum_00",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 4.5,
+                "time_window_s": [
+                  4.15,
+                  4.85
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_01",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 8.430924304554752,
+                "time_window_s": [
+                  8.080924304554753,
+                  8.780924304554752
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_02",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 12.475921738011685,
+                "time_window_s": [
+                  12.125921738011685,
+                  12.825921738011685
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_03",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 15.537929154021672,
+                "time_window_s": [
+                  15.187929154021672,
+                  15.887929154021672
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_04",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 18.745504901470337,
+                "time_window_s": [
+                  18.395504901470336,
+                  19.09550490147034
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_05",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 21.78009209677211,
+                "time_window_s": [
+                  21.430092096772107,
+                  22.13009209677211
+                ]
+              },
+              {
+                "arm": "continuum",
+                "point_id": "continuum_06",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              },
+              {
+                "arm": "rigid",
+                "point_id": "rigid_terminal",
+                "position_and_orientation_required": true,
+                "specified_velocity_requirement": null,
+                "time_s": 27.0,
+                "time_window_s": [
+                  25.5,
+                  27.0
+                ]
+              }
+            ],
+            "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4"
+          },
+          "protected_time_intervals_s": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              4.15,
+              4.85
+            ],
+            [
+              8.080924304554753,
+              8.780924304554752
+            ],
+            [
+              12.125921738011685,
+              12.825921738011685
+            ],
+            [
+              15.187929154021672,
+              15.887929154021672
+            ],
+            [
+              18.395504901470336,
+              19.09550490147034
+            ],
+            [
+              21.430092096772107,
+              22.13009209677211
+            ],
+            [
+              23.98,
+              27.0
+            ]
+          ],
+          "reasons": [],
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "schema": "task_anchored_cartesian_residual_v1",
+          "status": "APPLICABLE",
+          "support_cutoff_s": 23.98,
+          "task_id": "c1_mother_01_minus",
+          "task_sha256": "0272e5438ff8defd554573c2ec49f06f9da224d1dfefda3f09c1ac7af997d9a4",
+          "time_mapping": "identity_physical_time",
+          "transverse_bases": [
+            [
+              [
+                -1.9814057857244814e-09,
+                0.5661127850852705
+              ],
+              [
+                1.360744055650363e-09,
+                0.8243277955783114
+              ],
+              [
+                1.0,
+                0.0
+              ]
+            ],
+            [
+              [
+                0.9942728594135699,
+                0.0
+              ],
+              [
+                -0.04051182509261938,
+                0.9253675771082968
+              ],
+              [
+                0.09889526308791721,
+                0.37907103191449554
+              ]
+            ],
+            [
+              [
+                0.9993955832523754,
+                0.0
+              ],
+              [
+                0.03347335085275243,
+                -0.2698553464743839
+              ],
+              [
+                0.00938098919799216,
+                0.962900873392059
+              ]
+            ],
+            [
+              [
+                0.9853974577488879,
+                0.0
+              ],
+              [
+                0.08721764095324744,
+                -0.8588473584504184
+              ],
+              [
+                0.1462358826300141,
+                0.5122316027762629
+              ]
+            ],
+            [
+              [
+                0.9997698839469187,
+                8.673617379884035e-19
+              ],
+              [
+                -0.008368424780148358,
+                -0.9207708613010013
+              ],
+              [
+                0.01975218011926227,
+                -0.3901038592208645
+              ]
+            ],
+            [
+              [
+                0.030477371515569535,
+                0.9584501720352754
+              ],
+              [
+                -0.10240146515370446,
+                0.28526000022006415
+              ],
+              [
+                0.9942761536715424,
+                0.0
+              ]
+            ]
+          ]
+        },
+        "z_m": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            -0.005
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "source_candidate_id": "C01",
+      "prediction_task_passed": true,
+      "online_guards_passed": true,
+      "preference_met": true,
+      "prediction_metrics": {
+        "I_support": 0.11363408960929994,
+        "I_support_10D": 0.11329222873456406,
+        "I_support_7D": 0.008807793690228292,
+        "I_support_sample_count": 329,
+        "I_route_key_legacy": 0.14096717690284735,
+        "I_route_key_legacy_10D": 0.14043621934010858,
+        "I_route_key_legacy_7D": 0.012223471741513565,
+        "I_route_key_legacy_sample_count": 167,
+        "I_full": 0.0995307719127502,
+        "I_full_10D": 0.0869108442683818,
+        "I_full_7D": 0.04850649138110268,
+        "I_full_sample_count": 1350,
+        "command_definition": "box-clipped nominal 17D velocity minus actually consumed selected 17D command",
+        "component_square_identity_checked": true,
+        "L_full": 1.2041407364899892,
+        "L_support": 0.41137800572683514,
+        "base_translation_peak_m": 0.00772024954017353,
+        "base_rotation_peak_rad": 0.05844352225178152,
+        "d_support": 0.02561085747099673,
+        "clearance_status": "MEASURED",
+        "clearance_is_censored_lower_bound": false,
+        "clearance_witness": {
+          "state_index": 5317,
+          "time_s": 10.63400000000022,
+          "pair": {
+            "pair_class": "arm_obstacle",
+            "geom_a": 131,
+            "geom_b": 1,
+            "geom_a_name": "collision_0061",
+            "geom_b_name": "v5_workspace_sphere_001_continuum_side_00",
+            "body_a_name": "link_29",
+            "body_b_name": "world"
+          },
+          "signed_distance_m": 0.02561085747099673,
+          "fromto": [
+            1.7293641067760919,
+            0.5759501175255758,
+            0.14379211655418234,
+            1.7272495741977434,
+            0.6014681655886444,
+            0.14431556227795606
+          ],
+          "censored_lower_bound": false
+        },
+        "related_pair_count": 62,
+        "clearance_query_count": 203856,
+        "source_compiled_model_sha256": "c4c4287de9984eb8d165a33da85b75390dd1aa6c6a896a9ab6791f1bef9bca0e",
+        "command_certificates_checked": 1350,
+        "consumed_reference_binding": {
+          "available": true,
+          "passed": true,
+          "planning_inputs_bound": 1350,
+          "representation_version": "task_anchored_cartesian_residual_v1",
+          "plan_sha256": "0fc2dc780ebba79b682678905c3c40ff1dc420fe5e69a98bb6541fb2b8f6aee1",
+          "definition_sha256": "ad8a66b126d96153d989ed2db771bee56068faf61adf9aa0dab751ceaebb6a9a",
+          "z_m": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              -0.005
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "physics_steps_added": 0,
+          "geometry_queries_added": 0
+        },
+        "native_state_count": 13501,
+        "saved_horizon_s": 26.999999999995914,
+        "torque_saturation_count": 0,
+        "peak_torque_abs_nm": 19.86699427806859,
+        "state_source": "own_saved_native_prediction_states"
+      },
+      "formal_actual_validation": "NOT_RUN",
+      "selected_origin_source": "retrieval",
+      "selected_lineage": [
+        {
+          "initial_position": 1,
+          "source": "retrieval"
+        }
+      ],
+      "source_attribution": "direct_learning_seed",
+      "best_safe_diagnostic": null
+    },
+    "B": {
+      "status": "PREFERENCE_UNMET_WITHIN_BUDGET",
+      "selected_plan": null,
+      "source_candidate_id": null,
+      "prediction_task_passed": null,
+      "online_guards_passed": null,
+      "preference_met": false,
+      "prediction_metrics": null,
+      "formal_actual_validation": "NOT_RUN",
+      "selected_origin_source": null,
+      "selected_lineage": null,
+      "source_attribution": "no_plan",
+      "best_safe_diagnostic": "C06"
+    }
+  },
+  "strict_winner": "C05",
+  "tie_selected_winner": "C01",
+  "tie_group_ids": [
+    "C01",
+    "C04",
+    "C05"
+  ],
+  "B_available_ids": [],
+  "finite_non_dominated_ids": [
+    "C01",
+    "C04",
+    "C05",
+    "C06"
+  ],
+  "comparable_candidate_ids": [
+    "C01",
+    "C04",
+    "C05",
+    "C06"
+  ],
+  "seed_only_selection": {
+    "strict": "C01",
+    "tie_selected": "C01",
+    "B": null,
+    "best_safe_diagnostic": "C01",
+    "tie_group_ids": [
+      "C01"
+    ],
+    "B_available_ids": []
+  },
+  "budget": {
+    "candidate_budget": 8,
+    "slots_consumed": 8,
+    "proposal_attempts": 9,
+    "proposal_limit": 128,
+    "cache_hits": 1,
+    "prediction_rollouts_started": 8,
+    "continuous_candidates_constructed": 5,
+    "non_historical_continuous_candidates_evaluated": 5,
+    "shared_A_B_pool": true,
+    "stop_reason": "CANDIDATE_BUDGET_EXHAUSTED",
+    "poll_truncated": true,
+    "completed_sweeps": [],
+    "current_step_m": 0.005
+  },
+  "formal_actual_validation": "NOT_RUN",
+  "selection_reads_final_actual": false,
+  "elapsed_wall_s": 449.21925590001047,
+  "sealed_prefixes": {
+    "4": "prefix_04.json",
+    "8": "prefix_08.json"
+  },
+  "registry_content_sha256": "bef574adfa40a90b215e65604bb6d14d729d1aea8f675d0a7d415dd4ca151730"
+}

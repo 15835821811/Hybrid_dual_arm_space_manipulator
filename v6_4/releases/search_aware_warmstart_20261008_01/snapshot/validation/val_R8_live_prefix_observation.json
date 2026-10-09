@@ -1,0 +1,66 @@
+{
+  "schema": "c3_live_prefix_observation_v1",
+  "observed_utc": "2026-10-08T09:58:11.0595547Z",
+  "path": "E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01\\closed_loop_val\\search\\c3_val_plus\\R\\planning\\c3_val_plus\\prefix_08.json",
+  "sha256": "287461bda72fa8ab104d444f9ad0ed1ca8e8530fcd288a5cb6f1922bda16de41",
+  "prefix_file_write_utc": "2026-10-08T09:57:08.9455232Z",
+  "prefix_budget": 8,
+  "later_slots_read": false,
+  "budget": {
+    "candidate_budget": 8,
+    "slots_consumed": 8,
+    "proposal_attempts": 8,
+    "cache_hits": 0,
+    "prediction_rollouts_started": 8,
+    "stop_reason": "CANDIDATE_BUDGET_EXHAUSTED"
+  },
+  "val_snapshot": [
+    {
+      "stage": "val",
+      "terminal_events": 8,
+      "completed_requests": [],
+      "latest_event": {
+        "task": "c3_val_plus",
+        "stream": "R",
+        "event": {
+          "event": "C1_CANDIDATE_TERMINAL",
+          "task": "c3_val_plus",
+          "candidate": "C07",
+          "source": "adaptive_poll",
+          "status": "PREDICTION_ADMISSIBLE",
+          "slots": 8,
+          "I_support": 0.09358167496437064,
+          "d_support": 0.040099962094097934
+        }
+      },
+      "actual_slot_files": 0
+    }
+  ],
+  "live_python_processes": [
+    {
+      "pid": 178460,
+      "created": "2026-10-08T17:46:27.327263+08:00",
+      "cpu_seconds": 0.015625,
+      "command": "\"E:\\v64c2\\.venv-c2\\Scripts\\python.exe\" -u -B -X utf8 -m v6_4.search_aware_warmstart_experiment closed-loop-val --run v6_4/output/search_aware_warmstart_20261008_01"
+    },
+    {
+      "pid": 165728,
+      "created": "2026-10-08T17:46:27.338007+08:00",
+      "cpu_seconds": 0.75,
+      "command": "\"C:\\Users\\admin\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe\" -u -B -X utf8 -m v6_4.search_aware_warmstart_experiment closed-loop-val --run v6_4/output/search_aware_warmstart_20261008_01"
+    },
+    {
+      "pid": 18324,
+      "created": "2026-10-08T17:46:28.11373+08:00",
+      "cpu_seconds": 0.015625,
+      "command": "E:\\v64c2\\.venv-c2\\Scripts\\python.exe -B -X utf8 -m v6_4.search_aware_warmstart_experiment _worker --run E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01 --stage val --task c3_val_plus --stream R"
+    },
+    {
+      "pid": 111464,
+      "created": "2026-10-08T17:46:28.128239+08:00",
+      "cpu_seconds": 695.484375,
+      "command": "\"C:\\Users\\admin\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe\" -B -X utf8 -m v6_4.search_aware_warmstart_experiment _worker --run E:\\v64c3\\v6_4\\output\\search_aware_warmstart_20261008_01 --stage val --task c3_val_plus --stream R"
+    }
+  ],
+  "scope": "Contemporaneous read of VAL R8 prefix before R12 completion; source control flow and mock ninth-call test separately establish before-next-evaluation sequencing. No physics or generation added."
+}

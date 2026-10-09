@@ -1,0 +1,15 @@
+# C.3 teacher and protocol implementation audit
+
+Audited frozen producer `9f39b42775283432eb933f63a9047c488ba22070`. This is a software/protocol audit, not an experimental outcome or safety certification.
+
+The real read-only historical import bound 72 physical TRAIN candidates from exactly six Tasks / three mother scenes: 40 PREDICTED_COMPLETE, 10 VALIDATED_EXECUTION, and 22 FAILED_OR_INCOMPLETE. It excluded 24 old VAL candidates, found no missing archived evidence, and performed zero physics steps. Thirteen mock tests passed, including complete twelve-pair teacher search, TRAIN-only dataset construction, and recovery.
+
+All twelve teacher combinations were frozen before nominal search. All 24 raw teacher proposals in the formal run are legal. T_transfer excludes the whole held-out mother; T_local only uses its own frozen near-quality pool. Initializer-effect labels preserve the original seed, fixed partner, shared search identity, raw legality and participation evidence. B requires a complete qualified result and at least30mm measured clearance. A success does not become B success. Common-rule-only and NO_PLAN outcomes do not become initializer-effect supervision.
+
+The D/S implementation uses the same presealed4000x32 reference indices, source-balanced labels, normalization and condition schema. Only updates250/4000 enter closed-loop VAL. The scorer ranks full original five-gate endpoints, B30, near-R12 quality, raw invalid count, bounded first-near hit encoding, declared physical/preview/geometry/cold-time costs, then update. TEST requires frozen selected model/data identities. R8 uses its sealed prefix. Actual aliases require identical Task, model/config, initial history and plan; aliases remain distinct logical slots and do not increase independent runs. These checks review code; real training, VAL and TEST outcomes remain unaudited here.
+
+A conservative unsupported-bucket edge remains in `search_effect_teacher.py:383`: the seed-id fallback can match absent plan SHA (`None`) to an earlier rejected row's absent plan SHA. It can omit a later direct-qualified effect label or misstate that seed reference. It cannot turn rejected raw into positive supervision. The current formal run is unaffected because all24 proposals are legal. Fix only after this experiment is sealed, with a distinct implementation identity, by requiring a non-None plan SHA or matching non-None content keys. Preserve the frozen producer, raw selections and labels; do not rerun or relabel current results.
+
+Completed official teacher results validate their own body seal and planning source hashes. A duplicate per-stream teacher_effect.json is not separately hashed by the completed-results fast path; the formal dataset consumes the sealed central results. Record this metadata limit separately.
+
+The root coordinator fixed the audit's pre-physics recovery findings: completed training skips preparation, retained initializer content is bound, and a retained TOOL_ERROR remains blocking. No control numerics, geometry limits, search order, candidate budget or safety gates were changed by this audit. Deployment remains NOT_MET.
