@@ -95,6 +95,10 @@ def main():
         assert publication['status'] == 'PASS'
         assert publication['remote_head'] == publication['artifact_commit']
         assert publication['branch'] == 'v6.4-c3-search-aware-closed-loop-val'
+        assert publication['remote_tree_verified'] is True
+        assert publication['release_blob_count'] == 4717 and publication['media_blob_count'] == 399
+        assert len(publication['raw_files']) == 10
+        assert all(row['status'] == 'PASS' for row in publication['raw_files'])
         evidence['publication'] = args.publication
         published = True
 

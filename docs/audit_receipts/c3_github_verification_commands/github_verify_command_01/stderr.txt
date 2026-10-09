@@ -1,0 +1,17 @@
+transform: short source buffer
+Traceback (most recent call last):
+  File "E:\v64c3\docs\audit_scripts\c3_verify_github_delivery.py", line 85, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "E:\v64c3\docs\audit_scripts\c3_verify_github_delivery.py", line 65, in main
+    data=cmd(['gh','api',f'repos/{REPO}/contents/{quote(name,safe="/")}?ref={a.commit}',
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\v64c3\docs\audit_scripts\c3_verify_github_delivery.py", line 18, in cmd
+    return subprocess.check_output(argv,cwd=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\admin\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\admin\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['gh', 'api', 'repos/15835821811/Hybrid_dual_arm_space_manipulator/contents/v6_4/releases/search_aware_warmstart_20261008_01/snapshot/models/D/checkpoint_4000.pt?ref=7cd661ace9e8eb7aa9058b1fc09467acdd6a522e', '-H', 'Accept: application/vnd.github.raw+json']' returned non-zero exit status 1.

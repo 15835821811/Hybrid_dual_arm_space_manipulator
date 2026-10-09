@@ -1,6 +1,6 @@
 # C.3 最终逐项完成核对
 
-状态：**LOCAL_COMPLETE_PUBLICATION_PENDING**。更新时间：2026-10-09T02:16:21.916481+00:00。
+状态：**COMPLETE**。更新时间：2026-10-09T02:29:52.979416+00:00。
 
 本文件把独立教师、VAL、TEST 审查与后续实际数组/源码字节、软件测试、媒体和迁移检查按任务书逐项对齐。原准备清单和各次中间审查保持原文；本核对不是新的物理验收，也不将旧的有限范围审查改名为最终全覆盖审查。
 
@@ -40,6 +40,7 @@
 |browser_relocation|[docs/audit_receipts/c3_delivery/browser_relocation_01.json](audit_receipts/c3_delivery/browser_relocation_01.json)|
 |preflight|[docs/audit_receipts/c3_publication_preflight.json](audit_receipts/c3_publication_preflight.json)|
 |git_index|[docs/audit_receipts/c3_git_index_01.json](audit_receipts/c3_git_index_01.json)|
+|publication|[docs/audit_receipts/c3_github_publication_02.json](audit_receipts/c3_github_publication_02.json)|
 
 ## 编号义务逐项结论
 
@@ -49,7 +50,7 @@
 |0.2|SATISFIED|teacher, val_selection, test, binary, report, preflight|Real 12 teacher streams, fresh D/S4000 training, 10 VAL streams and 16 TEST streams completed. Negative outcome is retained. Producer and later evidence commits are separate; staged commits are not claimed as new experiments.|
 |1.1|SATISFIED|implementation, binary, source_delta, preflight, release|Correct fixed base, independent requested branch and frozen producer. 430 producer files and 37 protected artifacts verified; historical artifacts preserved. Publication changes one teacher null-identity edge, with original bytes archived and all 12 original summaries invariant.|
 |1.2|SATISFIED|implementation, binary, source_delta, preflight, release|Correct fixed base, independent requested branch and frozen producer. 430 producer files and 37 protected artifacts verified; historical artifacts preserved. Publication changes one teacher null-identity edge, with original bytes archived and all 12 original summaries invariant.|
-|1.3|PUBLICATION_PENDING|preflight|Local deliverables verified; GitHub push and exact remote head verification still required.|
+|1.3|SATISFIED|publication|Normal independent-branch publication and exact remote artifact head/file-tree verification recorded; no main merge or history rewrite.|
 |1.4|SATISFIED|report, release, media, core_plots, plots|Exactly two scientific core charts. User-requested current saved-actual media are a separate supplement. Original history remains unchanged.|
 |2.1a|SATISFIED|implementation, binary, state, mock, preflight|Frozen low-level model/controller/geometry/search numerical source, runtime-normalized identities and original five-gate evidence checked. 27s/13500 main steps for every unique actual; 20ms planning/2ms physics and original reference bounds retained. Current C.3 wrapper/S-source tests preserve C.2 defaults.|
 |2.1b|SATISFIED|implementation, binary, state, mock, preflight|Frozen low-level model/controller/geometry/search numerical source, runtime-normalized identities and original five-gate evidence checked. 27s/13500 main steps for every unique actual; 20ms planning/2ms physics and original reference bounds retained. Current C.3 wrapper/S-source tests preserve C.2 defaults.|
@@ -150,7 +151,7 @@
 |U.4|SATISFIED|media, numeric, visual|Saved qpos/qvel + mj_forward display only; guards prohibit mj_step/QP/distance queries/training/sampling. Manifest binds source/task/plan/config/replay. Media adds zero scientific steps/samples/updates and does not confer safety acceptance.|
 |U.5|SATISFIED|media, core_plots, report|Both core chart bytes equal frozen report charts and were visually inspected. A/B cost sharing, missing R8 cold cost and predicted-prefix scope are explicit.|
 |U.6|SATISFIED|preflight, media, report|Current README and both navigation entries point to C.3 report/viewer/docs. Historical C.2/B/C.1 entries and assets retained. Local HTTP and relocated relative assets verified; GitHub source HTML is correctly described as requiring local viewing.|
-|U.7|PUBLICATION_PENDING|preflight|Local deliverables verified; GitHub push and exact remote head verification still required.|
+|U.7|SATISFIED|publication|Normal independent-branch publication and exact remote artifact head/file-tree verification recorded; no main merge or history rewrite.|
 
 ## §15 最终状态与 §16 边界
 

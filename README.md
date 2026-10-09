@@ -12,7 +12,7 @@
 
 TEST 共 40 个逻辑 actual 槽：34 槽完整通过、6 槽 NO_PLAN，其中 28 次独立实际执行、6 个严格别名。主预测物理步 4,058,970 / 4,428,000，VAL+TEST 主 actual 步 526,500 / 810,000；预演、重放和几何另计。三 TRAIN、两 TEST 母场景及单训练 seed 仅支持 DATA_LIMITED 先导，deployment=NOT_MET，连续时间与硬件安全均未建立。
 
-[C.3 封存研究报告](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/summary.json) · [当前查看器：五视角、连续体侧视、末端轨迹与误差](v6_4/visualization/search_aware_warmstart_20261008_01/index.html) · [展示与来源说明](docs/V6_4_C3_VISUALIZATION.md) · [最终逐项验收](docs/C3_FINAL_COMPLETION_AUDIT.md) · [最终 TEST 审计](docs/C3_FINAL_TEST_METADATA_AUDIT.md) · [软件测试](docs/C3_FINAL_MOCK_EXECUTION.md) · [独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c3-search-aware-closed-loop-val)
+[C.3 封存研究报告](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/summary.json) · [当前查看器：五视角、连续体侧视、末端轨迹与误差](v6_4/visualization/search_aware_warmstart_20261008_01/index.html) · [展示与来源说明](docs/V6_4_C3_VISUALIZATION.md) · [最终逐项验收](docs/C3_FINAL_COMPLETION_AUDIT.md) · [GitHub 交付核验](docs/V6_4_C3_DELIVERY.md) · [最终 TEST 审计](docs/C3_FINAL_TEST_METADATA_AUDIT.md) · [软件测试](docs/C3_FINAL_MOCK_EXECUTION.md) · [独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c3-search-aware-closed-loop-val)
 
 便携包包含真实权重、统一 TRAIN 数据、VAL/TEST 实际 trace 与独立重放数组、命令与验收文件，以及实验 producer `9f39b42775283432eb933f63a9047c488ba22070` 的完整冻结源码。大型私有预测/计时/几何档案的遗漏项逐文件列出 SHA 与本地保留原因，不冒充已随 clone 携带。发布代码另含不影响本轮结果的[空初值身份维护](docs/V6_4_C3_MAINTENANCE.md)。字节验证不运行新实验：
 
