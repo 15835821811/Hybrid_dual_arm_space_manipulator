@@ -1,0 +1,164 @@
+{
+  "R8_timing": "only sealed optimizer-prefix timer; no separately measured end-to-end cold total",
+  "data_preparation_elapsed_s": null,
+  "limits": {
+    "D_training_runs": 1,
+    "S_training_runs": 1,
+    "diagnostic_ddim_samples": 8,
+    "smoke_ddim_samples": 8,
+    "teacher_candidate_slots": 96,
+    "test_actual_slots": 40,
+    "test_candidate_slots": 144,
+    "test_ddim_samples": 8,
+    "val_actual_slots": 20,
+    "val_candidate_slots": 88,
+    "val_ddim_samples": 8
+  },
+  "outer_process_start_to_finish_s": null,
+  "reservations": {
+    "D_training_runs": 1,
+    "S_training_runs": 1,
+    "teacher_candidate_slots": 96,
+    "test_actual_slots": 40,
+    "test_candidate_slots": 144,
+    "test_ddim_samples": 8,
+    "val_actual_slots": 20,
+    "val_candidate_slots": 88,
+    "val_ddim_samples": 8
+  },
+  "stage_makespan_s": null,
+  "stages": {
+    "teacher": {
+      "DDIM_samples_generated": 0,
+      "actual_NO_PLAN": 0,
+      "actual_aliases": 0,
+      "actual_auxiliary_work": {
+        "independent_saved_torque_replay_steps": null,
+        "native_geometry_query_calls": null,
+        "private_preview_physics_steps": null,
+        "qp_solve_calls": null
+      },
+      "actual_logical_slots_present": 0,
+      "consumed_candidate_slots": 96,
+      "independent_saved_torque_replay_steps": 0,
+      "legal_exact_cache_hits": 9,
+      "main_actual_physics_steps": 0,
+      "native_geometry_query_calls": 1399791908,
+      "nominal_failed_rollouts": 14,
+      "nominal_positive_step_incomplete_rollouts": 12,
+      "nominal_status_counts": {
+        "EXECUTION_REFUSED": 12,
+        "PREDICTION_ADMISSIBLE": 82,
+        "PREDICTION_TASK_UNMET": 2
+      },
+      "parameter_constructions": 105,
+      "prediction_physics_steps": 1198050,
+      "prediction_rollouts_started": 96,
+      "private_preview_physics_steps": 1198170,
+      "qp_solve_calls": 119817,
+      "raw_rejected": 0,
+      "regression_forward_units": 0,
+      "streams_complete": 12,
+      "streams_expected": 12,
+      "summed_cold_planning_service_s": 7143.521010098513,
+      "summed_outer_process_wall_s": null,
+      "summed_unique_actual_service_s": null,
+      "unique_actual_attempts": 0
+    },
+    "test": {
+      "DDIM_samples_generated": 8,
+      "actual_NO_PLAN": 6,
+      "actual_aliases": 6,
+      "actual_auxiliary_work": {
+        "independent_saved_torque_replay_steps": 378000,
+        "native_geometry_query_calls": 943879870,
+        "private_preview_physics_steps": 378000,
+        "qp_solve_calls": 37800
+      },
+      "actual_logical_slots_present": 40,
+      "consumed_candidate_slots": 144,
+      "independent_saved_torque_replay_steps": 0,
+      "legal_exact_cache_hits": 5,
+      "main_actual_physics_steps": 378000,
+      "native_geometry_query_calls": 2289739016,
+      "nominal_failed_rollouts": 0,
+      "nominal_positive_step_incomplete_rollouts": 0,
+      "nominal_status_counts": {
+        "INITIALIZER_RAW_REJECTED": 6,
+        "PREDICTION_ADMISSIBLE": 138
+      },
+      "parameter_constructions": 149,
+      "prediction_physics_steps": 1863000,
+      "prediction_rollouts_started": 138,
+      "private_preview_physics_steps": 1863000,
+      "qp_solve_calls": 186300,
+      "raw_rejected": 6,
+      "regression_forward_units": 8,
+      "streams_complete": 16,
+      "streams_expected": 16,
+      "summed_cold_planning_service_s": 11238.24721349962,
+      "summed_outer_process_wall_s": 11246.944411301054,
+      "summed_unique_actual_service_s": 4070.7993590012193,
+      "unique_actual_attempts": 28
+    },
+    "val": {
+      "DDIM_samples_generated": 8,
+      "actual_NO_PLAN": 6,
+      "actual_aliases": 3,
+      "actual_auxiliary_work": {
+        "independent_saved_torque_replay_steps": 148500,
+        "native_geometry_query_calls": 370551308,
+        "private_preview_physics_steps": 148500,
+        "qp_solve_calls": 14850
+      },
+      "actual_logical_slots_present": 20,
+      "consumed_candidate_slots": 88,
+      "independent_saved_torque_replay_steps": 0,
+      "legal_exact_cache_hits": 1,
+      "main_actual_physics_steps": 148500,
+      "native_geometry_query_calls": 1070364078,
+      "nominal_failed_rollouts": 27,
+      "nominal_positive_step_incomplete_rollouts": 24,
+      "nominal_status_counts": {
+        "EXECUTION_REFUSED": 24,
+        "PREDICTION_ADMISSIBLE": 61,
+        "PREDICTION_TASK_UNMET": 3
+      },
+      "parameter_constructions": 89,
+      "prediction_physics_steps": 997920,
+      "prediction_rollouts_started": 88,
+      "private_preview_physics_steps": 998160,
+      "qp_solve_calls": 99816,
+      "raw_rejected": 0,
+      "regression_forward_units": 8,
+      "streams_complete": 10,
+      "streams_expected": 10,
+      "summed_cold_planning_service_s": 5946.767733599059,
+      "summed_outer_process_wall_s": 5952.2863235003315,
+      "summed_unique_actual_service_s": 1616.309423100669,
+      "unique_actual_attempts": 11
+    }
+  },
+  "timing_note": "Shared A/B request counted once; summed service time is not makespan; absent measurements remain null.",
+  "training": {
+    "D": {
+      "ddim_sample_units": 0,
+      "effective_parameter_count": 152332,
+      "elapsed_s": 9.794224900193512,
+      "initialization_seed": 64321,
+      "optimizer_updates_total": 4000,
+      "paired_reference_indices_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+      "sample_exposures_total": 128000
+    },
+    "S": {
+      "ddim_sample_units": 0,
+      "effective_parameter_count": 134412,
+      "elapsed_s": 8.694569500163198,
+      "initialization_seed": 64331,
+      "optimizer_updates_total": 4000,
+      "paired_reference_indices_sha256": "0f4015ed1132bdb04b7caac2423b390dd6e0a42efdf3af33197e8941ac2811d8",
+      "sample_exposures_total": 128000
+    },
+    "summed_offline_training_service_s": 18.48879440035671
+  }
+}

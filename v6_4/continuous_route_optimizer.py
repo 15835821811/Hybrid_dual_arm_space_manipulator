@@ -83,7 +83,7 @@ def _preference_selection(rows, active, reason, tie_band=.001):
     return result
 
 
-def optimize(task, preferences, execution_identity, evaluator, run_root, *, search_spec=None, initializer=None):
+def optimize(task, preferences, execution_identity, evaluator, run_root, *, search_spec=None, initializer=None, seed_schedule=None):
     """Optimize a new frozen TaskSpec using an injected nominal evaluator.
 
     No task-ID lookup, historic oracle or final actual input exists here.
@@ -93,6 +93,10 @@ def optimize(task, preferences, execution_identity, evaluator, run_root, *, sear
     """
     started = time.perf_counter()
     spec = search_spec or SearchSpec()
+    if seed_schedule is not None:
+        from .c4a_portfolio import RulePreservingPortfolio
+        if not isinstance(seed_schedule, RulePreservingPortfolio) or initializer is not None or spec.candidate_budget != 8:
+            raise ValueError("C4-A portfolio requires its explicit schedule, eight slots and no replacement initializer")
     if not isinstance(spec, SearchSpec):
         raise TypeError("frozen SearchSpec required")
     if not execution_identity or not all(k in execution_identity for k in
@@ -104,6 +108,8 @@ def optimize(task, preferences, execution_identity, evaluator, run_root, *, sear
     root = Path(run_root); root.mkdir(parents=True, exist_ok=True)
     inputs = {"task_sha256": task.sha256(), "preferences": [p.to_dict() for p in preferences],
               "execution_identity": execution_identity, "search_spec": asdict(spec)}
+    if seed_schedule is not None:
+        inputs["c4a_seed_schedule_identity"] = seed_schedule.identity
     if initializer is not None:
         from .route_initializers import FrozenSeedInitializer, json_raw
         if isinstance(initializer, dict):
@@ -192,6 +198,18 @@ def optimize(task, preferences, execution_identity, evaluator, run_root, *, sear
         proposals.append(proposal)
         if key in cache:
             hits += 1; proposal["cache_hit_candidate_id"] = cache[key]["candidate_id"]
+            if seed_schedule is not None:
+                # P2 counts every scheduled proposal, including exact repeats.
+                # Reuse retained evidence, never a new physical call or retry.
+                original = cache[key]
+                row = {**copy.deepcopy(original), **proposal,
+                    "candidate_id": f"C{len(rows):02d}",
+                    "evidence_alias_of_candidate_id": original["candidate_id"],
+                    "prediction_rollout_started": False, "prediction_steps": 0,
+                    "independent_physical_evidence": False,
+                    "costs": {"cache_hit_zero_new_work": True}, "elapsed_wall_s": 0.}
+                retain(row)
+                return row
             return None
         cid = f"C{len(rows):02d}"
         evidence = evaluator(plan, cid)
@@ -204,6 +222,8 @@ def optimize(task, preferences, execution_identity, evaluator, run_root, *, sear
         return row
 
     seeds = initial_candidates(task) if active else []
+    if seed_schedule is not None and active:
+        seeds = seed_schedule(task)
     if initializer is not None and active:
         overrides = initializer(task)
         if not isinstance(overrides, dict) or set(overrides) != {1, 3}:
@@ -256,6 +276,8 @@ def optimize(task, preferences, execution_identity, evaluator, run_root, *, sear
             "origin_source": origin, "proposal_lineage": [{"initial_position": i, "source": origin}]})
         if row and row.get("tool_error"):
             reason = "TOOL_ERROR"; break
+        if seed_schedule is not None and len(rows) == 4:
+            snapshot_prefix(4)
     seed_count = len(rows)
     if len(rows) == 4:
         snapshot_prefix(4, reason or "CANDIDATE_BUDGET_EXHAUSTED")
