@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import ast,csv,hashlib,json,pathlib,subprocess,sys\nroot=pathlib.Path.cwd();out=root/'v6_4/c4a_evidence/review_final';out.mkdir(exist_ok=False)\ndef read(p):return json.loads(p.read_text(encoding='utf8'))\ndef sha(p):\n h=hashlib.sha256()\n with p.open('rb') as f:\n  for b in iter(lambda:f.read(4*1024*1024),b''):h.update(b)\n return h.hexdigest()\ndef git(*args):return subprocess.check_output(['git',*args],text=True,encoding='utf8').strip()\nfor p in (root/'docs/audit_scripts').glob('c4a_*.py'):ast.parse(p.read_text(encoding='utf8'))\ns=read(root/'v6_4/c4a_evidence/results_01/summary.json');i=read(root/'v6_4/c4a_evidence/final_integrity.json')\nassert s['status']=='COMPLETED' and i['status']=='PASS'\nb=s['budget'];assert (b['consumed_candidate_slots'],b['prediction_calls'],b['logical_actual_present'],b['unique_actual_runs'],b['actual_aliases'])==(48,46,12,7,5)\nassert b['new_training_updates']==b['new_C3_TEST_runs']==0\nfor name in ['P0','P1','P2']:\n m=s['strategies'][name];assert (m['full_actual_passed'],m['B_actual_B30'],m['NO_PLAN'],m['NOT_RUN'],m['TOOL_ERROR'])==(4,2,0,0,0)\nassert [(s['strategies'][m]['near_P0_A'],s['strategies'][m]['near_P0_B']) for m in ['P0','P1','P2']]==[(2,2),(1,1),(2,2)]\nwith (root/'v6_4/c4a_evidence/results_01/dev_endpoints.csv').open(encoding='utf8',newline='') as f:rows=list(csv.DictReader(f))\nassert len(rows)==12 and all(all(json.loads(r['five_gates']).values()) for r in rows)\nassert all(all(x==0 for x in json.loads(r['prediction_actual_difference']).values()) for r in rows)\ncommands=list((root/'v6_4/c4a_evidence/dev_01/command_logs').glob('*/receipt.json'));assert len(commands)==8 and all(read(p)['exit_code']==0 for p in commands)\nr=root/'v6_4/releases/c4a_architecture_audit_20261010_01';mf=read(r/'manifest.json')\nassert all(sha(r/p)==h for p,h in mf['files_sha256'].items())\nfrom v6_4.search_aware_warmstart_experiment import _used_seeds\nused,_=_used_seeds();assert {2028300010,2028404739}.issubset(used)\nrender=out/'rendered_results.md'\nsubprocess.run([sys.executable,'-B','-X','utf8','docs/audit_scripts/c4a_write_results.py','--results','v6_4/c4a_evidence/results_01','--output',str(render)],check=True)\nassert sha(render)==sha(root/'docs/V6_4_C4A_RESULTS.md')\nassert read(root/'v6_4/c4a_evidence/review_01/test_coverage.json')['unique_passed']==137\nassert git('rev-parse','HEAD')=='dd834783847bfbcc4f8ec624b7bce0d22777b6de'\nassert git('rev-parse','v6.4-c3-search-aware-closed-loop-val')=='18f6329e3960c76dce8b787749b269695888f9c9'\nremote=(root/'docs/audit_receipts/c4a/remote_final_01/stdout.txt').read_text().strip();assert remote.startswith('18f6329e3960c76dce8b787749b269695888f9c9')\nvalue=dict(status='PASS',summary_and_endpoint_claims_checked=True,results_document_matches_generator=True,independent_actual_runs=7,aliases=5,all_five_gates=True,all_quality_prediction_actual_deltas_zero=True,all_eight_physical_commands_exit_zero=True,release_files_verified=len(mf['files_sha256']),new_DEV_seeds_registered=True,unique_passed_tests=137,source_producer=git('rev-parse','HEAD'),base=git('rev-parse','v6.4-c3-search-aware-closed-loop-val'),remote_ref=remote,branch=git('branch','--show-current'),worktrees=git('worktree','list','--porcelain'),new_physics_steps=0,new_model_forwards=0)\n(out/'final_review.json').write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\\n',encoding='utf8');print(json.dumps({k:v for k,v in value.items() if k!='worktrees'},ensure_ascii=False))"
+  ],
+  "cwd": "E:\\v64c4a",
+  "started_utc": "2026-10-10T02:19:22.332657+00:00",
+  "ended_utc": "2026-10-10T02:19:24.389099+00:00",
+  "elapsed_s": 2.0560228000395,
+  "exit_code": 0,
+  "pid": 87708,
+  "status": "PASS",
+  "environment": {
+    "OMP_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null
+  },
+  "output_sha256": {
+    "stdout.txt": "05b862b535b8b9620a07efa95341c501fcd810d8de0791951b6b7e3d3de394e0",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import ast,pathlib,json; p=sorted(pathlib.Path('docs/audit_scripts').glob('c4a_*.py')); [ast.parse(f.read_text(encoding='utf8'),filename=str(f)) for f in p]; print(json.dumps({'status':'PASS','scripts':[str(f) for f in p],'physics_steps':0,'model_forwards':0}))"
+  ],
+  "cwd": "E:\\v64c4a",
+  "started_utc": "2026-10-10T01:54:16.484102+00:00",
+  "ended_utc": "2026-10-10T01:54:16.532643+00:00",
+  "elapsed_s": 0.04790230002254248,
+  "exit_code": 0,
+  "pid": 136496,
+  "status": "PASS",
+  "environment": {
+    "OMP_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null
+  },
+  "output_sha256": {
+    "stdout.txt": "191edff001fb2c1a6d57936505befa27c71d683a68f99dc8692c500899b6ff1f",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

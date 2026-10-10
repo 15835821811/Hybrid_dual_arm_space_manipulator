@@ -1,0 +1,10 @@
+{
+  "initial_status": "FAIL",
+  "check": "Git index bytes versus delivery SHA-256",
+  "path": "docs/V6_4_C4A_OBJECTIVE.md",
+  "working_copy_sha256": "9273ed7e101f699a7a55cead461f54b68db841482ed797c2108472a66583880c",
+  "old_index_sha256": "add37db95d3220a631486ea094c6db1aeb2aec9c436da653ea3a42968f43c91a",
+  "cause": "The early objective copy was committed before the C4-A -text attribute. Git retained normalized LF in the index while the frozen input copy uses CRLF.",
+  "remediation": "Re-stage C4-A documents with git add --renormalize after the explicit -text attribute; preserve current bytes, no physical/source change.",
+  "physical_retries": 0
+}
