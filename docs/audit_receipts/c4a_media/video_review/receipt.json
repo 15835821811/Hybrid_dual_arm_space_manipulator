@@ -1,0 +1,3524 @@
+{
+  "schema": "c4a_video_review_pack_v1",
+  "started_utc": "2026-10-10T02:41:23.340682+00:00",
+  "script_sha256": "20714b8d2e60ebc59c29b4ba01110cae1255c78f35fc2bce1bb391e80cd97359",
+  "argv": [
+    "E:\\v64c2\\.venv-c2\\Scripts\\python.exe",
+    "docs/audit_scripts/c4a_video_review_pack.py",
+    "--media",
+    "v6_4/visualization/c4a_architecture_audit_20261010_01",
+    "--output",
+    "docs/audit_receipts/c4a_media/video_review"
+  ],
+  "media": "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01",
+  "status": "MACHINE_PASS_VISUAL_REVIEW_PENDING",
+  "commands": [
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-version"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.03799849981442094,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-version"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.03823400009423494,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09773229993879795,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07707019988447428,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10205509979277849,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07868219958618283,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10242950031533837,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07673120032995939,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10824370011687279,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07602989999577403,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09913180023431778,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07523779990151525,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.38712129974737763,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.15408529993146658,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.2014105999842286,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_A\\c4a_dev0_plus_P0_A_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_A\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09657600009813905,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.0997377997264266,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07537809992209077,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10188800003379583,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07715889997780323,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09885169984772801,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07466630032286048,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10632969997823238,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07477560034021735,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09763040021061897,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07497560000047088,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.38758879993110895,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.15398860024288297,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.2060346999205649,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P0_B\\c4a_dev0_plus_P0_B_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P0_B\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10207789996638894,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1006082003004849,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07289370009675622,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10673880018293858,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07315359963104129,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09920180030167103,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07368709985166788,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.11262070015072823,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07861919980496168,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09792029997333884,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07376530021429062,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.3914864999242127,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.15870679961517453,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.20430479990318418,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev0_plus_P1_B\\c4a_dev0_plus_P1_B_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev0_plus_P1_B\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1010957001708448,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09839490009471774,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07682170020416379,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10242660017684102,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07511499989777803,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09963429998606443,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07323039975017309,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10623040003702044,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07439839979633689,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1030218000523746,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07624990027397871,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.3872513002716005,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.157466399949044,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.20509930001571774,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P0_B\\c4a_dev1_minus_P0_B_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P0_B\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1015714998356998,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10419780015945435,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07393589988350868,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10076900012791157,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07439800025895238,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09966439986601472,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.0754122999496758,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1050348998978734,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.0744154998101294,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09774680016562343,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.0729994997382164,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.39405049988999963,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.14912990015000105,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.19913010019809008,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_A\\c4a_dev1_minus_P1_A_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_A\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10224700020626187,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09715500008314848,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07635880028828979,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10106560029089451,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07905039982870221,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09854299994185567,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07539119990542531,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10620269970968366,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07824059994891286,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09768600016832352,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07566259987652302,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.39538099989295006,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1537708998657763,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.21179809980094433,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P1_B\\c4a_dev1_minus_P1_B_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P1_B\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.1022020997479558,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_overview.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.098348299972713,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_overview.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\overview\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.08074610028415918,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_front.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10101020010188222,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_front.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\front\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07811160013079643,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_side.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09931090008467436,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_side.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\side\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07649580016732216,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_top.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.10550069995224476,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_top.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\top\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07554769981652498,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_iso.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.0984948999248445,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_iso.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\iso\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.07256640028208494,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_five_view_grid.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.3851071000099182,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_five_view_grid.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\five_view_grid\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.15186019986867905,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffprobe.EXE",
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,r_frame_rate,nb_read_frames:format=duration",
+        "-of",
+        "json",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_continuum_focus.mp4"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.20381239987909794,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-7.1-full_build\\bin\\ffmpeg.EXE",
+        "-v",
+        "error",
+        "-nostdin",
+        "-i",
+        "E:\\v64c4a\\v6_4\\visualization\\c4a_architecture_audit_20261010_01\\replays\\c4a_dev1_minus_P2_A\\c4a_dev1_minus_P2_A_continuum_focus.mp4",
+        "-vf",
+        "select=eq(n\\,0)+eq(n\\,203)+eq(n\\,405)",
+        "-vsync",
+        "0",
+        "-frames:v",
+        "3",
+        "E:\\v64c4a\\docs\\audit_receipts\\c4a_media\\video_review\\frames\\c4a_dev1_minus_P2_A\\continuum_focus\\%02d.png"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.09669810021296144,
+      "stderr": ""
+    }
+  ],
+  "videos": [
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "overview",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_overview.mp4",
+      "sha256": "7b251aae4dbb728a27ade1f60bbc62486885639341e04c2ab56573073533e4fb",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\overview\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\overview\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "front",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_front.mp4",
+      "sha256": "e8e7fd7cb206020b6d6e88793f6b27809ac072a8439e6d1b53e48c9e4b789d7a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\front\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\front\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "side",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_side.mp4",
+      "sha256": "09f64fb8dc5957e6db0621f5d89140ebaa96de3b51a56ec4eed93ba173e6980a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\side\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\side\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "top",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_top.mp4",
+      "sha256": "ee5bd70571d5f78533eb64fc0b111338e022ff742227bf99b2935da6dff8f78c",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\top\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\top\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "iso",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_iso.mp4",
+      "sha256": "6ee74e50dca510221eaf49d8a45accbfeb14e17c0478480067b1a362b4fd1d49",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\iso\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\iso\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_five_view_grid.mp4",
+      "sha256": "2cb1f720dd5ddcf78df602a9ab30e06a8df0effe0ebaaed3c10ada64c9ebfb02",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\five_view_grid\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\five_view_grid\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev0_plus_P0_A/c4a_dev0_plus_P0_A_continuum_focus.mp4",
+      "sha256": "c83b1b0d0ee103886da854972fd4abe8fadb853ac250f80f2024414b4b49e52d",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_A\\continuum_focus\\01.png",
+        "frames\\c4a_dev0_plus_P0_A\\continuum_focus\\02.png",
+        "frames\\c4a_dev0_plus_P0_A\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "overview",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_overview.mp4",
+      "sha256": "4eb3286b3c48b21870771f82869a04b88483122fe6afea3ddacaec00e8e29e4a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\overview\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\overview\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "front",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_front.mp4",
+      "sha256": "143e7e276a0bbfb6dc1580f9f3e45233fe6dd31aa37a8f698e3a8524e2380439",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\front\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\front\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "side",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_side.mp4",
+      "sha256": "848fe65a595ba1983fe28eb29db76f25a1aa0da2e21e16cbfb522bf039266cb3",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\side\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\side\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "top",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_top.mp4",
+      "sha256": "ae5baa80490477b6d9dc3f6c9c3a5a245a43d4526314685110365e70fa282b20",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\top\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\top\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "iso",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_iso.mp4",
+      "sha256": "b6c6d3f0fc41a1618f3b8c47980fdd8b326efcbf8b57775aea58a6796424c1f4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\iso\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\iso\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_five_view_grid.mp4",
+      "sha256": "ca842dafce2e031ecfaf33c08df275f9529a5e284bc454c82f7bcda99eca81fa",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\five_view_grid\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\five_view_grid\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev0_plus_P0_B/c4a_dev0_plus_P0_B_continuum_focus.mp4",
+      "sha256": "2991273b96a6a9f1c9875dd4c7373dab11aeb7a00b204c0fd97b77f12eb9dbe0",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P0_B\\continuum_focus\\01.png",
+        "frames\\c4a_dev0_plus_P0_B\\continuum_focus\\02.png",
+        "frames\\c4a_dev0_plus_P0_B\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "overview",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_overview.mp4",
+      "sha256": "5cd0d9ae8c8afcefba5ce51dc5405499acfb797a8bd2dcd3d1d504e31e9dd14a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\overview\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\overview\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "front",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_front.mp4",
+      "sha256": "ef73534f6848d38cbe6830c20ed1709c83044ab856aaa4a192bb5989e9d107ab",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\front\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\front\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "side",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_side.mp4",
+      "sha256": "46b039468e88f16ac8780f0871119139abc7636955b501e6b404d38582795922",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\side\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\side\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "top",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_top.mp4",
+      "sha256": "c5a255e6b8a92927ce856db021660930f904b54e61a02ea9cc0922fbeb9d5e15",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\top\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\top\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "iso",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_iso.mp4",
+      "sha256": "b65c872019d64d488f1d6ddb55181ae7dddcc09b48a2ed950117d3e3de90b60a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\iso\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\iso\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_five_view_grid.mp4",
+      "sha256": "43f74859702c1947992704911e34f70df78f99e9e71e964f56b4255c86fdd046",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\five_view_grid\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\five_view_grid\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev0_plus_P1_B/c4a_dev0_plus_P1_B_continuum_focus.mp4",
+      "sha256": "a758e4ebe25d037ec88971f893bb8fd8706fa22dee8b36c5082d1a1110e2f1f5",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev0_plus_P1_B\\continuum_focus\\01.png",
+        "frames\\c4a_dev0_plus_P1_B\\continuum_focus\\02.png",
+        "frames\\c4a_dev0_plus_P1_B\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "overview",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_overview.mp4",
+      "sha256": "f8d9d631a2be26ff32a3035723bc1bbd837f4c3f64344e044da7be7628dcf0f9",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\overview\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\overview\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "front",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_front.mp4",
+      "sha256": "0c7d1dea4400b38fbfe01f3a58d7cb75f81ef2f80fe0632650df2bd419bb95a0",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\front\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\front\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "side",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_side.mp4",
+      "sha256": "fc2bb48b7d56b5bac6f5a07b8e52ee11d4cce4e1d64a097021b4fb439a6e83b4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\side\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\side\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "top",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_top.mp4",
+      "sha256": "859a6e8ca2a5056889f6dac4bfc42acf8c0b13f369ce5daeeb310f06b0af7376",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\top\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\top\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "iso",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_iso.mp4",
+      "sha256": "17bf711f9b0ac6973985d4c582425f9fc04e07ae0a12c3983c2f9d0599b1c373",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\iso\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\iso\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_five_view_grid.mp4",
+      "sha256": "e3a12096179d53f34990d215d1e25f7e4b76bb590579cdaeb4c78c3a62e3d9d5",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\five_view_grid\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\five_view_grid\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev1_minus_P0_B/c4a_dev1_minus_P0_B_continuum_focus.mp4",
+      "sha256": "07cbb6212b86e7dae2ab1b26155018d25b4f9ab84a3a701e185f6d2b9ff2f874",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P0_B\\continuum_focus\\01.png",
+        "frames\\c4a_dev1_minus_P0_B\\continuum_focus\\02.png",
+        "frames\\c4a_dev1_minus_P0_B\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "overview",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_overview.mp4",
+      "sha256": "ce3fa1e4db3ecaf68e0c67b6a6ebdfc98cb62cd33674a5064c1b94730f15d335",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\overview\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\overview\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "front",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_front.mp4",
+      "sha256": "c8bcf9052233b97ef4c4236243009f4da2e887f56d07c1ad51d6ac4c1be7eebe",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\front\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\front\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "side",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_side.mp4",
+      "sha256": "6113857d838e33aa8fa300bcec2020f6df9cb0aa0a5fea591eb9cbbaf7799916",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\side\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\side\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "top",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_top.mp4",
+      "sha256": "b39621922f2c9781d602c97719fe0bb1837bc18f7f81a7f939ce9e852b98cc71",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\top\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\top\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "iso",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_iso.mp4",
+      "sha256": "e0ef5ffd18ed669be304f77613741887bd3e749b3d5aa08c4ad79f27db1da2a4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\iso\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\iso\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_five_view_grid.mp4",
+      "sha256": "2a9d77dca8fcfc8b8c9ad9647986f5fdd3ecff316f96ecddcd35d6cc9da0d2ef",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\five_view_grid\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\five_view_grid\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev1_minus_P1_A/c4a_dev1_minus_P1_A_continuum_focus.mp4",
+      "sha256": "4ce6adf21872fafaf20deaf7ee76c424e21961d64ae37651687dde257c1c251b",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_A\\continuum_focus\\01.png",
+        "frames\\c4a_dev1_minus_P1_A\\continuum_focus\\02.png",
+        "frames\\c4a_dev1_minus_P1_A\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "overview",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_overview.mp4",
+      "sha256": "62486d7a1aa24eb2548bcfe0b1f7b8351fca3f0955cda0e64368200a30c1c00a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\overview\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\overview\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "front",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_front.mp4",
+      "sha256": "426d66c65a19c7cdcf97c6a24f5de05c4db52fd89700d25276eaa141461fa68e",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\front\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\front\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "side",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_side.mp4",
+      "sha256": "99fbb66109e4932f315bdc9d56c70d60d96eaa402a2ad8878f721d1e0e429a3f",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\side\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\side\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "top",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_top.mp4",
+      "sha256": "7be3e75e3bb29c292d53b6693750419723d5fdcee1c1dfb941991de68a761c90",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\top\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\top\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "iso",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_iso.mp4",
+      "sha256": "34b34d60c742accbd9cd0ba968736162885e6d9ae14e0d1c38523c5eefdcf5c2",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\iso\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\iso\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_five_view_grid.mp4",
+      "sha256": "654e99578ebf6fe16229d222b09379566616cd55174581d5e6491df4a72e50fc",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\five_view_grid\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\five_view_grid\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_continuum_focus.mp4",
+      "sha256": "645c4fdd33fec0f2e7f410c60bfaca7d9ec44bd60100ca6641de1d129826f944",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P1_B\\continuum_focus\\01.png",
+        "frames\\c4a_dev1_minus_P1_B\\continuum_focus\\02.png",
+        "frames\\c4a_dev1_minus_P1_B\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "overview",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_overview.mp4",
+      "sha256": "56fff4411fed3d83d89ab2cb904d76fe259ab76184769dbaebb5c90a32e04176",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\overview\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\overview\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\overview\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "front",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_front.mp4",
+      "sha256": "3436b45550a2b007d7476177f6d34536af6300927c02eaeafd37189385ba768a",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\front\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\front\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\front\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "side",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_side.mp4",
+      "sha256": "855087e75d58775d3b5ff0beed1aad5d787dc750742686a6a496cdfb6723b1dc",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\side\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\side\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\side\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "top",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_top.mp4",
+      "sha256": "72db6d137b9cc349464465dd37d3b6e9f2f6119276f0b58c82ed4eafb3eb2462",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\top\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\top\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\top\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "iso",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_iso.mp4",
+      "sha256": "915b65c050392006a44e1a375134eb3ba153b50d74679994e6180b3d185cf389",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\iso\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\iso\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\iso\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "five_view_grid",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_five_view_grid.mp4",
+      "sha256": "719aef1580b3957b39d74c52dfceb62e808613694d4e4336c1376ae33d022550",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1920,
+            "height": 960,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\five_view_grid\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\five_view_grid\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\five_view_grid\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "view": "continuum_focus",
+      "video": "replays/c4a_dev1_minus_P2_A/c4a_dev1_minus_P2_A_continuum_focus.mp4",
+      "sha256": "48a03549e677a956390d4d87836ed16dfc42afd32a7b77c94e330982c934d217",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 720,
+            "r_frame_rate": "15/1",
+            "nb_read_frames": "406"
+          }
+        ],
+        "format": {
+          "duration": "27.066667"
+        }
+      },
+      "review_frame_indices": [
+        0,
+        203,
+        405
+      ],
+      "review_frames": [
+        "frames\\c4a_dev1_minus_P2_A\\continuum_focus\\01.png",
+        "frames\\c4a_dev1_minus_P2_A\\continuum_focus\\02.png",
+        "frames\\c4a_dev1_minus_P2_A\\continuum_focus\\03.png"
+      ],
+      "visual_review": "NOT_RUN"
+    }
+  ],
+  "contact_sheets": [
+    {
+      "slot": "c4a_dev0_plus_P0_A",
+      "path": "c4a_dev0_plus_P0_A_seven_view_contact_sheet.jpg",
+      "sha256": "59dc548ffa3d16e86762c2952985b8b4dd5120f354459f3e2fba0089d084da27",
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P0_B",
+      "path": "c4a_dev0_plus_P0_B_seven_view_contact_sheet.jpg",
+      "sha256": "2acfdacb65a89e5d2b06e749431feb3e6ade8b17441797995ddbf5209d0ff03d",
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev0_plus_P1_B",
+      "path": "c4a_dev0_plus_P1_B_seven_view_contact_sheet.jpg",
+      "sha256": "676ee517bc35ff3f4e0bdf78bf55841b8375edd5dc28b7bad324098aa8356c11",
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P0_B",
+      "path": "c4a_dev1_minus_P0_B_seven_view_contact_sheet.jpg",
+      "sha256": "05ce39a6b7d83270c2711f9be3f15a431c005ff50d119d32faa2832a06a6a884",
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_A",
+      "path": "c4a_dev1_minus_P1_A_seven_view_contact_sheet.jpg",
+      "sha256": "030641546285bd6fecb4b3fb60a7f1aec940d3b045bca3f739940f7219e43d71",
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P1_B",
+      "path": "c4a_dev1_minus_P1_B_seven_view_contact_sheet.jpg",
+      "sha256": "a573e00faa7463b9c0fe8e188b8aad0996b8fc5ac534dec826144bb3e4e6fea0",
+      "visual_review": "NOT_RUN"
+    },
+    {
+      "slot": "c4a_dev1_minus_P2_A",
+      "path": "c4a_dev1_minus_P2_A_seven_view_contact_sheet.jpg",
+      "sha256": "b7873f6806efaf5e81435620ed12862a9bf2b25a79c5aded49e4e8a9faf99792",
+      "visual_review": "NOT_RUN"
+    }
+  ],
+  "visual_review": "NOT_RUN",
+  "physics_steps": 0,
+  "model_samples": 0,
+  "training_updates": 0,
+  "tools": {
+    "ffprobe": "ffprobe version 7.1-full_build-www.gyan.dev Copyright (c) 2007-2024 the FFmpeg developers",
+    "ffmpeg": "ffmpeg version 7.1-full_build-www.gyan.dev Copyright (c) 2000-2024 the FFmpeg developers"
+  },
+  "media_manifest_sha256": "b71ca5bdf9b0275e781231ae68a2337d8ef6420af6f7a98a6a9491c8c35ff0aa",
+  "unique_saved_actuals": 7,
+  "video_count": 49,
+  "ended_utc": "2026-10-10T02:41:36.624977+00:00",
+  "elapsed_wall_s": 13.283092599827796
+}

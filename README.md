@@ -1,3 +1,21 @@
+# Hybrid Dual-Arm Space Manipulator — V6.4-C4-A
+
+当前版本：**Diffusion 架构适配性审计与规则保留式初值组合**。两个独立 DEV 任务、P0/P1/P2 三种策略、A/B 两种偏好，共 12 个结果槽（7 次独立执行、5 个严格别名）。全部完整执行 27 秒并通过原五门禁；六个 B 结果均达到 30 mm 净空目标。结论为 **MODIFY / ARCHITECTURE_NOT_JUSTIFIED**：局部 Diffusion 提案有用，尚未证明该架构优于简单提案方法。
+
+[当前可视化查看器](v6_4/visualization/c4a_architecture_audit_20261010_01/index.html) · [五视角与连续体侧视视频目录](v6_4/visualization/c4a_architecture_audit_20261010_01/replays) · [轨迹、跟踪误差与原生 CSV](v6_4/visualization/c4a_architecture_audit_20261010_01/figures) · [结果报告](docs/V6_4_C4A_RESULTS.md) · [架构决策](docs/V6_4_C4A_DECISION.md) · [可视化说明](docs/V6_4_C4A_VISUALIZATION.md) · [独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c4a-diffusion-architecture-audit)
+
+本轮媒体包含 **49 个 MP4**：每次独立执行的总览、正面、侧面、俯视、等轴测、五视角拼接、连续体侧视特写；同步更新 **7 组双臂末端轨迹与误差图、7 份原生 2 ms CSV、6 张策略对比图**。别名共享对应执行的媒体。所有视频只读取保存的 Actual 状态并做前向计算，不增加物理步、控制求解、模型采样或训练。
+
+![C4-A 执行质量与规划成本](v6_4/visualization/c4a_architecture_audit_20261010_01/charts/actual_quality_and_cost.png)
+
+![C4-A DEV1 P1-B 五视角预览](v6_4/visualization/c4a_architecture_audit_20261010_01/replays/c4a_dev1_minus_P1_B/c4a_dev1_minus_P1_B_five_view_preview.png)
+
+GitHub 文件页显示 HTML 源码；克隆本分支后，在仓库根目录运行 `python -m http.server 8766 --bind 127.0.0.1`，再打开 [本地交互查看器](http://127.0.0.1:8766/v6_4/visualization/c4a_architecture_audit_20261010_01/index.html)。成品视频、图片、CSV 和相对链接随分支携带，查看无需 MuJoCo。完整原生仿真档案仍按[原发布清单](v6_4/releases/c4a_architecture_audit_20261010_01/raw_inventory_sha256.json)保留在本地；本次增加的是可独立查看的媒体补充包。
+
+以下保留 C.3 及更早版本的历史结论与媒体。
+
+---
+
 # Hybrid Dual-Arm Space Manipulator — V6.4-C.3
 
 本轮固定研究程序已经完成：96 槽教师搜索、D/S 各一次 4000 更新、88 槽闭环 VAL 和 144 槽独立 TEST。两个模型均由 VAL 选中 **update 4000**。Diffusion 未建立相对规则、TRAIN-only 检索或简单回归的整体收益；默认保留 **C.1 规则初始化**。
@@ -12,7 +30,7 @@
 
 TEST 共 40 个逻辑 actual 槽：34 槽完整通过、6 槽 NO_PLAN，其中 28 次独立实际执行、6 个严格别名。主预测物理步 4,058,970 / 4,428,000，VAL+TEST 主 actual 步 526,500 / 810,000；预演、重放和几何另计。三 TRAIN、两 TEST 母场景及单训练 seed 仅支持 DATA_LIMITED 先导，deployment=NOT_MET，连续时间与硬件安全均未建立。
 
-[C.3 封存研究报告](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/summary.json) · [当前查看器：五视角、连续体侧视、末端轨迹与误差](v6_4/visualization/search_aware_warmstart_20261008_01/index.html) · [展示与来源说明](docs/V6_4_C3_VISUALIZATION.md) · [最终逐项验收](docs/C3_FINAL_COMPLETION_AUDIT.md) · [GitHub 交付核验](docs/V6_4_C3_DELIVERY.md) · [最终 TEST 审计](docs/C3_FINAL_TEST_METADATA_AUDIT.md) · [软件测试](docs/C3_FINAL_MOCK_EXECUTION.md) · [独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c3-search-aware-closed-loop-val)
+[C.3 封存研究报告](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/REPORT.md) · [机器结论](v6_4/releases/search_aware_warmstart_20261008_01/snapshot/summary.json) · [C.3 历史查看器：五视角、连续体侧视、末端轨迹与误差](v6_4/visualization/search_aware_warmstart_20261008_01/index.html) · [展示与来源说明](docs/V6_4_C3_VISUALIZATION.md) · [最终逐项验收](docs/C3_FINAL_COMPLETION_AUDIT.md) · [GitHub 交付核验](docs/V6_4_C3_DELIVERY.md) · [最终 TEST 审计](docs/C3_FINAL_TEST_METADATA_AUDIT.md) · [软件测试](docs/C3_FINAL_MOCK_EXECUTION.md) · [独立分支](https://github.com/15835821811/Hybrid_dual_arm_space_manipulator/tree/v6.4-c3-search-aware-closed-loop-val)
 
 便携包包含真实权重、统一 TRAIN 数据、VAL/TEST 实际 trace 与独立重放数组、命令与验收文件，以及实验 producer `9f39b42775283432eb933f63a9047c488ba22070` 的完整冻结源码。大型私有预测/计时/几何档案的遗漏项逐文件列出 SHA 与本地保留原因，不冒充已随 clone 携带。发布代码另含不影响本轮结果的[空初值身份维护](docs/V6_4_C3_MAINTENANCE.md)。字节验证不运行新实验：
 
