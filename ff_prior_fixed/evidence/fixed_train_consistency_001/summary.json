@@ -1,0 +1,920 @@
+{
+  "TEST": "NOT_RUN",
+  "attempts": {
+    "candidates": 60,
+    "consistency": 4,
+    "correction": 16,
+    "execution": 12
+  },
+  "benefit": "NOT_ESTABLISHED",
+  "calls": {
+    "candidates.coupled": 1879,
+    "candidates.distance": 11369089,
+    "candidates.fk": 776543,
+    "candidates.forward": 3878,
+    "candidates.mass_matrix": 529326,
+    "candidates.physics_steps": 0,
+    "candidates.rrt": 0,
+    "candidates.sqp": 0,
+    "candidates.torque_rollout": 0,
+    "consistency.coupled": 8,
+    "consistency.distance": 1950408,
+    "consistency.fk": 58220,
+    "consistency.forward": 105036,
+    "consistency.mass_matrix": 117024,
+    "consistency.physics_steps": 42000,
+    "consistency.rrt": 0,
+    "consistency.sqp": 0,
+    "consistency.torque_rollout": 4,
+    "correction.coupled": 818,
+    "correction.distance": 190492,
+    "correction.fk": 219284,
+    "correction.forward": 898,
+    "correction.mass_matrix": 215156,
+    "correction.physics_steps": 0,
+    "correction.rrt": 0,
+    "correction.sqp": 0,
+    "correction.torque_rollout": 0,
+    "execution.coupled": 0,
+    "execution.distance": 483046,
+    "execution.fk": 0,
+    "execution.forward": 26256,
+    "execution.mass_matrix": 15752,
+    "execution.physics_steps": 10500,
+    "execution.rrt": 0,
+    "execution.sqp": 0,
+    "execution.torque_rollout": 1
+  },
+  "consistency_diagnostics": [
+    {
+      "comparison": {
+        "Bplus_used_for_reconstruction": false,
+        "actual_native_path_reconstruction_vs_execution": {
+          "base": {
+            "final_position_m": 1.3426222224520415e-07,
+            "final_rotation_rad": 1.0760223376925527e-06,
+            "max_position_m": 2.9939355985804705e-07,
+            "max_rotation_rad": 1.6477076942523731e-06,
+            "rms_position_m": 2.149334831671163e-07,
+            "rms_rotation_rad": 1.267316619203394e-06
+          },
+          "end_effectors": {
+            "final_position_m": [
+              2.159326156148823e-06,
+              1.3840236876450851e-06
+            ],
+            "final_rotation_rad": [
+              1.0760223377036842e-06,
+              1.0760223377955043e-06
+            ],
+            "max_position_m": 3.551799549643174e-06,
+            "max_rotation_rad": 1.6477076945883115e-06,
+            "rms_position_m": 2.2647850837365325e-06,
+            "rms_rotation_rad": 1.2673166192037698e-06
+          }
+        },
+        "all_67_native_joint_rates_used": true,
+        "comparison_states": 1051,
+        "diagnostic_flags": {
+          "native_conditioned_base_within_1mm_0_2deg": true,
+          "native_conditioned_within_1mm_0_2deg": true,
+          "prediction_base_grid_converged": true,
+          "prediction_grid_converged": true,
+          "reference_base_within_1mm_0_2deg": true,
+          "reference_prediction_within_5mm_1deg": true
+        },
+        "full_motion_and_hold": true,
+        "generalized_momentum_max": 1.5877839561910523e-05,
+        "hardware_model_accuracy": "NOT_VALIDATED",
+        "manifold_max_rad": 1.616471501791894e-09,
+        "native_alignment": "state[k+1] follows ctrl[k]",
+        "native_tracking_max_rad": 2.4387543226325747e-06,
+        "nominal_reference_vs_execution": {
+          "base": {
+            "final_position_m": 6.910001970462324e-08,
+            "final_rotation_rad": 5.528636249039139e-07,
+            "max_position_m": 6.999959298257195e-08,
+            "max_rotation_rad": 5.684892650158651e-07,
+            "rms_position_m": 4.54799733580666e-08,
+            "rms_rotation_rad": 3.54136439206861e-07
+          },
+          "end_effectors": {
+            "final_position_m": [
+              1.100604721764004e-06,
+              7.164638395930057e-07
+            ],
+            "final_rotation_rad": [
+              5.563937982421108e-07,
+              5.63231014811919e-07
+            ],
+            "max_position_m": 1.5563328564845535e-06,
+            "max_rotation_rad": 2.301816693328903e-06,
+            "rms_position_m": 7.968088138099502e-07,
+            "rms_rotation_rad": 6.999235943087933e-07
+          }
+        },
+        "per_frame_base_state_copied": false,
+        "physical_certification": "NOT_GRANTED_BY_THIS_COMPARISON",
+        "prediction_grid_convergence": {
+          "base": {
+            "final_position_m": 2.603831211253931e-11,
+            "final_rotation_rad": 1.428437285401756e-10,
+            "max_position_m": 2.1667269518300456e-09,
+            "max_rotation_rad": 1.1227322918867315e-08,
+            "rms_position_m": 8.808569929189673e-10,
+            "rms_rotation_rad": 4.021203447978195e-09
+          },
+          "end_effectors": {
+            "final_position_m": [
+              2.8405399885745326e-10,
+              1.8180242167113496e-10
+            ],
+            "final_rotation_rad": [
+              1.4284353795736968e-10,
+              1.4284388197099672e-10
+            ],
+            "max_position_m": 2.2540314084892093e-08,
+            "max_rotation_rad": 1.1227323112441795e-08,
+            "rms_position_m": 7.130198261451301e-09,
+            "rms_rotation_rad": 4.021203453657858e-09
+          }
+        },
+        "prediction_intervals": 1000,
+        "reference_hash": "9a34938747edb655bba2bab27ae0a4bc8ad5e088827fdd35d791295a0b556825",
+        "status": "MEASURED",
+        "threshold_scope": "diagnostic agreement flags only; all execution acceptance gates unchanged"
+      },
+      "execution_level": "EXECUTION_VERIFIED",
+      "execution_status": "PASS",
+      "sample_id": "trainfix_000_0",
+      "status": "MEASURED",
+      "task_hash": "71597c579de3e3416d30e35d3893ace9a19ca2775f86ac341bad7373a31313bd"
+    },
+    {
+      "comparison": {
+        "Bplus_used_for_reconstruction": false,
+        "actual_native_path_reconstruction_vs_execution": {
+          "base": {
+            "final_position_m": 1.6994012339007593e-07,
+            "final_rotation_rad": 1.104670735576417e-06,
+            "max_position_m": 3.39506568672924e-07,
+            "max_rotation_rad": 3.4138302171311606e-06,
+            "rms_position_m": 2.414324019694751e-07,
+            "rms_rotation_rad": 2.3753522945675596e-06
+          },
+          "end_effectors": {
+            "final_position_m": [
+              2.1634603886746817e-06,
+              1.3630947191471473e-06
+            ],
+            "final_rotation_rad": [
+              1.1046707352876232e-06,
+              1.1046707359384926e-06
+            ],
+            "max_position_m": 5.896659276415192e-06,
+            "max_rotation_rad": 3.4138302174433875e-06,
+            "rms_position_m": 3.7379441097441736e-06,
+            "rms_rotation_rad": 2.3753522945647847e-06
+          }
+        },
+        "all_67_native_joint_rates_used": true,
+        "comparison_states": 1051,
+        "diagnostic_flags": {
+          "native_conditioned_base_within_1mm_0_2deg": true,
+          "native_conditioned_within_1mm_0_2deg": true,
+          "prediction_base_grid_converged": true,
+          "prediction_grid_converged": true,
+          "reference_base_within_1mm_0_2deg": true,
+          "reference_prediction_within_5mm_1deg": true
+        },
+        "full_motion_and_hold": true,
+        "generalized_momentum_max": 1.5243673246095879e-05,
+        "hardware_model_accuracy": "NOT_VALIDATED",
+        "manifold_max_rad": 4.747235177442882e-09,
+        "native_alignment": "state[k+1] follows ctrl[k]",
+        "native_tracking_max_rad": 5.083298844743567e-06,
+        "nominal_reference_vs_execution": {
+          "base": {
+            "final_position_m": 8.689076935910669e-08,
+            "final_rotation_rad": 5.601427493359803e-07,
+            "max_position_m": 1.1262943962333225e-07,
+            "max_rotation_rad": 6.658925225884414e-07,
+            "rms_position_m": 5.7077702372604884e-08,
+            "rms_rotation_rad": 3.400008116838482e-07
+          },
+          "end_effectors": {
+            "final_position_m": [
+              8.940648646603812e-07,
+              6.7222116798269e-07
+            ],
+            "final_rotation_rad": [
+              3.812890329267001e-07,
+              5.365768552573648e-07
+            ],
+            "max_position_m": 2.3251475861736854e-06,
+            "max_rotation_rad": 4.729042868428855e-06,
+            "rms_position_m": 8.982124966290255e-07,
+            "rms_rotation_rad": 1.1366670486155003e-06
+          }
+        },
+        "per_frame_base_state_copied": false,
+        "physical_certification": "NOT_GRANTED_BY_THIS_COMPARISON",
+        "prediction_grid_convergence": {
+          "base": {
+            "final_position_m": 2.323840789872961e-11,
+            "final_rotation_rad": 1.876023232420741e-10,
+            "max_position_m": 4.4782132680082445e-09,
+            "max_rotation_rad": 3.1462718983055405e-08,
+            "rms_position_m": 1.537630723328726e-09,
+            "rms_rotation_rad": 1.1511389537786857e-08
+          },
+          "end_effectors": {
+            "final_position_m": [
+              2.41857440274194e-10,
+              1.8669530340181283e-10
+            ],
+            "final_rotation_rad": [
+              1.876024901016481e-10,
+              1.876019796071938e-10
+            ],
+            "max_position_m": 5.7619092752092496e-08,
+            "max_rotation_rad": 3.146271919594232e-08,
+            "rms_position_m": 1.7816189924097526e-08,
+            "rms_rotation_rad": 1.1511389543792458e-08
+          }
+        },
+        "prediction_intervals": 1000,
+        "reference_hash": "21954877c962c89b7f6bd3dfbfd323cbd0d6e90a68a14a542340adb1732650c7",
+        "status": "MEASURED",
+        "threshold_scope": "diagnostic agreement flags only; all execution acceptance gates unchanged"
+      },
+      "execution_level": "EXECUTION_VERIFIED",
+      "execution_status": "PASS",
+      "sample_id": "main_000044",
+      "status": "MEASURED",
+      "task_hash": "71597c579de3e3416d30e35d3893ace9a19ca2775f86ac341bad7373a31313bd"
+    },
+    {
+      "comparison": {
+        "Bplus_used_for_reconstruction": false,
+        "actual_native_path_reconstruction_vs_execution": {
+          "base": {
+            "final_position_m": 1.6358347124218186e-07,
+            "final_rotation_rad": 1.1933253354373396e-06,
+            "max_position_m": 3.5814271288588105e-07,
+            "max_rotation_rad": 2.572478743343888e-06,
+            "rms_position_m": 2.609265190607939e-07,
+            "rms_rotation_rad": 1.9786586906314568e-06
+          },
+          "end_effectors": {
+            "final_position_m": [
+              2.4364036593635486e-06,
+              1.4822993120123654e-06
+            ],
+            "final_rotation_rad": [
+              1.1933253353917987e-06,
+              1.1933253355604664e-06
+            ],
+            "max_position_m": 5.433722183694421e-06,
+            "max_rotation_rad": 2.5724787437664174e-06,
+            "rms_position_m": 3.4256033429209445e-06,
+            "rms_rotation_rad": 1.9786586906272525e-06
+          }
+        },
+        "all_67_native_joint_rates_used": true,
+        "comparison_states": 1051,
+        "diagnostic_flags": {
+          "native_conditioned_base_within_1mm_0_2deg": true,
+          "native_conditioned_within_1mm_0_2deg": true,
+          "prediction_base_grid_converged": true,
+          "prediction_grid_converged": true,
+          "reference_base_within_1mm_0_2deg": true,
+          "reference_prediction_within_5mm_1deg": true
+        },
+        "full_motion_and_hold": true,
+        "generalized_momentum_max": 1.7074590856928223e-05,
+        "hardware_model_accuracy": "NOT_VALIDATED",
+        "manifold_max_rad": 7.612530951092711e-09,
+        "native_alignment": "state[k+1] follows ctrl[k]",
+        "native_tracking_max_rad": 2.1786406401158587e-06,
+        "nominal_reference_vs_execution": {
+          "base": {
+            "final_position_m": 8.583383874203541e-08,
+            "final_rotation_rad": 6.309768980938998e-07,
+            "max_position_m": 8.621363986724913e-08,
+            "max_rotation_rad": 6.459584747652336e-07,
+            "rms_position_m": 5.3658047482461663e-08,
+            "rms_rotation_rad": 3.7872446518558464e-07
+          },
+          "end_effectors": {
+            "final_position_m": [
+              1.3484747557054002e-06,
+              7.325723219993682e-07
+            ],
+            "final_rotation_rad": [
+              7.646775958277768e-07,
+              5.393471802747151e-07
+            ],
+            "max_position_m": 2.598789979328157e-06,
+            "max_rotation_rad": 3.4289873270926243e-06,
+            "rms_position_m": 1.0226680978588276e-06,
+            "rms_rotation_rad": 9.606164085242365e-07
+          }
+        },
+        "per_frame_base_state_copied": false,
+        "physical_certification": "NOT_GRANTED_BY_THIS_COMPARISON",
+        "prediction_grid_convergence": {
+          "base": {
+            "final_position_m": 1.4410627293590386e-11,
+            "final_rotation_rad": 3.677766970000573e-10,
+            "max_position_m": 2.7200400795490108e-09,
+            "max_rotation_rad": 2.5119285820294168e-08,
+            "rms_position_m": 1.1043370993048437e-09,
+            "rms_rotation_rad": 8.051211871359505e-09
+          },
+          "end_effectors": {
+            "final_position_m": [
+              6.084931449991295e-10,
+              4.3135077731765544e-10
+            ],
+            "final_rotation_rad": [
+              3.6777690274583394e-10,
+              3.6777640213991876e-10
+            ],
+            "max_position_m": 3.86344073694923e-08,
+            "max_rotation_rad": 2.511928572972113e-08,
+            "rms_position_m": 1.2945158922461858e-08,
+            "rms_rotation_rad": 8.051211858580774e-09
+          }
+        },
+        "prediction_intervals": 1000,
+        "reference_hash": "6db1e529d7d5ba8a622af10204629d8393f892f5fd55965a73fc2b2b2445013c",
+        "status": "MEASURED",
+        "threshold_scope": "diagnostic agreement flags only; all execution acceptance gates unchanged"
+      },
+      "execution_level": "EXECUTION_VERIFIED",
+      "execution_status": "PASS",
+      "sample_id": "trainfix_001_0",
+      "status": "MEASURED",
+      "task_hash": "f4b2b046906cf18a0622bc57bd5303c9c53ee7ce327d34aea04f8500b0a58d86"
+    },
+    {
+      "comparison": {
+        "Bplus_used_for_reconstruction": false,
+        "actual_native_path_reconstruction_vs_execution": {
+          "base": {
+            "final_position_m": 1.7392247141744426e-07,
+            "final_rotation_rad": 1.1838593997772993e-06,
+            "max_position_m": 4.139065516055443e-07,
+            "max_rotation_rad": 3.441970352880872e-06,
+            "rms_position_m": 2.6911697715817224e-07,
+            "rms_rotation_rad": 2.246027334435136e-06
+          },
+          "end_effectors": {
+            "final_position_m": [
+              2.3961439519346442e-06,
+              1.460988856245812e-06
+            ],
+            "final_rotation_rad": [
+              1.183859399710346e-06,
+              1.1838593993835499e-06
+            ],
+            "max_position_m": 6.922186699080154e-06,
+            "max_rotation_rad": 3.4419703528625373e-06,
+            "rms_position_m": 3.829199589778391e-06,
+            "rms_rotation_rad": 2.2460273344399252e-06
+          }
+        },
+        "all_67_native_joint_rates_used": true,
+        "comparison_states": 1051,
+        "diagnostic_flags": {
+          "native_conditioned_base_within_1mm_0_2deg": true,
+          "native_conditioned_within_1mm_0_2deg": true,
+          "prediction_base_grid_converged": true,
+          "prediction_grid_converged": true,
+          "reference_base_within_1mm_0_2deg": true,
+          "reference_prediction_within_5mm_1deg": true
+        },
+        "full_motion_and_hold": true,
+        "generalized_momentum_max": 2.054067600968561e-05,
+        "hardware_model_accuracy": "NOT_VALIDATED",
+        "manifold_max_rad": 8.430721659718968e-10,
+        "native_alignment": "state[k+1] follows ctrl[k]",
+        "native_tracking_max_rad": 1.988420172405192e-06,
+        "nominal_reference_vs_execution": {
+          "base": {
+            "final_position_m": 9.081034727705826e-08,
+            "final_rotation_rad": 6.156503091316887e-07,
+            "max_position_m": 9.090094150841607e-08,
+            "max_rotation_rad": 6.201657953401853e-07,
+            "rms_position_m": 5.337857117246099e-08,
+            "rms_rotation_rad": 3.380534221314301e-07
+          },
+          "end_effectors": {
+            "final_position_m": [
+              1.248448713478059e-06,
+              7.356465603375473e-07
+            ],
+            "final_rotation_rad": [
+              6.319277645180565e-07,
+              5.732253745364748e-07
+            ],
+            "max_position_m": 2.38442818207116e-06,
+            "max_rotation_rad": 2.3161771744348468e-06,
+            "rms_position_m": 9.705311102235958e-07,
+            "rms_rotation_rad": 8.424679773379425e-07
+          }
+        },
+        "per_frame_base_state_copied": false,
+        "physical_certification": "NOT_GRANTED_BY_THIS_COMPARISON",
+        "prediction_grid_convergence": {
+          "base": {
+            "final_position_m": 1.0787490074522208e-11,
+            "final_rotation_rad": 8.604916323497822e-11,
+            "max_position_m": 2.4329408945777806e-09,
+            "max_rotation_rad": 1.6515759757058368e-08,
+            "rms_position_m": 1.1620664648228555e-09,
+            "rms_rotation_rad": 8.454464905012948e-09
+          },
+          "end_effectors": {
+            "final_position_m": [
+              1.6270696537285892e-10,
+              1.0230564274922774e-10
+            ],
+            "final_rotation_rad": [
+              8.604892555238709e-11,
+              8.604952117178144e-11
+            ],
+            "max_position_m": 3.210946648904059e-08,
+            "max_rotation_rad": 1.6515759866604414e-08,
+            "rms_position_m": 1.413829342373018e-08,
+            "rms_rotation_rad": 8.454464917818768e-09
+          }
+        },
+        "prediction_intervals": 1000,
+        "reference_hash": "b030d29a4d755cd734ddc551ae6004178b526ee4de68761e61373e2f4a03f00e",
+        "status": "MEASURED",
+        "threshold_scope": "diagnostic agreement flags only; all execution acceptance gates unchanged"
+      },
+      "execution_level": "EXECUTION_VERIFIED",
+      "execution_status": "PASS",
+      "sample_id": "main_000017",
+      "status": "MEASURED",
+      "task_hash": "f4b2b046906cf18a0622bc57bd5303c9c53ee7ce327d34aea04f8500b0a58d86"
+    }
+  ],
+  "correction": {
+    "accepted_model_and_fixed_goal": 16,
+    "attempt_denominator": 16,
+    "failed_or_error": 0,
+    "records": 16,
+    "targets": 8,
+    "training_after_execution_exclusion": 16
+  },
+  "cpu_s": {
+    "candidates": 106.046875,
+    "consistency": 58.796875,
+    "correction": 14.140625,
+    "execution": 10.703125
+  },
+  "generalization_claim": "NOT_ESTABLISHED",
+  "hardware_accuracy": "NOT_VALIDATED",
+  "historical_comparison": {
+    "methods": {
+      "residual_diffusion_guided": {
+        "candidate_denominator": 20,
+        "candidate_errors": 0,
+        "candidate_records": 20,
+        "execution_attempted": 0,
+        "execution_verified": 0,
+        "failed_gates": {
+          "geometry_refinement": 1
+        },
+        "full_path_cost_evaluations": 847,
+        "goal_valid": 0,
+        "model_valid": 19,
+        "network_calls": 320,
+        "task_denominator": 4,
+        "worse_arm_error_mm_range": [
+          8.93291645441437,
+          29.91460673812113
+        ]
+      },
+      "residual_diffusion_unguided": {
+        "candidate_denominator": 20,
+        "candidate_errors": 0,
+        "candidate_records": 20,
+        "execution_attempted": 0,
+        "execution_verified": 0,
+        "failed_gates": {
+          "geometry_refinement": 1
+        },
+        "full_path_cost_evaluations": 0,
+        "goal_valid": 0,
+        "model_valid": 19,
+        "network_calls": 320,
+        "task_denominator": 4,
+        "worse_arm_error_mm_range": [
+          12.280039813991447,
+          71.16279370763196
+        ]
+      },
+      "structured_public_seed": {
+        "candidate_denominator": 20,
+        "candidate_errors": 0,
+        "candidate_records": 20,
+        "execution_attempted": 1,
+        "execution_verified": 1,
+        "failed_gates": {},
+        "full_path_cost_evaluations": 875,
+        "goal_valid": 2,
+        "model_valid": 20,
+        "network_calls": 0,
+        "task_denominator": 4,
+        "worse_arm_error_mm_range": [
+          4.2299672654340865,
+          34.926864918897785
+        ]
+      }
+    },
+    "scope": "previous run retained; not extra experiments in this run"
+  },
+  "methods": {
+    "residual_diffusion_guided": {
+      "candidate_denominator": 20,
+      "candidate_errors": 0,
+      "candidate_records": 20,
+      "execution_verified": 0,
+      "failed_gates": {
+        "geometry_refinement": 6
+      },
+      "full_path_cost_evaluations": 846,
+      "goal_valid": 0,
+      "model_valid": 14,
+      "network_calls": 320,
+      "task_denominator": 4,
+      "worse_arm_position_mm_range": [
+        10.424762889628186,
+        36.81062236381695
+      ]
+    },
+    "residual_diffusion_unguided": {
+      "candidate_denominator": 20,
+      "candidate_errors": 0,
+      "candidate_records": 20,
+      "execution_verified": 0,
+      "failed_gates": {
+        "geometry_refinement": 6
+      },
+      "full_path_cost_evaluations": 0,
+      "goal_valid": 0,
+      "model_valid": 14,
+      "network_calls": 320,
+      "task_denominator": 4,
+      "worse_arm_position_mm_range": [
+        14.259091951314218,
+        73.66139905718452
+      ]
+    },
+    "structured_public_seed": {
+      "candidate_denominator": 20,
+      "candidate_errors": 0,
+      "candidate_records": 20,
+      "execution_verified": 1,
+      "failed_gates": {},
+      "full_path_cost_evaluations": 875,
+      "goal_valid": 2,
+      "model_valid": 20,
+      "network_calls": 0,
+      "task_denominator": 4,
+      "worse_arm_position_mm_range": [
+        4.2299672654340865,
+        34.926864918897785
+      ]
+    }
+  },
+  "model_fidelity": "CONSISTENT_IN_CHECKED_CASES",
+  "physical_execution": {
+    "benchmark_attempts": 1,
+    "benchmark_verified": 1,
+    "diagnostic_attempts": 4,
+    "diagnostic_verified": 4,
+    "independent_replay_pass": 5
+  },
+  "pilot": "NOT_RUN",
+  "scope": "ADAPTIVE_FROZEN_DEV_SMOKE",
+  "software_tests": {
+    "command": "python -m pytest ff_prior/tests ff_prior_next/tests ff_prior_fixed/tests -q",
+    "junit_sha256": "773e3572a844526b141a24452df8c0fa6e97806989a5ce31aa50711b20c88e26",
+    "source_hashes": {
+      "ff_prior/__init__.py": "0513aa254fda5d4da366096fccc0a2d4809aa16978cf9399c288b05413d31062",
+      "ff_prior/benchmark.py": "710d5193ead1639fc0ce00f3b9a28e33018d9e13b1cc0c290379113221ee3e71",
+      "ff_prior/clean_prior.py": "ec50e9ae214e763c5bdb5836af236c00bce8add2100e82dab01877ba658d6a2b",
+      "ff_prior/cli.py": "6543f57d7b518c66713922de57bfb03b4abb1b974e9a5e959bfed7867e7fe10c",
+      "ff_prior/contracts.py": "a0fca6f4c4b39e49fa383a49852ea206bccbf39511045fbc094fa134d78171b1",
+      "ff_prior/coupled_predictor.py": "0a75b3b28138e5b5e39825db834cf367250e80d30076a74d5984ab87071bdc07",
+      "ff_prior/dataset.py": "d6b2513e9e21d7807d91717d8fc920894422e0492d983f0a1dd262161a426ab8",
+      "ff_prior/diffusion.py": "5a1dfdb5fde1e4dbc6af312b0abbeb32925563b33530e5917060ec9d50483442",
+      "ff_prior/geometry.py": "bc34ecbeea365e70b19036da0090c6ba0b3527dc63a0dcd2b9555fd3a541a2c1",
+      "ff_prior/guidance.py": "affeb0f923bff80d7bd8d566f2f5132ff791dbe9414a3ee08bfa75f8f7219009",
+      "ff_prior/initial_state.py": "778109409d1b05cff456167e9f7d3799a4b4751d273c85052df50dfd33ae7689",
+      "ff_prior/model_gates.py": "6d771f42cad6e48f0a0d109ed680c99ca1f72b57a6b4778ac2917c718cbc0033",
+      "ff_prior/physical_audit.py": "720bb9cabbee9191b662c7b2a428bd0fe717e98e9695e2ffc70994329b42c2d1",
+      "ff_prior/pipeline.py": "ea63e77cde66db3c0377ab6a61d70d03cd7b4c93b26716879fa9c1c71d13b8e3",
+      "ff_prior/proposal_generator.py": "47392c51487f07ca2ff008f47d2a4cd63e4a1bec8012b713cdff65315b242c38",
+      "ff_prior/recheck.py": "5e78499c01f8458c3a7a88e286a5348167aa76b6544e90120983bfcd6d895ead",
+      "ff_prior/recovery/__init__.py": "c718ebb575a363a3cc7aeace361805393e9a6d659786bb645673c50370f0cecf",
+      "ff_prior/recovery/__main__.py": "a7e18175f09842eccbcd8e8e036c94a5f0d107d79847436cf285c6a3af7b9384",
+      "ff_prior/report.py": "4b3a8f31f246196d83f82b329380fc4d2ac3b21ed0aa77562736868107ea77c3",
+      "ff_prior/robot_adapter.py": "01ddac44b2039353dcc017f383dc3f995cdd616e3019420dd4b1444303aa3605",
+      "ff_prior/scenes.py": "9a4dd1276669de944a7cbf2e96c326f98cf1899685b59bb3a5e773d8884bfe43",
+      "ff_prior/spline.py": "b04d8bf4d6585546afd0bd6fe7a411c4273f8ba40262e00a8efb51dd88b1d552",
+      "ff_prior/storage.py": "768408d21fdf76c8d382d8e0e042d562c61075f3598936f9140d37595e9864f7",
+      "ff_prior/study.py": "c27407da964c03a675d1e6b39ef04a64edea06b1c47ec94d56e5f00508f52e80",
+      "ff_prior/torque_tracker.py": "584f352fca34899c07759a234c84a3c5e8df3915ba2a97993f5f6860a7fd7f13",
+      "ff_prior/visualize_evidence.py": "80b73ff7ea08aa44b3437c1f5a16dcca9694014d140d7e9c95986425a69b07a8",
+      "ff_prior_fixed/__init__.py": "aafc29ece6b80b37a9818121b5acc152945a97c055116ba5bf9472f771dbc4b5",
+      "ff_prior_fixed/consistency.py": "353dd7f83e8e3d655257b85ad3c048f5f0550a1fc9db3e9b807f92ef86e19c6a",
+      "ff_prior_fixed/correction.py": "819ca91efe4fe5e86f7c3a1217e9cb3ddb6380b7c7e78b849248f34d71dc3d9d",
+      "ff_prior_fixed/experiment.py": "255f93c13cccea4e244d2799984c708e768b27ff9b7bccfd755a200adc871f2e",
+      "ff_prior_fixed/job.py": "44af14247e1f598f10d5cddd15589b925e50b8cdf69549e0a37a2241c117af9b",
+      "ff_prior_fixed/reporting.py": "ee65ae22bffe6c845bfe01e2832ac12e24bde4bd652c0139e96ebbfd6aabb3b2",
+      "ff_prior_next/__init__.py": "744789f133e3d6d5403a56680a4cd9714b2d577bee140394536c677cce1fb6ed",
+      "ff_prior_next/experiment.py": "937ebdd60b71a5a9a22d26b2f53316ca21e85040f0e9a3947122fd3f442d0e60",
+      "ff_prior_next/job.py": "f8ce2342e78a405dce33522534ce1d0b8dcb9777f9f3e1fef0981dc844c9bca5",
+      "ff_prior_next/learning.py": "aeed976c2b9a385875d2004767051cf151660144388e50029696d03629b035d9",
+      "model_test/angle_convention.py": "eb6845ad23570bcdd2056d6977bfdfa4af7f1fb1dc635689359284ca20f10699",
+      "model_test/robot_model_spec_v5.py": "34068777f5b93809d273388b2232d026f730734bf9963d1b7070f6698278919d",
+      "v6_lite/continuum_model_spec.py": "2cf364e32ce5f361564130609b683217431847f693c337b504fc5128b243ebfd"
+    },
+    "status": "PASS",
+    "suite_wall_s": 25.715,
+    "tests": 58
+  },
+  "status": "FINISHED",
+  "training": {
+    "benefit": "NOT_ESTABLISHED",
+    "checkpoint_selection": "VAL_V_MSE_ONLY",
+    "checkpoint_sha256": "11541a1948add5d473b12a9f506a8cfc6a8e81fcbaf367d903c652bda1b60ea6",
+    "cpu_s": 9.59375,
+    "diagnostic_forward_calls": 6,
+    "noise_bands": [
+      {
+        "shuffled_condition_rmse_rad": 0.00034133411659937945,
+        "t": 0,
+        "val_rmse_rad": 0.00035222500310097966
+      },
+      {
+        "shuffled_condition_rmse_rad": 0.03270915133602957,
+        "t": 500,
+        "val_rmse_rad": 0.029257377039330897
+      },
+      {
+        "shuffled_condition_rmse_rad": 0.03913294398108421,
+        "t": 999,
+        "val_rmse_rad": 0.03469509443872963
+      }
+    ],
+    "prior_rank": 6,
+    "reload_error": 0.0,
+    "reload_forward_calls": 2,
+    "selected_weight_hash": "39ca22e6749b6bdb650ffcef38a99bc8491380b8542424f6345f4ede6f707706",
+    "status": "PASS",
+    "train_absolute_rms_from_initial_rad": 0.05262151383782748,
+    "train_residual_rms_rad": 0.03253213390110281,
+    "training_val_forward_calls": 400,
+    "updates": 200,
+    "wall_s": 8.534627300221473,
+    "zero_residual_val_rmse_rad": 0.03841943824755224
+  },
+  "training_dataset": {
+    "TEST_arrays_read": false,
+    "TRAIN": [
+      "main_000000",
+      "main_000001",
+      "main_000002",
+      "main_000003",
+      "main_000004",
+      "main_000005",
+      "main_000006",
+      "main_000007",
+      "main_000008",
+      "main_000009",
+      "main_000010",
+      "main_000011",
+      "main_000012",
+      "main_000013",
+      "main_000014",
+      "main_000015",
+      "main_000016",
+      "main_000017",
+      "main_000018",
+      "main_000019",
+      "main_000020",
+      "main_000021",
+      "main_000022",
+      "main_000023",
+      "main_000024",
+      "main_000030",
+      "main_000031",
+      "main_000032",
+      "main_000033",
+      "main_000034",
+      "main_000040",
+      "main_000041",
+      "main_000042",
+      "main_000043",
+      "main_000044",
+      "main_000050",
+      "main_000051",
+      "main_000052",
+      "main_000053",
+      "main_000054",
+      "main_000055",
+      "main_000056",
+      "main_000057",
+      "main_000058",
+      "main_000059",
+      "main_000060",
+      "main_000061",
+      "main_000062",
+      "main_000063",
+      "main_000064",
+      "main_000065",
+      "main_000066",
+      "main_000067",
+      "main_000068",
+      "main_000069",
+      "main_000070",
+      "main_000071",
+      "main_000072",
+      "main_000073",
+      "main_000074",
+      "main_000075",
+      "main_000076",
+      "main_000077",
+      "main_000078",
+      "main_000079",
+      "main_000080",
+      "main_000081",
+      "main_000082",
+      "main_000083",
+      "main_000084",
+      "main_000085",
+      "main_000086",
+      "main_000087",
+      "main_000088",
+      "main_000089",
+      "main_000090",
+      "main_000091",
+      "main_000092",
+      "main_000093",
+      "main_000094",
+      "main_000105",
+      "main_000106",
+      "main_000107",
+      "main_000108",
+      "main_000109",
+      "main_000115",
+      "main_000116",
+      "main_000117",
+      "main_000118",
+      "main_000119",
+      "main_000120",
+      "main_000121",
+      "main_000122",
+      "main_000123",
+      "main_000124",
+      "main_000125",
+      "main_000126",
+      "main_000127",
+      "main_000128",
+      "main_000129",
+      "main_000130",
+      "main_000131",
+      "main_000132",
+      "main_000133",
+      "main_000134",
+      "main_000135",
+      "main_000136",
+      "main_000137",
+      "main_000138",
+      "main_000139",
+      "main_000140",
+      "main_000141",
+      "main_000142",
+      "main_000143",
+      "main_000144",
+      "main_000145",
+      "main_000146",
+      "main_000147",
+      "main_000148",
+      "main_000149",
+      "main_000155",
+      "main_000156",
+      "main_000157",
+      "main_000158",
+      "main_000159",
+      "main_000160",
+      "main_000161",
+      "main_000162",
+      "main_000163",
+      "main_000164",
+      "main_000165",
+      "main_000166",
+      "main_000167",
+      "main_000168",
+      "main_000169",
+      "main_000180",
+      "main_000181",
+      "main_000182",
+      "main_000183",
+      "main_000184",
+      "main_000185",
+      "main_000186",
+      "main_000187",
+      "main_000188",
+      "main_000189",
+      "main_000190",
+      "main_000191",
+      "main_000192",
+      "main_000193",
+      "main_000194",
+      "trainfix_000_0",
+      "trainfix_000_1",
+      "trainfix_001_0",
+      "trainfix_001_1",
+      "trainfix_002_0",
+      "trainfix_002_1",
+      "trainfix_003_0",
+      "trainfix_003_1",
+      "trainfix_004_0",
+      "trainfix_004_1",
+      "trainfix_005_0",
+      "trainfix_005_1",
+      "trainfix_006_0",
+      "trainfix_006_1",
+      "trainfix_007_0",
+      "trainfix_007_1"
+    ],
+    "VAL": [
+      "main_000025",
+      "main_000026",
+      "main_000027",
+      "main_000028",
+      "main_000029",
+      "main_000035",
+      "main_000036",
+      "main_000037",
+      "main_000038",
+      "main_000039",
+      "main_000100",
+      "main_000101",
+      "main_000102",
+      "main_000103",
+      "main_000104",
+      "main_000150",
+      "main_000151",
+      "main_000152",
+      "main_000153",
+      "main_000154",
+      "main_000175",
+      "main_000176",
+      "main_000177",
+      "main_000178",
+      "main_000179",
+      "main_000195",
+      "main_000196",
+      "main_000197",
+      "main_000198",
+      "main_000199"
+    ],
+    "excluded_known_execution_failed_ids": [],
+    "lineage_inherited_from_TRAIN": true,
+    "new_eligible_ids": [
+      "trainfix_000_0",
+      "trainfix_000_1",
+      "trainfix_001_0",
+      "trainfix_001_1",
+      "trainfix_002_0",
+      "trainfix_002_1",
+      "trainfix_003_0",
+      "trainfix_003_1",
+      "trainfix_004_0",
+      "trainfix_004_1",
+      "trainfix_005_0",
+      "trainfix_005_1",
+      "trainfix_006_0",
+      "trainfix_006_1",
+      "trainfix_007_0",
+      "trainfix_007_1"
+    ]
+  },
+  "unknown_interrupted_work": [],
+  "wall_s": {
+    "candidates": 108.5212800996378,
+    "consistency": 59.837788600008935,
+    "correction": 14.908996698446572,
+    "execution": 10.977063999976963
+  }
+}

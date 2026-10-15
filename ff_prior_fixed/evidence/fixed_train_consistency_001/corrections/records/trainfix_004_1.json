@@ -1,0 +1,358 @@
+{
+  "arrays": "corrections/arrays/trainfix_004_1.npz",
+  "condition": {
+    "duration": 10.0,
+    "goals": [
+      [
+        [
+          0.9988789792095913,
+          -0.044892951758076304,
+          -0.015013586368671276,
+          1.93266399650058
+        ],
+        [
+          0.01479212561096496,
+          -0.005261239974956623,
+          0.9998767485914617,
+          0.6031854219194137
+        ],
+        [
+          -0.04496640871930905,
+          -0.9989779488238821,
+          -0.0045912798341089175,
+          -0.009693638341181206
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          -0.9928419032922231,
+          0.11676854921556826,
+          0.02510101554052807,
+          1.2314081278875473
+        ],
+        [
+          0.020369701662764618,
+          -0.041537266250370686,
+          0.9989292921756845,
+          -0.5477116620533155
+        ],
+        [
+          0.11768615178195088,
+          0.9922901598960536,
+          0.038861397970458955,
+          0.03612072214287799
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    ],
+    "initial_features": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.7853981633974483,
+      0.0,
+      1.5707963267948966,
+      0.0,
+      0.7853981633974483,
+      0.0
+    ],
+    "pose_mask": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ]
+  },
+  "condition_hash": "39b910cc622fce7e1a5666ff59758eb5adcc6633c953aea13bad16fd75f44452",
+  "data_role": "FF_MODEL_PRIOR",
+  "execution_status": "NOT_RUN",
+  "family_group": "2c15558401afe1cb895f3fe2a8e2307e64dd183d3c923fadc453cf8335117604",
+  "family_id": "main_family_000001",
+  "frozen_goal_pass": true,
+  "goal_relabelled": false,
+  "goal_source": "FROZEN_TRAIN_WORLD_GOAL",
+  "history": [
+    {
+      "accepted": true,
+      "after_cost": 0.0019439282157592483,
+      "before_cost": 0.6991098136558814,
+      "iteration": 0,
+      "jacobian_singular_values": [
+        409.9750708653495,
+        408.11665477516397,
+        219.28870687359174,
+        210.5685607996953,
+        80.66686693686451,
+        75.46688110142289,
+        59.132374281929735,
+        59.06357488453903,
+        47.830022645531784,
+        37.01715457901302,
+        1.784022945728057,
+        1.0401363371412846
+      ],
+      "step_norm": 0.056989087723094176,
+      "trials": [
+        {
+          "normalized_pose_cost": 0.0019439282157592483,
+          "scale": 1.0
+        }
+      ]
+    }
+  ],
+  "iterations": 1,
+  "model_validation": {
+    "gates": {
+      "boundary": true,
+      "coupled_convergence": true,
+      "domain": true,
+      "finite": true,
+      "geometry": true,
+      "geometry_refinement": true,
+      "identity": true,
+      "label_consistency": true,
+      "motion": true,
+      "native_range": true,
+      "time_hold": true
+    },
+    "geometry": {
+      "coarse": {
+        "checked_states": 129,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008538009330401764,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "extra": null,
+      "geometry_step_budget_m": 0.002,
+      "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+      "maximum_geometry_step_m": 0.0006372529656158057,
+      "midpoints": {
+        "checked_states": 128,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008538009171177295,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "minimum_clearance_m": 0.008538009171177295,
+      "refinement_difference_m": 1.5922446867933093e-10
+    },
+    "numerical": {
+      "comparisons": [
+        {
+          "aligned_body_extent_m": 5.097688424026288e-07,
+          "coarse": 128,
+          "fine": 256,
+          "passed": true,
+          "terminal_position_m": [
+            9.445057308380606e-09,
+            8.868801678521883e-09
+          ],
+          "terminal_rotation_rad": [
+            6.141744878752029e-09,
+            6.141743996665276e-09
+          ]
+        }
+      ],
+      "passed": true
+    },
+    "reference_torque_feasibility": "NOT_EVALUATED",
+    "required": [
+      "identity",
+      "finite",
+      "domain",
+      "native_range",
+      "boundary",
+      "motion",
+      "coupled_convergence",
+      "geometry",
+      "geometry_refinement",
+      "time_hold",
+      "label_consistency"
+    ],
+    "validation_level": "MODEL_VALID",
+    "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+  },
+  "optimization_coupled_calls": 36,
+  "optimizer": "17_smooth_direction_damped_goal_correction",
+  "parent_sample_id": "main_000006",
+  "position_error_m": [
+    0.00020809901864452706,
+    4.6412962547493915e-05
+  ],
+  "private_terminal_used": false,
+  "reference_hash": "77e359da5e1f3a77f918e92ba579af1490f1dc6f73811a3ab897a071d37782c0",
+  "rotation_error_rad": [
+    0.0001500600546066509,
+    0.00012543852975597575
+  ],
+  "sample_id": "trainfix_004_1",
+  "seed": 20358524,
+  "source_partition": "train_correction",
+  "source_sample_id": "main_000006",
+  "split": "TRAIN",
+  "status": "ACCEPTED",
+  "task": {
+    "condition": {
+      "duration": 10.0,
+      "goals": [
+        [
+          [
+            0.9988789792095913,
+            -0.044892951758076304,
+            -0.015013586368671276,
+            1.93266399650058
+          ],
+          [
+            0.01479212561096496,
+            -0.005261239974956623,
+            0.9998767485914617,
+            0.6031854219194137
+          ],
+          [
+            -0.04496640871930905,
+            -0.9989779488238821,
+            -0.0045912798341089175,
+            -0.009693638341181206
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        [
+          [
+            -0.9928419032922231,
+            0.11676854921556826,
+            0.02510101554052807,
+            1.2314081278875473
+          ],
+          [
+            0.020369701662764618,
+            -0.041537266250370686,
+            0.9989292921756845,
+            -0.5477116620533155
+          ],
+          [
+            0.11768615178195088,
+            0.9922901598960536,
+            0.038861397970458955,
+            0.03612072214287799
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ],
+      "initial_features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7853981633974483,
+        0.0,
+        1.5707963267948966,
+        0.0,
+        0.7853981633974483,
+        0.0
+      ],
+      "pose_mask": [
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "contract": {
+      "acceptance": {
+        "actual_clearance_m": 0.0,
+        "calibration_status": "INHERITED_DEV_FROZEN_FOR_THIS_SMOKE_NOT_PRODUCTION",
+        "deadline_s": 30.0,
+        "hold_s": 0.5,
+        "manifold_residual_rad": 0.02,
+        "momentum_atol": 1e-05,
+        "momentum_relative_tolerance": 0.002,
+        "planning_clearance_m": 0.0,
+        "position_error_m": 0.005,
+        "replay_atol": 1e-10,
+        "rotation_error_rad": 0.017453292519943295,
+        "subdivisions": 2,
+        "tracking_error_rad": 0.02
+      },
+      "initial_state_id": "9eb21ed3fa3f7d5fd475de862d75adce52e582f5ad86911b09330c45e0c01c7b",
+      "pair_policy_hash": "9b9b68b541cc3527cbd60cab70e8f98a16cd73e6a9e3a0cce3a2d844f8592944",
+      "robot_hash": "76edfae2ce103d0191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19"
+    },
+    "source": "MODEL_DERIVED",
+    "task_hash": "09feb258f5f8ca7a7e3418fed55ee1e0bc38e11a8cdf1b9525d0db35b21d021b"
+  },
+  "task_hash": "09feb258f5f8ca7a7e3418fed55ee1e0bc38e11a8cdf1b9525d0db35b21d021b",
+  "training_eligible": true,
+  "validation_level": "MODEL_VALID",
+  "variant": 1
+}
