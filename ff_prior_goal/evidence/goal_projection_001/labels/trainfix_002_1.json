@@ -1,0 +1,96 @@
+{
+  "execution_evidence": "UNCHANGED_NOT_UPGRADED",
+  "position_error_m": [
+    2.2685215400295264e-05,
+    8.766671602275718e-05
+  ],
+  "rotation_error_rad": [
+    1.4401860301321328e-05,
+    0.00021847333848882267
+  ],
+  "sample_id": "trainfix_002_1",
+  "status": "PASS",
+  "task_hash": "23d9911c37e7300acb0e594d81cd564a02675ec5160da45592b892c333c24bcf",
+  "validation": {
+    "gates": {
+      "boundary": true,
+      "coupled_convergence": true,
+      "domain": true,
+      "finite": true,
+      "geometry": true,
+      "geometry_refinement": true,
+      "identity": true,
+      "label_consistency": true,
+      "motion": true,
+      "native_range": true,
+      "time_hold": true
+    },
+    "geometry": {
+      "coarse": {
+        "checked_states": 129,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008504934952820347,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "extra": null,
+      "geometry_step_budget_m": 0.002,
+      "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+      "maximum_geometry_step_m": 0.0009736810293179933,
+      "midpoints": {
+        "checked_states": 128,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.00850493208435224,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "minimum_clearance_m": 0.00850493208435224,
+      "refinement_difference_m": 2.868468107139477e-09
+    },
+    "numerical": {
+      "comparisons": [
+        {
+          "aligned_body_extent_m": 2.9183431294265726e-07,
+          "coarse": 128,
+          "fine": 256,
+          "passed": true,
+          "terminal_position_m": [
+            7.092940117127326e-09,
+            5.513095821843425e-09
+          ],
+          "terminal_rotation_rad": [
+            3.6593207414463296e-09,
+            3.659320586855578e-09
+          ]
+        }
+      ],
+      "passed": true
+    },
+    "reference_torque_feasibility": "NOT_EVALUATED",
+    "required": [
+      "identity",
+      "finite",
+      "domain",
+      "native_range",
+      "boundary",
+      "motion",
+      "coupled_convergence",
+      "geometry",
+      "geometry_refinement",
+      "time_hold",
+      "label_consistency"
+    ],
+    "validation_level": "MODEL_VALID",
+    "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+  }
+}

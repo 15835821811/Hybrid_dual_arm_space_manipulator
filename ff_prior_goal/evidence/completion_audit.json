@@ -1,0 +1,46 @@
+{
+  "requirements": [
+    {
+      "evidence": "ff_prior_goal/docs/RESEARCH.md",
+      "requirement": "relevant solution research",
+      "result": "Verified primary papers and explicit adaptation limits"
+    },
+    {
+      "evidence": "0ec7cb12 + software_tests.json",
+      "requirement": "real implementation",
+      "result": "64 tests PASS; runtime source hashes verified"
+    },
+    {
+      "evidence": "goal_projection_001/labels",
+      "requirement": "qualified existing TRAIN trajectories",
+      "result": "16/16 model+fixed goal revalidated"
+    },
+    {
+      "evidence": "summary.json + all150 candidate records",
+      "requirement": "stable learned constrained sampling",
+      "result": "50/50 projected learned candidates eligible, all10 tasks have5/5"
+    },
+    {
+      "evidence": "20 native traces + report.json + independent_verification.json",
+      "requirement": "real torque and independent replay",
+      "result": "10 learned and10 baseline executions PASS, 20 replays PASS"
+    },
+    {
+      "evidence": "run.json + frozen_tasks.json + independent_verification.json",
+      "requirement": "frozen DEV and physical gates",
+      "result": "original4 tasks, same5candidate seeds, all gates unchanged"
+    },
+    {
+      "evidence": "job.py + status.json + resume_verification.json",
+      "requirement": "background and terminal access without duplicate work",
+      "result": "worker exited, resume270 files unchanged"
+    },
+    {
+      "evidence": "preflight.json + independent_verification.json + ANALYSIS.md",
+      "requirement": "preservation and honest benefit reporting",
+      "result": "old files/branches/evidence unchanged; benefit not established; no pilot or TEST"
+    }
+  ],
+  "scope": "User-authorized smoke only; no universal feasibility or independent TEST claim",
+  "status": "PASS"
+}
