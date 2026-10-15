@@ -1,0 +1,235 @@
+{
+  "checks": [
+    {
+      "evidence": [
+        "baseline_audit.json",
+        "run.json",
+        "../../../docs/V7_1_BASELINE_AUDIT.md"
+      ],
+      "id": "workspace_and_contract_audit",
+      "phase": "M0",
+      "requirement": "\u5b9e\u9645HEAD\u3001\u5df2\u6709\u5b9e\u73b0\u3001\u521d\u6001\u3001\u7269\u7406\u5408\u540c\u3001\u6267\u884c\u73af\u5883\u6709\u6765\u6e90\uff1b\u4e0d\u8986\u76d6\u65e7\u5de5\u4f5c\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml",
+        "release_verification.json",
+        "reference_sample.npz"
+      ],
+      "id": "shared_spline_decoder",
+      "phase": "M1",
+      "requirement": "24\u63a7\u5236\u70b9/19\u81ea\u7531token\u3001\u8fb9\u754c\u5bfc\u6570\u3001\u771f\u5b9e\u65f6\u957f\u4e0e\u4fdd\u5b58\u89c6\u56fe\u4e00\u81f4\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "ledger.json",
+        "release_verification.json"
+      ],
+      "id": "bounded_low_cost_generator",
+      "phase": "M1",
+      "requirement": "\u63d0\u6848\u53d7\u9884\u7b97\u7ea6\u675f\uff0c\u4e3b\u751f\u6210\u94feRRT/SQP/\u771f\u5b9erollout\u8c03\u7528\u8ba1\u6570\u4e3a\u96f6\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml",
+        "geometry_counterexamples.json"
+      ],
+      "id": "geometry_counterexamples",
+      "phase": "M1",
+      "requirement": "\u81ea\u78b0\u649e\u3001\u81c2\u95f4\u3001\u57fa\u5ea7/\u5b89\u88c5\u5ea7\u53ca\u4e2d\u9014\u78b0\u649e\u53cd\u4f8b\u4e0d\u901a\u8fc7\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml",
+        "records/main_000000.json"
+      ],
+      "id": "coupled_predictor",
+      "phase": "M2",
+      "requirement": "\u5f53\u524d\u8d28\u91cf\u77e9\u9635/\u6b63\u786e\u53c2\u8003\u7cfb/\u72ec\u7acbscratch\u3001\u975e\u96f6\u521d\u59cb\u52a8\u91cf\u62d2\u7edd\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "records/main_000000.json",
+        "records/dev_000083.json",
+        "tests.xml"
+      ],
+      "id": "numerical_convergence",
+      "phase": "M2",
+      "requirement": "\u9010\u6837\u672c\u6536\u655b\u8bb0\u5f55\u3001\u5931\u8d25\u4e0d\u63d0\u5347\u7b49\u7ea7\u3001\u8def\u5f84\u7f13\u5b58\u6b63\u786e\u5931\u6548\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml",
+        "release_verification.json"
+      ],
+      "id": "goal_provenance",
+      "phase": "M2",
+      "requirement": "\u524d\u5411\u6d3e\u751f\u76ee\u6807\u4e0e\u51bb\u7ed3\u4efb\u52a1\u4e24\u6761\u903b\u8f91\u9694\u79bb\uff0c\u51bb\u7ed3\u540e\u5931\u8d25\u91cd\u6807\u88ab\u62d2\u7edd\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml",
+        "release_verification.json"
+      ],
+      "id": "validation_levels",
+      "phase": "M3",
+      "requirement": "\u62bd\u67e5\u4e0d\u6279\u91cf\u8ba4\u8bc1\uff0c\u672a\u77e5\u95e8\u69db\u4e0d\u5f53PASS\uff0c\u6267\u884c\u5931\u8d25\u4e0e\u6a21\u578b\u72b6\u6001\u5206\u522b\u4fdd\u5b58\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "splits.json",
+        "release_verification.json"
+      ],
+      "id": "split_and_condition_audit",
+      "phase": "M3",
+      "requirement": "\u6839\u8c31\u7cfb/\u8fd1\u91cd\u590d/split\u65e0\u6cc4\u6f0f\uff0ccondition\u4e0d\u5305\u542b\u6559\u5e08\u6216\u672a\u6765\u72b6\u6001\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "learning/scaler.json",
+        "release_verification.json"
+      ],
+      "id": "normalizer_audit",
+      "phase": "M3",
+      "requirement": "\u53ea\u7528TRAIN\u62df\u5408\uff0c\u8bad\u7ec3/\u63a8\u7406\u5171\u4eabschema\u4e0e\u8f6c\u6362\u5b9e\u73b0\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml",
+        "resume_before.json",
+        "release_verification.json"
+      ],
+      "id": "budget_resume_integrity",
+      "phase": "M3",
+      "requirement": "\u9884\u7b97\u7d2f\u8ba1\u3001\u4e2d\u65ad\u6062\u590d\u3001\u5e76\u884c\u91cd\u590d\u7ed3\u679c\u53bb\u91cd\u548crun\u9501\u5b9e\u6d4b\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audits/dev_000004/report.json",
+        "release_verification.json"
+      ],
+      "id": "physical_execution",
+      "phase": "M4",
+      "requirement": "\u771f\u5b9ectrl+mj_step\u3001\u65e0\u9690\u85cf\u72b6\u6001\u8986\u76d6\u3001\u65e0\u4efb\u52a1\u91cd\u89c4\u5212\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audits/dev_000004/report.json",
+        "release_verification.json"
+      ],
+      "id": "independent_replay",
+      "phase": "M4",
+      "requirement": "\u65b0data\u91cd\u653ectrl\uff0c\u6709\u65f6\u95f4\u5bf9\u9f50\u548c\u6570\u503c\u5dee\u5f02\u8bc1\u636e\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audits/dev_000004/report.json",
+        "release_verification.json"
+      ],
+      "id": "native_state_whole_body_check",
+      "phase": "M4",
+      "requirement": "\u4f7f\u7528\u5b9e\u9645\u4f4e\u5c42\u94fe\u5168\u673a\u68c0\u67e5\uff0c\u6d41\u5f62\u6b8b\u5dee\u3001\u4fdd\u6301\u548c\u65f6\u9650\u6709\u62a5\u544a\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "audit_selection.json",
+        "release_verification.json"
+      ],
+      "id": "audit_selection_integrity",
+      "phase": "M4",
+      "requirement": "DEV\u72ec\u7acb\u6765\u6e90\uff0c\u968f\u673a\u4e0e\u98ce\u9669\u7ec4\u5206\u5f00\uff0c\u5931\u8d25\u4e0d\u66ff\u6362\u3002",
+      "status": "PASS"
+    },
+    {
+      "claim_limit": "Implementation and DEV experiment completed; diffusion benefit NOT_ESTABLISHED.",
+      "evidence": [
+        "learning/training.json",
+        "release_verification.json"
+      ],
+      "id": "training_smoke",
+      "phase": "M5",
+      "requirement": "\u6743\u91cd\u771f\u5b9e\u66f4\u65b0\uff0ccheckpoint/scaler/schema\u91cd\u8f7d\u53ef\u590d\u73b0\u3002",
+      "status": "PASS"
+    },
+    {
+      "claim_limit": "Implementation and DEV experiment completed; diffusion benefit NOT_ESTABLISHED.",
+      "evidence": [
+        "benchmark/benchmark_000_diffusion_in_denoising_guidance/planning.json",
+        "release_verification.json"
+      ],
+      "id": "in_denoising_guidance",
+      "phase": "M5",
+      "requirement": "\u5f15\u5bfc\u53d1\u751f\u5728\u53bb\u566a\u5185\u5e76\u4f7f\u7528\u5b8c\u6574\u8026\u5408\u4ee3\u4ef7\uff0c\u540e\u7aef\u80fd\u529b\u5982\u5b9e\u6807\u8bb0\u3002",
+      "status": "PASS"
+    },
+    {
+      "claim_limit": "Implementation and DEV experiment completed; diffusion benefit NOT_ESTABLISHED.",
+      "evidence": [
+        "benchmark.json",
+        "release_verification.json"
+      ],
+      "id": "matched_minimal_comparison",
+      "phase": "M5",
+      "requirement": "\u540c\u4e00\u516c\u5f00\u4efb\u52a1/\u5019\u9009\u6570/\u7ea6\u675f\uff0c\u9009\u62e9\u5148\u4e8e\u5b9e\u9645\u6267\u884c\u3002",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "tests.xml"
+      ],
+      "id": "strict_five_candidate_protocol",
+      "phase": "STUDY",
+      "reason": "Explicit study/strict/final TEST execution was not authorized by default; software guard and quota tests passed.",
+      "requirement": "\u4e94\u5019\u9009\u53bb\u91cd\u4e0e\u5b8c\u6574\u6c60\u9a8c\u8bc1\uff1b\u4e0d\u8db3\u4e0d\u4f2a\u9020\uff0c\u4e0d\u5728\u4e3b\u5148\u9a8c\u5f3a\u5236\u914d\u989d\u3002",
+      "status": "NOT_RUN"
+    },
+    {
+      "evidence": [
+        "benchmark.json"
+      ],
+      "id": "held_out_benchmark",
+      "phase": "STUDY",
+      "reason": "Explicit study/strict/final TEST execution was not authorized by default; software guard and quota tests passed.",
+      "requirement": "\u5c01\u5b58200\u4efb\u52a1\uff0c\u4e0d\u4f9d\u636e\u5f85\u6d4b\u65b9\u6cd5\u8868\u73b0\u6311\u9898\uff1b\u7ed3\u679c\u5fc5\u987b\u771f\u5b9e\u6267\u884c\u3002",
+      "status": "NOT_RUN"
+    },
+    {
+      "evidence": [
+        "cumulative_cost.json",
+        "summary.json",
+        "../../../docs/V7_1_OFFLINE_COST_REPORT.md"
+      ],
+      "id": "cost_and_scope_report",
+      "phase": "RELEASE",
+      "requirement": "\u6a21\u578b\u5148\u9a8c\u4e0e\u7269\u7406\u4e13\u5bb6\u6210\u672c\u5206\u5f00\uff0c\u65e0\u865a\u6784\u52a0\u901f\uff1b\u56fa\u5b9a\u521d\u6001/\u9759\u6001/\u4eff\u771f\u8fb9\u754c\u660e\u786e\u3002",
+      "status": "PASS"
+    }
+  ],
+  "measured_output_counts": {
+    "benchmark_executions_and_replays_each": 1,
+    "dev_attempted": 200,
+    "dev_valid": 199,
+    "main_attempted": 200,
+    "main_valid": 200,
+    "offline_executions_and_replays_each": 24,
+    "rejected": 1
+  },
+  "package_type": "measured_smoke_evidence",
+  "repository_implementation_status": "IMPLEMENTED_DEV_SCOPE",
+  "robot_tests_status": "43_PASSED_INCLUDING_NATIVE_PHYSICS",
+  "schema_version": "ff_prior_v7_1_measured_acceptance"
+}

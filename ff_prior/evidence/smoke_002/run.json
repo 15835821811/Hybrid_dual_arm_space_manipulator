@@ -1,0 +1,364 @@
+{
+  "config": {
+    "benchmark": {
+      "all_costs_and_unresolved_tasks_accounted": true,
+      "minimal_methods": [
+        "structured_prior_same_guidance",
+        "diffusion_in_denoising_guidance",
+        "diffusion_no_guidance"
+      ],
+      "oracle_best_of_all_executions_reported_separately": true,
+      "primary_execution_metric": "model_selected_one_candidate_before_execution",
+      "same_public_conditions_and_verifier": true,
+      "task_and_scene_frozen_before_planning": true,
+      "task_selection_depends_on_tested_diffusion_success": false,
+      "witnesses_and_teacher_q_goals_exposed_to_methods": false
+    },
+    "configuration_status": "DEVELOPMENT_PROPOSAL",
+    "coupled_predictor": {
+      "cache_retiming_only_under_audited_static_zero_momentum_assumptions": true,
+      "claim_existing_numpy_mujoco_is_autodifferentiable": false,
+      "convergence_failure_status": "NUMERICAL_UNRESOLVED",
+      "first_backend": "audited_cpu_mujoco_scratch",
+      "geometry_refinement_separate_from_endpoint_convergence": true,
+      "integrate_in_consistent_se3_frame": true,
+      "integration_order_minimum": 2,
+      "momentum_model": "zero_momentum_reduced_mapping",
+      "numerical_error_proposal": {
+        "aligned_body_point_difference_m": 0.001,
+        "terminal_position_difference_m": 0.001,
+        "terminal_rotation_difference_deg": 0.2
+      },
+      "path_change_invalidates_cache": true,
+      "phase_intervals": [
+        128,
+        256,
+        512
+      ],
+      "solve_mass_blocks_not_explicit_inverse": true,
+      "time_dependent_constraints_rechecked_after_retiming": true
+    },
+    "execution_policy": {
+      "automatic_pilot": false,
+      "automatic_production": false,
+      "automatic_study": false,
+      "budget_counts_failures_duplicates_revisions_and_replay": true,
+      "deadline_is_not_compute_wall_budget": true,
+      "default_profile": "smoke",
+      "resume_uses_cumulative_budget": true,
+      "unresolved_is_proven_infeasible": false
+    },
+    "implementation_status": "TO_BE_IMPLEMENTED",
+    "physical_audit": {
+      "controller_source": "audited_free_base_feedforward_plus_67d_pd",
+      "default_exclude_known_execution_failures_from_training": true,
+      "high_level_reference_update_s": 0.02,
+      "independent_replay": "stored_ctrl_from_frozen_initial_state",
+      "native_trace_required": true,
+      "optional_safety_qp_enabled": false,
+      "physics_dt_s": 0.002,
+      "random_and_risk_statistics_separate": true,
+      "reference_evaluation": "every_physics_step",
+      "replace_failed_audit_samples": false,
+      "selection_freeze_before_execution": true,
+      "selection_source": "separately_budgeted_dev_families",
+      "task_replanning_inside_tracker": false
+    },
+    "prior_generation": {
+      "actual_torque_rollout_calls_allowed": 0,
+      "arm_base_collision_checks": true,
+      "external_obstacles": false,
+      "failed_proposals_trigger_unbounded_refill": false,
+      "generation_policy": "bounded_proposals_not_success_quota",
+      "goal_source": "coupled_forward_generated",
+      "high_dimensional_sqp_calls_allowed": 0,
+      "immutable_record_after_publication": true,
+      "inter_arm_collision_checks": true,
+      "master_seed": 20261015,
+      "minimum_same_world_goal_candidates": null,
+      "optimization_repair_enabled": false,
+      "optional_cheap_revisions_max": 2,
+      "private_terminal_seed_is_model_condition": false,
+      "proposal_families": [
+        "smooth_baseline",
+        "correlated_low_frequency_perturbation",
+        "continuum_leads",
+        "rigid_arm_leads",
+        "joint_group_motion_allocation"
+      ],
+      "proposals_per_family": 5,
+      "rrt_calls_allowed": 0,
+      "self_collision_checks": true
+    },
+    "profiles": {
+      "pilot": {
+        "actual_audit_samples_max": 256,
+        "benchmark_selected_execution_max": 120,
+        "dev_generation_wall_budget_s": 7200,
+        "evaluation_scope": "independent_dev",
+        "evaluation_tasks_max": 40,
+        "independent_dev_proposals_max": 2000,
+        "main_families": 2000,
+        "main_generation_wall_budget_s": 7200,
+        "main_proposals": 10000,
+        "random_audit_samples_max": 192,
+        "risk_audit_samples_max": 64,
+        "training_updates_max": 5000
+      },
+      "smoke": {
+        "actual_audit_samples_max": 24,
+        "benchmark_selected_execution_max": 12,
+        "dev_generation_wall_budget_s": 1800,
+        "evaluation_scope": "independent_dev",
+        "evaluation_tasks_max": 4,
+        "independent_dev_proposals_max": 200,
+        "main_families": 40,
+        "main_generation_wall_budget_s": 1800,
+        "main_proposals": 200,
+        "random_audit_samples_max": 16,
+        "risk_audit_samples_max": 8,
+        "training_updates_max": 200
+      },
+      "study": {
+        "final_test_task_budget": 200,
+        "requires_explicit_profile_and_frozen_resource_budget": true,
+        "reuse_frozen_training_data": true,
+        "strict_multimodal_task_budget": 20
+      }
+    },
+    "reference": {
+      "control_points": 24,
+      "deadline_s": 30.0,
+      "derivatives": "analytic_from_shared_decoder",
+      "duration_candidates_s": [
+        10.0,
+        15.0,
+        20.0,
+        25.0,
+        29.5
+      ],
+      "duration_policy": "first_feasible_from_frozen_set",
+      "hold_duration_s": 0.5,
+      "independent_terminal_joint_goal_condition": false,
+      "initial_boundary": "first_three_equal_q0",
+      "joint_dimension": 17,
+      "jointly_optimize_duration_in_default_generator": false,
+      "latent_tokens": 19,
+      "representation": "cubic_clamped_bspline",
+      "terminal_boundary": "last_three_equal_free_terminal_variable",
+      "training_view_points": 128
+    },
+    "robot": {
+      "angle_unit": "radian",
+      "base_drift_is_hard_gate_by_default": false,
+      "continuum_domain": "intersection_physical_geometry_audited_shape",
+      "continuum_planner_dof": 10,
+      "final_collision_uses_actual_low_level_state": true,
+      "free_base": true,
+      "geometric_truth": "authoritative_discrete_chain",
+      "gravity_m_s2": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden_external_wrench": false,
+      "mapping_and_limits": "from_audited_current_robot_contract",
+      "overwrite_robot_state_during_execution": false,
+      "planner_dof": 17,
+      "position_unit": "metre",
+      "quaternion_order": "from_audited_contract_and_explicit_schema",
+      "rigid_planner_dof": 7,
+      "robot_actuator_dof": 67,
+      "scene_dimensions": "from_compiled_model_and_names"
+    },
+    "sampling": {
+      "candidate_count": 5,
+      "exact_ddim_call_count_required": true,
+      "fallback_backend": "SUBSPACE_FD_DEV_ONLY",
+      "fallback_can_enable_production": false,
+      "fallback_centered_evaluations_per_candidate_per_guide": 16,
+      "fallback_is_full_exact_gradient": false,
+      "fallback_smoke_guided_iterations": 2,
+      "fallback_subspace_directions": 8,
+      "fallback_uses_full_coupled_cost": true,
+      "full_dimension_fd_allowed_only_for_small_audit": true,
+      "guidance_inside_reverse_process": true,
+      "preferred_guidance_backend": "audited_full_path_sensitivity_or_vjp"
+    },
+    "scaleup_gate": {
+      "automatic_relaxation_of_physical_acceptance": false,
+      "random_dev_execution_conversion_proposal_minimum": 0.8,
+      "report_sample_count_and_uncertainty": true,
+      "requires_all_contract_and_anti_cheating_tests": true,
+      "requires_no_data_leakage": true,
+      "requires_real_smoke_and_pilot_evidence": true,
+      "threshold_is_not_per_sample_physical_certificate": true
+    },
+    "schema_version": "ff_prior_v7_1_proposal",
+    "scope": {
+      "arbitrary_initial_state_support": "NOT_VALIDATED",
+      "continuous_time_certified": false,
+      "dynamic_support": "NOT_VALIDATED",
+      "environment_motion": "static",
+      "hardware_validated": false,
+      "initial_momentum_support": "audited_zero_momentum_only",
+      "initial_state": "frozen_complete_state",
+      "task": "dual_end_effector_world_pose_noncontact"
+    },
+    "source": {
+      "automatic_remote_push": false,
+      "automatically_stop_old_jobs": false,
+      "base_policy": "audited_current_workspace_head",
+      "destination_branch": "v7.1-lightweight-free-floating-prior",
+      "historical_reference_commit": "e2941462011bfcde8c96dcf5b81be7537e900a40",
+      "preserve_existing_work_and_artifacts": true,
+      "repository": "15835821811/Hybrid_dual_arm_space_manipulator"
+    },
+    "split": {
+      "cross_split_near_duplicate_audit": true,
+      "empty_scene_id_is_not_one_global_lineage": true,
+      "freeze_before_training": true,
+      "historical_import_enabled": false,
+      "independent_dev_calibration_families": true,
+      "nonempty_scene_family_isolation": true,
+      "normalizer_fit_on_train_only": true,
+      "proportions": [
+        0.8,
+        0.1,
+        0.1
+      ],
+      "revisions_retimings_audits_inherit_split": true,
+      "unit": "lineage_and_goal_neighborhood_family",
+      "use_final_test_for_development": false
+    },
+    "storage": {
+      "arrays_format": "sharded_lossless_npz",
+      "atomic_writes": true,
+      "deterministic_merge_by_proposal_id": true,
+      "each_worker_has_independent_data": true,
+      "first_backend_workers": 1,
+      "full_trace_for_every_rejected_proposal": false,
+      "index_format": "jsonl",
+      "large_data_committed_to_git": false,
+      "per_run_lock": true,
+      "reference_and_actual_separate": true,
+      "reject_output_identity_conflict": true,
+      "video_for_every_trajectory": false
+    },
+    "strict_multimodal": {
+      "enabled_in_default_run": false,
+      "first_batch": 8,
+      "max_root_attempts_per_task": 40,
+      "min_count_may_be_relaxed": false,
+      "minimum_distinct_model_valid_candidates": 5,
+      "one_counted_candidate_per_root": true,
+      "require_five_physics_successes": false,
+      "retiming_is_new_mode": false,
+      "retry_batch": 8,
+      "study_task_budget": 20,
+      "underfilled_status": "INSUFFICIENT_CANDIDATES",
+      "validate_all_candidates_of_frozen_pool": true
+    },
+    "training": {
+      "attention_heads": 4,
+      "checkpoint_selection": "validation_only",
+      "conditioning": "online_initial_state_features_dual_world_goals_duration_pose_mask",
+      "future_fields_allowed": false,
+      "hidden_dim": 128,
+      "layers": 4,
+      "objective": "epsilon_prediction_mse",
+      "schema_and_robot_hash_match_required": true,
+      "target": "latent_Z_19x17"
+    },
+    "validation": {
+      "audit_upgrades_unaudited_samples": false,
+      "final_geometry_uses_projected_q17": false,
+      "frozen_task_relabel_after_failure": false,
+      "inherited_uncalibrated_proposal": {
+        "actual_clearance_m": 0.0,
+        "planning_clearance_m": 0.0,
+        "terminal_position_tolerance_m_each_arm": 0.005,
+        "terminal_rotation_tolerance_deg_each_arm": 1.0
+      },
+      "main_prior_required_level": "MODEL_VALID",
+      "missing_required_gate_is_pass": false,
+      "model_valid_implies_actual_execution": false,
+      "physical_threshold_policy": "use_current_frozen_contract_else_independent_dev_proposal",
+      "require_independent_ctrl_replay_for_execution_verified": true,
+      "strict_expert_required_level": "EXECUTION_VERIFIED",
+      "torque_model_gate_when_unimplemented": "NOT_EVALUATED_OR_BLOCK_REQUIRED_PROFILE",
+      "unspecified_physical_tolerances_policy": "require_dev_basis_and_frozen_version",
+      "user_override": {
+        "applies_to": [
+          "model_geometry",
+          "native_execution",
+          "independent_replay",
+          "benchmark"
+        ],
+        "collision_requirement": "NONPENETRATION",
+        "instruction": "\u6309\u4ec5\u4e0d\u7a7f\u900f\u7684\u5386\u53f2\u8986\u76d6\u6765\uff0c\u5e76\u5199\u5165\u76ee\u6807",
+        "source": "Direct user instruction in this chat, 2026-10-15 Asia/Shanghai"
+      }
+    }
+  },
+  "identity": {
+    "budget": {
+      "actual_audit_samples_max": 24,
+      "benchmark_selected_execution_max": 12,
+      "dev_generation_wall_budget_s": 1800,
+      "evaluation_scope": "independent_dev",
+      "evaluation_tasks_max": 4,
+      "independent_dev_proposals_max": 200,
+      "main_families": 40,
+      "main_generation_wall_budget_s": 1800,
+      "main_proposals": 200,
+      "random_audit_samples_max": 16,
+      "risk_audit_samples_max": 8,
+      "training_updates_max": 200
+    },
+    "config_hash": "340d40963a8f728154d49e16e9b32d1a274ec880bc2a2dc246130d9e29c22ee5",
+    "environment": {
+      "mujoco": "3.3.2",
+      "numpy": "1.26.4",
+      "pytest": "8.4.2",
+      "pyyaml": "6.0.3",
+      "scipy": "1.11.2",
+      "torch": "2.6.0+cpu"
+    },
+    "head": "070e7008923bf2642dcecf9806745564388669b9",
+    "initial_state_id": "9eb21ed3fa3f7d5fd475de862d75adce52e582f5ad86911b09330c45e0c01c7b",
+    "profile": "smoke",
+    "robot_hash": "76edfae2ce103d0191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19",
+    "source_hash": "ba712f4d675766a27d8558a9abc6fe1262caa71b9c741f5f03b483b3d1895560"
+  },
+  "scope": "DEVELOPMENT_ONLY",
+  "source_hashes": {
+    "ff_prior/__init__.py": "0513aa254fda5d4da366096fccc0a2d4809aa16978cf9399c288b05413d31062",
+    "ff_prior/benchmark.py": "710d5193ead1639fc0ce00f3b9a28e33018d9e13b1cc0c290379113221ee3e71",
+    "ff_prior/cli.py": "6543f57d7b518c66713922de57bfb03b4abb1b974e9a5e959bfed7867e7fe10c",
+    "ff_prior/contracts.py": "a0fca6f4c4b39e49fa383a49852ea206bccbf39511045fbc094fa134d78171b1",
+    "ff_prior/coupled_predictor.py": "0a75b3b28138e5b5e39825db834cf367250e80d30076a74d5984ab87071bdc07",
+    "ff_prior/dataset.py": "d6b2513e9e21d7807d91717d8fc920894422e0492d983f0a1dd262161a426ab8",
+    "ff_prior/diffusion.py": "1c150431612dea1f69f4e080ac31dd5cf5acbd1671001a4e49f0490c3a12a3b2",
+    "ff_prior/geometry.py": "bc34ecbeea365e70b19036da0090c6ba0b3527dc63a0dcd2b9555fd3a541a2c1",
+    "ff_prior/guidance.py": "affeb0f923bff80d7bd8d566f2f5132ff791dbe9414a3ee08bfa75f8f7219009",
+    "ff_prior/initial_state.py": "778109409d1b05cff456167e9f7d3799a4b4751d273c85052df50dfd33ae7689",
+    "ff_prior/model_gates.py": "6d771f42cad6e48f0a0d109ed680c99ca1f72b57a6b4778ac2917c718cbc0033",
+    "ff_prior/physical_audit.py": "720bb9cabbee9191b662c7b2a428bd0fe717e98e9695e2ffc70994329b42c2d1",
+    "ff_prior/pipeline.py": "ea63e77cde66db3c0377ab6a61d70d03cd7b4c93b26716879fa9c1c71d13b8e3",
+    "ff_prior/proposal_generator.py": "47392c51487f07ca2ff008f47d2a4cd63e4a1bec8012b713cdff65315b242c38",
+    "ff_prior/recovery/__init__.py": "c718ebb575a363a3cc7aeace361805393e9a6d659786bb645673c50370f0cecf",
+    "ff_prior/recovery/__main__.py": "a7e18175f09842eccbcd8e8e036c94a5f0d107d79847436cf285c6a3af7b9384",
+    "ff_prior/report.py": "4b3a8f31f246196d83f82b329380fc4d2ac3b21ed0aa77562736868107ea77c3",
+    "ff_prior/robot_adapter.py": "01ddac44b2039353dcc017f383dc3f995cdd616e3019420dd4b1444303aa3605",
+    "ff_prior/scenes.py": "9a4dd1276669de944a7cbf2e96c326f98cf1899685b59bb3a5e773d8884bfe43",
+    "ff_prior/spline.py": "b04d8bf4d6585546afd0bd6fe7a411c4273f8ba40262e00a8efb51dd88b1d552",
+    "ff_prior/storage.py": "768408d21fdf76c8d382d8e0e042d562c61075f3598936f9140d37595e9864f7",
+    "ff_prior/study.py": "c27407da964c03a675d1e6b39ef04a64edea06b1c47ec94d56e5f00508f52e80",
+    "ff_prior/torque_tracker.py": "584f352fca34899c07759a234c84a3c5e8df3915ba2a97993f5f6860a7fd7f13",
+    "ff_prior/visualize_evidence.py": "80b73ff7ea08aa44b3437c1f5a16dcca9694014d140d7e9c95986425a69b07a8",
+    "model_test/angle_convention.py": "eb6845ad23570bcdd2056d6977bfdfa4af7f1fb1dc635689359284ca20f10699",
+    "model_test/robot_model_spec_v5.py": "34068777f5b93809d273388b2232d026f730734bf9963d1b7070f6698278919d",
+    "v6_lite/continuum_model_spec.py": "2cf364e32ce5f361564130609b683217431847f693c337b504fc5128b243ebfd"
+  }
+}

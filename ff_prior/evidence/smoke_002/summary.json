@@ -1,0 +1,169 @@
+{
+  "BENCHMARK_STATUS": "NOT_ESTABLISHED",
+  "GUIDED_SAMPLING_STATUS": "DEV_EVIDENCE_AVAILABLE",
+  "MODEL_PRIOR_STATUS": "MODEL_VALID_SAMPLES_AVAILABLE",
+  "OFFLINE_PIPELINE_STATUS": "GENERATION_EVIDENCE_AVAILABLE",
+  "PHYSICAL_AUDIT_STATUS": "EXECUTION_EVIDENCE_AVAILABLE",
+  "SCALEUP_ELIGIBLE": false,
+  "TRAINING_STATUS": "PASS",
+  "active_work": null,
+  "benchmark": {
+    "benefit": "NOT_ESTABLISHED",
+    "final_TEST": "NOT_RUN",
+    "frozen_tasks": 4,
+    "guidance_backend": "SUBSPACE_FD_DEV_ONLY",
+    "methods": {
+      "diffusion_in_denoising_guidance": {
+        "completed": 4,
+        "denominator": 4,
+        "execution_verified": 0,
+        "failed_or_error": 0,
+        "no_candidate": 4
+      },
+      "diffusion_no_guidance": {
+        "completed": 4,
+        "denominator": 4,
+        "execution_verified": 0,
+        "failed_or_error": 0,
+        "no_candidate": 4
+      },
+      "structured_prior_same_guidance": {
+        "completed": 4,
+        "denominator": 4,
+        "execution_verified": 1,
+        "failed_or_error": 0,
+        "no_candidate": 3
+      }
+    },
+    "predefined_task_denominator": 4,
+    "status": "FINISHED"
+  },
+  "calls": {
+    "benchmark.coupled": 1715,
+    "benchmark.distance": 11488321,
+    "benchmark.fk": 668829,
+    "benchmark.forward": 29730,
+    "benchmark.mass_matrix": 463346,
+    "benchmark.physics_steps": 10500,
+    "benchmark.rrt": 0,
+    "benchmark.sqp": 0,
+    "benchmark.torque_rollout": 1,
+    "dev.coupled": 435,
+    "dev.distance": 2787478,
+    "dev.fk": 250870,
+    "dev.forward": 1270,
+    "dev.mass_matrix": 190310,
+    "dev.physics_steps": 0,
+    "dev.rrt": 0,
+    "dev.sqp": 0,
+    "dev.torque_rollout": 0,
+    "main.coupled": 443,
+    "main.distance": 2880413,
+    "main.fk": 261126,
+    "main.forward": 1286,
+    "main.mass_matrix": 198518,
+    "main.physics_steps": 0,
+    "main.rrt": 0,
+    "main.sqp": 0,
+    "main.torque_rollout": 0,
+    "physical_audit.coupled": 0,
+    "physical_audit.distance": 11591552,
+    "physical_audit.fk": 0,
+    "physical_audit.forward": 630144,
+    "physical_audit.mass_matrix": 378048,
+    "physical_audit.physics_steps": 252000,
+    "physical_audit.rrt": 0,
+    "physical_audit.sqp": 0,
+    "physical_audit.torque_rollout": 24
+  },
+  "counter_definitions": {
+    "fk": "explicit scratch mj_kinematics calls",
+    "forward": "explicit mj_forward calls, including tracker/replay/native verification",
+    "internal_engine_calls": "not double-counted as Python API calls",
+    "mass_matrix": "explicit full mass-matrix reads",
+    "physics_steps": "mj_step calls, execution plus independent replay"
+  },
+  "independent_replay_count": 24,
+  "independent_replay_pass": 24,
+  "partitions": {
+    "dev": {
+      "attempted": 200,
+      "model_valid": 199,
+      "rejected_or_error": 1,
+      "wall_s_per_model_valid": 0.24536237134902397
+    },
+    "main": {
+      "attempted": 200,
+      "model_valid": 200,
+      "rejected_or_error": 0,
+      "wall_s_per_model_valid": 0.24169952949276194
+    }
+  },
+  "physical_audits": {
+    "random": {
+      "conversion": 1.0,
+      "execution_verified": 16,
+      "failed_or_error": 0,
+      "finished": 16,
+      "frozen_count": 16,
+      "unbiased_population_estimate": true,
+      "wilson95": [
+        0.8063923194655637,
+        1.0
+      ]
+    },
+    "risk": {
+      "conversion": 1.0,
+      "execution_verified": 8,
+      "failed_or_error": 0,
+      "finished": 8,
+      "frozen_count": 8,
+      "unbiased_population_estimate": false,
+      "wilson95": [
+        0.6755924351161198,
+        1.0
+      ]
+    }
+  },
+  "physical_execution_count": 24,
+  "profile": "smoke",
+  "resource_cpu_s": {
+    "benchmark": 107.140625,
+    "dataset": 3.984375,
+    "dev": 45.609375,
+    "main": 46.484375,
+    "physical_audit": 252.03125
+  },
+  "resource_wall_s": {
+    "benchmark": 107.77522729989141,
+    "dataset": 4.735631899908185,
+    "dev": 48.82711189845577,
+    "main": 48.33990589855239,
+    "physical_audit": 253.8528531002812
+  },
+  "scaleup_reasons": [
+    "pilot explicitly NOT_RUN",
+    "SUBSPACE_FD_DEV_ONLY is not production eligible",
+    "inherited physical tolerance profile is developmental"
+  ],
+  "scope": "DEVELOPMENT_ONLY",
+  "storage_bytes": 1397427366,
+  "training": {
+    "checkpoint_selection": "VAL_MSE_ONLY",
+    "cpu_s": 9.984375,
+    "diffusion_benefit": "NOT_ESTABLISHED",
+    "initial_weight_hash": "05a3c92674c34d8779b861f120d662e6151403781af2056beddc88515306a5d9",
+    "reload_forward_calls": 2,
+    "reload_max_error": 0.0,
+    "selected_weight_hash": "34e88a4a0c7cd4092249c5f93facc5a5f3e8fca1d750896b6e2df1f5a8fbf5bd",
+    "status": "PASS",
+    "train_count": 150,
+    "training_and_val_forward_calls": 400,
+    "updates": 200,
+    "val_count": 30,
+    "wall_s": 7.684385599568486,
+    "weights_changed": true
+  },
+  "unresolved_call_accounting": [],
+  "wall_s_per_execution_verified": 10.577202212511716
+}

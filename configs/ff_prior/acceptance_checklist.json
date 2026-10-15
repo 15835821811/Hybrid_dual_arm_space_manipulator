@@ -1,0 +1,156 @@
+{
+  "schema_version": "ff_prior_v7_1_acceptance_proposal",
+  "package_type": "codex_task_specification_not_robot_implementation",
+  "repository_implementation_status": "NOT_ASSESSED_IN_THIS_TASK_PACKAGE",
+  "robot_tests_status": "NOT_RUN",
+  "measured_output_counts": null,
+  "checks": [
+    {
+      "phase": "M0",
+      "id": "workspace_and_contract_audit",
+      "requirement": "实际HEAD、已有实现、初态、物理合同、执行环境有来源；不覆盖旧工作。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M1",
+      "id": "shared_spline_decoder",
+      "requirement": "24控制点/19自由token、边界导数、真实时长与保存视图一致。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M1",
+      "id": "bounded_low_cost_generator",
+      "requirement": "提案受预算约束，主生成链RRT/SQP/真实rollout调用计数为零。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M1",
+      "id": "geometry_counterexamples",
+      "requirement": "自碰撞、臂间、基座/安装座及中途碰撞反例不通过。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M2",
+      "id": "coupled_predictor",
+      "requirement": "当前质量矩阵/正确参考系/独立scratch、非零初始动量拒绝。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M2",
+      "id": "numerical_convergence",
+      "requirement": "逐样本收敛记录、失败不提升等级、路径缓存正确失效。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M2",
+      "id": "goal_provenance",
+      "requirement": "前向派生目标与冻结任务两条逻辑隔离，冻结后失败重标被拒绝。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M3",
+      "id": "validation_levels",
+      "requirement": "抽查不批量认证，未知门槛不当PASS，执行失败与模型状态分别保存。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M3",
+      "id": "split_and_condition_audit",
+      "requirement": "根谱系/近重复/split无泄漏，condition不包含教师或未来状态。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M3",
+      "id": "normalizer_audit",
+      "requirement": "只用TRAIN拟合，训练/推理共享schema与转换实现。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M3",
+      "id": "budget_resume_integrity",
+      "requirement": "预算累计、中断恢复、并行重复结果去重和run锁实测。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M4",
+      "id": "physical_execution",
+      "requirement": "真实ctrl+mj_step、无隐藏状态覆盖、无任务重规划。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M4",
+      "id": "independent_replay",
+      "requirement": "新data重放ctrl，有时间对齐和数值差异证据。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M4",
+      "id": "native_state_whole_body_check",
+      "requirement": "使用实际低层链全机检查，流形残差、保持和时限有报告。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M4",
+      "id": "audit_selection_integrity",
+      "requirement": "DEV独立来源，随机与风险组分开，失败不替换。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M5",
+      "id": "training_smoke",
+      "requirement": "权重真实更新，checkpoint/scaler/schema重载可复现。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M5",
+      "id": "in_denoising_guidance",
+      "requirement": "引导发生在去噪内并使用完整耦合代价，后端能力如实标记。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "M5",
+      "id": "matched_minimal_comparison",
+      "requirement": "同一公开任务/候选数/约束，选择先于实际执行。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "STUDY",
+      "id": "strict_five_candidate_protocol",
+      "requirement": "五候选去重与完整池验证；不足不伪造，不在主先验强制配额。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "STUDY",
+      "id": "held_out_benchmark",
+      "requirement": "封存200任务，不依据待测方法表现挑题；结果必须真实执行。",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "phase": "RELEASE",
+      "id": "cost_and_scope_report",
+      "requirement": "模型先验与物理专家成本分开，无虚构加速；固定初态/静态/仿真边界明确。",
+      "status": "NOT_RUN",
+      "evidence": []
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "config_hash": "340d40963a8f728154d49e16e9b32d1a274ec880bc2a2dc246130d9e29c22ee5",
+  "data_role": "FF_MODEL_PRIOR",
+  "execution_status": "NOT_RUN",
+  "family_id": "dev_family_000016",
+  "goal_source": "coupled_forward_generated",
+  "initial_state_id": "9eb21ed3fa3f7d5fd475de862d75adce52e582f5ad86911b09330c45e0c01c7b",
+  "mapping_hash": "f3aac9d540c79026b2f6db7ec0d9761ebc454d3fca7993b676c34a04e8dfcd63",
+  "pair_policy_hash": "9b9b68b541cc3527cbd60cab70e8f98a16cd73e6a9e3a0cce3a2d844f8592944",
+  "parent_id": null,
+  "producer_commit": "070e7008923bf2642dcecf9806745564388669b9",
+  "provenance": {
+    "proposal_type": "rigid_arm_leads",
+    "q_terminal_seed": [
+      0.04941505407222335,
+      -0.06562718296465983,
+      -0.07903356901416146,
+      -0.06629913541836158,
+      -0.07776286471787544,
+      0.0573406344387264,
+      -0.07866798777639145,
+      0.055443482843932204,
+      0.0724691089742842,
+      0.07598402476485505,
+      0.272566376572093,
+      1.0574935237198257,
+      0.09201422775056868,
+      1.8206526259261577,
+      0.054512743021799724,
+      0.8518828901551695,
+      -0.07217127396263047
+    ],
+    "seed": 30277271
+  },
+  "publication": "IMMUTABLE",
+  "resources": {
+    "calls": {
+      "coupled": 3,
+      "distance": 24332,
+      "fk": 2312,
+      "forward": 8,
+      "mass_matrix": 1798,
+      "physics_steps": 0,
+      "rrt": 0,
+      "sqp": 0,
+      "torque_rollout": 0
+    },
+    "cpu_s": 0.25,
+    "wall_s": 0.2591685000807047
+  },
+  "robot_hash": "76edfae2ce103d0191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19",
+  "root_id": "dev_000083",
+  "sample_id": "dev_000083",
+  "scene_family_id": null,
+  "scene_hash": "76edfae2ce103d0191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19",
+  "source_hash": "ba712f4d675766a27d8558a9abc6fe1262caa71b9c741f5f03b483b3d1895560",
+  "source_partition": "dev",
+  "split": "REJECTED",
+  "training_eligible": false,
+  "validation": {
+    "gates": {
+      "boundary": true,
+      "coupled_convergence": true,
+      "domain": true,
+      "finite": true,
+      "geometry": true,
+      "geometry_refinement": false,
+      "identity": true,
+      "label_consistency": true,
+      "motion": true,
+      "native_range": true,
+      "time_hold": true
+    },
+    "geometry": {
+      "coarse": {
+        "checked_states": 129,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008492924011449045,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "extra": {
+        "checked_states": 256,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008492924011786042,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "geometry_step_budget_m": 0.002,
+      "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+      "maximum_geometry_step_m": 0.0020325358604690214,
+      "midpoints": {
+        "checked_states": 128,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008492924014144447,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "minimum_clearance_m": 0.008492924011449045,
+      "refinement_difference_m": 0.0
+    },
+    "numerical": {
+      "comparisons": [
+        {
+          "aligned_body_extent_m": 1.4665380569414397e-06,
+          "coarse": 128,
+          "fine": 256,
+          "passed": true,
+          "terminal_position_m": [
+            3.368137453270251e-08,
+            2.0229636605285072e-08
+          ],
+          "terminal_rotation_rad": [
+            1.7267346723166015e-08,
+            1.726734624066413e-08
+          ]
+        }
+      ],
+      "passed": true
+    },
+    "reference_torque_feasibility": "NOT_EVALUATED",
+    "required": [
+      "identity",
+      "finite",
+      "domain",
+      "native_range",
+      "boundary",
+      "motion",
+      "coupled_convergence",
+      "geometry",
+      "geometry_refinement",
+      "time_hold",
+      "label_consistency"
+    ],
+    "validation_level": "REJECTED",
+    "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+  },
+  "validation_level": "REJECTED",
+  "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+}

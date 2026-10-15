@@ -1,0 +1,254 @@
+# 待实现的新配置合同，不是现有CLI已经支持的配置。
+# 所有新规模/预算/网络数值均为工程提案，不是实测结果。
+schema_version: ff_prior_v7_1_proposal
+implementation_status: TO_BE_IMPLEMENTED
+configuration_status: DEVELOPMENT_PROPOSAL
+source:
+  repository: 15835821811/Hybrid_dual_arm_space_manipulator
+  base_policy: audited_current_workspace_head
+  historical_reference_commit: e2941462011bfcde8c96dcf5b81be7537e900a40
+  destination_branch: v7.1-lightweight-free-floating-prior
+  preserve_existing_work_and_artifacts: true
+  automatically_stop_old_jobs: false
+  automatic_remote_push: false
+scope:
+  initial_state: frozen_complete_state
+  task: dual_end_effector_world_pose_noncontact
+  environment_motion: static
+  initial_momentum_support: audited_zero_momentum_only
+  dynamic_support: NOT_VALIDATED
+  arbitrary_initial_state_support: NOT_VALIDATED
+  continuous_time_certified: false
+  hardware_validated: false
+robot:
+  planner_dof: 17
+  continuum_planner_dof: 10
+  rigid_planner_dof: 7
+  robot_actuator_dof: 67
+  scene_dimensions: from_compiled_model_and_names
+  mapping_and_limits: from_audited_current_robot_contract
+  continuum_domain: intersection_physical_geometry_audited_shape
+  angle_unit: radian
+  position_unit: metre
+  quaternion_order: from_audited_contract_and_explicit_schema
+  free_base: true
+  gravity_m_s2: [0.0, 0.0, 0.0]
+  hidden_external_wrench: false
+  overwrite_robot_state_during_execution: false
+  geometric_truth: authoritative_discrete_chain
+  final_collision_uses_actual_low_level_state: true
+  base_drift_is_hard_gate_by_default: false
+reference:
+  representation: cubic_clamped_bspline
+  control_points: 24
+  latent_tokens: 19
+  joint_dimension: 17
+  training_view_points: 128
+  initial_boundary: first_three_equal_q0
+  terminal_boundary: last_three_equal_free_terminal_variable
+  independent_terminal_joint_goal_condition: false
+  duration_candidates_s: [10.0, 15.0, 20.0, 25.0, 29.5]
+  hold_duration_s: 0.5
+  deadline_s: 30.0
+  duration_policy: first_feasible_from_frozen_set
+  jointly_optimize_duration_in_default_generator: false
+  derivatives: analytic_from_shared_decoder
+prior_generation:
+  master_seed: 20261015
+  generation_policy: bounded_proposals_not_success_quota
+  proposals_per_family: 5
+  minimum_same_world_goal_candidates: null
+  external_obstacles: false
+  self_collision_checks: true
+  inter_arm_collision_checks: true
+  arm_base_collision_checks: true
+  proposal_families:
+    - smooth_baseline
+    - correlated_low_frequency_perturbation
+    - continuum_leads
+    - rigid_arm_leads
+    - joint_group_motion_allocation
+  rrt_calls_allowed: 0
+  high_dimensional_sqp_calls_allowed: 0
+  actual_torque_rollout_calls_allowed: 0
+  optimization_repair_enabled: false
+  optional_cheap_revisions_max: 2
+  failed_proposals_trigger_unbounded_refill: false
+  private_terminal_seed_is_model_condition: false
+  goal_source: coupled_forward_generated
+  immutable_record_after_publication: true
+coupled_predictor:
+  first_backend: audited_cpu_mujoco_scratch
+  momentum_model: zero_momentum_reduced_mapping
+  solve_mass_blocks_not_explicit_inverse: true
+  integrate_in_consistent_se3_frame: true
+  integration_order_minimum: 2
+  phase_intervals: [128, 256, 512]
+  numerical_error_proposal:
+    terminal_position_difference_m: 0.001
+    terminal_rotation_difference_deg: 0.2
+    aligned_body_point_difference_m: 0.001
+  convergence_failure_status: NUMERICAL_UNRESOLVED
+  geometry_refinement_separate_from_endpoint_convergence: true
+  cache_retiming_only_under_audited_static_zero_momentum_assumptions: true
+  path_change_invalidates_cache: true
+  time_dependent_constraints_rechecked_after_retiming: true
+  claim_existing_numpy_mujoco_is_autodifferentiable: false
+validation:
+  main_prior_required_level: MODEL_VALID
+  strict_expert_required_level: EXECUTION_VERIFIED
+  missing_required_gate_is_pass: false
+  model_valid_implies_actual_execution: false
+  audit_upgrades_unaudited_samples: false
+  physical_threshold_policy: use_current_frozen_contract_else_independent_dev_proposal
+  inherited_uncalibrated_proposal:
+    terminal_position_tolerance_m_each_arm: 0.005
+    terminal_rotation_tolerance_deg_each_arm: 1.0
+    planning_clearance_m: 0.0
+    actual_clearance_m: 0.0
+  user_override:
+    source: "Direct user instruction in this chat, 2026-10-15 Asia/Shanghai"
+    instruction: "按仅不穿透的历史覆盖来，并写入目标"
+    collision_requirement: NONPENETRATION
+    applies_to: [model_geometry, native_execution, independent_replay, benchmark]
+  unspecified_physical_tolerances_policy: require_dev_basis_and_frozen_version
+  frozen_task_relabel_after_failure: false
+  final_geometry_uses_projected_q17: false
+  require_independent_ctrl_replay_for_execution_verified: true
+  torque_model_gate_when_unimplemented: NOT_EVALUATED_OR_BLOCK_REQUIRED_PROFILE
+physical_audit:
+  selection_source: separately_budgeted_dev_families
+  selection_freeze_before_execution: true
+  random_and_risk_statistics_separate: true
+  replace_failed_audit_samples: false
+  physics_dt_s: 0.002
+  high_level_reference_update_s: 0.020
+  reference_evaluation: every_physics_step
+  controller_source: audited_free_base_feedforward_plus_67d_pd
+  task_replanning_inside_tracker: false
+  optional_safety_qp_enabled: false
+  independent_replay: stored_ctrl_from_frozen_initial_state
+  native_trace_required: true
+  default_exclude_known_execution_failures_from_training: true
+strict_multimodal:
+  enabled_in_default_run: false
+  study_task_budget: 20
+  minimum_distinct_model_valid_candidates: 5
+  min_count_may_be_relaxed: false
+  first_batch: 8
+  retry_batch: 8
+  max_root_attempts_per_task: 40
+  one_counted_candidate_per_root: true
+  validate_all_candidates_of_frozen_pool: true
+  retiming_is_new_mode: false
+  require_five_physics_successes: false
+  underfilled_status: INSUFFICIENT_CANDIDATES
+split:
+  proportions: [0.8, 0.1, 0.1]
+  unit: lineage_and_goal_neighborhood_family
+  revisions_retimings_audits_inherit_split: true
+  independent_dev_calibration_families: true
+  nonempty_scene_family_isolation: true
+  empty_scene_id_is_not_one_global_lineage: true
+  cross_split_near_duplicate_audit: true
+  freeze_before_training: true
+  normalizer_fit_on_train_only: true
+  use_final_test_for_development: false
+  historical_import_enabled: false
+training:
+  target: latent_Z_19x17
+  conditioning: online_initial_state_features_dual_world_goals_duration_pose_mask
+  future_fields_allowed: false
+  hidden_dim: 128
+  layers: 4
+  attention_heads: 4
+  objective: epsilon_prediction_mse
+  checkpoint_selection: validation_only
+  schema_and_robot_hash_match_required: true
+sampling:
+  candidate_count: 5
+  exact_ddim_call_count_required: true
+  guidance_inside_reverse_process: true
+  preferred_guidance_backend: audited_full_path_sensitivity_or_vjp
+  fallback_backend: SUBSPACE_FD_DEV_ONLY
+  fallback_subspace_directions: 8
+  fallback_centered_evaluations_per_candidate_per_guide: 16
+  fallback_smoke_guided_iterations: 2
+  fallback_uses_full_coupled_cost: true
+  fallback_is_full_exact_gradient: false
+  fallback_can_enable_production: false
+  full_dimension_fd_allowed_only_for_small_audit: true
+benchmark:
+  task_selection_depends_on_tested_diffusion_success: false
+  task_and_scene_frozen_before_planning: true
+  witnesses_and_teacher_q_goals_exposed_to_methods: false
+  primary_execution_metric: model_selected_one_candidate_before_execution
+  oracle_best_of_all_executions_reported_separately: true
+  same_public_conditions_and_verifier: true
+  all_costs_and_unresolved_tasks_accounted: true
+  minimal_methods:
+    - structured_prior_same_guidance
+    - diffusion_in_denoising_guidance
+    - diffusion_no_guidance
+profiles:
+  smoke:
+    main_proposals: 200
+    main_families: 40
+    independent_dev_proposals_max: 200
+    main_generation_wall_budget_s: 1800
+    dev_generation_wall_budget_s: 1800
+    actual_audit_samples_max: 24
+    random_audit_samples_max: 16
+    risk_audit_samples_max: 8
+    training_updates_max: 200
+    evaluation_scope: independent_dev
+    evaluation_tasks_max: 4
+    benchmark_selected_execution_max: 12
+  pilot:
+    main_proposals: 10000
+    main_families: 2000
+    independent_dev_proposals_max: 2000
+    main_generation_wall_budget_s: 7200
+    dev_generation_wall_budget_s: 7200
+    actual_audit_samples_max: 256
+    random_audit_samples_max: 192
+    risk_audit_samples_max: 64
+    training_updates_max: 5000
+    evaluation_scope: independent_dev
+    evaluation_tasks_max: 40
+    benchmark_selected_execution_max: 120
+  study:
+    reuse_frozen_training_data: true
+    final_test_task_budget: 200
+    strict_multimodal_task_budget: 20
+    requires_explicit_profile_and_frozen_resource_budget: true
+execution_policy:
+  default_profile: smoke
+  automatic_pilot: false
+  automatic_study: false
+  automatic_production: false
+  budget_counts_failures_duplicates_revisions_and_replay: true
+  resume_uses_cumulative_budget: true
+  deadline_is_not_compute_wall_budget: true
+  unresolved_is_proven_infeasible: false
+scaleup_gate:
+  requires_real_smoke_and_pilot_evidence: true
+  requires_all_contract_and_anti_cheating_tests: true
+  requires_no_data_leakage: true
+  random_dev_execution_conversion_proposal_minimum: 0.80
+  report_sample_count_and_uncertainty: true
+  threshold_is_not_per_sample_physical_certificate: true
+  automatic_relaxation_of_physical_acceptance: false
+storage:
+  index_format: jsonl
+  arrays_format: sharded_lossless_npz
+  reference_and_actual_separate: true
+  atomic_writes: true
+  per_run_lock: true
+  reject_output_identity_conflict: true
+  first_backend_workers: 1
+  each_worker_has_independent_data: true
+  deterministic_merge_by_proposal_id: true
+  full_trace_for_every_rejected_proposal: false
+  video_for_every_trajectory: false
+  large_data_committed_to_git: false
