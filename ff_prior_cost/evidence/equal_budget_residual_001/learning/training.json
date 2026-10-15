@@ -1,0 +1,242 @@
+{
+  "DEV_TEST_gradient_reads": false,
+  "benefit": "NOT_ESTABLISHED_UNTIL_MATCHED_COMPARISON",
+  "checkpoint_sha256": "81624c309767f384fdf85f09f5aa6a3a3cb4caea54bbd0473d41142d5baefae8",
+  "contract": {
+    "batch": 16,
+    "clean_aux_weight": 1.0,
+    "loss_scope": "joint residual imitation; actual world pose diagnosed separately, not claimed as differentiable dynamics",
+    "lr": 0.0001,
+    "sanity_gate": "fixed high-noise TRAIN loss <=30% initial, finite weights",
+    "sanity_targets": 8,
+    "sanity_updates": 80,
+    "scaler": "frozen",
+    "seed": 20261031,
+    "select": "fixed three-band VAL clean MSE every 20 updates",
+    "temporal_prior": "frozen_rank6",
+    "terminal_weight": 4.0,
+    "train_targets": 30,
+    "updates": 240,
+    "val_targets": 6,
+    "version": "minimal_repaired_residual_distillation_1"
+  },
+  "cpu_s": 7.296875,
+  "history": [
+    {
+      "train_loss": 0.9872862696647644,
+      "update": 20,
+      "val_clean_mse": [
+        0.00013399792078416795,
+        0.8549075126647949,
+        1.2486413717269897
+      ]
+    },
+    {
+      "train_loss": 1.0318477153778076,
+      "update": 40,
+      "val_clean_mse": [
+        0.00013361983292270452,
+        0.8308643102645874,
+        1.2189607620239258
+      ]
+    },
+    {
+      "train_loss": 0.9377291202545166,
+      "update": 60,
+      "val_clean_mse": [
+        0.00013809803931508213,
+        0.8960660696029663,
+        1.3393527269363403
+      ]
+    },
+    {
+      "train_loss": 0.9451612234115601,
+      "update": 80,
+      "val_clean_mse": [
+        0.00013418214803095907,
+        0.9045259356498718,
+        1.3382558822631836
+      ]
+    },
+    {
+      "train_loss": 0.7618706226348877,
+      "update": 100,
+      "val_clean_mse": [
+        0.00013541286170948297,
+        0.9296581745147705,
+        1.312789797782898
+      ]
+    },
+    {
+      "train_loss": 0.9622304439544678,
+      "update": 120,
+      "val_clean_mse": [
+        0.0001361803151667118,
+        0.8766283392906189,
+        1.2658370733261108
+      ]
+    },
+    {
+      "train_loss": 0.7200577855110168,
+      "update": 140,
+      "val_clean_mse": [
+        0.00013802971807308495,
+        0.9313184022903442,
+        1.2850922346115112
+      ]
+    },
+    {
+      "train_loss": 0.6439619064331055,
+      "update": 160,
+      "val_clean_mse": [
+        0.00013317055709194392,
+        0.9870840311050415,
+        1.347508192062378
+      ]
+    },
+    {
+      "train_loss": 0.6729593873023987,
+      "update": 180,
+      "val_clean_mse": [
+        0.00013169343583285809,
+        0.975398600101471,
+        1.2950178384780884
+      ]
+    },
+    {
+      "train_loss": 0.6634403467178345,
+      "update": 200,
+      "val_clean_mse": [
+        0.0001337277062702924,
+        1.0102667808532715,
+        1.3444757461547852
+      ]
+    },
+    {
+      "train_loss": 0.6138575673103333,
+      "update": 220,
+      "val_clean_mse": [
+        0.0001278901327168569,
+        0.9627029299736023,
+        1.2601563930511475
+      ]
+    },
+    {
+      "train_loss": 0.6269857883453369,
+      "update": 240,
+      "val_clean_mse": [
+        0.0001325739867752418,
+        1.0236966609954834,
+        1.2833868265151978
+      ]
+    }
+  ],
+  "identity": "26479a6e584732527a2eabdc77c252263441d714e79e9767e1502de03842a9b1",
+  "initial_val_clean_mse": [
+    0.00013779204164166003,
+    0.679050624370575,
+    0.9670669436454773
+  ],
+  "parent_weight_hash": "39ca22e6749b6bdb650ffcef38a99bc8491380b8542424f6345f4ede6f707706",
+  "physical_training_label_level": "MODEL_VALID_ONLY",
+  "reload_error": 0.0,
+  "reload_forward_calls": 2,
+  "sanity": {
+    "claim": "pipeline capacity sanity only; no generalization claim",
+    "final_loss": 0.06104006618261337,
+    "forward_calls": 82,
+    "initial_loss": 0.8641008138656616,
+    "ratio": 0.07063998228348277,
+    "status": "PASS",
+    "training_ids": [
+      "cost_TRAIN_000",
+      "cost_TRAIN_001",
+      "cost_TRAIN_002",
+      "cost_TRAIN_003",
+      "cost_TRAIN_004",
+      "cost_TRAIN_005",
+      "cost_TRAIN_006",
+      "cost_TRAIN_007"
+    ]
+  },
+  "selected_update": 0,
+  "selected_val_mean_mse": 0.548751786685898,
+  "selected_weight_hash": "39ca22e6749b6bdb650ffcef38a99bc8491380b8542424f6345f4ede6f707706",
+  "status": "PASS",
+  "training_forward_calls": 240,
+  "training_ids": [
+    "cost_TRAIN_000",
+    "cost_TRAIN_001",
+    "cost_TRAIN_002",
+    "cost_TRAIN_003",
+    "cost_TRAIN_004",
+    "cost_TRAIN_005",
+    "cost_TRAIN_006",
+    "cost_TRAIN_007",
+    "cost_TRAIN_008",
+    "cost_TRAIN_009",
+    "cost_TRAIN_010",
+    "cost_TRAIN_011",
+    "cost_TRAIN_012",
+    "cost_TRAIN_013",
+    "cost_TRAIN_014",
+    "cost_TRAIN_015",
+    "cost_TRAIN_016",
+    "cost_TRAIN_017",
+    "cost_TRAIN_018",
+    "cost_TRAIN_019",
+    "cost_TRAIN_020",
+    "cost_TRAIN_021",
+    "cost_TRAIN_022",
+    "cost_TRAIN_023",
+    "cost_TRAIN_024",
+    "cost_TRAIN_025",
+    "cost_TRAIN_026",
+    "cost_TRAIN_027",
+    "cost_TRAIN_028",
+    "cost_TRAIN_029"
+  ],
+  "training_task_hashes": [
+    "4310c0f961b7ef37dac4c7735c00fa795760681688c220a43e28fd1f5ba52839",
+    "9ebe14869f436458574b05c80ec9a06ca900e6bd8cc3f01c3255888eefb94c84",
+    "23d9911c37e7300acb0e594d81cd564a02675ec5160da45592b892c333c24bcf",
+    "b95e4c149acaadec2a33f3804f273051e31e8c1e2413d4bb8b3912e6912b0e4b",
+    "e1b884d6c861a298c2e29db0a192090a49c756ccf2ccf85579dabfc27037989d",
+    "a4945cd5ec704ca4eebebfa6bb6af5d86e190127fc9b5a5ee1a8166655b0d935",
+    "b34091c74a79c2afba04d948a3c7cc2f2d57c85158595b9610e7792bae0c6841",
+    "87a7520081c9641f0493dc39ab5b942b3e6f9936333e29b6615d3cfcc8f80545",
+    "59e1497cb8454e6627fee02f943cad7235315238617bc38ae7aa8c22ca26c203",
+    "b49f03ffead3b89f2ef92bb6a76872961cf97d83292bce91c2222212f6893204",
+    "937af96ed0a090f4a9ddbc15e095bf166586bcea490e803a7ce21e6f7e16a2aa",
+    "cd5e897a113d088db74be678f434773a996cdbdc0dfb79f4a2525615c05b4fa9",
+    "121eccdbfbd6891b34980974710b27a231095414cc8ea2b9e85c11d45e3cb925",
+    "e387e219f7ce2fee1213e2c7fe0af3e8d8d986334fdc5bccd5da0c44cda13051",
+    "61a7854c3148f8349e5d29d12a228e87a3a5a4fa7ea81a583dbac87c8d5b1eef",
+    "1556796a07eb83be983ba2c0eaa1edcfd517fda794cff842be9c36c71531c6ae",
+    "90d5ea4e6a0f692b363868edbc3fdb294f8335098790f273cf510243a5ba1297",
+    "ce23e947aa9014c166c760c093923ca8bb551ce47ad65643e20a386b44062660",
+    "d00e1fce2629ebe046d3748c0d97a3d6520249b2edfe10eb97b4344ec8be9fb9",
+    "4aa35c86d5e38bb9e65d05eaae755a6e18c8972358a99c1ec941c973fb99e5a2",
+    "72468f774c4652de7eddf860184b72579575eb68335112915ecb8ca7bde8dc48",
+    "f4b2b046906cf18a0622bc57bd5303c9c53ee7ce327d34aea04f8500b0a58d86",
+    "835a7fd7cf78cd9353f888f5c4740cf9c5c2bfca33cf462045ce0695ffeea94b",
+    "6401197f120da484c25345e322c4de0ef8be52a472896fa9953a17ad4eea36ec",
+    "45a7bf28d2e846c18a055feebee080615e8d80dbc8c76d1d1e1a792c363de83f",
+    "97e1ee1ef459c2963f200f1d87275faaac1424149bb6c4e08e04a739b615e2f4",
+    "586372054d31820daefaec4f332fe9ef3bd160de53a86a70c66e4c6d3c2de157",
+    "46de22bd36dcc28f305b2e2efa0a1cbd95820203ad5adb407ceadc4f5cceb5d8",
+    "deb32344224daa0f003600dd59efcf75a149afcff05a9fd20d8e637109ef42e1",
+    "3f9b8d8c0daaf2cd7662bff1c3cd0b6dc9b67ab53353b497e5566cd04e805c14"
+  ],
+  "validation_forward_calls": 39,
+  "validation_ids": [
+    "cost_VAL_000",
+    "cost_VAL_001",
+    "cost_VAL_002",
+    "cost_VAL_003",
+    "cost_VAL_004",
+    "cost_VAL_005"
+  ],
+  "wall_s": 5.62238600011915,
+  "weights_changed": false
+}

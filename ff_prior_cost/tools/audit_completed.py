@@ -48,7 +48,11 @@ def main():
             assert r['task']==e['task'] and r['parent_sample_id']==e['sample_id']
             assert r['family_id']==e['family_id'] and r['execution_evidence']=='NOT_EXECUTED'
             assert r['training_eligible']==(split=='TRAIN' and r['eligible'])
-            assert all(r['validation']['gates'].get(k,False) for k in MODEL_GATES)==(r['validation']['validation_level']=='MODEL_VALID')
+            v=r['validation']; model=all(v['gates'].get(k,False) for k in MODEL_GATES)
+            goal=('frozen_goal_position_error_m' in v and max(v['frozen_goal_position_error_m'])<=.005
+                and max(v['frozen_goal_rotation_error_rad'])<=np.deg2rad(1))
+            assert model==(v['validation_level']=='MODEL_VALID') and r['frozen_goal_pass']==goal
+            assert r['eligible']==(model and goal)
     trained=read_json(out/'learning/training.json')
     if trained['status']=='PASS':
         assert trained['checkpoint_sha256']==file_digest(out/'learning/model.pt')
@@ -101,6 +105,7 @@ def main():
                     assert ledger['completed'][f'execution_{split}_{ti}_{method}']['status']=='EXECUTION_FAILED'; continue
                 report=read_json(directory/'report.json'); executions+=1
                 assert read_json(directory/'frozen_task.json')==task
+                assert report['task_hash']==task['task_hash']
                 assert report['metadata']['reference_hash']==chosen['reference_hash']
                 assert report['scene_model_hash']==run['robot_hash'] and report['initial_state_id']==run['initial_state_id']
                 assert report['metadata']['robot_state_writes_during_step_loop']==0
