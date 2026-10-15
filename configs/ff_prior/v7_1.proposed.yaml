@@ -162,11 +162,17 @@ training:
   hidden_dim: 128
   layers: 4
   attention_heads: 4
-  objective: epsilon_prediction_mse
+  # 2026-10-15 explicit diffusion repair; old run configs remain frozen in their manifests.
+  objective: velocity_prediction_mse
   checkpoint_selection: validation_only
   schema_and_robot_hash_match_required: true
 sampling:
   candidate_count: 5
+  state_precision: float64
+  network_precision: float32
+  clean_estimate_prior: TRAIN_TEMPORAL_SVD
+  clean_prior_retained_energy: 0.9999999
+  guidance_update: rederive_epsilon_at_same_xt
   exact_ddim_call_count_required: true
   guidance_inside_reverse_process: true
   preferred_guidance_backend: audited_full_path_sensitivity_or_vjp

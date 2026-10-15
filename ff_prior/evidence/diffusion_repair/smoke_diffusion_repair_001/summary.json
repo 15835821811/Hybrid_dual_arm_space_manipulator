@@ -1,0 +1,86 @@
+{
+  "SCALEUP_ELIGIBLE": false,
+  "benchmark": {
+    "benefit": "NOT_ESTABLISHED",
+    "final_TEST": "NOT_RUN",
+    "frozen_tasks": 4,
+    "guidance_backend": "SUBSPACE_FD_DEV_ONLY",
+    "methods": {
+      "diffusion_in_denoising_guidance": {
+        "completed": 4,
+        "denominator": 4,
+        "execution_verified": 0,
+        "failed_or_error": 0,
+        "no_candidate": 4
+      },
+      "diffusion_no_guidance": {
+        "completed": 4,
+        "denominator": 4,
+        "execution_verified": 0,
+        "failed_or_error": 0,
+        "no_candidate": 4
+      },
+      "structured_prior_same_guidance": {
+        "completed": 4,
+        "denominator": 4,
+        "execution_verified": 1,
+        "failed_or_error": 0,
+        "no_candidate": 3
+      }
+    },
+    "predefined_task_denominator": 4,
+    "status": "FINISHED"
+  },
+  "budget": {
+    "benchmark_selected_execution_max": 12,
+    "candidates_per_task": 5,
+    "ddim_steps": 16,
+    "evaluation_tasks_max": 4,
+    "guidance_updates_per_candidate": 2,
+    "training_updates_max": 200
+  },
+  "calls": {
+    "benchmark.coupled": 1846,
+    "benchmark.distance": 11671023,
+    "benchmark.fk": 765566,
+    "benchmark.forward": 30072,
+    "benchmark.mass_matrix": 538104,
+    "benchmark.physics_steps": 10500,
+    "benchmark.rrt": 0,
+    "benchmark.sqp": 0,
+    "benchmark.torque_rollout": 1
+  },
+  "cpu_s": {
+    "benchmark": 115.734375
+  },
+  "final_TEST": "NOT_RUN",
+  "independent_replay_pass": 1,
+  "physical_execution_count": 1,
+  "physical_profile_unchanged": true,
+  "pilot": "NOT_RUN",
+  "same_frozen_tasks": true,
+  "scope": "SMOKE_DEV_RECHECK",
+  "source": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\smoke_002",
+  "source_unchanged": true,
+  "status": "FINISHED",
+  "training": {
+    "checkpoint_selection": "VAL_MSE_ONLY",
+    "cpu_s": 9.859375,
+    "diffusion_benefit": "NOT_ESTABLISHED",
+    "initial_weight_hash": "05a3c92674c34d8779b861f120d662e6151403781af2056beddc88515306a5d9",
+    "loss_target": "v",
+    "reload_forward_calls": 2,
+    "reload_max_error": 0.0,
+    "selected_weight_hash": "1d24238d6f313ec7746ddf3796ed747ba304912ca53609c47c9fb2ce8f907d93",
+    "status": "PASS",
+    "train_count": 150,
+    "training_and_val_forward_calls": 400,
+    "updates": 200,
+    "val_count": 30,
+    "wall_s": 7.778019499965012,
+    "weights_changed": true
+  },
+  "wall_s": {
+    "benchmark": 117.65262380009517
+  }
+}

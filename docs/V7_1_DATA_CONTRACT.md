@@ -80,10 +80,23 @@ training. Other groups use stable 80/10/10 hash allocation. Revisions and
 retimings inherit lineage; final TEST is not used for development.
 
 Separate trajectory and condition scalers fit TRAIN only; they save schema,
-robot and initial-state hashes. The Transformer predicts epsilon on 19 free
-tokens with hidden 128, four layers and four heads. VAL MSE selects the checkpoint.
+robot and initial-state hashes. The original smoke_002 Transformer predicted
+epsilon. The 2026-10-15 repair predicts velocity v on the same 19 free tokens
+with hidden 128, four layers and four heads. VAL v MSE selects the new checkpoint;
+it is not directly comparable with historical epsilon MSE. Old checkpoints
+retain their explicit or legacy prediction interpretation.
 Weights, optimizer, RNG and update count are saved for resume; schema/robot/scaler
 mismatches fail closed. Synthetic test-fixture training is not robot evidence.
+
+The repaired sampler keeps DDIM state and affine transforms in float64 while
+network inference remains float32. Guidance and clean projection rederive
+epsilon at the same noisy state. The final guided physical array is returned
+without a float32 round trip; physical-domain tolerances are unchanged.
+A temporal SVD projection fits only TRAIN control deviations from the public
+initial q17, retaining 0.9999999 energy. It acts on clean estimates inside DDIM,
+is bound to TRAIN sample/array/robot/initial hashes, and uses no private endpoint
+or DEV witness. It is a proposal regularizer, not a model or execution gate.
+All projected outputs must still pass the complete frozen physical contract.
 
 DDIM makes exactly the requested network calls. In the last two reverse
 iterations, SUBSPACE_FD_DEV_ONLY guidance evaluates eight centered directions

@@ -35,6 +35,11 @@ def test_training_updates_reload_schema_and_exact_ddim_calls(tmp_path):
     with pytest.raises(ValueError): load_checkpoint(tmp_path/"learning","wrong","initial")
     resumed=train(tmp_path,records,dataset,"software_fixture","initial",updates=3,software_fixture=True)
     assert len(resumed["history"])==3
+    saved=torch.load(tmp_path/"learning/model.pt",weights_only=False)
+    saved['metadata']['diffusion_contract']['prediction_type']='epsilon'
+    torch.save(saved,tmp_path/"learning/model.pt")
+    with pytest.raises(ValueError,match='prediction contract'):
+        load_checkpoint(tmp_path/"learning","software_fixture","initial")
 
 
 def test_guidance_is_inside_reverse_process():

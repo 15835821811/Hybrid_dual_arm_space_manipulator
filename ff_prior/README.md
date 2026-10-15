@@ -10,15 +10,17 @@ created from `ff_prior/requirements.lock`. No global environment is required.
 .venv\Scripts\python.exe -m ff_prior.cli run --config configs/ff_prior/v7_1.proposed.yaml --profile smoke --output artifacts/v7_1/smoke_003 --dry-run
 .venv\Scripts\python.exe -m ff_prior.cli run --config configs/ff_prior/v7_1.proposed.yaml --profile smoke --output artifacts/v7_1/smoke_003
 .venv\Scripts\python.exe -m ff_prior.cli status --run-dir artifacts/v7_1/smoke_002
-.venv\Scripts\python.exe -m ff_prior.cli resume --run-dir artifacts/v7_1/smoke_002
 .venv\Scripts\python.exe -m ff_prior.cli report --run-dir artifacts/v7_1/smoke_002
 .venv\Scripts\python.exe -m ff_prior.visualize_evidence --run-dir artifacts/v7_1/smoke_002 --video
 ```
 
 `audit` is read-only; `run` executes real generation, selected physical audits,
 training and matched DEV planning. Existing output identities require `resume`.
-`smoke_002` is the completed release run; `smoke_003` above is an unused example
-output for a new reproduction, not a third run already performed.
+`smoke_002` is the preserved original release run; `smoke_003` above is an unused
+example for a new full-pipeline run with the current implementation. Its code
+and training contract differ from the historical run. Resume deliberately
+rejects a changed source identity; historical implementations are archived in
+each run's `executed_source.zip` and should be reproduced in a separate checkout.
 `--stages generate` or `--stages audit` can stop at an explicit engineering
 checkpoint; the default is the full smoke. `--budget-json` overrides named
 budgets and creates a distinct run identity. The same output cannot be silently
@@ -58,3 +60,26 @@ explicit nonpenetration override (>=0 m), with the full topology pair policy.
 Runtime outputs/checkpoints/native traces remain local. The Git evidence bundle
 contains only compact reports and representative samples; it does not include
 large historical or new datasets. No remote push is automatic.
+
+The 2026-10-15 numerical repair and TRAIN-only temporal projection are documented
+in `docs/V7_1_DIFFUSION_REPAIR_REPORT.md`. Both matched rechecks finished: baseline
+1/4, guided Diffusion 0/4, unguided Diffusion 0/4. Each Diffusion method now has
+6/20 MODEL_VALID candidates, but none satisfies the frozen dual world goal.
+This is numerical improvement, not established planning benefit.
+
+Use the smoke-only recheck entry point to retain the exact old dataset, four
+frozen DEV tasks, seeds and candidate budgets. It does not generate more data
+or access TEST arrays. The first two outputs already exist; 003 is only an
+unused reproduction example, not another completed experiment.
+
+```powershell
+.venv\Scripts\python.exe -m ff_prior.recheck --source artifacts/v7_1/smoke_002 --output artifacts/v7_1/smoke_diffusion_repair_003 --dry-run
+.venv\Scripts\python.exe -m ff_prior.recheck --source artifacts/v7_1/smoke_002 --output artifacts/v7_1/smoke_diffusion_repair_003
+.venv\Scripts\python.exe -m ff_prior.recheck --source artifacts/v7_1/smoke_002 --output artifacts/v7_1/smoke_diffusion_repair_002 --resume
+```
+
+Recheck status is in its `summary.json`. Its source `run.config` freezes the old
+physical protocol; `identity.diffusion_contract`, `identity.clean_prior_mode`
+and checkpoint metadata specify the repaired learning/sampling implementation.
+Compact reports, per-candidate failures, tests and source snapshots are retained
+under `ff_prior/evidence/diffusion_repair/`; large weights/traces remain local.
