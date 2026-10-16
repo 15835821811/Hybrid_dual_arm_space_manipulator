@@ -7,6 +7,13 @@ from ff_prior.pipeline import acceptance
 from ff_prior_expand import data
 
 
+def test_all_inherited_reference_hashes_come_from_actual_arrays():
+    index=data.old_index()
+    legacy=[e for e in index if 'reference_hash' not in read_json(data.ROOT/e['record'])]
+    assert legacy,'regression population must include the schema that failed'
+    assert all(len(data.reference_hash(e))==64 for e in index)
+
+
 def test_real_forward_generation_freezes_target_and_admits_with_full_proof(physical,tmp_path):
     canonical,initial,_=physical
     profile=acceptance(read_json('artifacts/v7_1/smoke_002/run.json')['config'])

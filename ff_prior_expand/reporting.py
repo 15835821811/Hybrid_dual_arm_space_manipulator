@@ -55,6 +55,7 @@ def report(out,ledger,status):
         'PILOT_ELIGIBLE':pilot,'next_action':'START_AUTHORIZED_PILOT' if pilot else 'REPAIR_IDENTIFIED_FAILURES_BEFORE_PILOT',
         'efficiency_superiority_required':False,'diffusion_superiority':'NOT_ESTABLISHED_BY_THIS_FEASIBILITY_RUN',
         'full_goal_achieved':False,'TEST_executed':False,'ledger_calls':ledger.data['calls'],'ledger_wall_s':ledger.data['wall_s']}
+    if (out/'mechanism_reuse.json').exists():result['reused_mechanism_evidence']=read_json(out/'mechanism_reuse.json')
     atomic_json(out/'summary.json',result)
     lines=['# 有界扩库与Diffusion完整闭环报告','',f'状态：{status}。本轮真实新增合格TRAIN {len(admitted)} 条，累计 {256+len(admitted)}；VAL保持48。',
         f'生成尝试 {len(attempts)}/1200；新空场景家族 {len(families)}；新增障碍场景条目 {result["new_obstacle_rows"]}。',
@@ -67,6 +68,7 @@ def report(out,ledger,status):
         '物理门槛、自由漂浮、完整初态、17→67映射、全机几何及真实力矩重放保持；失败不重标目标、不替换执行。',
         '预留TEST只读取目标元数据用于分区隔离；未读取其轨迹数组、训练或评测。',
         '',f'生成拒绝/异常：{result["generation_failures"]}。',
-        '下一阶段：全部验收与审计通过后按用户授权启动pilot；否则保存具体失败并继续修复，不自动运行最终TEST。']
+        '下一阶段：全部验收与审计通过后按用户授权启动pilot；否则保存具体失败并继续修复，不自动运行最终TEST。',
+        '机制诊断复用qualified_expansion_001已完成的18个真实候选；源模型、采样代码、任务与种子核验一致，没有重新执行。此前61.016秒从总预算扣除，原失败和原始结果保留。']
     (out/'REPORT.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     return result

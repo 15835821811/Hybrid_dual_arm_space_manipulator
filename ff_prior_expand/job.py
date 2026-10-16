@@ -13,7 +13,7 @@ from ff_prior.recovery import process_is_alive, recover_dead_lock
 
 ROOT=Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE='artifacts/v7_1/smoke_002'
-DEFAULT_OUT='artifacts/v7_1/qualified_expansion_001'
+DEFAULT_OUT='artifacts/v7_1/qualified_expansion_002'
 TERMINAL={'FINISHED','FINISHED_WITH_BLOCKED_ITEMS','FAILED'}
 
 

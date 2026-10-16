@@ -18,7 +18,7 @@ from .sampling import candidate
 
 ROOT=Path(__file__).resolve().parents[1]
 METHODS=('structured','frozen_diffusion','learned_mean','expanded_diffusion')
-PROTOCOL={'version':'bounded_expansion_full_loop_1','profile':'bounded_TRAIN_expansion_plus_smoke',
+PROTOCOL={'version':'bounded_expansion_full_loop_2','profile':'bounded_TRAIN_expansion_plus_smoke',
     'data':data.CONTRACT,'training':learning.CONTRACT,'sensitivity':sensitivity.CONTRACT,
     'guidance':GUIDE,'validation':VALIDATE,'methods':list(METHODS),'candidates_per_task':5,
     'sampling_seeds':[20261219,20261223,20261229],'DEV_tasks':4,'max_candidates':240,
@@ -34,6 +34,9 @@ PROTOCOL={'version':'bounded_expansion_full_loop_1','profile':'bounded_TRAIN_exp
     'pilot_run_in_this_profile':False,'pilot_after_success_authorized':True,
     'pilot_gate':'data + stability + actual training ingestion + independent audit; existing scale/physics capability limits checked before launch',
     'final_TEST_auto_launch':False,'strict_multimodal':False,'goal_relabelled':False,'physical_gates_changed':False}
+CARRY=ROOT/'artifacts/v7_1/qualified_expansion_001'
+PROTOCOL['completed_mechanism_reuse']={'source':CARRY.relative_to(ROOT).as_posix(),
+    'only_identical_sampler_model_tasks_seeds':True,'prior_elapsed_charged':True,'old_failure_retained':True}
 
 
 def sources():
@@ -48,6 +51,8 @@ def inputs(source):
         for k in ('record','arrays'):files[os.path.relpath(ROOT/e[k],source)]=e[k+'_sha256']
     for sid,r in read_json(source/'splits.json')['records'].items():
         if r['split']=='TEST':files[f'records/{sid}.json']=file_digest(source/'records'/f'{sid}.json')
+    for p in [CARRY/'run.json',CARRY/'status.json',CARRY/'ledger.json',CARRY/'frozen_tasks.json',CARRY/'failure.json',CARRY/'executed_source.zip']+sorted((CARRY/'mechanism').glob('*.json')):
+        files[os.path.relpath(p,source)]=file_digest(p)
     return old,ds,dev,rows,files
 
 
@@ -84,7 +89,22 @@ def run(source,out,progress,resume=False,previous_elapsed=0.):
             with zipfile.ZipFile(out/'executed_source.zip','w',zipfile.ZIP_DEFLATED) as z:
                 for p in sources():z.write(ROOT/p,p)
         if digest(read_json(out/'frozen_tasks.json'))!=digest(frozen):raise ValueError('frozen tasks changed')
-        ledger=Ledger(out,identity);deadline=time.time()+max(0,7200-previous_elapsed)
+        ledger=Ledger(out,identity)
+        prior_elapsed=read_json(CARRY/'status.json')['elapsed_s']
+        deadline=time.time()+max(0,7200-previous_elapsed-prior_elapsed)
+        carry=read_json(CARRY/'run.json');old_frozen=read_json(CARRY/'frozen_tasks.json')
+        assert old_frozen['mechanism_entries']==frozen['mechanism_entries']
+        assert read_json(CARRY/'failure.json')['reason']=="KeyError('reference_hash')"
+        assert old_frozen['DEV']==dev
+        for p,h in carry['identity']['source_hashes'].items():
+            if p in ('ff_prior_expand/experiment.py','ff_prior_expand/data.py','ff_prior_expand/audit_results.py','ff_prior_expand/reporting.py','ff_prior_expand/tests/test_expand.py','ff_prior_expand/job.py'):continue
+            if sources()[p]!=h:raise ValueError('mechanism reuse source changed: '+p)
+        for k in ('mechanism_seeds','guidance','validation'):
+            assert carry['identity']['protocol'][k]==PROTOCOL[k]
+        atomic_json(out/'mechanism_reuse.json',{'source':str(CARRY),'prior_elapsed_s':prior_elapsed,
+            'reason':'legacy optional reference_hash field missing after successful mechanism phase',
+            'sampler_physics_and_tasks_identical':True,'old_result_files_immutable':True,
+            'network_and_coupled_calls_already_executed_in_source':True,'new_mechanism_execution_calls':0})
         cache=previous_data.RuntimeCache(canonical,initial,profile)
         frozen_bundle=previous_learning.load(data.PREVIOUS/'learning/goal_loss')
         # Paired TRAIN-only mechanism diagnostic, not a cost superiority gate.
@@ -96,10 +116,12 @@ def run(source,out,progress,resume=False,previous_elapsed=0.):
                     if key in ledger.data['completed']:continue
                     budget(out,deadline);ledger.begin(key,'mechanism',7200,18)
                     progress('TRAIN_collision_mechanism',task=ti+1,seed=sj+1,method=method)
-                    r=candidate(method,0,e['task'],base,seed+ti*101,frozen_bundle,rr,ii,cc,profile,deadline)
-                    r.update(sample_id=e['sample_id'],split='TRAIN');atomic_json(path,r);ledger.finish({'status':r['status']},r['model_calls'])
+                    r=read_json(CARRY/'mechanism'/f'{key}.json')
+                    assert r['task_hash']==e['task']['task_hash'] and r['seed']==seed+ti*101 and r['method']==method
+                    assert r['status']=='DONE' and r['public_base_hash']==digest(base) and r['actual_network_calls']==16
+                    atomic_json(path,r);ledger.finish({'status':r['status'],'reused_from':str(CARRY)},r['model_calls'])
         heldout=data.heldout_goals(original,dev,source)
-        hashes={read_json(ROOT/e['record'])['reference_hash'] for e in original}
+        hashes={data.reference_hash(e) for e in original}
         admitted=0
         for path in sorted((out/'records').glob('*.json')):
             row=data.check_new_record(out,path,ledger);hashes.add(row['reference_hash']);admitted+=row['execution_status']!='FAIL'

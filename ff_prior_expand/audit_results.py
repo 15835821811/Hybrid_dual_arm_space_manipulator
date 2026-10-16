@@ -12,7 +12,7 @@ from ff_prior_complex.tools.audit_completed import audit_physics
 
 
 def verify(out):
-    from .experiment import ROOT,PROTOCOL,METHODS,sources,inputs
+    from .experiment import ROOT,PROTOCOL,METHODS,sources,inputs,CARRY
     from . import data
     from .learning import load
     out=Path(out);run=read_json(out/'run.json');ledger=read_json(out/'ledger.json')
@@ -27,11 +27,13 @@ def verify(out):
     for branch,h in before['branches'].items():assert subprocess.check_output(['git','rev-parse',branch],cwd=ROOT,text=True).strip()==h
     with zipfile.ZipFile(out/'executed_source.zip') as z:
         assert all(hashlib.sha256(z.read(p)).hexdigest()==h for p,h in sources().items())
+    with zipfile.ZipFile(CARRY/'executed_source.zip') as z:
+        assert all(hashlib.sha256(z.read(p)).hexdigest()==h for p,h in read_json(CARRY/'run.json')['identity']['source_hashes'].items())
     frozen=read_json(out/'frozen_tasks.json');assert frozen['DEV']==dev
     index=read_json(out/'training_index.json')['records'];old=data.old_index()
     assert index[:len(old)]==old and sum(e['split']=='VAL' for e in index)==48
     heldout=data.heldout_goals(old,dev,source)
-    accepted=[];hashes={read_json(ROOT/e['record'])['reference_hash'] for e in old}
+    accepted=[];hashes={data.reference_hash(e) for e in old}
     for path in sorted((out/'records').glob('*.json')):
         r=data.check_new_record(out,path)
         assert ledger['completed'][r['sample_id']]['status']=='ADMITTED'
@@ -85,6 +87,7 @@ def verify(out):
             pair=[]
             for method in ('frozen_diffusion','diffusion_goal_only'):
                 r=read_json(out/'mechanism'/f'mechanism_{ti}_{sj}_{method}.json')
+                assert r==read_json(CARRY/'mechanism'/f'mechanism_{ti}_{sj}_{method}.json')
                 check_candidate(r,e['task'],method,seed+ti*101);pair.append(r)
             if all(r['status']=='DONE' for r in pair):assert pair[0]['sampling']['raw_proposal_hash']==pair[1]['sampling']['raw_proposal_hash']
     physics=[];steps=0
@@ -120,7 +123,8 @@ def verify(out):
     return {'status':'PASS' if not problems and not ledger.get('unresolved_call_accounting') else 'BLOCKED',
         'problems':problems,'actual_new_TRAIN_arrays':len(accepted),'training_rows_actually_consumed':len(train['train_draw_counts']) if train else 0,
         'new_rows_all_consumed':bool(train and all(train['train_draw_counts'].get(r['sample_id'],0)>0 for r in accepted)),
-        'candidate_network_calls':network,'audited_execution_traces':len(physics),'physics_steps_including_replay':steps,
+        'candidate_network_calls_including_reused':network,'mechanism_network_calls_reused':288,
+        'new_DEV_network_calls':network-288,'audited_execution_traces':len(physics),'physics_steps_including_replay':steps,
         'old_files_unchanged':len(before['old_files']),'user_edits_and_branches_unchanged':True,
         'original_DEV_unchanged':True,'TEST_arrays_read':False,'TEST_goal_metadata_split_guard_only':True,
         'minimum_execution_clearance_m':min((p['minimum_clearance_m'] for p in physics),default=None),

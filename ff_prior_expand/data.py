@@ -12,7 +12,7 @@ from ff_prior_loop import data as old_data
 from ff_prior_modes.data import RuntimeCache
 from ff_prior_feasible.validation import validate
 from ff_prior.scenes import SceneSpec
-from ff_prior.spline import Reference
+from ff_prior.spline import Reference,from_arrays
 
 ROOT=Path(__file__).resolve().parents[1]
 PREVIOUS=ROOT/'artifacts/v7_1/qualified_modes_smoke_001'
@@ -39,6 +39,14 @@ def old_index():
         for k in ('record','arrays'):
             if file_digest(ROOT/e[k])!=e[k+'_sha256']:raise ValueError('inherited bytes changed')
     return index
+
+
+def reference_hash(entry):
+    """Legacy schemas may omit a marker; authoritative saved arrays define it."""
+    row=read_json(ROOT/entry['record'])
+    with np.load(ROOT/entry['arrays']) as arrays:actual=from_arrays(arrays).reference_hash
+    if row.get('reference_hash',actual)!=actual:raise ValueError('legacy reference marker disagrees with arrays')
+    return actual
 
 
 def contexts(canonical,initial,profile,index):

@@ -1,6 +1,6 @@
 param(
     [ValidateSet('start','resume','status','report')][string]$Action = 'status',
-    [string]$Output = 'artifacts/v7_1/qualified_expansion_001'
+    [string]$Output = 'artifacts/v7_1/qualified_expansion_002'
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot

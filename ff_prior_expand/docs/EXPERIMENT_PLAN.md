@@ -20,6 +20,9 @@ C1：条件Diffusion与保持目标的碰撞引导、独立验证、真实力矩
 用户本轮追加“验证成功直接启动pilot或TEST”。选择pilot作为下一阶段；旧“不得自动pilot”限制已被这一条件授权覆盖。只有数据门槛、稳定门槛、真实训练消费及独立审计全部通过，summary.PILOT_ELIGIBLE才为true；届时继续落实并启动独立有界pilot。不得把本轮结束或某条成功当作全验收通过。最终TEST不自动使用；模型/协议未锁定不得用于调参。生产能力限制仍须按真实支持范围处理，pilot资格不等于正式生产认证。
 
 ## 后台交付
-新目录artifacts/v7_1/qualified_expansion_001，终端ff_prior_expand/job.ps1 start/status/report/resume。源码先提交；完成恢复只校验，不重复计算。旧目录、工作区未提交修改和原main/旧分支保留。生成、训练、MODEL_VALID、执行通过、扩库、Diffusion收益分别报告。
+新目录artifacts/v7_1/qualified_expansion_002，终端ff_prior_expand/job.ps1 start/status/report/resume。源码先提交；完成恢复只校验，不重复计算。旧目录、工作区未提交修改和原main/旧分支保留。生成、训练、MODEL_VALID、执行通过、扩库、Diffusion收益分别报告。
 
 用户最新补充已纳入：增加新初态、新目标与运动幅度覆盖；新障碍场景/不同绕行路线仍需单独证据，本批沿用3个TRAIN场景，不把控制点差异写成同伦多样性。
+
+## 兼容性修复与已完成工作复用
+首轮qualified_expansion_001在完成18个真实TRAIN机制候选后，于收集旧参考哈希时因旧记录缺少reference_hash字段退出。原目录、错误、源码快照和18候选不改动。新版本从已有真实npz用公共解码器重建参考哈希；有旧标记时必须一致。新增全304条旧数据的回归检查。002仅复用经相同采样源码/模型输入/任务/种子核验的18条机制证据，不重复推理；原61.016秒从7200秒累计预算中扣除。生成、训练和DEV对照尚未运行，不用这18条冒充其结果。
