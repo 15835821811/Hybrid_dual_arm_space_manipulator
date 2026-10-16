@@ -1,0 +1,236 @@
+{
+  "TEST_executed": false,
+  "actual_training_passed": true,
+  "coverage_training_closure_passed": true,
+  "diffusion_superiority": "REQUIRES_SEPARATE_SUPPORTED_COMPARISON",
+  "errors": [],
+  "full_goal_achieved": false,
+  "independent_audit_passed": true,
+  "inherited_failure_accounting": {
+    "anchors": 4949,
+    "inherited_elapsed_s": 3463.5,
+    "manifest_sha256": "d1f56124d95025747d68a38a842f42daad56b72a406397cf79c73c5af8d84434",
+    "new_physics_calls_for_import": 0,
+    "previous_failed_attempt": {
+      "id": "sensitivity_d02ece4cec734111f5f8df579e0d4feb794e91ef824c4110950951f602ff3c45",
+      "stage": "sensitivity",
+      "started": 1792160020.7290251
+    },
+    "previous_failed_attempt_extra_calls": "unknown; at most 39 coupled calls reserved, not counted as zero or certified",
+    "previous_failure_erased": false,
+    "reused_coupled_calls": 193011,
+    "source": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\qualified_pilot_train_001",
+    "status": "PASS"
+  },
+  "ledger_calls": {
+    "cached_sensitivity.coupled": 386568,
+    "cached_sensitivity.new_coupled": 0,
+    "candidate.coupled": 6654,
+    "candidate.distance": 42315243,
+    "candidate.fk": 2882298,
+    "candidate.forward": 7614,
+    "candidate.mass_matrix": 1962492,
+    "candidate.physics_steps": 0,
+    "candidate.rrt": 0,
+    "candidate.sqp": 0,
+    "candidate.torque_rollout": 0,
+    "execution.coupled": 0,
+    "execution.distance": 23199006,
+    "execution.fk": 0,
+    "execution.forward": 1260288,
+    "execution.mass_matrix": 756096,
+    "execution.physics_steps": 504000,
+    "execution.rrt": 0,
+    "execution.sqp": 0,
+    "execution.torque_rollout": 48,
+    "sensitivity.coupled": 79872,
+    "sensitivity.distance": 0,
+    "sensitivity.fk": 20606976,
+    "sensitivity.forward": 79872,
+    "sensitivity.mass_matrix": 20606976,
+    "sensitivity.physics_steps": 0,
+    "sensitivity.rrt": 0,
+    "sensitivity.sqp": 0,
+    "sensitivity.torque_rollout": 0
+  },
+  "methods": {
+    "expanded_diffusion": {
+      "completed": 60,
+      "coupled_queries": 1609,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 960,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 94.77615370322019
+    },
+    "frozen_diffusion": {
+      "completed": 60,
+      "coupled_queries": 1655,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 960,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 97.8111066990532
+    },
+    "learned_mean": {
+      "completed": 60,
+      "coupled_queries": 1710,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 0,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 100.14628960052505
+    },
+    "structured": {
+      "completed": 60,
+      "coupled_queries": 1680,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 0,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 98.67458350164816
+    }
+  },
+  "protocol": {
+    "DEV_tasks": 4,
+    "TEST": false,
+    "TRAIN_range": [
+      12096,
+      12144
+    ],
+    "VAL": 48,
+    "automatic_100k_expansion": false,
+    "candidate_coupled_ceiling": 113,
+    "candidate_interval_ceiling": 15872,
+    "candidate_wall_s": 15,
+    "candidates_per_task": 5,
+    "cpu_threads": 2,
+    "full_goal_auto_complete": false,
+    "ingestion_gate": "all qualified coverage TRAIN arrays loaded and sampled; original TRAIN-only codec frozen; exact task sensitivities",
+    "max_candidates": 240,
+    "max_output_bytes": 21474836480,
+    "max_selected_executions": 48,
+    "methods": [
+      "structured",
+      "frozen_diffusion",
+      "learned_mean",
+      "expanded_diffusion"
+    ],
+    "old_model": "verified 10000-TRAIN model; same frozen codec as warm start",
+    "profile": "coverage_training_and_frozen_DEV",
+    "relative_efficiency_required": false,
+    "sampling_seeds": [
+      20261219,
+      20261223,
+      20261229
+    ],
+    "selection": "minimum normalized frozen world-goal error among eligible, exactly one execution; no replacement",
+    "sensitivity": {
+      "VAL_queries": 0,
+      "cache": "one existing qualified TRAIN anchor per exact task hash",
+      "difference_rad": 0.0001,
+      "directions": 34,
+      "directions_kind": "17 smooth terminal + 17 zero-terminal sine bows",
+      "half_step_relative_tolerance": 0.02,
+      "max_anchors": 13000,
+      "mixed_direction_relative_tolerance": 0.05,
+      "not_a_physical_validator": true,
+      "not_full_latent_gradient": true,
+      "phase_intervals": 128,
+      "queries_per_anchor": 39
+    },
+    "stability_gate": "new model each seed >=18/20 eligible; all tasks reached; 12/12 selected execution/replay; no numerical errors",
+    "strict_multimodal": false,
+    "training": {
+      "TRAIN_only_fit": true,
+      "architecture": "same centered temporal latent MLP as previous round",
+      "batch": 64,
+      "goal_loss": "mean squared local coupled pose change of denoised error in 34-direction surrogate",
+      "goal_loss_weight": 0.05,
+      "lr": 0.0002,
+      "obstacle_conditioned": false,
+      "seed": 20261501,
+      "selection": "fixed final update; no VAL gradients/checkpoint selection",
+      "updates": 6000,
+      "version": "qualified_coverage_frozen_codec_finetune_1",
+      "warm_start": "verified 10k model; fixed codec fitted to original 10000 TRAIN only"
+    },
+    "version": "qualified_coverage_training_closure_1",
+    "wall_budget_s": 5400
+  },
+  "relative_efficiency_required": false,
+  "status": "FINISHED",
+  "unresolved_calls": []
+}
