@@ -63,3 +63,7 @@
 ## 首批闭环完成与有界pilot前置验收通过
 
 qualified_expansion_002真实新增744条，累计1000 TRAIN并完成实际训练；原冻结DEV四方法各60/60合格、12/12执行重放，独立审计PASS。补充3条边界执行重放全部通过，最小实测间距0.223264mm。按用户授权进入累计10000条pilot数据阶段，随后仍须实际训练与冻结复核。相对效率不作为门槛；同任务成功率均饱和，Diffusion独占收益尚未成立，最终TEST仍保留。详见ff_prior_expand/docs/ANALYSIS.md与ff_prior_pilot/docs/EXPERIMENT_PLAN.md。
+
+## 10,000条后的学习接续已封装
+
+已实现ff_prior_pilot_train并启动条件队列，待qualified_pilot_001实际退出且数据及48例执行审计门槛通过后自动运行。解决原1100个TRAIN敏感度锚点容量限制，保持逐准确目标39次耦合校验；正式训练12000更新×64样本，逐条核验消费，随后原冻结DEV四方法对照与真实执行/重放。活跃预算14400秒、2 CPU线程，队列等待另设7500秒上限。队列完成仅表示派发，训练闭环、优越性与全部目标仍必须等待真实证据。协议见ff_prior_pilot_train/docs/EXPERIMENT_PLAN.md。
