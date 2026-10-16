@@ -2,6 +2,10 @@
 
 ## 2026-10-17 最新完成状态
 
+接续独立初态数据作业qualified_origin_coverage_001已结束，2219.875秒，原始审计PASS、32/32预选真实力矩执行及重放、336000步。新增535合格TRAIN（503独立初态前向＋32固定目标修正），累计12679 TRAIN，独立TRAIN初态43→546；VAL48、原DEV4和旧结果保留，另先冻结NEW_VAL8。名义覆盖503/512、119/128，39原ERROR保留，所以原数据门和接续训练资格未通过，终态FINISHED_WITH_BLOCKED_ITEMS。后续训练仍BLOCKED，不将逐条合格或抽查写成整批门通过。
+
+全部39初始化异常已独立诊断为实际初态穿透、仅warmstart不同；后续ff_prior_scene_guard先明确拒绝穿透，再保留全部187完整转移检查，3/3真实测试，未接入原冻结作业。独立结论partial/high、神经收益未评估。下一步另冻结有界补9障碍初态及新合并库资格，保留原门/失败/成本，再实际训练和原DEV/NEW_VAL三种子同预算对照。报告`../../ff_prior_origin_coverage/docs/ANALYSIS.md`，终端`.\ff_prior_origin_coverage\job.ps1 status|report`，完成resume已核验不重复工作。
+
 用户要求继续作为最高优先级：先完成机制，再合格扩库；时间/耦合查询仅辅助，不设相对优胜推进门槛。万条级生成及12144 TRAIN实际训练已交付；独立新开发验证也已完成：12任务×3种子，新Diffusion173/180候选合格、36/36选定真实力矩执行及独立重放通过，12教师通过，原始审计PASS。四方法选定执行均36/36，强样条175/180候选合格；C1稳定性成立，C2联合质量优势不成立。网络修正前目标精度不足与完整方法可行分开判断。
 
 原作业诊断前进度回调错误保留FAILED；恢复仅补固定96诊断及审计，不重新采样或执行，不重置原时间预算。完成目录independent_new_validation_recovery_001；报告`../../ff_prior_generalization/docs/ANALYSIS.md`，终端`.\ff_prior_generalization_recover\job.ps1 status`与`report`。

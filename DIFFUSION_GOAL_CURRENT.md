@@ -10,9 +10,9 @@
 
 下一目标优先增加每家族独立的新初态及初态×运动组合：12144 TRAIN实际只有43个q17初态构型。先冻结有界数据预算及新独立验证，再生成、准入、预选执行抽查、实际训练和复核；本12任务用于后续设计后转作DEV回归。保留仅不穿透和其他全部物理门槛、完整初态/自由漂浮/全机几何与验证分级，不自动最终TEST、十万规模或旧生产任务。长期研究目标保持进行中。
 
-接续实现`ff_prior_origin_coverage`已完成，协议和6/6真实软件测试已冻结：512独立新TRAIN初态/前向轨迹（128单次新球障碍场景），最多768主尝试；8固定TRAIN世界目标×4修正尝试；TRAIN生成前先冻结8新独立验证；32预选真实执行/重放。5400秒/2线程/20GiB，查询与时间只辅助。初次测试的4×4平移列错误与测试篡改索引错误已修复，失败XML保留。已提交b133c0b5并启动qualified_origin_coverage_001，worker201448实际存活；8个新验证已冻结，最近完整快照315个新TRAIN初态/轨迹、75球障碍已准入，正式生成和执行审计仍进行。计划`ff_prior_origin_coverage/docs/EXPERIMENT_PLAN.md`，终端`.\ff_prior_origin_coverage\job.ps1 status|report`。
+接续作业`qualified_origin_coverage_001`已终态FINISHED_WITH_BLOCKED_ITEMS、worker201448退出，耗时2219.875秒（约37分钟）。实际503/512前向独立初态、119/128新球障碍，8个固定TRAIN世界目标32/32修正准入，共535新增合格TRAIN，累计12679 TRAIN；独立TRAIN初态43→546，原VAL48不变，新NEW_VAL8在TRAIN生成前冻结。32/32预选真实67力矩执行及独立重放、336000物理步和原始审计PASS；仅24新增TRAIN为EXECUTION_VERIFIED，511保持MODEL_VALID。本轮新训练与网络采样均未执行。报告`ff_prior_origin_coverage/docs/ANALYSIS.md`，终端`.\ff_prior_origin_coverage\job.ps1 status|report`。
 
-本轮原覆盖门尚未通过，已出现ERROR及四尝试耗尽的障碍槽位，不能事后改门或删分母。最早6个积分状态异常已独立诊断为实际初态球障碍穿透，仅warmstart不同，0耦合/物理步/网络；原错误保留。供后续版本使用的ff_prior_scene_guard先明确拒绝初态穿透，安全场景仍保留全部187项完整状态/参数/几何转移检查，3/3真实测试通过，与旧实现安全初态精确相同；未接入当前冻结作业。继续完成已生成样本和预选真实执行审计，保留可用合格数据；数据门受阻及后续协议调整须如实报告，不能将初始化修复、生成或抽查写成新训练/全库执行通过。
+本轮原覆盖门未通过，ready_for_training_stage=false：9个障碍槽位171/211/243/271/279/351/431/443/491耗尽原4次尝试，39 ERROR保留。全部39异常已逐例独立诊断为实际初态穿透、仅warmstart不同，0耦合/物理步/网络；66 REJECTED均geometry。供后续版本使用的ff_prior_scene_guard先拒绝初态穿透，再保留全部187项完整转移检查，3/3真实测试、安全完整初态等价；未接入本轮。独立结果评审partial/high：可保留535合格样本，原训练BLOCKED不能解除，C2未评估。下一步另冻结有界补充9覆盖及合并资格协议，再实际训练和原DEV4/NEW_VAL8三种子同预算对照；不能改原门、改原失败目标、删历史ERROR或把抽查/生成写成神经收益。
 
 完整报告：[独立新世界目标验证](ff_prior_generalization/docs/ANALYSIS.md)；[独立结果评审](paper/review-traces/experiment-result-to-claim/20261017_new_validation_run01/REVIEW.md)。终端：
 
