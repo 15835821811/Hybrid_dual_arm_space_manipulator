@@ -31,4 +31,4 @@
 .\ff_prior_pilot\job.ps1 resume
 ```
 
-新目录 artifacts/v7_1/qualified_pilot_001。运行中不重复start/resume；已完成resume只校验，不重复生成。尚未启动，须先完成前置验收和测试。
+新目录 artifacts/v7_1/qualified_pilot_001。运行中不重复start/resume；已完成resume只校验，不重复生成。前置验收、独立复核和4项软件测试已通过。已启动worker 105972，源码514cc539，当前实际生成中；结果以status/summary为准，不预写完成。
