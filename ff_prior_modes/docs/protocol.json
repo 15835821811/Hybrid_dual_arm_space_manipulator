@@ -1,0 +1,146 @@
+{
+  "DEV_executed": false,
+  "TEST": false,
+  "VAL_tasks": 10,
+  "advantage_gate": "stable; eligible/physical noninferior to BOTH strong spline and augmented mean; more physical tasks OR >=10% lower actual queries AND wall",
+  "candidate_coupled_ceiling": 113,
+  "candidate_integration_interval_ceiling": 15872,
+  "candidate_wall_ceiling_s": 15.0,
+  "candidates_per_task": 5,
+  "data": {
+    "amplitudes_rad": [
+      0.03,
+      -0.03,
+      0.06,
+      -0.06,
+      0.1,
+      -0.1
+    ],
+    "duration": "unchanged parent",
+    "family_selection": "3 paired complex families + 2 other origin families",
+    "max_attempts": 48,
+    "minimum_control_rms_distance_rad": 0.005,
+    "new_TEST": false,
+    "new_VAL": false,
+    "seed": 20261093,
+    "strict_multimodal_claim": false,
+    "target": "pre-existing TRAIN world goal; never relabel",
+    "targets": 8,
+    "variants": 6,
+    "version": "fixed_train_world_modes_1",
+    "witness_slots": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ]
+  },
+  "data_gate": "at least 80% of 48 admitted; each obstacle target >=2 distinct labels; 4/4 preselected execution/replay",
+  "frozen_goal_relabel": false,
+  "guidance": {
+    "acceptance_clearance_m": 0.0,
+    "collision_repair_buffer_m": 0.0002,
+    "collision_scale_m": 0.003,
+    "curvature_weight": 10.0,
+    "difference_rad": 0.0001,
+    "directions": 24,
+    "geometry_step_budget_m": 0.002,
+    "geometry_stride": 1,
+    "goal_accept_fraction": 0.8,
+    "goal_feasible_incumbent_cannot_be_sacrificed": true,
+    "goal_inner_fraction": 0.65,
+    "iterations": 4,
+    "line_scales": [
+      1.0,
+      0.5,
+      0.25
+    ],
+    "maximum_coefficient_step_rad": 0.15,
+    "phase_intervals": 128,
+    "repair_queries": 110,
+    "schedule": [
+      15
+    ],
+    "version": "goal_preserving_repair_1"
+  },
+  "max_candidates": 250,
+  "max_new_training_rows": 48,
+  "max_selected_executions": 50,
+  "max_witness_executions": 4,
+  "methods": [
+    "structured_feasible",
+    "frozen_latent_diffusion",
+    "augmented_mean_spline",
+    "augmented_diffusion",
+    "goal_loss_diffusion"
+  ],
+  "physical_gates_changed": false,
+  "pilot": false,
+  "production_expansion": false,
+  "profile": "smoke",
+  "same_tasks_seeds_as_previous": true,
+  "scope": "small TRAIN enrichment, exploratory original VAL; not strict multimodal certification",
+  "seed": 20261067,
+  "selection": "minimum normalized world-goal error among eligible; one torque execution and replay, no replacement",
+  "sensitivity": {
+    "VAL_queries": 0,
+    "cache": "one existing qualified TRAIN anchor per exact task hash",
+    "difference_rad": 0.0001,
+    "directions": 34,
+    "directions_kind": "17 smooth terminal + 17 zero-terminal sine bows",
+    "half_step_relative_tolerance": 0.02,
+    "max_anchors": 180,
+    "mixed_direction_relative_tolerance": 0.05,
+    "not_a_physical_validator": true,
+    "not_full_latent_gradient": true,
+    "phase_intervals": 128,
+    "queries_per_anchor": 39
+  },
+  "sensitivity_interval_ceiling": 898560,
+  "sensitivity_query_ceiling": 7020,
+  "stability_gate": "each group >=90% eligible; each task >=4/5 eligible; 10/10 selected execution/replay",
+  "study": false,
+  "training": {
+    "TRAIN_only_fit": true,
+    "architecture": "same centered temporal latent MLP as previous round",
+    "batch": 32,
+    "goal_loss": "mean squared local coupled pose change of denoised error in 34-direction surrogate",
+    "goal_loss_weight": 0.05,
+    "lr": 0.0002,
+    "obstacle_conditioned": false,
+    "same_initial_weights_batch_noise_schedule_across_ablation": true,
+    "seed": 20261081,
+    "selection": "fixed final update; no VAL gradients/checkpoint selection",
+    "updates": 1800,
+    "version": "qualified_modes_coupled_loss_1"
+  },
+  "validation": {
+    "aligned_geometry_convergence_m": 0.001,
+    "all_geometry_pairs_preserved": true,
+    "endpoint_convergence_m": 0.001,
+    "endpoint_convergence_rad": 0.003490658503988659,
+    "geometry_step_budget_m": 0.002,
+    "intervals": [
+      256,
+      512,
+      1024
+    ],
+    "maximum_coupled_queries": 3,
+    "maximum_integration_intervals": 1792,
+    "preserve_detected_penetration": true
+  },
+  "version": "qualified_modes_smoke_1",
+  "wall_budget_s": 5400
+}
