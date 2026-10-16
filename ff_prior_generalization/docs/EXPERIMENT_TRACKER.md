@@ -12,3 +12,7 @@
 源码和冻结协议已提交`ed13706f`。启动证据`../evidence/launched_001.json`，实际launcher81120、worker103392，初始状态为来源核验；该快照不是最终任务、采样或执行通过证明。当前状态以终端和实际status/ledger为准，已启动作业不要重复派发。
 
 任务冻结已实际完成：17次生成尝试，12个独立家族全部MODEL_VALID并冻结，6新初态较大运动＋6静态绕行。保护目标近邻命中0；3次拒绝（2次场景筛选失败、1次教师无效）和2次`scene transfer changed robot: ['integration_state']`兼容性错误保留，未放宽检查，未产生未知生成调用记录。后两次失败具体成因尚待独立诊断，不能据此断言机器人动力学改变。证据`../evidence/tasks_frozen_001.json`。此时worker103392确认存活，处于教师真实执行/重放，四方法正式结果仍PENDING。
+
+独立诊断已实际复现两次错误：只有默认home的warmstart不同，新增障碍在该未使用构型下穿透约12.120/34.321mm；实际任务初态完整状态逐字段一致、187项转移检查PASS、初始最小间距8.519mm。诊断调用0耦合/0物理步/0网络；工具首次因只读buffer失败的记录保留。证据`../../ff_prior_pilot_tools/evidence/scene_state_diagnostic_002/`。后续版本模块`ff_prior_origin_scene`以实际任务完整初态审计，未删除warmstart或其他检查，5/5真实软件测试通过；本轮冻结源码及结果未修改，也未重新准入此前拒绝。
+
+教师12/12真实执行和独立重放已由原始native trace重新核验：126000物理步（含重放）、最小间距5.556926mm、最大hold位置误差0.007297mm；核验自身没有新增仿真。证据`../evidence/teacher_traces_verified_001.json`。这是教师可行性证据，不等同Diffusion成功；worker103392仍在四方法对照阶段，正式整体结论待完成。
