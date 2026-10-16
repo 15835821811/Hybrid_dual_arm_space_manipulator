@@ -1,0 +1,70 @@
+{
+  "DEV_tasks": 4,
+  "TEST": false,
+  "TRAIN": 10000,
+  "VAL": 48,
+  "automatic_100k_expansion": false,
+  "candidate_coupled_ceiling": 113,
+  "candidate_interval_ceiling": 15872,
+  "candidate_wall_s": 15,
+  "candidates_per_task": 5,
+  "cpu_threads": 2,
+  "full_goal_auto_complete": false,
+  "ingestion_gate": "all 10000 TRAIN arrays loaded and sampled; TRAIN-only fitting; all exact TRAIN task sensitivities valid",
+  "max_candidates": 240,
+  "max_output_bytes": 42949672960,
+  "max_selected_executions": 48,
+  "methods": [
+    "structured",
+    "frozen_diffusion",
+    "learned_mean",
+    "expanded_diffusion"
+  ],
+  "old_model": "verified 1000-TRAIN model, not legacy 256-TRAIN checkpoint",
+  "profile": "pilot_training_and_frozen_DEV",
+  "recovery": {
+    "manifest_sha256": "d1f56124d95025747d68a38a842f42daad56b72a406397cf79c73c5af8d84434",
+    "previous_unknown_calls_retained": true,
+    "prior_elapsed_charged": true,
+    "reuse_only_committed_exact_sensitivities": true
+  },
+  "relative_efficiency_required": false,
+  "sampling_seeds": [
+    20261219,
+    20261223,
+    20261229
+  ],
+  "selection": "minimum normalized frozen world-goal error among eligible, exactly one execution; no replacement",
+  "sensitivity": {
+    "VAL_queries": 0,
+    "cache": "one existing qualified TRAIN anchor per exact task hash",
+    "difference_rad": 0.0001,
+    "directions": 34,
+    "directions_kind": "17 smooth terminal + 17 zero-terminal sine bows",
+    "half_step_relative_tolerance": 0.02,
+    "max_anchors": 11000,
+    "mixed_direction_relative_tolerance": 0.05,
+    "not_a_physical_validator": true,
+    "not_full_latent_gradient": true,
+    "phase_intervals": 128,
+    "queries_per_anchor": 39
+  },
+  "stability_gate": "new model each seed >=18/20 eligible; all tasks reached; 12/12 selected execution/replay; no numerical errors",
+  "strict_multimodal": false,
+  "training": {
+    "TRAIN_only_fit": true,
+    "architecture": "same centered temporal latent MLP as previous round",
+    "batch": 64,
+    "goal_loss": "mean squared local coupled pose change of denoised error in 34-direction surrogate",
+    "goal_loss_weight": 0.05,
+    "lr": 0.0002,
+    "obstacle_conditioned": false,
+    "same_initial_weights_batch_noise_schedule_across_ablation": true,
+    "seed": 20261081,
+    "selection": "fixed final update; no VAL gradients/checkpoint selection",
+    "updates": 12000,
+    "version": "qualified_10k_pilot_coupled_loss_1"
+  },
+  "version": "qualified_10k_training_closure_1",
+  "wall_budget_s": 14400
+}

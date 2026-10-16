@@ -4,8 +4,13 @@ import time
 import numpy as np
 import torch
 from ff_prior_latent.learning import Codec,LatentDenoiser,sample
-from ff_prior.diffusion import schedule,prediction_to_clean_noise,save_torch,weight_hash
-from ff_prior.storage import atomic_json,read_json,digest,file_digest
+from ff_prior.diffusion import schedule,prediction_to_clean_noise,save_torch as base_save_torch,weight_hash
+from ff_prior.storage import read_json,digest,file_digest
+from .storage import atomic_json,retry_write
+
+
+def save_torch(path,value):
+    return retry_write(base_save_torch,path,value)
 
 CONTRACT={'version':'qualified_10k_pilot_coupled_loss_1','updates':12000,'batch':64,'lr':2e-4,'seed':20261081,
     'architecture':'same centered temporal latent MLP as previous round','goal_loss_weight':.05,

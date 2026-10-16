@@ -8,12 +8,13 @@ import sys
 import threading
 import time
 import traceback
-from ff_prior.storage import atomic_json, read_json
+from ff_prior.storage import read_json
+from .storage import atomic_json
 from ff_prior.recovery import process_is_alive, recover_dead_lock
 
 ROOT=Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE='artifacts/v7_1/qualified_pilot_001'
-DEFAULT_OUT='artifacts/v7_1/qualified_pilot_train_001'
+DEFAULT_OUT='artifacts/v7_1/qualified_pilot_train_002'
 TERMINAL={'FINISHED','FINISHED_WITH_BLOCKED_ITEMS','FAILED'}
 
 
@@ -64,7 +65,7 @@ def worker(source,out,resume=False):
     out=Path(out).resolve(); out.mkdir(parents=True,exist_ok=True)
     if (out/'run.lock').exists():
         raise RuntimeError('worker lock already exists; use explicit resume after dead-owner verification')
-    previous=read_json(out/'status.json').get('elapsed_s',0.) if resume and (out/'status.json').exists() else 0.
+    previous=read_json(out/'status.json').get('elapsed_s',0.) if resume and (out/'status.json').exists() else read_json(Path(__file__).parent/'evidence/recovery_001/failed_run_manifest.json')['elapsed_s']
     with Monitor(out,previous) as monitor:
         try:
             from .experiment import run

@@ -18,6 +18,15 @@ def verify(out,identity,index,rows,codec):
     out=Path(out);source=Path(identity['source']);ledger=read_json(out/'ledger.json');problems=[]
     assert ledger['inflight'] is None and ledger['identity']=={'run_identity_hash':digest(identity)}
     assert sources()==identity['source_hashes'] and identity['protocol']==PROTOCOL
+    from .reuse import MANIFEST
+    recovery=read_json(MANIFEST);prior=Path(recovery['source']);reuse=read_json(out/'sensitivity_reuse.json')
+    assert file_digest(MANIFEST)==PROTOCOL['recovery']['manifest_sha256']==reuse['manifest_sha256']
+    assert all(file_digest(prior/p)==h for p,h in recovery['files'].items())
+    assert reuse['inherited_elapsed_s']==recovery['elapsed_s'] and reuse['anchors']==recovery['completed']
+    for key in reuse['reused_keys']:
+        for suffix in ('.json','.npz'):
+            rel='sensitivity/'+key+suffix
+            assert file_digest(out/rel)==recovery['files'][rel]
     assert all(file_digest(source/p)==h for p,h in identity['source_files'].items())
     assert read_json(out/'training_index.json')['records']==index==read_json(source/'training_index.json')['records']
     assert read_json(out/'run.json')['acceptance']==read_json(source/'run.json')['acceptance']

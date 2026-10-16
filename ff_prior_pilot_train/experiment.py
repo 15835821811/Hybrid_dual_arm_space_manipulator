@@ -5,7 +5,8 @@ import time
 import zipfile
 import subprocess
 import numpy as np
-from ff_prior.storage import read_json,atomic_json,atomic_npz,file_digest,digest,Ledger,RunLock
+from ff_prior.storage import read_json,file_digest,digest,RunLock
+from .storage import atomic_json,atomic_npz,Ledger
 from ff_prior.recovery import process_is_alive
 from ff_prior.pipeline import audit,acceptance
 from ff_prior.guidance import public_goal_initializer
@@ -16,6 +17,7 @@ from ff_prior_modes import data as loader
 from ff_prior_loop.experiment import execute
 from . import learning,sensitivity
 
+from .reuse import MANIFEST,import_completed
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'artifacts/v7_1/smoke_002'
 FROZEN=ROOT/'artifacts/v7_1/qualified_expansion_002/learning/goal_loss'
@@ -32,6 +34,9 @@ PROTOCOL={'version':'qualified_10k_training_closure_1','profile':'pilot_training
     'old_model':'verified 1000-TRAIN model, not legacy 256-TRAIN checkpoint',
     'TEST':False,'strict_multimodal':False,'relative_efficiency_required':False,
     'full_goal_auto_complete':False,'automatic_100k_expansion':False}
+
+
+PROTOCOL['recovery']={'manifest_sha256':file_digest(MANIFEST),'prior_elapsed_charged':True,'reuse_only_committed_exact_sensitivities':True,'previous_unknown_calls_retained':True}
 
 
 def sources():
@@ -84,6 +89,9 @@ def report(out,ledger,status):
         'pilot_training_closure_passed':passed,'errors':errors,'unresolved_calls':ledger.data.get('unresolved_call_accounting',[]),
         'TEST_executed':False,'full_goal_achieved':False,'diffusion_superiority':'REQUIRES_SEPARATE_SUPPORTED_COMPARISON',
         'relative_efficiency_required':False,'ledger_calls':ledger.data['calls'],'protocol':PROTOCOL}
+    if (out/'sensitivity_reuse.json').exists():
+        reused=read_json(out/'sensitivity_reuse.json')
+        result['recovery_accounting']={k:v for k,v in reused.items() if k!='reused_keys'}
     atomic_json(out/'summary.json',result)
     lines=['# 10,000条扩库数据的真实训练与冻结DEV闭环','',f'状态：{status}；10000条实际训练消费：{trained}；独立审计：{audited}；本轮闭环：{passed}。','',
         '| 方法 | 合格/60 | 执行及重放/12 |','|---|---:|---:|']
@@ -92,6 +100,8 @@ def report(out,ledger,status):
         '预注册每种子至少18/20候选、各任务可达、12/12执行重放；查询和时间仅辅助记录，不要求效率胜出。',
         '原DEV是已使用的开发任务，不是最终TEST泛化证据。验证等级按实际单条证据保留，不批量升级整个数据集。',
         '失败不重标世界目标、不替补执行；训练或敏感度依赖失败时保留BLOCKED，独立基线仍运行。最终TEST未执行，不自动扩至100000。']
+    if 'recovery_accounting' in result:
+        lines+=['','本次接续保留001失败：复用已提交敏感度，原3463.5秒计入总预算。旧未提交锚点额外调用未知（预留上限39次），不记为零；本轮完整缓存调用与旧失败额外成本分别报告。']
     (out/'REPORT.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     return result
 
@@ -113,14 +123,21 @@ def run(source,out,progress,resume=False,previous_elapsed=0.):
             with zipfile.ZipFile(out/'executed_source.zip','w',zipfile.ZIP_DEFLATED) as z:
                 for p in sources():z.write(ROOT/p,p)
         assert read_json(out/'frozen_tasks.json')['DEV']==dev
-        ledger=Ledger(out,{'run_identity_hash':digest(identity)});deadline=time.time()+max(0,14400-previous_elapsed)
+        ledger=Ledger(out,{'run_identity_hash':digest(identity)});prior_elapsed=read_json(MANIFEST)['elapsed_s']
+        deadline=time.time()+max(0,14400-max(previous_elapsed,prior_elapsed))
         cache=loader.RuntimeCache(canonical,initial,profile)
         arrays,rows=loader.arrays(index,cache,out,progress);codec=learning.fit_codec(out/'learning',arrays)
+        progress('validate_and_import_completed_sensitivities')
+        import_completed(out,arrays,rows,codec,ledger,identity)
         # Keep 1200 seconds for independent baselines and selected execution.
         try:
             matrices,sreport=sensitivity.prepare(out,arrays,rows,codec,cache,ledger,deadline-1200,progress)
         except Exception as error:
-            matrices=None;sreport={'status':'BLOCKED','reason':repr(error)}
+            import traceback
+            matrices=None;sreport={'status':'BLOCKED','reason':repr(error),'traceback':traceback.format_exc()}
+            if ledger.data.get('inflight'):
+                ledger.data.setdefault('unresolved_call_accounting',[]).append(ledger.data['inflight']['id'])
+                ledger.finish({'status':'BLOCKED','reason':repr(error)},{})
             atomic_json(out/'sensitivity_failure.json',sreport)
         try:
             training=learning.train(out/'learning/goal_loss',arrays,codec,matrices,'goal_loss',sreport,progress,deadline-1200)

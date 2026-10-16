@@ -1,8 +1,10 @@
 """Full free-floating propagation, 34-direction local training surrogate only."""
 import time
+import traceback
 from pathlib import Path
 import numpy as np
-from ff_prior.storage import atomic_json,atomic_npz,read_json,file_digest,digest
+from ff_prior.storage import read_json,file_digest,digest
+from .storage import atomic_json,atomic_npz
 from ff_prior.spline import Reference
 from ff_prior.coupled_predictor import predict_coupled
 from ff_prior_fixed.correction import pose_vector
@@ -67,13 +69,18 @@ def prepare(out,arrays,rows,codec,cache,ledger,deadline,progress):
         work='sensitivity_'+key;path=out/'sensitivity'/f'{key}.json';arr=path.with_suffix('.npz')
         if work not in ledger.data['completed']:
             ledger.begin(work,'sensitivity',14400,CONTRACT['max_anchors']);rr,ii,cc,_=cache.get(rows[i]);before=rr.calls.copy()
-            progress('TRAIN_coupled_sensitivities',anchor=j+1,total=len(anchors),sample=ids[i])
             try:
+                progress('TRAIN_coupled_sensitivities',anchor=j+1,total=len(anchors),sample=ids[i])
                 g,report=build(rows[i]['task'],z[i],rr,ii,codec.basis,deadline)
                 report['anchor_sample_id']=ids[i]
                 if report['status']=='PASS':atomic_npz(arr,G=g)
-            except Exception as error:report={'status':'BLOCKED','reason':repr(error),'anchor_sample_id':ids[i],'task_hash':key}
-            report['calls']={k:rr.calls[k]-before[k] for k in before};atomic_json(path,report)
+            except Exception as error:report={'status':'BLOCKED','reason':repr(error),'traceback':traceback.format_exc(),'anchor_sample_id':ids[i],'task_hash':key}
+            report['calls']={k:rr.calls[k]-before[k] for k in before}
+            try:
+                atomic_json(path,report)
+            except Exception as error:
+                ledger.finish({'status':'BLOCKED','reason':'sensitivity proof write failed: '+repr(error)},report['calls'])
+                raise
             ledger.finish({'status':report['status']},report['calls'])
         if not path.exists() or read_json(path)['status']!='PASS' or not arr.exists():failures.append(key)
         else:
