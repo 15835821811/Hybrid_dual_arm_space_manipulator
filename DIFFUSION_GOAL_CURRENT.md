@@ -1,8 +1,8 @@
 # 当前目标补充：先完成机制闭环，再以合格数据扩库
 
-## 当前接续程序：12688条实际训练与同预算smoke（已实现，待启动）
+## 当前接续程序：12688条实际训练与同预算smoke（后台已启动）
 
-已实现独立ff_prior_origin_train，6/6真实软件检查通过。另冻结6000更新×64，每批旧32+新增覆盖32（544条按producer识别），温启动12144模型、原10k codec固定；重新拟合全部TRAIN的组平衡条件均值。原DEV4+NEW_VAL8三种子四方法、720候选/144预选执行重放/96固定诊断，9000秒/2线程/20GiB。此时正式运行未启动，不提前记通过；查询/耗时不设相对门槛，神经质量单独实测。协议ff_prior_origin_train/docs/EXPERIMENT_PLAN.md，终端.\ff_prior_origin_train\job.ps1 status|report。
+已实现独立ff_prior_origin_train，6/6真实软件检查通过。另冻结6000更新×64，每批旧32+新增覆盖32（544条按producer识别），温启动12144模型、原10k codec固定；重新拟合全部TRAIN的组平衡条件均值。原DEV4+NEW_VAL8三种子四方法、720候选/144预选执行重放/96固定诊断，9000秒/2线程/20GiB。qualified_origin_train_001已实际启动，worker99200确认存活，源码a11e746e；正式训练、smoke与神经收益仍待结果，不提前记通过；查询/耗时不设相对门槛，神经质量单独实测。协议ff_prior_origin_train/docs/EXPERIMENT_PLAN.md，终端.\ff_prior_origin_train\job.ps1 status|report。
 
 
 ## 2026-10-17 当前权威目标与最新数据释放
@@ -15,7 +15,7 @@
 
 新增覆盖来源共544条（旧535+新9），其中33 TRAIN为 EXECUTION_VERIFIED、511保持 MODEL_VALID；合并离线审计41条轨迹=继承32+新9，430,500步。原数据作业仍 FINISHED_WITH_BLOCKED_ITEMS/ready=false、39 ERROR及全部旧成本保留，新合并资格不改写原失败。独立评审确认数据释放 yes/high；本轮新训练和神经收益未评估，完整目标保持进行中。
 
-下一阶段：另行冻结 12,688 TRAIN 实际接续训练。按两个 producer_run_id 定义544条新增覆盖组并平衡抽样，不能按 new_in_this_run 只取9条；证明逐条实际消费、权重更新及保存重载。随后以强样条、TRAIN-only条件均值、旧模型、新模型，在原冻结 DEV4 和 NEW_VAL8 上运行三种子、同候选数及同物理修正预算 smoke，分开报告原DEV回归和新验证。NEW_VAL 不参与梯度、编码器拟合或检查点选择。
+接续阶段已另行冻结并在 qualified_origin_train_001 后台实际执行：12,688 TRAIN 接续训练。按两个 producer_run_id 定义544条新增覆盖组并平衡抽样，不能按 new_in_this_run 只取9条；证明逐条实际消费、权重更新及保存重载。随后以强样条、TRAIN-only条件均值、旧模型、新模型，在原冻结 DEV4 和 NEW_VAL8 上运行三种子、同候选数及同物理修正预算 smoke，分开报告原DEV回归和新验证。NEW_VAL 不参与梯度、编码器拟合或检查点选择。
 
 既有12144 TRAIN模型完整方法在12个新开发任务上173/180合格、36/36执行重放；强样条175/180、所有方法执行均36/36。网络修正前目标仍0/180命中，优越性未成立。新增初态覆盖是接续训练的依据，不是改善已被证明的结论。
 
