@@ -1,0 +1,138 @@
+{
+  "TEST": false,
+  "TRAIN_tasks": 8,
+  "VAL_executed": false,
+  "amplitudes": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "attenuation_signal": "no less eligible than full amplitude; stable; queries AND time <=90% full; mean pairwise eligible RMS >=80% full; distinct eligible count >=80% full",
+  "candidate_integration_interval_ceiling": 15872,
+  "candidate_query_ceiling": 113,
+  "candidate_seed": 20261113,
+  "candidate_wall_ceiling_s": 15.0,
+  "candidates_per_task": 5,
+  "checkpoint_updates": 0,
+  "diversity": "greedy candidate-order packing of eligible control matrices at RMS>=0.005rad; also mean pairwise RMS; not homotopy",
+  "frozen_goal_relabel": false,
+  "guidance": {
+    "acceptance_clearance_m": 0.0,
+    "collision_repair_buffer_m": 0.0002,
+    "collision_scale_m": 0.003,
+    "curvature_weight": 10.0,
+    "difference_rad": 0.0001,
+    "directions": 24,
+    "geometry_step_budget_m": 0.002,
+    "geometry_stride": 1,
+    "goal_accept_fraction": 0.8,
+    "goal_feasible_incumbent_cannot_be_sacrificed": true,
+    "goal_inner_fraction": 0.65,
+    "iterations": 4,
+    "line_scales": [
+      1.0,
+      0.5,
+      0.25
+    ],
+    "maximum_coefficient_step_rad": 0.15,
+    "phase_intervals": 128,
+    "repair_queries": 110,
+    "schedule": [
+      15
+    ],
+    "version": "goal_preserving_repair_1"
+  },
+  "max_candidates": 400,
+  "max_selected_executions": 20,
+  "mean_zero": "five identical proposals intentionally retained; report one distinct path, charge all five; strong mean-plus-bow baseline retained",
+  "method_order": "rotate by (task_index+candidate_index) before each candidate block; no cross-method proposal cache",
+  "methods": [
+    "structured_feasible",
+    "frozen_latent_diffusion",
+    "augmented_mean_spline",
+    "mean_zero",
+    "v025",
+    "v050",
+    "v100",
+    "g025",
+    "g050",
+    "g100"
+  ],
+  "new_data": 0,
+  "original_DEV_executed": false,
+  "physical_gates_changed": false,
+  "pilot": false,
+  "production_expansion": false,
+  "profile": "smoke",
+  "selection": "minimum normalized goal error among eligible; one execution on each preselected TRAIN task; no replacement",
+  "selection_scope": "TRAIN mechanism evidence only; no generalization/superiority/expansion declaration",
+  "specs": {
+    "augmented_mean_spline": [
+      "mean_bow",
+      null
+    ],
+    "frozen_latent_diffusion": [
+      "frozen",
+      1.0
+    ],
+    "g025": [
+      "goal_loss",
+      0.25
+    ],
+    "g050": [
+      "goal_loss",
+      0.5
+    ],
+    "g100": [
+      "goal_loss",
+      1.0
+    ],
+    "mean_zero": [
+      "mean",
+      0.0
+    ],
+    "structured_feasible": [
+      "structured",
+      null
+    ],
+    "v025": [
+      "v_only",
+      0.25
+    ],
+    "v050": [
+      "v_only",
+      0.5
+    ],
+    "v100": [
+      "v_only",
+      1.0
+    ]
+  },
+  "stability": "at least36/40 eligible, each task>=4/5, preselected2/2 actual execution/replay",
+  "strict_multimodal": false,
+  "study": false,
+  "task_selection": "all eight preexisting qualified_modes generation parents; label controls removed from inference entries",
+  "threads": 2,
+  "validation": {
+    "aligned_geometry_convergence_m": 0.001,
+    "all_geometry_pairs_preserved": true,
+    "endpoint_convergence_m": 0.001,
+    "endpoint_convergence_rad": 0.003490658503988659,
+    "geometry_step_budget_m": 0.002,
+    "intervals": [
+      256,
+      512,
+      1024
+    ],
+    "maximum_coupled_queries": 3,
+    "maximum_integration_intervals": 1792,
+    "preserve_detected_penetration": true
+  },
+  "version": "TRAIN_residual_amplitude_smoke_1",
+  "wall_budget_s": 5400,
+  "witness_task_slots": [
+    0,
+    6
+  ]
+}
