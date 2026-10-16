@@ -1,6 +1,7 @@
 """Read-only attribution summary; refuses incomplete runs and existing outputs."""
 import argparse
 import json
+import math
 from pathlib import Path
 from statistics import median
 
@@ -36,10 +37,13 @@ def analyze(source, output):
                         raise ValueError('non-DONE record: cannot silently omit failed candidates')
                     guide = r['sampling']['guidance'][-1]
                     history = guide['history']
-                    if not history:
-                        raise ValueError('missing pre/post guidance pose evidence')
-                    initial.append(max(history[0]['before_pose_norms']))
-                    final.append(max(history[-1]['after_pose_norms']))
+                    def pose_norm(key):
+                        error = guide[key]
+                        if len(error) != 12 or not all(math.isfinite(v) for v in error):
+                            raise ValueError('invalid stored pose error')
+                        return max(math.sqrt(sum(v*v for v in error[j:j+3])) for j in range(0, 12, 3))
+                    initial.append(pose_norm('initial_goal_error'))
+                    final.append(pose_norm('final_goal_error'))
                     accepted.append(sum(bool(h['accepted']) for h in history))
                     eligible += int(r['eligible'])
                 outcome = read(source / 'executions' / str(seed) / sid / method / 'outcome.json')['status']

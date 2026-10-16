@@ -1,0 +1,237 @@
+{
+  "TEST_executed": false,
+  "actual_training_passed": true,
+  "diffusion_superiority": "REQUIRES_SEPARATE_SUPPORTED_COMPARISON",
+  "errors": [],
+  "full_goal_achieved": false,
+  "independent_audit_passed": true,
+  "ledger_calls": {
+    "candidate.coupled": 6725,
+    "candidate.distance": 42734400,
+    "candidate.fk": 2909775,
+    "candidate.forward": 7685,
+    "candidate.mass_matrix": 1980810,
+    "candidate.physics_steps": 0,
+    "candidate.rrt": 0,
+    "candidate.sqp": 0,
+    "candidate.torque_rollout": 0,
+    "execution.coupled": 0,
+    "execution.distance": 23199006,
+    "execution.fk": 0,
+    "execution.forward": 1260288,
+    "execution.mass_matrix": 756096,
+    "execution.physics_steps": 504000,
+    "execution.rrt": 0,
+    "execution.sqp": 0,
+    "execution.torque_rollout": 48,
+    "sensitivity.coupled": 386568,
+    "sensitivity.distance": 0,
+    "sensitivity.fk": 99734544,
+    "sensitivity.forward": 386568,
+    "sensitivity.mass_matrix": 99734544,
+    "sensitivity.physics_steps": 0,
+    "sensitivity.rrt": 0,
+    "sensitivity.sqp": 0,
+    "sensitivity.torque_rollout": 0
+  },
+  "methods": {
+    "expanded_diffusion": {
+      "completed": 60,
+      "coupled_queries": 1655,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 960,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 97.9472646987997
+    },
+    "frozen_diffusion": {
+      "completed": 60,
+      "coupled_queries": 1680,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 960,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 99.48953939974308
+    },
+    "learned_mean": {
+      "completed": 60,
+      "coupled_queries": 1710,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 0,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 100.0807837001048
+    },
+    "structured": {
+      "completed": 60,
+      "coupled_queries": 1680,
+      "eligible": 60,
+      "execution_verified": 12,
+      "executions": 12,
+      "network_calls": 0,
+      "per_seed": {
+        "0": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "1": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        },
+        "2": {
+          "completed": 20,
+          "eligible": 20,
+          "tasks_reached": 4
+        }
+      },
+      "stable": true,
+      "wall_s": 99.04046579869464
+    }
+  },
+  "pilot_training_closure_passed": true,
+  "protocol": {
+    "DEV_tasks": 4,
+    "TEST": false,
+    "TRAIN": 10000,
+    "VAL": 48,
+    "automatic_100k_expansion": false,
+    "candidate_coupled_ceiling": 113,
+    "candidate_interval_ceiling": 15872,
+    "candidate_wall_s": 15,
+    "candidates_per_task": 5,
+    "cpu_threads": 2,
+    "full_goal_auto_complete": false,
+    "ingestion_gate": "all 10000 TRAIN arrays loaded and sampled; TRAIN-only fitting; all exact TRAIN task sensitivities valid",
+    "max_candidates": 240,
+    "max_output_bytes": 42949672960,
+    "max_selected_executions": 48,
+    "methods": [
+      "structured",
+      "frozen_diffusion",
+      "learned_mean",
+      "expanded_diffusion"
+    ],
+    "old_model": "verified 1000-TRAIN model, not legacy 256-TRAIN checkpoint",
+    "profile": "pilot_training_and_frozen_DEV",
+    "recovery": {
+      "manifest_sha256": "d1f56124d95025747d68a38a842f42daad56b72a406397cf79c73c5af8d84434",
+      "previous_unknown_calls_retained": true,
+      "prior_elapsed_charged": true,
+      "reuse_only_committed_exact_sensitivities": true
+    },
+    "relative_efficiency_required": false,
+    "sampling_seeds": [
+      20261219,
+      20261223,
+      20261229
+    ],
+    "selection": "minimum normalized frozen world-goal error among eligible, exactly one execution; no replacement",
+    "sensitivity": {
+      "VAL_queries": 0,
+      "cache": "one existing qualified TRAIN anchor per exact task hash",
+      "difference_rad": 0.0001,
+      "directions": 34,
+      "directions_kind": "17 smooth terminal + 17 zero-terminal sine bows",
+      "half_step_relative_tolerance": 0.02,
+      "max_anchors": 11000,
+      "mixed_direction_relative_tolerance": 0.05,
+      "not_a_physical_validator": true,
+      "not_full_latent_gradient": true,
+      "phase_intervals": 128,
+      "queries_per_anchor": 39
+    },
+    "stability_gate": "new model each seed >=18/20 eligible; all tasks reached; 12/12 selected execution/replay; no numerical errors",
+    "strict_multimodal": false,
+    "training": {
+      "TRAIN_only_fit": true,
+      "architecture": "same centered temporal latent MLP as previous round",
+      "batch": 64,
+      "goal_loss": "mean squared local coupled pose change of denoised error in 34-direction surrogate",
+      "goal_loss_weight": 0.05,
+      "lr": 0.0002,
+      "obstacle_conditioned": false,
+      "same_initial_weights_batch_noise_schedule_across_ablation": true,
+      "seed": 20261081,
+      "selection": "fixed final update; no VAL gradients/checkpoint selection",
+      "updates": 12000,
+      "version": "qualified_10k_pilot_coupled_loss_1"
+    },
+    "version": "qualified_10k_training_closure_1",
+    "wall_budget_s": 14400
+  },
+  "recovery_accounting": {
+    "anchors": 4949,
+    "inherited_elapsed_s": 3463.5,
+    "manifest_sha256": "d1f56124d95025747d68a38a842f42daad56b72a406397cf79c73c5af8d84434",
+    "new_physics_calls_for_import": 0,
+    "previous_failed_attempt": {
+      "id": "sensitivity_d02ece4cec734111f5f8df579e0d4feb794e91ef824c4110950951f602ff3c45",
+      "stage": "sensitivity",
+      "started": 1792160020.7290251
+    },
+    "previous_failed_attempt_extra_calls": "unknown; at most 39 coupled calls reserved, not counted as zero or certified",
+    "previous_failure_erased": false,
+    "reused_coupled_calls": 193011,
+    "source": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\qualified_pilot_train_001",
+    "status": "PASS"
+  },
+  "relative_efficiency_required": false,
+  "status": "FINISHED",
+  "unresolved_calls": []
+}
