@@ -1,0 +1,968 @@
+{
+  "aggregate": {
+    "TRAIN": {
+      "frozen_diffusion": {
+        "candidate_denominator": 30,
+        "candidate_errors": 0,
+        "candidate_records": 30,
+        "coupled_queries": 2559,
+        "cpu_s": 45.046875,
+        "distance_queries": 582072,
+        "eligible": 22,
+        "execution_verified": 6,
+        "model_valid": 22,
+        "network_calls": 480,
+        "task_denominator": 6,
+        "wall_s": 45.47469259845093
+      },
+      "structured_narrow": {
+        "candidate_denominator": 30,
+        "candidate_errors": 0,
+        "candidate_records": 30,
+        "coupled_queries": 2550,
+        "cpu_s": 43.203125,
+        "distance_queries": 475754,
+        "eligible": 18,
+        "execution_verified": 4,
+        "model_valid": 18,
+        "network_calls": 0,
+        "task_denominator": 6,
+        "wall_s": 43.79368679784238
+      },
+      "structured_wide": {
+        "candidate_denominator": 30,
+        "candidate_errors": 0,
+        "candidate_records": 30,
+        "coupled_queries": 2640,
+        "cpu_s": 47.09375,
+        "distance_queries": 715755,
+        "eligible": 4,
+        "execution_verified": 2,
+        "model_valid": 4,
+        "network_calls": 0,
+        "task_denominator": 6,
+        "wall_s": 47.58597649820149
+      }
+    },
+    "VAL": {
+      "frozen_diffusion": {
+        "candidate_denominator": 30,
+        "candidate_errors": 0,
+        "candidate_records": 30,
+        "coupled_queries": 2798,
+        "cpu_s": 47.578125,
+        "distance_queries": 516656,
+        "eligible": 15,
+        "execution_verified": 4,
+        "model_valid": 20,
+        "network_calls": 480,
+        "task_denominator": 6,
+        "wall_s": 48.10767730046064
+      },
+      "structured_narrow": {
+        "candidate_denominator": 30,
+        "candidate_errors": 0,
+        "candidate_records": 30,
+        "coupled_queries": 2226,
+        "cpu_s": 36.828125,
+        "distance_queries": 373350,
+        "eligible": 12,
+        "execution_verified": 3,
+        "model_valid": 22,
+        "network_calls": 0,
+        "task_denominator": 6,
+        "wall_s": 37.45357209909707
+      },
+      "structured_wide": {
+        "candidate_denominator": 30,
+        "candidate_errors": 0,
+        "candidate_records": 30,
+        "coupled_queries": 2395,
+        "cpu_s": 43.140625,
+        "distance_queries": 719351,
+        "eligible": 2,
+        "execution_verified": 2,
+        "model_valid": 7,
+        "network_calls": 0,
+        "task_denominator": 6,
+        "wall_s": 43.61833060160279
+      }
+    }
+  },
+  "blocked_slots": 0,
+  "diffusion_benefit_observed_on_VAL": true,
+  "diffusion_losses_to_any_spline": [
+    {
+      "kind": "static_detour",
+      "sample_id": "complex_val_04_static_detour",
+      "split": "VAL"
+    },
+    {
+      "kind": "static_detour",
+      "sample_id": "complex_val_05_static_detour",
+      "split": "VAL"
+    }
+  ],
+  "diffusion_unique_wins": [
+    {
+      "kind": "static_detour",
+      "sample_id": "complex_train_00_static_detour",
+      "split": "TRAIN"
+    },
+    {
+      "kind": "static_detour",
+      "sample_id": "complex_train_01_static_detour",
+      "split": "TRAIN"
+    },
+    {
+      "kind": "larger_motion",
+      "sample_id": "complex_val_03_larger_motion",
+      "split": "VAL"
+    },
+    {
+      "kind": "static_detour",
+      "sample_id": "complex_val_03_static_detour",
+      "split": "VAL"
+    }
+  ],
+  "generalization_benefit_established": false,
+  "ledger_calls": {
+    "candidates.coupled": 15168,
+    "candidates.distance": 3382938,
+    "candidates.fk": 4111336,
+    "candidates.forward": 15991,
+    "candidates.mass_matrix": 4038528,
+    "candidates.physics_steps": 0,
+    "candidates.rrt": 0,
+    "candidates.sqp": 0,
+    "candidates.torque_rollout": 0,
+    "execution.coupled": 0,
+    "execution.distance": 15046083,
+    "execution.fk": 0,
+    "execution.forward": 813876,
+    "execution.mass_matrix": 488292,
+    "execution.physics_steps": 325500,
+    "execution.rrt": 0,
+    "execution.sqp": 0,
+    "execution.torque_rollout": 21,
+    "generation.coupled": 66,
+    "generation.distance": 438176,
+    "generation.fk": 41913,
+    "generation.forward": 192,
+    "generation.mass_matrix": 32394,
+    "generation.physics_steps": 0,
+    "generation.rrt": 0,
+    "generation.sqp": 0,
+    "generation.torque_rollout": 0,
+    "witness_execution.coupled": 0,
+    "witness_execution.distance": 8577048,
+    "witness_execution.fk": 0,
+    "witness_execution.forward": 465072,
+    "witness_execution.mass_matrix": 279024,
+    "witness_execution.physics_steps": 186000,
+    "witness_execution.rrt": 0,
+    "witness_execution.sqp": 0,
+    "witness_execution.torque_rollout": 12
+  },
+  "ledger_wall_s": {
+    "candidates": 268.9351041004993,
+    "execution": 342.78108519874513,
+    "generation": 49.1322822002694,
+    "witness_execution": 196.1986674000509
+  },
+  "new_model_training_performed": false,
+  "new_verified_records": {
+    "TRAIN": 6,
+    "VAL": 6
+  },
+  "protocol": {
+    "DEV_rerun": false,
+    "TEST": false,
+    "candidate_total_coupled_ceiling": 113,
+    "candidate_wall_ceiling_s": 8.0,
+    "candidates_per_task": 5,
+    "checkpoint": "fixed_train_consistency_001/learning",
+    "collision_optimization": false,
+    "ddim_steps": 16,
+    "failure_replacement": false,
+    "frozen_goal_relabel": false,
+    "generation": {
+      "bow_amplitude_rad": 0.12,
+      "duration_s": 15.0,
+      "goal_relabel_after_freeze": false,
+      "kinds": [
+        "larger_motion",
+        "static_detour"
+      ],
+      "obstacle_radius_m": 0.012,
+      "parents_per_split": 3,
+      "planner_results_used": false,
+      "scale": 1.5,
+      "screen_candidates": 24,
+      "screen_clearance_m": 0.003,
+      "screen_phases": [
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75
+      ],
+      "screen_stride": 8,
+      "seed": 20261041,
+      "selection": "hash order; one parent per existing split family; no replacement",
+      "splits": [
+        "TRAIN",
+        "VAL"
+      ]
+    },
+    "max_candidates": 180,
+    "max_executions_including_witnesses": 48,
+    "max_tasks": 12,
+    "methods": [
+      "structured_narrow",
+      "structured_wide",
+      "frozen_diffusion"
+    ],
+    "narrow_sigma_rad": 0.015,
+    "no_private_witness_for_planner": true,
+    "physical_gates_changed": false,
+    "pilot": false,
+    "primary_claim": "at least one VAL task fails both spline budgets but diffusion passes actual execution and replay",
+    "profile": "smoke",
+    "projection": {
+      "allocation": "remaining budget; two-call method reserves 36 for final call",
+      "calls_per_candidate": 2,
+      "curvature_weight": 10.0,
+      "damping": 0.001,
+      "difference_rad": 0.0001,
+      "directions": 17,
+      "frozen_goal_relabel": false,
+      "iterations_per_call": 4,
+      "line_scales": [
+        1.0,
+        0.5,
+        0.25,
+        0.125
+      ],
+      "maximum_parameter_step_rad": 0.1,
+      "phase_intervals": 128,
+      "repair_queries_per_candidate": 110,
+      "stop_position_m": 0.001,
+      "stop_rotation_rad": 0.003490658503988659,
+      "total_coupled_queries_per_candidate": 113,
+      "validation_gates_changed": false,
+      "validation_query_reserve": 3,
+      "version": "shared_budget_projection_1"
+    },
+    "retraining": false,
+    "scope": "exploratory TRAIN/VAL; existing weights frozen; not a new training-benefit or TEST claim",
+    "seed": 20261047,
+    "selection": "minimum frozen-goal error among eligible candidates; one execution, no replacement",
+    "strict_multimodal": false,
+    "study": false,
+    "supporting_claim": "same paired tasks/candidates/query/wall ceilings; report all consumed work and failures",
+    "version": "complex_train_val_smoke_1",
+    "wall_budget_s": 1800,
+    "wide_first_harmonic_sigma_rad": 0.1,
+    "wide_second_harmonic_sigma_rad": 0.05,
+    "witness_required": "MODEL_VALID plus actual torque execution and independent replay"
+  },
+  "status": "FINISHED",
+  "tasks": [
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "larger_motion",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 440,
+          "cpu_s": 7.84375,
+          "distance_queries": 118220,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 7.925100799649954
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 6.03125,
+          "distance_queries": 59884,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 6.146746599581093
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 440,
+          "cpu_s": 7.890625,
+          "distance_queries": 119701,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry_refinement": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 7.944451099727303
+        }
+      },
+      "sample_id": "complex_train_00_larger_motion",
+      "split": "TRAIN",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "static_detour",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 438,
+          "cpu_s": 7.75,
+          "distance_queries": 96486,
+          "eligible": 3,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry": 2
+          },
+          "model_valid": 3,
+          "network_calls": 80,
+          "wall_s": 7.75768469972536
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 6.140625,
+          "distance_queries": 60854,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 6.223846699576825
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 370,
+          "cpu_s": 6.8125,
+          "distance_queries": 121361,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 5,
+            "gate:geometry_refinement": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 6.917950099799782
+        }
+      },
+      "sample_id": "complex_train_00_static_detour",
+      "split": "TRAIN",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "larger_motion",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 401,
+          "cpu_s": 6.921875,
+          "distance_queries": 71189,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 7.00561480037868
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 6.078125,
+          "distance_queries": 59340,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 6.251389099750668
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 370,
+          "cpu_s": 6.71875,
+          "distance_queries": 118938,
+          "eligible": 2,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry_refinement": 3
+          },
+          "model_valid": 2,
+          "network_calls": 0,
+          "wall_s": 6.819747399538755
+        }
+      },
+      "sample_id": "complex_train_01_larger_motion",
+      "split": "TRAIN",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "static_detour",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 6.15625,
+          "distance_queries": 60483,
+          "eligible": 2,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry": 3
+          },
+          "model_valid": 2,
+          "network_calls": 80,
+          "wall_s": 6.247986499220133
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 6.125,
+          "distance_queries": 60311,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 6.152747599873692
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 370,
+          "cpu_s": 6.671875,
+          "distance_queries": 120783,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 1,
+            "gate:geometry_refinement": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 6.818381600081921
+        }
+      },
+      "sample_id": "complex_train_01_static_detour",
+      "split": "TRAIN",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "larger_motion",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 475,
+          "cpu_s": 8.421875,
+          "distance_queries": 117206,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 8.495655100326985
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.34375,
+          "distance_queries": 117167,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 9.453578899614513
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.484375,
+          "distance_queries": 117089,
+          "eligible": 2,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry_refinement": 3
+          },
+          "model_valid": 2,
+          "network_calls": 0,
+          "wall_s": 9.53636199934408
+        }
+      },
+      "sample_id": "complex_train_02_larger_motion",
+      "split": "TRAIN",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "static_detour",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 440,
+          "cpu_s": 7.953125,
+          "distance_queries": 118488,
+          "eligible": 2,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry": 3
+          },
+          "model_valid": 2,
+          "network_calls": 80,
+          "wall_s": 8.042650699149817
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.484375,
+          "distance_queries": 118198,
+          "eligible": 3,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry": 2
+          },
+          "model_valid": 3,
+          "network_calls": 0,
+          "wall_s": 9.565377899445593
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.515625,
+          "distance_queries": 117883,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry_refinement": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 9.549084299709648
+        }
+      },
+      "sample_id": "complex_train_02_static_detour",
+      "split": "TRAIN",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "larger_motion",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.5625,
+          "distance_queries": 120676,
+          "eligible": 2,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "frozen_goal": 3
+          },
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 9.68894680030644
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 541,
+          "cpu_s": 8.65625,
+          "distance_queries": 72928,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "frozen_goal": 5
+          },
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 9.029122099746019
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.359375,
+          "distance_queries": 122056,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "frozen_goal": 2,
+            "gate:geometry_refinement": 3
+          },
+          "model_valid": 2,
+          "network_calls": 0,
+          "wall_s": 9.61378680029884
+        }
+      },
+      "sample_id": "complex_val_03_larger_motion",
+      "split": "VAL",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "static_detour",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.453125,
+          "distance_queries": 120694,
+          "eligible": 3,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "frozen_goal": 2
+          },
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 9.688653599936515
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 540,
+          "cpu_s": 8.84375,
+          "distance_queries": 60779,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "frozen_goal": 5
+          },
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 8.903387400321662
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 545,
+          "cpu_s": 9.484375,
+          "distance_queries": 121578,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "frozen_goal": 3,
+            "gate:geometry": 1,
+            "gate:geometry_refinement": 2
+          },
+          "model_valid": 3,
+          "network_calls": 0,
+          "wall_s": 9.57101870002225
+        }
+      },
+      "sample_id": "complex_val_03_static_detour",
+      "split": "VAL",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "larger_motion",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 331,
+          "cpu_s": 5.796875,
+          "distance_queries": 71116,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 5.838056199718267
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 225,
+          "cpu_s": 3.921875,
+          "distance_queries": 59340,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 3.9603692991659045
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 230,
+          "cpu_s": 4.671875,
+          "distance_queries": 118885,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry_refinement": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 4.6745536010712385
+        }
+      },
+      "sample_id": "complex_val_04_larger_motion",
+      "split": "VAL",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "static_detour",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 470,
+          "cpu_s": 7.65625,
+          "distance_queries": 60429,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 5
+          },
+          "model_valid": 0,
+          "network_calls": 80,
+          "wall_s": 7.67343470081687
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 190,
+          "cpu_s": 3.40625,
+          "distance_queries": 60241,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 5
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 3.430238500703126
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 230,
+          "cpu_s": 4.6875,
+          "distance_queries": 120250,
+          "eligible": 1,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry": 2,
+            "gate:geometry_refinement": 4
+          },
+          "model_valid": 1,
+          "network_calls": 0,
+          "wall_s": 4.710917300079018
+        }
+      },
+      "sample_id": "complex_val_04_static_detour",
+      "split": "VAL",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "larger_motion",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 472,
+          "cpu_s": 7.921875,
+          "distance_queries": 82892,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 80,
+          "wall_s": 7.9641241994686425
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 6.015625,
+          "distance_queries": 59340,
+          "eligible": 5,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {},
+          "model_valid": 5,
+          "network_calls": 0,
+          "wall_s": 6.081130500417203
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 475,
+          "cpu_s": 8.265625,
+          "distance_queries": 117796,
+          "eligible": 1,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry_refinement": 4
+          },
+          "model_valid": 1,
+          "network_calls": 0,
+          "wall_s": 8.307374199386686
+        }
+      },
+      "sample_id": "complex_val_05_larger_motion",
+      "split": "VAL",
+      "witness": "EXECUTION_VERIFIED"
+    },
+    {
+      "comparison_complete": true,
+      "generation": "FROZEN",
+      "generation_reason": null,
+      "kind": "static_detour",
+      "methods": {
+        "frozen_diffusion": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 435,
+          "cpu_s": 7.1875,
+          "distance_queries": 60849,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 5
+          },
+          "model_valid": 0,
+          "network_calls": 80,
+          "wall_s": 7.254461800213903
+        },
+        "structured_narrow": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 365,
+          "cpu_s": 5.984375,
+          "distance_queries": 60722,
+          "eligible": 2,
+          "execution": "EXECUTION_VERIFIED",
+          "failures": {
+            "gate:geometry": 3
+          },
+          "model_valid": 2,
+          "network_calls": 0,
+          "wall_s": 6.049324298743159
+        },
+        "structured_wide": {
+          "candidate_denominator": 5,
+          "candidate_errors": 0,
+          "candidate_records": 5,
+          "coupled_queries": 370,
+          "cpu_s": 6.671875,
+          "distance_queries": 118786,
+          "eligible": 0,
+          "execution": "NO_CANDIDATE",
+          "failures": {
+            "gate:geometry": 1,
+            "gate:geometry_refinement": 4
+          },
+          "model_valid": 0,
+          "network_calls": 0,
+          "wall_s": 6.74068000074476
+        }
+      },
+      "sample_id": "complex_val_05_static_detour",
+      "split": "VAL",
+      "witness": "EXECUTION_VERIFIED"
+    }
+  ]
+}

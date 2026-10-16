@@ -1,5 +1,5 @@
 # 实验进度
 
-C0：审计完成，新测试检查中。C1—C4：待运行。
+C0：81/81 测试 PASS。C1：12/12 任务冻结。C2：12/12 见证执行和重放通过。C3：180 候选实际运行，状态 FINISHED。C4：原始证据复核 PASS。
 
-不得将尚未运行的阶段写为通过。详见 EXPERIMENT_PLAN.md 与后台 status.json。
+VAL 独有成功：2；泛化收益未建立。未训练新增数据、未重跑 DEV、未启动 pilot 或 TEST。详见 ANALYSIS.md。
