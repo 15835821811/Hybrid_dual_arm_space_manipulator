@@ -1,0 +1,52 @@
+{
+  "claim_supported": "partial",
+  "claim_verdicts": {
+    "C1_small_fixed_world_TRAIN_enrichment": "yes, within the specified local MODEL_VALID quality gate only",
+    "C2_local_coupled_pose_loss_reduces_repair_cost": "yes for this matched run; generalization and reproducibility remain partial",
+    "full_reproducible_Diffusion_superiority_and_actual_larger_expansion": "no"
+  },
+  "what_results_support": [
+    "48/48 distinct fixed-target TRAIN labels passed model validation across 8 existing goals from 5 families; 4 preselected labels passed actual 67-channel torque execution and replay; 44 remain MODEL_VALID. TRAIN grows 208 to 256, with 30 families unchanged and added-obstacle rows 3 to 21.",
+    "Matched goal-loss versus v-only comparison supports a useful local training-loss effect: total coupled queries 2250 to 1735 (-22.89%), candidate wall time 133.1591 to 105.0333 seconds (-21.12%), repair queries 2139 to 1625 (-24.03%). Query totals improved on all 10 tasks.",
+    "All five methods achieved 50/50 candidate eligibility and 10/10 selected execution/replay success. Goal-loss Diffusion beat strong spline in observed total queries (-12.24%) and candidate time (-10.13%) at those equal observed success counts.",
+    "Goal-loss reduced pre-repair median position error from 68.74 to 34.16 mm, but no learned method had a raw pose-pass candidate."
+  ],
+  "what_results_dont_support": [
+    "Diffusion superiority over BOTH strong spline and learned mean is not supported: mean uses 1710 queries and 103.7063 seconds versus 1735 and 105.0333 for goal-loss Diffusion (+1.46% queries, +1.28% time). No extra executed success exists. The predefined advantage gate fails.",
+    "48 new rows do not establish new task-family coverage, distinct homotopy classes, useful output multimodality, broad execution certification, or production-scale expansion.",
+    "All methods' final success depends on a shared nonlinear projector and adaptive validator; it is not proof of raw diffusion feasibility or learned physical constraint satisfaction.",
+    "The frozen-old to augmented-v-only comparison is not an isolated data-only ablation: refitted codec, normalization/center, training membership and per-row exposure change. Initial seed and weights do NOT differ.",
+    "One training initialization and reused exploratory VAL tasks do not establish reproducibility, population noninferiority, independent-family generalization, or final TEST performance.",
+    "No net end-to-end cost advantage including the offline sensitivity/data investment, and no advantage in independently defined diversity/coverage/trajectory quality, has been established."
+  ],
+  "missing_evidence": [
+    "Independent frozen development families, multiple training seeds and at least three prespecified sampling-seed groups, repeated/interleaved timing, paired task/family-level uncertainty and explicit success noninferiority margins.",
+    "A controlled comparison of useful stochastic residuals versus matched learned mean and residual attenuation; report target error, repair cost, accepted mode diversity, reverse wins and all failures.",
+    "Full frozen rollout of production-stage expansion with actual qualified arrays, stratified execution evidence, provenance, recovery and training/reevaluation.",
+    "Broader surrogate accuracy at actual denoising displacements and added trajectories; current checks are local around one anchor per exact TRAIN task.",
+    "paper/PAPER_CLAIM_AUDIT.json is absent."
+  ],
+  "suggested_claim_revision": "On ten reused exploratory VAL tasks, adding a TRAIN-only local coupled-pose error regularizer to otherwise matched diffusion training reduced repair queries and online candidate time while retaining observed execution success. A small fixed-world TRAIN enrichment met its local model-validation and preselected execution gates. The learned mean remains the strongest aggregate cost baseline, and reproducible Diffusion superiority plus actual production expansion remain uncompleted objectives.",
+  "next_experiments_needed": [
+    "First run a bounded TRAIN-only mechanism study of goal-loss diffusion versus the same conditional mean with residual amplitude 0, attenuated residual, and full residual. Measure actual pre-repair goal displacement, final valid diversity and repair burden, with identical projector/gates and all physics calls charged. Freeze the selected setting using TRAIN only. This directly tests whether the current benefit is mainly suppression of harmful noise.",
+    "If useful diversity is lost or the mean remains dominant, test a goal-preserving residual/within-denoising correction using the local surrogate, with nonlinear rechecks and strictly charged calls; add obstacle conditioning only as a separately controlled factor, not a simultaneous unidentifiable change.",
+    "Freeze a fresh bounded confirmation protocol with unchanged strong spline, matched mean, v-only, goal-loss and the selected next method; retain old frozen model as reference. Use independent development families, multiple training seeds and at least three sampling-seed groups, interleaved repeated timing, equal budgets, paired task-level estimates and predeclared effects. Do not weaken the existing exploratory gate retroactively.",
+    "After a reproducible advantage is established, execute the separately authorized staged approximately 1k to 10k to 100k qualified-data route with real generation, lineage and failures, stratified torque execution/replay and actual retraining. Until then, keep the full objective active."
+  ],
+  "confidence": "medium",
+  "confidence_detail": "High confidence in arithmetic, observed local C2 benefit and failure of the present advantage gate; medium confidence overall because review is bounded/read-only, validation tasks are reused, and broad claims lack independent replication.",
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_label": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "routing_action": "supplement and mechanism-focused method refinement; do not confirm full goal or route to confirmed superiority claims",
+  "code_audit_scope_concerns": [
+    "Reviewed named evidence hashes (all 7 match), raw candidate aggregate costs, training metadata and objective/sensitivity/report/audit source; did not rerun physics, training or the full independent audit.",
+    "Prompt correction: old latent and both new models use seed 20261081 and identical initial_weight_hash b3caf91eeb0b25197a5c10f9aaee413a24fa46f3066846680b921affa39e86ab. Preserve prompt as provenance but do not repeat its different-seed assertion.",
+    "Loss is a linearized pose-change penalty on denoised coefficient error using 34 selected directions mapped to 119 coefficients. It is neither full exact physical loss nor a validator. One reused anchor per task need not represent large denoising displacements or all six added variants.",
+    "Stored omitted-temporal-direction relative error over 168 anchors averages 0.1562%, maximum 0.6991%, but checks use only one small random displacement per anchor; this is reassuring local evidence, not global certification.",
+    "MODEL_VALID raw record explicitly reports reference_torque_feasibility NOT_EVALUATED and continuous_time_certified false. Keep that scope distinct from the selected actual execution/replay records.",
+    "RNG hashes are sampled every 100 updates; source determinism plus matching init/data/counts supports the paired-loss design, but this review did not independently replay training."
+  ],
+  "posthoc_multiobjective_note": "Saved-trajectory diagnostics show lower goal-loss median path/effort/acceleration integral than mean, but spline remains better on all three; goal-loss has lower median hold-position error than both. These are posthoc metrics on goal-error-selected trajectories, motivate preregistered multiobjective analysis, and do not alter the failed advantage gate. Supplemental artifact is outside the original seven-input hash manifest."
+}
