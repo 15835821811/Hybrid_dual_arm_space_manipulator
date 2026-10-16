@@ -16,10 +16,12 @@ ROOT=Path(__file__).resolve().parents[1]
 def analyze(source,output):
     source,output=Path(source).resolve(),Path(output).resolve();started=time.time()
     if output==source or source in output.parents:raise ValueError('analysis output must be separate from immutable run')
+    if output.exists():raise FileExistsError('existing analysis retained; choose a new output')
     state=read_json(source/'status.json');ledger=read_json(source/'ledger.json')
     alive=process_is_alive(state['pid']);terminal=state['status'] in ('FINISHED','FINISHED_WITH_BLOCKED_ITEMS','FAILED') and not alive
     checked=[];pending=[];issues=[];seen=set();references=set();contexts=Counter();shapes=Counter();scales=Counter();durations=Counter();levels=Counter()
     geometries=[];position=[];rotation=[];excursions=[];initials=[];goal_positions=[];families=set();task_ids=set();state_ids=set()
+    roles=Counter();scene_hashes=set()
     for p in sorted((source/'records').glob('*.json')):
         if ledger['completed'].get(p.stem,{}).get('status')!='ADMITTED':pending.append(p.stem);continue
         seen.add(p.stem)
@@ -40,8 +42,16 @@ def analyze(source,output):
             with np.load(source/r['complete_initial_state']) as a:
                 assert digest({'values':a['values'],'model_hash':r['task']['contract']['robot_hash'],'state_mask':int(STATE)})==r['task']['contract']['initial_state_id']
             assert read_json(source/'tasks'/r['sample_id']/'task.json')==r['task']
-            checked.append(r['sample_id']);contexts[r['context_id']]+=1;shapes[g['provenance']['proposal_type']]+=1
-            scales[str(g['provenance']['motion_scale'])]+=1;durations[str(r['condition']['duration'])]+=1
+            provenance=g.get('provenance')
+            if provenance:
+                shape=provenance['proposal_type'];scale=str(provenance['motion_scale'])
+            elif r.get('data_role')=='FIXED_TRAIN_WORLD_MODES':
+                shape='fixed_world_target_sine_bow';scale='not_applicable_fixed_goal'
+            else:raise ValueError('unknown saved proposal provenance')
+            checked.append(r['sample_id']);contexts[r['context_id']]+=1;shapes[shape]+=1
+            scales[scale]+=1;durations[str(r['condition']['duration'])]+=1
+            roles[r.get('data_role','UNSPECIFIED')]+=1
+            if r.get('scene',{}).get('objects'):scene_hashes.add(digest(r['scene']))
             families.add(r['family_id']);task_ids.add(r['task']['task_hash']);state_ids.add(r['task']['contract']['initial_state_id'])
             initials.append(r['condition']['initial_features']);goal_positions.append(np.asarray(r['condition']['goals'])[:,:3,3])
             v=r['validation'];geometries.append([v['geometry']['minimum_clearance_m'],v['geometry']['maximum_geometry_step_m']])
@@ -77,6 +87,7 @@ def analyze(source,output):
         'terminal_at_start':terminal,'snapshot_not_atomic_across_files':not terminal,'full_run_success_claim':False,
         'committed_saved_rows_checked':len(checked),'pending_uncommitted_records':pending,'issues':issues,
         'validation_levels':dict(levels),'contexts':dict(contexts),'proposal_shapes':dict(shapes),'motion_scales':dict(scales),
+        'data_roles':dict(roles),'distinct_saved_nonempty_scene_contracts':len(scene_hashes),
         'durations_s':dict(durations),'distinct_family_labels':len(families),'distinct_world_tasks':len(task_ids),'distinct_initial_states':len(state_ids),
         'control_excursion_rad':bounds(excursions),'initial_q17_rad':bounds(initials),'world_goal_positions_m':bounds(goal_positions),
         'saved_geometry_columns':['clearance_m','maximum_step_m'],'saved_geometry':bounds(geometries),

@@ -1,5 +1,7 @@
 # 有界覆盖扩库接续
 
+最新完成状态：qualified_coverage_001已FINISHED，1675.5秒；2048前向＋96/96修正，12144 TRAIN/48 VAL。48/48执行重放、504000步及原始审计通过；其余2096新条目仅MODEL_VALID。独立数据阶段评审yes，完整分析见ANALYSIS.md。worker135524退出，队列已接续训练182540。下方为启动时历史快照。
+
 2026-10-16：代码c8611237，最终源码5项真实模型软件测试通过，预启动只读审阅发现的路径/分层/恢复计数问题全部关闭。
 
 qualified_coverage_001已实际启动，worker135524。已通过前置10k闭环和退出检查，旧来源及新场景合同校验完成，进入coverage_forward_generation；启动核验时已实际准入104条前向样本。动态状态以job.ps1 status为准，启动证据保留于evidence/launch_001.json，不代表本批完成。
