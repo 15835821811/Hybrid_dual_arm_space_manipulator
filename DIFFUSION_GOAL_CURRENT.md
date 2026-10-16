@@ -14,6 +14,8 @@
 
 本轮原覆盖门未通过，ready_for_training_stage=false：9个障碍槽位171/211/243/271/279/351/431/443/491耗尽原4次尝试，39 ERROR保留。全部39异常已逐例独立诊断为实际初态穿透、仅warmstart不同，0耦合/物理步/网络；66 REJECTED均geometry。供后续版本使用的ff_prior_scene_guard先拒绝初态穿透，再保留全部187项完整转移检查，3/3真实测试、安全完整初态等价；未接入本轮。独立结果评审partial/high：可保留535合格样本，原训练BLOCKED不能解除，C2未评估。下一步另冻结有界补充9覆盖及合并资格协议，再实际训练和原DEV4/NEW_VAL8三种子同预算对照；不能改原门、改原失败目标、删历史ERROR或把抽查/生成写成神经收益。
 
+接续实现ff_prior_origin_fill：9缺失槽位各最多8个新提案、总72；新seed20261801/任务ID/单球场景，最多9条新轨迹全部真实执行重放，1800秒/2线程/10GiB。采用初态几何先拒绝但保留187完整转移检查；另建合并资格，原作业仍ready=false/39 ERROR保留。软件6/6真实测试通过，正式作业尚未启动；通过新合并门后另冻结真实训练，不能提前称12688/555已实现。协议ff_prior_origin_fill/docs/EXPERIMENT_PLAN.md，终端`.\ff_prior_origin_fill\job.ps1 status|report`。
+
 完整报告：[独立新世界目标验证](ff_prior_generalization/docs/ANALYSIS.md)；[独立结果评审](paper/review-traces/experiment-result-to-claim/20261017_new_validation_run01/REVIEW.md)。终端：
 
 ```powershell
