@@ -3,7 +3,7 @@
 | Run ID | 阶段 | 目的 | 状态 | 说明 |
 |---|---|---|---|---|
 | software_001 | M0 | 实际前向/碰撞拒绝/隔离/篡改/67力矩重放/旧门保持/恢复去重 | PASS | 最终源码6/6、106.67秒；第一版测试记录保留，参考篡改已强化为有效文件上的reference mismatch拒绝；不是正式补充结果 |
-| qualified_origin_fill_001 | M1–M4 | 新9障碍初态、9全执行重放、新合并资格 | TODO | 新预算72提案/1800秒/2线程/10GiB，旧门与错误不改 |
-| merged_origin_training | M5 | 实际训练与原DEV/新验证同预算对照 | PENDING_MERGED_GATE | 尚未冻结或执行训练 |
+| qualified_origin_fill_001 | M1–M4 | 新9障碍初态、9全执行重放、新合并资格 | FINISHED / PASS | 378.688秒，15提案9准入6拒绝0ERROR；9/9新执行重放；新合并库12688 TRAIN/555初态、512前向/128球场景，独立审计PASS；旧门保持 |
+| merged_origin_training | M5 | 实际训练与原DEV/新验证同预算对照 | PENDING_ACTUAL_TRAINING | 新合并门已PASS，训练与采样收益尚未实施 |
 
 长期目标继续进行，软件/数据/执行/训练/神经收益分别报告。无最终TEST或自动十万规模。
