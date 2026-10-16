@@ -5,6 +5,7 @@
 | M0 | 当前HEAD、运行作业与保护边界 | 已审计 | 7e939f03；四项用户修改保留；无Python作业 |
 | M1 | 保持目标的碰撞修正与自适应验证 | 已实现 | guidance.py / validation.py |
 | M2 | TRAIN校准 | 12/12模型与世界目标通过 | evidence/train_calibration_001；未执行力矩 |
-| M3 | 软件测试 | 新增8/8通过；完整回归待完成 | evidence/new_tests_initial.xml |
-| M4 | 冻结VAL smoke与执行重放 | 待运行 | artifacts/v7_1/goal_preserving_smoke_001 |
-| M5 | 独立证据复核与下一步决策 | 待运行 | 不因完成运行而宣布完整优势目标达成 |
+| M3 | 软件测试 | 完整98/98通过；另1项隔离输出复核通过 | evidence/tests.xml / isolation_tests.xml |
+| M4 | 冻结VAL smoke与执行重放 | 200候选完成；39次执行与独立重放通过 | 新Diffusion50/50、10/10；样条同为50/50、10/10 |
+| M5 | 独立证据复核与下一步决策 | 稳定门槛通过；优势未成立 | 新Diffusion查询+7.38%、耗时+9.06%；旧测试固定路径报告覆盖例外已记录，3982/3983旧文件未变 |
+| M6 | 强制核心目标 | 继续进行 | 优越性验证与实际扩库必须同时完成，详见CORE_GOAL.md；本轮未扩库 |
