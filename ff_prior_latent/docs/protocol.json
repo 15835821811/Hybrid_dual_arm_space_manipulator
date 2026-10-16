@@ -1,0 +1,101 @@
+{
+  "DEV_executed": false,
+  "TEST": false,
+  "advantage_gate": "stable + no lower eligible/physical success + more physical tasks OR >=10% lower queries AND wall than BOTH spline and learned_mean_spline",
+  "candidate_coupled_ceiling": 113,
+  "candidate_integration_interval_ceiling": 15872,
+  "candidate_wall_ceiling_s": 15.0,
+  "candidates_per_task": 5,
+  "ddim_steps": 16,
+  "expansion": false,
+  "frozen_goal_relabel": false,
+  "guidance": {
+    "acceptance_clearance_m": 0.0,
+    "collision_repair_buffer_m": 0.0002,
+    "collision_scale_m": 0.003,
+    "curvature_weight": 10.0,
+    "difference_rad": 0.0001,
+    "directions": 24,
+    "geometry_step_budget_m": 0.002,
+    "geometry_stride": 1,
+    "goal_accept_fraction": 0.8,
+    "goal_feasible_incumbent_cannot_be_sacrificed": true,
+    "goal_inner_fraction": 0.65,
+    "iterations": 4,
+    "line_scales": [
+      1.0,
+      0.5,
+      0.25
+    ],
+    "maximum_coefficient_step_rad": 0.15,
+    "phase_intervals": 128,
+    "repair_queries": 110,
+    "schedule": [
+      15
+    ],
+    "version": "goal_preserving_repair_1"
+  },
+  "max_candidates": 200,
+  "max_selected_executions": 40,
+  "mean_spline": "ridge center; candidate0 exact mean; candidates1-4 same 0.03rad bow as spline",
+  "methods": [
+    "structured_feasible",
+    "frozen_diffusion_feasible",
+    "learned_mean_spline",
+    "latent_diffusion_feasible"
+  ],
+  "physical_gates_changed": false,
+  "pilot": false,
+  "profile": "smoke",
+  "representation_claim": "low-rank noise and clean trajectory share TRAIN-only basis; not claimed until evidence",
+  "same_tasks_seeds_as_previous": true,
+  "seed": 20261067,
+  "selection": "lowest normalized goal error among eligible; one torque execution plus replay; no replacement",
+  "stability_gate": {
+    "each_task_eligible": 4,
+    "execution_verified": 10,
+    "new_origin_eligible": 18,
+    "old_complex_eligible": 27
+  },
+  "structured_bow_sigma_rad": 0.03,
+  "study": false,
+  "task_groups": {
+    "new_origin_VAL": 4,
+    "old_complex_VAL": 6
+  },
+  "training": {
+    "batch": 32,
+    "data_added": false,
+    "ddim_steps": 16,
+    "features": "public_condition_48 + public_initializer_terminal_delta_17",
+    "fit": "TRAIN_only",
+    "hidden": 256,
+    "hidden_layers": 3,
+    "lr": 0.0002,
+    "prediction": "v",
+    "retained_temporal_energy": 0.9999999,
+    "ridge_lambda": 10.0,
+    "scene_conditioned": false,
+    "seed": 20261081,
+    "selection": "fixed_final_update; VAL diagnostic only",
+    "updates": 1800,
+    "version": "centered_temporal_latent_v1"
+  },
+  "validation": {
+    "aligned_geometry_convergence_m": 0.001,
+    "all_geometry_pairs_preserved": true,
+    "endpoint_convergence_m": 0.001,
+    "endpoint_convergence_rad": 0.003490658503988659,
+    "geometry_step_budget_m": 0.002,
+    "intervals": [
+      256,
+      512,
+      1024
+    ],
+    "maximum_coupled_queries": 3,
+    "maximum_integration_intervals": 1792,
+    "preserve_detected_penetration": true
+  },
+  "version": "latent_residual_smoke_1",
+  "wall_budget_s": 3600
+}

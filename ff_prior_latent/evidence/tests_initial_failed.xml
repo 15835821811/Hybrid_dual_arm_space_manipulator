@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="23" time="39.370" timestamp="2026-10-16T16:46:25.633762+08:00" hostname="wangbingquan"><testcase classname="ff_prior_latent.tests.test_latent" name="test_train_only_codec_reconstructs_known_temporal_subspace" time="0.009" /><testcase classname="ff_prior_latent.tests.test_latent" name="test_latent_ddim_reproducible_finite_and_keeps_final_projection_exact" time="0.018" /><testcase classname="ff_prior_latent.tests.test_latent" name="test_codec_has_no_fit_access_to_validation_or_teacher_fields" time="0.008"><failure message="ValueError: condition schema violation/future field injection">def test_codec_has_no_fit_access_to_validation_or_teacher_fields():
+        task,base,z,codec=fixture(); original=codec.center(task['condition'],base)
+        edited=dict(task['condition'],teacher_Z=np.full((19,17),1e6),scene_label='private_witness')
+&gt;       assert np.array_equal(original,codec.center(edited,base))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ff_prior_latent\tests\test_latent.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+ff_prior_latent\learning.py:34: in center
+    return np.r_[1.,self.condition(c,base)]@self.ridge
+                    ^^^^^^^^^^^^^^^^^^^^^^
+ff_prior_latent\learning.py:32: in condition
+    return (feature(c,base)-self.feature_mean)/self.feature_scale
+            ^^^^^^^^^^^^^^^
+ff_prior_latent\learning.py:20: in feature
+    return np.r_[public_condition(condition),np.asarray(base)[-1]-condition['initial_features']]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = {'duration': 15.0, 'goals': [[[0.9950714047059037, -0.09278706391367325, 0.03497799746840602, 1.9184905148257814], [-0...57772, -0.004652657007078363, ...], 'pose_mask': [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]], ...}
+
+    def public_condition(condition):
+        if set(condition) != CONDITION_KEYS:
+&gt;           raise ValueError("condition schema violation/future field injection")
+E           ValueError: condition schema violation/future field injection
+
+ff_prior\contracts.py:52: ValueError</failure></testcase><testcase classname="ff_prior_latent.tests.test_latent" name="test_empty_results_cannot_claim_learning_or_diffusion_advantage" time="0.047" /><testcase classname="ff_prior_latent.tests.test_latent" name="test_all_methods_share_unchanged_physical_budget" time="0.000" /><testcase classname="ff_prior_latent.tests.test_latent" name="test_active_background_worker_prevents_duplicate_launch" time="0.021" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_collision_improvement_cannot_destroy_goal_feasibility" time="0.000" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_constrained_collision_step_uses_redundancy_without_goal_tradeoff" time="0.001" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_real_train_path_adaptive_refinement_preserves_2mm_gate" time="10.053" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_adaptive_grid_does_not_accept_real_penetration" time="4.704" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_actual_train_sampler_preserves_goal_bounds_ddim_and_budget" time="6.167" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_deadline_is_not_reported_as_candidate_success" time="0.618" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_empty_results_never_claim_advantage" time="0.010" /><testcase classname="ff_prior_feasible.tests.test_feasible" name="test_background_duplicate_launch_refused" time="0.017" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_new_origin_is_complete_state_not_physical_redefinition" time="4.416" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_lineage_selection_reproducible_and_disjoint" time="0.390" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_fixed_world_generation_really_loads_new_initial_and_same_goal" time="2.073" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_real_collision_guidance_repairs_train_case_without_relaxing_gate" time="6.944" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_numeric_sampler_shared_budget_and_complete_origin[structured_joint]" time="0.224" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_numeric_sampler_shared_budget_and_complete_origin[frozen_diffusion_joint]" time="1.557" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_numeric_sampler_shared_budget_and_complete_origin[trained_diffusion_goal_only]" time="1.058" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_empty_or_failed_evidence_never_opens_expansion_gate" time="0.008" /><testcase classname="ff_prior_loop.tests.test_loop" name="test_new_background_duplicate_refused" time="0.058" /></testsuite></testsuites>
