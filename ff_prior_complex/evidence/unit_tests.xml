@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="9" time="17.154" timestamp="2026-10-16T10:28:20.467430+08:00" hostname="wangbingquan"><testcase classname="ff_prior_complex.tests.test_complex" name="test_split_lineage_and_selection_are_order_independent" time="0.001" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_static_scene_transfer_preserves_dynamics_and_forbids_wrong_snapshot" time="9.758" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_world_obstacle_is_not_excluded_from_nonpenetration" time="3.859"><failure message="assert (not True)">physical = (&lt;ff_prior.robot_adapter.RobotAdapter object at 0x000001FAC05243E0&gt;, InitialState(values=array([0.        , 0.        ...191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19'), &lt;ff_prior.geometry.CollisionBackend object at 0x000001FAC7C0BFB0&gt;)
+
+    def test_world_obstacle_is_not_excluded_from_nonpenetration(physical):
+        robot,initial,collision=physical
+        data=initial.reset(robot)
+        # Deliberately overlap a robot geom, to verify the added scene cannot bypass collision gates.
+        gi=next(g for g in collision.geoms if robot.model.geom_bodyid[g]==robot.base_body)
+        rr,ii,cc=scene_runtime(SceneSpec((Obstacle('hit','sphere',tuple(data.geom_xpos[gi]),(.15,0.,0.)),),'unit_hit'))
+        result=cc.scan(ii.reset(rr),0.)
+&gt;       assert not result['passed'] and result['minimum_clearance_m']&lt;0
+E       assert (not True)
+
+ff_prior_complex\tests\test_complex.py:45: AssertionError</failure></testcase><testcase classname="ff_prior_complex.tests.test_complex" name="test_real_comparison_keeps_task_frozen_and_same_budget[structured_narrow]" time="0.726" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_real_comparison_keeps_task_frozen_and_same_budget[structured_wide]" time="0.892" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_real_comparison_keeps_task_frozen_and_same_budget[frozen_diffusion]" time="0.748" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_expired_candidate_cannot_claim_pass" time="0.031" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_wider_proposals_keep_terminal_and_change_path" time="0.001" /><testcase classname="ff_prior_complex.tests.test_complex" name="test_background_duplicate_refused" time="0.057" /></testsuite></testsuites>

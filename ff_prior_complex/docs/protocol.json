@@ -1,0 +1,92 @@
+{
+  "DEV_rerun": false,
+  "TEST": false,
+  "candidate_total_coupled_ceiling": 113,
+  "candidate_wall_ceiling_s": 8.0,
+  "candidates_per_task": 5,
+  "checkpoint": "fixed_train_consistency_001/learning",
+  "collision_optimization": false,
+  "ddim_steps": 16,
+  "failure_replacement": false,
+  "frozen_goal_relabel": false,
+  "generation": {
+    "bow_amplitude_rad": 0.12,
+    "duration_s": 15.0,
+    "goal_relabel_after_freeze": false,
+    "kinds": [
+      "larger_motion",
+      "static_detour"
+    ],
+    "obstacle_radius_m": 0.012,
+    "parents_per_split": 3,
+    "planner_results_used": false,
+    "scale": 1.5,
+    "screen_candidates": 24,
+    "screen_clearance_m": 0.003,
+    "screen_phases": [
+      0.25,
+      0.375,
+      0.5,
+      0.625,
+      0.75
+    ],
+    "screen_stride": 8,
+    "seed": 20261041,
+    "selection": "hash order; one parent per existing split family; no replacement",
+    "splits": [
+      "TRAIN",
+      "VAL"
+    ]
+  },
+  "max_candidates": 180,
+  "max_executions_including_witnesses": 48,
+  "max_tasks": 12,
+  "methods": [
+    "structured_narrow",
+    "structured_wide",
+    "frozen_diffusion"
+  ],
+  "narrow_sigma_rad": 0.015,
+  "no_private_witness_for_planner": true,
+  "physical_gates_changed": false,
+  "pilot": false,
+  "primary_claim": "at least one VAL task fails both spline budgets but diffusion passes actual execution and replay",
+  "profile": "smoke",
+  "projection": {
+    "allocation": "remaining budget; two-call method reserves 36 for final call",
+    "calls_per_candidate": 2,
+    "curvature_weight": 10.0,
+    "damping": 0.001,
+    "difference_rad": 0.0001,
+    "directions": 17,
+    "frozen_goal_relabel": false,
+    "iterations_per_call": 4,
+    "line_scales": [
+      1.0,
+      0.5,
+      0.25,
+      0.125
+    ],
+    "maximum_parameter_step_rad": 0.1,
+    "phase_intervals": 128,
+    "repair_queries_per_candidate": 110,
+    "stop_position_m": 0.001,
+    "stop_rotation_rad": 0.003490658503988659,
+    "total_coupled_queries_per_candidate": 113,
+    "validation_gates_changed": false,
+    "validation_query_reserve": 3,
+    "version": "shared_budget_projection_1"
+  },
+  "retraining": false,
+  "scope": "exploratory TRAIN/VAL; existing weights frozen; not a new training-benefit or TEST claim",
+  "seed": 20261047,
+  "selection": "minimum frozen-goal error among eligible candidates; one execution, no replacement",
+  "strict_multimodal": false,
+  "study": false,
+  "supporting_claim": "same paired tasks/candidates/query/wall ceilings; report all consumed work and failures",
+  "version": "complex_train_val_smoke_1",
+  "wall_budget_s": 1800,
+  "wide_first_harmonic_sigma_rad": 0.1,
+  "wide_second_harmonic_sigma_rad": 0.05,
+  "witness_required": "MODEL_VALID plus actual torque execution and independent replay"
+}
