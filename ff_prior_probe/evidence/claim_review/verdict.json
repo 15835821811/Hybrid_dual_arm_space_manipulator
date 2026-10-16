@@ -1,0 +1,69 @@
+{
+  "experiment_id": "train_residual_probe_001",
+  "claim_supported": "partial",
+  "claim_verdicts": {
+    "C1": "partial: within-model amplitude intervention is verified and reduces v-only repair costs; loss-related amplitude-versus-direction attribution is not fully isolated",
+    "C2": "no: every attenuation setting fails the frozen joint cost-and-variation retention gate",
+    "reproducible_superiority_and_actual_large_expansion": "no"
+  },
+  "what_results_support": [
+    "All 400 TRAIN candidates and 80 paired three-amplitude proposal groups were independently checked from saved JSON; source input hashes match.",
+    "v025 and v050 reduce coupled queries by 21.7877% and candidate time by approximately 20.25% relative to v100, with unchanged 40/40 eligibility.",
+    "g100 improves on v100 at full amplitude in this fixed TRAIN setting, while additional attenuation provides no meaningful cost benefit.",
+    "All ten methods meet the frozen stability gate; all twenty preselected execution/replay reports pass, and selections/reference hashes match saved eligible candidates.",
+    "The goal-loss residual differs in both amplitude and direction; normalized pose-change-per-residual is a descriptive mechanism clue only."
+  ],
+  "what_results_dont_support": [
+    "No attenuation preserves at least 80% of final pairwise RMS while satisfying the other C2 requirements.",
+    "No overall superiority over the exact pretrained learned mean or the cost/variation tradeoff of mean-plus-bow is established.",
+    "No useful obstacle-route, homotopy, or multimodal coverage is established by control-point RMS and greedy distinct counts.",
+    "No raw-sample full feasibility, all-candidate execution certification, independent generalization, or hardware validation is established.",
+    "No new training, dataset expansion, or completion of the full goal occurred in this round."
+  ],
+  "missing_evidence": [
+    "Prospectively amplitude-matched comparisons separating residual-direction benefit from shrinkage and nonlinear processing.",
+    "A qualified stochastic residual that adds useful world-target coverage at justified total cost against the pretrained conditional mean and a reasonable nonneural stochastic baseline.",
+    "Actual additional qualified TRAIN arrays and verified training ingestion across new target/scene conditions after data-quality and stability gates.",
+    "Independent development families, at least three preset sampling seeds, and different training seeds for reproducible confirmation.",
+    "A paper-to-evidence claim audit."
+  ],
+  "suggested_claim_revision": "On eight previously trained fixed world targets, residual attenuation reduces v-only repair cost by shrinking output variation; all attenuation settings fail the preregistered cost-and-variation preservation gate. Goal-loss training changes residual amplitude and direction, but useful target-preserving stochastic coverage and reproducible superiority remain unestablished.",
+  "next_experiments_needed": [
+    "One bounded world-target-qualified residual-learning and TRAIN coverage-increment stage: freeze one target-preserving representation/denoising change; retain the pretrained learned mean, mean-plus-bow/nonneural stochastic control, strong spline and current g100; compare at matched amplitude where causal direction attribution is intended.",
+    "After prospective data-quality/stability checks, execute a predefined small TRAIN expansion across target/scene conditions with actual arrays, provenance, failures, deduplication against prior same-goal labels, training-ingestion verification and stratified preselected execution; measure accepted incremental coverage per total cost. Preserve existing authorization limits and do not automatically start pilot/study/strict_multimodal/TEST/production.",
+    "After that focused stage, freeze independent-development multi-seed confirmation before claiming reproducible superiority."
+  ],
+  "confidence": "high",
+  "confidence_scope": "Local evidence arithmetic and the partial/no gate decision, not success of future methods or generalization.",
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_label": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "routing_action": "supplement: focused world-target-qualified residual learning plus gated bounded TRAIN coverage expansion",
+  "full_goal_achieved": false,
+  "negative_results_retained": true,
+  "thresholds_changed": false,
+  "audit": {
+    "bound_input_hashes_verified": 7,
+    "raw_candidates_recomputed": 400,
+    "paired_unscaled_proposal_groups_verified": 80,
+    "execution_reports_and_selection_references_verified": 20,
+    "additional_physics_or_training": 0,
+    "candidate_queries": 11991,
+    "candidate_network_calls": 4480,
+    "candidate_internal_wall_s": 711.7356165098026,
+    "ledger_candidate_stage_wall_s": 717.9868827024475,
+    "timing_note": "Two timing levels differ by 6.251266 seconds; per-method comparisons use saved candidate internal wall times consistently. Neither is total system time.",
+    "physics_steps_in_existing_execution_and_replay": 310000,
+    "maximum_candidate_queries": 105,
+    "maximum_candidate_intervals": 13952,
+    "maximum_candidate_wall_s": 5.995948799885809,
+    "geometry_failures": ["structured_feasible/mode_train_00/04", "augmented_mean_spline/mode_train_01/01", "augmented_mean_spline/mode_train_02/02"],
+    "g100_vs_mean_zero_query_win_tie_loss": [0, 30, 10],
+    "g100_vs_mean_plus_bow_query_win_tie_loss": [2, 28, 10],
+    "mean_zero_distinct_total": 8,
+    "mean_zero_cost_caveat": "Five repeated proposals were correctly charged, but this is not an optimal practical cached/early-stop cost.",
+    "normalized_pose_change_per_residual_g_over_v_median": 0.5634766105030171,
+    "normalized_pose_change_per_residual_reverse_pairs": 2
+  }
+}
