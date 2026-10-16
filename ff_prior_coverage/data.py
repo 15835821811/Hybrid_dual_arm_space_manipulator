@@ -1,0 +1,264 @@
+"""Bounded forward-derived TRAIN coverage, immutable goals, fail-closed admission."""
+from pathlib import Path
+import time
+import numpy as np
+from ff_prior.storage import read_json,file_digest,digest
+from ff_prior_pilot_train.storage import atomic_json,atomic_npz
+from ff_prior.contracts import assert_frozen,MODEL_GATES,all_pass
+from ff_prior.proposal_generator import propose,quick_gates,motion_valid
+from ff_prior.coupled_predictor import predict_coupled,pose_errors
+from ff_prior_complex.tasks import task_for
+from ff_prior_loop.runtime import at_origin,origin_audit
+from ff_prior_loop import data as old_data
+from ff_prior_modes.data import RuntimeCache
+from ff_prior_feasible.validation import validate
+from ff_prior.scenes import SceneSpec
+from ff_prior.spline import Reference,from_arrays
+
+ROOT=Path(__file__).resolve().parents[1]
+PREVIOUS=ROOT/'artifacts/v7_1/qualified_pilot_001'
+CONTRACT={'seed':20261401,'max_attempts':3600,'cumulative_TRAIN_target_max':12144,
+    'new_forward_target':2048,'proposals_per_family':2,'empty_origin_contexts':12,
+    'TRAIN_obstacle_contexts':12,'origin_jitter_rad':[.02,.03,.04,.05,.06,.07,.08,.09,.10,.11,.12,.13],
+    'motion_scales':[1.,.75,1.25,1.5,.5,1.75], 'new_empty_family_target':350,
+    'goal_prediction_intervals':256,'goal_frozen_before_independent_validation':True,
+    'maximum_generation_queries':4,'candidate_wall_s':15.,
+    'fixed_targets':24,'fixed_variants':4,'fixed_admitted_minimum':48,
+    'risk_audits':24,'mode_audits':12,'random_audits':12,
+    'scene_scope':'12 new stationary origins and 12 translated/resized TRAIN obstacle scenes',
+    'no_target_search_or_repair_in_main_generator':True,'minimum_same_world_goal_candidates':None,
+    'final_TEST_arrays_read':False,'strict_multimodal':False}
+
+
+
+def old_index():
+    index=read_json(PREVIOUS/'training_index.json')['records']
+    if sum(e['split']=='TRAIN' for e in index)!=10000 or sum(e['split']=='VAL' for e in index)!=48:
+        raise ValueError('unexpected original population')
+    old_data.assert_disjoint(index)
+    for e in index:
+        if e['execution_status']=='FAIL' or e['validation_level'] not in ('MODEL_VALID','EXECUTION_VERIFIED'):
+            raise ValueError('invalid inherited admission')
+        for k in ('record','arrays'):
+            if file_digest(ROOT/e[k])!=e[k+'_sha256']:raise ValueError('inherited bytes changed')
+    return index
+
+
+def reference_hash(entry):
+    """Legacy schemas may omit a marker; authoritative saved arrays define it."""
+    row=read_json(ROOT/entry['record'])
+    with np.load(ROOT/entry['arrays']) as arrays:actual=from_arrays(arrays).reference_hash
+    if row.get('reference_hash',actual)!=actual:raise ValueError('legacy reference marker disagrees with arrays')
+    return actual
+
+
+def contexts(canonical,initial,profile,index):
+    from ff_prior_complex.tasks import scene_runtime,transfer_audit
+    values=[]
+    for slot in range(12):
+        rng=np.random.default_rng(CONTRACT['seed']+slot*173)
+        scale=CONTRACT['origin_jitter_rad'][slot]
+        q0=canonical.spec.planner_zero+rng.uniform(-scale,scale,17)
+        rr,ii,cc=at_origin(canonical,q0)
+        values.append(({'context_id':f'origin_{slot}','scene':SceneSpec().to_dict(),
+            'family_id':None,'origin_audit':origin_audit(canonical,rr,ii)},rr,ii,cc))
+    parents=sorted((e for e in index if e['split']=='TRAIN' and e['sample_id'].startswith('complex_train_')
+        and e['sample_id'].endswith('static_detour')),key=lambda e:e['sample_id'])
+    if len(parents)!=3:raise ValueError('expected 3 existing TRAIN obstacle parents')
+    shifts=[(.005,0.,0.),(-.005,0.,0.),(0.,.01,0.),(0.,-.01,0.)]
+    scales=[.75,.9,1.1,1.25]
+    for parent_slot,e in enumerate(parents):
+        row=read_json(ROOT/e['record'])
+        for variant in range(4):
+            slot=parent_slot*4+variant
+            scene=shifted_scene(row['scene'],shifts[variant],scales[variant])
+            base,bi,_=scene_runtime(scene)
+            transfer=transfer_audit(canonical,initial,base,bi)
+            rr,ii,cc=at_origin(base,row['condition']['initial_features'])
+            values.append(({'context_id':f'obstacle_{slot}','scene':scene.to_dict(),'family_id':e['family_id'],
+                'parent_sample_id':e['sample_id'],'scene_translation_m':shifts[variant],
+                'scene_size_scale':scales[variant],
+                'origin_audit':{'scene_transfer':transfer,'origin':origin_audit(base,rr,ii)}},rr,ii,cc))
+    return values
+
+
+def shifted_scene(value,shift,scale):
+    from ff_prior.scenes import Obstacle
+    source=SceneSpec.from_dict(value)
+    objects=tuple(Obstacle(o.object_id,o.shape,tuple(np.asarray(o.position)+shift),
+                          tuple(np.asarray(o.size)*scale),o.quaternion_wxyz) for o in source.objects)
+    return SceneSpec(objects,source.family_id)
+
+
+def heldout_goals(index,dev,source=None):
+    # Reserved TEST goal metadata is used solely by the split-isolation guard;
+    # no TEST arrays, training gradients, checkpoint selection or evaluation.
+    goals=[(e['sample_id'],read_json(ROOT/e['record'])['condition']['goals']) for e in index if e['split']=='VAL']+[
+        (f'DEV_{j}',e['task']['condition']['goals']) for j,e in enumerate(dev)]
+    if source is not None:
+        source=Path(source)
+        for sid,r in read_json(source/'splits.json')['records'].items():
+            if r['split']=='TEST':goals.append(('RESERVED_'+sid,read_json(source/'records'/f'{sid}.json')['condition']['goals']))
+    return goals
+
+
+def goal_neighbours(task,heldout):
+    hits=[]
+    for sid,goal in heldout:
+        p,r=pose_errors(task['condition']['goals'],goal)
+        if max(p)<.01 and max(r)<np.deg2rad(1):hits.append(sid)
+    return hits
+
+
+def generate(attempt,context,out,profile,heldout,existing_hashes,deadline):
+    meta,rr,ii,cc=context;out=Path(out);sid=f'coverage_train_{attempt:05d}'
+    family=attempt//2;variant=(family+attempt%2)%5
+    family_id=meta['family_id'] or f'coverage_family_{family:04d}'
+    before=rr.calls.copy();started=time.perf_counter();deadline=min(deadline,time.time()+15.)
+    result={'sample_id':sid,'attempt':attempt,'family_id':family_id,'split':'TRAIN',
+        'context_id':meta['context_id'],'status':'REJECTED','admitted':False,'goal_relabelled':False}
+    try:
+        ref,provenance=propose(rr,300000+family,variant,CONTRACT['seed'])
+        motion_scale=CONTRACT['motion_scales'][(family//24)%6]
+        provenance['motion_scale']=motion_scale;result['provenance']=provenance
+        if ref is None:result['reason']='DURATION_SET_EXHAUSTED';return result
+        z=ref.q0+motion_scale*(ref.z-ref.q0)
+        ref=next((v for duration in (10.,15.,20.,25.,29.5)
+            if motion_valid(rr,v:=Reference(z,rr.spec.planner_zero,duration))),None)
+        if ref is None:result['reason']='SCALED_DURATION_SET_EXHAUSTED';return result
+        result['quick_gates']=quick_gates(rr,ref)
+        if not all(result['quick_gates'].values()):result['reason']='QUICK_GATES';return result
+        # Derive exactly once before independent model/goal validation. Failed
+        # paths retain this task; never substitute the validator's final pose.
+        pred=predict_coupled(ii,ref,rr,256,deadline)
+        task=task_for(rr,ii,cc,profile,pred['ee'][-1],ref.duration)
+        atomic_json(out/'tasks'/sid/'task.json',task)
+        atomic_npz(out/'tasks'/sid/'initial_state.npz',values=ii.values)
+        result.update(task_hash=task['task_hash'],reference_hash=ref.reference_hash,
+            complete_initial_state_sha256=file_digest(out/'tasks'/sid/'initial_state.npz'))
+        hits=goal_neighbours(task,heldout);result['cross_split_goal_neighbours']=hits
+        if hits:result['reason']='HELDOUT_GOAL_NEIGHBOUR';return result
+        if ref.reference_hash in existing_hashes:result['reason']='DUPLICATE_REFERENCE';return result
+        checks=validate(ref.z,task,rr,ii,cc,profile,deadline)
+        result['validation_result']=checks
+        if not checks['eligible']:result['reason']='INDEPENDENT_VALIDATION_REJECTED';return result
+        if time.time()>deadline:raise RuntimeError('GENERATION_WALL_BUDGET_EXHAUSTED')
+        calls={k:rr.calls[k]-before[k] for k in before}
+        if calls['coupled']>4 or any(calls[k] for k in ('rrt','sqp','torque_rollout','physics_steps')):
+            raise RuntimeError('FORBIDDEN_MAIN_GENERATOR_CALLS')
+        atomic_npz(out/'arrays'/f'{sid}.npz',**ref.arrays())
+        row={'sample_id':sid,'family_id':family_id,'root_id':sid,'split':'TRAIN',
+            'condition':task['condition'],'task':task,'scene':meta['scene'],'context_id':meta['context_id'],
+            'validation_level':'MODEL_VALID','execution_status':'NOT_RUN','training_eligible':True,
+            'validation':checks['validation'],'reference_hash':ref.reference_hash,
+            'arrays':f'arrays/{sid}.npz','complete_initial_state':f'tasks/{sid}/initial_state.npz',
+            'initial_state_sha256':file_digest(out/'tasks'/sid/'initial_state.npz'),
+            'arrays_sha256':file_digest(out/'arrays'/f'{sid}.npz'),
+            'goal_source':'coupled_forward_256_before_independent_validation','goal_relabelled':False,
+            'producer_run_id':out.name,'data_role':'COVERAGE_EXPANDED_FF_MODEL_PRIOR','generation_proof':f'generation/{sid}.json'}
+        atomic_json(out/'records'/f'{sid}.json',row)
+        result.update(status='ADMITTED',admitted=True)
+        assert_frozen(task)
+    except Exception as error:result.update(status='ERROR',admitted=False,reason=repr(error))
+    finally:
+        result.update(calls={k:rr.calls[k]-before[k] for k in before},wall_s=time.perf_counter()-started)
+    return result
+
+
+def check_new_record(out,path,ledger=None):
+    out=Path(out);r=read_json(path);assert_frozen(r['task'])
+    proof=read_json(out/r['generation_proof'])
+    if ledger and ledger.data['completed'].get(r['sample_id'],{}).get('status')!='ADMITTED':
+        raise ValueError('uncommitted/unknown generation cannot enter training')
+    if not (proof['admitted'] and proof['status']=='ADMITTED' and proof['task_hash']==r['task']['task_hash']
+        and proof['validation_result']['eligible'] and proof['validation_result']['frozen_goal_pass']
+        and all_pass(proof['validation_result']['validation']['gates'],MODEL_GATES)
+        and r['validation']==proof['validation_result']['validation'] and not r['goal_relabelled']):
+        raise ValueError('admission proof missing or inconsistent')
+    for key,hkey in [('arrays','arrays_sha256'),('complete_initial_state','initial_state_sha256')]:
+        if file_digest(out/r[key])!=r[hkey]:raise ValueError('admitted bytes changed')
+    with np.load(out/r['arrays']) as a:
+        ref=Reference(a['Z'],r['condition']['initial_features'],r['condition']['duration'])
+    if ref.reference_hash!=r['reference_hash'] or ref.reference_hash!=proof['reference_hash']:
+        raise ValueError('reference mismatch')
+    if read_json(out/'tasks'/r['sample_id']/'task.json')!=r['task']:raise ValueError('frozen task changed')
+    return r
+
+
+def combined(out,ledger):
+    out=Path(out);index=[dict(e,source_run_id=e.get('source_run_id',e.get('producer_run_id','inherited_before_coverage')),
+        new_in_this_run=False) for e in old_index()];seen={e['sample_id'] for e in index}
+    for p in sorted((out/'records').glob('*.json')):
+        r=check_new_record(out,p,ledger)
+        if r['execution_status']=='FAIL':continue
+        if r['sample_id'] in seen:raise ValueError('duplicate sample id')
+        seen.add(r['sample_id']);a=out/r['arrays']
+        index.append({'sample_id':r['sample_id'],'family_id':r['family_id'],'split':'TRAIN',
+            'record':p.relative_to(ROOT).as_posix(),'arrays':a.relative_to(ROOT).as_posix(),
+            'record_sha256':file_digest(p),'arrays_sha256':file_digest(a),
+            'validation_level':r['validation_level'],'execution_status':r['execution_status'],
+            'producer_run_id':out.name,'new_in_this_run':True})
+    for e in index:
+        if 'producer_run_id' not in e:e['new_in_this_run']=False
+    old_data.assert_disjoint(index)
+    return index
+
+
+def expected_contexts():
+    return {f'origin_{i}' for i in range(CONTRACT['empty_origin_contexts'])}|{f'obstacle_{i}' for i in range(CONTRACT['TRAIN_obstacle_contexts'])}
+
+
+def select_modes(out,ledger):
+    """One new, already-frozen TRAIN target per context, before mode outcomes."""
+    out=Path(out);path=out/'mode_selection.json'
+    if path.exists():return read_json(path)
+    rows=[check_new_record(out,p,ledger) for p in sorted((out/'records').glob('coverage_train_*.json'))]
+    if {r['context_id'] for r in rows}!=expected_contexts():raise ValueError('missing forward context')
+    entries=[]
+    for slot,c in enumerate(sorted(expected_contexts())):
+        r=min((r for r in rows if r['context_id']==c),key=lambda r:digest({'coverage_mode':r['sample_id']}))
+        with np.load(out/r['arrays']) as a:z=a['Z'].copy()
+        entries.append({'sample_id':f'coverage_mode_{slot:02d}','slot':slot,'split':'TRAIN',
+            'parent_sample_id':r['sample_id'],'family_id':r['family_id'],'task':r['task'],
+            'scene':r['scene'],'context_id':c,'Z':z,'frozen_before_mode_generation':True})
+    atomic_json(path,entries);return entries
+
+
+def generate_mode(entry,k,cache,out,profile,deadline):
+    from ff_prior_modes.data import generate as fixed_generate
+    if not 0<=k<CONTRACT['fixed_variants']:raise ValueError('outside mode budget')
+    out=Path(out);r=fixed_generate(entry,k,cache,out,profile,deadline)
+    r.update(attempt=entry['slot']*4+k,family_id=entry['family_id'],context_id=entry['context_id'],
+             goal_relabelled=False)
+    if r['admitted']:
+        path=out/'records'/f'{r["sample_id"]}.json';row=read_json(path)
+        state=out/row['complete_initial_state']
+        atomic_json(out/'tasks'/r['sample_id']/'task.json',entry['task'])
+        row.update(context_id=entry['context_id'],producer_run_id=out.name,
+            generation_proof=f'generation/{r["sample_id"]}.json',
+            initial_state_sha256=file_digest(state),arrays_sha256=file_digest(out/row['arrays']))
+        r.update(reference_hash=row['reference_hash'],complete_initial_state_sha256=row['initial_state_sha256'])
+        atomic_json(path,row)
+    return r
+
+
+def select_audits(out,ledger):
+    out=Path(out);path=out/'audit_selection.json'
+    if path.exists():return read_json(path)
+    rows=[check_new_record(out,p,ledger) for p in sorted((out/'records').glob('*.json'))]
+    if {r['context_id'] for r in rows}!=expected_contexts():raise ValueError('missing admitted context')
+    risk=[min((r for r in rows if r['context_id']==c),key=lambda r:(r['validation']['geometry']['minimum_clearance_m'],r['sample_id']))['sample_id']
+          for c in sorted(expected_contexts())]
+    mode=sorted((r['sample_id'] for r in rows if r['sample_id'].startswith('coverage_mode_') and r['sample_id'] not in risk),
+                key=lambda sid:digest({'coverage_mode_audit':sid}))[:12]
+    random=[]
+    strata=[c for prefix in ('origin_','obstacle_') for c in sorted(
+        (v for v in expected_contexts() if v.startswith(prefix)),key=lambda v:digest({'coverage_context':v}))[:6]]
+    for c in strata:
+        pool=sorted((r['sample_id'] for r in rows if r['context_id']==c and r['sample_id'] not in risk+mode),
+                    key=lambda sid:digest({'coverage_audit':sid}))
+        if pool:random.append(pool[0])
+    if len(set(risk+mode+random))!=48:raise ValueError('insufficient 48 distinct preselected audits')
+    selection={'risk':risk,'fixed_modes':mode,'random_stratified':random,
+        'frozen_before_execution':True,'replacement_after_failure':False,'every_context_minimum_in_risk':True}
+    atomic_json(path,selection);return selection
