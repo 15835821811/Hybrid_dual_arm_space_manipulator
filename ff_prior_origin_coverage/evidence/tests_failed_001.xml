@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="22.095" timestamp="2026-10-17T03:52:04.441421+08:00" hostname="wangbingquan"><testcase classname="ff_prior_origin_coverage.tests.test_origins" name="test_every_forward_slot_has_a_new_origin" time="5.447" /><testcase classname="ff_prior_origin_coverage.tests.test_origins" name="test_real_forward_admission_and_fixed_goal_mode" time="1.879" /><testcase classname="ff_prior_origin_coverage.tests.test_origins" name="test_scratch_scene_is_actually_qualified" time="0.646"><failure message="AssertionError: {'admitted': False, 'attempt': 0, 'calls': {'coupled': 1, 'distance': 0, 'fk': 514, 'forward': 1, ...}, 'empty_origin_...a': 'arm_2_wrist_link', 'body_b': 'end_link', 'geom_a': 'collision_0070', 'geom_b': 'collision_0072'}, ...}, ...}, ...}&#10;assert False">physical = (&lt;ff_prior.robot_adapter.RobotAdapter object at 0x00000225E72AF5C0&gt;, InitialState(values=array([0.        , 0.        ...191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19'), &lt;ff_prior.geometry.CollisionBackend object at 0x00000225E71954C0&gt;)
+tmp_path = WindowsPath('C:/Users/admin/AppData/Local/Temp/pytest-of-admin/pytest-166/test_scratch_scene_is_actually0')
+
+    def test_scratch_scene_is_actually_qualified(physical,tmp_path):
+        r=generate(physical,tmp_path,slot=3)
+&gt;       assert r['admitted'],r
+E       AssertionError: {'admitted': False, 'attempt': 0, 'calls': {'coupled': 1, 'distance': 0, 'fk': 514, 'forward': 1, ...}, 'empty_origin_...a': 'arm_2_wrist_link', 'body_b': 'end_link', 'geom_a': 'collision_0070', 'geom_b': 'collision_0072'}, ...}, ...}, ...}
+E       assert False
+
+ff_prior_origin_coverage\tests\test_origins.py:57: AssertionError</failure></testcase><testcase classname="ff_prior_origin_coverage.tests.test_origins" name="test_validation_goal_initial_neighbour_and_tampered_task_refused" time="1.560"><failure message="TypeError: 'float' object is not iterable">physical = (&lt;ff_prior.robot_adapter.RobotAdapter object at 0x00000225E72AF5C0&gt;, InitialState(values=array([0.        , 0.        ...191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19'), &lt;ff_prior.geometry.CollisionBackend object at 0x00000225E71954C0&gt;)
+tmp_path = WindowsPath('C:/Users/admin/AppData/Local/Temp/pytest-of-admin/pytest-166/test_validation_goal_initial_n0')
+
+    def test_validation_goal_initial_neighbour_and_tampered_task_refused(physical,tmp_path):
+        first=generate(physical,tmp_path/'first',split='NEW_VAL');assert first['admitted'],first
+        row=read_json(tmp_path/'first/records'/f'{first["sample_id"]}.json')
+        assert not row['training_eligible'] and row['split']=='NEW_VAL'
+        guard=[{'sample_id':'reserved','goals':row['condition']['goals']}]
+        blocked=generate(physical,tmp_path/'guard',split='NEW_VAL',guard=guard)
+        assert blocked['reason']=='PROTECTED_WORLD_GOAL_NEIGHBOUR' and not blocked['admitted']
+        assert read_json(tmp_path/'guard/tasks'/first['sample_id']/'task.json')==row['task']
+        q=data.proposal_origin(physical[0],'TRAIN',0,0)
+        blocked=generate(physical,tmp_path/'initial',valq=[q])
+        assert blocked['reason']=='FROZEN_VALIDATION_INITIAL_NEIGHBOUR' and not blocked['admitted']
+        commit(tmp_path/'first',first)
+&gt;       row['task']['condition']['goals'][0][0]+=.01
+E       TypeError: 'float' object is not iterable
+
+ff_prior_origin_coverage\tests\test_origins.py:76: TypeError</failure></testcase><testcase classname="ff_prior_origin_coverage.tests.test_origins" name="test_actual_native_torque_and_independent_replay" time="12.412" /><testcase classname="ff_prior_origin_coverage.tests.test_origins" name="test_interrupted_work_and_live_duplicate_are_not_replayed" time="0.038" /></testsuite></testsuites>
