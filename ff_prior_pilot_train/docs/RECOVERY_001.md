@@ -20,3 +20,7 @@
 ```
 
 默认查询002；查原失败使用 `-Output artifacts/v7_1/qualified_pilot_train_001`。仅在确认当前worker退出后使用resume。最终报告须分别说明软件修复、实际训练、采样/执行结果和Diffusion收益。
+
+## 实际恢复验证
+
+修复提交8e1a44fe后启动002，实际worker PID116820。全量输入重新加载成功，4949个已提交缓存全部核验导入（193011次原耦合调用保留）。原故障锚点d02ece4…在002中重新计算39次并PASS、账目正常提交，随后继续推进剩余锚点。实际恢复快照见evidence/recovery_001/actual_recovery_snapshot.json。此证据支持恢复链路已越过原故障点；完整12000次训练更新和冻结DEV尚未完成，目标仍在进行。
