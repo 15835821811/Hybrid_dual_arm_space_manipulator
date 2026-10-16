@@ -59,3 +59,7 @@
 ## 首批扩库执行中的边界审计补充
 
 首批现已产生744条新增MODEL_VALID轨迹并完成原16/16预选执行重放，实际训练加载1000 TRAIN与48 VAL。原每家族一次的风险选择会排除已被随机组选中的障碍家族，因此补充3条各场景最低模型间距且未入原选择的TRAIN轨迹，预选在补充执行前冻结。补充作业等待主worker退出后自动执行，不修改原记录与协议。pilot的启动须同时读取主闭环验收与ff_prior_boundary补充审计结果；任一实际执行失败通过单样本隔离覆盖表进入后续加载，不掩盖此前训练消费历史。详见ff_prior_boundary/docs/EXPERIMENT_PLAN.md。
+
+## 首批闭环完成与有界pilot前置验收通过
+
+qualified_expansion_002真实新增744条，累计1000 TRAIN并完成实际训练；原冻结DEV四方法各60/60合格、12/12执行重放，独立审计PASS。补充3条边界执行重放全部通过，最小实测间距0.223264mm。按用户授权进入累计10000条pilot数据阶段，随后仍须实际训练与冻结复核。相对效率不作为门槛；同任务成功率均饱和，Diffusion独占收益尚未成立，最终TEST仍保留。详见ff_prior_expand/docs/ANALYSIS.md与ff_prior_pilot/docs/EXPERIMENT_PLAN.md。
