@@ -1,5 +1,14 @@
 # 后台训练接续跟踪
 
+## 2026-10-16 21:19 实测更新（覆盖下方启动时快照）
+
+- qualified_pilot_001已FINISHED，10000 TRAIN/48 VAL，48/48执行重放及独立原始审计PASS，原worker已退出。
+- pilot_training_queue_001已FINISHED，含义仅为成功派发训练，原队列worker已退出。
+- qualified_pilot_train_001已实际启动，worker46588；完整数组加载后正在构建9912个准确TRAIN任务的耦合敏感度。12000次模型更新、冻结DEV及最终审计尚未完成。
+- 数据阶段报告见ff_prior_pilot/docs/ANALYSIS.md。相对效率不作为继续推进门槛；Diffusion新收益仍待实测。
+
+## 以下为原始启动时快照
+
 - qualified_pilot_001：数据生成中，worker105972；不能预写数据审计通过。
 - pilot_training_queue_001：RUNNING，worker114180；实际等待父worker退出与数据验收，源码8a332a9a。
 - qualified_pilot_train_001：尚未开始；正式12000次更新、10000 TRAIN及冻结DEV结果均待真实运行。
