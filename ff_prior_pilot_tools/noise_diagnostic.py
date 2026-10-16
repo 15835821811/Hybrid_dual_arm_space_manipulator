@@ -9,7 +9,7 @@ from ff_prior.diffusion import schedule,prediction_to_clean_noise
 
 ROOT=Path(__file__).resolve().parents[1]
 STAGES={'one_k':('qualified_expansion_002','ff_prior_expand.learning'),
-        'ten_k':('qualified_pilot_train_001','ff_prior_pilot_train.learning')}
+        'ten_k':('qualified_pilot_train_002','ff_prior_pilot_train.learning')}
 
 
 def analyze(stage,output):
