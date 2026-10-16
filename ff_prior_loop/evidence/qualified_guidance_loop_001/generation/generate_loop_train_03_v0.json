@@ -1,0 +1,112 @@
+{
+  "eligible": true,
+  "frozen_goal_pass": true,
+  "guidance": null,
+  "reference_hash": "e9b8138477937c274896e3230edd211afd6eb5f68ca4b0cc84c142b0578ab372",
+  "sample_id": "loop_train_03_v0",
+  "score": 0.0,
+  "status": "MODEL_VALID",
+  "task_hash": "5a7289b5ce3767125c01c5fd865b0900d9780762f9caafa906c1f0a788432000",
+  "validation": {
+    "frozen_goal_position_error_m": [
+      0.0,
+      0.0
+    ],
+    "frozen_goal_rotation_error_rad": [
+      0.0,
+      0.0
+    ],
+    "gates": {
+      "boundary": true,
+      "coupled_convergence": true,
+      "domain": true,
+      "finite": true,
+      "geometry": true,
+      "geometry_refinement": true,
+      "identity": true,
+      "label_consistency": true,
+      "motion": true,
+      "native_range": true,
+      "time_hold": true
+    },
+    "geometry": {
+      "coarse": {
+        "checked_states": 129,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008468723015414173,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "extra": {
+        "checked_states": 256,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008468709469489766,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "geometry_step_budget_m": 0.002,
+      "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+      "maximum_geometry_step_m": 0.0011774110826757401,
+      "midpoints": {
+        "checked_states": 128,
+        "continuous_time_certified": false,
+        "minimum_clearance_m": 0.008468990800281745,
+        "pair": {
+          "body_a": "arm_2_wrist_link",
+          "body_b": "end_link",
+          "geom_a": "collision_0070",
+          "geom_b": "collision_0072"
+        },
+        "passed": true
+      },
+      "minimum_clearance_m": 0.008468709469489766,
+      "refinement_difference_m": 0.0
+    },
+    "numerical": {
+      "comparisons": [
+        {
+          "aligned_body_extent_m": 1.1348844084837838e-06,
+          "coarse": 128,
+          "fine": 256,
+          "passed": true,
+          "terminal_position_m": [
+            2.20306362167896e-08,
+            1.9711802249167594e-08
+          ],
+          "terminal_rotation_rad": [
+            1.2966967234653374e-08,
+            1.2966968174366857e-08
+          ]
+        }
+      ],
+      "passed": true
+    },
+    "reference_torque_feasibility": "NOT_EVALUATED",
+    "required": [
+      "identity",
+      "finite",
+      "domain",
+      "native_range",
+      "boundary",
+      "motion",
+      "coupled_convergence",
+      "geometry",
+      "geometry_refinement",
+      "time_hold",
+      "label_consistency"
+    ],
+    "validation_level": "MODEL_VALID",
+    "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+  },
+  "variant": 0
+}
