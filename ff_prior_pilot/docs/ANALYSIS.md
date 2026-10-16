@@ -39,6 +39,8 @@
 
 当前结论：有界扩库数据阶段通过，预选48例物理执行通过；扩库后的Diffusion收益尚未评估，完整目标未完成。相对查询和耗时优势不作为推进门槛。
 
+独立result-to-claim复核结论为yes、高置信度，仅支持上述数据阶段主张。复核另行枚举生成记录、继承样本哈希、15个上下文最小间距选择及48份报告，未发现阻断缺口。分层随机组实际采用预定哈希顺序，不应表述为全库简单独立随机抽样。复核未重新解码全部原始trace，该部分由已保存的原始审计提供证据。完整意见见 `paper/review-traces/experiment-result-to-claim/20261016_expansion_run01/pilot_data_final_review.md`。下一步继续已启动的训练，不能提前确认学习收益。
+
 ```powershell
 .\ff_prior_pilot_train\job.ps1 status
 .\ff_prior_pilot_train\job.ps1 report
