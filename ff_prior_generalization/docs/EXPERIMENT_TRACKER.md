@@ -1,11 +1,14 @@
 # 独立新验证执行跟踪
 
+最新状态：原001保留FAILED，独立恢复001已FINISHED，C1稳定性PASS、C2质量优势FAIL、原始审计PASS。完整报告[ANALYSIS.md](ANALYSIS.md)。下方启动和运行中文字为历史快照，不是当前任务状态。
+
 | Run ID | 阶段 | 目的 | 分区 | 状态 | 说明 |
 |---|---|---|---|---|---|
 | software_001 | M0 | 实际物理任务、保存模型采样等价、准入篡改拒绝、统计/存活状态 | 软件测试 | PASS | 5/5，23.879秒；不作为正式实验结果 |
-| independent_new_validation_001 | M1–M4 | 12独立家族、720候选、教师及选定真实执行/重放、引导前完整验证、原始审计 | NEW_VAL | RUNNING | worker103392已确认存活；原DEV/VAL保留；无训练更新或最终TEST |
+| independent_new_validation_001 | M1–M4 | 12独立家族、720候选、教师及选定真实执行/重放 | NEW_VAL | FAILED（保留） | 完成全部候选/执行后，首次诊断前进度字段stage冲突；worker103392已退出，全部原结果保留 |
+| independent_new_validation_recovery_001 | M4收尾 | 沿用原候选与执行字节，首次完成96诊断及最终审计 | NEW_VAL | FINISHED | worker44152已退出；新模型173/180、36/36执行重放，教师12/12，156原始轨迹审计PASS；不重采样、不重执行、不重置预算 |
 
-终端：`.\ff_prior_generalization\job.ps1 status`及`report`。优先检查完整机制和数据覆盖，不设查询/耗时相对优胜门槛。
+完成状态终端：`.\ff_prior_generalization_recover\job.ps1 status`及`report`，已完成resume不重复运行。原入口保留FAILED。优先检查完整机制和数据覆盖，不设查询/耗时相对优胜门槛。新旧模型及简单基线均36/36选定执行/重放通过；新模型raw固定子集9/12模型物理门通过、0/12世界目标命中。C1通过、C2不通过，优势不作为有限合格扩库的前置条件。下一批数据尚未生成，本组用于后续设计后转作DEV回归。
 
 只读前置核验已确认12192条已有TRAIN/VAL索引、12216条目标隔离元数据（含原DEV和仅保护用途的保留TEST元数据）、84300个既有来源文件。最终正式运行仍独立重核身份，不能以此预检查替代正式任务或执行结果。
 

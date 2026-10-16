@@ -1,0 +1,616 @@
+{
+  "TEST_executed": false,
+  "frozen_tasks": 12,
+  "full_goal_achieved": false,
+  "independent_audit_passed": true,
+  "methods": {
+    "expanded_diffusion": {
+      "candidate_errors": 0,
+      "completed": 180,
+      "coupled_queries": 7143,
+      "eligible": 173,
+      "execution_verified": 36,
+      "network_calls": 2880,
+      "per_seed_eligible": {
+        "0": 59,
+        "1": 56,
+        "2": 58
+      },
+      "pre_median_norm": 5.997942282473152,
+      "pre_pose_diagnostic_count": 180,
+      "pre_pose_pass": 0,
+      "raw_independent_validation": {
+        "raw": {
+          "completed": 12,
+          "eligible": 0,
+          "errors": 0
+        },
+        "smoothed_clipped": {
+          "completed": 12,
+          "eligible": 0,
+          "errors": 0
+        }
+      },
+      "rejection_gates": {
+        "geometry": 7
+      },
+      "selected_outcomes": 36,
+      "wall_s": 418.33428710186854
+    },
+    "frozen_diffusion": {
+      "candidate_errors": 0,
+      "completed": 180,
+      "coupled_queries": 7437,
+      "eligible": 170,
+      "execution_verified": 36,
+      "network_calls": 2880,
+      "per_seed_eligible": {
+        "0": 58,
+        "1": 57,
+        "2": 55
+      },
+      "pre_median_norm": 6.608022415993366,
+      "pre_pose_diagnostic_count": 180,
+      "pre_pose_pass": 0,
+      "raw_independent_validation": {
+        "raw": {
+          "completed": 12,
+          "eligible": 0,
+          "errors": 0
+        },
+        "smoothed_clipped": {
+          "completed": 12,
+          "eligible": 0,
+          "errors": 0
+        }
+      },
+      "rejection_gates": {
+        "geometry": 9,
+        "geometry_refinement": 1
+      },
+      "selected_outcomes": 36,
+      "wall_s": 441.81071449723095
+    },
+    "learned_mean": {
+      "candidate_errors": 0,
+      "completed": 180,
+      "coupled_queries": 7610,
+      "eligible": 175,
+      "execution_verified": 36,
+      "network_calls": 0,
+      "per_seed_eligible": {
+        "0": 58,
+        "1": 59,
+        "2": 58
+      },
+      "pre_median_norm": 9.114261773906135,
+      "pre_pose_diagnostic_count": 180,
+      "pre_pose_pass": 0,
+      "raw_independent_validation": {
+        "raw": {
+          "completed": 12,
+          "eligible": 0,
+          "errors": 0
+        },
+        "smoothed_clipped": {
+          "completed": 12,
+          "eligible": 0,
+          "errors": 0
+        }
+      },
+      "rejection_gates": {
+        "geometry": 5
+      },
+      "selected_outcomes": 36,
+      "wall_s": 449.57269160076976
+    },
+    "structured": {
+      "candidate_errors": 0,
+      "completed": 180,
+      "coupled_queries": 7637,
+      "eligible": 175,
+      "execution_verified": 36,
+      "network_calls": 0,
+      "per_seed_eligible": {
+        "0": 57,
+        "1": 59,
+        "2": 59
+      },
+      "pre_median_norm": 5.668905453010179,
+      "pre_pose_diagnostic_count": 180,
+      "pre_pose_pass": 15,
+      "raw_independent_validation": {
+        "raw": {
+          "completed": 12,
+          "eligible": 1,
+          "errors": 0
+        },
+        "smoothed_clipped": {
+          "completed": 12,
+          "eligible": 1,
+          "errors": 0
+        }
+      },
+      "rejection_gates": {
+        "geometry": 5
+      },
+      "selected_outcomes": 36,
+      "wall_s": 443.4748684973456
+    }
+  },
+  "new_validation_stability_passed": true,
+  "paired_quality": {
+    "frozen_diffusion": {
+      "bootstrap95_geometric_ratio": [
+        0.7052639798808867,
+        0.9762121159962293
+      ],
+      "geometric_mean_task_ratio": 0.8280595459528531,
+      "median_task_ratio": 0.8134061630543474,
+      "new_higher_tasks": 4,
+      "new_lower_tasks": 8,
+      "paired_tasks": 12,
+      "pre_registered_quality_pass": true,
+      "status": "DONE"
+    },
+    "learned_mean": {
+      "bootstrap95_geometric_ratio": [
+        0.5390891020922365,
+        0.9274142713961324
+      ],
+      "geometric_mean_task_ratio": 0.6980589681097014,
+      "median_task_ratio": 0.6177909520405,
+      "new_higher_tasks": 3,
+      "new_lower_tasks": 9,
+      "paired_tasks": 12,
+      "pre_registered_quality_pass": true,
+      "status": "DONE"
+    },
+    "structured": {
+      "bootstrap95_geometric_ratio": [
+        0.42055646922290163,
+        1.8844755505305422
+      ],
+      "geometric_mean_task_ratio": 0.9042130203528359,
+      "median_task_ratio": 0.9762409204602794,
+      "new_higher_tasks": 6,
+      "new_lower_tasks": 6,
+      "paired_tasks": 12,
+      "pre_registered_quality_pass": false,
+      "status": "DONE"
+    }
+  },
+  "pre_registered_quality_claim_passed": false,
+  "protocol": {
+    "TEST": false,
+    "automatic_100k_expansion": false,
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261691,
+    "candidate_coupled_ceiling": 113,
+    "candidate_interval_ceiling": 15872,
+    "candidate_wall_s": 15.0,
+    "candidates_per_task": 5,
+    "checkpoint_selection": false,
+    "cpu_threads": 2,
+    "ddim_steps": 16,
+    "full_goal_auto_complete": false,
+    "generation": {
+      "TEST_arrays_read": false,
+      "TEST_metadata_guard_only": true,
+      "attempt_wall_s": 45.0,
+      "attempts_per_slot": 8,
+      "generation_budget_s": 1800.0,
+      "goal_guard_position_m": 0.01,
+      "goal_guard_rotation_deg": 1.0,
+      "motion_scales": [
+        1.25,
+        1.5,
+        1.75
+      ],
+      "obstacle_bow_rad": 0.12,
+      "obstacle_slots": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "origin_jitter_rad": [
+        0.14,
+        0.16,
+        0.18,
+        0.2,
+        0.22,
+        0.24
+      ],
+      "proposal_family_offset": 600000,
+      "reuse_TRAIN_teacher": false,
+      "scene": "new scratch static sphere selected by frozen teacher/public-direct screen",
+      "scene_parent": null,
+      "seed": 20261601,
+      "selection": "first independently qualified teacher per fixed slot; before planners",
+      "slots": 12
+    },
+    "max_candidates": 720,
+    "max_output_bytes": 21474836480,
+    "max_selected_executions": 144,
+    "max_witness_executions": 12,
+    "methods": [
+      "structured",
+      "frozen_diffusion",
+      "learned_mean",
+      "expanded_diffusion"
+    ],
+    "obstacle_conditioned": false,
+    "original_DEV_modified": false,
+    "profile": "bounded_development_validation",
+    "quality_claim": "task median pre-correction pose norm ratio <=0.85 and paired task-bootstrap 95% upper ratio <1 against BOTH structured and learned_mean, with stability and no physical success regression",
+    "raw_diagnostics": {
+      "affects_selection": false,
+      "candidate_id": 0,
+      "maximum": 96,
+      "seed_group": 0,
+      "separate_budget_s": 600.0,
+      "stages": [
+        "raw",
+        "smoothed_clipped"
+      ]
+    },
+    "relative_efficiency_required": false,
+    "sampling_seeds": [
+      20261619,
+      20261623,
+      20261629
+    ],
+    "selection": "minimum normalized frozen-goal error among eligible; one execution; no replacement",
+    "stability": "12 frozen tasks; 12/12 teacher execution/replay; new model each seed >=54/60 eligible; all 36 selected execution/replay; no numerical ERROR",
+    "strict_multimodal": false,
+    "task_slots": 12,
+    "training_updates": 0,
+    "version": "independent_world_goal_validation_1",
+    "wall_budget_s": 7200.0
+  },
+  "recovery": {
+    "diagnostic_actual_attempts": 96,
+    "known_zero_failure_proof": {
+      "failed_attempt_retained": true,
+      "failed_diagnostic_coupled_calls": 0,
+      "failed_diagnostic_network_calls": 0,
+      "failed_diagnostic_wall_s_upper_bound": 0.2658994197845459,
+      "inherited_elapsed_s": 3705.780999999959,
+      "original_reservation": {
+        "id": "diagnostic_newval_00_structured_raw",
+        "stage": "diagnostic",
+        "started": 1792178100.6025007
+      },
+      "policy": "reuse same pre-physics reservation once; no candidate/native replay or unknown-call refund",
+      "status": "PROVEN_ZERO_DIAGNOSTIC_PHYSICS"
+    },
+    "original_elapsed_s": 3705.780999999959,
+    "original_status": "FAILED",
+    "sampling_rerun": false,
+    "source": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\independent_new_validation_001",
+    "source_manifest_sha256": "36fd1ee2cd0ca33030478b903f7948180077b3014955bc34ce9381beb25801c0",
+    "torque_execution_rerun": false
+  },
+  "relative_efficiency_required": false,
+  "status": "FINISHED",
+  "task_metrics": {
+    "newval_00": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 4.214882585259356,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.986005100783386,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.5386847044385177,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 11.793479291545903,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_01": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 5.250903693809354,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.721600567757906,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 10.934504395069165,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 0.628583105177044,
+        "pre_pose_pass": 15
+      }
+    },
+    "newval_02": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.2464545915632623,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 5.76819922826005,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 5.617089044404406,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 4.358503661352145,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_03": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 15.462347284952585,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 18.868720998310057,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 21.991201841181798,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 16.447785904792987,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_04": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.02183378552418,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 2.68865638554171,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 1.5259827884226906,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 2.9848367689029085,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_05": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 12.358239017499418,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 14,
+        "pre_median_norm": 17.05866557477105,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 20.144609057546532,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 6.343538594071073,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_06": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.6554111494133115,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 4.527707997684564,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 6.6532782096181355,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 38.521524750472764,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_07": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 2.431477655330866,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 4.973740317028354,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 7.250304541190999,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 21.845700319744306,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_08": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 11,
+        "pre_median_norm": 6.773861214398009,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 14,
+        "pre_median_norm": 8.411425777455195,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 14,
+        "pre_median_norm": 14.165703586705181,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 11,
+        "pre_median_norm": 19.781425909970515,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_09": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 13,
+        "pre_median_norm": 9.473136312314127,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 9,
+        "pre_median_norm": 9.078242540737937,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 11,
+        "pre_median_norm": 7.0814637950524055,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 14,
+        "pre_median_norm": 2.686135891075667,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_10": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 14,
+        "pre_median_norm": 9.85153384109041,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 13,
+        "pre_median_norm": 11.430120138871798,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 15.235891819541324,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 3.5175120759356995,
+        "pre_pose_pass": 0
+      }
+    },
+    "newval_11": {
+      "expanded_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 10.104408201420744,
+        "pre_pose_pass": 0
+      },
+      "frozen_diffusion": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 15.57146862734569,
+        "pre_pose_pass": 0
+      },
+      "learned_mean": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 16.242270054896096,
+        "pre_pose_pass": 0
+      },
+      "structured": {
+        "completed": 15,
+        "eligible": 15,
+        "pre_median_norm": 4.982432366453497,
+        "pre_pose_pass": 0
+      }
+    }
+  },
+  "task_slots": 12,
+  "teacher_execution_verified": 12,
+  "training_updates": 0
+}
