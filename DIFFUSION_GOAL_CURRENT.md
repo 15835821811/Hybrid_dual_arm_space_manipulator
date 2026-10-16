@@ -10,7 +10,9 @@
 
 下一目标优先增加每家族独立的新初态及初态×运动组合：12144 TRAIN实际只有43个q17初态构型。先冻结有界数据预算及新独立验证，再生成、准入、预选执行抽查、实际训练和复核；本12任务用于后续设计后转作DEV回归。保留仅不穿透和其他全部物理门槛、完整初态/自由漂浮/全机几何与验证分级，不自动最终TEST、十万规模或旧生产任务。长期研究目标保持进行中。
 
-接续实现`ff_prior_origin_coverage`已完成，协议和6/6真实软件测试已冻结：512独立新TRAIN初态/前向轨迹（128单次新球障碍场景），最多768主尝试；8固定TRAIN世界目标×4修正尝试；TRAIN生成前先冻结8新独立验证；32预选真实执行/重放。5400秒/2线程/20GiB，查询与时间只辅助。初次测试的4×4平移列错误与测试篡改索引错误已修复，失败XML保留。正式作业尚未启动，不能称新增样本或新训练已经通过；数据门通过后另冻结实际训练与原DEV/新验证对照。计划`ff_prior_origin_coverage/docs/EXPERIMENT_PLAN.md`，终端`.\ff_prior_origin_coverage\job.ps1 status|report`。
+接续实现`ff_prior_origin_coverage`已完成，协议和6/6真实软件测试已冻结：512独立新TRAIN初态/前向轨迹（128单次新球障碍场景），最多768主尝试；8固定TRAIN世界目标×4修正尝试；TRAIN生成前先冻结8新独立验证；32预选真实执行/重放。5400秒/2线程/20GiB，查询与时间只辅助。初次测试的4×4平移列错误与测试篡改索引错误已修复，失败XML保留。已提交b133c0b5并启动qualified_origin_coverage_001，worker201448实际存活；8个新验证已冻结，最近完整快照315个新TRAIN初态/轨迹、75球障碍已准入，正式生成和执行审计仍进行。计划`ff_prior_origin_coverage/docs/EXPERIMENT_PLAN.md`，终端`.\ff_prior_origin_coverage\job.ps1 status|report`。
+
+本轮原覆盖门尚未通过，已出现ERROR及四尝试耗尽的障碍槽位，不能事后改门或删分母。最早6个积分状态异常已独立诊断为实际初态球障碍穿透，仅warmstart不同，0耦合/物理步/网络；原错误保留。供后续版本使用的ff_prior_scene_guard先明确拒绝初态穿透，安全场景仍保留全部187项完整状态/参数/几何转移检查，3/3真实测试通过，与旧实现安全初态精确相同；未接入当前冻结作业。继续完成已生成样本和预选真实执行审计，保留可用合格数据；数据门受阻及后续协议调整须如实报告，不能将初始化修复、生成或抽查写成新训练/全库执行通过。
 
 完整报告：[独立新世界目标验证](ff_prior_generalization/docs/ANALYSIS.md)；[独立结果评审](paper/review-traces/experiment-result-to-claim/20261017_new_validation_run01/REVIEW.md)。终端：
 
