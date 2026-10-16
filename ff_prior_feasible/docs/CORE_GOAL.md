@@ -1,5 +1,10 @@
 # 强制核心目标：跑通 Diffusion 完整机制，形成合格数据并实际扩库
 
+## 当前接续程序：12688条实际训练与同预算smoke（已实现，待启动）
+
+已实现独立ff_prior_origin_train，6/6真实软件检查通过。另冻结6000更新×64，每批旧32+新增覆盖32（544条按producer识别），温启动12144模型、原10k codec固定；重新拟合全部TRAIN的组平衡条件均值。原DEV4+NEW_VAL8三种子四方法、720候选/144预选执行重放/96固定诊断，9000秒/2线程/20GiB。此时正式运行未启动，不提前记通过；查询/耗时不设相对门槛，神经质量单独实测。协议ff_prior_origin_train/docs/EXPERIMENT_PLAN.md，终端.\ff_prior_origin_train\job.ps1 status|report。
+
+
 ## 当前权威进度：新合并库已释放，真实接续训练待实施
 
 2026-10-17：qualified_origin_fill_001 FINISHED，378.688秒，9/9新增真实执行和独立重放、原始审计PASS。另立新合并资格ready=true，累计12688 TRAIN/原48 VAL、555不同TRAIN初态；新增覆盖512前向/128球场景及32固定目标修正。原数据作业仍ready=false/39 ERROR保持；不追溯改写旧门。独立NEW_VAL8冻结且排除训练。新增覆盖544条须按producer_run_id识别，33执行等级、511 MODEL_VALID；未执行不升级。
