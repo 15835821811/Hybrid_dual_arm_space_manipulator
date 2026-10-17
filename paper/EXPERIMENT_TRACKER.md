@@ -1,13 +1,13 @@
-# 有界扩库与学习进程
+# 世界终点监督闭环进程
 
-| Run ID | 目的 | 状态 | 实际证据/边界 |
-|---|---|---|---|
-| qualified_origin_train_001 | 12688行训练与smoke | FINISHED | C1通过/C2未通过；旧报告保留 |
-| qualified_origin_batch_001 | 新初态及固定目标补充 | FINISHED | 新增1086，合并13774TRAIN/1578初态；56/56执行重放、审计PASS |
-| qualified_origin_learn_001 | 13774行接续训练首尝试 | FAILED before training | 无界缓存风险中断；39.4GiB private，旧失败证据保留 |
-| qualified_origin_learn_002 | 有界缓存下实际训练与smoke | FINISHED | 6000更新/全13774行；四方法各180/180与36/36；审计PASS，C1通过/C2未通过；218.11分钟 |
-| origin_learn_002_resume | 完成恢复幂等验证 | PASS | NO_WORK_ALREADY_COMPLETE；状态/summary/ledger/launcher SHA未变 |
-| origin_batch_next_software | 下一批实际物理及分区测试 | PASS 8/8 | 七项物理/隔离/恢复检查＋一项已完成父代门，合并JUnit不代表重跑 |
-| qualified_origin_batch_002 | 新1024槽＋32固定目标＋72预选执行 | PREPARED_NOT_LAUNCHED | 8/8测试与来源预检PASS；按用户指示保留备用，优先终点训练修复 |
+|阶段|状态|证据与边界|
+|---|---|---|
+|上一轮13774实际训练与smoke|FINISHED/已提交b5921b54|C1通过、C2未通过；完整报告、独立审查、幂等恢复通过|
+|原1024槽扩库|PREPARED_NOT_LAUNCHED|按用户最新指示暂缓，不自动启动|
+|新真实世界终点监督软件|PASS 8/8|完整102差分/反传/真实下降、空场景和球场景修正及真实执行重放、原13822输入逐行核验、冻结任务和恢复检查|
+|新来源核验|PASS|176479来源文件/217Python源码，203.605秒；正式工作尚未启动|
+|world_endpoint_smoke_001数据/训练/对照|NOT_STARTED|16固定TRAIN目标最多64修正；6000更新/120真实终点梯度；原12任务/3种子/四方法720候选|
+|结果原始审计/独立审查/报告|PENDING|只有真实完成才写通过；分开判断训练对齐与泛化收益|
+|最终TEST|CONDITIONALLY_BLOCKED|先满足冻结就绪门及独立审查，再评估扩库需要、冻结一次未触碰TEST协议；本worker不读取TEST|
 
-整体研究目标未完成；下一批神经训练另冻。C2与查询/耗时相对优势均不是合格扩库门。无最终TEST、strict_multimodal或自动十万生产。
+保持原物理门、旧结果、VAL48、原DEV，完整目标未完成。查询/时间相对胜出不是门槛。
