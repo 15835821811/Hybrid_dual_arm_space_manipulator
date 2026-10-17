@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="10" time="47.569" timestamp="2026-10-17T16:00:38.480535+08:00" hostname="wangbingquan"><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_complete_qualified_population_and_holdout" time="5.307" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_affine_recalibration_preserves_actual_old_network" time="13.647" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_calibration_and_mean_are_train_only" time="0.084" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_origin_row_sampler_resume_and_exhaustive_balance" time="0.003" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_real_updates_cache_and_completed_resume" time="4.994" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_cache_rejects_reference_or_basis_tamper" time="0.004" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_rebased_ddim_guidance_and_real_67_torque_replay" time="13.150" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_closure" name="test_missing_dependency_and_live_duplicate_do_not_pass" time="0.043" /><testcase classname="ff_prior_origin_learn_bounded.tests.test_runtime" name="test_real_scene_eviction_preserves_state_initializer_and_coupled_prediction" time="8.497"><failure message="KeyError: 'duration_s'">def test_real_scene_eviction_preserves_state_initializer_and_coupled_prediction():
+        config=read_json(BASE/'run.json')['config'];_,rr,ii,_=audit(config);profile=acceptance(config)
+        entries=read_json(SOURCE/'training_index.json')['records'];rows=[]
+        for e in entries:
+            if not e['sample_id'].startswith('batch_v1_train_'):continue
+            r=read_json(ROOT/e['record'])
+            if r.get('scene',{}).get('objects'):rows.append((e,r))
+            if len(rows)==6:break
+        assert len(rows)==6
+        cache=TaskOriginSceneCache(rr,ii,profile,max_entries=2,max_scene_models=1)
+        e,row=rows[0];a,ai,ac,ap=cache.get(row)
+        with np.load(ROOT/e['arrays']) as archive:z=archive['Z'].copy()
+        base=public_goal_initializer(row['task'],a,ai)
+&gt;       ref=Reference(np.asarray(row['condition']['initial_features']),z,row['condition']['duration_s'])
+                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'duration_s'
+
+ff_prior_origin_learn_bounded\tests\test_runtime.py:28: KeyError</failure></testcase><testcase classname="ff_prior_origin_learn_bounded.tests.test_runtime" name="test_actual_windows_memory_measurement_and_guard" time="0.000" /></testsuite></testsuites>
