@@ -1,0 +1,254 @@
+{
+  "scope": "read-only saved evidence recomputation; no training/inference/physics/replay rerun",
+  "checks": {
+    "input_hashes": {
+      "ff_prior_world_endpoint\\docs\\EXPERIMENT_PLAN.md": true,
+      "ff_prior_world_endpoint\\learning.py": true,
+      "ff_prior_world_endpoint\\endpoint.py": true,
+      "ff_prior_world_endpoint\\protocol.py": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\status.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\summary.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\data_summary.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\data_verification.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\independent_verification.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\ledger.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\checkpoint_binding.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\learning\\goal_loss\\training.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\learning\\goal_loss\\world_diagnostic_before.json": true,
+      "artifacts\\v7_1\\world_endpoint_smoke_001\\learning\\goal_loss\\world_diagnostic_after.json": true
+    },
+    "frozen_source_hashes_and_zip": 217
+  },
+  "producer_head": "7bac71d522cd9ef51a7e40fdb8620724c172f7b1",
+  "training": {
+    "updates": 6000,
+    "draws": 384000,
+    "rows": 13838,
+    "new_rows": 64,
+    "all_row_draws": {
+      "min": 13.0,
+      "median": 14.0,
+      "max": 136.0
+    },
+    "new_row_draws": {
+      "min": 37.0,
+      "median": 38.0,
+      "max": 39.0
+    },
+    "new_row_total_draws": 2448,
+    "optimizer_steps_verified": 8,
+    "VAL_gradient_updates": 0,
+    "index_pretraining_consumed_flag": false
+  },
+  "new_data": {
+    "rows": 64,
+    "targets": 16,
+    "validation_levels": {
+      "MODEL_VALID": 48,
+      "EXECUTION_VERIFIED": 16
+    },
+    "minimum_pairwise_control_rms_rad": 0.0064834029573128775,
+    "targets_unchanged_from_parent": true,
+    "selection_recomputed": true
+  },
+  "gradients": {
+    "events": 120,
+    "dimensions": 102,
+    "saved_perturbation_losses_recomputed": 24480,
+    "coupled_calls": 25440,
+    "max_half_relative_error": 9.701792776036418e-07,
+    "max_direction_relative_error": 3.566588436563514e-05,
+    "max_256_512_position_delta_m": 1.673874494143102e-08,
+    "max_256_512_rotation_delta_rad": 7.585076832330235e-09,
+    "noise_times": {
+      "500": 64,
+      "999": 56
+    },
+    "per_target_visits": {
+      "batch_v1_train_0824_a0": 8,
+      "batch_v1_train_0825_a0": 8,
+      "batch_v1_train_0701_a0": 8,
+      "batch_v1_train_0356_a0": 8,
+      "batch_v1_train_0782_a0": 8,
+      "batch_v1_train_0502_a0": 8,
+      "batch_v1_train_0166_a0": 8,
+      "batch_v1_train_0756_a0": 8,
+      "batch_v1_train_0503_a1": 7,
+      "batch_v1_train_0479_a6": 7,
+      "batch_v1_train_0995_a0": 7,
+      "batch_v1_train_0791_a1": 7,
+      "batch_v1_train_0979_a0": 7,
+      "batch_v1_train_0923_a0": 7,
+      "batch_v1_train_0867_a0": 7,
+      "batch_v1_train_1023_a0": 7
+    },
+    "unique_rows": 64,
+    "rows_with_both_noise_times": 0,
+    "loss": {
+      "min": 0.21533733453377385,
+      "median": 5.4015940386844195,
+      "max": 152.50436234792727
+    },
+    "latent_gradient_l2": {
+      "min": 1.9384700497503056,
+      "median": 25.77309466042489,
+      "max": 167.94917234495995
+    },
+    "total_parameter_gradient_norm_before_clipping": {
+      "min": 2.49745774269104,
+      "median": 52.64939308166504,
+      "max": 1267.304443359375
+    },
+    "events_gradient_norm_gt1": 120
+  },
+  "TRAIN_alignment": {
+    "median_paired_loss_ratio": 4.608628024263159,
+    "improved": 5,
+    "n": 32,
+    "by_t": {
+      "500": {
+        "median_ratio": 4.1262728376007445,
+        "improved": 2,
+        "n": 16
+      },
+      "999": {
+        "median_ratio": 5.259528634587976,
+        "improved": 3,
+        "n": 16
+      }
+    }
+  },
+  "methods": {
+    "structured": {
+      "candidates": 180,
+      "eligible": 180,
+      "pre_pose_pass": 45,
+      "raw_goal": 3,
+      "raw_physics": 12,
+      "native": 36,
+      "max_queries": 55,
+      "max_intervals": 7552,
+      "max_wall_s": 3.1535543999634683
+    },
+    "frozen_diffusion": {
+      "candidates": 180,
+      "eligible": 180,
+      "pre_pose_pass": 15,
+      "raw_goal": 0,
+      "raw_physics": 12,
+      "native": 36,
+      "max_queries": 30,
+      "max_intervals": 4352,
+      "max_wall_s": 1.7956585995852947
+    },
+    "learned_mean": {
+      "candidates": 180,
+      "eligible": 180,
+      "pre_pose_pass": 22,
+      "raw_goal": 1,
+      "raw_physics": 12,
+      "native": 36,
+      "max_queries": 30,
+      "max_intervals": 4352,
+      "max_wall_s": 1.7574418000876904
+    },
+    "expanded_diffusion": {
+      "candidates": 180,
+      "eligible": 180,
+      "pre_pose_pass": 5,
+      "raw_goal": 0,
+      "raw_physics": 12,
+      "native": 36,
+      "max_queries": 28,
+      "max_intervals": 4096,
+      "max_wall_s": 1.6949231997132301
+    }
+  },
+  "paired_reused_DEV8": {
+    "structured": {
+      "median_ratio": 1.1973841661045437,
+      "geometric_ratio": 1.6588216068455977,
+      "bootstrap95": [
+        0.9905101456430364,
+        3.2015151584283443
+      ],
+      "new_lower": 2,
+      "new_higher": 6,
+      "task_ratios": {
+        "batch_v1_new_val_0000_a0": 3.298672715076601,
+        "batch_v1_new_val_0001_a0": 1.743572472802774,
+        "batch_v1_new_val_0002_a0": 1.0931704622475076,
+        "batch_v1_new_val_0003_a0": 1.3015978699615798,
+        "batch_v1_new_val_0004_a0": 1.0736896279609096,
+        "batch_v1_new_val_0005_a0": 0.7058069473397733,
+        "batch_v1_new_val_0006_a0": 11.703654509635143,
+        "batch_v1_new_val_0007_a0": 0.7898913163661518
+      }
+    },
+    "frozen_diffusion": {
+      "median_ratio": 1.2396669249000487,
+      "geometric_ratio": 1.199371765343927,
+      "bootstrap95": [
+        1.1243551205084368,
+        1.2665117975657423
+      ],
+      "new_lower": 0,
+      "new_higher": 8,
+      "task_ratios": {
+        "batch_v1_new_val_0000_a0": 1.249831773011417,
+        "batch_v1_new_val_0001_a0": 1.0257276488560485,
+        "batch_v1_new_val_0002_a0": 1.1938675257758329,
+        "batch_v1_new_val_0003_a0": 1.2295020767886804,
+        "batch_v1_new_val_0004_a0": 1.0581901202430966,
+        "batch_v1_new_val_0005_a0": 1.2862930011402596,
+        "batch_v1_new_val_0006_a0": 1.2954467253131825,
+        "batch_v1_new_val_0007_a0": 1.2904416470356048
+      }
+    },
+    "learned_mean": {
+      "median_ratio": 1.120066072549506,
+      "geometric_ratio": 1.3416725507784926,
+      "bootstrap95": [
+        1.0794814816682627,
+        1.6890696922333304
+      ],
+      "new_lower": 1,
+      "new_higher": 7,
+      "task_ratios": {
+        "batch_v1_new_val_0000_a0": 0.9467493468916017,
+        "batch_v1_new_val_0001_a0": 1.0528972902972689,
+        "batch_v1_new_val_0002_a0": 1.1438748917883865,
+        "batch_v1_new_val_0003_a0": 1.8791968397703926,
+        "batch_v1_new_val_0004_a0": 1.9631076759809791,
+        "batch_v1_new_val_0005_a0": 1.0580611148412216,
+        "batch_v1_new_val_0006_a0": 1.0962572533106256,
+        "batch_v1_new_val_0007_a0": 2.1519545740199737
+      }
+    }
+  },
+  "native_saved_trace_audit": {
+    "traces": 160,
+    "comparison_traces": 144,
+    "TRAIN_traces": 16,
+    "physics_steps_including_reported_independent_replay": 1680000,
+    "max_hold_position_m": 0.003591158304146604,
+    "minimum_saved_state_clearance_m": 0.0022760002953218766,
+    "max_reported_replay_error": 0.0,
+    "scope": "all160 ctrl hash/shape/finite/EE hold/clearance arrays; reported independent replay checked, not rerun; no fresh dynamics or all-geometric-pairs reconstruction"
+  },
+  "limitations": [
+    "Intermediate model weights are not separately retained for every event; x at current prediction supported by frozen source and per-event input hash, not full per-event inference replay.",
+    "Existing inherited source-array/initializer audit accepted; only parent index and new records/arrays independently checked here, not all176k sourcefiles.",
+    "Saved reports establish independent replay result; this review does not rerun replay physics.",
+    "No separate parameter-gradient contribution or cosine logged for v and endpoint terms; cannot establish dominance, conflict, or causal cause.",
+    "Eight comparison tasks labelled NEW_VAL in raw paths are reused development tasks; all statistical claims are conditional on these tasks and one training seed."
+  ],
+  "TEST_gates": {
+    "TRAIN_true_endpoint_median_ratio_le_08": false,
+    "complete_stability_and_raw_audit": true,
+    "fixed_raw_goal_at_least4of12": false,
+    "fixed_raw_physics12of12": true,
+    "reused_DEV8_paired_quality_vs_frozen13774": false
+  },
+  "status": "PASS"
+}

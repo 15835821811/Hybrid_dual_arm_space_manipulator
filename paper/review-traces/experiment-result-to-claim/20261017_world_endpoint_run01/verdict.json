@@ -1,0 +1,102 @@
+{
+  "experiment": "world_endpoint_smoke_001",
+  "producer_head": "7bac71d522cd9ef51a7e40fdb8620724c172f7b1",
+  "claim_supported": "partial",
+  "confidence": "high",
+  "confidence_scope": "对本轮冻结运行的实现、消费、执行和负面性能结果；失败机制因果归因仍不确定。",
+  "review_role": "fresh independent paper architect/reviewer",
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "writing_verdict": "provisional — no paper claim audit available",
+  "C1": {
+    "claim_supported": "yes",
+    "scope": "当前预测的完整102维有限差分非线性耦合终点监督、实际TRAIN消费、既定模拟任务上的完整物理闭环。",
+    "implementation_correctness": "supported within saved-evidence and numerical-check scope",
+    "model_data_admission": "64 new MODEL-qualified TRAIN rows across16 unchanged targets;48 MODEL_VALID and16 EXECUTION_VERIFIED",
+    "training": "6000 optimizer updates;384000 draws;13838 TRAIN rows seen;64 new rows37–39 draws each;VAL48 excluded from fitting/gradients/checkpoint selection",
+    "gradient_evidence": "120 events;102 dimensions;24480 perturbation losses independently recomputed;25440 coupled calls;half/direction/convergence checks pass",
+    "full_torque_replay": "144 comparison plus16 TRAIN saved native torque traces verified; independent replay reports pass; MuJoCo simulation only",
+    "limits": "No hardware claim; no continuous-time clearance certificate; not proof of general task stability or neural benefit."
+  },
+  "C2": {
+    "claim_supported": "no",
+    "neural_benefit": false,
+    "TRAINalignment": "FAIL",
+    "TRAIN_median_paired_loss_ratio": 4.608628024263159,
+    "TRAIN_improved_cases": 5,
+    "TRAIN_probe_cases": 32,
+    "reused_DEV8_median_ratio_vs_frozen13774": 1.2396669249000487,
+    "reused_DEV8_geometric_bootstrap95": [1.1243551205084368, 1.2665117975657423],
+    "reused_DEV8_new_worse_tasks": 8,
+    "raw_goal_pass": "0/12",
+    "pre_correction_pose_pass": "5/180 vs old15/180,mean22/180,structured45/180",
+    "strong_baseline_superiority": "not supported"
+  },
+  "TRAINalignment": {
+    "status": "FAIL",
+    "threshold": "paired median true endpoint loss after/before<=0.8",
+    "observed": 4.608628024263159,
+    "t500_median_ratio": 4.1262728376007445,
+    "t999_median_ratio": 5.259528634587976,
+    "scope": "16 fixed TRAIN targets, first correction variant each,2 independent-noise probes; not all-TRAIN risk or unseen validation"
+  },
+  "TEST_readiness": {
+    "status": "BLOCKED",
+    "complete_stability_and_raw_audit": true,
+    "TRAIN_true_endpoint_median_ratio_le_08": false,
+    "reused_DEV8_paired_quality_vs_frozen13774": false,
+    "fixed_raw_goal_at_least4of12": false,
+    "fixed_raw_physics12of12": true,
+    "eligible_for_TEST_protocol_review": false,
+    "TEST_executed": false,
+    "broad1024_expansion_executed": false,
+    "expansion_justified_now": false
+  },
+  "what_results_support": [
+    "绑定当前预测的非线性模型终点有限差分已实际接入反向传播，保存的损失与梯度数值自洽。",
+    "新增64条固定目标修正样本准入、全部新旧TRAIN实际消费、固定最终检查点和训练/验证分离有证据。",
+    "同任务同预算共同物理修正后四方法均180/180候选合格、36/36执行重放通过，稳定流程可用。",
+    "本轮配方在预注册TRAIN探针及复用开发任务上未获得预期神经提案收益，应保留负结果。"
+  ],
+  "what_results_dont_support": [
+    "TRAIN终点改善、神经提案优于冻结模型或强基线。",
+    "把共同修正后的饱和成功率解释为扩散模型自身收益。",
+    "未见任务泛化、多训练种子稳定、硬件有效、连续时间无碰撞。",
+    "损失权重、裁剪、监督稀疏、训练/采样差异中的任一项是已证实失败原因。",
+    "仅凭数据量扩大就会恢复收益，或现在进入最终TEST。"
+  ],
+  "missing_evidence": [
+    "同数据/初始权重/更新数/RNG下保留旧G与新增world目标的受控消融；本轮还移除了原每batch局部G项。",
+    "vMSE和world项各自参数梯度范数、夹角、裁剪后有效更新与同探针一步响应。",
+    "覆盖更多TRAIN目标、同变体多噪声时刻、生成链输入及最终t0的对齐证据。",
+    "多训练seed和独立未见任务的性能证据；当前八任务均已复用。",
+    "所有world事件中间网络权重未各自归档，不能逐事件重新生成当前预测；源码/哈希/保存数组支持现有有限范围判断。"
+  ],
+  "suggested_claim_revision": "在冻结模拟范围内完成真实非线性世界终点监督、实际TRAIN消费与力矩执行/独立重放闭环；该配方未改善预注册TRAIN终点探针或开发神经提案，作为实现可用但学习收益失败的结果报告。",
+  "next_experiments_needed": {
+    "for_this_review": "none; current frozen evidence is sufficient to rejectC2 and blockTEST",
+    "if_research_resumes": [
+      "先另冻有界开发方案，对同数据同warm-start比较v-only、旧局部G、稀疏world、旧G+world；记录独立梯度与实际更新。",
+      "在固定训练噪声输入和生成链输入上对齐探针，再单因素检查覆盖、时间和频率。",
+      "出现稳定开发正证据后，再评估覆盖驱动扩库及冻结一次未触碰TEST协议。"
+    ],
+    "launched_by_reviewer": false
+  },
+  "hypotheses": {
+    "sparse_supervision": "design fact; causal explanation unproven",
+    "variant_time_aliasing": "64 rows each supervised at only one of t500/t999; design coverage limit,not protocol violation",
+    "gradient_clipping": "all120 combined norms>1; separate loss contributions unavailable; causality unproven",
+    "training_sampling_mismatch": "forward-corrupted clean input at500/999 differs from16-step generated chain ending0; cannot explain away failed same-bandTRAIN probes",
+    "confounds": ["64 additional rows", "6000 extra updates", "new RNG seed and optimizer state", "removed old every-batch localG term", "added sparse nonlinearworld term"]
+  },
+  "routing_action": "retain_narrow_C1_confirmation; C2_pivot_to_recipe_review_before_any_new_bounded_development_study",
+  "model_disposition": "retain as experimental failed candidate; do not promote",
+  "preserve_negative_results": true,
+  "audit_notes": [
+    "Two SciPy internal trial-point bound-clipping warnings exist; final accepted candidate gates pass. Do not claim no internal temporary bound excursions.",
+    "training_index.actual_training_consumed=false is a pretraining snapshot field; final training/progress evidence verifies actual consumption.",
+    "No raw data or frozen source modified; no training,network inference,physics or replay rerun.",
+    "Inherited complete source-array/initializer audit accepted; raw current gradient/candidate/diagnostic/native-trace evidence independently recomputed."
+  ],
+  "evidence": ["response.md", "verification_evidence.json", "verify_saved_evidence.py"]
+}
