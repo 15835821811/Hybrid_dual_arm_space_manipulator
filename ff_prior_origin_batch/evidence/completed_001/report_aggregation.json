@@ -1,0 +1,1492 @@
+{
+  "TEST_arrays_read": false,
+  "TRAIN_families": 5999,
+  "TRAIN_grades": {
+    "EXECUTION_VERIFIED": 207,
+    "MODEL_VALID": 13567
+  },
+  "TRAIN_origins": 1578,
+  "fixed_min_control_rms_rad": 0.006478671604545054,
+  "fixed_mode_rejects": [
+    {
+      "minimum_reference_rms_rad": 0.019358286409692907,
+      "reason": null,
+      "sample_id": "batch_v1_mode_15_v2",
+      "validation_result": {
+        "eligible": false,
+        "frozen_goal_pass": true,
+        "reference_hash": "371c4c3f27ed1bc033d3b952b06f165c7ccc82a4606b974832c8ee05a409596b",
+        "score": 8.407656118720282e-10,
+        "validation": {
+          "frozen_goal_position_error_m": [
+            1.4346478966105357e-07,
+            1.9725545040158426e-08
+          ],
+          "frozen_goal_rotation_error_rad": [
+            2.1925295970257786e-08,
+            1.0143738949424618e-08
+          ],
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.02165740016173327,
+              "pair": {
+                "body_a": "world",
+                "body_b": "end_link",
+                "geom_a": "v7_batch_v1_sphere_TRAIN_315_1",
+                "geom_b": "collision_0072"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0006135675299622732,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.021748213238891936,
+              "pair": {
+                "body_a": "world",
+                "body_b": "end_link",
+                "geom_a": "v7_batch_v1_sphere_TRAIN_315_1",
+                "geom_b": "collision_0072"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.021748213238891936,
+            "refinement_difference_m": 9.081307715866696e-05
+          },
+          "numerical": {
+            "comparisons": [
+              {
+                "aligned_body_extent_m": 1.323187772670744e-07,
+                "coarse": 256,
+                "fine": 512,
+                "passed": true,
+                "terminal_position_m": [
+                  5.488347127352416e-10,
+                  3.501600099880898e-10
+                ],
+                "terminal_rotation_rad": [
+                  2.773600868381972e-10,
+                  2.773598110932674e-10
+                ]
+              }
+            ],
+            "passed": true
+          },
+          "reference_torque_feasibility": "NOT_EVALUATED",
+          "required": [
+            "identity",
+            "finite",
+            "domain",
+            "native_range",
+            "boundary",
+            "motion",
+            "coupled_convergence",
+            "geometry",
+            "geometry_refinement",
+            "time_hold",
+            "label_consistency"
+          ],
+          "validation_level": "REJECTED",
+          "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+        },
+        "validation_grids": [
+          {
+            "gates": {
+              "boundary": true,
+              "coupled_convergence": true,
+              "domain": true,
+              "finite": true,
+              "geometry": false,
+              "geometry_refinement": true,
+              "identity": true,
+              "label_consistency": true,
+              "motion": true,
+              "native_range": true,
+              "time_hold": true
+            },
+            "geometry": {
+              "coarse": {
+                "checked_states": 257,
+                "continuous_time_certified": false,
+                "minimum_clearance_m": -0.02165740016173327,
+                "pair": {
+                  "body_a": "world",
+                  "body_b": "end_link",
+                  "geom_a": "v7_batch_v1_sphere_TRAIN_315_1",
+                  "geom_b": "collision_0072"
+                },
+                "passed": false
+              },
+              "extra": null,
+              "geometry_step_budget_m": 0.002,
+              "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+              "maximum_geometry_step_m": 0.0006135675299622732,
+              "midpoints": {
+                "checked_states": 256,
+                "continuous_time_certified": false,
+                "minimum_clearance_m": -0.021748213238891936,
+                "pair": {
+                  "body_a": "world",
+                  "body_b": "end_link",
+                  "geom_a": "v7_batch_v1_sphere_TRAIN_315_1",
+                  "geom_b": "collision_0072"
+                },
+                "passed": false
+              },
+              "minimum_clearance_m": -0.021748213238891936,
+              "refinement_difference_m": 9.081307715866696e-05
+            },
+            "intervals": 512,
+            "validation_level": "REJECTED"
+          }
+        ],
+        "validation_integration_intervals": 768
+      }
+    }
+  ],
+  "fixed_target_admission_counts": {
+    "0683b600bafc8838e6af409c6eb15be2dc0c62f8a219397fa4a95c3c8ff5a7bf": 4,
+    "188227508745e70fffeb0ce6c7d624947ae3ca8cca0d82eeec7401537e8dcd98": 4,
+    "2767da113608fc1b92ce95e07bed5983d1aaebd1b50229310f6161b1e6930020": 4,
+    "44553a168535ae7ffa384485a2abea21e9867f13fcf5b7c3333061675a971164": 4,
+    "6133505d832a1bbea63b7a3630253630421ece00f76c67be93697361fbf86bf8": 4,
+    "a45772ced48be1e9a7d1410327b603d47a2133df16479cd2090af48db3978396": 4,
+    "a7bcd7aef7662aeb913e0b841498aab610771e49ef866962f9620101ca5e5d58": 4,
+    "ab7f4868b899dd960dec160393578a1f24cef69c3460120aeaa88ea0e30a7e46": 4,
+    "ac29291ecc56cb236b79473d786742b0f6b2f94448796afc9dcc6964427650f4": 4,
+    "acf124d0fa4e8f6ce303a8dfc3356fcf9804c8f49eaf6dfcbe07650240e260f5": 4,
+    "b83648646e600459a52de41b341fb63ad1c1d64e806e6bd2c2778bd961e1b650": 4,
+    "c90d6acbfee22e95315f1d4b91f60fa66f507c3089b2fe8c224a5310b595d1e9": 4,
+    "cdc48d0e9c6d4171e910ededc3442738046802b2747c85ba03dd47bc74a024a9": 4,
+    "e58832edceee442ef649668cf58e3b491c8a0be29c26ce7d38525b50846f5900": 3,
+    "f0a8b255bd4ca718107cb0987da6d02c8ef783df0c67a82f5b8210429c0917b9": 4,
+    "fdbf41f8ca932e6e53e7069a00bc8141b141d45bb4b2dd85cf68bfbc4379a19d": 4
+  },
+  "forward_empty": 768,
+  "forward_sphere": 255,
+  "full_goal_achieved": false,
+  "generation_coupled_max_by_stage": {
+    "fixed_generation": 55,
+    "forward_generation": 4,
+    "validation_generation": 3
+  },
+  "generation_statuses": {
+    "ADMITTED": 1094,
+    "REJECTED": 242
+  },
+  "maximum_new_MODEL_frozen_goal_position_m": 0.001437394490208614,
+  "maximum_new_MODEL_frozen_goal_rotation_rad": 0.000866875125114863,
+  "minimum_initial_reject_clearance_m": -0.049188656720083594,
+  "minimum_new_MODEL_clearance_m": 0.00015159338959606743,
+  "missing_forward_slots": [
+    235
+  ],
+  "missing_slot_attempts": [
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a0",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0235_a1",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a2",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0235_a3",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a4",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a5",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a6",
+      "status": "REJECTED"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a7",
+      "status": "REJECTED"
+    }
+  ],
+  "native_TRAIN_roles": {
+    "FIXED_NEW_ORIGIN_TRAIN_WORLD_MODES": 10,
+    "INDEPENDENT_ORIGIN_TRAIN": 38
+  },
+  "native_TRAIN_scenes": {
+    "empty": 26,
+    "sphere": 22
+  },
+  "network_training_calls": 0,
+  "new_FORWARD": 1023,
+  "new_TRAIN": 1086,
+  "new_TRAIN_grades": {
+    "EXECUTION_VERIFIED": 48,
+    "MODEL_VALID": 1038
+  },
+  "new_TRAIN_roles": {
+    "FIXED_NEW_ORIGIN_TRAIN_WORLD_MODES": 63,
+    "INDEPENDENT_ORIGIN_TRAIN": 1023
+  },
+  "new_modes": 63,
+  "new_reference_hashes": 1094,
+  "new_validation": 8,
+  "output_bytes": 1299627580,
+  "reject_gate_counts": {
+    "geometry": 145
+  },
+  "reject_reason_counts": {
+    "INDEPENDENT_VALIDATION_REJECTED": 144,
+    "INITIAL_GEOMETRY_REJECTED": 97,
+    "UNSPECIFIED": 1
+  },
+  "rejects": [
+    {
+      "reason": null,
+      "sample_id": "batch_v1_mode_15_v2",
+      "stage": "fixed_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0019_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0023_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0035_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0035_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0047_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0047_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0047_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0047_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0047_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0055_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0059_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0059_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0063_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0063_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0067_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0075_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0079_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0083_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0083_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0083_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0083_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0083_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0083_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0091_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0091_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0099_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0099_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0099_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0099_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0099_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0111_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0123_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0127_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0127_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0127_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0127_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0127_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0139_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0143_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0167_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0175_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0191_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0203_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0207_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0215_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0227_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0227_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0227_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0235_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0235_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a6",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0235_a7",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0243_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0247_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0263_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0263_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0263_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0263_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0263_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0275_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0279_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0299_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0299_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0299_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0299_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0307_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0307_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0315_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0316_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0323_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0327_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0327_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0327_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0335_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0335_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0335_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0335_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0335_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0339_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0343_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0343_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0343_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0351_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0351_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0359_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0359_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0367_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0371_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0371_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0387_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0387_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0387_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0391_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0415_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0427_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0431_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0443_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0459_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0463_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0475_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0479_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0479_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0479_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0479_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0479_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0479_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0491_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0503_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0515_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0515_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0515_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0523_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0523_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0527_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0543_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0551_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0551_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0551_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0551_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0551_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0551_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0551_a6",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0567_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0567_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0567_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0575_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0587_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0599_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0603_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0611_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0611_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0631_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0631_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0631_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0631_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0635_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0639_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0639_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0639_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0659_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0659_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0659_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0659_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0659_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0659_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0659_a6",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0663_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0667_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0667_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0667_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0667_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0671_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0671_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0671_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0679_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0679_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0699_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0703_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0703_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0715_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0727_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0731_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0731_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0731_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0739_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0739_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0739_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0747_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0747_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0751_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0751_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0767_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0767_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0767_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0767_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0775_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0775_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0791_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0815_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0815_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0815_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0819_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0819_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0819_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0819_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0819_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0823_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0839_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0839_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0839_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0839_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0839_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0839_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0843_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0843_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0847_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0847_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0847_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0851_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0855_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0859_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0883_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0883_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0883_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0883_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0883_a4",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0883_a5",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0883_a6",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0887_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0887_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0891_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0891_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0891_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0891_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0895_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0895_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0895_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0911_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0927_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0927_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0927_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0927_a3",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0931_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0951_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0955_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0955_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0955_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0959_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0959_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0963_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0967_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0967_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0967_a2",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0991_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_0999_a0",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INITIAL_GEOMETRY_REJECTED",
+      "sample_id": "batch_v1_train_0999_a1",
+      "stage": "forward_generation"
+    },
+    {
+      "reason": "INDEPENDENT_VALIDATION_REJECTED",
+      "sample_id": "batch_v1_train_1019_a0",
+      "stage": "forward_generation"
+    }
+  ],
+  "relative_efficiency_gate": false,
+  "source_audit_sha256": "2f0b5c737bf77d8c7f103e79ab43c53dafb38f5a2e497b3ecae5016074847a8e",
+  "source_summary_sha256": "107bd42b3c48f641987f96c9cbee763235b173bd88121c08ebd584763c5ed600",
+  "status": "PASS",
+  "total_TRAIN": 13774
+}
