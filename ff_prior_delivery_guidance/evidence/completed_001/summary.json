@@ -1,0 +1,183 @@
+{
+  "TEST": "NOT_RUN",
+  "audit": "PASS",
+  "diffusion_advantage": "NOT_ESTABLISHED",
+  "engineering_gates": {
+    "frozen_diffusion": {
+      "candidate_denominator": 80,
+      "checks": {
+        "all_candidates_accounted": true,
+        "all_preselected_units_accounted": true,
+        "audit_passed": true,
+        "candidate_qualification": true,
+        "execution_and_replay": true,
+        "no_candidate_implementation_errors": true,
+        "no_unresolved_errors": true
+      },
+      "execution_denominator": 16,
+      "minimum_eligible": 64,
+      "minimum_execution_verified": 13,
+      "scope": "engineering continuation only; no sample certification or superiority claim",
+      "status": "PASS"
+    },
+    "late4_diffusion": {
+      "candidate_denominator": 80,
+      "checks": {
+        "all_candidates_accounted": true,
+        "all_preselected_units_accounted": true,
+        "audit_passed": true,
+        "candidate_qualification": true,
+        "execution_and_replay": true,
+        "no_candidate_implementation_errors": true,
+        "no_unresolved_errors": true
+      },
+      "execution_denominator": 16,
+      "minimum_eligible": 64,
+      "minimum_execution_verified": 13,
+      "scope": "engineering continuation only; no sample certification or superiority claim",
+      "status": "PASS"
+    },
+    "learned_mean": {
+      "candidate_denominator": 80,
+      "checks": {
+        "all_candidates_accounted": true,
+        "all_preselected_units_accounted": true,
+        "audit_passed": true,
+        "candidate_qualification": true,
+        "execution_and_replay": true,
+        "no_candidate_implementation_errors": true,
+        "no_unresolved_errors": true
+      },
+      "execution_denominator": 16,
+      "minimum_eligible": 64,
+      "minimum_execution_verified": 13,
+      "scope": "engineering continuation only; no sample certification or superiority claim",
+      "status": "PASS"
+    },
+    "structured": {
+      "candidate_denominator": 80,
+      "checks": {
+        "all_candidates_accounted": true,
+        "all_preselected_units_accounted": true,
+        "audit_passed": true,
+        "candidate_qualification": true,
+        "execution_and_replay": true,
+        "no_candidate_implementation_errors": true,
+        "no_unresolved_errors": true
+      },
+      "execution_denominator": 16,
+      "minimum_eligible": 64,
+      "minimum_execution_verified": 13,
+      "scope": "engineering continuation only; no sample certification or superiority claim",
+      "status": "PASS"
+    }
+  },
+  "metrics": {
+    "frozen_diffusion": {
+      "candidate_errors": 0,
+      "candidate_wall_s": 136.39796609943733,
+      "completed": 80,
+      "coupled_queries": 2242,
+      "eligible": 80,
+      "execution_errors": 0,
+      "execution_verified": 16,
+      "representation_blocked": 0,
+      "selected_outcomes": 16
+    },
+    "late4_diffusion": {
+      "candidate_errors": 0,
+      "candidate_wall_s": 362.75081430282444,
+      "completed": 80,
+      "coupled_queries": 6357,
+      "eligible": 80,
+      "execution_errors": 0,
+      "execution_verified": 16,
+      "representation_blocked": 0,
+      "selected_outcomes": 16
+    },
+    "learned_mean": {
+      "candidate_errors": 0,
+      "candidate_wall_s": 150.35786229837686,
+      "completed": 80,
+      "coupled_queries": 2500,
+      "eligible": 80,
+      "execution_errors": 0,
+      "execution_verified": 16,
+      "representation_blocked": 0,
+      "selected_outcomes": 16
+    },
+    "structured": {
+      "candidate_errors": 0,
+      "candidate_wall_s": 157.29381370032206,
+      "completed": 80,
+      "coupled_queries": 2567,
+      "eligible": 80,
+      "execution_errors": 0,
+      "execution_verified": 16,
+      "representation_blocked": 0,
+      "selected_outcomes": 16
+    }
+  },
+  "new_dataset_rows": 0,
+  "next_stage": "M2_READY",
+  "protocol": {
+    "DDIM_steps": 16,
+    "DEV": false,
+    "TEST": false,
+    "TRAIN_targets": 8,
+    "advantage_required_for_delivery": false,
+    "candidate_coupled_ceiling": 113,
+    "candidate_interval_ceiling": 15872,
+    "candidate_wall_s": 15.0,
+    "candidates_per_task": 5,
+    "cpu_threads": 2,
+    "diagnostic_coupled_ceiling": 48,
+    "diagnostic_gate": "original teachers must qualify; if any latent roundtrip is not eligible, stop late4 only and retain baseline comparison",
+    "diagnostic_validations": 16,
+    "goal_relabel": false,
+    "guidance_allocations": {
+      "12": 27,
+      "13": 27,
+      "14": 27,
+      "15": 29
+    },
+    "max_candidates": 320,
+    "max_output_bytes": 21474836480,
+    "max_selected_executions": 64,
+    "method_selection": "TRAIN only: late4 must pass engineering gate and both counts >= frozen_diffusion; else old validated sampler",
+    "methods": [
+      "structured",
+      "learned_mean",
+      "frozen_diffusion",
+      "late4_diffusion"
+    ],
+    "minimum_eligible_per_method": 64,
+    "minimum_execution_verified_per_method": 13,
+    "model_sha256": "02b2af4dfa4ccef027fdebd246c92635c9c97f338c5c5181075176fd380994ff",
+    "old_1024": false,
+    "pilot": false,
+    "prediction": "v",
+    "relative_efficiency_required": false,
+    "repair_queries": 110,
+    "sampling_seeds": [
+      20262601,
+      20262602
+    ],
+    "selection": "min(score,candidate_id) among eligible; one native execution, no replacement",
+    "strict_multimodal": false,
+    "target_selection": "SHA256(sample_id) order; 4 empty + 4 obstacle endpoint_mode_00..15_v0",
+    "training_updates": 0,
+    "version": "delivery_m1_late_clean_guidance_1",
+    "wall_budget_s": 14400.0
+  },
+  "selection": {
+    "M2_ready": true,
+    "TRAIN_only": true,
+    "method": "late4_diffusion",
+    "new_method_replaces_old": true,
+    "reason": "both frozen count criteria"
+  },
+  "stage": "M1",
+  "status": "FINISHED",
+  "training_updates": 0
+}
