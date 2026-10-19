@@ -1,41 +1,32 @@
 {
-  "version": "delivery_v1",
-  "created_at": "2026-10-19T14:59:16+08:00",
+  "app_goal": {
+    "confirmed_at": "2026-10-19T15:30:50.680872+08:00",
+    "created": true,
+    "previous_goal_cleared": true,
+    "state": "active",
+    "version": "delivery_v1"
+  },
   "authoritative_goal": "DIFFUSION_GOAL_CURRENT.md",
-  "plan": "paper/EXPERIMENT_PLAN.md",
   "base_commit": "04b54adf",
+  "baseline_checkpoint_sha256": "02b2af4dfa4ccef027fdebd246c92635c9c97f338c5c5181075176fd380994ff",
   "baseline_run": "qualified_origin_learn_002",
   "baseline_training_rows": 13774,
-  "baseline_checkpoint_sha256": "02b2af4dfa4ccef027fdebd246c92635c9c97f338c5c5181075176fd380994ff",
+  "created_at": "2026-10-19T14:59:16+08:00",
+  "data": {
+    "execution_units": 16,
+    "max_attempts": 256,
+    "minimum_distinct_targets": 16,
+    "minimum_execution_verified": 13,
+    "minimum_qualified": 64,
+    "slots": 128,
+    "targets": 32
+  },
   "engineering_gate": {
     "candidate_fraction": 0.8,
     "execution_replay_fraction": 0.8,
-    "superiority_required": false,
     "raw_all_pass_required": false,
+    "superiority_required": false,
     "world_loss_ratio_required": false
-  },
-  "data": {
-    "targets": 32,
-    "slots": 128,
-    "max_attempts": 256,
-    "minimum_qualified": 64,
-    "minimum_distinct_targets": 16,
-    "execution_units": 16,
-    "minimum_execution_verified": 13
-  },
-  "training": {
-    "max_updates": 6000
-  },
-  "resources": {
-    "cpu_threads": 2,
-    "max_seconds": 14400,
-    "max_output_gib": 20
-  },
-  "iteration": {
-    "formal_runs_per_block": 1,
-    "bugfix_versions_per_block": 1,
-    "effect_only_retry": false,
-    "skip_completed": true
   },
   "forbidden_runs": [
     "old_1024",
@@ -44,38 +35,48 @@
     "strict_multimodal",
     "TEST"
   ],
-  "app_goal": {
-    "state": "active",
-    "version": "delivery_v1",
-    "previous_goal_cleared": true,
-    "created": true,
-    "confirmed_at": "2026-10-19T15:30:50.680872+08:00"
+  "iteration": {
+    "bugfix_versions_per_block": 1,
+    "effect_only_retry": false,
+    "formal_runs_per_block": 1,
+    "skip_completed": true
+  },
+  "plan": "paper/EXPERIMENT_PLAN.md",
+  "resources": {
+    "cpu_threads": 2,
+    "max_output_gib": 20,
+    "max_seconds": 14400
   },
   "stages": [
     {
       "id": "M0",
-      "status": "PASS_REUSED",
-      "run": "qualified_origin_learn_002"
+      "run": "qualified_origin_learn_002",
+      "status": "PASS_REUSED"
     },
     {
+      "entrypoint": "ff_prior_delivery_guidance/job.ps1",
       "id": "M1",
-      "status": "READY_NOT_IMPLEMENTED",
-      "run": "delivery_guidance_smoke_001"
+      "run": "delivery_guidance_smoke_001",
+      "status": "IMPLEMENTED_READY"
     },
     {
       "id": "M2",
-      "status": "PLANNED",
-      "run": "delivery_dataset_128_001"
+      "run": "delivery_dataset_128_001",
+      "status": "PLANNED"
     },
     {
       "id": "M3",
-      "status": "PLANNED",
-      "run": "delivery_train_dev_001"
+      "run": "delivery_train_dev_001",
+      "status": "PLANNED"
     },
     {
       "id": "M4",
-      "status": "NOT_READY",
-      "run": "delivery_release_001"
+      "run": "delivery_release_001",
+      "status": "NOT_READY"
     }
-  ]
+  ],
+  "training": {
+    "max_updates": 6000
+  },
+  "version": "delivery_v1"
 }

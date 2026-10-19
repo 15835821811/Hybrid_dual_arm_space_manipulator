@@ -35,7 +35,9 @@ def status():
         "historical_mechanism": evidence["historical_mechanism"] if not changed else "UNCONFIRMED",
         "data_inventory": evidence["data_inventory"],
         "old_world_supervision": "HISTORICAL_BLOCKED_NOT_RELABELED",
-        "new_physical_experiments_in_this_goal_revision": 0,
+        "new_physical_experiments_in_this_goal_revision": sum(
+            (ROOT / 'artifacts/v7_1' / item['run'] / 'run.json').exists()
+            for item in policy['stages'] if item['id'] != 'M0'),
         "stages": stages,
         "forbidden_runs": policy["forbidden_runs"],
         "app_goal": policy["app_goal"],

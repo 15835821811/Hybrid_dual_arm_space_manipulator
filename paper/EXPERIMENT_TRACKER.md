@@ -7,7 +7,7 @@
 |B0旧完整机制|qualified_origin_learn_002，稳定13774模型，180/180与36/36|PASS_REUSED|不重跑|
 |当前库|13838 TRAIN/48 VAL，分级标签保留|PASS_REUSED|按当前索引使用|
 |旧四组训练|D=0.914089；原DEV未运行|HISTORICAL_BLOCKED|不晋级C/D，不阻塞新主线|
-|B1采样整合|delivery_guidance_smoke_001|READY_NOT_IMPLEMENTED|一次编码检查+320 TRAIN候选|
+|B1采样整合|delivery_guidance_smoke_001|IMPLEMENTED_READY|9/9软件检查；启动一次编码检查+320 TRAIN槽|
 |B2小批补库|delivery_dataset_128_001|PLANNED|32×4槽，最多256尝试|
 |B3训练和DEV|delivery_train_dev_001|PLANNED|6000更新+720候选/144执行上限|
 |B4交付|delivery_release_001|NOT_READY|数据/模型/报告和下一阶段协议|
