@@ -38,3 +38,8 @@ worker CPU2线程、4小时、20GiB；预留2小时给DEV。软件/来源8项检
 .\ff_prior_expand256_train\job.ps1 report
 .\ff_prior_expand256_train\job.ps1 resume
 ```
+
+
+## 2026-10-19 执行收尾
+
+本协议单次运行已完成：256/256扩库、32/32执行；14222 TRAIN全部参与6000更新；四方法各180/180候选、36/36执行重放；原始审计PASS。新独立审查C1 yes/high、C2 no/high，报告ff_prior_expand256_train/docs/ANALYSIS.md。一次完成resume无重复已留证，后续不再扩库/训练/TEST。工程门通过不等于新模型优越，按交付manifest保留两模型并建议旧模型为默认。

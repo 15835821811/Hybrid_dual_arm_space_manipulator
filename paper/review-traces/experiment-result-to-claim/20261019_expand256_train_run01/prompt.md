@@ -1,0 +1,11 @@
+# Exact bounded reviewer task
+
+你是全新独立paper architect/reviewer，按 C:/Users/admin/.codex/skills/experiment-result-to-claim/SKILL.md 及shared-references/review-tracing.md 执行结果到主张审查。工作区 E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。只读冻结源码和原始实验，不运行训练/仿真/审计/resume，不改运行输出，不依赖旧review或其他对话。可仅写新trace目录 paper/review-traces/experiment-result-to-claim/20261019_expand256_train_run01 下prompt.md,response.md,inputs.json,verdict.json；主执行者会写handoff。审查两阶段：artifacts/v7_1/qualified_expand256_001，artifacts/v7_1/expand256_train_dev_001；协议 ff_prior_expand256/docs/EXPERIMENT_PLAN.md 和 ff_prior_expand256_train/docs/EXPERIMENT_PLAN.md。预期主张C1：按原物理门完成256槽合格数据扩库、真实训练和冻结开发回归，工程闭环可用。C2：新增数据继续训练使Diffusion成功率/世界终点精度稳定改善、优于强样条/均值。请独立读取原始summary/audit/training元数据、少量原始候选执行证据和来源绑定，核对256合格的实际尝试分母、32执行/重放、分级无泛化升级、覆盖是否新增独特目标、TRAIN14222全消费6000更新384000抽样、旧13966准确权重/codec、原DEV4+已用8三种子四方法720/144、失败未决项、物理门未放宽。不复跑审计。自行提取原始180对候选及36对执行世界终点误差(每条双臂max，mm/deg)并分析升降；解释新数据+额外更新混合干预，已用DEV不是真TEST，late4结果非裸网络。检查paper/PAPER_CLAIM_AUDIT.json若有。判断C1/C2各yes/partial/no/confidence/支持与不支持/下一阶段。当前不允许新扩库或TEST，即便门通过亦仅建议。可选模型建议要区分软件summary自动选新模型(仅工程门)与科学上优于旧模型，不能等同。父进程正核验一次training完成resume，稍后会给证据路径；可先独立做审查，发现真实阻断请立即报告。保存完整trace原始响应及输入hash时间，回复主结论。不要写目标报告或提交git。
+
+## Additional evidence pointer from executor
+
+完成resume已只核一次：ff_prior_expand256_train/evidence/completed_resume.json，1491文件清单/mtime与10核心hash不变，NO_WORK_ALREADY_COMPLETE。源扩库resume既有artifacts/v7_1/expand256_train_chain_001/source_completed_resume.json，1651文件7核心hash不变，未重复。请纳入审查，不再次运行resume。
+
+## Inputs and independence
+
+Exact reviewed input list, SHA256 and timestamps are in inputs.json. Main inputs: the two frozen protocols, both raw runs (summary, ledger, failures, frozen identities, execution source ZIP, original generation/candidate files, original execution reports and selections), training metadata and provenance, 64 source parent records, and two sampled native trace arrays. Numerical comparisons were independently extracted from 720 original candidate JSONs and 144 original execution reports. No old review, executor-created final_statistics.json, paired_endpoint_results.csv, delivery_manifest.json or target report was used to establish this verdict. No training, simulation, packaged audit, resume or TEST was run by this reviewer.
