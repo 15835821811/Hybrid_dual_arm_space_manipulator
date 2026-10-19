@@ -1,0 +1,33 @@
+{
+  "admission": "deduplicate; complete state and lineage; MODEL_VALID unless actually executed and independently replayed; failed/unknown execution excluded",
+  "automatic_launch": false,
+  "engineering_prerequisites_pass": true,
+  "exact_task_seed_manifest_frozen": false,
+  "execution_units": 32,
+  "individual_gates": "unchanged historical no-penetration, both world endpoints 5mm/1degree, 2mm geometry step and all existing motion/dynamics/range/replay gates",
+  "max_attempts": 512,
+  "max_attempts_per_slot": 2,
+  "next_continue_gate": {
+    "execution_denominator": 32,
+    "minimum_distinct_targets": 32,
+    "minimum_execution_replay": 26,
+    "minimum_qualification_per_actual_attempt": 0.5,
+    "minimum_qualified": 128
+  },
+  "obstacle_execution_units": 16,
+  "requires_separate_run_authorization": true,
+  "resource_contract": {
+    "max_output_gib": 20,
+    "threads": 2,
+    "wall_s": 14400
+  },
+  "selection": "TRAIN only; deterministic metadata coverage ranking; 32 obstacle and 32 no-obstacle targets; 64 distinct origins where available. Exclude all used DEV and VAL/TEST families. Freeze exact task hashes, seeds, origins and execution units before generation.",
+  "slots": 256,
+  "slots_per_target": 4,
+  "status": "PROTOCOL_ONLY_NOT_STARTED",
+  "stop": "at frozen attempt/time/storage limits; never silently fill partial quota or recurse to 512/1024",
+  "superiority_time_or_query_win_required": false,
+  "targets": 64,
+  "unit_selection": "first frozen-order eligible candidate per preselected target; no replacement after execution failure",
+  "version": "next_256_coverage_proposal_v1"
+}

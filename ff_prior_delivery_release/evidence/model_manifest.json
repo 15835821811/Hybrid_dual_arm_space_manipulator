@@ -1,0 +1,76 @@
+{
+  "TEST_final_model_freeze": false,
+  "advantage": "NOT_ESTABLISHED",
+  "binding": {
+    "bytes": 530,
+    "path": "artifacts/v7_1/delivery_train_dev_001/checkpoint_binding.json",
+    "sha256": "b3775b7798a73a6b15c470442bef0c49dfdee01fab1f6c91456b9fcf4d768860"
+  },
+  "candidate_budget": {
+    "coupled_queries": 113,
+    "integration_intervals": 15872,
+    "network_calls": 16,
+    "repair_queries": 110,
+    "wall_s": 15
+  },
+  "comparison": {
+    "bytes": 4299,
+    "path": "artifacts/v7_1/delivery_train_dev_001/summary.json",
+    "sha256": "8c8e840b8b728d95c84c0ea843c1cbfef2cce0ee740186ca6c07a3aedaadd617"
+  },
+  "dataset": {
+    "bytes": 9484807,
+    "path": "artifacts/v7_1/delivery_dataset_128_001/training_index.json",
+    "sha256": "9ed1eb2b3b33405d34f012b0625b2c02cd0b28b7dd3e464b643144bf449e5829"
+  },
+  "engineering_gate": {
+    "candidate_denominator": 180,
+    "checks": {
+      "all_candidates_accounted": true,
+      "all_preselected_units_accounted": true,
+      "audit_passed": true,
+      "candidate_qualification": true,
+      "execution_and_replay": true,
+      "no_candidate_implementation_errors": true,
+      "no_unresolved_errors": true
+    },
+    "execution_denominator": 36,
+    "minimum_eligible": 144,
+    "minimum_execution_verified": 29,
+    "scope": "engineering continuation only; no sample certification or superiority claim",
+    "status": "PASS"
+  },
+  "executed_source": {
+    "bytes": 372138,
+    "path": "artifacts/v7_1/delivery_train_dev_001/executed_source.zip",
+    "sha256": "e3d94155332d021cfdbf36684c4b665c158016e6c2e5ea141925bfda98bd1598"
+  },
+  "files": {
+    "codec.json": {
+      "bytes": 984483,
+      "path": "artifacts/v7_1/delivery_train_dev_001/learning/goal_loss/codec.json",
+      "sha256": "4e8997e6804eaa7e6b44ac7ef8ee2623c0d535e3011d7cd6f49e6c0a1516033a"
+    },
+    "model.pt": {
+      "bytes": 1234816,
+      "path": "artifacts/v7_1/delivery_train_dev_001/learning/goal_loss/model.pt",
+      "sha256": "87f7c48957986ff5b86da5d751cac0fb2497b7879205788dccb66519bff18c82"
+    },
+    "training.json": {
+      "bytes": 2030990,
+      "path": "artifacts/v7_1/delivery_train_dev_001/learning/goal_loss/training.json",
+      "sha256": "2ba86c95571795f1f145049b524d43843733fa09e30d96ff652b92c066fad06b"
+    }
+  },
+  "raw_proposal_success": "NOT_REMEASURED_IN_M3",
+  "sampler": "late4_diffusion",
+  "selected_method": "expanded_diffusion",
+  "source_commit": "09ba8bae",
+  "training_proof": {
+    "bytes": 325,
+    "path": "artifacts/v7_1/delivery_train_dev_001/training_verification.json",
+    "sha256": "514fb3a2b9cb8f2c8215152caae839b22fe888374ca7398ebe02599a17fd8fa1"
+  },
+  "version": "delivery_model_v1",
+  "world_loss_scope": "v MSE + teacher-local pose surrogate; not exact nonlinear endpoint-gradient supervision"
+}

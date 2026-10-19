@@ -28,12 +28,20 @@ def status():
                                 ("status", "stage", "pid", "heartbeat", "report") if k in runtime}
             entry["status"] = "SEE_RUNTIME_NOT_AN_ACCEPTANCE_VERDICT"
         stages.append(entry)
+    release_dir = ROOT / 'ff_prior_delivery_release/evidence'
+    current_data = read(release_dir / 'dataset_manifest.json') if (release_dir / 'dataset_manifest.json').is_file() else None
     return {
         "goal_version": policy["version"],
         "source_evidence": "UNCHANGED" if not changed else "CHANGED_REVIEW_REQUIRED",
         "changed_sources": changed,
         "historical_mechanism": evidence["historical_mechanism"] if not changed else "UNCONFIRMED",
-        "data_inventory": evidence["data_inventory"],
+        "historical_data_inventory": evidence["data_inventory"],
+        "data_inventory": {
+            "counts_by_split": current_data['counts_by_split'],
+            "counts_by_split_and_level": current_data['counts_by_split_and_level'],
+            "index": current_data['index'],
+        } if current_data else evidence["data_inventory"],
+        "delivery_completion": read(release_dir / 'completion.json') if (release_dir / 'completion.json').is_file() else "PENDING",
         "old_world_supervision": "HISTORICAL_BLOCKED_NOT_RELABELED",
         "new_physical_experiments_in_this_goal_revision": sum(
             (ROOT / 'artifacts/v7_1' / item['run'] / 'run.json').exists()

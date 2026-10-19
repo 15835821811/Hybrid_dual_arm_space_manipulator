@@ -1,4 +1,5 @@
 {
+  "TEST": "NOT_READY_NOT_RUN",
   "app_goal": {
     "confirmed_at": "2026-10-19T15:30:50.680872+08:00",
     "created": true,
@@ -21,6 +22,8 @@
     "slots": 128,
     "targets": 32
   },
+  "diffusion_advantage": "NOT_ESTABLISHED",
+  "engineering_delivery": "PASS",
   "engineering_gate": {
     "candidate_fraction": 0.8,
     "execution_replay_fraction": 0.8,
@@ -73,13 +76,16 @@
       "entrypoint": "ff_prior_delivery_train/job.ps1",
       "id": "M3",
       "run": "delivery_train_dev_001",
+      "selected_method": "expanded_diffusion",
       "source_commit": "09ba8bae",
-      "status": "RUNNING"
+      "status": "PASS"
     },
     {
+      "entrypoint": "ff_prior_delivery_release/job.ps1",
       "id": "M4",
+      "review": "20261019_delivery_run01",
       "run": "delivery_release_001",
-      "status": "NOT_READY"
+      "status": "PASS"
     }
   ],
   "training": {
