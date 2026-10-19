@@ -1,0 +1,128 @@
+{
+  "D_both": "research candidate only; modest TRAIN improvement, no DEV qualification",
+  "TEST": false,
+  "broad1024": false,
+  "full_goal_achieved": false,
+  "keep_development_default": "qualified_origin_learn_002/learning/goal_loss",
+  "new_development_default": false,
+  "new_native_executions": 0,
+  "new_training_rows": 0,
+  "pilot": false,
+  "raw_evidence_hashes": {
+    "TRAIN_selection.json": "fbe3fba4faa39ae1bbf26448a6bacac734d5b2b6c0c305d223cf5bb551bd4824",
+    "independent_verification.json": "357370f88b99996d662de3fc0e86fdee1a9d5498ff3aeb5100e7f603286391a9",
+    "runtime_cache_audit.json": "8eee8c9e959dee003dff6a94c441359e6f1693fc9326e16f4a7db0b2b781846f",
+    "status.json": "c6278210f99e2731c9d4561a43dec01f2da3eab8e852a790012f9064db440bb3",
+    "summary.json": "c46d7d8897350293e41d4ea17a2576161df9d15f688351b101867d43f1cf80ad",
+    "training_verification.json": "f5d4609875a66da830396cb9d401c4df402746e3b857b498396c19504012fc7a"
+  },
+  "raw_evidence_root": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\paired_objectives_smoke_001",
+  "review_verdict": {
+    "audit_skill": "experiment-result-to-claim",
+    "causal_boundaries": {
+      "clipping": "240/240 world events clip, but no unclipped/normalized causal control exists; clipping coefficient does not equal AdamW parameter step scaling.",
+      "local_deletion": "A controlled contribution is supported within this paired run, not a unique explanation for the previous run.",
+      "noise": "Both measured noise bands degrade for A/C; training noise time is bound to correction variant and event counts differ64/56. No high-noise-only causal claim.",
+      "pose_objective": "Squared aggregate loss improvement does not imply every position and orientation inequality improves or passes.",
+      "probe_definition": "One denoising prediction from a noisy TRAIN teacher trajectory plus saved coupled endpoint propagation; not 16-step DDIM or DEV.",
+      "world_scale": "Weighted world gradients dominate on recorded world events; the finding is a diagnostic, not a proven cause of endpoint degradation."
+    },
+    "claim_supported": "partial",
+    "claims": {
+      "C1": {
+        "claim_supported": "yes",
+        "confidence": "high",
+        "scope": "Only tested numerical world-model finite-difference gradients, network VJP/small-step descent and paired implementation. Eight TRAIN diagnostic cases and one paired training seed.",
+        "what_results_dont_support": [
+          "Globally valid analytical gradients or derivatives of native physical execution.",
+          "Guaranteed descent of mixed AdamW updates, stable learned endpoint generation, generalization or multiple-seed robustness."
+        ],
+        "what_results_support": [
+          "8/8 parameter-direction checks and descent gates passed; all three tested negative-gradient steps decrease each case.",
+          "Same initial checkpoint, frozen codec, data manifest and shared random tensors; 6000 updates and 384000 draws per arm; 240 current-prediction world-gradient events."
+        ]
+      },
+      "C2": {
+        "DEV_status": "BLOCKED_BEFORE_RUN",
+        "TRAIN_gate_threshold_vs_B": 1.0,
+        "TRAIN_gate_threshold_vs_warm": 0.8,
+        "best_arm": "D_both",
+        "claim_supported": "no",
+        "confidence": "high",
+        "median_paired_ratio_vs_B": 0.8536475351189914,
+        "median_paired_ratio_vs_warm": 0.9140885911213292,
+        "scope": "Pre-registered TRAIN eligibility failed; downstream DEV/DDIM/native execution and superiority were not run in this round.",
+        "selected_arm": null,
+        "what_results_dont_support": [
+          "Meeting the 20% TRAIN improvement gate.",
+          "Increasing simultaneous 5mm/1degree endpoint qualification: warm5/32 versus D4/32.",
+          "DEV failure or success, full DDIM improvement, execution qualification, unseen generalization, or Diffusion superiority over strong spline and conditional mean."
+        ],
+        "what_results_support": [
+          "D improves paired scalar loss relative to B on 25/32 development probes and relative to warm on 17/32.",
+          "Retaining local loss improves this fixed paired run, while world-loss effects depend on local-loss presence."
+        ]
+      }
+    },
+    "confidence": "high",
+    "data_blocked_by_missing_paper_audit": false,
+    "experiment_id": "paired_objectives_smoke_001",
+    "files": {
+      "findings": "findings.md",
+      "handoff": "handoff.md",
+      "inputs": "inputs.json",
+      "response": "response.md",
+      "verification_results": "verification_results.json",
+      "verification_script": "verify_saved_evidence.py"
+    },
+    "generated_at": "2026-10-19T03:13:45.003873+00:00",
+    "missing_evidence": [
+      "A world-loss arm passing the frozen TRAIN gate.",
+      "An isolated scale/clipping/noise intervention to establish the proposed failure mechanism.",
+      "Complete DDIM and frozen same-budget DEV comparisons, followed by native execution and replay for eligible models.",
+      "Strong spline and conditional-mean comparisons, multiple training seeds, and unused development tasks.",
+      "Paper-to-evidence claim audit when downstream writing is prepared."
+    ],
+    "next_experiments_needed": [
+      "Suggestion only, not authorization: freeze a bounded single-factor world-gradient scale/normalization comparison while retaining local loss and holding the other choices fixed.",
+      "If noise attribution is pursued later, separately freeze a variant/noise-decoupled design.",
+      "Only after the existing TRAIN gate passes, perform the frozen downstream comparisons and then seek multiple-seed and unused-task evidence."
+    ],
+    "paper_claim_audit": "unavailable",
+    "pending_external_review": false,
+    "pending_source_audit": false,
+    "review_role": "independent paper architect/reviewer",
+    "review_trace": "20261019_paired_run01",
+    "routing_action": "supplement_after_separate_protocol; close current round; keep DEV BLOCKED; do not automatically launch new experiments",
+    "suggested_claim_revision": "\u5728\u5355\u4e2a\u56fa\u5b9a\u914d\u5bf9TRAIN\u5b9e\u9a8c\u4e2d\uff0c\u5f53\u524d\u9884\u6d4b\u5904\u7684\u5b8c\u6574102\u7ef4\u6570\u503c\u4e16\u754c\u7ec8\u70b9\u68af\u5ea6\u901a\u8fc7\u53c2\u6570\u94fe\u5f0f\u4f20\u9012\u53ca\u5c0f\u6b65\u4e0b\u964d\u8bca\u65ad\u3002\u4fdd\u7559\u5c40\u90e8\u9879\u660e\u663e\u7f13\u89e3\u672c\u8f6e\u7ec8\u70b9\u9000\u5316\uff0c\u4f46\u6700\u4f73\u7ec4\u5408\u672a\u8fbe\u5230\u9884\u6ce8\u518cTRAIN\u95e8\uff0c\u7aef\u70b9\u540c\u65f6\u8fbe\u6807\u7387\u672a\u63d0\u9ad8\uff0c\u5c1a\u65e0\u672c\u8f6eDEV\u3001\u5b8c\u6574DDIM\u548c\u771f\u5b9e\u6267\u884c\u4f18\u52bf\u8bc1\u636e\u3002",
+    "validation": {
+      "checks_passed": 7411,
+      "executor_resume": "NO_WORK_ALREADY_COMPLETE",
+      "reviewer_additional_physics_calls": 0,
+      "reviewer_read_only_checks": "PASS",
+      "reviewer_scope": {
+        "DDIM_or_execution_run": false,
+        "all240_current_prediction_audit_repeated": false,
+        "all_source_row_audit_repeated": false,
+        "endpoint_cases": 160,
+        "fixed_one_step_neural_predictions": 160,
+        "fixed_random_tensor_spot_checks": 5,
+        "optimizer_final_states": 4,
+        "paired_sequence_internal_checks": 6000,
+        "resume_execution_repeated_by_reviewer": false,
+        "single_step_cases": 8,
+        "single_step_full102_arithmetic": 8,
+        "training_replayed": false,
+        "world_event_metadata": 240,
+        "world_full102_and_weight_VJP_spot_checks": 8
+      },
+      "worker_source_audit": "PASS",
+      "worker_terminal_status": "FINISHED_WITH_BLOCKED_ITEMS",
+      "worker_training_verification": "PASS"
+    },
+    "what_results_dont_support": "Stable target learning, qualification of new models for DEV/execution, Diffusion advantages or unique causal explanations involving deleted local loss, clipping or high noise.",
+    "what_results_support": "Numerical world-model endpoint gradients are usable at measured points; paired objective comparisons show a local-loss benefit in this one-seed fixed TRAIN setting. D mitigates degradation but remains ineligible.",
+    "writing_verdict": "provisional \u2014 no paper claim audit available"
+  },
+  "status": "COMPLETE_WITH_DEV_BLOCKED"
+}

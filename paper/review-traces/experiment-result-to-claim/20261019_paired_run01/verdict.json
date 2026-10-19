@@ -1,0 +1,107 @@
+{
+  "audit_skill": "experiment-result-to-claim",
+  "experiment_id": "paired_objectives_smoke_001",
+  "review_role": "independent paper architect/reviewer",
+  "review_trace": "20261019_paired_run01",
+  "generated_at": "2026-10-19T03:13:45.003873+00:00",
+  "claim_supported": "partial",
+  "confidence": "high",
+  "claims": {
+    "C1": {
+      "claim_supported": "yes",
+      "confidence": "high",
+      "scope": "Only tested numerical world-model finite-difference gradients, network VJP/small-step descent and paired implementation. Eight TRAIN diagnostic cases and one paired training seed.",
+      "what_results_support": [
+        "8/8 parameter-direction checks and descent gates passed; all three tested negative-gradient steps decrease each case.",
+        "Same initial checkpoint, frozen codec, data manifest and shared random tensors; 6000 updates and 384000 draws per arm; 240 current-prediction world-gradient events."
+      ],
+      "what_results_dont_support": [
+        "Globally valid analytical gradients or derivatives of native physical execution.",
+        "Guaranteed descent of mixed AdamW updates, stable learned endpoint generation, generalization or multiple-seed robustness."
+      ]
+    },
+    "C2": {
+      "claim_supported": "no",
+      "confidence": "high",
+      "scope": "Pre-registered TRAIN eligibility failed; downstream DEV/DDIM/native execution and superiority were not run in this round.",
+      "best_arm": "D_both",
+      "median_paired_ratio_vs_warm": 0.9140885911213292,
+      "median_paired_ratio_vs_B": 0.8536475351189914,
+      "TRAIN_gate_threshold_vs_warm": 0.8,
+      "TRAIN_gate_threshold_vs_B": 1.0,
+      "selected_arm": null,
+      "DEV_status": "BLOCKED_BEFORE_RUN",
+      "what_results_support": [
+        "D improves paired scalar loss relative to B on 25/32 development probes and relative to warm on 17/32.",
+        "Retaining local loss improves this fixed paired run, while world-loss effects depend on local-loss presence."
+      ],
+      "what_results_dont_support": [
+        "Meeting the 20% TRAIN improvement gate.",
+        "Increasing simultaneous 5mm/1degree endpoint qualification: warm5/32 versus D4/32.",
+        "DEV failure or success, full DDIM improvement, execution qualification, unseen generalization, or Diffusion superiority over strong spline and conditional mean."
+      ]
+    }
+  },
+  "what_results_support": "Numerical world-model endpoint gradients are usable at measured points; paired objective comparisons show a local-loss benefit in this one-seed fixed TRAIN setting. D mitigates degradation but remains ineligible.",
+  "what_results_dont_support": "Stable target learning, qualification of new models for DEV/execution, Diffusion advantages or unique causal explanations involving deleted local loss, clipping or high noise.",
+  "missing_evidence": [
+    "A world-loss arm passing the frozen TRAIN gate.",
+    "An isolated scale/clipping/noise intervention to establish the proposed failure mechanism.",
+    "Complete DDIM and frozen same-budget DEV comparisons, followed by native execution and replay for eligible models.",
+    "Strong spline and conditional-mean comparisons, multiple training seeds, and unused development tasks.",
+    "Paper-to-evidence claim audit when downstream writing is prepared."
+  ],
+  "suggested_claim_revision": "在单个固定配对TRAIN实验中，当前预测处的完整102维数值世界终点梯度通过参数链式传递及小步下降诊断。保留局部项明显缓解本轮终点退化，但最佳组合未达到预注册TRAIN门，端点同时达标率未提高，尚无本轮DEV、完整DDIM和真实执行优势证据。",
+  "next_experiments_needed": [
+    "Suggestion only, not authorization: freeze a bounded single-factor world-gradient scale/normalization comparison while retaining local loss and holding the other choices fixed.",
+    "If noise attribution is pursued later, separately freeze a variant/noise-decoupled design.",
+    "Only after the existing TRAIN gate passes, perform the frozen downstream comparisons and then seek multiple-seed and unused-task evidence."
+  ],
+  "routing_action": "supplement_after_separate_protocol; close current round; keep DEV BLOCKED; do not automatically launch new experiments",
+  "causal_boundaries": {
+    "local_deletion": "A controlled contribution is supported within this paired run, not a unique explanation for the previous run.",
+    "world_scale": "Weighted world gradients dominate on recorded world events; the finding is a diagnostic, not a proven cause of endpoint degradation.",
+    "clipping": "240/240 world events clip, but no unclipped/normalized causal control exists; clipping coefficient does not equal AdamW parameter step scaling.",
+    "noise": "Both measured noise bands degrade for A/C; training noise time is bound to correction variant and event counts differ64/56. No high-noise-only causal claim.",
+    "probe_definition": "One denoising prediction from a noisy TRAIN teacher trajectory plus saved coupled endpoint propagation; not 16-step DDIM or DEV.",
+    "pose_objective": "Squared aggregate loss improvement does not imply every position and orientation inequality improves or passes."
+  },
+  "validation": {
+    "reviewer_read_only_checks": "PASS",
+    "checks_passed": 7411,
+    "reviewer_scope": {
+      "endpoint_cases": 160,
+      "fixed_one_step_neural_predictions": 160,
+      "single_step_cases": 8,
+      "single_step_full102_arithmetic": 8,
+      "world_event_metadata": 240,
+      "world_full102_and_weight_VJP_spot_checks": 8,
+      "paired_sequence_internal_checks": 6000,
+      "optimizer_final_states": 4,
+      "all_source_row_audit_repeated": false,
+      "fixed_random_tensor_spot_checks": 5,
+      "resume_execution_repeated_by_reviewer": false,
+      "all240_current_prediction_audit_repeated": false,
+      "training_replayed": false,
+      "DDIM_or_execution_run": false
+    },
+    "worker_training_verification": "PASS",
+    "worker_source_audit": "PASS",
+    "worker_terminal_status": "FINISHED_WITH_BLOCKED_ITEMS",
+    "executor_resume": "NO_WORK_ALREADY_COMPLETE",
+    "reviewer_additional_physics_calls": 0
+  },
+  "paper_claim_audit": "unavailable",
+  "writing_verdict": "provisional — no paper claim audit available",
+  "data_blocked_by_missing_paper_audit": false,
+  "pending_external_review": false,
+  "pending_source_audit": false,
+  "files": {
+    "response": "response.md",
+    "verification_script": "verify_saved_evidence.py",
+    "verification_results": "verification_results.json",
+    "inputs": "inputs.json",
+    "handoff": "handoff.md",
+    "findings": "findings.md"
+  }
+}

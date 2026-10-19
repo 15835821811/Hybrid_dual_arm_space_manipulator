@@ -1,16 +1,16 @@
-# 当前实验进度：世界终点优化的配对诊断
+# 四组配对训练已完成，DEV改善门未通过
 
-|Run ID|阶段|目的/方法|分区|主要门|状态|说明|
-|---|---|---|---|---|---|---|
-|world_endpoint_smoke_001|上一轮|真实终点监督闭环|TRAIN/冻结DEV|实现和物理审计|FINISHED dade7190|完整通过；TRAIN损失比4.608628、神经收益FAIL；保留64合格修正和失败模型|
-|paired_objectives_smoke_001|M0|来源及代码验证|既有TRAIN/VAL|源码和来源hash、真实物理回归测试|PASS / WORKER_RUNNING|独立ff_prior_paired_objectives；13/13测试；178645来源/231源码核验PASS；正式科学结果仍待测|
-|paired_objectives_smoke_001|M1|8例TRAIN参数单步|TRAIN|完整102梯度+参数方向+真实下降|PENDING|门过才开始四组|
-|paired_objectives_smoke_001|M2|v/local/world/both四组|相同13838 TRAIN|6000更新、同初始化/批次/噪声、240真梯度|PENDING|不增加数据、不换强基准|
-|paired_objectives_smoke_001|M3|TRAIN选组后同预算smoke|原DEV4+已用8开发|TRAIN比≤0.8且不劣B，720候选/144执行上限|DEPENDENT|未通过不启动DEV；无TEST|
-|paired_objectives_smoke_001|M4|原始审计/独立审查/恢复/报告|本轮原始结果|可重建证据、NO_WORK恢复、仅任务提交|PENDING|后台结束后收尾|
-|qualified_origin_batch_next|长期后续|1024槽扩库|TRAIN|另冻范围和资格门|PREPARED_NOT_LAUNCHED|用户最新要求保持暂停|
-|pilot/TEST|长期后续|最终覆盖与一次性检验|未触碰TEST|未来模型/协议冻结与范围授权|BLOCKED_BY_CURRENT_SCOPE|本轮不读取、不运行|
+|阶段|状态|证据与边界|
+|---|---|---|
+|软件/来源|PASS|13/13测试，178645来源/231源码|
+|TRAIN单步诊断|PASS|8/8参数梯度方向；三个小步均下降|
+|四组真实训练|PASS|各6000更新、384000抽取，13838TRAIN全部使用，同权重和序列|
+|真实终点梯度审计|PASS|C/D各120，共240个当前预测由保存权重重建|
+|固定TRAIN探针|部分改善|A3.348868、B1.048363、C4.710018、D0.914089；D位姿4/32，旧5/32|
+|原冻结DEV复核|BLOCKED_NOT_RUN|C/D均未满足相对warm≤0.8；没有候选和执行|
+|来源/原始结果/独立审查|完成|见本轮ANALYSIS和新的review-traces，收益边界保留|
+|完成resume|PASS|NO_WORK_ALREADY_COMPLETE，9项核心hash不变|
+|旧1024/pilot/TEST|NOT_STARTED|用户当前范围禁止|
+|长期目标|未完成|下一优先：保留局部G，TRAIN有界优化尺度诊断；尚未启动新实验|
 
-用户已恢复本轮实际执行；旧应用目标卡片不可通过现有goal工具原地改写/恢复。统一目标以DIFFUSION_GOAL_CURRENT.md和本轮代码协议为准。历史目标、计划及tracker均保存在ff_prior_paired_objectives/docs/history/。长期目标未完成。
-
-启动记录：源码ded2d537；worker PID 149432，观察阶段 preflight，心跳存活。独立输出artifacts/v7_1/paired_objectives_smoke_001；接续automation已恢复，每30分钟只检查状态，运行正常时安静等待，结束后审查与报告。
+报告：ff_prior_paired_objectives/docs/ANALYSIS.md。后台2497.297秒，旧模型/数据/结果/用户修改保留；本轮没有新增数据和正式力矩执行。
