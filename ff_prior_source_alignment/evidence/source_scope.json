@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-19",
+  "repository": "https://github.com/zhanglooong/htdcr-actuator-aware-diffusion-planning",
+  "commit": "900d781ba63f0123dff95e49a76d51cb49a74803",
+  "retrieval": "GitHub plugin metadata/tree/README; fresh shallow clone verified at the same commit",
+  "other_project_conversations_used": false,
+  "paper": {
+    "title": "Actuator-aware diffusion motion planning for hyper-redundant tendon-driven continuum robots",
+    "doi": "10.1016/j.robot.2026.105754",
+    "publisher_url": "https://www.sciencedirect.com/science/article/pii/S0921889026004252",
+    "bibliographic_record": "Robotics and Autonomous Systems 207 (January 2027), 105754",
+    "accessible": "publisher-indexed abstract, introduction and section previews",
+    "full_text": "NOT_VERIFIED; direct page fetch returned 403; no PDF/TeX in pinned repository tree",
+    "actual_training_size_or_dataset_pass_rate": "NOT_VERIFIED"
+  },
+  "initial_probe_environment_issue": {
+    "issue": "local Python environment lacked tqdm",
+    "resolution": "installed tqdm 4.67.1 without dependencies into artifacts/reference_audits/htdcr_900d781_20261019/deps; existing venv unchanged",
+    "synthetic_dependency_stub": false
+  },
+  "claim_intent_manifests": [{
+    "manifest_id": "source-alignment-20261019-01",
+    "claims": [
+      {"claim_id":"C1","claim_text":"Upstream constructs a joint-endpoint-conditioned spline prior, then applies actuator refinement and inference guidance.","planned_refs":["pinned_repository"]},
+      {"claim_id":"C2","claim_text":"Code defaults and newly run numerical probes are not proof of the paper's actual dataset size or success rates.","planned_refs":["pinned_repository","publisher_preview"]},
+      {"claim_id":"C3","claim_text":"The current floating robot has a different target contract, and its final-step-only guidance differs from upstream multi-step guidance.","planned_refs":["pinned_repository","current_source"]},
+      {"claim_id":"C4","claim_text":"The existing dataset is highly sparse per exact task; D's scalar improvement does not satisfy the historical gate.","planned_refs":["local_alignment_002.json","paired_saved_probes"]}
+    ],
+    "negative_constraints":["No other conversation evidence","No paper full-text claim","No upstream numerical probe represented as local robot execution","No historical gate rewriting","No new training/DEV/pilot/TEST or production expansion"]
+  }]
+}

@@ -1,3 +1,17 @@
+# 2026-10-19 HTDCR源独立核查与目标调整
+
+分析报告：ff_prior_source_alignment/docs/ANALYSIS.md；待实施协议：ff_prior_source_alignment/docs/NEXT_PROTOCOL.md。
+
+- Source: 900d781ba63f0123dff95e49a76d51cb49a74803；不使用其他对话。
+- 原仓库函数探针：8对40条，无障碍10秒100点；修正前31/40、修正后39/40；不是论文结果，也不是本机器人验证。
+- 当前只读数据索引：13838 TRAIN/48 VAL，13886记录哈希和家族隔离PASS；没有新增数据/训练/执行。
+- 新前瞻TRAIN分项计算器10项软件测试通过。初次VAL角色误报保留并修复，正式inventory为local_alignment_002.json。
+- 旧D比0.914089、位姿4/32，旧DEV仍BLOCKED；不改写冻结历史门。
+- 目标改为分开验证后期去噪内引导与受控世界监督；R1/R2待实施运行。
+- 原1024槽扩库、pilot、study、strict_multimodal及TEST未启动；长期目标未完成。
+
+---
+
 # 四组配对训练已完成，DEV改善门未通过
 
 |阶段|状态|证据与边界|

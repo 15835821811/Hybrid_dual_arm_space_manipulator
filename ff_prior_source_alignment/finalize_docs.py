@@ -1,0 +1,97 @@
+"""One-time goal/tracker update after source analysis; launches no jobs."""
+import hashlib
+import json
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+PACKAGE=Path(__file__).resolve().parent
+
+
+def main():
+    archive=PACKAGE/'docs/history/GOAL_before_source_alignment_20261019.md'
+    if archive.exists():
+        raise FileExistsError('closeout already written')
+    goal=ROOT/'DIFFUSION_GOAL_CURRENT.md'
+    archive.parent.mkdir(parents=True,exist_ok=True)
+    archive.write_bytes(goal.read_bytes())
+    text='''# 当前统一研究目标与执行边界
+
+2026-10-19 按用户“仅依据HTDCR项目源核查并调整”的要求更新。来源是全新取得的900d781ba63f0123dff95e49a76d51cb49a74803源码、出版社可访问预览，以及当前项目源代码和原始结果；没有读取其他项目对话。调整前全文保存在ff_prior_source_alignment/docs/history/。旧实验与失败结论全部保留。
+
+## 最终目标
+
+形成能在指定双末端世界目标下稳定生成合格自由漂浮轨迹的完整规划机制，验证Diffusion相对强样条与条件均值的可复现额外贡献，并按实际覆盖缺口逐批构建可追溯、分级验证的数据集。不预设实验必胜；不能通过削弱强基线、重标失败目标、改变物理门或隐藏修正成本制造优势。
+
+分别报告软件实现、MODEL_VALID数据资格、预选真实67力矩执行与独立重放、Diffusion收益。裸网络不全合格不自动否定引导规划机制；完整共同修正成功也不自动证明网络优势。查询/耗时受预算限制并如实记录，不要求相对胜出。
+
+## 最新证据与调整理由
+
+- paired_objectives_smoke_001完成、原始审计PASS，8/8参数单步检查通过；四组同13838数据、同旧权重、同批次噪声各6000更新。D真实世界终点配对损失比0.914089，低于B但未达≤0.8，位姿通过4/32低于旧5/32。因此旧协议DEV仍BLOCKED，未运行，D不晋级。
+- 当前库13838 TRAIN/48 VAL；本次13886记录哈希及家族隔离检查PASS。13495精确TRAIN任务中13405仅一条。资格标签为既有结果，本次没有新增数据或物理执行。
+- 参考项目以已知q_start/q_goal生成样条先验，主训练是噪声MSE，采样多次硬写边界并多步引导。当前自由漂浮世界目标不能靠固定q_goal保证；当前采样只在最后干净步调用共同修正器。
+- 因此世界终点训练监督保留为独立适配分支，不再成为完整引导机制的唯一研究路线。现有合格前向数据继续保留，不盲目增加同类单轨迹世界标签。
+- 同名论文可核实摘要/章节预览；未取得全文，实际训练规模和成功率未核实。参考生成器默认100000对×5不等于已验证论文数据量。
+
+## 分阶段推进
+
+|阶段|具体动作|当前状态和停止门|
+|---|---|---|
+|R0 来源与数据接口|固定上游SHA，核对生成/修正/训练/采样，检查本地索引并建立分项指标|已完成；源码函数探针8对40条独立保存，不入本机器人库|
+|R1 引导机制|旧13774模型固定；已有8个TRAIN目标×2种子×4方法×5候选；比较最后步修正与后4次clean预测引导，总计16网络调用/110耦合修正上限不变|协议已保存，实施与运行尚未开始；只在TRAIN先验证，物理门和强基线不变|
+|R2 终点学习|保留每批局部G，单独改变世界梯度尺度/实际步长，再另验频率与噪声覆盖|旧D不晋级；先有界单步诊断；新的学习实验须冻结配对随机序列和完整预算|
+|R2-DEV 原冻结复核|学习分支通过≤0.8且不劣于B，并满足新协议分项不退化门后，原DEV4＋已用8开发任务、三种子、720候选/144执行上限|旧实验BLOCKED保持；不得用R1结果改写旧门或冒充D通过；本次未启动新DEV|
+|R3 合格数据覆盖|重用已有16目标×4修正数据；条件学习收益有证据后按TRAIN覆盖缺口冻结小批补充，独立统计模式和物理等级|未启动；主库不要求每目标五条，strict_multimodal仍遵原合同|
+|R4 扩库与最终检验|多训练种子/困难任务/强基线验证支持贡献后，按覆盖矩阵和分级配额有界扩库；最终模型和未触碰TEST协议另行冻结|1024槽、pilot、study、strict_multimodal运行和最终TEST本阶段均未启动，部分门通过不能自动解锁|
+
+R1不是把旧学习分支的≤0.8门放宽为完整机制通过：它使用旧模型，测的是采样策略，独立输出与独立结论。R1只达到继续研究门时不宣称优势、不自动扩库，不使用DEV选择采样超参。详细方法、种子、资源和门槛见ff_prior_source_alignment/docs/NEXT_PROTOCOL.md。
+
+## 不变物理、数据及工作区约束
+
+保留仅不穿透的历史几何覆盖与现有数值容差、双末端世界5 mm/1°、完整初态、17→67映射、自由漂浮耦合、全机几何、原始力矩执行和独立重放。导向缓冲与内部网格不能替代硬验收。不得固定基座、失败后重标目标、利用私有教师终点关节角作推理条件、mock实验、把抽样执行等级推广到未执行轨迹。
+
+保留main、旧分支、旧模型、数据、全部结果、用户修改与旧作业；不回退、强推、自动停止或上传大规模数据。新增实验必须独立源码身份和输出，不原地修改冻结旧包后冒用旧运行ID。资源继续以CPU2线程、4小时、20GiB输出为上限，先做smoke/有界TRAIN诊断。
+
+## 最终结束门
+
+1. 指定世界目标在预冻结协议中稳定合格，模型验收、执行、重放分别有原始证据，恢复不重复。
+2. Diffusion额外贡献由强基线、多个训练种子、明确任务范围与失败明细支持；若不成立，优越性目标未达成。
+3. 数据覆盖与规模达到扩库前冻结矩阵和分级配额，来源/家族隔离/去重/固定目标不重标全部核实。
+4. 固定最终模型和一次性未触碰TEST协议后完成独立最终检验，不用TEST调参重试。当前尚不具备启动条件。
+5. 代码、实际软件检查、后台日志、结果分析、独立审查及提交齐备。本次来源分析不算新的完整训练/机器人实验；长期目标尚未完成。
+
+## 当前终端入口
+
+旧实验：`.\\ff_prior_paired_objectives\\job.ps1 status|report|resume`，已完成接续保持暂停。
+本次核查：`.\\ff_prior_source_alignment\\job.ps1 status|report|plan`，明确显示下一协议尚未实施运行，不伪装后台任务。
+
+应用目标卡片旧文本/暂停状态受工具能力限制；本文件记录用户授权下的现行研究计划，不修改应用内部存储或创建重复目标绕过。
+'''
+    goal.write_text(text,encoding='utf-8')
+    (ROOT/'ff_prior_feasible/docs/CORE_GOAL.md').write_text(text,encoding='utf-8')
+    old=(ROOT/'paper/EXPERIMENT_TRACKER.md').read_text(encoding='utf-8')
+    tracker='''# 2026-10-19 HTDCR源独立核查与目标调整
+
+分析报告：ff_prior_source_alignment/docs/ANALYSIS.md；待实施协议：ff_prior_source_alignment/docs/NEXT_PROTOCOL.md。
+
+- Source: 900d781ba63f0123dff95e49a76d51cb49a74803；不使用其他对话。
+- 原仓库函数探针：8对40条，无障碍10秒100点；修正前31/40、修正后39/40；不是论文结果，也不是本机器人验证。
+- 当前只读数据索引：13838 TRAIN/48 VAL，13886记录哈希和家族隔离PASS；没有新增数据/训练/执行。
+- 新前瞻TRAIN分项计算器10项软件测试通过。初次VAL角色误报保留并修复，正式inventory为local_alignment_002.json。
+- 旧D比0.914089、位姿4/32，旧DEV仍BLOCKED；不改写冻结历史门。
+- 目标改为分开验证后期去噪内引导与受控世界监督；R1/R2待实施运行。
+- 原1024槽扩库、pilot、study、strict_multimodal及TEST未启动；长期目标未完成。
+
+---
+
+'''+old
+    (ROOT/'paper/EXPERIMENT_TRACKER_20261019_source_alignment.md').write_text(tracker,encoding='utf-8')
+    (ROOT/'paper/EXPERIMENT_TRACKER.md').write_text(tracker,encoding='utf-8')
+    checks={}
+    for path in (goal, ROOT/'ff_prior_feasible/docs/CORE_GOAL.md', PACKAGE/'docs/ANALYSIS.md',PACKAGE/'docs/NEXT_PROTOCOL.md'):
+        checks[path.relative_to(ROOT).as_posix()]=hashlib.sha256(path.read_bytes()).hexdigest()
+    (PACKAGE/'evidence/docs_binding.json').write_text(json.dumps(checks,indent=2)+'\n',encoding='utf-8')
+    print(json.dumps(checks,indent=2))
+
+
+if __name__=='__main__':
+    main()
