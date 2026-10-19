@@ -3,7 +3,7 @@
 |Run ID|阶段|目的/方法|分区|主要门|状态|说明|
 |---|---|---|---|---|---|---|
 |world_endpoint_smoke_001|上一轮|真实终点监督闭环|TRAIN/冻结DEV|实现和物理审计|FINISHED dade7190|完整通过；TRAIN损失比4.608628、神经收益FAIL；保留64合格修正和失败模型|
-|paired_objectives_smoke_001|M0|来源及代码验证|既有TRAIN/VAL|源码和来源hash、真实物理回归测试|IMPLEMENTED_TESTING|独立ff_prior_paired_objectives；尚不声称正式通过|
+|paired_objectives_smoke_001|M0|来源及代码验证|既有TRAIN/VAL|源码和来源hash、真实物理回归测试|PASS / WORKER_RUNNING|独立ff_prior_paired_objectives；13/13测试；178645来源/231源码核验PASS；正式科学结果仍待测|
 |paired_objectives_smoke_001|M1|8例TRAIN参数单步|TRAIN|完整102梯度+参数方向+真实下降|PENDING|门过才开始四组|
 |paired_objectives_smoke_001|M2|v/local/world/both四组|相同13838 TRAIN|6000更新、同初始化/批次/噪声、240真梯度|PENDING|不增加数据、不换强基准|
 |paired_objectives_smoke_001|M3|TRAIN选组后同预算smoke|原DEV4+已用8开发|TRAIN比≤0.8且不劣B，720候选/144执行上限|DEPENDENT|未通过不启动DEV；无TEST|
@@ -12,3 +12,5 @@
 |pilot/TEST|长期后续|最终覆盖与一次性检验|未触碰TEST|未来模型/协议冻结与范围授权|BLOCKED_BY_CURRENT_SCOPE|本轮不读取、不运行|
 
 用户已恢复本轮实际执行；旧应用目标卡片不可通过现有goal工具原地改写/恢复。统一目标以DIFFUSION_GOAL_CURRENT.md和本轮代码协议为准。历史目标、计划及tracker均保存在ff_prior_paired_objectives/docs/history/。长期目标未完成。
+
+启动记录：源码ded2d537；worker PID 149432，观察阶段 preflight，心跳存活。独立输出artifacts/v7_1/paired_objectives_smoke_001；接续automation已恢复，每30分钟只检查状态，运行正常时安静等待，结束后审查与报告。
