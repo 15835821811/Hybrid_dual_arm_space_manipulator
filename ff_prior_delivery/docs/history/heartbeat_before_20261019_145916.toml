@@ -1,0 +1,10 @@
+version = 1
+id = "automation"
+kind = "heartbeat"
+name = "配对终点优化闭环完成后审查报告"
+prompt = "继续本线程用户已恢复并授权的TRAIN单步诊断与四组配对训练后台闭环。有效目标为工作区 E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator 下 DIFFUSION_GOAL_CURRENT.md；旧应用目标卡片仍暂停且文本过时，不能覆盖用户2026-10-19的新授权。独立运行 artifacts/v7_1/paired_objectives_smoke_001，源码提交ded2d537，入口 .\\ff_prior_paired_objectives\\job.ps1 status|report|resume。先只读取该运行status.json并检查对应PID存活；若仍RUNNING且心跳正常，不重复分析、不新增实验、不重跑审计、不发送过程报告，本次安静结束并保留接续。若作业退出或失败，读取该作业原始结果和ff_prior_paired_objectives/docs/EXPERIMENT_PLAN.md，进行必要故障诊断或收尾；保留所有旧模型/数据/结果/用户修改/旧作业。被冻结源码不得原地修改后冒用原运行身份；必要实现修复用独立版本和输出，保留失败证据。核对8例TRAIN参数单步诊断、四组同13838数据/同13774起始权重/同批次噪声的各6000实际更新、C/D各120完整102维当前预测梯度及240前置权重重建、TRAIN-only32探针选择门、原冻结DEV4+已用8开发任务同720候选/144执行上限smoke（仅依赖门通过才应运行）。本轮未新增TRAIN数据或执行，64合格修正和16执行来自上一轮，不可写成本轮新成果。TRAIN门失败则DEV BLOCKED，仍做不依赖DEV的原始审计及报告，不强行启动。完成后依experiment-result-to-claim技能委派新的独立审查，不复用上一轮审查；核对原始证据、未决调用及物理门，验证完成resume不重复工作且核心文件hash不变。写中文ff_prior_paired_objectives/docs/ANALYSIS.md，保存紧凑原始证据和新的review-traces，更新统一目标及版本化paper实验tracker，只提交本任务文件。本轮不得启动1024槽扩库、pilot、study、strict_multimodal或最终TEST，即便部分门通过也不得自动启动。不得放宽仅不穿透、5mm/1度及其他现有物理门，不得失败后重标目标，不得将模型抽查升级全部样本。软件完成、模型数据合格、真实力矩执行、Diffusion收益分别报告；查询和耗时不要求相对胜出。最终交付自包含中文分析报告链接、实测结论、代码提交和终端命令。完成本轮报告收尾后暂停本接续，避免重复运行；长期最终目标尚未达成，不能标记complete。"
+status = "PAUSED"
+rrule = "FREQ=MINUTELY;INTERVAL=30"
+target_thread_id = "01a13ece-78b6-7cb1-be56-f2b8ea144014"
+created_at = 1792239868875
+updated_at = 1792379800444

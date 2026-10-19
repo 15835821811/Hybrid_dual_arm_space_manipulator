@@ -1,0 +1,79 @@
+{
+  "version": "delivery_v1",
+  "created_at": "2026-10-19T14:59:16+08:00",
+  "authoritative_goal": "DIFFUSION_GOAL_CURRENT.md",
+  "plan": "paper/EXPERIMENT_PLAN.md",
+  "base_commit": "04b54adf",
+  "baseline_run": "qualified_origin_learn_002",
+  "baseline_training_rows": 13774,
+  "baseline_checkpoint_sha256": "02b2af4dfa4ccef027fdebd246c92635c9c97f338c5c5181075176fd380994ff",
+  "engineering_gate": {
+    "candidate_fraction": 0.8,
+    "execution_replay_fraction": 0.8,
+    "superiority_required": false,
+    "raw_all_pass_required": false,
+    "world_loss_ratio_required": false
+  },
+  "data": {
+    "targets": 32,
+    "slots": 128,
+    "max_attempts": 256,
+    "minimum_qualified": 64,
+    "minimum_distinct_targets": 16,
+    "execution_units": 16,
+    "minimum_execution_verified": 13
+  },
+  "training": {
+    "max_updates": 6000
+  },
+  "resources": {
+    "cpu_threads": 2,
+    "max_seconds": 14400,
+    "max_output_gib": 20
+  },
+  "iteration": {
+    "formal_runs_per_block": 1,
+    "bugfix_versions_per_block": 1,
+    "effect_only_retry": false,
+    "skip_completed": true
+  },
+  "forbidden_runs": [
+    "old_1024",
+    "pilot",
+    "study",
+    "strict_multimodal",
+    "TEST"
+  ],
+  "app_goal": {
+    "state": "paused",
+    "old_text": "SUPERSEDED",
+    "cleared": false
+  },
+  "stages": [
+    {
+      "id": "M0",
+      "status": "PASS_REUSED",
+      "run": "qualified_origin_learn_002"
+    },
+    {
+      "id": "M1",
+      "status": "READY_NOT_IMPLEMENTED",
+      "run": "delivery_guidance_smoke_001"
+    },
+    {
+      "id": "M2",
+      "status": "PLANNED",
+      "run": "delivery_dataset_128_001"
+    },
+    {
+      "id": "M3",
+      "status": "PLANNED",
+      "run": "delivery_train_dev_001"
+    },
+    {
+      "id": "M4",
+      "status": "NOT_READY",
+      "run": "delivery_release_001"
+    }
+  ]
+}
