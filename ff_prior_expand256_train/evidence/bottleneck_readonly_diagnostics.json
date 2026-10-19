@@ -1,0 +1,51 @@
+{
+  "scope": "read existing evidence only; no propagation or training",
+  "parent64": {
+    "n": 64,
+    "position_median_mm": 2.074617585093991e-06,
+    "position_max_mm": 9.578019942289685e-05,
+    "rotation_median_deg": 7.084389354261145e-08,
+    "rotation_max_deg": 3.1503906494809332e-06
+  },
+  "new256": {
+    "n": 256,
+    "position_median_mm": 1.155746739018555,
+    "position_max_mm": 3.3614341004175015,
+    "rotation_median_deg": 0.1056275441982353,
+    "rotation_max_deg": 0.2640319324469607
+  },
+  "guidance": {
+    "frozen_diffusion": {
+      "stages": 720,
+      "stages_without_solver": 213,
+      "last_stages_without_solver": 179,
+      "accepted_steps": 479,
+      "last_prepared_pose_within_inner": 179
+    },
+    "expanded_diffusion": {
+      "stages": 720,
+      "stages_without_solver": 209,
+      "last_stages_without_solver": 180,
+      "accepted_steps": 477,
+      "last_prepared_pose_within_inner": 180
+    }
+  },
+  "interpretation": {
+    "parent_near_zero": "Parent targets were forward-derived; near-zero recorded residual is expected and is not evidence of inverse-planning generalization.",
+    "new_teachers": "Admissible but not exact-goal teachers; current teacher-relative G loss is zero at each teacher even with nonzero absolute endpoint residual.",
+    "last_stage": "First/last guide records include prepare/smoothing and earlier guidance; none are a complete unguided DDIM experiment.",
+    "causality": "Mechanism mismatch and descriptive traces, not isolated causal proof of model degradation."
+  },
+  "source_hashes": {
+    "ff_prior_origin_learn_bounded/learning.py": "e4ac4bca2d67ecebb0fc0698299252c54b3a1b2568ffdff44cd43ff3cbefacc9",
+    "ff_prior_expand256_train/learning.py": "5b9d9d988b5a5fdd9cbeacf4e4379346bdc7c4033ac10f2a9bbbba39e38de6d0",
+    "ff_prior_expand256_train/data.py": "9e643170e0ae4858881b1f5e5f19dcea7463da440a441549e6777da1983c189b",
+    "ff_prior_delivery_guidance/sampling.py": "5fd9cf76b5da40e50cbf3e955f410e92d53cca5a5f27cf2a5fc3e1f1b24a8979",
+    "ff_prior_feasible/guidance.py": "67a4fe828dec4028387fdfbfb48c20e3167068c04244c1eeb5fba0afe7dafe75",
+    "ff_prior_fixed/correction.py": "819ca91efe4fe5e86f7c3a1217e9cb3ddb6380b7c7e78b849248f34d71dc3d9d",
+    "ff_prior_latent/learning.py": "5f76d741a0929d06fc651586232cf8107444b3020bda0e0e730912a78af35a35",
+    "ff_prior_expand256_train/evidence/final_statistics.json": "cc18ae41b985da979e9f9e28e11fcfd9682792727cb475b753b1e6cc7702b231",
+    "ff_prior_expand256/evidence/target_selection.json": "bf54121a71373dc571c68757d52d9ab3e9f832b86d94f6560f90d5bba8bcb2a2",
+    "artifacts/v7_1/qualified_expand256_001/qualified_increment.json": "e672c696418ede1466449c6b5e11a35fd6f1702f12805e24fd22094ac96ee4dc"
+  }
+}

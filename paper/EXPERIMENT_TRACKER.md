@@ -1,19 +1,15 @@
-# 本轮完成跟踪：256槽扩库＋一次训练＋冻结开发对照
+# 世界终点精度下一轮：计划，尚未启动
 
-2026-10-19。所有后台worker已退出，软件和实际工程验证完成；联合独立审查完成：C1 yes/high、C2 no/high，无工程交付阻断。
+前一轮256槽扩库＋14222 TRAIN训练＋原DEV回归已完成并归档，C1工程通过/C2优势未成立。当前只读瓶颈统计已完成；本轮不启动后台。
 
-|阶段|状态|实际证据|
-|---|---|---|
-|扩库软件/来源|PASS|7/7|
-|合格扩库|PASS|256/256尝试，64既有目标各4条，TRAIN14222/VAL48|
-|扩库真实执行重放|PASS|32/32，新增224 MODEL_VALID＋32 EXECUTION_VERIFIED|
-|后续软件/来源|PASS|8/8，准确旧13966模型及codec绑定|
-|实际训练|PASS|14222全消费，6000更新384000抽样，0 VAL梯度|
-|原冻结DEV对照|PASS|四方法各180/180候选、36/36执行重放|
-|两个原始审计|PASS|336000＋1512000原生及重放步核对，无重复仿真|
-|完成resume|PASS|扩库1651文件/7核心hash、训练1491文件/10核心hash不变|
-|新的独立主张审查|DONE|C1 yes/high，C2 no/high；新trace20261019_expand256_train_run01|
-|Diffusion稳定优势|NOT_ESTABLISHED|成功率相同，位置指标混合，姿态局部改善|
-|继续扩库/pilot/TEST|NOT_STARTED|本轮禁止|
+|阶段|目的|上限|状态|
+|---|---|---|---|
+|M0|冻结8诊断目标、32事件TRAIN目标、VAL48和来源|一次metadata冻结|PLANNED|
+|M1|绝对终点项实际AdamW步受控下降|24单步案例，6000额外coupled，60min|PLANNED|
+|M2|固定14222数据的一份B训练，对照A复用|6000更新，60×2世界事件，27000coupled，150min|DEPENDENCY_M1|
+|M3a|真实完整无引导DDIM机制诊断|VAL48×2种子×A/B=192条|DEPENDENCY_M2|
+|M3b|同预算完整开发回归|逻辑720/144；新增B180/36，其余精确身份复用|DEPENDENCY_M2|
+|收尾|审计/一次新独立review/中文报告|总6h/2CPU/20GiB|PLANNED|
+|扩库/pilot/最终TEST|明确不运行|0|FORBIDDEN|
 
-建议保留旧13966为默认、新14222为合格候选，不把worker selected_method当成优越性选择。此轮完成后交付版本与收窄主张，不追加实验。完整报告ff_prior_expand256_train/docs/ANALYSIS.md，原始数据分级及模型hash见delivery_manifest.json。
+先解决绝对目标误差和优化尺度，不改数据/网络/采样器，不重复已有A训练。不满足科研优势也结束并如实报告；不改物理门或自动追加实验。完整预算、门与复用条件见EXPERIMENT_PLAN.md。
