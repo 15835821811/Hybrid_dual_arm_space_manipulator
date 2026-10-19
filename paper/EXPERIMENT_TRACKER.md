@@ -1,17 +1,14 @@
-# 世界终点监督闭环已完成，收益未成立
+# 当前实验进度：世界终点优化的配对诊断
 
-|阶段|状态|实际证据和边界|
-|---|---|---|
-|上一轮收尾|FINISHED b5921b54|旧13774模型和结果保持|
-|软件/来源预检|PASS|8/8真实测试；176479来源/217Python绑定|
-|固定TRAIN修正|PASS|16目标64/64准入；16/16预选真实执行重放；合并13838TRAIN/原VAL48|
-|真实世界终点训练|实现PASS/改善FAIL|6000更新/全部TRAIN参与、120全102梯度；TRAIN独立噪声损失中位比4.608628|
-|冻结smoke完整流程|C1 PASS|四方法各180/180和36/36；720候选/144比较轨迹/96诊断|
-|神经质量|C2 FAIL|已用8开发任务8/8比旧模型更差，任务中位比1.239667；raw0/12|
-|原始审计/独立评审|PASS/partial|完整保存证据一致；不支持目标质量提升和神经优越性|
-|完成恢复|PASS|NO_WORK_ALREADY_COMPLETE，核心四文件SHA不变，无重复工作|
-|原1024槽扩库|PREPARED_NOT_LAUNCHED|按最新条件不启动；64合格数据保留|
-|最终TEST|BLOCKED|TRAIN改善、对旧模型质量、raw≥4/12三门未通过|
-|下一实验|NOT_STARTED|建议TRAIN-only目标项保留/叠加、梯度尺度和跨噪声配对诊断；另冻预算后实施|
+|Run ID|阶段|目的/方法|分区|主要门|状态|说明|
+|---|---|---|---|---|---|---|
+|world_endpoint_smoke_001|上一轮|真实终点监督闭环|TRAIN/冻结DEV|实现和物理审计|FINISHED dade7190|完整通过；TRAIN损失比4.608628、神经收益FAIL；保留64合格修正和失败模型|
+|paired_objectives_smoke_001|M0|来源及代码验证|既有TRAIN/VAL|源码和来源hash、真实物理回归测试|IMPLEMENTED_TESTING|独立ff_prior_paired_objectives；尚不声称正式通过|
+|paired_objectives_smoke_001|M1|8例TRAIN参数单步|TRAIN|完整102梯度+参数方向+真实下降|PENDING|门过才开始四组|
+|paired_objectives_smoke_001|M2|v/local/world/both四组|相同13838 TRAIN|6000更新、同初始化/批次/噪声、240真梯度|PENDING|不增加数据、不换强基准|
+|paired_objectives_smoke_001|M3|TRAIN选组后同预算smoke|原DEV4+已用8开发|TRAIN比≤0.8且不劣B，720候选/144执行上限|DEPENDENT|未通过不启动DEV；无TEST|
+|paired_objectives_smoke_001|M4|原始审计/独立审查/恢复/报告|本轮原始结果|可重建证据、NO_WORK恢复、仅任务提交|PENDING|后台结束后收尾|
+|qualified_origin_batch_next|长期后续|1024槽扩库|TRAIN|另冻范围和资格门|PREPARED_NOT_LAUNCHED|用户最新要求保持暂停|
+|pilot/TEST|长期后续|最终覆盖与一次性检验|未触碰TEST|未来模型/协议冻结与范围授权|BLOCKED_BY_CURRENT_SCOPE|本轮不读取、不运行|
 
-正式实验耗时77.98分钟；主报告ff_prior_world_endpoint/docs/ANALYSIS.md。新模型只作实验候选，保留旧开发基准，长期目标未完成。仅不穿透及其他物理门、旧结果/分支/用户修改保持；无pilot或最终TEST。
+用户已恢复本轮实际执行；旧应用目标卡片不可通过现有goal工具原地改写/恢复。统一目标以DIFFUSION_GOAL_CURRENT.md和本轮代码协议为准。历史目标、计划及tracker均保存在ff_prior_paired_objectives/docs/history/。长期目标未完成。
