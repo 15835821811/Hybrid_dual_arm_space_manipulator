@@ -63,11 +63,4 @@ qualified_origin_learn_002的稳定13774模型已有180/180候选合格、36/36�
 
 这是统一目标与状态入口；真实worker的start/resume将在M1实施时提供，不能伪装已有物理后台运行。
 
-应用旧目标卡片仍paused，当前工具无法清除或改写；文件中已废止旧文本执行效力。可在聊天命令中使用：
-
-```text
-/goal clear
-/goal 按 DIFFUSION_GOAL_CURRENT.md 的 delivery_v1 目标执行到 M4 工程交付；复用旧通过证据，每阶段一次，物理门不变，优势单独报告，不启动旧1024、pilot或TEST。
-```
-
-这是用户/系统操作，不是已代为完成。官方说明：[Using Goals in Codex](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex)。恢复的后台接续与应用目标卡片是独立状态，不宣称卡片已恢复。
+应用目标更新（2026-10-19T15:30:50.680872+08:00）：用户已清除旧目标；get_goal确认无目标后，已实际创建active的delivery_v1新卡片。无需用户再次创建。当前卡片、统一目标文件和后台接续采用同一协议；M1实现与新物理运行仍未开始，不能把目标激活写成实验正在运行。

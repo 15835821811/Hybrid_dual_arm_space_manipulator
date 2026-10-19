@@ -13,6 +13,6 @@
 |B4交付|delivery_release_001|NOT_READY|数据/模型/报告和下一阶段协议|
 |TEST/旧1024/pilot|无新运行|NOT_STARTED|本轮禁止|
 |研究优势|强基线对照未支持稳定优势|NOT_ESTABLISHED|独立报告|
-|旧应用卡片|paused|SUPERSEDED_TEXT_NOT_CLEARED|用户/系统清除操作|
+|应用目标卡片|用户清除旧目标后已实际创建delivery_v1|ACTIVE|按M1→M4推进，同一接续不重复启动|
 
 本轮目标/协议与状态入口已建立，无新增物理通过；实际运行须由独立目录status/PID/心跳确认。
