@@ -1,0 +1,30 @@
+{
+  "experiment": "endpoint_precision_bounded_001",
+  "source_commit": "121d71a1d9994570390f95549ea3ae8834fe2174",
+  "claim_supported": "no",
+  "claims": {
+    "C1": {"claim_supported": "no", "interpretation": "Not established: M1 gate failed; no paired B training or VAL/DEV comparison."},
+    "C2": {"claim_supported": "no", "interpretation": "Not evaluated by a new B-to-baseline comparison; superiority remains unestablished."}
+  },
+  "what_results_support": "Raw reconstruction confirms 24 real current-prediction 102-D gradient attempts; 21 pass numerical checks, 10 scaled combined AdamW proposals pass event/control descent. Base/world gradients and base/combined increments reconstruct exactly. Protocol stop is warranted.",
+  "what_results_dont_support": "Improved learned endpoint precision, independent causal gain from world term, new B engineering qualification, superiority over simple baselines, generalization or hardware safety.",
+  "missing_evidence": ["M2 paired B training and M3 unguided/DEV were not run", "No base-only post-update true-endpoint comparison", "No saved post-restoration optimizer checkpoint or real nonempty-moment restoration test", "No independent physical replay in this review", "No paper/PAPER_CLAIM_AUDIT.json"],
+  "suggested_claim_revision": "10 of 24 fixed TRAIN single-step diagnostics admitted a scaled combined update, below the preregistered continuation gate; learning precision and Diffusion superiority remain unverified.",
+  "next_experiments_needed": "None authorized in this round. Close the bounded run. A separately authorized future protocol could address max-branch finite differences, base-only causal controls, and nonempty optimizer-state transaction tests.",
+  "confidence": "high",
+  "routing_action": "pivot_to_narrow_claim_and_close_current_round",
+  "routing": {"continue_current_experiments": false, "retain_control_A": true, "confirmed_paper_writing": false, "new_authorization_required_for_future_experiments": true},
+  "paper_claim_audit": "unavailable",
+  "writing_status": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "independent_readonly_reconstruction": "PASS",
+  "observed_parameter_update_bug": false,
+  "gradient_numerical_limitation": "Cases 03/10/11 cross max-loss branches under coordinate finite differences; original failures retained.",
+  "accepted": 10,
+  "gradient_pass": 21,
+  "cases": 24,
+  "accepted_per_noise": {"333": 3, "667": 3, "999": 4},
+  "coupled_calls_reconstructed": 5248,
+  "new_optimizer_steps_by_review": 0,
+  "new_physical_calls_by_review": 0
+}
