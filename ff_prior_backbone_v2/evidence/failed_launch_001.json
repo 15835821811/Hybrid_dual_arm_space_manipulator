@@ -1,0 +1,76 @@
+{
+  "original_source": "434f42ee",
+  "failed_run": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\backbone_pair_smoke_001",
+  "failure": {
+    "reason": "FileNotFoundError(2, 'No such file or directory')",
+    "status": "FAILED",
+    "traceback": "Traceback (most recent call last):\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Lib\\site-packages\\torch\\serialization.py\", line 771, in __init__\n    self.name.encode(\"ascii\")\nUnicodeEncodeError: 'ascii' codec can't encode characters in position 3-4: ordinal not in range(128)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\ff_prior_backbone\\job.py\", line 30, in worker\n    result = run(out, monitor.update, previous)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\ff_prior_backbone\\experiment.py\", line 99, in run\n    learning.train(out, kind, codec, arrays, G, data, deadline, progress)\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\ff_prior_backbone\\learning.py\", line 125, in train\n    save_torch(proof_dir / \"before.pt\", {\"weights\": model.state_dict(), \"optimizer\": opt.state_dict(),\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\ff_prior_origin_learn_bounded\\learning.py\", line 16, in save_torch\n    return retry_write(base_save_torch,path,value)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\ff_prior_pilot_train\\storage.py\", line 9, in retry_write\n    return operation(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\ff_prior\\diffusion.py\", line 64, in save_torch\n    torch.save(payload,tmp)\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Lib\\site-packages\\torch\\serialization.py\", line 943, in save\n    with _open_zipfile_writer(f) as opened_zipfile:\n         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Lib\\site-packages\\torch\\serialization.py\", line 810, in _open_zipfile_writer\n    return container(name_or_buffer)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\.venv\\Lib\\site-packages\\torch\\serialization.py\", line 776, in __init__\n    self.file_stream = io.FileIO(self.name, mode=\"w\")\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'E:\\\\桌面\\\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\\\Hybrid_dual_arm_space_manipulator\\\\artifacts\\\\v7_1\\\\backbone_pair_smoke_001\\\\learning\\\\mlp\\\\updates\\\\0001\\\\before.pt.tmp'\n"
+  },
+  "numerical_sanity": {
+    "parameter_counts": {
+      "mlp": 208998,
+      "transformer": 211969
+    },
+    "physical_pass_claim": false,
+    "records": [
+      {
+        "finite": true,
+        "kind": "mlp",
+        "last_loss": 0.8972213268280029,
+        "reload_exact": true,
+        "steps": 2,
+        "weights_retained": false
+      },
+      {
+        "finite": true,
+        "kind": "transformer",
+        "last_loss": 1.590057134628296,
+        "reload_exact": true,
+        "steps": 2,
+        "weights_retained": false
+      }
+    ],
+    "status": "PASS",
+    "training_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "formal_optimizer_updates": 0,
+  "why_zero": "traceback before first loss/backward/optimizer.step, before.pt save failed at update1; initial.pt and pending journal only",
+  "files": {
+    "events.jsonl": "def44a0f314fdd2daaa20425e8d25a1280cf9c5842707a49e3c753080417a9c8",
+    "executed_source.zip": "1fb83d13e57101f11e6dfaa6ea6c711665a5a1c928c552042cd1376de3db2fec",
+    "failure.json": "7758fc900dd0eb678d6dbf3e7931418d7fbef215ae314be9c7923c04b84721e0",
+    "frozen_tasks.json": "59be46521cadd6a35a21de2082999450947fd55af9d64cd8bd012b34e1567219",
+    "launcher.json": "1a3a2246595eed8c03ca5f6772109b85235ec875b7129408f6d9a35deff474ad",
+    "numerical_sanity.json": "880e9193790409f83d5a8d96723a73aa73dadf3beb28028fd462a4c2c6b83ca0",
+    "physical_contract.json": "06256b0fb5f6445363e9e8c8f23a22a9b150d31bdebfa43cf8f42e4ab7fc47b5",
+    "REPORT.md": "32476a3eeb01951441e4c3a5ac88935985d89a77d76a6c86ce9614db7f532dd2",
+    "reuse_manifest.json": "01e324fc6b16835c326d11c424d6909b1267201e26341858b3eccef918eba4a7",
+    "run.json": "e3b1851f392135c969adbd083a294239f2598b613bd001da706791e4bf1399f2",
+    "sanity_started.json": "c1d81a13f7aa9df5ae6244db3fa0392d8691943717d09be61ea7637215be7a20",
+    "status.json": "088a35d8d9edcfbc672fb4fa09558f9de7a355e41a65fedd9704101e9d2125e5",
+    "training_input.json": "70fb6140375d5f9b7f9583eb965f525a905ccc81ac5c41300a117fb9027d710a",
+    "worker.stderr.log": "dd5b312c27dd3adaa92f80dec0350cc46a2794a0ab47c99abd9f7fe6238de272",
+    "worker.stdout.log": "def44a0f314fdd2daaa20425e8d25a1280cf9c5842707a49e3c753080417a9c8",
+    "learning/mlp/codec.json": "4e8997e6804eaa7e6b44ac7ef8ee2623c0d535e3011d7cd6f49e6c0a1516033a",
+    "learning/mlp/initial.pt": "b6c406cbb7efae226211dad75c7d163ae17b7221699718aafb4bfc386dcdc87e",
+    "learning/mlp/journal.json": "995186c71b81a0c2df8c971b33990df18c50e979748a04423b6eeec93e27c94b"
+  },
+  "revision_scope": "create training evidence parent directory; add regression test; unchanged scientific protocol"
+}

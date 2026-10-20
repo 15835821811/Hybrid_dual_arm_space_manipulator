@@ -1,6 +1,6 @@
 # MLP／小型 Transformer：同潜变量、同数据的有界主干对照
 
-日期：2026-10-20。用户已授权制定目标并实际执行。独立包 `ff_prior_backbone`，唯一输出 `artifacts/v7_1/backbone_pair_smoke_001`。旧模型、数据、结果和工作区修改保留。
+日期：2026-10-20。用户已授权制定目标并实际执行。独立包 `ff_prior_backbone_v2`，唯一输出 `artifacts/v7_1/backbone_pair_smoke_002`。旧模型、数据、结果和工作区修改保留。
 
 ## 研究问题与目标
 
@@ -62,8 +62,14 @@ DEV：种子20262119/23/29，目标与初态保持旧12任务身份，每目标5
 
 ## 后台、恢复与收尾
 
-入口：`.\ff_prior_backbone\job.ps1 start|status|report|resume`。单worker、PID与心跳、逐阶段日志；独立源快照和输入哈希。完整20步训练段可从已提交checkpoint继续；未提交训练段、未知物理工作禁止重放，需诊断而非重复执行。完成或活跃resume返回NO_WORK。
+入口：`.\ff_prior_backbone_v2\job.ps1 start|status|report|resume`。单worker、PID与心跳、逐阶段日志；独立源快照和输入哈希。完整20步训练段可从已提交checkpoint继续；未提交训练段、未知物理工作禁止重放，需诊断而非重复执行。完成或活跃resume返回NO_WORK。
 
-只在本轮完成后执行一次新的 `experiment-result-to-claim` 独立审查，保存review-traces，写 `ff_prior_backbone/docs/ANALYSIS.md`。更新统一目标和版本化paper tracker，只提交本任务代码、小证据和报告。源码冻结后不得原地修复并冒用同一运行；真实实现故障使用独立版本与输出保留失败证据。
+只在本轮完成后执行一次新的 `experiment-result-to-claim` 独立审查，保存review-traces，写 `ff_prior_backbone_v2/docs/ANALYSIS.md`。更新统一目标和版本化paper tracker，只提交本任务代码、小证据和报告。源码冻结后不得原地修复并冒用同一运行；真实实现故障使用独立版本与输出保留失败证据。
 
 本轮完成不等于长期科研目标完成；允许结论为无优势或尚不确定，不自动切换默认模型。
+
+## 启动故障修复版本
+
+原434f42ee运行backbone_pair_smoke_001在保存第1步before.pt时因证据子目录未创建退出；4次临时数值检查完成，正式optimizer.step尚未调用，未生成无引导或DEV物理结果。原源码、失败日志和所有文件保留，不冒用原运行身份。
+
+v2仅修复证据写入目录创建，增加真实嵌套路径写入/重载回归测试；数据、权重初始化、损失、随机序列、模型规模、候选预算及物理门全部不变。不得把第一次失败写作科学负结果。

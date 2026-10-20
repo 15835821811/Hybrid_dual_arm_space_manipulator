@@ -1,6 +1,6 @@
 # 当前执行目标：MLP与小型Transformer有界主干对照
 
-2026-10-20。用户已授权制定目标并执行；本轮准备完成，待提交冻结源码后后台启动。独立运行 artifacts/v7_1/backbone_pair_smoke_001，入口 .\ff_prior_backbone\job.ps1 status|report|resume。
+2026-10-20。用户已授权制定目标并执行；本轮准备完成，待提交冻结源码后后台启动。独立运行 artifacts/v7_1/backbone_pair_smoke_002，入口 .\ff_prior_backbone_v2\job.ps1 status|report|resume。
 
 本轮要回答：在相同102维潜变量、65维条件、数据、损失、训练抽样和采样物理流程下，小型Transformer是否改善无引导世界终点精度，以及完整规划质量。相对优势是待验证的科学结论，不作为启动全流程的门。
 
@@ -16,4 +16,6 @@
 
 保留旧模型/数据/结果/用户修改/旧作业。不扩库、不启动1024/pilot/study/strict_multimodal/TEST、不失败重标、不抽查升级、不自动替换默认模型。
 
-完成后写ff_prior_backbone/docs/ANALYSIS.md并更新版本化paper tracker，独立审查后决定推荐哪种主干；不自动追加实验。完整研究长期目标继续保持独立，本轮完成不等于Diffusion相对优势已成立。
+完成后写ff_prior_backbone_v2/docs/ANALYSIS.md并更新版本化paper tracker，独立审查后决定推荐哪种主干；不自动追加实验。完整研究长期目标继续保持独立，本轮完成不等于Diffusion相对优势已成立。
+
+启动修复记录：原434f42ee运行backbone_pair_smoke_001在第1步before.pt保存前因缺目录退出，正式更新0次；旧源码及18个输出文件hash完整保留。独立v2仅修复证据父目录创建并增加回归测试，14/14测试通过；协议除版本标识外完全一致，未因效果追加实验。
