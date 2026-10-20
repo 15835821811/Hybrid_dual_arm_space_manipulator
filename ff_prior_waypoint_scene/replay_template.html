@@ -1,0 +1,66 @@
+<div id="waypoint-replay">
+  <h3>非接触接近、跟踪与保持 · 实际状态回放</h3>
+  <div class="viz-controls">
+    <label class="form-label">场景与方法<select id="wp-case" class="form-select"></select></label>
+    <label class="form-label">视角<select id="wp-view" class="form-select"><option value="oblique">斜视</option><option value="top">俯视 XY</option><option value="front">正视 XZ</option></select></label>
+    <button type="button" id="wp-play" class="btn btn-primary">播放</button>
+    <button type="button" id="wp-end" class="btn">最后时刻</button>
+  </div>
+  <canvas id="wp-scene" role="img" aria-label="保存实际状态的双臂骨架回放，圆点是实际末端，十字是随时间变化的期望末端"></canvas>
+  <label class="form-label">时间 <span id="wp-clock"></span><input id="wp-time" class="form-range" type="range" min="0" max="27" value="0" step=".02"></label>
+  <div class="text-small" id="wp-detail" aria-live="polite"></div>
+  <div class="viz-row text-small"><span id="wp-c">● 连续体</span><span id="wp-r">● 刚性臂</span><span>× 期望末端 · 实线实际轨迹 · 虚线时序参考</span></div>
+  <canvas id="wp-chart" role="img" aria-label="双臂世界位置跟踪误差曲线，单位毫米；虚线为5毫米门槛"></canvas>
+  <span id="wp-color" hidden></span>
+</div>
+<style>
+#waypoint-replay canvas{display:block;width:100%}#waypoint-replay #wp-scene{height:360px}#waypoint-replay #wp-chart{height:180px}#waypoint-replay #wp-c{color:var(--viz-series-1)}#waypoint-replay #wp-r{color:var(--viz-series-2)}
+</style>
+<script>
+(()=>{
+const data=/*DATA*/[];
+const root=document.getElementById('waypoint-replay'),$=id=>root.querySelector('#'+id);
+const labels={'stationary/task_controller':'静止目标 · 控制基线','stationary/diffusion_null_prior':'静止目标 · Diffusion先验＋控制','drifting/task_controller':'漂移目标 · 控制基线','drifting/diffusion_null_prior':'漂移目标 · Diffusion先验＋控制'};
+data.forEach((d,i)=>{$('wp-case').add(new Option(labels[d.name],i))});
+let selected=0,seconds=0,playing=false,last=0;
+const color=name=>{const s=$('wp-color');s.style.color='var('+name+')';return getComputedStyle(s).color};
+function surface(id){const el=$(id),w=el.clientWidth,h=el.clientHeight,scale=devicePixelRatio||1;el.width=w*scale;el.height=h*scale;let ctx=el.getContext('2d');ctx.scale(scale,scale);return [ctx,w,h]}
+function draw(){
+const d=data[selected],i=d.time.reduce((best,t,k)=>Math.abs(t-seconds)<Math.abs(d.time[best]-seconds)?k:best,0);
+const c=[color('--viz-series-1'),color('--viz-series-2')],fg=color('--foreground'),grid=color('--border');
+const [ctx,w,h]=surface('wp-scene'),view=$('wp-view').value;
+const project=p=>view==='top'?[p[0],p[1]]:view==='front'?[p[0],p[2]]:[.84*p[0]-.54*p[1],.36*p[0]+.56*p[1]+.75*p[2]];
+const all=d.c.flat().concat(d.r.flat(),d.goal.flat(),d.base).map(project);
+const lo=[0,1].map(a=>Math.min(...all.map(p=>p[a]))),hi=[0,1].map(a=>Math.max(...all.map(p=>p[a])));
+const s=Math.min((w-44)/(hi[0]-lo[0]+.05),(h-50)/(hi[1]-lo[1]+.05));
+const pt=p=>{const q=project(p);return [w/2+s*(q[0]-(lo[0]+hi[0])/2),h/2-s*(q[1]-(lo[1]+hi[1])/2)]};
+function line(points,stroke,width,dash=[]){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.beginPath();points.forEach((p,j)=>{const q=pt(p);j?ctx.lineTo(...q):ctx.moveTo(...q)});ctx.stroke();ctx.setLineDash([])}
+for(let arm=0;arm<2;arm++){
+ line(d.goal.map(g=>g[arm]),c[arm],1,[4,4]);line(d.tip.slice(0,i+1).map(g=>g[arm]),c[arm],1.5);
+ line(arm===0?d.c[i]:d.r[i],c[arm],arm===0?4:6);
+ const actual=pt(d.tip[i][arm]),target=pt(d.goal[i][arm]);ctx.fillStyle=c[arm];ctx.beginPath();ctx.arc(...actual,4,0,2*Math.PI);ctx.fill();
+ ctx.strokeStyle=c[arm];ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(target[0]-6,target[1]);ctx.lineTo(target[0]+6,target[1]);ctx.moveTo(target[0],target[1]-6);ctx.lineTo(target[0],target[1]+6);ctx.stroke();
+}
+const b=pt(d.base[i]);ctx.strokeStyle=fg;ctx.strokeRect(b[0]-12,b[1]-10,24,20);
+ctx.fillStyle=fg;ctx.font='12px system-ui';ctx.fillText('世界坐标 · 骨架视图',12,18);
+$('wp-clock').textContent=d.time[i].toFixed(2)+' s / '+d.time.at(-1).toFixed(2)+' s';
+$('wp-detail').textContent=`${d.status} · 位置 C/R ${d.p[i].map(x=>x.toFixed(2)).join(' / ')} mm · 姿态 ${d.angle[i].map(x=>x.toFixed(2)).join(' / ')}° · 间隙 ${d.clearance[i].toFixed(2)} mm · 连续体最大 |q| ${d.domain[i].toFixed(3)} / 1.000 rad`;
+const [g,cw,ch]=surface('wp-chart'),left=62,right=cw-12,top=18,bottom=ch-34,ymax=Math.max(6,...d.p.flat())*1.08;
+const x=t=>left+(right-left)*t/d.time.at(-1),y=v=>bottom-(bottom-top)*v/ymax;
+g.strokeStyle=grid;g.strokeRect(left,top,right-left,bottom-top);g.fillStyle=fg;g.font='12px system-ui';
+for(let k=0;k<=3;k++){const v=ymax*k/3;g.fillText(v.toFixed(1),12,y(v)+4)}
+for(let k=0;k<=3;k++){let t=d.time.at(-1)*k/3;g.fillText(t.toFixed(0),Math.min(right-15,x(t)-5),bottom+17)}
+g.fillText('误差 mm',5,12);g.fillText('时间 s',(left+right)/2-20,ch-2);
+for(let a=0;a<2;a++){g.strokeStyle=c[a];g.lineWidth=1.5;g.beginPath();d.time.forEach((t,k)=>k?g.lineTo(x(t),y(d.p[k][a])):g.moveTo(x(t),y(d.p[k][a])));g.stroke()}
+g.strokeStyle=fg;g.setLineDash([4,4]);g.beginPath();g.moveTo(left,y(5));g.lineTo(right,y(5));g.stroke();g.setLineDash([]);
+g.beginPath();g.moveTo(x(d.time[i]),top);g.lineTo(x(d.time[i]),bottom);g.stroke();
+}
+$('wp-case').onchange=()=>{selected=+$('wp-case').value;seconds=0;playing=false;$('wp-play').textContent='播放';$('wp-time').max=data[selected].time.at(-1);$('wp-time').value=0;draw()};
+$('wp-view').onchange=draw;
+$('wp-time').oninput=()=>{seconds=+$('wp-time').value;draw()};
+$('wp-end').onclick=()=>{seconds=data[selected].time.at(-1);$('wp-time').value=seconds;playing=false;$('wp-play').textContent='播放';draw()};
+$('wp-play').onclick=()=>{if(seconds>=data[selected].time.at(-1))seconds=0;playing=!playing;last=performance.now();$('wp-play').textContent=playing?'暂停':'播放'};
+function animate(now){if(playing){seconds=Math.min(data[selected].time.at(-1),seconds+(now-last)/1000);$('wp-time').value=seconds;draw();if(seconds>=data[selected].time.at(-1)){playing=false;$('wp-play').textContent='播放'}}last=now;requestAnimationFrame(animate)}
+new ResizeObserver(draw).observe(root);draw();requestAnimationFrame(animate);
+})();
+</script>
