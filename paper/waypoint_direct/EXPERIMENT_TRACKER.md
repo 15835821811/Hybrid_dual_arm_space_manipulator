@@ -1,5 +1,5 @@
-# 旧数据迁移进度
+# 移动-only协议执行进度
 
-2026-10-20：waypoint_migration_001后台单案例迁移诊断已完成。可见初态与映射精确匹配；完整历史隐藏状态未恢复，旧合同不等价；冲突轨迹历史加速度比1.06024及18次联合运动违规，隔离两份拷贝。按名称解析目标自由关节后581条已分割记录均移动，静止0。
+2026-10-20，waypoint_moving_gate_001已完成：冻结32移动TRAIN/8移动VAL，排除冲突trace；静止DEV为OOD，不再要求静止训练覆盖。首4TRAIN中3个完整13500步执行+重放通过，1个表示加速度解析峰值1.242058超限，未执行。资格门3/4，B1/B2/B3 BLOCKED，0新训练/DEV。
 
-原表示/执行/训练/DEV阶段BLOCKED，实际0新物理步/0训练。详情ff_prior_waypoint_migration/docs/ANALYSIS.md。未扩库/TEST；不得将其他任务目标覆盖为本轮完成。下一步需明确已有静止TRAIN/VAL来源或另行冻结移动-only研究范围，当前不自动更改。
+报告ff_prior_waypoint_moving/docs/ANALYSIS.md。下一步同任务受约束表示，不扩库或降低物理门；未自动试参。旧结果不覆盖，不宣称全库合格或Diffusion收益。
