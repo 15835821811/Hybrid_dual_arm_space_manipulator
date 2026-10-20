@@ -1,6 +1,6 @@
 # 当前目标：端点分组误差Jacobian与解析平滑链式梯度闭环
 
-2026-10-20用户明确授权实际执行；状态AUTHORIZED_READY（17/17软件检查通过，待冻结提交后唯一后台启动）。上一轮smooth已40c653fb收尾，不覆盖旧证据。新包ff_prior_endpoint_jacobian，新输出artifacts/v7_1/endpoint_jacobian_bounded_001。
+2026-10-20用户明确授权实际执行；状态RUNNING（17/17软件检查通过；源码ecaf2519冻结，后台已实际启动，PID见独立run的status.json）。上一轮smooth已40c653fb收尾，不覆盖旧证据。新包ff_prior_endpoint_jacobian，新输出artifacts/v7_1/endpoint_jacobian_bounded_001。
 
 方法：在当前预测上计算四组平方归一化世界终点误差对102维轨迹变量的Jacobian，再乘softmax(q/tau)+.05/4解析权重。tau1、epsilon .01固定，原半步2%、独立标量方向5%检查保持；不以同源链式公式替换参考检查。
 
