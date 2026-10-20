@@ -1,5 +1,5 @@
-# 当前阶段
+# 旧数据迁移进度
 
-2026-10-20：用户已授权执行。独立运行waypoint_direct_audit_001完成只读审计；B0资格门BLOCKED，B1/B2/B3未启动。没有确认静止TRAIN/VAL；旧合同资格待迁移，不认定旧数据物理失败。32TRAIN/8VAL辅助拟合超出原4TRAIN诊断范围，已披露，不计表示门通过。
+2026-10-20：waypoint_migration_001后台单案例迁移诊断已完成。可见初态与映射精确匹配；完整历史隐藏状态未恢复，旧合同不等价；冲突轨迹历史加速度比1.06024及18次联合运动违规，隔离两份拷贝。按名称解析目标自由关节后581条已分割记录均移动，静止0。
 
-实际0训练/0新增执行/0DEV候选。详情ff_prior_waypoint_direct/docs/ANALYSIS.md。后台终态resume不重跑。未扩库/TEST。
+原表示/执行/训练/DEV阶段BLOCKED，实际0新物理步/0训练。详情ff_prior_waypoint_migration/docs/ANALYSIS.md。未扩库/TEST；不得将其他任务目标覆盖为本轮完成。下一步需明确已有静止TRAIN/VAL来源或另行冻结移动-only研究范围，当前不自动更改。

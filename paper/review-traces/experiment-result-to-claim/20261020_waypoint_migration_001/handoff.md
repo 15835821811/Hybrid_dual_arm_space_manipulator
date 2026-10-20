@@ -1,0 +1,1 @@
+partial；维持BLOCKED，未训练/执行。已限制802文件保留范围，不称全依赖冻结；运行后dependency_supplement补充adapter等hash，未追认预冻结。审查后独立源码读取已核对ff_prior_waypoint_scene/experiment.py:47的DEV -.235值；原审查按原样保留。无ctrl限制旧精确重放，不永久禁止新MODEL_VALID迁移。所有依赖阶段未运行。
