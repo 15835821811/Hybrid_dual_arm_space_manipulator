@@ -1,16 +1,20 @@
-# 端点分组Jacobian与解析平滑链式梯度：执行状态
+# 分组误差Jacobian与解析平滑链式梯度：完整闭环终态
 
-|阶段|门槛/工作|状态|
+|阶段|实测|状态|
 |---|---|---|
-|M0|继承原24对/32事件目标/1096输入绑定，新源码|FROZEN ecaf2519|
-|软件|解析权重、102×4组Jacobian、原门不变、事务与随机序列|PASS 17/17|
-|M1|48/48数值检查；至少16/24及各档4/8；恢复|RUNNING|
-|M2|单一B、6000普通更新、60联合世界事件/120梯度|DEPENDENCY_M1|
-|M3无引导|完整16步A/B×48VAL×2|DEPENDENCY_M2|
-|M3DEV|新增B180候选/36执行；复用旧540/108|DEPENDENCY_M2|
-|收尾|只读原始审计、新独立review、一次完成resume、中文报告|PENDING|
-|扩库/TEST|禁止|NOT_RUN|
+|软件|17/17|PASS|
+|M1|24/24接受、48/48梯度、三个噪声均8/8、恢复一致|PASS|
+|M2|6000更新、14222TRAIN全参与、300段普通随机摘要匹配|PASS|
+|M2世界监督|120/120梯度；31/60事件接受|PASS，作用大小另判|
+|M3无引导|A/B各96条、各8合格；位置均值微降|DONE，命中数不增|
+|M3DEV|B180/180合格、36/36执行重放；旧540/108复用|工程PASS|
+|原始审计|168梯度、新180/36；无未决工作|PASS|
+|完成resume|唯一一次、1249文件不变|PASS|
+|新独立审查|工程证据PASS；C1 partial、C2 no|DONE|
+|扩库/TEST|未运行，禁止本轮追加|NOT_RUN|
 
-新包ff_prior_endpoint_jacobian，run endpoint_jacobian_bounded_001。完整协议见该包docs/EXPERIMENT_PLAN.md；旧smooth结果22/24、46/48保留，未作原地通过升级。不因效果差追加实验。物理门、候选预算、旧模型/数据/结果与用户修改保持。
+运行endpoint_jacobian_bounded_001，2859.547秒，源码ecaf2519、启动26e2b60b。实际耦合50779、预留57396；无新增训练数据。无引导位置均值15.320480→15.300894mm、DEV执行均值.737807→.737143mm，但候选略差与部分姿态退化；完整成功率饱和。工程完成不等于科学收益成立。
 
-启动回执ff_prior_endpoint_jacobian/evidence/launch_receipt.json；实际状态见run status.json。后台已启动，未预判M1或下游结果。
+报告ff_prior_endpoint_jacobian/docs/ANALYSIS.md。下一阶段仅建议对齐有效监督覆盖与采样分布，不重复数值局部打转；本轮不自动追加实验，长期目标未complete。物理门和旧模型/结果保持。
+
+独立审查168梯度/AdamW、6000随机序列、192完整DDIM及36新执行保存证据通过；无新增物理或训练。论文主张审计不存在，下游论文判定provisional。收尾后暂停自动接续，长期科学目标未完成。
