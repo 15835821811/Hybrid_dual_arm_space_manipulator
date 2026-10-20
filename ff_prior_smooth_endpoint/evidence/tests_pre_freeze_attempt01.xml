@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="58.598" timestamp="2026-10-20T09:56:54.196646+08:00" hostname="wangbingquan"><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_01_binding_and_selection" time="33.297" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_02_loss_absolute_and_threshold_groups" time="0.001" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_03_reject_passed_group_crossing" time="0.000" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_04_optimizer_transaction" time="0.633" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_05_all_6000_A_random_batches" time="11.744" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_06_base_objective_exact_A" time="0.004" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_07_unguided_exact_network_budget" time="0.005" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_08_independent_prediction_rng" time="0.001" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_09_budget_reject_before_mutation" time="0.010" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_10_resume_completed_read_only" time="11.653"><failure message="ValueError: completed identity changed">self = &lt;ff_prior_smooth_endpoint.test_implementation.Software testMethod=test_10_resume_completed_read_only&gt;
+
+    def test_10_resume_completed_read_only(self):
+        from .job import completed_no_work
+        from ff_prior_pilot_train.storage import atomic_json
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory)
+            atomic_json(p/'run.json',{'identity':identity(),'software_fixture_only':True})
+            atomic_json(p/'summary.json',{'status':'FINISHED_WITH_BLOCKED_ITEMS','software_fixture_only':True})
+            atomic_json(p/'status.json',{'status':'FINISHED_WITH_BLOCKED_ITEMS','software_fixture_only':True})
+            before={f.name:f.read_bytes() for f in p.iterdir()}
+&gt;           self.assertEqual(completed_no_work(p)['resume'],'NO_WORK_ALREADY_COMPLETE')
+                             ^^^^^^^^^^^^^^^^^^^^
+
+ff_prior_smooth_endpoint\test_implementation.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+out = WindowsPath('C:/Users/admin/AppData/Local/Temp/tmp6vmw0aac')
+
+    def completed_no_work(out):
+        from .inputs import identity
+&gt;       if read_json(out/'run.json')['identity']!=identity():raise ValueError('completed identity changed')
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: completed identity changed
+
+ff_prior_smooth_endpoint\job.py:11: ValueError</failure></testcase><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_11_missing_endpoint_retains_denominator" time="0.001" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_12_smooth_group_tie_derivative" time="0.000" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_13_nonempty_optimizer_commit_restore" time="0.006" /><testcase classname="ff_prior_smooth_endpoint.test_implementation.Software" name="test_14_joint_batch_counts_bounded" time="0.000" /></testsuite></testsuites>
