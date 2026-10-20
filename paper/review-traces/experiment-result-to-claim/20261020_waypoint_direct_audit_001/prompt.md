@@ -1,0 +1,1 @@
+独立只读审查当前完整航点直接轨迹协议B0。核对worker、summary/episodes/freeze/preservation及原TRAIN/VAL，禁止TEST与仿真。判断BLOCKED是否合理、资格0是否被误当物理失败，运动覆盖、标签冲突、离线表示和协议偏差，给出主张支持程度及最小迁移建议。

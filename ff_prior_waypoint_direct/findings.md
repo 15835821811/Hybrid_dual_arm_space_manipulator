@@ -1,0 +1,3 @@
+# 结果到主张
+
+waypoint_direct_audit_001；claim_supported: partial；对已检查文件的描述置信度高，对全工作区数据穷尽性无保证。C1直接生成可行性/C2相对收益均未检验。原报告中的资格0是未认证，不是物理失败。32TRAIN/8VAL离线拟合偏离原4TRAIN表示门，已披露。下一步优先既有动态数据来源迁移与静止覆盖核对；不自动扩库或TEST。独立审查见docs/INDEPENDENT_REVIEW.md。
