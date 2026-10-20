@@ -1,6 +1,6 @@
 # 当前执行目标：MLP与小型Transformer有界主干对照
 
-2026-10-20。用户已授权制定目标并执行；本轮准备完成，待提交冻结源码后后台启动。独立运行 artifacts/v7_1/backbone_pair_smoke_002，入口 .\ff_prior_backbone_v2\job.ps1 status|report|resume。
+2026-10-20。用户已授权制定目标并执行；本轮已实际后台启动，状态RUNNING，PID 40916；源码4ccba221。独立运行 artifacts/v7_1/backbone_pair_smoke_002，入口 .\ff_prior_backbone_v2\job.ps1 status|report|resume。
 
 本轮要回答：在相同102维潜变量、65维条件、数据、损失、训练抽样和采样物理流程下，小型Transformer是否改善无引导世界终点精度，以及完整规划质量。相对优势是待验证的科学结论，不作为启动全流程的门。
 
