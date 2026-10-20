@@ -1,0 +1,135 @@
+{
+  "review_role": "fresh independent paper architect/reviewer",
+  "experiment": "artifacts/v7_1/backbone_pair_smoke_002",
+  "frozen_source": "4ccba22122c5ad241fe2d701ff907d82d99d41e4",
+  "claims": {
+    "C1": {
+      "claim_supported": "no",
+      "what_results_support": [
+        "冻结单训练种子、同表示/数据/损失/更新预算下，Transformer无引导姿态均值与中位改善，位置及Q中位改善；存在有限辅助指标收益。",
+        "完整16步无物理引导、共同prepare后96配对样本，MLP与Transformer全部门合格率都为0/96，缺失端点0。"
+      ],
+      "what_results_dont_support": [
+        "预定主要指标没有改善；位置均值19.016722→21.088268mm、P95 31.097930→43.740550mm，Q均值4.417744→4.571178、P95 6.722665→10.317055，不能称整体世界终点质量改善。",
+        "不能据本轮认定MLP是主要瓶颈、Transformer普遍更差或无效；不能把架构包差异单独归因注意力。"
+      ],
+      "missing_evidence": [
+        "跨独立训练种子的可重复收益。",
+        "达到5mm/1度及全部几何门的无引导改善。",
+        "保持最终TEST隔离的更广任务分布证据；当前48VAL×2不是96个独立目标，也不是训练重复。"
+      ],
+      "suggested_claim_revision": "在本冻结预算的探索性配对比较中，小型Transformer改善了部分中心误差统计，但未改善无引导全部门合格率，且位置及综合Q的均值与尾部退化；尚无证据证明其整体改善无引导世界终点质量。",
+      "next_experiments_needed": [
+        "本轮不执行任何追加实验。若未来另获授权，应先冻结新的假设和判定指标，再进行独立训练种子的等预算重复；优先解释尾部退化，而非按本轮结果择优追加种子或训练步数。"
+      ],
+      "confidence": "high"
+    },
+    "C2": {
+      "claim_supported": "partial",
+      "what_results_support": [
+        "在固定12个已用DEV任务×3采样种子、每任务5候选及共同late4下，两新主干各180/180候选合格、36/36执行重放通过。",
+        "相对本轮从头训练MLP，Transformer的执行位置均值0.787201→0.659327mm，降低0.127875mm（约16.24%），位置P95 1.225679→0.950734mm，姿态均值0.093666→0.080320度；位置26/36配对更好、10/36更差。",
+        "三采样种子均值、原DEV4及已用8任务分层的执行位置均值均改善；该结果支持有限开发任务上的末端精度收益。"
+      ],
+      "what_results_dont_support": [
+        "四方法成功率相同，不能宣称成功率优势；完整流程通过不证明无引导生成合格。",
+        "不能宣称普遍规划优势、跨训练种子稳定性或样本效率优势；同一训练模型下的36执行不是36个独立训练重复。",
+        "条件均值执行位置均值0.366634mm、姿态0.043928度，比Transformer更低；Transformer相对条件均值位置仅8/36更好。",
+        "Transformer候选位置/姿态最大误差比MLP更大；执行收益依赖固定合格候选选择和引导流程，不能反推整体无引导分布改善。"
+      ],
+      "missing_evidence": [
+        "独立训练重复及预先规定的任务层统计分析。",
+        "更广且未用于开发的任务分布；当前任务已使用，非最终TEST。",
+        "没有同任务关闭引导的DEV消融；无引导在VAL、执行在DEV，不能跨表相减作为引导的独立因果贡献。",
+        "若要归因注意力，需将归一化、残差、激活等因素分开控制；本轮不具备此设计。"
+      ],
+      "suggested_claim_revision": "在单训练种子、固定12个已用开发任务和共同late4流程中，小型Transformer相对本轮MLP显示执行末端误差的探索性改善；四方法成功率持平，且尚未超过条件均值基线的平均精度，不能据此认定普遍规划优势。",
+      "next_experiments_needed": [
+        "仅在另行批准的新计划中考虑多训练种子等预算重复和任务层分析；保留简单基线与原物理门。本轮无需为完成工程流程而追加实验，不启动扩库、pilot、study、strict_multimodal或TEST。"
+      ],
+      "confidence": "medium"
+    }
+  },
+  "engineering_verdict": {
+    "status": "PASS",
+    "claim_supported": "yes",
+    "scope": "仅本轮360新增模型候选、72实际MuJoCo原生67力矩执行及原运行独立重放证据；非硬件、非全库执行证明。",
+    "what_results_support": [
+      "源码/输入身份、训练过程证据、无引导采样来源、固定DEV候选/预执行选择、已保存轨迹与执行门形成闭环；达到每模型144/180、29/36工程计数门，且无未知工作。",
+      "逐条新轨迹代数复核通过，工程有效不依赖C1或相对优势。"
+    ],
+    "what_results_dont_support": [
+      "未执行候选或训练库全部具有力矩可执行性。",
+      "连续时间无碰撞证书、硬件验证、动态环境或任意初态适用性。"
+    ],
+    "missing_evidence": [
+      "独立重放没有单独保存第二条原始轨迹；本次核对原始重放残差、计数与冻结重放实现，没有重新进行物理仿真。",
+      "完整积分初态由任务身份、输入绑定和冻结初始化代码支撑；native_trace单独不包含所有初态applied-force/mocap/userdata字段。"
+    ],
+    "confidence": "high"
+  },
+  "paper_claim_audit": "unavailable",
+  "downstream_writing_status": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "recommend_replace_default_model": false,
+  "recommend_continue_dataset_expansion": false,
+  "permitted_next_stage": "完成本轮中文结果分析、版本化实验记录与有界结果报告；可暂定写作上述限定结论。科学路线收窄，不自动进入优势确认、扩库或TEST。新实验须单独计划和授权。",
+  "routing_action": "C1收窄/否定当前整体改善主张；C2仅记录有限探索性精度收益；工程完成；保留模型和全部结果。",
+  "verification_scope": {
+    "raw_helper": {
+      "status": "PASS",
+      "errors": [],
+      "new_candidates": 360,
+      "new_execution_units": 72,
+      "native_verified": 72,
+      "native_plus_replay_steps": 756000,
+      "read_only_AdamW_reconstructions": 6,
+      "TEST": false,
+      "scope": "saved evidence and neural/AdamW algebra; no new simulation or optimizer.step; old controls hash-only"
+    },
+    "source_files": 168,
+    "bound_inputs": 28861,
+    "selected_updates_per_model": [
+      1,
+      3000,
+      6000
+    ],
+    "training_updates_each": 6000,
+    "matched_segments": 300,
+    "unguided": 192,
+    "new_candidates": 360,
+    "new_executions": 72,
+    "reused_candidates": 360,
+    "reused_executions": 72,
+    "trajectory_algebra": "PASS",
+    "actual_coupled": 29527,
+    "reserved_coupled": 41256,
+    "coupled_limit": 42000,
+    "wall_s": 2741.1569999996573,
+    "output_bytes": 1582560002,
+    "threads": 2,
+    "resume_handoff": {
+      "source": "主代理执行一次；审查者仅核验其原始前后manifest与当前956文件hash",
+      "status": "PASS",
+      "resume": "NO_WORK_ALREADY_COMPLETE",
+      "files": 956
+    }
+  },
+  "evidence_limitations": [
+    "仅两个固定主干各一个训练种子；采样种子非训练重复。",
+    "无引导指标取共同prepare后的轨迹，非raw轨迹的另一次世界终点测量；raw神经采样精确重建，未调用传播。",
+    "只对6个预选更新进行梯度/AdamW代数重建；其余更新由300段序列摘要、覆盖计数、最终状态和运行日志共同支撑，不声称逐步重建全部12000次优化。",
+    "未重新调用mj_step、coupled propagation、optimizer.step、训练或resume；原执行重放是否正确依赖绑定源码及保存的执行证据。",
+    "对全部72条native_trace重算可由已存数组推导的门；未重算几何距离、碰撞中点和质量矩阵。",
+    "旧基线仅读取结果及身份哈希，不重跑旧物理审计；没有把旧360/72算成新增。",
+    "几何是不穿透门和既定离散细化，continuous_time_certified=false；不是安全裕量或连续时间证书。",
+    "14软件测试只作为软件证据，不作为物理证据。",
+    "没有PAPER_CLAIM_AUDIT，因此下游论文表述为provisional。"
+  ],
+  "artifacts": [
+    "response.md",
+    "reviewer_raw_audit.json",
+    "reviewer_trajectory_algebra.json",
+    "reviewer_supplemental.json"
+  ]
+}

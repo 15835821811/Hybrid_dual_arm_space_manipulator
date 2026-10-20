@@ -1,16 +1,30 @@
-# Experiment Tracker：有界主干对照v2
+# Experiment Tracker：有界MLP与Transformer对照已完成
 
-唯一有效run：artifacts/v7_1/backbone_pair_smoke_002，ff_prior_backbone_v2。原001启动文件写入失败保留，未进行正式更新或DEV。
+2026-10-20。用户授权的本轮实现、训练、完整无引导诊断、原冻结DEV同预算
+候选/力矩执行/重放、原始审计、新独立审查及报告均完成。
+有效运行artifacts/v7_1/backbone_pair_smoke_002；冻结源码4ccba221。
+入口 .\ff_prior_backbone_v2\tools\job.ps1 status|report|resume。
 
-|阶段|目的与范围|状态|证据|
-|---|---|---|---|
-|启动修复|001证据父目录缺失，0次正式更新|FIXED_IN_V2|原18文件保存hash，源码434f42ee不修改；独立v2父目录写入回归|
-|M0|14222TRAIN/48VAL，28861绑定、168源码，数值检查|PASS：软件及实际临时数值检查|14/14测试通过；与原冻结输入/协议一致，未扩大实验|
-|M1|从头MLP208998/Transformer211969参数各6000更新|RUNNING|观察到MLP 1800/6000；目标仍为相同codec/v+.05localG/随机序列、全部TRAIN消费|
-|M2|各VAL48×2种子完整16步无引导，共192|PENDING|结果不作为DEV拦截门|
-|M3|原DEV12×3种子×5候选×2新模型|PENDING|新增360/72，旧简单基线复用360/72；原物理门不变|
-|M4|只读原始审计、新独立review、报告提交|PENDING|完成resume仅一次；无优势也如实收尾|
+|阶段|实际结果|状态|
+|---|---|---|
+|M0|14/14软件测试；原001存储故障独立v2修复，失败证据保留|PASS|
+|M1|14222TRAIN/48VAL；两个近参数规模主干各6000正式更新；同300随机摘要|PASS|
+|M2|完整16步无引导各96条，均0/96指定目标全门合格|已完成，C1=no|
+|M3|原DEV4+已用8，3种子，每任务5候选；两组各180/180与36/36|工程PASS|
+|M4|原始审计及全新独立审查、一次resume956文件不变、中文报告|已完成|
 
-C1终点精度与C2完整收益未判定。仅一个训练种子，不宣称普遍稳定优势。不扩库、不启动pilot/study/strict_multimodal/TEST；保留全部旧结果和用户修改。
+Transformer对新MLP执行位置均值下降16.24%，但成功率持平，条件均值平均精度更优。
+C2=partial，仅支持固定开发任务上共同late4后的有限残差收益；单训练种子。
+两组无引导均0/96，Transformer位置/Q均值和尾部更差；不支持普遍替代MLP。
+软件实现、MODEL_VALID、具体执行重放通过和科学收益分别判定。
 
-实际启动：源码4ccba221，PID 40916，状态RUNNING，阶段M1_training，心跳健康；接续mlp-transformer每15分钟只读状态，完成/失败再收尾。正式结果尚未产生，不预先通过。
+保留旧默认模型、全部数据/结果/用户修改/其他作业。原001失败证据保留。
+保持仅不穿透、5mm/1度、2mm几何采样、17→67、完整初态、自由漂浮、
+全机几何及全部运动/力矩/重放门。不扩库、不启动pilot/study/strict_multimodal/TEST。
+本轮接续收尾后暂停。没有自动追加实验或替换默认模型。
+
+下一研究方向仅建议：固定现有TRAIN与预算，验证完整采样输出的目标对齐，
+监控无引导命中和尾部，同时保留简单基线；若研究架构稳定性需独立训练重复。
+新实验须另行确定方案；不以本轮完成宣称长期Diffusion优势目标完成。
+完整报告ff_prior_backbone_v2/docs/ANALYSIS.md；paper claim audit缺失，
+下游论文写作仍provisional。重放审查边界见报告。
