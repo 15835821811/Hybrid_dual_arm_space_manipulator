@@ -1,0 +1,166 @@
+{
+  "run": "artifacts/v7_1/sample_alignment_001",
+  "producer_head": "b242dbebbfc9e71880ec7c70f2a078ba45778ef6",
+  "review_role": "fresh independent paper architect/reviewer",
+  "claim_supported": "partial",
+  "confidence": "high",
+  "confidence_scope": "High for frozen-run accounting and descriptive verdict; medium for repeatable scientific benefit beyond one training seed.",
+  "claims": {
+    "C1": {
+      "claim_supported": "yes",
+      "scope": "Only the frozen single-training-seed combined-method comparison on 48 existing VAL tasks and two paired sampling seeds.",
+      "general_superiority_supported": false,
+      "confidence": "high",
+      "what_results_support": "Unguided eligibility 9/96 to 24/96, 15 gained and zero lost hits; position improves in 84/96 pairs; empirical position, rotation and Q tails decrease.",
+      "what_results_dont_support": "Population tail guarantees, high-reliability unguided planning, independent training reproducibility, or isolated teacher/world-gradient causality.",
+      "missing_evidence": [
+        "Independent training seeds",
+        "Unseen task/scene evaluation",
+        "Separate teacher-only and world-only controls if component attribution is desired"
+      ],
+      "suggested_claim_revision": "For one matched training seed and the frozen 48-task two-sampling-seed VAL set, combined full-DDIM teacher and world-endpoint alignment raised unguided eligibility from 9/96 to 24/96 and reduced observed error tails."
+    },
+    "C2": {
+      "claim_supported": "no",
+      "confidence": "high",
+      "what_results_support": "Both new methods retain 180/180 candidate and 36/36 execution success on original DEV; aligned has 5/5 candidates and one verified selected execution in the fixed three-obstacle static pregrasp scene.",
+      "what_results_dont_support": "Improved complete planning in general, success-rate advantage, consistent position advantage, five-obstacle application readiness, dynamic or contact capture.",
+      "missing_evidence": [
+        "A legal five-obstacle trajectory and execution witness",
+        "Consistent complete-planning gains across independent tasks and training replicates"
+      ],
+      "suggested_claim_revision": "The combined training package preserves original-DEV engineering success and works in one fixed three-obstacle static pregrasp scene, but the five-obstacle application remains unsolved under the frozen budget."
+    }
+  },
+  "engineering": {
+    "bounded_completion": "PASS",
+    "source_files_checked": 173,
+    "bound_input_files_checked": 29027,
+    "source_and_input_hash_mismatches": 0,
+    "training_updates_per_model": 1200,
+    "TRAIN_rows_seen_per_model": 14222,
+    "TRAIN_draws_per_model": 76800,
+    "ordinary_random_stream_independently_reconstructed": true,
+    "VAL_gradients_or_checkpoint_selection": false,
+    "aligned_teacher_batches": 1200,
+    "aligned_world_events": 60,
+    "fresh_saved_evidence_audit": {
+      "status": "PASS",
+      "saved_update_reconstructions": 64,
+      "full16_world_VJP_reconstructions": 60,
+      "new_DEV_candidates": 360,
+      "DEV_execution_units": 72,
+      "application_candidates": 50,
+      "application_execution_units": 10,
+      "native_verified": 75,
+      "native_plus_replay_steps": 838500
+    },
+    "extra_review_checks": [
+      "Both diagnostic neural VJPs rebuilt",
+      "All 62 saved central/fine convergence pose differences independently recalculated",
+      "Raw statistics, paired variations and application failure gates independently recomputed",
+      "Original DEV task reuse identity and 1403-entry before/after completed-resume manifests inspected"
+    ],
+    "runtime_reproducibility_caveat": {
+      "initial_unmatched_environment_audit": "FAIL at aligned update 0020 normalized prepared-output equality",
+      "unmatched_environment_max_normalized_error": 1.4903633882568101e-12,
+      "unmatched_environment_max_prepared_Z_error_rad": 1.6653345369377348e-15,
+      "existing_assertion_threshold": 1e-12,
+      "matched_environment_event_error": 0.0,
+      "resolution": "Set OMP_NUM_THREADS, MKL_NUM_THREADS and OPENBLAS_NUM_THREADS to 2 before numerical imports, and torch threads to 2 as in original worker. Complete saved-only audit then passes; no tolerance or source edits.",
+      "blocking": false
+    },
+    "new_DEV_engineering_pass": true,
+    "new_DEV_plus_application_candidates": 410,
+    "new_DEV_plus_application_MODEL_VALID": 374,
+    "new_DEV_plus_application_eligible": 373,
+    "MODEL_VALID_but_ineligible_record": "application/capture_3_obstacles/aligned_unguided/candidates/01.json: frozen_goal_pass=false",
+    "actual_coupled_calls": 45270,
+    "reserved_coupled_upper": 60050,
+    "coupled_limit": 75000,
+    "unresolved_work": false,
+    "physics_relaxed": false,
+    "replay_evidence_limit": "Native arrays and replay summary/source are verified; a complete separate second replay trajectory is not stored and no new physical replay was run.",
+    "continuous_time_certified": false,
+    "hardware_validated": false
+  },
+  "application": {
+    "scope": "Static noncontact pregrasp approach plus hold, APPLICATION_DEV",
+    "three_obstacles_eligible": {
+      "plain": 5,
+      "aligned": 5,
+      "structured": 3,
+      "learned_mean": 0,
+      "aligned_unguided": 0
+    },
+    "five_obstacles_eligible": {
+      "plain": 0,
+      "aligned": 0,
+      "structured": 0,
+      "learned_mean": 0,
+      "aligned_unguided": 0
+    },
+    "denominator_per_method_scene": 5,
+    "actual_new_executions": 3,
+    "execution_units_without_candidate": 7,
+    "five_obstacles_aligned_pose_pass": 5,
+    "five_obstacles_aligned_geometry_fail": 5,
+    "five_obstacles_aligned_penetration_range_mm": [39.456567627629, 52.37309143118473],
+    "five_obstacles_aligned_goal_only_fallbacks": "16/20 saved solver records",
+    "three_obstacles_mean_failure": "All five fail geometry_refinement: 2.115–2.227 mm steps exceed 2 mm, despite positive sampled clearance 6.907–8.465 mm and passing pose.",
+    "five_obstacle_feasibility": "Unestablished; bounded failures do not prove infeasibility.",
+    "two_scene_application_ready": false
+  },
+  "TEST": {
+    "ready": false,
+    "decision": "BLOCKED_APPLICATION_GATE",
+    "reason": "Aligned five-obstacle candidates are 0/5 and no selected execution exists; required >=4/5 and selected execution/replay pass in both scenes are not met.",
+    "relative_advantage_is_prerequisite": false,
+    "initiated_by_review": false
+  },
+  "what_results_support": "A bounded empirical unguided improvement for the combined training change and completed original-DEV engineering validation.",
+  "what_results_dont_support": "General complete-planning superiority, two-scene application readiness, or TEST readiness.",
+  "missing_evidence": "Independent training repetitions, unseen scene generalization, component attribution, and a legal five-obstacle path/execution witness.",
+  "next_bounded_action": "Close this frozen run with narrowed C1 and negative C2/application conclusions; use saved collision pairs, constraints and fallback traces to prepare a separate bounded feasibility/guidance diagnostic proposal. Do not start TEST, expand data, relax gates or add simulations in this review.",
+  "next_experiments_needed": "For a future separately authorized protocol: distinguish five-obstacle path feasibility from bounded planner failure before further training; independent training repetitions and component controls are needed only for broader scientific claims.",
+  "routing_action": "confirm_bounded_C1_and_engineering; narrow_C2; diagnose_application_failure_before_any_TEST",
+  "paper_claim_audit": "unavailable",
+  "downstream_writing_verdict": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "review_operations": {
+    "saved_arrays_hashes_neural_autograd_algebra_only": true,
+    "new_optimizer_steps": 0,
+    "new_physics_simulations": 0,
+    "new_resume_calls": 0,
+    "new_experiments": 0
+  },
+  "raw_sources": [
+    "ff_prior_sample_alignment/docs/EXPERIMENT_PLAN.md",
+    "ff_prior_sample_alignment/docs/REFERENCE_SOURCE_ADDENDUM.md",
+    "ff_prior_sample_alignment/learning.py",
+    "ff_prior_sample_alignment/objectives.py",
+    "ff_prior_sample_alignment/audit_results.py",
+    "ff_prior_endpoint_jacobian/endpoint.py",
+    "ff_prior_endpoint_jacobian/state_audit.py",
+    "ff_prior/physical_audit.py",
+    "artifacts/v7_1/sample_alignment_001/run.json",
+    "artifacts/v7_1/sample_alignment_001/executed_source.zip",
+    "artifacts/v7_1/sample_alignment_001/training_input.json",
+    "artifacts/v7_1/sample_alignment_001/learning/{plain,aligned}/",
+    "artifacts/v7_1/sample_alignment_001/diagnostic/",
+    "artifacts/v7_1/sample_alignment_001/unguided/",
+    "artifacts/v7_1/sample_alignment_001/candidates/",
+    "artifacts/v7_1/sample_alignment_001/executions/",
+    "artifacts/v7_1/sample_alignment_001/application/",
+    "artifacts/v7_1/sample_alignment_001/paired_statistics.json",
+    "artifacts/v7_1/sample_alignment_001/application_statistics.json",
+    "artifacts/v7_1/sample_alignment_001/independent_verification.json",
+    "artifacts/v7_1/sample_alignment_001/ledger.json",
+    "artifacts/v7_1/sample_alignment_001/physical_contract.json",
+    "artifacts/v7_1/expand256_train_dev_001/candidates/*/*/{structured,learned_mean}/",
+    "artifacts/v7_1/expand256_train_dev_001/executions/*/*/{structured,learned_mean}/",
+    "ff_prior_sample_alignment/evidence/completed/resume_command.json",
+    "ff_prior_sample_alignment/evidence/completed/core_manifest_before_resume.json",
+    "ff_prior_sample_alignment/evidence/completed/core_manifest_after_resume.json"
+  ]
+}
