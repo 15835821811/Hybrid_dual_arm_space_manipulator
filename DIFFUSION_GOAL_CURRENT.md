@@ -1,6 +1,6 @@
 # 当前目标：平滑世界损失与控制样本共同优化
 
-2026-10-20，用户已授权实际执行。状态AUTHORIZED_READY。继承旧轮5f1e92ad的负结果，不改旧代码或结果；新独立包ff_prior_smooth_endpoint，输出artifacts/v7_1/smooth_endpoint_bounded_001。
+2026-10-20，用户已授权实际执行。状态RUNNING。继承旧轮5f1e92ad的负结果，不改旧代码或结果；源码74700959、14/14软件检查通过且后台已实际启动；新独立包ff_prior_smooth_endpoint，输出artifacts/v7_1/smooth_endpoint_bounded_001。
 
 先M1：原8目标×3噪声共24对，两样本世界梯度等权；平滑logmeanexp固定tau1.0，普通诊断base也成对均值，新增同一步长base-only端点。检查原Q下降、已通过分项不越门、有限域、数值梯度和状态恢复。48份完整102维梯度均通过且至少16/24、各档4/8才训练。
 
