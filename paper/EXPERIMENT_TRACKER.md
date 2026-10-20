@@ -1,18 +1,21 @@
-# 平滑世界终点与联合控制梯度：后台实际运行
+# 平滑世界损失与联合控制梯度：本轮终态
 
-原endpoint_precision_bounded_001于5f1e92ad收尾，10/24、21/24梯度通过的记录不修改。新run smooth_endpoint_bounded_001。
-
-|阶段|工作|状态|
+|阶段|实测|状态|
 |---|---|---|
-|M0|原目标与数据/旧对照绑定；新成对事件序列冻结|FROZEN|
-|软件|平滑loss、非空AdamW事务、随机序列、无引导DDIM、恢复检查|PASS 14/14|
-|M1|24对、48梯度，原16/24和每档4/8门，匹配base-only端点|RUNNING M1|
-|M2|一份候选6000普通更新、60联合世界事件/120梯度|DEPENDENCY_M1|
-|M3无引导|A/B×VAL48×2，共192|DEPENDENCY_M2|
-|M3原DEV|新增B180候选/36执行，复用540/108|DEPENDENCY_M2|
-|收尾|新独立review、一次完成resume、中文报告|PENDING|
-|扩库/TEST|0|FORBIDDEN|
+|M0身份冻结|164源码、1096输入/对照绑定|PASS|
+|软件|14/14稳定版本测试|PASS|
+|M1接受|22/24，三个噪声7/8、8/8、7/8|接受率分项PASS|
+|M1数值梯度|事件24/24，控制22/24|FAIL 46/48，要求48/48|
+|M2训练|0普通更新、0正式世界事件|BLOCKED_M1|
+|M3无引导|0新增候选|BLOCKED_M1|
+|M3原DEV|0新增候选/执行；540/108仅旧身份绑定|BLOCKED_M1|
+|原始审计|10392前向，无未决工作|PASS，不覆盖数值FAIL|
+|独立审查|C1=no、C2=no，有限M1描述支持|DONE|
+|完成resume|唯一一次，211文件不变|PASS|
+|扩库/TEST|未运行|FORBIDDEN|
 
-2CPU/6h/20GiB，60000额外耦合硬上限。查询/耗时不要求优于基线，物理门不变。只执行一轮，不因负结果追加试验。
+运行smooth_endpoint_bounded_001，417.891秒，源码74700959、启动cfcd0e5c。旧轮10/24仅历史参照，本轮普通base也变成双样本，不能隔离平滑化贡献。22接受步中base同尺度21可接受；世界增量收益不稳定。两个无试探案例被账本标成NO_DESCENT是标签缺陷，实际为方向检查阻塞，冻结记录保留。
 
-源码74700959；实际运行PID/心跳见独立运行status.json。启动记录ff_prior_smooth_endpoint/evidence/launch_receipt.json；实验结果尚未判定。
+报告ff_prior_smooth_endpoint/docs/ANALYSIS.md；新审查paper/review-traces/experiment-result-to-claim/20261020_smooth_endpoint_run01/。软件、数据资格、真实执行和科学收益分开判定：没有新数据/模型/执行资格，科学收益未成立，不能推断未训练候选无效。
+
+下一轮仅建议修复导数表达并冻结数值验证；本轮不再追加。长期目标未complete。物理门、旧模型/结果与用户修改保持。

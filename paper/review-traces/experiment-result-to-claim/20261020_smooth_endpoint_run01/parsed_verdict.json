@@ -1,0 +1,60 @@
+{
+  "experiment": "smooth_endpoint_bounded_001",
+  "review_role": "fresh independent paper architect/reviewer",
+  "claim_supported": "no",
+  "confidence": "high",
+  "claims": {
+    "C1": {
+      "claim_supported": "no",
+      "reason": "M1 gradient gate 46/48; no formal training or unguided/development evaluation"
+    },
+    "C2": {
+      "claim_supported": "no",
+      "reason": "no new candidate/model or paired execution against simple baselines"
+    },
+    "limited_M1_descriptive": {
+      "claim_supported": "yes",
+      "scope": "22/24 accepted temporary paired endpoint steps on eight fixed TRAIN targets; no updates retained"
+    },
+    "mechanism": {
+      "claim_supported": "partial",
+      "scope": "21/22 accepted scales also admissible for base-only; one incremental acceptance; mixed relative Q"
+    }
+  },
+  "what_results_support": "Current-prediction full102 finite differences, equal event/control world VJPs and paired ordinary gradient match saved evidence; all M1 updates restored; limited temporary descent on fixed TRAIN diagnostics.",
+  "what_results_dont_support": "Formal learned precision improvement, complete unguided generation benefit, execution validity, Diffusion superiority, isolated smooth/joint causality, broad generalization.",
+  "missing_evidence": [
+    "48/48 frozen numerical gradient pass",
+    "completed formal 6000-update training and nonempty AdamW runtime verification",
+    "fixed final model unguided VAL48 x 2",
+    "matched full development candidate/execution/replay comparisons"
+  ],
+  "suggested_claim_revision": "Report a bounded diagnostic with 22/24 temporary accepted steps, 46/48 gradient checks and M1 blocked; preserve C1/C2 as unestablished.",
+  "next_experiments_needed": [
+    "Only under future explicit authorization and a new frozen version: diagnose direction consistency, re-pass predeclared numerical gates, then complete planned training and matched evaluation. No experiments in this round."
+  ],
+  "implementation_findings": [
+    {
+      "kind": "diagnostic_label_bug",
+      "file": "ff_prior_smooth_endpoint/learning.py",
+      "finding": "ledger NO_DESCENT for case08/12 conflates gradient-blocked/no trials with evaluated non-descent",
+      "changes_applied": false
+    },
+    {
+      "kind": "numerical_implementation",
+      "finding": "No pose-loss, VJP, gradient-combination or AdamW algebra mismatch found; root cause of FD direction discrepancy not uniquely established."
+    }
+  ],
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "pending_external_review": false,
+  "routing_action": "record limited M1 evidence; C1/C2 unestablished; pause current round; no additional experiments",
+  "source_commit": "7470095972b8f5b4cb0eba80d6463fd7dfccc36b",
+  "evidence": "fresh_readonly_evidence.json",
+  "posthoc_saved_pose_chain_sensitivity": {
+    "path": "saved_pose_chain_sensitivity.json",
+    "interpretation": "supports scalar finite-difference truncation amplified by projection cancellation as a possible explanation; not a unique root-cause proof",
+    "gate_change": false,
+    "new_physics": false
+  }
+}
