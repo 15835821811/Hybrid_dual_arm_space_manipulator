@@ -1,0 +1,2913 @@
+{
+  "TEST": false,
+  "TRAIN_added": 0,
+  "accepted_updates": 15,
+  "actual_executions": 0,
+  "failing_gate_counts": {
+    "geometry": 12,
+    "geometry_refinement": 5
+  },
+  "infeasibility_proven": false,
+  "ledger": {
+    "attempts": {
+      "local_diagnosis": 2,
+      "teacher_search_and_validation": 12
+    },
+    "calls": {
+      "local_diagnosis.coupled": 124,
+      "local_diagnosis.distance": 867571,
+      "local_diagnosis.fk": 51957,
+      "local_diagnosis.forward": 131,
+      "local_diagnosis.mass_matrix": 34808,
+      "local_diagnosis.physics_steps": 0,
+      "local_diagnosis.rrt": 0,
+      "local_diagnosis.sqp": 3,
+      "local_diagnosis.torque_rollout": 0,
+      "teacher_search_and_validation.coupled": 8522,
+      "teacher_search_and_validation.distance": 2594146,
+      "teacher_search_and_validation.fk": 2662720,
+      "teacher_search_and_validation.forward": 8609,
+      "teacher_search_and_validation.mass_matrix": 2253716,
+      "teacher_search_and_validation.physics_steps": 0,
+      "teacher_search_and_validation.rrt": 0,
+      "teacher_search_and_validation.sqp": 26,
+      "teacher_search_and_validation.torque_rollout": 0
+    },
+    "completed": {
+      "legacy_local": {
+        "stage": "local_diagnosis",
+        "status": "DONE"
+      },
+      "local_subspaces": {
+        "stage": "local_diagnosis",
+        "status": "DONE"
+      },
+      "teacher_00_original_failed": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_01_three_aligned": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_02_three_plain": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_03_three_structured": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_04_bow_j10_-1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_05_bow_j10_1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_06_bow_j11_-1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_07_bow_j11_1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_08_bow_j12_-1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_09_bow_j12_1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_10_bow_j14_-1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_11_bow_j14_1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      }
+    },
+    "cpu_s": {
+      "local_diagnosis": 10.46875,
+      "teacher_search_and_validation": 220.9375
+    },
+    "identity": {
+      "identity_hash": "ca24df0773c424f3ac79ed680b60b6982507c611982a41f593de537d6a3871e9"
+    },
+    "inflight": null,
+    "wall_s": {
+      "local_diagnosis": 10.50441550090909,
+      "teacher_search_and_validation": 222.51214080117643
+    }
+  },
+  "legacy": {
+    "coupled": 109,
+    "goal_pass": true,
+    "stages": [
+      {
+        "accepted": 0,
+        "coupled_calls": 27,
+        "iteration": 12,
+        "solvers": [
+          {
+            "fallback_goal_only": true,
+            "iterations": 54,
+            "linear_pose_feasible": false,
+            "message": "Positive directional derivative for linesearch",
+            "solver": "pose_constrained_collision_sqp",
+            "success": false
+          }
+        ]
+      },
+      {
+        "accepted": 0,
+        "coupled_calls": 27,
+        "iteration": 13,
+        "solvers": [
+          {
+            "fallback_goal_only": false,
+            "iterations": 5,
+            "linear_pose_feasible": true,
+            "message": "Optimization terminated successfully",
+            "solver": "pose_constrained_collision_sqp",
+            "success": true
+          }
+        ]
+      },
+      {
+        "accepted": 0,
+        "coupled_calls": 27,
+        "iteration": 14,
+        "solvers": [
+          {
+            "fallback_goal_only": true,
+            "iterations": 52,
+            "linear_pose_feasible": false,
+            "message": "Positive directional derivative for linesearch",
+            "solver": "pose_constrained_collision_sqp",
+            "success": false
+          }
+        ]
+      },
+      {
+        "accepted": 0,
+        "coupled_calls": 28,
+        "iteration": 15,
+        "solvers": [
+          {
+            "fallback_goal_only": true,
+            "iterations": 56,
+            "linear_pose_feasible": false,
+            "message": "Positive directional derivative for linesearch",
+            "solver": "pose_constrained_collision_sqp",
+            "success": false
+          }
+        ]
+      }
+    ],
+    "validation": {
+      "frozen_goal_position_error_m": [
+        0.00203731947832989,
+        0.0006016841243826411
+      ],
+      "frozen_goal_rotation_error_rad": [
+        0.0011575746028781096,
+        0.0008633668115459879
+      ],
+      "gates": {
+        "boundary": true,
+        "coupled_convergence": true,
+        "domain": true,
+        "finite": true,
+        "geometry": false,
+        "geometry_refinement": true,
+        "identity": true,
+        "label_consistency": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "geometry": {
+        "coarse": {
+          "checked_states": 513,
+          "continuous_time_certified": false,
+          "minimum_clearance_m": -0.04102993555150207,
+          "pair": {
+            "body_a": "world",
+            "body_b": "fore_arm_link",
+            "geom_a": "v7_capture_3",
+            "geom_b": "collision_0069"
+          },
+          "passed": false
+        },
+        "extra": null,
+        "geometry_step_budget_m": 0.002,
+        "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+        "maximum_geometry_step_m": 0.0015020582012310795,
+        "midpoints": {
+          "checked_states": 512,
+          "continuous_time_certified": false,
+          "minimum_clearance_m": -0.04102992814357902,
+          "pair": {
+            "body_a": "world",
+            "body_b": "fore_arm_link",
+            "geom_a": "v7_capture_3",
+            "geom_b": "collision_0069"
+          },
+          "passed": false
+        },
+        "minimum_clearance_m": -0.04102993555150207,
+        "refinement_difference_m": 0.0
+      },
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 9.886403855441691e-07,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.3074922711381345e-08,
+              5.046137213775043e-09
+            ],
+            "terminal_rotation_rad": [
+              9.839335136736756e-09,
+              9.839336329918134e-09
+            ]
+          },
+          {
+            "aligned_body_extent_m": 2.471582576088808e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              2.7676655204072906e-09,
+              7.821439430144734e-10
+            ],
+            "terminal_rotation_rad": [
+              2.2034542270581635e-09,
+              2.2034553844913387e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "reference_torque_feasibility": "NOT_EVALUATED",
+      "required": [
+        "identity",
+        "finite",
+        "domain",
+        "native_range",
+        "boundary",
+        "motion",
+        "coupled_convergence",
+        "geometry",
+        "geometry_refinement",
+        "time_hold",
+        "label_consistency"
+      ],
+      "validation_level": "REJECTED",
+      "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+    }
+  },
+  "linear_pose_feasible_return": 3,
+  "linear_zero_check": [
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "00_original_failed",
+      "success": false,
+      "zero_step_pose_feasible": true
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "01_three_aligned",
+      "success": false,
+      "zero_step_pose_feasible": true
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "02_three_plain",
+      "success": false,
+      "zero_step_pose_feasible": true
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "03_three_structured",
+      "success": false,
+      "zero_step_pose_feasible": true
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "04_bow_j10_-1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 1,
+      "returned_linear_pose_feasible": false,
+      "seed": "04_bow_j10_-1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "05_bow_j10_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 1,
+      "returned_linear_pose_feasible": false,
+      "seed": "05_bow_j10_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 2,
+      "returned_linear_pose_feasible": false,
+      "seed": "05_bow_j10_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "06_bow_j11_-1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 1,
+      "returned_linear_pose_feasible": false,
+      "seed": "06_bow_j11_-1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 1,
+      "returned_linear_pose_feasible": false,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 2,
+      "returned_linear_pose_feasible": false,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 3,
+      "returned_linear_pose_feasible": false,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 4,
+      "returned_linear_pose_feasible": false,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 5,
+      "returned_linear_pose_feasible": false,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 6,
+      "returned_linear_pose_feasible": true,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 7,
+      "returned_linear_pose_feasible": true,
+      "seed": "07_bow_j11_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 8,
+      "returned_linear_pose_feasible": true,
+      "seed": "07_bow_j11_1",
+      "success": true,
+      "zero_step_pose_feasible": true
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "08_bow_j12_-1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 1,
+      "returned_linear_pose_feasible": false,
+      "seed": "08_bow_j12_-1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "09_bow_j12_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 1,
+      "returned_linear_pose_feasible": false,
+      "seed": "09_bow_j12_1",
+      "success": false,
+      "zero_step_pose_feasible": false
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "10_bow_j14_-1",
+      "success": false,
+      "zero_step_pose_feasible": true
+    },
+    {
+      "iteration": 0,
+      "returned_linear_pose_feasible": false,
+      "seed": "11_bow_j14_1",
+      "success": false,
+      "zero_step_pose_feasible": true
+    }
+  ],
+  "local": {
+    "rank_alone_is_not_global_feasibility": true,
+    "same_linearization_and_solver": true,
+    "source": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\capture_feasibility_001\\teachers\\00_original_failed\\iterations\\00",
+    "status": "DONE",
+    "variants": {
+      "codec102": {
+        "direction_rank": 102,
+        "goal_singular_values": [
+          391.9740284946965,
+          383.86832685840744,
+          228.21020754216016,
+          199.8180731460817,
+          82.81171229447156,
+          73.70864174567797,
+          57.726788343660026,
+          57.51583027142003,
+          44.80539077002416,
+          35.261551912225514,
+          16.286417480162253,
+          11.160374685786465
+        ],
+        "solver": {
+          "fallback": "JOINT_COLLISION_GOAL_RESTORATION",
+          "goal_jacobian_rank": 12,
+          "iterations": 41,
+          "linear_pose_feasible": false,
+          "message": "Positive directional derivative for linesearch",
+          "success": false,
+          "variables": 102
+        },
+        "trials": [
+          {
+            "Q": 5.025353831783885,
+            "collision_violation": 1.9612835927453969,
+            "goal_groups": [
+              2.1147321489560222,
+              5.025353831783885,
+              0.9531830963575918,
+              2.5981044362564405
+            ],
+            "minimum_clearance_m": -0.02041870263924381,
+            "scale": 1.0,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 2.7755466126257615,
+            "collision_violation": 4.964386487819412,
+            "goal_groups": [
+              0.5968787065288956,
+              2.7755466126257615,
+              0.2905384187647714,
+              0.9675822838240864
+            ],
+            "minimum_clearance_m": -0.02332430091367597,
+            "scale": 0.5,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 1.4668339041788239,
+            "collision_violation": 10.337445034980835,
+            "goal_groups": [
+              0.2377789558700293,
+              1.4668339041788239,
+              0.13870557703180825,
+              0.4506480780728257
+            ],
+            "minimum_clearance_m": -0.031823453121335894,
+            "scale": 0.25,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 0.754933632679554,
+            "collision_violation": 13.824728484096907,
+            "goal_groups": [
+              0.1640203478000471,
+              0.754933632679554,
+              0.10761484671984678,
+              0.2262058379227155
+            ],
+            "minimum_clearance_m": -0.03633121713778012,
+            "scale": 0.125,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          }
+        ]
+      },
+      "full323": {
+        "direction_rank": 323,
+        "goal_singular_values": [
+          404.89590172749314,
+          396.52166521389165,
+          235.73237848119078,
+          206.40087241095017,
+          85.54144055603406,
+          76.13777877173526,
+          59.629478057075474,
+          59.4112691523438,
+          46.28212812518617,
+          36.42220551038067,
+          16.82079733870223,
+          11.523712233463208
+        ],
+        "solver": {
+          "fallback": "JOINT_COLLISION_GOAL_RESTORATION",
+          "goal_jacobian_rank": 12,
+          "iterations": 45,
+          "linear_pose_feasible": false,
+          "message": "Positive directional derivative for linesearch",
+          "success": false,
+          "variables": 323
+        },
+        "trials": [
+          {
+            "Q": 8.017094784690267,
+            "collision_violation": 8.945075738013578,
+            "goal_groups": [
+              1.77638775864174,
+              8.017094784690267,
+              0.9187261404579482,
+              1.5640119428124206
+            ],
+            "minimum_clearance_m": -0.04470543882708168,
+            "scale": 1.0,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 3.9709489857177673,
+            "collision_violation": 4.951069631398757,
+            "goal_groups": [
+              0.4631122334925982,
+              3.9709489857177673,
+              0.2757047682738089,
+              0.9238484726415888
+            ],
+            "minimum_clearance_m": -0.022306534568992616,
+            "scale": 0.5,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 1.975491999700414,
+            "collision_violation": 10.275386811589332,
+            "goal_groups": [
+              0.18587080274334142,
+              1.975491999700414,
+              0.13318678130462794,
+              0.5122705491794337
+            ],
+            "minimum_clearance_m": -0.031632518248456996,
+            "scale": 0.25,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 0.9856613961511796,
+            "collision_violation": 13.816024213590072,
+            "goal_groups": [
+              0.14917901843485912,
+              0.9856613961511796,
+              0.10556258738120143,
+              0.2701182158776705
+            ],
+            "minimum_clearance_m": -0.03631705679886384,
+            "scale": 0.125,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          }
+        ]
+      },
+      "legacy24": {
+        "direction_rank": 24,
+        "goal_singular_values": [
+          404.2237160702703,
+          395.40266623795975,
+          239.57147389607255,
+          209.7286944103728,
+          85.57228469069977,
+          76.34958313710428,
+          59.673818733063484,
+          59.43809125184378,
+          46.244179844183385,
+          36.1232973978737,
+          16.91852584707121,
+          11.546827910915951
+        ],
+        "solver": {
+          "fallback": "JOINT_COLLISION_GOAL_RESTORATION",
+          "goal_jacobian_rank": 12,
+          "iterations": 46,
+          "linear_pose_feasible": false,
+          "message": "Positive directional derivative for linesearch",
+          "success": false,
+          "variables": 24
+        },
+        "trials": [
+          {
+            "Q": 8.47382436721241,
+            "collision_violation": 0.07386204396174181,
+            "goal_groups": [
+              1.66149805593822,
+              8.47382436721241,
+              0.10052568970111908,
+              1.659574867284227
+            ],
+            "minimum_clearance_m": -0.0036054152559057417,
+            "scale": 1.0,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 4.295813994666517,
+            "collision_violation": 4.50375726145129,
+            "goal_groups": [
+              0.47297803029914876,
+              4.295813994666517,
+              0.05756081948194628,
+              0.8406300709329697
+            ],
+            "minimum_clearance_m": -0.0219871935416865,
+            "scale": 0.5,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 2.1638004160975477,
+            "collision_violation": 10.188031988092696,
+            "goal_groups": [
+              0.2022781783898641,
+              2.1638004160975477,
+              0.07907132832015584,
+              0.43172505471152645
+            ],
+            "minimum_clearance_m": -0.031420110849336325,
+            "scale": 0.25,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          },
+          {
+            "Q": 1.086434824485481,
+            "collision_violation": 13.821584114395598,
+            "goal_groups": [
+              0.15506981857291466,
+              1.086434824485481,
+              0.09259328814304367,
+              0.2199992251351091
+            ],
+            "minimum_clearance_m": -0.03619606305367605,
+            "scale": 0.125,
+            "status": "COARSE_DIAGNOSTIC_NOT_MODEL_VALID"
+          }
+        ]
+      }
+    }
+  },
+  "model_qualified": 0,
+  "pose_qualified": 7,
+  "quick_rejects": 0,
+  "raw_audit": {
+    "actual_execution_records": 0,
+    "derivative_columns_checked": 8398,
+    "errors": [],
+    "native_plus_replay_steps": 0,
+    "no_new_physics_or_optimization": true,
+    "status": "PASS",
+    "validation_records": 13
+  },
+  "solver_success": 1,
+  "status": {
+    "elapsed_s": 259.3430000003427,
+    "heartbeat": 1792502735.3829582,
+    "pid": 19040,
+    "progress": {},
+    "report": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\capture_feasibility_001\\REPORT.md",
+    "stage": "complete",
+    "started_at": 1792502476.0276601,
+    "status": "FINISHED"
+  },
+  "teacher_iterations": 26,
+  "teachers": [
+    {
+      "accepted": 0,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.6562339185942054,
+      "goal_pass": true,
+      "initial_Q": 0.15501236494598222,
+      "initial_clearance_mm": -41.01113766835183,
+      "iterations": 1,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.332344623942535e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.5137965508974857e-08,
+              6.2287370438144505e-09
+            ],
+            "terminal_rotation_rad": [
+              1.1849842379965353e-08,
+              1.184984397958451e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 3.3308251722255747e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              3.245357697399893e-09,
+              8.540416364670655e-10
+            ],
+            "terminal_rotation_rad": [
+              2.433065522585695e-09,
+              2.4330658110267275e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        0.7751218960414636,
+        0.013349173208659854
+      ],
+      "rotation_deg": [
+        0.10616952010513514,
+        0.0011561295828574536
+      ],
+      "search_clearance_mm": -41.01113766835183,
+      "search_final_Q": 0.15501236494598222,
+      "seed": "00_original_failed",
+      "validation_clearance_mm": -41.0111337415013,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04101113378185955,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0033124410303814918,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04101103498078192,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04101113378185955,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.041011133741501296,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0016562339185942055,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04101112139136696,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.041011133741501296,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        }
+      ]
+    },
+    {
+      "accepted": 0,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.7166563773812633,
+      "goal_pass": true,
+      "initial_Q": 0.0450373229031745,
+      "initial_clearance_mm": -46.367970915509076,
+      "iterations": 1,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.4538088375920798e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.7480381143973605e-08,
+              3.2350087391337737e-09
+            ],
+            "terminal_rotation_rad": [
+              1.4466207000713572e-08,
+              1.4466207281634461e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 3.6344840115830253e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              4.318507704385943e-09,
+              8.234591018136709e-10
+            ],
+            "terminal_rotation_rad": [
+              3.279011947694785e-09,
+              3.279010242523053e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        0.2251574206272099,
+        0.02749245561449521
+      ],
+      "rotation_deg": [
+        0.02948275047477451,
+        0.001975939161552526
+      ],
+      "search_clearance_mm": -46.367970915509076,
+      "search_final_Q": 0.0450373229031745,
+      "seed": "01_three_aligned",
+      "validation_clearance_mm": -46.36796683801153,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04636796675133094,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.003433267885365951,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04636773817816148,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04636796675133094,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04636796683801153,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0017166563773812634,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0463679382663691,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04636796683801153,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        }
+      ]
+    },
+    {
+      "accepted": 0,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.2256847966916462,
+      "goal_pass": true,
+      "initial_Q": 0.08382001897060792,
+      "initial_clearance_mm": -45.31379817552662,
+      "iterations": 1,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.0150538102001219e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.516505410784478e-08,
+              4.2855215009054476e-09
+            ],
+            "terminal_rotation_rad": [
+              1.1557399950619722e-08,
+              1.1557400673496538e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 2.5340060066582394e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              3.4230839059987363e-09,
+              7.902967275897744e-10
+            ],
+            "terminal_rotation_rad": [
+              2.5946054351196393e-09,
+              2.594605624768487e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        0.41913191551227524,
+        0.008430411705341593
+      ],
+      "rotation_deg": [
+        0.05067526902107905,
+        0.0005377149937978572
+      ],
+      "search_clearance_mm": -45.31379817552662,
+      "search_final_Q": 0.08382001897060792,
+      "seed": "02_three_plain",
+      "validation_clearance_mm": -45.313794477462,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04531379453657547,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0024513336813615466,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04531373340913192,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04531379453657547,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.045313794477462,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0012256847966916461,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04531378683653364,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.045313794477462,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        }
+      ]
+    },
+    {
+      "accepted": 0,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.4939854720166557,
+      "goal_pass": true,
+      "initial_Q": 0.08044457561888489,
+      "initial_clearance_mm": -56.24134723576402,
+      "iterations": 1,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 4.7324483064106235e-07,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              8.393114028328355e-09,
+              4.8534114635745435e-09
+            ],
+            "terminal_rotation_rad": [
+              4.2601060231532226e-09,
+              4.2601059772789935e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        0.32912538835641725,
+        0.4022082098494803
+      ],
+      "rotation_deg": [
+        0.018864301905514018,
+        0.020514675560852742
+      ],
+      "search_clearance_mm": -56.24134723576402,
+      "search_final_Q": 0.08044457561888489,
+      "seed": "03_three_structured",
+      "validation_clearance_mm": -56.241425879545254,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.056241425879545254,
+              "pair": {
+                "body_a": "world",
+                "body_b": "arm_2_wrist_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0070"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0014939854720166556,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0562087798816964,
+              "pair": {
+                "body_a": "world",
+                "body_b": "arm_2_wrist_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0070"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.056241425879545254,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        }
+      ]
+    },
+    {
+      "accepted": 1,
+      "eligible": false,
+      "failing_gates": [
+        "geometry",
+        "geometry_refinement"
+      ],
+      "geometry_step_mm": 4.112457207471916,
+      "goal_pass": false,
+      "initial_Q": 3.0964227167475245,
+      "initial_clearance_mm": -40.51194014017263,
+      "iterations": 2,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.0875751682592311e-05,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              7.730102863393176e-07,
+              4.78098589912583e-07
+            ],
+            "terminal_rotation_rad": [
+              3.801042227816884e-07,
+              3.8010422360466346e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 2.8523345501400696e-06,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              1.4488999798569244e-07,
+              1.1282988731278235e-07
+            ],
+            "terminal_rotation_rad": [
+              9.259463403902758e-08,
+              9.259463473244311e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 6.772209277151896e-07,
+            "coarse": 1024,
+            "fine": 2048,
+            "passed": true,
+            "terminal_position_m": [
+              8.574679423478009e-09,
+              4.867343802185498e-09
+            ],
+            "terminal_rotation_rad": [
+              3.911567785738758e-09,
+              3.9115677947618855e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        10.522388753579333,
+        20.7878404852423
+      ],
+      "rotation_deg": [
+        0.5853045463079579,
+        0.7014507487729199
+      ],
+      "search_clearance_mm": -22.076564395802503,
+      "search_final_Q": 4.1575658334612,
+      "seed": "04_bow_j10_-1",
+      "validation_clearance_mm": -22.076545173656605,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022076544835285095,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.01644082719980791,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022076367248443245,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022076544835285095,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022076546040355517,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.008224169585978307,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022076523841971885,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022076546040355517,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022076545173656606,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.004112457207471916,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022076542398858052,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022076545173656606,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        }
+      ]
+    },
+    {
+      "accepted": 2,
+      "eligible": false,
+      "failing_gates": [
+        "geometry",
+        "geometry_refinement"
+      ],
+      "geometry_step_mm": 2.6709473485630526,
+      "goal_pass": false,
+      "initial_Q": 3.0046110527340852,
+      "initial_clearance_mm": -41.04399048744606,
+      "iterations": 3,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 6.962279940142048e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              4.1877716655641794e-07,
+              2.627294281978966e-07
+            ],
+            "terminal_rotation_rad": [
+              2.0025389298878067e-07,
+              2.0025389321457224e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 1.8391349151610136e-06,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              1.2868249266008973e-07,
+              9.661101162749433e-08
+            ],
+            "terminal_rotation_rad": [
+              7.680108524185253e-08,
+              7.68010850931356e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 4.3469017293323456e-07,
+            "coarse": 1024,
+            "fine": 2048,
+            "passed": true,
+            "terminal_position_m": [
+              8.373302293988212e-09,
+              4.9604758939377204e-09
+            ],
+            "terminal_rotation_rad": [
+              4.1159574660178545e-09,
+              4.1159572395319606e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        8.080198617217704,
+        16.797749445744202
+      ],
+      "rotation_deg": [
+        0.26287154145508995,
+        1.2490651670394395
+      ],
+      "search_clearance_mm": -24.465438384830104,
+      "search_final_Q": 3.3595369124588865,
+      "seed": "05_bow_j10_1",
+      "validation_clearance_mm": -24.465405800950577,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.024465395301946517,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.010681143769684306,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.02446529220378375,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.024465395301946517,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.024465405517680443,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.005341494463958144,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.024465392630403128,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.024465405517680443,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.02446540580095058,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0026709473485630525,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.024465404190041316,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.02446540580095058,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        }
+      ]
+    },
+    {
+      "accepted": 1,
+      "eligible": false,
+      "failing_gates": [
+        "geometry",
+        "geometry_refinement"
+      ],
+      "geometry_step_mm": 3.172556256745681,
+      "goal_pass": false,
+      "initial_Q": 0.8923094338131852,
+      "initial_clearance_mm": -41.32961107748514,
+      "iterations": 2,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 8.568565077901785e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              2.3452550387846874e-07,
+              1.6011230343238894e-07
+            ],
+            "terminal_rotation_rad": [
+              1.1233635892972751e-07,
+              1.1233635838648289e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 2.238819386784781e-06,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              4.7926658895006855e-08,
+              5.2444146431855926e-08
+            ],
+            "terminal_rotation_rad": [
+              4.660409460401956e-08,
+              4.660409376979809e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 5.581675222289632e-07,
+            "coarse": 1024,
+            "fine": 2048,
+            "passed": true,
+            "terminal_position_m": [
+              1.1690682777671851e-08,
+              9.144884381825037e-09
+            ],
+            "terminal_rotation_rad": [
+              7.60387301323559e-09,
+              7.603873175839642e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        1.5180318008591767,
+        18.570690390857482
+      ],
+      "rotation_deg": [
+        0.16639222236313508,
+        0.9788534875375524
+      ],
+      "search_clearance_mm": -22.559453236382225,
+      "search_final_Q": 3.714130080713085,
+      "seed": "06_bow_j11_-1",
+      "validation_clearance_mm": -22.55938788112259,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022559382207702237,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.01268581092008904,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022559291776474335,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022559382207702237,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022559387834585838,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.006344820597476548,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022559376530686816,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022559387834585838,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.02255938788112259,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0031725562567456807,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.02255938646813488,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.02255938788112259,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        }
+      ]
+    },
+    {
+      "accepted": 9,
+      "eligible": false,
+      "failing_gates": [
+        "geometry",
+        "geometry_refinement"
+      ],
+      "geometry_step_mm": 14.750270620338487,
+      "goal_pass": true,
+      "initial_Q": 1.1441249715211537,
+      "initial_clearance_mm": -90.89827862028334,
+      "iterations": 9,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 2.857374387598646e-05,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.0889819443788634e-06,
+              5.591823514189429e-07
+            ],
+            "terminal_rotation_rad": [
+              5.762950847928676e-07,
+              5.762950843130081e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 7.30948117780621e-06,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              3.6070338394550125e-07,
+              2.8660157636888553e-07
+            ],
+            "terminal_rotation_rad": [
+              2.590014816889844e-07,
+              2.5900148234898743e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 1.7526804375593626e-06,
+            "coarse": 1024,
+            "fine": 2048,
+            "passed": true,
+            "terminal_position_m": [
+              7.509217102149024e-08,
+              3.605536710441854e-08
+            ],
+            "terminal_rotation_rad": [
+              3.818581345855733e-08,
+              3.818581410600071e-08
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        0.007724095270446196,
+        0.006826836264028462
+      ],
+      "rotation_deg": [
+        0.0013830116088051538,
+        0.001250614437193546
+      ],
+      "search_clearance_mm": 0.20298568062551703,
+      "search_final_Q": 0.0014677736932222536,
+      "seed": "07_bow_j11_1",
+      "validation_clearance_mm": -4.84040019243175,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.003151716260227649,
+              "pair": {
+                "body_a": "end_link",
+                "body_b": "target_satellite",
+                "geom_a": "collision_0072",
+                "geom_b": "target_satellite_collision"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.05897059299953003,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0037556149927893655,
+              "pair": {
+                "body_a": "end_link",
+                "body_b": "target_satellite",
+                "geom_a": "collision_0072",
+                "geom_b": "target_satellite_collision"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.0037556149927893655,
+            "refinement_difference_m": 0.0006038987325617164
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.003755385523247653,
+              "pair": {
+                "body_a": "end_link",
+                "body_b": "target_satellite",
+                "geom_a": "collision_0072",
+                "geom_b": "target_satellite_collision"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.02949823480595282,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.004840488903938531,
+              "pair": {
+                "body_a": "end_link",
+                "body_b": "target_satellite",
+                "geom_a": "collision_0072",
+                "geom_b": "target_satellite_collision"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.004840488903938531,
+            "refinement_difference_m": 0.0010851033806908781
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.00484040019243175,
+              "pair": {
+                "body_a": "end_link",
+                "body_b": "target_satellite",
+                "geom_a": "collision_0072",
+                "geom_b": "target_satellite_collision"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.014750270620338487,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.00463463290593457,
+              "pair": {
+                "body_a": "end_link",
+                "body_b": "target_satellite",
+                "geom_a": "collision_0072",
+                "geom_b": "target_satellite_collision"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.00484040019243175,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        }
+      ]
+    },
+    {
+      "accepted": 1,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.4353565284156224,
+      "goal_pass": false,
+      "initial_Q": 1.0027577952342988,
+      "initial_clearance_mm": -40.79569442771369,
+      "iterations": 2,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 3.5137689996133412e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              2.534356431360754e-07,
+              1.693537583970133e-07
+            ],
+            "terminal_rotation_rad": [
+              1.2907719228436174e-07,
+              1.2907719255157125e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 8.784370291875034e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              7.7426017688965e-08,
+              5.870051888151056e-08
+            ],
+            "terminal_rotation_rad": [
+              4.521557665638474e-08,
+              4.521557677724388e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 2.241541361218814e-07,
+            "coarse": 1024,
+            "fine": 2048,
+            "passed": true,
+            "terminal_position_m": [
+              1.7469608222608832e-09,
+              1.2768859899192703e-09
+            ],
+            "terminal_rotation_rad": [
+              1.0282328110492833e-09,
+              1.028233215407483e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        3.8878878233009626,
+        10.474170385880253
+      ],
+      "rotation_deg": [
+        0.2752457864347806,
+        0.3297945881742242
+      ],
+      "search_clearance_mm": -31.484836589752096,
+      "search_final_Q": 2.0948251486268186,
+      "seed": "08_bow_j12_-1",
+      "validation_clearance_mm": -31.484812076348227,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.03148480687318818,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0057378576567082605,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.03148469076000892,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.03148480687318818,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.03148481196329562,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0028703718178579364,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.03148479744914486,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.03148481196329562,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.03148481207634823,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0014353565284156225,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.03148481026207919,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.03148481207634823,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        }
+      ]
+    },
+    {
+      "accepted": 1,
+      "eligible": false,
+      "failing_gates": [
+        "geometry",
+        "geometry_refinement"
+      ],
+      "geometry_step_mm": 4.658120341936109,
+      "goal_pass": false,
+      "initial_Q": 1.0398105449549622,
+      "initial_clearance_mm": -41.21884596970606,
+      "iterations": 2,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.0364583461830987e-05,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              5.297408345523902e-07,
+              3.5355595477419503e-07
+            ],
+            "terminal_rotation_rad": [
+              2.7002443101854956e-07,
+              2.7002443092516375e-07
+            ]
+          },
+          {
+            "aligned_body_extent_m": 2.7276953585563817e-06,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              6.868272306386596e-08,
+              4.893875736559732e-08
+            ],
+            "terminal_rotation_rad": [
+              3.940089037661772e-08,
+              3.940088997655802e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 6.43127818765189e-07,
+            "coarse": 1024,
+            "fine": 2048,
+            "passed": true,
+            "terminal_position_m": [
+              9.96610468241976e-09,
+              7.94657608322027e-09
+            ],
+            "terminal_rotation_rad": [
+              6.1652561521203235e-09,
+              6.165255705967397e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        2.675696864504932,
+        19.286835078520355
+      ],
+      "rotation_deg": [
+        0.03823472021354081,
+        1.139883271199988
+      ],
+      "search_clearance_mm": -22.51477639648137,
+      "search_final_Q": 3.857345922856437,
+      "seed": "09_bow_j12_1",
+      "validation_clearance_mm": -22.514721953598176,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022514711870327588,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.018628144866464323,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022514575587256933,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022514711870327588,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022514721430406903,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.00931555105152112,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.02251470439501854,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022514721430406903,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022514721953598178,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.004658120341936109,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.022514719824174603,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.022514721953598178,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        }
+      ]
+    },
+    {
+      "accepted": 0,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.7803088212068283,
+      "goal_pass": true,
+      "initial_Q": 0.21581462287940228,
+      "initial_clearance_mm": -40.973201336753014,
+      "iterations": 1,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.3333663686467488e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.50211557376474e-08,
+              6.1787819137323134e-09
+            ],
+            "terminal_rotation_rad": [
+              1.1787148379240049e-08,
+              1.1787148367201085e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 3.3333796249983177e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              3.2194165624125293e-09,
+              8.407355318830612e-10
+            ],
+            "terminal_rotation_rad": [
+              2.4165056418720073e-09,
+              2.4165071686751656e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        1.0791350137368323,
+        0.27718820084898466
+      ],
+      "rotation_deg": [
+        0.10940020165293017,
+        0.013604085113076349
+      ],
+      "search_clearance_mm": -40.973201336753014,
+      "search_final_Q": 0.21581462287940228,
+      "seed": "10_bow_j14_-1",
+      "validation_clearance_mm": -40.97319749694701,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04097319753333935,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0035605617751841745,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.040973098842034,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04097319753333935,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04097319749694701,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0017803088212068282,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.040973185160533526,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04097319749694701,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        }
+      ]
+    },
+    {
+      "accepted": 0,
+      "eligible": false,
+      "failing_gates": [
+        "geometry"
+      ],
+      "geometry_step_mm": 1.6261603062980072,
+      "goal_pass": true,
+      "initial_Q": 0.13222801154733488,
+      "initial_clearance_mm": -41.04908638557606,
+      "iterations": 1,
+      "numerical": {
+        "comparisons": [
+          {
+            "aligned_body_extent_m": 1.3314330414000558e-06,
+            "coarse": 256,
+            "fine": 512,
+            "passed": true,
+            "terminal_position_m": [
+              1.525232890776665e-08,
+              6.246153960755865e-09
+            ],
+            "terminal_rotation_rad": [
+              1.1951020707294245e-08,
+              1.195102159057469e-08
+            ]
+          },
+          {
+            "aligned_body_extent_m": 3.328546722348083e-07,
+            "coarse": 512,
+            "fine": 1024,
+            "passed": true,
+            "terminal_position_m": [
+              3.2768736972191842e-09,
+              8.59844255659771e-10
+            ],
+            "terminal_rotation_rad": [
+              2.4607538222209095e-09,
+              2.4607541026324434e-09
+            ]
+          }
+        ],
+        "passed": true
+      },
+      "position_mm": [
+        0.6611740373390562,
+        0.29150738537888377
+      ],
+      "rotation_deg": [
+        0.11019705945900271,
+        0.014289682283752773
+      ],
+      "search_clearance_mm": -41.04908638557606,
+      "search_final_Q": 0.13222801154733488,
+      "seed": "11_bow_j14_1",
+      "validation_clearance_mm": -41.04908237518912,
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04104908241893786,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0032523136900761036,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04104898350336129,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04104908241893786,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04104908237518912,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0016261603062980073,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04104907001074265,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04104908237518912,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        }
+      ]
+    }
+  ],
+  "trial_count": 71,
+  "zero_feasible_solver_return_infeasible": 6
+}

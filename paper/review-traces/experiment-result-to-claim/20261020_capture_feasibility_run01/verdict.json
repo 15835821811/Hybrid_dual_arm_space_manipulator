@@ -1,0 +1,265 @@
+{
+  "experiment": "capture_feasibility_001",
+  "review_role": "fresh independent paper architect/reviewer",
+  "claim_supported": "no",
+  "C1": {
+    "claim": "找到并严格验证及执行通过原固定五障碍绕行见证",
+    "claim_supported": "no",
+    "interpretation": "0/12合格模型路径，0执行；未找到，不证明不存在"
+  },
+  "C2": {
+    "claim": "当前102维表示或局部方向是固定任务失败的已证实瓶颈",
+    "claim_supported": "no",
+    "interpretation": "无模型见证使表示分支BLOCKED；局部诊断揭示求解、目标内裕量、尺度及几何采样限制，但不足以因果归因维数"
+  },
+  "confidence": "high",
+  "confidence_scope": "对本轮未取得见证及证据边界；不代表对全局不可行性或表示瓶颈的信心",
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_reason": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "what_results_support": [
+    "12个冻结起点完成有限323维局部搜索；26轮、8398差分列、15接受更新，保存代数一致",
+    "严格验证0/12模型合格；7/12世界目标门通过、12/12几何失败、5/12几何步长门失败；0执行不是执行失败",
+    "07粗网格+0.20299mm但严格最终-4.84040mm，最大几何步长14.75027mm；精度与穿透应分开",
+    "三个局部方向目标Jacobian均秩12；102方向1/8试探保持Q<=.8且改善粗网格碰撞罚，但仍有36.331mm穿透",
+    "legacy四阶段109查询无接受修正，最终目标通过/几何失败；不是完整DDIM"
+  ],
+  "what_results_dont_support": [
+    "不支持已取得绕行执行见证或全局不存在合法路径",
+    "不支持102表示不可能/codec损坏合格路径，亦不支持高维必优",
+    "SLSQP失败不能证明线性化约束不可行；6轮起点已有可行零步",
+    "搜索Q<=.8保护不等于所有物理Q<=1起点保持，06从Q=.89231退化至3.71413",
+    "相同系数边界不等实际控制增量尺度；局部结果不能纯归因维数",
+    "无Diffusion同预算优势、TRAIN泛化、TEST、动态航点或接触抓取证据"
+  ],
+  "missing_evidence": [
+    "严格模型合格路径及原生67力矩执行/独立重放",
+    "同一合格见证的纯codec/prepare/102维修复对照",
+    "SLSQP原候选与完整约束残差、LSQ状态",
+    "等实际控制域尺度局部对照与精细碰撞反馈",
+    "中间验证网格完整轨迹、legacy差分和局部试探完整轨迹",
+    "paper/PAPER_CLAIM_AUDIT.json"
+  ],
+  "suggested_claim_revision": "冻结有界诊断未取得严格模型/执行见证；一次粗网格改善被精细几何验收拒绝。证据显示求解鲁棒性、目标内裕量、方向尺度和搜索几何采样限制，尚不能归因102维或判定任务不可行。",
+  "next_experiments_needed": [
+    "仅另行授权后冻结单一有限修正版：既定00和07两个初点，可行incumbent初始化/保护、控制域尺度归一、保存全部求解残差、精细碰撞反馈",
+    "保持原全部物理门；预先明确物理Q<=1起点保护政策；若有见证再做表示与执行对照",
+    "本轮不自动追加搜索/训练/扩库/TEST"
+  ],
+  "routing_action": "revise / supplement only after separate authorization",
+  "application_status": "BLOCKED_NO_MODEL_VALID_WITNESS",
+  "representation_status": "BLOCKED_NO_MODEL_VALID_WITNESS",
+  "engineering_completion": "bounded run DONE; scientific positive claims not established",
+  "audit_scope": "Independent saved-array algebra/source identity review. No new optimization, MuJoCo, FK, propagation, old audit, or resume. Existing audit PASS is not independent physical replay.",
+  "evidence": {
+    "status": "PASS_SAVED_ALGEBRA_ONLY",
+    "source_hashes_checked": 129,
+    "binding_files_checked": 188,
+    "producer_head": "3417785ac3c32fb23cba9a38aa11743343b8e1d5",
+    "task_hash": "e66384242aaacf174ab1d7e642f0ba84b55ea580ab1b62951988409c75115496",
+    "counts": {
+      "iterations": 26,
+      "derivative_columns": 8398,
+      "blocked_columns": 0,
+      "accepted_updates": 15,
+      "solver_success": 1,
+      "solver_pose_feasible": 3,
+      "zero_step_pose_feasible": 7,
+      "evaluated_trials": 71,
+      "quick_rejected_trials": 0
+    },
+    "teacher_rows": [
+      {
+        "seed": "00_original_failed",
+        "iterations": 1,
+        "initial_Q": 0.15501236494598222,
+        "final_Q": 0.15501236494598222,
+        "coarse_clearance_m": -0.04101113766835183,
+        "goal_pass": true,
+        "fine_clearance_m": -0.041011133741501296,
+        "geometry_step_m": 0.0016562339185942055,
+        "eligible": false
+      },
+      {
+        "seed": "01_three_aligned",
+        "iterations": 1,
+        "initial_Q": 0.0450373229031745,
+        "final_Q": 0.0450373229031745,
+        "coarse_clearance_m": -0.04636797091550908,
+        "goal_pass": true,
+        "fine_clearance_m": -0.04636796683801153,
+        "geometry_step_m": 0.0017166563773812634,
+        "eligible": false
+      },
+      {
+        "seed": "02_three_plain",
+        "iterations": 1,
+        "initial_Q": 0.08382001897060792,
+        "final_Q": 0.08382001897060792,
+        "coarse_clearance_m": -0.04531379817552662,
+        "goal_pass": true,
+        "fine_clearance_m": -0.045313794477462,
+        "geometry_step_m": 0.0012256847966916461,
+        "eligible": false
+      },
+      {
+        "seed": "03_three_structured",
+        "iterations": 1,
+        "initial_Q": 0.08044457561888489,
+        "final_Q": 0.08044457561888489,
+        "coarse_clearance_m": -0.056241347235764017,
+        "goal_pass": true,
+        "fine_clearance_m": -0.056241425879545254,
+        "geometry_step_m": 0.0014939854720166556,
+        "eligible": false
+      },
+      {
+        "seed": "04_bow_j10_-1",
+        "iterations": 2,
+        "initial_Q": 3.0964227167475245,
+        "final_Q": 4.1575658334612,
+        "coarse_clearance_m": -0.022076564395802502,
+        "goal_pass": false,
+        "fine_clearance_m": -0.022076545173656606,
+        "geometry_step_m": 0.004112457207471916,
+        "eligible": false
+      },
+      {
+        "seed": "05_bow_j10_1",
+        "iterations": 3,
+        "initial_Q": 3.0046110527340852,
+        "final_Q": 3.3595369124588865,
+        "coarse_clearance_m": -0.024465438384830104,
+        "goal_pass": false,
+        "fine_clearance_m": -0.02446540580095058,
+        "geometry_step_m": 0.0026709473485630525,
+        "eligible": false
+      },
+      {
+        "seed": "06_bow_j11_-1",
+        "iterations": 2,
+        "initial_Q": 0.8923094338131852,
+        "final_Q": 3.714130080713085,
+        "coarse_clearance_m": -0.022559453236382226,
+        "goal_pass": false,
+        "fine_clearance_m": -0.02255938788112259,
+        "geometry_step_m": 0.0031725562567456807,
+        "eligible": false
+      },
+      {
+        "seed": "07_bow_j11_1",
+        "iterations": 9,
+        "initial_Q": 1.1441249715211537,
+        "final_Q": 0.0014677736932222536,
+        "coarse_clearance_m": 0.00020298568062551703,
+        "goal_pass": true,
+        "fine_clearance_m": -0.00484040019243175,
+        "geometry_step_m": 0.014750270620338487,
+        "eligible": false
+      },
+      {
+        "seed": "08_bow_j12_-1",
+        "iterations": 2,
+        "initial_Q": 1.0027577952342988,
+        "final_Q": 2.0948251486268186,
+        "coarse_clearance_m": -0.0314848365897521,
+        "goal_pass": false,
+        "fine_clearance_m": -0.03148481207634823,
+        "geometry_step_m": 0.0014353565284156225,
+        "eligible": false
+      },
+      {
+        "seed": "09_bow_j12_1",
+        "iterations": 2,
+        "initial_Q": 1.0398105449549622,
+        "final_Q": 3.857345922856437,
+        "coarse_clearance_m": -0.02251477639648137,
+        "goal_pass": false,
+        "fine_clearance_m": -0.022514721953598178,
+        "geometry_step_m": 0.004658120341936109,
+        "eligible": false
+      },
+      {
+        "seed": "10_bow_j14_-1",
+        "iterations": 1,
+        "initial_Q": 0.21581462287940228,
+        "final_Q": 0.21581462287940228,
+        "coarse_clearance_m": -0.040973201336753015,
+        "goal_pass": true,
+        "fine_clearance_m": -0.04097319749694701,
+        "geometry_step_m": 0.0017803088212068282,
+        "eligible": false
+      },
+      {
+        "seed": "11_bow_j14_1",
+        "iterations": 1,
+        "initial_Q": 0.13222801154733488,
+        "final_Q": 0.13222801154733488,
+        "coarse_clearance_m": -0.04104908638557606,
+        "goal_pass": true,
+        "fine_clearance_m": -0.04104908237518912,
+        "geometry_step_m": 0.0016261603062980073,
+        "eligible": false
+      }
+    ],
+    "validation_records": 13,
+    "local_algebra": {
+      "full323": {
+        "direction_rank": 323,
+        "goal_rank": 12,
+        "zero_step_pose_slack": 0.3984711667138537,
+        "coefficient_step_max": 0.14999997014372976,
+        "control_delta_max": 0.14999997014372976,
+        "linear_returned_step_Q": 7.8546630115638125,
+        "step_matches_teacher": true
+      },
+      "codec102": {
+        "direction_rank": 102,
+        "goal_rank": 12,
+        "zero_step_pose_slack": 0.3984711667138537,
+        "coefficient_step_max": 0.14999999556012572,
+        "control_delta_max": 0.35088936031634377,
+        "linear_returned_step_Q": 6.204446198701385,
+        "step_matches_teacher": false
+      },
+      "legacy24": {
+        "direction_rank": 24,
+        "goal_rank": 12,
+        "zero_step_pose_slack": 0.3984711667138537,
+        "coefficient_step_max": 0.14999999983502962,
+        "control_delta_max": 0.18645066769194993,
+        "linear_returned_step_Q": 8.714746327236412,
+        "step_matches_teacher": false
+      }
+    },
+    "legacy_used": 109,
+    "selected_teacher_ids": [],
+    "executions": 0,
+    "coupled_ledger": 8646,
+    "paper_claim_audit": "unavailable",
+    "scope_limit": "No new MuJoCo/FK/propagation/optimizer. Saved geometry distances and rejected trial metrics are read, not independently re-simulated; solver internal candidate is not saved."
+  },
+  "implementation_and_audit_findings": [
+    {
+      "kind": "observed_solver_limitation",
+      "finding": "6 rounds had feasible zero step but SLSQP candidate failed pose constraints; internal candidate absent from saved NPZ"
+    },
+    {
+      "kind": "comparison_confound",
+      "finding": "control delta maxima 24=.186451,102=.350889,323=.150000rad under same coefficient bounds"
+    },
+    {
+      "kind": "latent_implementation_gap",
+      "finding": "low-dimensional linear_pose_feasible checks pose only, not mapped domain; fallback LSQ omits mapped domain, subsequently guarded by quick gates; no observed invalid acceptance"
+    },
+    {
+      "kind": "audit_coverage_gap",
+      "finding": "original audit does not independently check local Jacobian projections or legacy source chain; reviewer supplements saved algebra but not physical replay"
+    },
+    {
+      "kind": "evidence_limit",
+      "finding": "validation mid-grid trajectories and original SLSQP candidates unavailable; no independent geometry distance or solver-state reconstruction"
+    }
+  ]
+}

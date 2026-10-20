@@ -1,0 +1,9 @@
+# Bounded reviewer task
+
+Parent task received:
+
+> 按 experiment-result-to-claim 技能担任全新独立 paper architect/reviewer。工作区 E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。用户授权本轮固定五障碍有界可行性/表示/引导诊断，保留原目标物理门，不扩库训练TEST。请先读 C:/Users/admin/.codex/skills/experiment-result-to-claim/SKILL.md，协议 ff_prior_capture_feasibility/docs/EXPERIMENT_PLAN.md 和源代码；仅只读原始证据，不运行优化器/仿真/旧审计/旧resume，不改冻结源码或原始run。源码3417785a；run artifacts/v7_1/capture_feasibility_001 已 FINISHED，259.343s；summary/audit初报12/12搜索完成、0合格、0执行、13严格验证、8398差分列。须独立核实原始teachers迭代npz/record、验证、local_subspaces、legacy_local、ledger、selection身份与用户目标/物理门；不只信summary。C1是否存在找到并执行通过的固定任务绕行见证；C2当前102表示/局部方向是否为瓶颈。特别检查SLSQP失败是否能证明线性问题不可行（应区分未找到与不可行）、原目标保持搜索Q<=.8与物理Q<=1的差别，以及高维局部搜索的有限覆盖。精度/穿透分开，不将0执行称执行失败；无见证表示模块BLOCKED。只读代数可重建起点/差分/参数更新/当前线性零步可行性/局部诊断，不做额外物理。输出what_results_support/dont_support/missing_evidence/suggested_claim_revision/next_experiments_needed/confidence及C1 C2总体yes|partial|no；有真实实现缺陷或审计范围缺口明确指出，不夸大原始audit。保存review response.md/verdict.json到 paper/review-traces/experiment-result-to-claim/20261020_capture_feasibility_run01/（仅该目录由你写），向我回报路径与关键发现。无需提交；不得自动追加实验。论文claim audit若不存在标provisional。
+
+Input list and SHA256 records are in `inputs.json`; the independently executed algebra-only reconstruction is `algebra_review.py`, with result `algebra_evidence.json`. Relevant production implementations read include solver, experiment, validation, inputs, audit_results, original pose-vector and reference/hash definitions, original validation gates and legacy guidance/prepare.
+
+Follow-up pointers supplied by parent included the seventh seed's coarse/fine collision discrepancy, zero-step feasibility, summary counts and optional completed-evidence paths. The reviewer independently read raw run records and rebuilt saved algebra rather than invoking the previous audit or trusting these pointers as verdicts.
