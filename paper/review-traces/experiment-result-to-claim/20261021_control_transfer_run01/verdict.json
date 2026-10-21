@@ -1,0 +1,106 @@
+{
+  "claim_supported": "partial",
+  "confidence": "high",
+  "run": "control_transfer_bounded_001",
+  "review_role": "fresh independent paper architect/reviewer",
+  "review_status": "completed",
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_reason": "No paper/PAPER_CLAIM_AUDIT.json available",
+  "claims": {
+    "C1": {
+      "claim_supported": "partial",
+      "evaluation_status": "evaluated_on_fixed_TRAIN_only",
+      "confidence": "high",
+      "qualification_gate": "BLOCKED",
+      "failed_gates": [
+        "qualified_at_least_12_of_16",
+        "old_qualified_preserved"
+      ]
+    },
+    "C2": {
+      "claim_supported": "no",
+      "evaluation_status": "not_evaluated",
+      "confidence": "high",
+      "reason": "M2 candidate training, M3 VAL and M4 DEV blocked by M1; no new B comparison exists",
+      "new_B_DEV_success_rate": null
+    }
+  },
+  "what_results_support": [
+    "Fixed 16 raw full-DDIM samples preserve old aligned function at migration initialization",
+    "6 float32 teacher reconstructions and 3 preselected teacher native/replay executions pass",
+    "Fixed TRAIN diagnostic reduces teacher loss, median Q and temporal roughness after 256 updates",
+    "All 16 post-diagnostic outputs meet saved model gates, six meet both model and target gates"
+  ],
+  "what_results_dont_support": [
+    "Frozen learnability qualification and original-qualified preservation",
+    "Formal candidate viability or network-generated native execution",
+    "New B VAL/DEV success rate, relative benefit or generalization",
+    "Arbitrary unseen detour reachability or full guided-method equivalence",
+    "Independent physical rerun or continuous-time/hardware safety"
+  ],
+  "missing_evidence": [
+    "A TRAIN gate-passing update rule that preserves originally qualified samples",
+    "One formal candidate from restored migration initialization",
+    "New full unguided VAL and paired original-budget DEV/APPLICATION_DEV comparison",
+    "Paper-to-evidence claim audit"
+  ],
+  "suggested_claim_revision": "功能保持迁移和有限TRAIN可优化性成立；预冻结可学性门失败，正式训练与泛化对照未评估。",
+  "next_experiments_needed": [
+    "Recommend only: freeze a bounded TRAIN test of full16 final world-error supervision/constraints and original-qualified protection, validate derivatives and individual outcomes, then conditionally one candidate and paired evaluations under a new protocol."
+  ],
+  "routing_action": "record partial C1 and unevaluated C2; close current run and pause continuation; recommendations only, no additional experiment",
+  "metrics": {
+    "before": {
+      "eligible": 1,
+      "model_valid": 13,
+      "median_Q": 9.109727117338771,
+      "roughness_rms_rad": 0.0015987012993460912,
+      "position_mm": {
+        "mean": 42.72704446894141,
+        "median": 45.024481885596515,
+        "p95": 78.14465423971049,
+        "maximum": 88.36415748931665
+      },
+      "rotation_deg": {
+        "mean": 4.674309569917435,
+        "median": 4.805520236169545,
+        "p95": 8.42834737884555,
+        "maximum": 8.571386570764444
+      },
+      "missing": 0,
+      "loss": 1.5174149248873479
+    },
+    "after": {
+      "eligible": 6,
+      "model_valid": 16,
+      "median_Q": 1.855334284447539,
+      "roughness_rms_rad": 0.001372278438450417,
+      "position_mm": {
+        "mean": 8.374361692013343,
+        "median": 9.276671422237694,
+        "p95": 13.985222424273966,
+        "maximum": 15.883037661186327
+      },
+      "rotation_deg": {
+        "mean": 0.5898458288373629,
+        "median": 0.5448960375182627,
+        "p95": 0.9022051021887612,
+        "maximum": 1.1185117701306484
+      },
+      "missing": 0,
+      "loss": 0.0033634738117828823
+    }
+  },
+  "evidence_checks": [
+    "checks.json",
+    "native_math.json",
+    "regression_provenance.json"
+  ],
+  "limitations": [
+    "Fresh neural VJP and AdamW checks cover retained first/last updates only",
+    "Saved physics arrays and source checked; no new physical queries or simulator execution",
+    "Teacher execution must not be relabelled network-generated execution"
+  ]
+}

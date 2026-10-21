@@ -1,12 +1,16 @@
-# 功能保持迁移与受控时间细节tracker
+# 完整323功能迁移有界实验：终态tracker
 
-|run|阶段|状态|门和证据|
-|---|---|---|---|
-|control_transfer_bounded_001|M0|软件/输入预检完成后启动|8软件测试；15412输入；旧权重精确迁移；独立TRAIN|
-|control_transfer_bounded_001|M1|RUNNING；df13c4e1|6重建/3执行；8目标×2种子完整采样等价；256临时更新可学性与物理门|
-|control_transfer_bounded_001|M2|依赖M1|唯一候选；14222 TRAIN、6000更新、1200完整16步教师批次|
-|control_transfer_bounded_001|M3|依赖M2|新96完整无引导，旧96准确复用|
-|control_transfer_bounded_001|M4|依赖M2|原DEV180新候选/36单元＋应用10/2；旧对照仅复用|
-|control_transfer_bounded_001|M5|待收尾|原始审计、新独立review、中文报告、一次完成resume、目标/提交|
+2026-10-21；源码df13c4e1；run control_transfer_bounded_001；135.03秒。
 
-任何M1门失败则M2—M4 BLOCKED，仍完整负结果收尾；不追加试验、不扩库、不放宽物理门、不TEST。临时诊断权重不保留给候选，正式重新从相同迁移初态开始。收益以实测为准。
+|阶段|状态|实测证据与边界|
+|---|---|---|
+|M0 软件/输入冻结|DONE|8/8软件测试；170源码/15412输入绑定；DEV不入TRAIN|
+|M1 功能与教师重建|PASS|16/16旧模型等价；6/6完整门重建；3/3新执行与重放|
+|M1 临时TRAIN可学性|DONE / GATE BLOCKED|256更新；1/16→6/16<12/16，原唯一合格样本退化；Q中位下降79.63%，模型16/16|
+|M2 唯一正式候选|BLOCKED / NOT_RUN|依赖M1；无6000更新、无新候选|
+|M3 VAL无引导|BLOCKED / NOT_RUN|不能给新候选成功率|
+|M4 冻结DEV及应用|BLOCKED / NOT_RUN|旧对照仅绑定，不冒充本轮成果|
+|M5 收尾|DONE|原始审计PASS、新独立review partial、中文报告、完成resume452文件不变、目标更新与本地提交|
+
+报告ff_prior_control_transfer/docs/ANALYSIS.md；独立review paper/review-traces/experiment-result-to-claim/20261021_control_transfer_run01/。C2相对收益not_evaluated。论文级结论provisional，具体见verdict。下一阶段仅提出完整采样世界终点监督和原合格保护，不自动启动。
+本轮无新增数据、不扩库、不放宽物理门、不TEST；长期科学目标未完成。

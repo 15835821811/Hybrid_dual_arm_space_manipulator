@@ -1,0 +1,600 @@
+{
+  "status": "PASS",
+  "scope": "Fresh saved-evidence and neural-only review; no optimizer.step, simulation, old audit execution, or resume",
+  "checks": {
+    "identity": {
+      "source_files": 170,
+      "bound_files": 15412,
+      "producer_head": "df13c4e146fff217488f2801359a80e567a25b51",
+      "frozen_archive_live_match": true
+    },
+    "codec_split_and_selection": {
+      "TRAIN": 14222,
+      "VAL": 48,
+      "rank": 19,
+      "dimensions": 323,
+      "all_rows_roundtrip_max_rad": 6.661338147750939e-16,
+      "orthogonality_max": 4.440892098500626e-16,
+      "all_TRAIN_inside_detail_bounds": true,
+      "min_limit": 3.0,
+      "max_limit": 5.557247929773719,
+      "TRAIN_VAL_family_disjoint": true,
+      "TRAIN_DEV_task_disjoint": true,
+      "fixed_diagnostic_ids": [
+        "complex_train_00_larger_motion",
+        "complex_train_00_static_detour",
+        "complex_train_01_larger_motion",
+        "complex_train_01_static_detour",
+        "complex_train_02_larger_motion",
+        "complex_train_02_static_detour",
+        "coverage_train_00288",
+        "pilot_train_07198"
+      ],
+      "qualification_levels": {
+        "MODEL_VALID": 13989,
+        "EXECUTION_VERIFIED": 281
+      }
+    },
+    "reconstruction": [
+      {
+        "id": "complex_train_00_larger_motion",
+        "float32_error_rad": 1.1402788019365673e-09,
+        "eligible": true
+      },
+      {
+        "id": "complex_train_00_static_detour",
+        "float32_error_rad": 2.9496590378541576e-09,
+        "eligible": true
+      },
+      {
+        "id": "complex_train_01_larger_motion",
+        "float32_error_rad": 1.409748762171148e-09,
+        "eligible": true
+      },
+      {
+        "id": "complex_train_01_static_detour",
+        "float32_error_rad": 3.400743055215205e-09,
+        "eligible": true
+      },
+      {
+        "id": "complex_train_02_larger_motion",
+        "float32_error_rad": 3.42156196431187e-09,
+        "eligible": true
+      },
+      {
+        "id": "complex_train_02_static_detour",
+        "float32_error_rad": 7.278801228416398e-09,
+        "eligible": true
+      }
+    ],
+    "migration": {
+      "cases": 16,
+      "max_raw_rad": 1.1102230246251565e-16,
+      "old_low_weights_equal": true,
+      "detail_clean_zero": true,
+      "old_RNG_preserved": true,
+      "initial_hash": "fa2b8b0d44113ce8a263cfeabd07e88a07cb97965a68e8ccf94d9b65654861d5"
+    },
+    "diagnostic_32_raw_physics_records": {
+      "aggregates": {
+        "before": {
+          "eligible": 1,
+          "model_valid": 13,
+          "median_Q": 9.109727117338771,
+          "roughness_rms_rad": 0.0015987012993460912,
+          "position_mm": {
+            "mean": 42.72704446894141,
+            "median": 45.024481885596515,
+            "p95": 78.14465423971049,
+            "maximum": 88.36415748931665
+          },
+          "rotation_deg": {
+            "mean": 4.674309569917435,
+            "median": 4.805520236169545,
+            "p95": 8.42834737884555,
+            "maximum": 8.571386570764444
+          },
+          "missing": 0,
+          "loss": 1.5174149248873479
+        },
+        "after": {
+          "eligible": 6,
+          "model_valid": 16,
+          "median_Q": 1.855334284447539,
+          "roughness_rms_rad": 0.001372278438450417,
+          "position_mm": {
+            "mean": 8.374361692013343,
+            "median": 9.276671422237694,
+            "p95": 13.985222424273966,
+            "maximum": 15.883037661186327
+          },
+          "rotation_deg": {
+            "mean": 0.5898458288373629,
+            "median": 0.5448960375182627,
+            "p95": 0.9022051021887612,
+            "maximum": 1.1185117701306484
+          },
+          "missing": 0,
+          "loss": 0.0033634738117828823
+        }
+      },
+      "gate_checks": {
+        "migration": true,
+        "loss_decreased": true,
+        "qualified": false,
+        "qualified_nonregression": true,
+        "old_qualified_preserved": false,
+        "median_Q_improved": true,
+        "controlled_time_detail": true,
+        "weights_changed": true,
+        "initial_weight_restorable": true
+      },
+      "regressed_indices": [
+        12
+      ],
+      "teacher_roughness_rms_rad": 0.0013200283159532328,
+      "per_case": [
+        {
+          "phase": "before",
+          "index": 0,
+          "id": "complex_train_00_larger_motion",
+          "seed": 20264231,
+          "eligible": false,
+          "position_mm": 63.83844154132888,
+          "rotation_deg": 4.016842172486387,
+          "Q": 12.767688308265777,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "id": "complex_train_00_larger_motion",
+          "seed": 20264237,
+          "eligible": false,
+          "position_mm": 39.37164152038389,
+          "rotation_deg": 2.738803341628856,
+          "Q": 7.874328304076778,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 2,
+          "id": "complex_train_00_static_detour",
+          "seed": 20265228,
+          "eligible": false,
+          "position_mm": 57.53788684659264,
+          "rotation_deg": 4.381571408980587,
+          "Q": 11.507577369318529,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 3,
+          "id": "complex_train_00_static_detour",
+          "seed": 20265234,
+          "eligible": false,
+          "position_mm": 61.936565529948965,
+          "rotation_deg": 7.327705119756664,
+          "Q": 12.387313105989794,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 4,
+          "id": "complex_train_01_larger_motion",
+          "seed": 20266225,
+          "eligible": false,
+          "position_mm": 51.55114747644708,
+          "rotation_deg": 5.120709185252764,
+          "Q": 10.310229495289416,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 5,
+          "id": "complex_train_01_larger_motion",
+          "seed": 20266231,
+          "eligible": false,
+          "position_mm": 37.67107274170462,
+          "rotation_deg": 8.380667648205918,
+          "Q": 8.380667648205918,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 6,
+          "id": "complex_train_01_static_detour",
+          "seed": 20267222,
+          "eligible": false,
+          "position_mm": 40.85503083883492,
+          "rotation_deg": 5.882374913051949,
+          "Q": 8.171006167766985,
+          "failed_gates": [
+            "geometry"
+          ],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 7,
+          "id": "complex_train_01_static_detour",
+          "seed": 20267228,
+          "eligible": false,
+          "position_mm": 49.19393293235811,
+          "rotation_deg": 7.669809703464021,
+          "Q": 9.838786586471622,
+          "failed_gates": [
+            "geometry"
+          ],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 8,
+          "id": "complex_train_02_larger_motion",
+          "seed": 20268219,
+          "eligible": false,
+          "position_mm": 88.36415748931665,
+          "rotation_deg": 7.811023426683948,
+          "Q": 17.67283149786333,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 9,
+          "id": "complex_train_02_larger_motion",
+          "seed": 20268225,
+          "eligible": false,
+          "position_mm": 31.435919983726585,
+          "rotation_deg": 5.304255507054443,
+          "Q": 6.287183996745317,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 10,
+          "id": "complex_train_02_static_detour",
+          "seed": 20269216,
+          "eligible": false,
+          "position_mm": 63.90626750865497,
+          "rotation_deg": 4.490331287086326,
+          "Q": 12.781253501730994,
+          "failed_gates": [
+            "geometry"
+          ],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 11,
+          "id": "complex_train_02_static_detour",
+          "seed": 20269222,
+          "eligible": false,
+          "position_mm": 74.73815315650845,
+          "rotation_deg": 8.571386570764444,
+          "Q": 14.947630631301688,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 12,
+          "id": "coverage_train_00288",
+          "seed": 20270213,
+          "eligible": true,
+          "position_mm": 3.1883191363478716,
+          "rotation_deg": 0.7244835282545421,
+          "Q": 0.7244835282545421,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 13,
+          "id": "coverage_train_00288",
+          "seed": 20270219,
+          "eligible": false,
+          "position_mm": 9.861617154363643,
+          "rotation_deg": 0.5091201251302263,
+          "Q": 1.9723234308727284,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 14,
+          "id": "pilot_train_07198",
+          "seed": 20271210,
+          "eligible": false,
+          "position_mm": 4.764057988296556,
+          "rotation_deg": 1.014826434417689,
+          "Q": 1.014826434417689,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "before",
+          "index": 15,
+          "id": "pilot_train_07198",
+          "seed": 20271216,
+          "eligible": false,
+          "position_mm": 5.418499658248733,
+          "rotation_deg": 0.8450427464601932,
+          "Q": 1.0836999316497464,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "id": "complex_train_00_larger_motion",
+          "seed": 20264231,
+          "eligible": false,
+          "position_mm": 10.409026904848837,
+          "rotation_deg": 0.7896738698782894,
+          "Q": 2.0818053809697674,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "id": "complex_train_00_larger_motion",
+          "seed": 20264237,
+          "eligible": true,
+          "position_mm": 4.72060203010648,
+          "rotation_deg": 0.40977683709885404,
+          "Q": 0.9441204060212961,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 2,
+          "id": "complex_train_00_static_detour",
+          "seed": 20265228,
+          "eligible": false,
+          "position_mm": 6.342053872381433,
+          "rotation_deg": 0.4510241216121787,
+          "Q": 1.2684107744762865,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 3,
+          "id": "complex_train_00_static_detour",
+          "seed": 20265234,
+          "eligible": false,
+          "position_mm": 15.883037661186327,
+          "rotation_deg": 0.6771197027108693,
+          "Q": 3.1766075322372656,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 4,
+          "id": "complex_train_01_larger_motion",
+          "seed": 20266225,
+          "eligible": false,
+          "position_mm": 13.352617345303178,
+          "rotation_deg": 0.7407064345485138,
+          "Q": 2.670523469060636,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 5,
+          "id": "complex_train_01_larger_motion",
+          "seed": 20266231,
+          "eligible": false,
+          "position_mm": 9.74959727186602,
+          "rotation_deg": 0.3813166647398042,
+          "Q": 1.9499194543732041,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 6,
+          "id": "complex_train_01_static_detour",
+          "seed": 20267222,
+          "eligible": false,
+          "position_mm": 8.803745572609367,
+          "rotation_deg": 0.4518211412625511,
+          "Q": 1.7607491145218734,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 7,
+          "id": "complex_train_01_static_detour",
+          "seed": 20267228,
+          "eligible": true,
+          "position_mm": 4.0829553466374655,
+          "rotation_deg": 0.38151985374401043,
+          "Q": 0.8165910693274931,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 8,
+          "id": "complex_train_02_larger_motion",
+          "seed": 20268219,
+          "eligible": false,
+          "position_mm": 11.778712727627852,
+          "rotation_deg": 0.669785515807756,
+          "Q": 2.3557425455255703,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 9,
+          "id": "complex_train_02_larger_motion",
+          "seed": 20268225,
+          "eligible": false,
+          "position_mm": 10.025180203814378,
+          "rotation_deg": 0.8301028795414653,
+          "Q": 2.0050360407628753,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 10,
+          "id": "complex_train_02_static_detour",
+          "seed": 20269216,
+          "eligible": false,
+          "position_mm": 9.935554788203461,
+          "rotation_deg": 0.5949291491759565,
+          "Q": 1.9871109576406922,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 11,
+          "id": "complex_train_02_static_detour",
+          "seed": 20269222,
+          "eligible": true,
+          "position_mm": 4.135954580283262,
+          "rotation_deg": 0.4493046230548947,
+          "Q": 0.8271909160566524,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 12,
+          "id": "coverage_train_00288",
+          "seed": 20270213,
+          "eligible": false,
+          "position_mm": 12.369051093824039,
+          "rotation_deg": 1.1185117701306484,
+          "Q": 2.473810218764808,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 13,
+          "id": "coverage_train_00288",
+          "seed": 20270219,
+          "eligible": true,
+          "position_mm": 4.990639326691316,
+          "rotation_deg": 0.36066246121435874,
+          "Q": 0.9981278653382631,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 14,
+          "id": "pilot_train_07198",
+          "seed": 20271210,
+          "eligible": true,
+          "position_mm": 4.461180206686197,
+          "rotation_deg": 0.6364153110170879,
+          "Q": 0.8922360413372393,
+          "failed_gates": [],
+          "shrink": 1.0
+        },
+        {
+          "phase": "after",
+          "index": 15,
+          "id": "pilot_train_07198",
+          "seed": 20271216,
+          "eligible": true,
+          "position_mm": 2.949878140143867,
+          "rotation_deg": 0.4948629258605688,
+          "Q": 0.5899756280287735,
+          "failed_gates": [],
+          "shrink": 1.0
+        }
+      ]
+    },
+    "first_last_full16_VJP_manual_AdamW": [
+      {
+        "step": 1,
+        "independent_loss": 1.5174149248873479,
+        "gradient_max_abs_error": 0.0,
+        "manual_AdamW_weight_max_abs_error": 0.0,
+        "manual_AdamW_moment_max_abs_error": 0.0,
+        "full16_batch_size": 16
+      },
+      {
+        "step": 256,
+        "independent_loss": 0.00337238768499368,
+        "gradient_max_abs_error": 0.0,
+        "manual_AdamW_weight_max_abs_error": 0.0,
+        "manual_AdamW_moment_max_abs_error": 0.0,
+        "full16_batch_size": 16
+      }
+    ],
+    "teacher_native_replay": {
+      "count": 3,
+      "native_plus_replay_steps": 46500,
+      "records": [
+        {
+          "id": "complex_train_00_static_detour",
+          "steps": 15500,
+          "min_clearance_m": 0.008480809867357353,
+          "hold_position_m": 7.832033294158803e-07,
+          "hold_rotation_rad": 6.641366341496818e-07
+        },
+        {
+          "id": "complex_train_01_static_detour",
+          "steps": 15500,
+          "min_clearance_m": 0.008460677827284931,
+          "hold_position_m": 1.050945141733202e-06,
+          "hold_rotation_rad": 1.0168595642177821e-06
+        },
+        {
+          "id": "complex_train_02_static_detour",
+          "steps": 15500,
+          "min_clearance_m": 0.008510376699959668,
+          "hold_position_m": 1.6256246721812554e-06,
+          "hold_rotation_rad": 1.3469475560679593e-06
+        }
+      ],
+      "network_generated_executions": 0
+    },
+    "blocked_and_ledger": {
+      "no_unknown_work": true,
+      "attempts": {
+        "TRAIN_diagnostic_physics": 32,
+        "TRAIN_diagnostic_updates": 1,
+        "TRAIN_execution": 3,
+        "TRAIN_reconstruction": 6
+      },
+      "actual_coupled": 76,
+      "reserved_coupled": 266,
+      "native_plus_replay_steps": 46500,
+      "temporary_updates": 256,
+      "formal_updates": 0,
+      "M2": "BLOCKED",
+      "M3": "BLOCKED",
+      "M4": "BLOCKED",
+      "new_B_DEV_success_rate": null,
+      "new_B_evaluation": "not_evaluated"
+    },
+    "paper_claim_audit": {
+      "status": "unavailable",
+      "label": "provisional — no paper claim audit available"
+    }
+  },
+  "errors": []
+}
