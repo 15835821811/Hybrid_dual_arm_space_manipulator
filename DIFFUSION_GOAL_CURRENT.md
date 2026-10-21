@@ -1,29 +1,19 @@
-# 当前执行目标收尾：固定五障碍可行路径与引导诊断
+# 当前执行目标：00/07可行初始化与精细碰撞反馈
 
-2026-10-20。用户授权的有界运行capture_feasibility_001已完成，源码3417785a。
-协议ff_prior_capture_feasibility/docs/EXPERIMENT_PLAN.md；完整报告ff_prior_capture_feasibility/docs/ANALYSIS.md。
-原目标全文保存在ff_prior_capture_feasibility/evidence/previous_goal.md；原世界目标、初态、五障碍和旧结果保留。
+2026-10-21，用户授权继续原固定五障碍任务；原目标存于ff_prior_capture_refine/evidence/previous_goal.md。
+冻结协议ff_prior_capture_refine/docs/EXPERIMENT_PLAN.md；独立运行artifacts/v7_1/capture_refine_001。
+输入为上一轮00/07的准确最终Z，不重新抽样；一个修正版，保持原目标/初态/五障碍及旧模型结果。
 
-|阶段|实际状态|
+|阶段|计划与完成门|
 |---|---|
-|M0软件与冻结|PASS：7/7测试；129源码、188绑定输入/旧源码；12准确起点|
-|M1有限路径搜索|DONE：12槽、26优化、15接受；0/12全门合格，7/12双臂目标门通过|
-|严格几何验收|12/12穿透，5/12另未满足2mm几何步长；最佳目标误差0.0077mm但穿透4.8404mm|
-|真实力矩执行/独立重放|NOT_RUN：合格集为空；不能称执行失败或复用旧成功填充|
-|M2表示见证|BLOCKED_NO_MODEL_VALID_WITNESS；无法判断102维是否破坏合格路径|
-|局部引导诊断|DONE：同点24/102/323方向及旧late4；识别粗网格漏碰、可行点求解失败和方向尺度混杂|
-|M3审计、恢复、报告|PASS：原始审计与全新独立只读review；完成resume一次，160文件清单/hash不变|
-|训练/扩库/最终TEST|未启动，本轮禁止|
+|M0软件/冻结|7测试；133源码；原任务与两个最终参考hash绑定；后台实际均匀传播等价门<1e-12|
+|M1两起点修正|各最多12次323维；零步可行初始化/最佳可行incumbent；实际控制增量±0.15rad；精细碰撞时刻进入梯度|
+|M2执行与表示|严格合格者最多2预选执行重放；首条模型见证做codec/prepare/最多8次102维修复，再最多3执行|
+|M3审计收尾|保存差分/全部约束残差/细网格预测；新独立review、一次完成resume、中文报告和本任务提交|
+|禁止项|不训练、不扩库、不pilot/study/strict_multimodal/TEST|
 
-运行259.343秒，8646次耦合；实际执行0、TRAIN增量0。物理门不变，无目标重标/移障碍/抽查升级。
-独立review：C1=no（未取得执行见证），C2=no（未建立102维瓶颈），总体no；不是证明任务不可行。
-原audit未覆盖的local映射和legacy链已由独立review做保存数组补核；不声称重跑完整物理验证。
-
-下一步建议，未启动：原00与07两个既定初点，一个修正版，保留可行点/统一实际控制步长，
-将细网格碰撞时刻反馈到搜索，记录原SLSQP返回值和全部约束残差；物理Q<=1可行者保护另行预注册。
-若找到严格见证，再一次完成预选执行与codec/prepare归因；否则按有限失败结束，不追加搜索。
-不盲目扩库、训练或换网络；固定静态避障预抓捕先行，动态航点后续独立处理。
-本轮工程目标已交付，长期可靠规划与稳定Diffusion优势尚未完成，五障碍应用仍BLOCKED。
-
-终端 .\ff_prior_capture_feasibility\job.ps1 status|report|resume。
-完成态不重复工作；本轮resume已核一次，无需重复核验。接续在收尾后暂停。
+所有已满足物理目标的分项受保护；0.2mm搜索裕量不替代最终仅不穿透门。
+精细网格最高16384，仍保持原2mm几何步长、5mm/1度、自由漂浮/17→67/完整初态/全机几何/力矩与重放门。
+2CPU/4小时/12GiB/12000耦合/2400万积分区间。效果不足不追加实验；无见证明确BLOCKED而不证明不可达。
+本有界工程完成不代表长期规划或Diffusion科学优势完成。保留用户修改和旧任务。
+终端 .\ff_prior_capture_refine\job.ps1 status|report|resume。
