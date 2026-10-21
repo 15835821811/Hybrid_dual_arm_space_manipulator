@@ -12,4 +12,6 @@
 仅不穿透、5mm/1度、2mm几何、17→67/完整初态/自由漂浮/全机几何/运动/力矩/重放门不变。软件表示误差1e-6rad用于float32重建，不替代物理门；纯float64往返≤1e-12。
 不新增数据、不混DEV入TRAIN、不扩库、不pilot、不TEST；保留旧模型结果与用户修改。2数学库线程/6h/20GiB输出/30000耦合。输出/codec/初始化/prepare/损失组合比较，不宣称纯维数因果。
 
-当前软件7测试通过，固定输入15411文件；正式重建/训练/评估尚待后台启动。终端 .\ff_prior_full_control\job.ps1 status|report|resume。后续建议不自动执行。
+当前软件7测试通过，固定输入15411文件；后台已启动；重建门控制训练及后续评估。终端 .\ff_prior_full_control\job.ps1 status|report|resume。后续建议不自动执行。
+
+源码f788a689；worker71700/launcher92180已确认存活心跳正常；接续automation ACTIVE，完成后独立审查报告。
