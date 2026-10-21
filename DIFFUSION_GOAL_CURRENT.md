@@ -17,3 +17,5 @@
 2CPU/4小时/12GiB/12000耦合/2400万积分区间。效果不足不追加实验；无见证明确BLOCKED而不证明不可达。
 本有界工程完成不代表长期规划或Diffusion科学优势完成。保留用户修改和旧任务。
 终端 .\ff_prior_capture_refine\job.ps1 status|report|resume。
+
+启动登记：源码345e1e5d；独立worker PID151500，launcher190456；已进入后台搜索。接续已ACTIVE，完成后独立审查与报告收尾。尚未给模型或执行通过结论。
