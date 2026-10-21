@@ -17,6 +17,10 @@ def main():
             with np.load(p.with_name('linearization.npz')) as arrays:
                 sparse_nodes=len(arrays['phase']);dense_nodes=len(arrays['dense_phase'])
             records.append({'iteration':a['iteration'],'accepted':a['accepted'],'before':a['before'],
+                'radius_rad':a['radius_rad'],'next_radius_rad':a['next_radius_rad'],
+                'no_nonzero_feasible_step':a['no_nonzero_feasible_step'],'solver_message':s['message'],
+                'restored_callback_count':sum(c['restoration_alpha']<1 for c in s['callbacks']),
+                'callback_count':len(s['callbacks']),
                 'success':s['success'],'solved_feasible':s['solved_feasible'],'returned_feasible':s['returned_feasible'],
                 'initial_residual':s['initial_residual'],'solved_residual':s['solved_residual'],'returned_residual':s['returned_residual'],
                 'returned_source':s['returned_source'],'initial_objective':s['initial_objective'],'returned_objective':s['returned_objective'],

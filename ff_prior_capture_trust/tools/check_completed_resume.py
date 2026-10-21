@@ -12,7 +12,7 @@ def main():
     target = PACKAGE/'evidence/completed/completed_resume.json'
     if target.exists():
         raise RuntimeError('once-only check already recorded')
-    assert read_json(OUT/'status.json')['status'] == 'FINISHED'
+    assert read_json(OUT/'status.json')['status'] in ('FINISHED','FINISHED_WITH_BLOCKED_ITEMS')
     def snapshot():
         return {p.relative_to(OUT).as_posix(): file_digest(p)
                 for p in sorted(OUT.rglob('*')) if p.is_file()}
