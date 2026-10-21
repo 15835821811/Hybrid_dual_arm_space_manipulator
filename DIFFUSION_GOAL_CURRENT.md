@@ -15,3 +15,5 @@
 2数学库线程/4小时/12GiB输出/12000耦合/2400万积分区间。不训练、扩库、pilot、study、strict_multimodal或TEST。
 无见证只报告本次有界未找到，不证明不可达，不归因102维或Diffusion架构；不自动追加下一实验。
 输出artifacts/v7_1/capture_trust_001；终端 .\ff_prior_capture_trust\job.ps1 status|report|resume。
+
+已实际启动：源码42bd8c25，worker106944/launcher13712，run capture_trust_001；接续automation ACTIVE，完成后新独立review和中文报告。运行状态不是物理通过。
