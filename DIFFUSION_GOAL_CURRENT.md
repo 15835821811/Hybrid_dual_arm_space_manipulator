@@ -15,4 +15,14 @@
 
 入口：ff_prior_rollout_world/job.ps1 status|report|resume。源码提交及PID记录在本包evidence/launch.json；启动前预检已通过7项软件测试。
 
-源码744c4f2d已冻结并实际后台启动：worker116008，launcher93204；M1第1轮正在计算当前完整323世界Jacobian，心跳正常；接续automation ACTIVE。尚无通过结论。
+## 本轮实际结果与下一阶段边界
+
+本轮后台FINISHED，约3599秒。M1 1→15/16，64完整Jacobian；门通过后正式14222TRAIN全部参与6000更新，再32完整Jacobian世界细化0→14/16。原合格保护只保证固定TRAIN锚点的接受结果，不保证普通更新或所有任务。
+
+无引导VAL24/96→4/96，泛化退化。原DEV180/180、36/36真实力矩执行重放通过，但新旧完整成功率持平，科学优势未建立。三障碍5/5、1执行通过；五障碍0/5，0/1执行单元（无候选），避障抓捕未完成。
+
+原始审计PASS；完成resume仅一次，3351原始文件与用户修改不变。新独立审查和中文报告见ff_prior_rollout_world/docs/ANALYSIS.md及CLAIM_VERDICT.md。本轮软件、实测、负结果报告及提交完成即可结束当前有界执行目标，不宣称长期科学目标完成。
+
+后续优先功能保持/分层TRAIN保护和未参与优化的TRAIN检查池，障碍条件与整轨迹碰撞另列。建议不替换旧默认模型，不扩库、不TEST；未经新的具体授权不追加试验。
+
+独立审查完成（有限C1=yes，C2=no，总体partial/provisional）；本轮接续automation已PAUSED。报告收尾与本地提交结束当前有界目标，不开启新实验。

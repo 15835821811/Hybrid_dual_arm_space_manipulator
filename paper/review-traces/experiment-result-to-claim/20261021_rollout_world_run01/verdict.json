@@ -1,0 +1,42 @@
+{
+  "skill": "experiment-result-to-claim",
+  "reviewer": "fresh independent paper architect/reviewer /root/rollout_world_fresh_review",
+  "claim_supported": "partial",
+  "claims": {
+    "C1": {
+      "claim_supported": "yes",
+      "scope": "fixed 8 TRAIN tasks x 2 seeds and accepted world-refinement states only",
+      "confidence": "high"
+    },
+    "C2": {
+      "claim_supported": "no",
+      "scope": "general or stable unguided/full-method relative gain; narrow descriptive application/selected-execution gains do not establish this",
+      "confidence": "high"
+    }
+  },
+  "what_results_support": "M1 1/16 to 15/16; formal refinement 0/16 to 14/16; original anchor preserved or recovered at accepted refinement; exact saved numerical evidence; DEV 180/180 and 36/36 engineering qualification.",
+  "what_results_dont_support": "Qualification throughout ordinary training, broad generalization, stable diffusion advantage, isolated causal effect of world supervision, or five-obstacle feasibility. VAL falls from24/96 to4/96; application remains5/10 and1/2.",
+  "missing_evidence": [
+    "same323 ordinary-versus-world VAL comparison with same prepare",
+    "non-anchor TRAIN protection checks",
+    "independent training seeds and task-level inference",
+    "scene-conditioned path feasibility",
+    "paper/PAPER_CLAIM_AUDIT.json"
+  ],
+  "suggested_claim_revision": "Limit C1 to the 8-task16-output joint supervised-and-accepted refinement workflow. Withdraw general C2 and state engineering parity with mixed error changes and VAL regression.",
+  "next_experiments_needed": "Only as future proposals under new authorization and preregistered budget: fixed existing TRAIN functional-preservation checks, common-representation/common-prepare comparisons, and obstacle/path conditioning. No experiments launched.",
+  "confidence": "high",
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_reason": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "routing_action": "narrow_claim_and_stop",
+  "raw_audit": "PASS",
+  "independent_numeric_checks": "PASS",
+  "physics_calls_added": 0,
+  "optimizer_steps_added": 0,
+  "TEST": false,
+  "source_modified": false,
+  "review_trace": "paper/review-traces/experiment-result-to-claim/20261021_rollout_world_run01",
+  "generated_at": "2026-10-21T10:31:06.890155+00:00"
+}
