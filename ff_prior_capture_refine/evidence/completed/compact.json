@@ -1,0 +1,1958 @@
+{
+  "TEST": false,
+  "TRAIN_added": 0,
+  "audit": {
+    "accepted_updates": 4,
+    "actual_execution_records": 0,
+    "difference_columns": 1938,
+    "errors": [],
+    "native_plus_replay_steps": 0,
+    "scope": "saved evidence algebra, not new simulation",
+    "status": "PASS",
+    "validation_records": 2
+  },
+  "budget": {
+    "actual_coupled": 1991,
+    "integration_intervals": 1822572,
+    "limits": {
+      "TEST": false,
+      "TRAIN_added": 0,
+      "active_buffer_m": 0.004,
+      "active_pair_cap": 240,
+      "codec_repair_iterations": 8,
+      "collision_scale_m": 0.003,
+      "coupled_cap": 12000,
+      "cpu_threads": 2,
+      "dense_grids": [
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384
+      ],
+      "difference_rad": 0.0001,
+      "execution_limit": 5,
+      "finite_failed_search_is_infeasibility_proof": false,
+      "goal_relabel": false,
+      "integration_cap": 24000000,
+      "line_scales": [
+        1.0,
+        0.5,
+        0.25,
+        0.125,
+        0.0625,
+        0.03125
+      ],
+      "output_bytes_cap": 12884901888,
+      "physics_relaxed": false,
+      "repair_clearance_m": 0.0002,
+      "seed_ids": [
+        "00_original_failed",
+        "07_bow_j11_1"
+      ],
+      "seed_source": "previous_final_path_not_initial_seed",
+      "seeds": 2,
+      "solver_max_iterations": 160,
+      "sparse_agreement_m": 0.001,
+      "sparse_agreement_rad": 0.003490658503988659,
+      "sparse_base_grids": [
+        512,
+        1024,
+        2048
+      ],
+      "split": "APPLICATION_DEV_DIAGNOSTIC",
+      "task": "capture_5_obstacles",
+      "teacher_execution_limit": 2,
+      "teacher_iterations": 12,
+      "training": false,
+      "trust_rad": 0.15,
+      "validation_intervals": [
+        256,
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384
+      ],
+      "version": "feasible_dense_feedback_v1",
+      "wall_s": 14400
+    }
+  },
+  "executions": {},
+  "ledger": {
+    "attempts": {
+      "implementation_check": 1,
+      "teacher_search_and_validation": 2
+    },
+    "calls": {
+      "implementation_check.coupled": 2,
+      "implementation_check.distance": 0,
+      "implementation_check.fk": 2052,
+      "implementation_check.forward": 2,
+      "implementation_check.mass_matrix": 2052,
+      "implementation_check.physics_steps": 0,
+      "implementation_check.rrt": 0,
+      "implementation_check.sqp": 0,
+      "implementation_check.torque_rollout": 0,
+      "teacher_search_and_validation.coupled": 1989,
+      "teacher_search_and_validation.distance": 22620935,
+      "teacher_search_and_validation.fk": 4499211,
+      "teacher_search_and_validation.forward": 2013,
+      "teacher_search_and_validation.mass_matrix": 3647074,
+      "teacher_search_and_validation.physics_steps": 0,
+      "teacher_search_and_validation.rrt": 0,
+      "teacher_search_and_validation.sqp": 6,
+      "teacher_search_and_validation.torque_rollout": 0
+    },
+    "completed": {
+      "sanity_uniform": {
+        "stage": "implementation_check",
+        "status": "DONE"
+      },
+      "teacher_00_original_failed": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      },
+      "teacher_07_bow_j11_1": {
+        "stage": "teacher_search_and_validation",
+        "status": "DONE"
+      }
+    },
+    "cpu_s": {
+      "implementation_check": 0.109375,
+      "teacher_search_and_validation": 375.46875
+    },
+    "identity": {
+      "identity_hash": "b61082cfa75f575a471f0a2b95cad9f48270ce1fb0f123b54cee62218af40b0f"
+    },
+    "inflight": null,
+    "wall_s": {
+      "implementation_check": 0.14135169982910156,
+      "teacher_search_and_validation": 379.9970206990838
+    }
+  },
+  "representation": {},
+  "sanity": {
+    "errors": {
+      "ee": 0.0,
+      "geom": 0.0,
+      "geom_rotation": 0.0,
+      "qpos": 0.0,
+      "velocity": 0.0
+    },
+    "status": "PASS"
+  },
+  "status": {
+    "elapsed_s": 398.64099999982864,
+    "heartbeat": 1792548968.7846658,
+    "pid": 151500,
+    "progress": {},
+    "report": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\capture_refine_001\\REPORT.md",
+    "stage": "complete",
+    "started_at": 1792548570.1341286,
+    "status": "FINISHED"
+  },
+  "teachers": [
+    {
+      "eligible": false,
+      "goal_pass": true,
+      "id": "00_original_failed",
+      "iterations": [
+        {
+          "accepted": false,
+          "active_pairs": 240,
+          "before": {
+            "Q": 0.15502437920829273,
+            "collision_violation": 64.50536680490396,
+            "geometry_step_m": 0.0016562339185942055,
+            "goal_groups": [
+              0.15502437920829273,
+              0.002669834641731971,
+              0.10616952010513517,
+              0.0011561295828574538
+            ],
+            "minimum_clearance_m": -0.041011133741501296
+          },
+          "dense_nodes": 1025,
+          "initial_objective": 1.0,
+          "initial_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.9759734301856278
+          },
+          "iteration": 0,
+          "returned_feasible": true,
+          "returned_objective": 1.0,
+          "returned_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.9759734301856278
+          },
+          "returned_source": "ZERO",
+          "solved_feasible": false,
+          "solved_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": -0.0008901191624437477
+          },
+          "sparse_agreement": [
+            {
+              "actual_intervals": 609,
+              "base_intervals": 512,
+              "distance_difference_m": 7.334744610287824e-08,
+              "position_m": [
+                1.3332456838095313e-07,
+                9.866624568019827e-08
+              ],
+              "rotation_rad": [
+                7.553044198948974e-08,
+                7.553044205799988e-08
+              ]
+            }
+          ],
+          "sparse_nodes": 610,
+          "success": false,
+          "trials": [
+            {
+              "Q": 0.15502437920829273,
+              "accepted": false,
+              "collision_violation": 64.50536680490396,
+              "geometry_step_m": 0.0016562339185942055,
+              "goal_groups": [
+                0.15502437920829273,
+                0.002669834641731971,
+                0.10616952010513517,
+                0.0011561295828574538
+              ],
+              "grid_history": [
+                {
+                  "intervals": 1024,
+                  "maximum_geometry_step_m": 0.0016562339185942055
+                }
+              ],
+              "minimum_clearance_m": -0.041011133741501296,
+              "scale": 1.0,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.15502437920829273,
+              "accepted": false,
+              "collision_violation": 64.50536680490396,
+              "geometry_step_m": 0.0016562339185942055,
+              "goal_groups": [
+                0.15502437920829273,
+                0.002669834641731971,
+                0.10616952010513517,
+                0.0011561295828574538
+              ],
+              "grid_history": [
+                {
+                  "intervals": 1024,
+                  "maximum_geometry_step_m": 0.0016562339185942055
+                }
+              ],
+              "minimum_clearance_m": -0.041011133741501296,
+              "scale": 0.5,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.15502437920829273,
+              "accepted": false,
+              "collision_violation": 64.50536680490396,
+              "geometry_step_m": 0.0016562339185942055,
+              "goal_groups": [
+                0.15502437920829273,
+                0.002669834641731971,
+                0.10616952010513517,
+                0.0011561295828574538
+              ],
+              "grid_history": [
+                {
+                  "intervals": 1024,
+                  "maximum_geometry_step_m": 0.0016562339185942055
+                }
+              ],
+              "minimum_clearance_m": -0.041011133741501296,
+              "scale": 0.25,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.15502437920829273,
+              "accepted": false,
+              "collision_violation": 64.50536680490396,
+              "geometry_step_m": 0.0016562339185942055,
+              "goal_groups": [
+                0.15502437920829273,
+                0.002669834641731971,
+                0.10616952010513517,
+                0.0011561295828574538
+              ],
+              "grid_history": [
+                {
+                  "intervals": 1024,
+                  "maximum_geometry_step_m": 0.0016562339185942055
+                }
+              ],
+              "minimum_clearance_m": -0.041011133741501296,
+              "scale": 0.125,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.15502437920829273,
+              "accepted": false,
+              "collision_violation": 64.50536680490396,
+              "geometry_step_m": 0.0016562339185942055,
+              "goal_groups": [
+                0.15502437920829273,
+                0.002669834641731971,
+                0.10616952010513517,
+                0.0011561295828574538
+              ],
+              "grid_history": [
+                {
+                  "intervals": 1024,
+                  "maximum_geometry_step_m": 0.0016562339185942055
+                }
+              ],
+              "minimum_clearance_m": -0.041011133741501296,
+              "scale": 0.0625,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.15502437920829273,
+              "accepted": false,
+              "collision_violation": 64.50536680490396,
+              "geometry_step_m": 0.0016562339185942055,
+              "goal_groups": [
+                0.15502437920829273,
+                0.002669834641731971,
+                0.10616952010513517,
+                0.0011561295828574538
+              ],
+              "grid_history": [
+                {
+                  "intervals": 1024,
+                  "maximum_geometry_step_m": 0.0016562339185942055
+                }
+              ],
+              "minimum_clearance_m": -0.041011133741501296,
+              "scale": 0.03125,
+              "status": "EVALUATED"
+            }
+          ]
+        }
+      ],
+      "old_validation": {
+        "frozen_goal_position_error_m": [
+          0.0007751218960414636,
+          1.3349173208659853e-05
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.0018530076910969245,
+          2.0178267800571157e-05
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 513,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.041011133741501296,
+            "pair": {
+              "body_a": "world",
+              "body_b": "fore_arm_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0069"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0016562339185942055,
+          "midpoints": {
+            "checked_states": 512,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.04101112139136696,
+            "pair": {
+              "body_a": "world",
+              "body_b": "fore_arm_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0069"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.041011133741501296,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.332344623942535e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                1.5137965508974857e-08,
+                6.2287370438144505e-09
+              ],
+              "terminal_rotation_rad": [
+                1.1849842379965353e-08,
+                1.184984397958451e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.3308251722255747e-07,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                3.245357697399893e-09,
+                8.540416364670655e-10
+              ],
+              "terminal_rotation_rad": [
+                2.433065522585695e-09,
+                2.4330658110267275e-09
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      },
+      "stop": "NO_ACCEPTED_STEP",
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.0007751218960414636,
+          1.3349173208659853e-05
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.0018530076910969245,
+          2.0178267800571157e-05
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 513,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.041011133741501296,
+            "pair": {
+              "body_a": "world",
+              "body_b": "fore_arm_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0069"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0016562339185942055,
+          "midpoints": {
+            "checked_states": 512,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.04101112139136696,
+            "pair": {
+              "body_a": "world",
+              "body_b": "fore_arm_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0069"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.041011133741501296,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.332344623942535e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                1.5137965508974857e-08,
+                6.2287370438144505e-09
+              ],
+              "terminal_rotation_rad": [
+                1.1849842379965353e-08,
+                1.184984397958451e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.3308251722255747e-07,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                3.245357697399893e-09,
+                8.540416364670655e-10
+              ],
+              "terminal_rotation_rad": [
+                2.433065522585695e-09,
+                2.4330658110267275e-09
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      },
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04101113378185955,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0033124410303814918,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04101103498078192,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.04101113378185955,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.041011133741501296,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0016562339185942055,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.04101112139136696,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.041011133741501296,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        }
+      ]
+    },
+    {
+      "eligible": false,
+      "goal_pass": true,
+      "id": "07_bow_j11_1",
+      "iterations": [
+        {
+          "accepted": true,
+          "active_pairs": 240,
+          "before": {
+            "Q": 0.0015456593348379681,
+            "collision_violation": 0.8025704695801408,
+            "geometry_step_m": 0.0018438186284807792,
+            "goal_groups": [
+              0.0015456593348379681,
+              0.001365784071239927,
+              0.0013823653659562388,
+              0.0012508305142628635
+            ],
+            "minimum_clearance_m": -0.0051439233232326515
+          },
+          "dense_nodes": 16385,
+          "initial_objective": 1.0,
+          "initial_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.9999982640571247
+          },
+          "iteration": 0,
+          "returned_feasible": true,
+          "returned_objective": 0.00022012350404806752,
+          "returned_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999999945979756
+          },
+          "returned_source": "BEST_FEASIBLE_INCUMBENT",
+          "solved_feasible": true,
+          "solved_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999999945979756
+          },
+          "sparse_agreement": [
+            {
+              "actual_intervals": 742,
+              "base_intervals": 512,
+              "distance_difference_m": 1.94651215098705e-06,
+              "position_m": [
+                2.774940484399802e-06,
+                2.1009185008842336e-06
+              ],
+              "rotation_rad": [
+                1.5877550286862483e-06,
+                1.5877550287089723e-06
+              ]
+            }
+          ],
+          "sparse_nodes": 743,
+          "success": false,
+          "trials": [
+            {
+              "Q": 1.0545269751675581,
+              "accepted": false,
+              "collision_violation": 51.96944655307804,
+              "geometry_step_m": 0.0011200344188756666,
+              "goal_groups": [
+                1.0545269751675581,
+                0.3030083882559822,
+                0.16752967149485173,
+                0.1848765965535103
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0011200344188756666
+                }
+              ],
+              "minimum_clearance_m": -0.0391721273405989,
+              "scale": 1.0,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.2597331360225249,
+              "accepted": false,
+              "collision_violation": 12.373475090486636,
+              "geometry_step_m": 0.0014845116478503218,
+              "goal_groups": [
+                0.2597331360225249,
+                0.07357026800645877,
+                0.04153791099738449,
+                0.04548228340549058
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0014845116478503218
+                }
+              ],
+              "minimum_clearance_m": -0.019498922491430967,
+              "scale": 0.5,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.06365903307965494,
+              "accepted": false,
+              "collision_violation": 3.0603317316825667,
+              "geometry_step_m": 0.0016651791896609269,
+              "goal_groups": [
+                0.06365903307965494,
+                0.017529448925807142,
+                0.010672951872562056,
+                0.011265588525502879
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0016651791896609269
+                }
+              ],
+              "minimum_clearance_m": -0.009761675237188057,
+              "scale": 0.25,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.014933103381516875,
+              "accepted": true,
+              "collision_violation": 0.7923033627780071,
+              "geometry_step_m": 0.0017547935922405699,
+              "goal_groups": [
+                0.014933103381516875,
+                0.0037056097979424663,
+                0.0032086114329930183,
+                0.002950691388529652
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0017547935922405699
+                }
+              ],
+              "minimum_clearance_m": -0.004925864422063907,
+              "scale": 0.125,
+              "status": "EVALUATED"
+            }
+          ]
+        },
+        {
+          "accepted": true,
+          "active_pairs": 240,
+          "before": {
+            "Q": 0.014933103381516875,
+            "collision_violation": 0.7923033627780071,
+            "geometry_step_m": 0.0017547935922405699,
+            "goal_groups": [
+              0.014933103381516875,
+              0.0037056097979424663,
+              0.0032086114329930183,
+              0.002950691388529652
+            ],
+            "minimum_clearance_m": -0.004925864422063907
+          },
+          "dense_nodes": 16385,
+          "initial_objective": 1.0,
+          "initial_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.999776827271177
+          },
+          "iteration": 1,
+          "returned_feasible": true,
+          "returned_objective": 8.465027486439528e-05,
+          "returned_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999944700429815
+          },
+          "returned_source": "BEST_FEASIBLE_INCUMBENT",
+          "solved_feasible": true,
+          "solved_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999944700429815
+          },
+          "sparse_agreement": [
+            {
+              "actual_intervals": 745,
+              "base_intervals": 512,
+              "distance_difference_m": 2.369367893354131e-06,
+              "position_m": [
+                3.5875819858699985e-06,
+                2.4004959476317917e-06
+              ],
+              "rotation_rad": [
+                1.8766373928403935e-06,
+                1.8766373927054667e-06
+              ]
+            }
+          ],
+          "sparse_nodes": 746,
+          "success": false,
+          "trials": [
+            {
+              "Q": 0.7625408261924441,
+              "accepted": false,
+              "collision_violation": 4.600586635887598,
+              "geometry_step_m": 0.0010742297165938824,
+              "goal_groups": [
+                0.7625408261924441,
+                0.21241777704532389,
+                0.12891260176212385,
+                0.13888556300384935
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0010742297165938824
+                }
+              ],
+              "minimum_clearance_m": -0.01175237931101436,
+              "scale": 1.0,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.19540965602671206,
+              "accepted": false,
+              "collision_violation": 2.888340789512193,
+              "geometry_step_m": 0.0013961767246001636,
+              "goal_groups": [
+                0.19540965602671206,
+                0.05363308754453777,
+                0.03346299728634318,
+                0.03501947752870523
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0013961767246001636
+                }
+              ],
+              "minimum_clearance_m": -0.009481236457180886,
+              "scale": 0.5,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.05777754960868547,
+              "accepted": false,
+              "collision_violation": 0.8916944197543054,
+              "geometry_step_m": 0.001576272550958224,
+              "goal_groups": [
+                0.05777754960868547,
+                0.015465444229878458,
+                0.010353737110200835,
+                0.010170966564656556
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.001576272550958224
+                }
+              ],
+              "minimum_clearance_m": -0.005249073422703206,
+              "scale": 0.25,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.024632103111193914,
+              "accepted": true,
+              "collision_violation": 0.35627220253369946,
+              "geometry_step_m": 0.0016657732926159694,
+              "goal_groups": [
+                0.024632103111193914,
+                0.006338868391323526,
+                0.004797647291798004,
+                0.004382179146707456
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0016657732926159694
+                }
+              ],
+              "minimum_clearance_m": -0.0032069424685787096,
+              "scale": 0.125,
+              "status": "EVALUATED"
+            }
+          ]
+        },
+        {
+          "accepted": true,
+          "active_pairs": 240,
+          "before": {
+            "Q": 0.024632103111193914,
+            "collision_violation": 0.35627220253369946,
+            "geometry_step_m": 0.0016657732926159694,
+            "goal_groups": [
+              0.024632103111193914,
+              0.006338868391323526,
+              0.004797647291798004,
+              0.004382179146707456
+            ],
+            "minimum_clearance_m": -0.0032069424685787096
+          },
+          "dense_nodes": 16385,
+          "initial_objective": 1.0,
+          "initial_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.9993813363266171
+          },
+          "iteration": 2,
+          "returned_feasible": true,
+          "returned_objective": 0.00015038138906705304,
+          "returned_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999996890278683
+          },
+          "returned_source": "BEST_FEASIBLE_INCUMBENT",
+          "solved_feasible": true,
+          "solved_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999996890278683
+          },
+          "sparse_agreement": [
+            {
+              "actual_intervals": 745,
+              "base_intervals": 512,
+              "distance_difference_m": 1.5912186717426113e-06,
+              "position_m": [
+                1.5737696346562625e-06,
+                1.1608225158209935e-06
+              ],
+              "rotation_rad": [
+                8.918591269374749e-07,
+                8.918591265680983e-07
+              ]
+            }
+          ],
+          "sparse_nodes": 746,
+          "success": false,
+          "trials": [
+            {
+              "Q": 1.0822653069723502,
+              "accepted": false,
+              "collision_violation": 7.507175158156805,
+              "geometry_step_m": 0.0010016611010235349,
+              "goal_groups": [
+                1.0822653069723502,
+                0.3751693864544779,
+                0.1714395077573083,
+                0.19333676984768275
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0010016611010235349
+                }
+              ],
+              "minimum_clearance_m": -0.015136349139842863,
+              "scale": 1.0,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.27849011487070424,
+              "accepted": false,
+              "collision_violation": 2.0167831126216855,
+              "geometry_step_m": 0.001247621661088188,
+              "goal_groups": [
+                0.27849011487070424,
+                0.09478542507245595,
+                0.044277857245404,
+                0.04932142763362383
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.001247621661088188
+                }
+              ],
+              "minimum_clearance_m": -0.007748579073136087,
+              "scale": 0.5,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.0843186767792812,
+              "accepted": false,
+              "collision_violation": 0.6408190431655638,
+              "geometry_step_m": 0.0014576671361900143,
+              "goal_groups": [
+                0.0843186767792812,
+                0.027230437270802064,
+                0.01389457275802377,
+                0.01478402917022844
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0014576671361900143
+                }
+              ],
+              "minimum_clearance_m": -0.00432669315198736,
+              "scale": 0.25,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.0378768571521761,
+              "accepted": true,
+              "collision_violation": 0.2639251192423446,
+              "geometry_step_m": 0.0015620408939940337,
+              "goal_groups": [
+                0.0378768571521761,
+                0.011037592741711465,
+                0.006733805305946525,
+                0.006620244389368302
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0015620408939940337
+                }
+              ],
+              "minimum_clearance_m": -0.0026955367347594986,
+              "scale": 0.125,
+              "status": "EVALUATED"
+            }
+          ]
+        },
+        {
+          "accepted": true,
+          "active_pairs": 240,
+          "before": {
+            "Q": 0.0378768571521761,
+            "collision_violation": 0.2639251192423446,
+            "geometry_step_m": 0.0015620408939940337,
+            "goal_groups": [
+              0.0378768571521761,
+              0.011037592741711465,
+              0.006733805305946525,
+              0.006620244389368302
+            ],
+            "minimum_clearance_m": -0.0026955367347594986
+          },
+          "dense_nodes": 16385,
+          "initial_objective": 0.8217535695323156,
+          "initial_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.9985524659424309
+          },
+          "iteration": 3,
+          "returned_feasible": true,
+          "returned_objective": 0.0001719632852516208,
+          "returned_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999964440865513
+          },
+          "returned_source": "BEST_FEASIBLE_INCUMBENT",
+          "solved_feasible": true,
+          "solved_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999964440865513
+          },
+          "sparse_agreement": [
+            {
+              "actual_intervals": 746,
+              "base_intervals": 512,
+              "distance_difference_m": 1.6543522686832124e-06,
+              "position_m": [
+                1.2193752867089882e-06,
+                9.134216720424635e-07
+              ],
+              "rotation_rad": [
+                7.023528701540206e-07,
+                7.023528699640063e-07
+              ]
+            }
+          ],
+          "sparse_nodes": 747,
+          "success": false,
+          "trials": [
+            {
+              "Q": 1.050275919155228,
+              "accepted": false,
+              "collision_violation": 1.4410168139353094,
+              "geometry_step_m": 0.0009768555279178516,
+              "goal_groups": [
+                1.050275919155228,
+                0.34226853940210544,
+                0.17148840084804026,
+                0.19590969900491428
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0009768555279178516
+                }
+              ],
+              "minimum_clearance_m": -0.006600656454767036,
+              "scale": 1.0,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.27766287678406887,
+              "accepted": false,
+              "collision_violation": 0.40641816549765747,
+              "geometry_step_m": 0.0011655303578141515,
+              "goal_groups": [
+                0.27766287678406887,
+                0.08912644744486287,
+                0.04501107189441543,
+                0.051424715303613436
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0011655303578141515
+                }
+              ],
+              "minimum_clearance_m": -0.003428451725790437,
+              "scale": 0.5,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.09260445239472058,
+              "accepted": true,
+              "collision_violation": 0.1728968836010986,
+              "geometry_step_m": 0.001356261055091166,
+              "goal_groups": [
+                0.09260445239472058,
+                0.028831156521193578,
+                0.015123901691270909,
+                0.0168506986596222
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.001356261055091166
+                }
+              ],
+              "minimum_clearance_m": -0.002154987016337269,
+              "scale": 0.25,
+              "status": "EVALUATED"
+            }
+          ]
+        },
+        {
+          "accepted": false,
+          "active_pairs": 240,
+          "before": {
+            "Q": 0.09260445239472058,
+            "collision_violation": 0.1728968836010986,
+            "geometry_step_m": 0.001356261055091166,
+            "goal_groups": [
+              0.09260445239472058,
+              0.028831156521193578,
+              0.015123901691270909,
+              0.0168506986596222
+            ],
+            "minimum_clearance_m": -0.002154987016337269
+          },
+          "dense_nodes": 16385,
+          "initial_objective": 0.7583871228433781,
+          "initial_residual": {
+            "control_min": 0.15,
+            "maximum_control_step_rad": 0.0,
+            "pose_min": 0.9914010231324593
+          },
+          "iteration": 4,
+          "returned_feasible": true,
+          "returned_objective": 9.36594262536195e-05,
+          "returned_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999999916203538
+          },
+          "returned_source": "BEST_FEASIBLE_INCUMBENT",
+          "solved_feasible": true,
+          "solved_residual": {
+            "control_min": 0.0,
+            "maximum_control_step_rad": 0.15,
+            "pose_min": 0.9999999916203538
+          },
+          "sparse_agreement": [
+            {
+              "actual_intervals": 744,
+              "base_intervals": 512,
+              "distance_difference_m": 2.7232310274849514e-07,
+              "position_m": [
+                6.679055319240766e-07,
+                4.877691775947124e-07
+              ],
+              "rotation_rad": [
+                3.6625714575532047e-07,
+                3.6625714556794985e-07
+              ]
+            }
+          ],
+          "sparse_nodes": 745,
+          "success": false,
+          "trials": [
+            {
+              "Q": 1.4081705760509142,
+              "accepted": false,
+              "collision_violation": 41.33077420998022,
+              "geometry_step_m": 0.0008887147053024493,
+              "goal_groups": [
+                1.4081705760509142,
+                0.6439000657134187,
+                0.21905864127422764,
+                0.2849879143444231
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0008887147053024493
+                }
+              ],
+              "minimum_clearance_m": -0.032690228352232426,
+              "scale": 1.0,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.39361139048201144,
+              "accepted": false,
+              "collision_violation": 15.409540501742905,
+              "geometry_step_m": 0.001046046910796992,
+              "goal_groups": [
+                0.39361139048201144,
+                0.17310954847991603,
+                0.06135434495305968,
+                0.07837020776877521
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.001046046910796992
+                }
+              ],
+              "minimum_clearance_m": -0.021161762703718882,
+              "scale": 0.5,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.15555685914297354,
+              "accepted": false,
+              "collision_violation": 4.782162185288825,
+              "geometry_step_m": 0.0011632853546465708,
+              "goal_groups": [
+                0.15555685914297354,
+                0.060977284516164146,
+                0.02458812546744212,
+                0.029731329940570036
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0011632853546465708
+                }
+              ],
+              "minimum_clearance_m": -0.012048914585731414,
+              "scale": 0.25,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.10245470045293177,
+              "accepted": false,
+              "collision_violation": 1.5321464993868479,
+              "geometry_step_m": 0.0012473006880247476,
+              "goal_groups": [
+                0.10245470045293177,
+                0.03502691122519416,
+                0.016510964538928318,
+                0.0189281648119976
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0012473006880247476
+                }
+              ],
+              "minimum_clearance_m": -0.006853455726570923,
+              "scale": 0.125,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.09216309351678761,
+              "accepted": false,
+              "collision_violation": 0.5782519842852901,
+              "geometry_step_m": 0.0013018187484921137,
+              "goal_groups": [
+                0.09216309351678761,
+                0.029479516388783204,
+                0.01499626936868353,
+                0.016833260304024992
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0013018187484921137
+                }
+              ],
+              "minimum_clearance_m": -0.004160622484651513,
+              "scale": 0.0625,
+              "status": "EVALUATED"
+            },
+            {
+              "Q": 0.09104709915752951,
+              "accepted": false,
+              "collision_violation": 0.27190854522843855,
+              "geometry_step_m": 0.0013290510799705674,
+              "goal_groups": [
+                0.09104709915752951,
+                0.02854560833411832,
+                0.014856645265761635,
+                0.01658234351794704
+              ],
+              "grid_history": [
+                {
+                  "intervals": 16384,
+                  "maximum_geometry_step_m": 0.0013290510799705674
+                }
+              ],
+              "minimum_clearance_m": -0.002768260562988161,
+              "scale": 0.03125,
+              "status": "EVALUATED"
+            }
+          ]
+        }
+      ],
+      "old_validation": {
+        "frozen_goal_position_error_m": [
+          7.724095270446196e-06,
+          6.826836264028462e-06
+        ],
+        "frozen_goal_rotation_error_rad": [
+          2.4138106166953733e-05,
+          2.1827339602003212e-05
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": false,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 1025,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.00484040019243175,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.014750270620338487,
+          "midpoints": {
+            "checked_states": 1024,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.00463463290593457,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.00484040019243175,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 2.857374387598646e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                1.0889819443788634e-06,
+                5.591823514189429e-07
+              ],
+              "terminal_rotation_rad": [
+                5.762950847928676e-07,
+                5.762950843130081e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 7.30948117780621e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                3.6070338394550125e-07,
+                2.8660157636888553e-07
+              ],
+              "terminal_rotation_rad": [
+                2.590014816889844e-07,
+                2.5900148234898743e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.7526804375593626e-06,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                7.509217102149024e-08,
+                3.605536710441854e-08
+              ],
+              "terminal_rotation_rad": [
+                3.818581345855733e-08,
+                3.818581410600071e-08
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      },
+      "stop": "NO_ACCEPTED_STEP",
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.0004630222619736029,
+          0.0001441557826059679
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.0002639618802606163,
+          0.0002941001728718026
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.002154987016337269,
+            "pair": {
+              "body_a": "world",
+              "body_b": "fore_arm_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0069"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001356261055091166,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.002154987010199918,
+            "pair": {
+              "body_a": "world",
+              "body_b": "fore_arm_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0069"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.002154987016337269,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.5541405361253447e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                7.518031745374657e-07,
+                4.679442574942443e-07
+              ],
+              "terminal_rotation_rad": [
+                4.1929440592690485e-07,
+                4.192944062193837e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 4.050318358567731e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.7672187079634794e-07,
+                1.989297224804231e-07
+              ],
+              "terminal_rotation_rad": [
+                1.549845329815968e-07,
+                1.5498453303387042e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 9.403264662085256e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                3.145059625145201e-08,
+                1.6526372670141318e-08
+              ],
+              "terminal_rotation_rad": [
+                1.5755789480546756e-08,
+                1.5755789321867935e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.380163485794381e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                4.884218373879748e-09,
+                4.319204337427859e-09
+              ],
+              "terminal_rotation_rad": [
+                4.273336462683598e-09,
+                4.273335686578792e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.846090889050795e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                8.857874900579944e-10,
+                3.4322685112759084e-10
+              ],
+              "terminal_rotation_rad": [
+                5.88987301163359e-10,
+                5.889875957947998e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4613975017297379e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                2.233643114748636e-10,
+                8.443618400229775e-11
+              ],
+              "terminal_rotation_rad": [
+                1.5213899082078576e-10,
+                1.5213957051311138e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      },
+      "validation_grids": [
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 257,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549897192914454,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.04338779060370731,
+            "midpoints": {
+              "checked_states": 256,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021547886089193884,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.0021549897192914454,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 512
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 513,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549923430615216,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.02169857244248128,
+            "midpoints": {
+              "checked_states": 512,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549672039299327,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.0021549923430615216,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 1024
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 1025,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549867871550853,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.010849899466325431,
+            "midpoints": {
+              "checked_states": 1024,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.002154983644755918,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.0021549867871550853,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 2048
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 2049,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549872338853596,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.005425019909484881,
+            "midpoints": {
+              "checked_states": 2048,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549868410854316,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.0021549872338853596,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 4096
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": false,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 4097,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549870579620177,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.0027125203071862642,
+            "midpoints": {
+              "checked_states": 4096,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.0021549870088615683,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.0021549870579620177,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 8192
+        },
+        {
+          "gates": {
+            "boundary": true,
+            "coupled_convergence": true,
+            "domain": true,
+            "finite": true,
+            "geometry": false,
+            "geometry_refinement": true,
+            "identity": true,
+            "label_consistency": true,
+            "motion": true,
+            "native_range": true,
+            "time_hold": true
+          },
+          "geometry": {
+            "coarse": {
+              "checked_states": 8193,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.002154987016337269,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "extra": null,
+            "geometry_step_budget_m": 0.002,
+            "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+            "maximum_geometry_step_m": 0.001356261055091166,
+            "midpoints": {
+              "checked_states": 8192,
+              "continuous_time_certified": false,
+              "minimum_clearance_m": -0.002154987010199918,
+              "pair": {
+                "body_a": "world",
+                "body_b": "fore_arm_link",
+                "geom_a": "v7_capture_3",
+                "geom_b": "collision_0069"
+              },
+              "passed": false
+            },
+            "minimum_clearance_m": -0.002154987016337269,
+            "refinement_difference_m": 0.0
+          },
+          "intervals": 16384
+        }
+      ]
+    }
+  ]
+}

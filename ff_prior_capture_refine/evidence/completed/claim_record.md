@@ -1,0 +1,2 @@
+
+2026-10-21 capture_refine_001收尾：398.641s，原00/07最终路径0/2 MODEL_VALID，0真实力矩执行/重放；07同16384网格穿透5.143923→2.154987mm，仍碰撞。六次SLSQP均160迭代上限，零步和返回可行性保护有效，4更新接受；不能称收敛、精度提升、不可达或Diffusion优势。独立review总体no，C1 no/C2 BLOCKED，confidence high限负结论；133源码/192绑定/1938差分/27试探/10网格/1991耦合/1822572积分独立代数复核。M0非位姿数组和部分距离/回调原数组未保存，科学证据限制保留。完成resume一次后121文件hash不变，stdout编码捕获失败且未重调。路由revise/stop；下一步可行步恢复和自适应信赖域需新授权，当前不追加。未训练、扩库、TEST，物理门和旧结果不变。报告ff_prior_capture_refine/docs/ANALYSIS.md；review 20261021_capture_refine_run01；paper audit不可用，下游论文provisional。
