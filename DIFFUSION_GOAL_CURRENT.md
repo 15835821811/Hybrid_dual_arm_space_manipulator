@@ -16,3 +16,5 @@
 2数学库线程/6h/20GiB/33000耦合；本轮只做预冻结一次临时诊断＋最多一次候选。科学收益未预设，工程完成和收益分别报告。
 
 终端：.\ff_prior_control_transfer\job.ps1 status|report|resume。当前预检/源码冻结与后台启动记录见本包evidence。
+
+源码df13c4e1；worker45928后台已启动，heartbeat正常；接续automation ACTIVE。仅读取状态到终态，再做结果审查收尾。
