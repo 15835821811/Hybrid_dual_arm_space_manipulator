@@ -1,0 +1,2054 @@
+{
+  "TEST": false,
+  "TRAIN_added": 0,
+  "budget": {
+    "actual_coupled": 34,
+    "integration_intervals": 96768,
+    "limits": {
+      "TEST": false,
+      "TRAIN_added": 0,
+      "basis": "frozen_TRAIN_rank6_then_terminal_unit_then_fixed_DCT_two_pass_Gram_Schmidt; rank19_identity",
+      "basis_fitted_to_DEV": false,
+      "coupled_cap": 300,
+      "cpu_threads": 2,
+      "execution_limit": 12,
+      "execution_order": "rank_then_mode; exact_reference_duplicates_once; teacher_anchor_once_fresh",
+      "goal_relabel": false,
+      "integration_cap": 3000000,
+      "legacy_input": "already_projected_raw_controls",
+      "legacy_smooth_weight": 10.0,
+      "max_logical_candidates": 12,
+      "modes": [
+        "raw",
+        "legacy_prepare",
+        "preserve_prepare"
+      ],
+      "output_bytes_cap": 8589934592,
+      "physics_relaxed": false,
+      "ranks": [
+        6,
+        10,
+        14,
+        19
+      ],
+      "repair_iterations": 0,
+      "shrink_scales": [
+        1.0,
+        0.5,
+        0.25,
+        0.125,
+        0.0625,
+        0.03125,
+        0.0
+      ],
+      "split": "APPLICATION_DEV_DIAGNOSTIC",
+      "task": "capture_5_obstacles",
+      "teacher": "07_bow_j11_1",
+      "training": false,
+      "validation_intervals": [
+        256,
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384
+      ],
+      "version": "fixed_temporal_enrichment_prepare_v1",
+      "wall_s": 7200
+    }
+  },
+  "independent_review": "PENDING",
+  "raw_audit": {
+    "errors": [],
+    "fresh_executions": 1,
+    "fresh_model_checks": 6,
+    "historical_model_reuses": 2,
+    "native_plus_replay_steps": 27500,
+    "same_run_duplicates": 4,
+    "scope": "saved arrays and frozen code, no new physics",
+    "status": "PASS"
+  },
+  "rows": [
+    {
+      "dimensions": 102,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r06_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r06_raw",
+      "mode": "raw",
+      "origin": {
+        "kind": "historical_exact_identity",
+        "reference_hash": "89850fb9389f69cc02e6126dc25f71ccde66fee758899adccbcaf1c61c2971e1",
+        "source": "artifacts/v7_1/capture_trust_001/representation/pure_codec"
+      },
+      "rank": 6,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.2084739231757325,
+          0.052607825225874864
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.2907478659734179,
+          0.06650714692577811
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 4097,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.04811774522135378,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0016757575316646467,
+          "midpoints": {
+            "checked_states": 4096,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.048154447681817876,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.048154447681817876,
+          "refinement_difference_m": 3.6702460464096975e-05
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 8.46952632078414e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                1.8261343415348248e-07,
+                1.3174803951916818e-07
+              ],
+              "terminal_rotation_rad": [
+                1.1108062619464643e-07,
+                1.1108062720048587e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.1335461119020694e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                1.0100858613879644e-07,
+                6.135239157311477e-08
+              ],
+              "terminal_rotation_rad": [
+                5.0268884439719064e-08,
+                5.026888462025615e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.318505003410742e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.6601531011484154e-09,
+                2.170321093499821e-09
+              ],
+              "terminal_rotation_rad": [
+                2.5533085357538365e-09,
+                2.5533076941636943e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.3380096657596965e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                5.867795565978547e-10,
+                3.442162165259122e-10
+              ],
+              "terminal_rotation_rad": [
+                6.415737857980755e-10,
+                6.415748715995577e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.34207845213388e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                1.9214319972366864e-10,
+                4.9934188315154104e-11
+              ],
+              "terminal_rotation_rad": [
+                1.58745934545508e-10,
+                1.5874696877058236e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 102,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r06_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r06_legacy_prepare",
+      "mode": "legacy_prepare",
+      "origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "c6606b134c19461cc45d219ad64b531cda20a6ccd9ef69942866bc608445fec6"
+      },
+      "rank": 6,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.2069230089822309,
+          0.06334329800364805
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.284507585664381,
+          0.07630418180537878
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 2049,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.04725472067146989,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001526453441611148,
+          "midpoints": {
+            "checked_states": 2048,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.04738608819426379,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.04738608819426379,
+          "refinement_difference_m": 0.00013136752279390568
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 2.1086483063411587e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                3.822998175298936e-08,
+                3.694325659739254e-08
+              ],
+              "terminal_rotation_rad": [
+                3.1614899411896386e-08,
+                3.1614899572063136e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.152046315008061e-07,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.4206672256136196e-08,
+                1.51658874464107e-08
+              ],
+              "terminal_rotation_rad": [
+                1.2388620571495559e-08,
+                1.2388621023147957e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.3094621993548316e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                6.330150548535955e-10,
+                1.5288182310296203e-10
+              ],
+              "terminal_rotation_rad": [
+                4.396122268725504e-10,
+                4.396121591192844e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.292053713693818e-08,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                1.9238943049268393e-10,
+                4.191416251732426e-11
+              ],
+              "terminal_rotation_rad": [
+                1.3882931276298658e-10,
+                1.3882902769004825e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 102,
+      "eligible": false,
+      "execution": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r06_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r06_preserve_prepare",
+      "mode": "preserve_prepare",
+      "origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r06_raw",
+        "reference_hash": "89850fb9389f69cc02e6126dc25f71ccde66fee758899adccbcaf1c61c2971e1"
+      },
+      "rank": 6,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.2084739231757325,
+          0.052607825225874864
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.2907478659734179,
+          0.06650714692577811
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 4097,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.04811774522135378,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0016757575316646467,
+          "midpoints": {
+            "checked_states": 4096,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.048154447681817876,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.048154447681817876,
+          "refinement_difference_m": 3.6702460464096975e-05
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 8.46952632078414e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                1.8261343415348248e-07,
+                1.3174803951916818e-07
+              ],
+              "terminal_rotation_rad": [
+                1.1108062619464643e-07,
+                1.1108062720048587e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.1335461119020694e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                1.0100858613879644e-07,
+                6.135239157311477e-08
+              ],
+              "terminal_rotation_rad": [
+                5.0268884439719064e-08,
+                5.026888462025615e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.318505003410742e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.6601531011484154e-09,
+                2.170321093499821e-09
+              ],
+              "terminal_rotation_rad": [
+                2.5533085357538365e-09,
+                2.5533076941636943e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.3380096657596965e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                5.867795565978547e-10,
+                3.442162165259122e-10
+              ],
+              "terminal_rotation_rad": [
+                6.415737857980755e-10,
+                6.415748715995577e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.34207845213388e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                1.9214319972366864e-10,
+                4.9934188315154104e-11
+              ],
+              "terminal_rotation_rad": [
+                1.58745934545508e-10,
+                1.5874696877058236e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 170,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r10_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r10_raw",
+      "mode": "raw",
+      "origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "c2e88b0dd91880ef64f83df5b4e9ee314216840d323181df2dacf27d53d6fd4a"
+      },
+      "rank": 10,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.01061161952484471,
+          0.006545905618653763
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.006798386891645511,
+          0.006851835746920944
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.0361884785280252,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001404161476499313,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.03618133316915384,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.0361884785280252,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.4951658678290856e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                6.222883540970713e-07,
+                3.907418352063098e-07
+              ],
+              "terminal_rotation_rad": [
+                3.123165582707375e-07,
+                3.1231655833208196e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.395216176701988e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.2848985211421455e-07,
+                1.3753538234054513e-07
+              ],
+              "terminal_rotation_rad": [
+                1.100466345176926e-07,
+                1.1004663413439893e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 8.925536240507028e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.4260883660841917e-08,
+                8.532218471338463e-09
+              ],
+              "terminal_rotation_rad": [
+                8.996137603878096e-09,
+                8.996138088941642e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.2541418046023143e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                1.057220263929897e-09,
+                3.6666901554123383e-10
+              ],
+              "terminal_rotation_rad": [
+                7.336571123703511e-10,
+                7.336567097591298e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.617460465178965e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                5.37405309909144e-10,
+                2.7228324628902315e-10
+              ],
+              "terminal_rotation_rad": [
+                2.9313691820163776e-10,
+                2.9313751286444194e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4043721338231268e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                1.4149684701161566e-10,
+                7.172085244339459e-11
+              ],
+              "terminal_rotation_rad": [
+                7.630577722322397e-11,
+                7.630530770714678e-11
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 170,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r10_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r10_legacy_prepare",
+      "mode": "legacy_prepare",
+      "origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "2a031f8a84d235c9eceb4f3ef3db576930f3e608ae7af42de28640e23ab9d427"
+      },
+      "rank": 10,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.01560990156844729,
+          0.0101515683332212
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.008158300599819493,
+          0.008470047115371087
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 2049,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.05680209132221898,
+            "pair": {
+              "body_a": "world",
+              "body_b": "wrist_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0071"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001545962569157851,
+          "midpoints": {
+            "checked_states": 2048,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.056690348374494125,
+            "pair": {
+              "body_a": "world",
+              "body_b": "wrist_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0071"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.05680209132221898,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.955911748699192e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                1.2573001981495232e-08,
+                1.2940544665698824e-08
+              ],
+              "terminal_rotation_rad": [
+                2.367294359823935e-08,
+                2.3672942570522232e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 4.79689034156965e-07,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                6.178720786174558e-09,
+                3.6264983645002757e-09
+              ],
+              "terminal_rotation_rad": [
+                3.040062310274291e-09,
+                3.0400632269765242e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.2151668082965127e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.6640312821628693e-09,
+                1.0028747178109033e-09
+              ],
+              "terminal_rotation_rad": [
+                8.988170369768829e-10,
+                8.988171800164866e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.0546561646982226e-08,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                1.8054444333842967e-10,
+                1.9698253419656232e-11
+              ],
+              "terminal_rotation_rad": [
+                1.4816709541709657e-10,
+                1.4816755009420448e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 170,
+      "eligible": false,
+      "execution": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r10_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r10_preserve_prepare",
+      "mode": "preserve_prepare",
+      "origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r10_raw",
+        "reference_hash": "c2e88b0dd91880ef64f83df5b4e9ee314216840d323181df2dacf27d53d6fd4a"
+      },
+      "rank": 10,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.01061161952484471,
+          0.006545905618653763
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.006798386891645511,
+          0.006851835746920944
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.0361884785280252,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001404161476499313,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.03618133316915384,
+            "pair": {
+              "body_a": "end_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0072",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.0361884785280252,
+          "refinement_difference_m": 0.0
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.4951658678290856e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                6.222883540970713e-07,
+                3.907418352063098e-07
+              ],
+              "terminal_rotation_rad": [
+                3.123165582707375e-07,
+                3.1231655833208196e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.395216176701988e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.2848985211421455e-07,
+                1.3753538234054513e-07
+              ],
+              "terminal_rotation_rad": [
+                1.100466345176926e-07,
+                1.1004663413439893e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 8.925536240507028e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.4260883660841917e-08,
+                8.532218471338463e-09
+              ],
+              "terminal_rotation_rad": [
+                8.996137603878096e-09,
+                8.996138088941642e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.2541418046023143e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                1.057220263929897e-09,
+                3.6666901554123383e-10
+              ],
+              "terminal_rotation_rad": [
+                7.336571123703511e-10,
+                7.336567097591298e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.617460465178965e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                5.37405309909144e-10,
+                2.7228324628902315e-10
+              ],
+              "terminal_rotation_rad": [
+                2.9313691820163776e-10,
+                2.9313751286444194e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4043721338231268e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                1.4149684701161566e-10,
+                7.172085244339459e-11
+              ],
+              "terminal_rotation_rad": [
+                7.630577722322397e-11,
+                7.630530770714678e-11
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 238,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r14_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r14_raw",
+      "mode": "raw",
+      "origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "69e78e46b5241bf2d3706859d993cbb6ddfab78e8ef6164899238a330a5b49e2"
+      },
+      "rank": 14,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.0036174381267807996,
+          0.0030518075129632428
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.0025349455420542394,
+          0.0025188211644561506
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.017903869724141597,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0012649026054950773,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.01790391388942547,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.01790391388942547,
+          "refinement_difference_m": 4.41652838745199e-08
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.4782480041816793e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                7.319523932377843e-07,
+                4.2340407500777095e-07
+              ],
+              "terminal_rotation_rad": [
+                3.875486351590026e-07,
+                3.8754863554504386e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.713038563649974e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.305954221161841e-07,
+                1.5786930869929203e-07
+              ],
+              "terminal_rotation_rad": [
+                1.0985626196034626e-07,
+                1.0985626248672875e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 9.144339619683517e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                8.078598777416309e-09,
+                5.643997451956482e-09
+              ],
+              "terminal_rotation_rad": [
+                3.827303980027923e-09,
+                3.827304188784229e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.312989835154384e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                6.916920924034012e-10,
+                6.913927500104594e-10
+              ],
+              "terminal_rotation_rad": [
+                5.146794624800623e-10,
+                5.146788894085136e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.7850943739079344e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                4.103361770557228e-10,
+                3.288785368875706e-10
+              ],
+              "terminal_rotation_rad": [
+                1.0512428366988201e-10,
+                1.0512389300462057e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4462995076011668e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                1.0765236912985375e-10,
+                8.561459498013825e-11
+              ],
+              "terminal_rotation_rad": [
+                2.8806463912010646e-11,
+                2.880732279428128e-11
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 238,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r14_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r14_legacy_prepare",
+      "mode": "legacy_prepare",
+      "origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "160a70ed47888a46edd99f9989a93dc578d1f255c461859c4a5f85170e61eefc"
+      },
+      "rank": 14,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.01555674338160104,
+          0.01012022841545873
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.008133758555437914,
+          0.008444812122203008
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 2049,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.05593497887735245,
+            "pair": {
+              "body_a": "world",
+              "body_b": "wrist_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0071"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0016722985097545981,
+          "midpoints": {
+            "checked_states": 2048,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.056044861203689164,
+            "pair": {
+              "body_a": "world",
+              "body_b": "wrist_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0071"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.056044861203689164,
+          "refinement_difference_m": 0.00010988232633671324
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.985875605860031e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                2.3416976432352152e-08,
+                2.411679814470303e-08
+              ],
+              "terminal_rotation_rad": [
+                3.041216420824891e-08,
+                3.0412162986393094e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 4.898977905823298e-07,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.6136014560608357e-09,
+                3.528812109951112e-09
+              ],
+              "terminal_rotation_rad": [
+                3.5545613825883165e-09,
+                3.5545603546799318e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.2333519710994568e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.131120647098932e-09,
+                4.723490047281928e-10
+              ],
+              "terminal_rotation_rad": [
+                6.363737410009706e-10,
+                6.363747130771451e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.0719865410270665e-08,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                2.2722541232930423e-10,
+                5.900932516723047e-11
+              ],
+              "terminal_rotation_rad": [
+                1.5000082877155785e-10,
+                1.5000020221933764e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 238,
+      "eligible": false,
+      "execution": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r14_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r14_preserve_prepare",
+      "mode": "preserve_prepare",
+      "origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r14_raw",
+        "reference_hash": "69e78e46b5241bf2d3706859d993cbb6ddfab78e8ef6164899238a330a5b49e2"
+      },
+      "rank": 14,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.0036174381267807996,
+          0.0030518075129632428
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.0025349455420542394,
+          0.0025188211644561506
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.017903869724141597,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0012649026054950773,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.01790391388942547,
+            "pair": {
+              "body_a": "wrist_link",
+              "body_b": "target_satellite",
+              "geom_a": "collision_0071",
+              "geom_b": "target_satellite_collision"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.01790391388942547,
+          "refinement_difference_m": 4.41652838745199e-08
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.4782480041816793e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                7.319523932377843e-07,
+                4.2340407500777095e-07
+              ],
+              "terminal_rotation_rad": [
+                3.875486351590026e-07,
+                3.8754863554504386e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.713038563649974e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.305954221161841e-07,
+                1.5786930869929203e-07
+              ],
+              "terminal_rotation_rad": [
+                1.0985626196034626e-07,
+                1.0985626248672875e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 9.144339619683517e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                8.078598777416309e-09,
+                5.643997451956482e-09
+              ],
+              "terminal_rotation_rad": [
+                3.827303980027923e-09,
+                3.827304188784229e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.312989835154384e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                6.916920924034012e-10,
+                6.913927500104594e-10
+              ],
+              "terminal_rotation_rad": [
+                5.146794624800623e-10,
+                5.146788894085136e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.7850943739079344e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                4.103361770557228e-10,
+                3.288785368875706e-10
+              ],
+              "terminal_rotation_rad": [
+                1.0512428366988201e-10,
+                1.0512389300462057e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4462995076011668e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                1.0765236912985375e-10,
+                8.561459498013825e-11
+              ],
+              "terminal_rotation_rad": [
+                2.8806463912010646e-11,
+                2.880732279428128e-11
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 323,
+      "eligible": true,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r19_raw",
+        "status": "EXECUTION_VERIFIED"
+      },
+      "id": "r19_raw",
+      "mode": "raw",
+      "origin": {
+        "kind": "historical_exact_identity",
+        "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed",
+        "source": "artifacts/v7_1/capture_trust_001/teachers/07_bow_j11_1"
+      },
+      "rank": 19,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          3.110840971388052e-05,
+          0.0019729659177062033
+        ],
+        "frozen_goal_rotation_error_rad": [
+          4.2603257491877665e-05,
+          0.0006244737213968558
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": true,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": 3.6043425860127903e-05,
+            "pair": {
+              "body_a": "world",
+              "body_b": "end_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0072"
+            },
+            "passed": true
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001345890755012972,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": 3.601942672437283e-05,
+            "pair": {
+              "body_a": "world",
+              "body_b": "end_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0072"
+            },
+            "passed": true
+          },
+          "minimum_clearance_m": 3.601942672437283e-05,
+          "refinement_difference_m": 2.3999135755070622e-08
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.5132234418217597e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                7.787740868843885e-07,
+                4.825275732765599e-07
+              ],
+              "terminal_rotation_rad": [
+                4.3313287981191615e-07,
+                4.331328798212129e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.974434656868437e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.789745010110101e-07,
+                1.9996615695010284e-07
+              ],
+              "terminal_rotation_rad": [
+                1.5532203849785799e-07,
+                1.553220383093623e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 9.134921698763912e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                3.092785158348145e-08,
+                1.5879656903175628e-08
+              ],
+              "terminal_rotation_rad": [
+                1.55863099542335e-08,
+                1.5586310292870682e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.333467657265777e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                4.936936826658958e-09,
+                4.262653515500728e-09
+              ],
+              "terminal_rotation_rad": [
+                4.231572735516708e-09,
+                4.2315715078757266e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.735796500417139e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                9.05250016750507e-10,
+                3.595815958625537e-10
+              ],
+              "terminal_rotation_rad": [
+                6.035938214468032e-10,
+                6.035940299189558e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4338812014014115e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                2.281095643775332e-10,
+                8.890026869268797e-11
+              ],
+              "terminal_rotation_rad": [
+                1.557718209414535e-10,
+                1.5577294742095063e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "MODEL_VALID",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 323,
+      "eligible": false,
+      "execution": {
+        "kind": "fresh_execution_owner",
+        "owner": "r19_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "id": "r19_legacy_prepare",
+      "mode": "legacy_prepare",
+      "origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "aeb0a6e3f99c986182d3290748d9903f927760ee99cd1ab33a233769a7a7755c"
+      },
+      "rank": 19,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          0.01555553467538894,
+          0.01011958796447378
+        ],
+        "frozen_goal_rotation_error_rad": [
+          0.008133006534204087,
+          0.008444090728727913
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": false,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 2049,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.05596457666658414,
+            "pair": {
+              "body_a": "world",
+              "body_b": "wrist_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0071"
+            },
+            "passed": false
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.0016630139452909242,
+          "midpoints": {
+            "checked_states": 2048,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": -0.05607451658079355,
+            "pair": {
+              "body_a": "world",
+              "body_b": "wrist_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0071"
+            },
+            "passed": false
+          },
+          "minimum_clearance_m": -0.05607451658079355,
+          "refinement_difference_m": 0.0001099399142094129
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.990217548629762e-06,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                2.5421908256957915e-08,
+                2.7253252077946536e-08
+              ],
+              "terminal_rotation_rad": [
+                3.2137466761497464e-08,
+                3.213746607641668e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 4.874584106999071e-07,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                4.096277236049067e-09,
+                3.0912455499889512e-09
+              ],
+              "terminal_rotation_rad": [
+                3.1196015498396878e-09,
+                3.119601479197235e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.2348424073377047e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                1.1841208965604806e-09,
+                4.808954560317104e-10
+              ],
+              "terminal_rotation_rad": [
+                6.70601732406089e-10,
+                6.706016615466523e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.0683368589015616e-08,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                2.434858949315484e-10,
+                8.450360807690746e-11
+              ],
+              "terminal_rotation_rad": [
+                1.4829516950748453e-10,
+                1.4829445097572825e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "REJECTED",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    },
+    {
+      "dimensions": 323,
+      "eligible": true,
+      "execution": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r19_raw",
+        "status": "EXECUTION_VERIFIED"
+      },
+      "id": "r19_preserve_prepare",
+      "mode": "preserve_prepare",
+      "origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r19_raw",
+        "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed"
+      },
+      "rank": 19,
+      "validation": {
+        "frozen_goal_position_error_m": [
+          3.110840971388052e-05,
+          0.0019729659177062033
+        ],
+        "frozen_goal_rotation_error_rad": [
+          4.2603257491877665e-05,
+          0.0006244737213968558
+        ],
+        "gates": {
+          "boundary": true,
+          "coupled_convergence": true,
+          "domain": true,
+          "finite": true,
+          "geometry": true,
+          "geometry_refinement": true,
+          "identity": true,
+          "label_consistency": true,
+          "motion": true,
+          "native_range": true,
+          "time_hold": true
+        },
+        "geometry": {
+          "coarse": {
+            "checked_states": 8193,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": 3.6043425860127903e-05,
+            "pair": {
+              "body_a": "world",
+              "body_b": "end_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0072"
+            },
+            "passed": true
+          },
+          "extra": null,
+          "geometry_step_budget_m": 0.002,
+          "hold_geometry": "constant_at_zero_terminal_velocity_static_environment",
+          "maximum_geometry_step_m": 0.001345890755012972,
+          "midpoints": {
+            "checked_states": 8192,
+            "continuous_time_certified": false,
+            "minimum_clearance_m": 3.601942672437283e-05,
+            "pair": {
+              "body_a": "world",
+              "body_b": "end_link",
+              "geom_a": "v7_capture_3",
+              "geom_b": "collision_0072"
+            },
+            "passed": true
+          },
+          "minimum_clearance_m": 3.601942672437283e-05,
+          "refinement_difference_m": 2.3999135755070622e-08
+        },
+        "numerical": {
+          "comparisons": [
+            {
+              "aligned_body_extent_m": 1.5132234418217597e-05,
+              "coarse": 256,
+              "fine": 512,
+              "passed": true,
+              "terminal_position_m": [
+                7.787740868843885e-07,
+                4.825275732765599e-07
+              ],
+              "terminal_rotation_rad": [
+                4.3313287981191615e-07,
+                4.331328798212129e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 3.974434656868437e-06,
+              "coarse": 512,
+              "fine": 1024,
+              "passed": true,
+              "terminal_position_m": [
+                2.789745010110101e-07,
+                1.9996615695010284e-07
+              ],
+              "terminal_rotation_rad": [
+                1.5532203849785799e-07,
+                1.553220383093623e-07
+              ]
+            },
+            {
+              "aligned_body_extent_m": 9.134921698763912e-07,
+              "coarse": 1024,
+              "fine": 2048,
+              "passed": true,
+              "terminal_position_m": [
+                3.092785158348145e-08,
+                1.5879656903175628e-08
+              ],
+              "terminal_rotation_rad": [
+                1.55863099542335e-08,
+                1.5586310292870682e-08
+              ]
+            },
+            {
+              "aligned_body_extent_m": 2.333467657265777e-07,
+              "coarse": 2048,
+              "fine": 4096,
+              "passed": true,
+              "terminal_position_m": [
+                4.936936826658958e-09,
+                4.262653515500728e-09
+              ],
+              "terminal_rotation_rad": [
+                4.231572735516708e-09,
+                4.2315715078757266e-09
+              ]
+            },
+            {
+              "aligned_body_extent_m": 5.735796500417139e-08,
+              "coarse": 4096,
+              "fine": 8192,
+              "passed": true,
+              "terminal_position_m": [
+                9.05250016750507e-10,
+                3.595815958625537e-10
+              ],
+              "terminal_rotation_rad": [
+                6.035938214468032e-10,
+                6.035940299189558e-10
+              ]
+            },
+            {
+              "aligned_body_extent_m": 1.4338812014014115e-08,
+              "coarse": 8192,
+              "fine": 16384,
+              "passed": true,
+              "terminal_position_m": [
+                2.281095643775332e-10,
+                8.890026869268797e-11
+              ],
+              "terminal_rotation_rad": [
+                1.557718209414535e-10,
+                1.5577294742095063e-10
+              ]
+            }
+          ],
+          "passed": true
+        },
+        "reference_torque_feasibility": "NOT_EVALUATED",
+        "required": [
+          "identity",
+          "finite",
+          "domain",
+          "native_range",
+          "boundary",
+          "motion",
+          "coupled_convergence",
+          "geometry",
+          "geometry_refinement",
+          "time_hold",
+          "label_consistency"
+        ],
+        "validation_level": "MODEL_VALID",
+        "validation_profile_id": "v7_1_dev_b4a8eaed77de91da"
+      }
+    }
+  ],
+  "status": "FINISHED",
+  "training": false
+}

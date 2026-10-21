@@ -1,0 +1,810 @@
+{
+  "audit": {
+    "errors": [],
+    "fresh_executions": 1,
+    "fresh_model_checks": 6,
+    "historical_model_reuses": 2,
+    "native_plus_replay_steps": 27500,
+    "same_run_duplicates": 4,
+    "scope": "saved arrays and frozen code, no new physics",
+    "status": "PASS"
+  },
+  "budget": {
+    "actual_coupled": 34,
+    "integration_intervals": 96768,
+    "limits": {
+      "TEST": false,
+      "TRAIN_added": 0,
+      "basis": "frozen_TRAIN_rank6_then_terminal_unit_then_fixed_DCT_two_pass_Gram_Schmidt; rank19_identity",
+      "basis_fitted_to_DEV": false,
+      "coupled_cap": 300,
+      "cpu_threads": 2,
+      "execution_limit": 12,
+      "execution_order": "rank_then_mode; exact_reference_duplicates_once; teacher_anchor_once_fresh",
+      "goal_relabel": false,
+      "integration_cap": 3000000,
+      "legacy_input": "already_projected_raw_controls",
+      "legacy_smooth_weight": 10.0,
+      "max_logical_candidates": 12,
+      "modes": [
+        "raw",
+        "legacy_prepare",
+        "preserve_prepare"
+      ],
+      "output_bytes_cap": 8589934592,
+      "physics_relaxed": false,
+      "ranks": [
+        6,
+        10,
+        14,
+        19
+      ],
+      "repair_iterations": 0,
+      "shrink_scales": [
+        1.0,
+        0.5,
+        0.25,
+        0.125,
+        0.0625,
+        0.03125,
+        0.0
+      ],
+      "split": "APPLICATION_DEV_DIAGNOSTIC",
+      "task": "capture_5_obstacles",
+      "teacher": "07_bow_j11_1",
+      "training": false,
+      "validation_intervals": [
+        256,
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384
+      ],
+      "version": "fixed_temporal_enrichment_prepare_v1",
+      "wall_s": 7200
+    }
+  },
+  "logical_candidates": 12,
+  "logical_model_passes": 2,
+  "new_execution": {
+    "checked_states": 27501,
+    "final_position_error_m": [
+      3.0688460985411195e-05,
+      0.001964951229190705
+    ],
+    "final_rotation_error_rad": [
+      5.330303545045697e-05,
+      0.0006108196214189167
+    ],
+    "gates": {
+      "complete_native_time": true,
+      "derivative_limits": true,
+      "dual_goal_hold": true,
+      "finite": true,
+      "identity": true,
+      "independent_replay": true,
+      "joint_limits": true,
+      "manifold": true,
+      "momentum": true,
+      "no_external_wrench": true,
+      "no_hidden_reset": true,
+      "raw_torque_limits": true,
+      "tracking": true,
+      "whole_body_clearance": true
+    },
+    "hold_max_position_error_m": [
+      3.222341592143443e-05,
+      0.001965991454771906
+    ],
+    "hold_max_rotation_error_rad": [
+      5.3461192589479285e-05,
+      0.0006116903387937759
+    ],
+    "level": "EXECUTION_VERIFIED",
+    "metadata": {
+      "controller": "floating_ff_torque_pd_v1",
+      "external_wrench_applied": false,
+      "initial_state_id": "3ffd4a33b1dc9c45632b2442077dac4bf45c2f13a7af222d183bc3746f96e7db",
+      "physics_steps": 13750,
+      "planned_steps": 13750,
+      "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed",
+      "robot_state_writes_during_step_loop": 0,
+      "scene_model_hash": "7dad6c3f7685a7f9bb6eb18e20cd80d2e54c2cb1391036765be120a34f8fdf72",
+      "status": "FINISHED",
+      "wall_seconds": 9.087352199479938
+    },
+    "minimum_clearance_m": 2.696884891472892e-05,
+    "native_states": 13751,
+    "replay": {
+      "atol": 1e-10,
+      "copies_actual_state_each_step": false,
+      "maximum_errors": {
+        "act": 0.0,
+        "qacc_warmstart": 0.0,
+        "qpos": 0.0,
+        "qvel": 0.0,
+        "time": 0.0
+      },
+      "passed": true,
+      "physics_steps": 13750
+    }
+  },
+  "no_TEST": true,
+  "no_new_TRAIN": true,
+  "no_training": true,
+  "rows": [
+    {
+      "dimensions": 102,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r06_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 8192,
+      "frozen_goal_pass": false,
+      "id": "r06_raw",
+      "minimum_clearance_mm": -48.15444768181788,
+      "mode": "raw",
+      "model_eligible": false,
+      "position_mm": [
+        208.4739231757325,
+        52.60782522587486
+      ],
+      "prepare_metadata": {
+        "policy": "no_prepare"
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 6,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.2967665632528731,
+        "control_rms_rad": 0.11185531865273553,
+        "intermediate_control_error_rad": {
+          "output": 0.2967665632528731,
+          "raw": 0.2967665632528731
+        },
+        "terminal_control_max_abs_rad": 0.0761080425712705
+      },
+      "reference_hash": "89850fb9389f69cc02e6126dc25f71ccde66fee758899adccbcaf1c61c2971e1",
+      "rotation_deg": [
+        16.65862562271216,
+        3.8105788263035536
+      ],
+      "validation_origin": {
+        "kind": "historical_exact_identity",
+        "reference_hash": "89850fb9389f69cc02e6126dc25f71ccde66fee758899adccbcaf1c61c2971e1",
+        "source": "artifacts/v7_1/capture_trust_001/representation/pure_codec"
+      }
+    },
+    {
+      "dimensions": 102,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r06_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 4096,
+      "frozen_goal_pass": false,
+      "id": "r06_legacy_prepare",
+      "minimum_clearance_mm": -47.38608819426379,
+      "mode": "legacy_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        206.9230089822309,
+        63.343298003648044
+      ],
+      "prepare_metadata": {
+        "policy": "legacy_prepare",
+        "shrink": 1.0,
+        "unchanged": false
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 6,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.40657414839565875,
+        "control_rms_rad": 0.1382447437880897,
+        "intermediate_control_error_rad": {
+          "clipped": 0.41270109766024277,
+          "output": 0.40657414839565875,
+          "projected": 0.40657414839565875,
+          "raw": 0.2967665632528731,
+          "smoothed": 0.41270109766024277
+        },
+        "terminal_control_max_abs_rad": 0.07495699477370889
+      },
+      "reference_hash": "c6606b134c19461cc45d219ad64b531cda20a6ccd9ef69942866bc608445fec6",
+      "rotation_deg": [
+        16.301083898025755,
+        4.37190757664713
+      ],
+      "validation_origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "c6606b134c19461cc45d219ad64b531cda20a6ccd9ef69942866bc608445fec6"
+      }
+    },
+    {
+      "dimensions": 102,
+      "execution_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r06_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 8192,
+      "frozen_goal_pass": false,
+      "id": "r06_preserve_prepare",
+      "minimum_clearance_mm": -48.15444768181788,
+      "mode": "preserve_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        208.4739231757325,
+        52.60782522587486
+      ],
+      "prepare_metadata": {
+        "policy": "preserve_prepare",
+        "reason": "already_quick_feasible",
+        "shrink": 1.0,
+        "unchanged": true
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 6,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.2967665632528731,
+        "control_rms_rad": 0.11185531865273553,
+        "intermediate_control_error_rad": {
+          "output": 0.2967665632528731,
+          "raw": 0.2967665632528731
+        },
+        "terminal_control_max_abs_rad": 0.0761080425712705
+      },
+      "reference_hash": "89850fb9389f69cc02e6126dc25f71ccde66fee758899adccbcaf1c61c2971e1",
+      "rotation_deg": [
+        16.65862562271216,
+        3.8105788263035536
+      ],
+      "validation_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r06_raw",
+        "reference_hash": "89850fb9389f69cc02e6126dc25f71ccde66fee758899adccbcaf1c61c2971e1"
+      }
+    },
+    {
+      "dimensions": 170,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r10_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 16384,
+      "frozen_goal_pass": false,
+      "id": "r10_raw",
+      "minimum_clearance_mm": -36.1884785280252,
+      "mode": "raw",
+      "model_eligible": false,
+      "position_mm": [
+        10.611619524844711,
+        6.545905618653763
+      ],
+      "prepare_metadata": {
+        "policy": "no_prepare"
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 10,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.2584132411596538,
+        "control_rms_rad": 0.08821513711393403,
+        "intermediate_control_error_rad": {
+          "output": 0.2584132411596538,
+          "raw": 0.2584132411596538
+        },
+        "terminal_control_max_abs_rad": 4.440892098500626e-16
+      },
+      "reference_hash": "c2e88b0dd91880ef64f83df5b4e9ee314216840d323181df2dacf27d53d6fd4a",
+      "rotation_deg": [
+        0.38951887638835025,
+        0.39258127021543815
+      ],
+      "validation_origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "c2e88b0dd91880ef64f83df5b4e9ee314216840d323181df2dacf27d53d6fd4a"
+      }
+    },
+    {
+      "dimensions": 170,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r10_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 4096,
+      "frozen_goal_pass": false,
+      "id": "r10_legacy_prepare",
+      "minimum_clearance_mm": -56.80209132221898,
+      "mode": "legacy_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        15.60990156844729,
+        10.151568333221201
+      ],
+      "prepare_metadata": {
+        "policy": "legacy_prepare",
+        "shrink": 1.0,
+        "unchanged": false
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 10,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.3973516149787478,
+        "control_rms_rad": 0.13313349050531606,
+        "intermediate_control_error_rad": {
+          "clipped": 0.39945673535284765,
+          "output": 0.3973516149787478,
+          "projected": 0.3973516149787478,
+          "raw": 0.2584132411596538,
+          "smoothed": 0.39945673535284765
+        },
+        "terminal_control_max_abs_rad": 6.661338147750939e-16
+      },
+      "reference_hash": "2a031f8a84d235c9eceb4f3ef3db576930f3e608ae7af42de28640e23ab9d427",
+      "rotation_deg": [
+        0.46743619236870493,
+        0.48529795198772074
+      ],
+      "validation_origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "2a031f8a84d235c9eceb4f3ef3db576930f3e608ae7af42de28640e23ab9d427"
+      }
+    },
+    {
+      "dimensions": 170,
+      "execution_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r10_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 16384,
+      "frozen_goal_pass": false,
+      "id": "r10_preserve_prepare",
+      "minimum_clearance_mm": -36.1884785280252,
+      "mode": "preserve_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        10.611619524844711,
+        6.545905618653763
+      ],
+      "prepare_metadata": {
+        "policy": "preserve_prepare",
+        "reason": "already_quick_feasible",
+        "shrink": 1.0,
+        "unchanged": true
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 10,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.2584132411596538,
+        "control_rms_rad": 0.08821513711393403,
+        "intermediate_control_error_rad": {
+          "output": 0.2584132411596538,
+          "raw": 0.2584132411596538
+        },
+        "terminal_control_max_abs_rad": 4.440892098500626e-16
+      },
+      "reference_hash": "c2e88b0dd91880ef64f83df5b4e9ee314216840d323181df2dacf27d53d6fd4a",
+      "rotation_deg": [
+        0.38951887638835025,
+        0.39258127021543815
+      ],
+      "validation_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r10_raw",
+        "reference_hash": "c2e88b0dd91880ef64f83df5b4e9ee314216840d323181df2dacf27d53d6fd4a"
+      }
+    },
+    {
+      "dimensions": 238,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r14_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 16384,
+      "frozen_goal_pass": true,
+      "id": "r14_raw",
+      "minimum_clearance_mm": -17.90391388942547,
+      "mode": "raw",
+      "model_eligible": false,
+      "position_mm": [
+        3.6174381267807996,
+        3.0518075129632427
+      ],
+      "prepare_metadata": {
+        "policy": "no_prepare"
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 14,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.14583719048279115,
+        "control_rms_rad": 0.03548386558375708,
+        "intermediate_control_error_rad": {
+          "output": 0.14583719048279115,
+          "raw": 0.14583719048279115
+        },
+        "terminal_control_max_abs_rad": 4.440892098500626e-16
+      },
+      "reference_hash": "69e78e46b5241bf2d3706859d993cbb6ddfab78e8ef6164899238a330a5b49e2",
+      "rotation_deg": [
+        0.14524168085521066,
+        0.14431782207156488
+      ],
+      "validation_origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "69e78e46b5241bf2d3706859d993cbb6ddfab78e8ef6164899238a330a5b49e2"
+      }
+    },
+    {
+      "dimensions": 238,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r14_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 4096,
+      "frozen_goal_pass": false,
+      "id": "r14_legacy_prepare",
+      "minimum_clearance_mm": -56.044861203689166,
+      "mode": "legacy_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        15.55674338160104,
+        10.12022841545873
+      ],
+      "prepare_metadata": {
+        "policy": "legacy_prepare",
+        "shrink": 1.0,
+        "unchanged": false
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 14,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.3993613604765006,
+        "control_rms_rad": 0.13104541963843333,
+        "intermediate_control_error_rad": {
+          "clipped": 0.399411768561034,
+          "output": 0.3993613604765006,
+          "projected": 0.3993613604765006,
+          "raw": 0.14583719048279115,
+          "smoothed": 0.399411768561034
+        },
+        "terminal_control_max_abs_rad": 6.661338147750939e-16
+      },
+      "reference_hash": "160a70ed47888a46edd99f9989a93dc578d1f255c461859c4a5f85170e61eefc",
+      "rotation_deg": [
+        0.4660300368050177,
+        0.48385209338314833
+      ],
+      "validation_origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "160a70ed47888a46edd99f9989a93dc578d1f255c461859c4a5f85170e61eefc"
+      }
+    },
+    {
+      "dimensions": 238,
+      "execution_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r14_raw",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 16384,
+      "frozen_goal_pass": true,
+      "id": "r14_preserve_prepare",
+      "minimum_clearance_mm": -17.90391388942547,
+      "mode": "preserve_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        3.6174381267807996,
+        3.0518075129632427
+      ],
+      "prepare_metadata": {
+        "policy": "preserve_prepare",
+        "reason": "already_quick_feasible",
+        "shrink": 1.0,
+        "unchanged": true
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 14,
+      "reconstruction": {
+        "basis_orthogonality_max": 4.440892098500626e-16,
+        "control_max_abs_rad": 0.14583719048279115,
+        "control_rms_rad": 0.03548386558375708,
+        "intermediate_control_error_rad": {
+          "output": 0.14583719048279115,
+          "raw": 0.14583719048279115
+        },
+        "terminal_control_max_abs_rad": 4.440892098500626e-16
+      },
+      "reference_hash": "69e78e46b5241bf2d3706859d993cbb6ddfab78e8ef6164899238a330a5b49e2",
+      "rotation_deg": [
+        0.14524168085521066,
+        0.14431782207156488
+      ],
+      "validation_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r14_raw",
+        "reference_hash": "69e78e46b5241bf2d3706859d993cbb6ddfab78e8ef6164899238a330a5b49e2"
+      }
+    },
+    {
+      "dimensions": 323,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r19_raw",
+        "status": "EXECUTION_VERIFIED"
+      },
+      "failed_gates": [],
+      "final_intervals": 16384,
+      "frozen_goal_pass": true,
+      "id": "r19_raw",
+      "minimum_clearance_mm": 0.03601942672437283,
+      "mode": "raw",
+      "model_eligible": true,
+      "position_mm": [
+        0.03110840971388052,
+        1.9729659177062033
+      ],
+      "prepare_metadata": {
+        "policy": "no_prepare"
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 19,
+      "reconstruction": {
+        "basis_orthogonality_max": 0.0,
+        "control_max_abs_rad": 0.0,
+        "control_rms_rad": 0.0,
+        "intermediate_control_error_rad": {
+          "output": 0.0,
+          "raw": 0.0
+        },
+        "terminal_control_max_abs_rad": 0.0
+      },
+      "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed",
+      "rotation_deg": [
+        0.0024409868477936955,
+        0.03577970865286825
+      ],
+      "validation_origin": {
+        "kind": "historical_exact_identity",
+        "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed",
+        "source": "artifacts/v7_1/capture_trust_001/teachers/07_bow_j11_1"
+      }
+    },
+    {
+      "dimensions": 323,
+      "execution_origin": {
+        "kind": "fresh_execution_owner",
+        "owner": "r19_legacy_prepare",
+        "status": "NO_CANDIDATE"
+      },
+      "failed_gates": [
+        "geometry"
+      ],
+      "final_intervals": 4096,
+      "frozen_goal_pass": false,
+      "id": "r19_legacy_prepare",
+      "minimum_clearance_mm": -56.07451658079355,
+      "mode": "legacy_prepare",
+      "model_eligible": false,
+      "position_mm": [
+        15.555534675388941,
+        10.11958796447378
+      ],
+      "prepare_metadata": {
+        "policy": "legacy_prepare",
+        "shrink": 1.0,
+        "unchanged": false
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 19,
+      "reconstruction": {
+        "basis_orthogonality_max": 0.0,
+        "control_max_abs_rad": 0.3994116610752091,
+        "control_rms_rad": 0.1309225269997612,
+        "intermediate_control_error_rad": {
+          "clipped": 0.3994116610752091,
+          "output": 0.3994116610752091,
+          "projected": 0.3994116610752091,
+          "raw": 0.0,
+          "smoothed": 0.3994116610752091
+        },
+        "terminal_control_max_abs_rad": 0.0
+      },
+      "reference_hash": "aeb0a6e3f99c986182d3290748d9903f927760ee99cd1ab33a233769a7a7755c",
+      "rotation_deg": [
+        0.4659869491622152,
+        0.4838107605816571
+      ],
+      "validation_origin": {
+        "kind": "new_model_validation",
+        "reference_hash": "aeb0a6e3f99c986182d3290748d9903f927760ee99cd1ab33a233769a7a7755c"
+      }
+    },
+    {
+      "dimensions": 323,
+      "execution_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r19_raw",
+        "status": "EXECUTION_VERIFIED"
+      },
+      "failed_gates": [],
+      "final_intervals": 16384,
+      "frozen_goal_pass": true,
+      "id": "r19_preserve_prepare",
+      "minimum_clearance_mm": 0.03601942672437283,
+      "mode": "preserve_prepare",
+      "model_eligible": true,
+      "position_mm": [
+        0.03110840971388052,
+        1.9729659177062033
+      ],
+      "prepare_metadata": {
+        "policy": "preserve_prepare",
+        "reason": "already_quick_feasible",
+        "shrink": 1.0,
+        "unchanged": true
+      },
+      "quick_gates": {
+        "boundary": true,
+        "domain": true,
+        "finite": true,
+        "motion": true,
+        "native_range": true,
+        "time_hold": true
+      },
+      "rank": 19,
+      "reconstruction": {
+        "basis_orthogonality_max": 0.0,
+        "control_max_abs_rad": 0.0,
+        "control_rms_rad": 0.0,
+        "intermediate_control_error_rad": {
+          "output": 0.0,
+          "raw": 0.0
+        },
+        "terminal_control_max_abs_rad": 0.0
+      },
+      "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed",
+      "rotation_deg": [
+        0.0024409868477936955,
+        0.03577970865286825
+      ],
+      "validation_origin": {
+        "kind": "same_run_exact_duplicate",
+        "owner": "r19_raw",
+        "reference_hash": "fe779021b23e23da18bb649e90b1d6605f4eee2739a3d2e51062c0ddd7f516ed"
+      }
+    }
+  ],
+  "run": "rep_fidelity_001",
+  "status": {
+    "elapsed_s": 137.34300000034273,
+    "heartbeat": 1792567728.1692715,
+    "pid": 86908,
+    "progress": {},
+    "report": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\rep_fidelity_001\\REPORT.md",
+    "stage": "complete",
+    "started_at": 1792567590.821177,
+    "status": "FINISHED"
+  },
+  "unique_model_passes": 1,
+  "unique_references": 8
+}

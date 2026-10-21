@@ -1,17 +1,22 @@
-# 当前执行目标：07固定五障碍路径的有界表示保真验证
+# 当前有界目标已完成：07五障碍表示保真验证
 
-长期目标仍为静态避障抓捕完整闭环，再接动态不规则航点。旧目标已归档ff_prior_rep_fidelity/evidence/previous_goal.md。
-当前用户授权以已执行合格07为基准，不要求先证明Diffusion优势才运行合格候选的全流程。
+长期目标仍为静态避障抓捕完整闭环，再接动态不规则航点；本轮完成不等于长期学习/科学目标达成。原目标归档ff_prior_rep_fidelity/evidence/previous_goal.md。
 
-冻结协议：ff_prior_rep_fidelity/docs/EXPERIMENT_PLAN.md；独立run artifacts/v7_1/rep_fidelity_001。
-先比较102/170/238/323维固定时间表示与raw、legacy_prepare、preserve_prepare的12个逻辑候选，检查原世界终点、避障及运动门；合格唯一reference继续原生67力矩执行与独立重放。323维精确身份为正对照，不算压缩或学习收益。
+协议ff_prior_rep_fidelity/docs/EXPERIMENT_PLAN.md；run artifacts/v7_1/rep_fidelity_001；源码ec59aa1f，后台登记ed27ccd8。
 
-新增基只用旧TRAIN基及固定数学规则，不拟合DEV；本轮目标/障碍/完整初态均冻结，无训练数据或权重写入。全部投影/prepare中间控制、双重放轨迹及中点几何保存。准确复用旧模型验证与本轮重复项单列，实际执行另计。
+|阶段|实际结果|状态|
+|---|---|---|
+|M0|10项软件测试、127源码闭包、原任务/完整初态合同绑定|PASS，非物理证明|
+|M1|12逻辑/8唯一；6新模型验证+2历史复用+4重复；170/238均未保留全部资格|完成，C1 no|
+|M2|仅323身份路径合格；13750原生67力矩步+13750独立重放步；五组重放误差0|新执行1/1通过|
+|M3|原始审计PASS；新独立357检查无失败；235文件一次resume不变|完成，review partial/high，限定单案例|
 
-M0软件和输入预检已PASS（10测试/127源码）；M1/M2后台已启动，M3审计报告待完成。仅不穿透、5mm/1度、2mm密度、完整初态/自由漂浮/17→67/全机几何/运动/力矩/重放所有门不变。
-预算2数学库线程/2小时/8GiB输出/300耦合/300万积分/最多12执行。旧结果和用户修改保留。不训练、不扩库、不pilot、不TEST；不因效果不足追加候选，不放宽门。
+238维终点3.617mm/0.1452度通过但穿透17.904mm；323原样模型间隙+0.036019mm、执行+0.026969mm，legacy平滑后位置15.556mm/穿透56.075mm。preserve均为raw精确副本，只有一条唯一合格轨迹，不能重复计成功。
+本轮总137.343秒、34耦合/96768积分/27500物理步、约1.294GB。完整初态、双轨迹、几何与表示中间证据已保存。仅不穿透、5mm/1度、2mm、完整初态/自由漂浮/17→67/全机几何/运动/力矩/重放门不变。
 
-结束后新独立审查、一次完成resume hash核验、中文报告与提交，并提出Diffusion输出及TRAIN训练的下一阶段建议，不自动启动下一轮。只可完成本轮有界目标，不能宣称长期科学优势完成。
-终端 .\ff_prior_rep_fidelity\job.ps1 status|report|resume。
+报告ff_prior_rep_fidelity/docs/ANALYSIS.md；新review paper/review-traces/experiment-result-to-claim/20261021_rep_fidelity_run01。纯数组不能重算全部MuJoCo物理量、momentum_exchange全序列未存、paper claim audit unavailable/provisional等边界已写明。
 
-源码ec59aa1f；后台worker86908/launcher74700已确认存活、心跳正常；接续automation ACTIVE，完成后独立审查并报告。
+未训练、未混DEV入TRAIN、未扩库、未启动TEST。Diffusion学习或相对收益本轮未测试。下一阶段仅建议独立TRAIN任务的323完整输出+资格保持prepare有界学习闭环；不在07继续搜索rank、不自动追加。接续在报告提交收尾后暂停。
+终端 .\ff_prior_rep_fidelity\job.ps1 status|report；resume已唯一核完，不再重复。
+
+本轮接续automation已PAUSED，避免重复运行；新独立review实际完成。

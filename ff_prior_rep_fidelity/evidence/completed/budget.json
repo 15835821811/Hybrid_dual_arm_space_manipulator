@@ -1,0 +1,57 @@
+{
+  "actual_coupled": 34,
+  "integration_intervals": 96768,
+  "limits": {
+    "TEST": false,
+    "TRAIN_added": 0,
+    "basis": "frozen_TRAIN_rank6_then_terminal_unit_then_fixed_DCT_two_pass_Gram_Schmidt; rank19_identity",
+    "basis_fitted_to_DEV": false,
+    "coupled_cap": 300,
+    "cpu_threads": 2,
+    "execution_limit": 12,
+    "execution_order": "rank_then_mode; exact_reference_duplicates_once; teacher_anchor_once_fresh",
+    "goal_relabel": false,
+    "integration_cap": 3000000,
+    "legacy_input": "already_projected_raw_controls",
+    "legacy_smooth_weight": 10.0,
+    "max_logical_candidates": 12,
+    "modes": [
+      "raw",
+      "legacy_prepare",
+      "preserve_prepare"
+    ],
+    "output_bytes_cap": 8589934592,
+    "physics_relaxed": false,
+    "ranks": [
+      6,
+      10,
+      14,
+      19
+    ],
+    "repair_iterations": 0,
+    "shrink_scales": [
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.0
+    ],
+    "split": "APPLICATION_DEV_DIAGNOSTIC",
+    "task": "capture_5_obstacles",
+    "teacher": "07_bow_j11_1",
+    "training": false,
+    "validation_intervals": [
+      256,
+      512,
+      1024,
+      2048,
+      4096,
+      8192,
+      16384
+    ],
+    "version": "fixed_temporal_enrichment_prepare_v1",
+    "wall_s": 7200
+  }
+}

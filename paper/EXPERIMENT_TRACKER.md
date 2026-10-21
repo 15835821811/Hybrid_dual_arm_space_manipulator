@@ -1,10 +1,10 @@
-# 有界表示保真实验tracker
+# 表示保真验证最终tracker
 
-|运行|阶段|比较/目的|划分|状态|
-|---|---|---|---|---|
-|rep_fidelity_001|M0|10软件测试、127源码闭包、准确07来源、原初态合同|APPLICATION_DEV诊断|PASS；不代表新物理通过|
-|rep_fidelity_001|M1|6/10/14/19时间秩 × raw/legacy/preserve，12逻辑候选|同固定07|RUNNING；源码ec59aa1f|
-|rep_fidelity_001|M2|合格唯一reference实际67力矩和独立重放；保存双轨迹|同固定07|依赖M1|
-|rep_fidelity_001|M3|原始只读审计、新独立review、一次完成resume、中文报告|本轮|PENDING|
+|run|阶段|实测结果|状态|
+|---|---|---|---|
+|rep_fidelity_001|M0|10软件测试/127源码/冻结输入|PASS|
+|rep_fidelity_001|M1|12逻辑8唯一，6新验证2历史复用4重复；仅323身份模型合格|完成；170/238科学主张no|
+|rep_fidelity_001|M2|唯一预选1条，13750原生力矩+13750独立重放|1/1 EXECUTION_VERIFIED|
+|rep_fidelity_001|M3|自动原始审计PASS、新review357核查、一次resume235hash不变|完成；overall partial/high，单案例|
 
-保留旧结果，不拟合DEV、不混TRAIN、不训练、扩库或TEST。仅身份正对照成功不证明紧凑表示或Diffusion收益。下一轮仅提出建议。
+REPORT: ff_prior_rep_fidelity/docs/ANALYSIS.md。无训练/扩库/TEST；DEV未入TRAIN。后续仅建议，不启动。源码ec59aa1f；后台ed27ccd8；科学no不改门，323正对照不算Diffusion优势。论文claim audit unavailable/provisional。长期科学目标未完成。
