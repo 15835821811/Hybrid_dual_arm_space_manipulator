@@ -14,3 +14,5 @@
 软件/分级模型资格/真实执行/科学收益分别报告，长期静态避障抓捕与动态航点目标不因本轮收尾宣称完成。
 
 入口：ff_prior_rollout_world/job.ps1 status|report|resume。源码提交及PID记录在本包evidence/launch.json；启动前预检已通过7项软件测试。
+
+源码744c4f2d已冻结并实际后台启动：worker116008，launcher93204；M1第1轮正在计算当前完整323世界Jacobian，心跳正常；接续automation ACTIVE。尚无通过结论。
