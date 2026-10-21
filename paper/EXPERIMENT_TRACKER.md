@@ -1,10 +1,12 @@
-# 表示保真验证最终tracker
+# 完整控制有界闭环tracker
 
-|run|阶段|实测结果|状态|
+|run|阶段|工作|状态|
 |---|---|---|---|
-|rep_fidelity_001|M0|10软件测试/127源码/冻结输入|PASS|
-|rep_fidelity_001|M1|12逻辑8唯一，6新验证2历史复用4重复；仅323身份模型合格|完成；170/238科学主张no|
-|rep_fidelity_001|M2|唯一预选1条，13750原生力矩+13750独立重放|1/1 EXECUTION_VERIFIED|
-|rep_fidelity_001|M3|自动原始审计PASS、新review357核查、一次resume235hash不变|完成；overall partial/high，单案例|
+|full_control_bounded_001|M0|7软件测试；14222 TRAIN/48 VAL；固定完整323 codec；输入绑定|软件PASS，预检收尾|
+|full_control_bounded_001|M1|6固定TRAIN复杂轨迹的实际float32目标重建＋3预选力矩重放|READY|
+|full_control_bounded_001|M2|唯一新MLP 6000更新＋1200完整16步教师批次|依赖M1|
+|full_control_bounded_001|M3|VAL48×2完整无引导＋旧aligned准确复用|依赖训练完成|
+|full_control_bounded_001|M4|原DEV12×3×5＋原应用3/5障碍×5；旧对照复用|依赖训练完成，不依赖科学优势|
+|full_control_bounded_001|M5|原始审计、新独立review、中文报告/目标/提交、一次完成resume|PENDING|
 
-REPORT: ff_prior_rep_fidelity/docs/ANALYSIS.md。无训练/扩库/TEST；DEV未入TRAIN。后续仅建议，不启动。源码ec59aa1f；后台ed27ccd8；科学no不改门，323正对照不算Diffusion优势。论文claim audit unavailable/provisional。长期科学目标未完成。
+无新增TRAIN，无DEV拟合，物理门不变，不扩库、不TEST。数据及模型初始化/输出/prepare/损失组合变化，不孤立归因维数或架构。方法失败仍保留完整分母。

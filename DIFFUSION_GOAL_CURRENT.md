@@ -1,22 +1,15 @@
-# 当前有界目标已完成：07五障碍表示保真验证
+# 当前执行目标：完整19×17输出与资格保持prepare的有界学习闭环
 
-长期目标仍为静态避障抓捕完整闭环，再接动态不规则航点；本轮完成不等于长期学习/科学目标达成。原目标归档ff_prior_rep_fidelity/evidence/previous_goal.md。
+保留长期目标静态避障抓捕→动态航点。上一轮rep_fidelity已2b8e47b1完成；其323身份执行成功不是Diffusion学习收益。原目标归档ff_prior_full_control/evidence/previous_goal.md。
 
-协议ff_prior_rep_fidelity/docs/EXPERIMENT_PLAN.md；run artifacts/v7_1/rep_fidelity_001；源码ec59aa1f，后台登记ed27ccd8。
+冻结协议ff_prior_full_control/docs/EXPERIMENT_PLAN.md；唯一run artifacts/v7_1/full_control_bounded_001。
 
-|阶段|实际结果|状态|
-|---|---|---|
-|M0|10项软件测试、127源码闭包、原任务/完整初态合同绑定|PASS，非物理证明|
-|M1|12逻辑/8唯一；6新模型验证+2历史复用+4重复；170/238均未保留全部资格|完成，C1 no|
-|M2|仅323身份路径合格；13750原生67力矩步+13750独立重放步；五组重放误差0|新执行1/1通过|
-|M3|原始审计PASS；新独立357检查无失败；235文件一次resume不变|完成，review partial/high，限定单案例|
+1. 先用独立TRAIN已有6条复杂合格轨迹验证完整codec实际float32训练目标重建，3条预选绕障轨迹做新原生67力矩执行与独立重放。6/6模型＋3/3执行以及表示误差门通过再训练；不使用07 DEV教师。
+2. 仅一个323维MLP从固定seed初始化，14222 TRAIN/48 VAL，6000普通更新，1200批完整16步采样教师约束；VAL不拟合、不进梯度、不选模型。教师损失不冒充真实非线性世界终点监督。
+3. 完成96条完整无引导采样、原DEV180新候选/36执行单元、原三/五障碍10新候选/2单元；同原候选预算、late4和物理门。准确复用旧aligned/强样条/条件均值，旧结果不记为新执行；无科学优势也继续预定评估。
+4. 新独立review、中文报告、紧凑原始证据、版本tracker与任务提交；完成resume只核一次，后台接续收尾后暂停。依赖门失败则下游BLOCKED，保留负结果，不调参追加。
 
-238维终点3.617mm/0.1452度通过但穿透17.904mm；323原样模型间隙+0.036019mm、执行+0.026969mm，legacy平滑后位置15.556mm/穿透56.075mm。preserve均为raw精确副本，只有一条唯一合格轨迹，不能重复计成功。
-本轮总137.343秒、34耦合/96768积分/27500物理步、约1.294GB。完整初态、双轨迹、几何与表示中间证据已保存。仅不穿透、5mm/1度、2mm、完整初态/自由漂浮/17→67/全机几何/运动/力矩/重放门不变。
+仅不穿透、5mm/1度、2mm几何、17→67/完整初态/自由漂浮/全机几何/运动/力矩/重放门不变。软件表示误差1e-6rad用于float32重建，不替代物理门；纯float64往返≤1e-12。
+不新增数据、不混DEV入TRAIN、不扩库、不pilot、不TEST；保留旧模型结果与用户修改。2数学库线程/6h/20GiB输出/30000耦合。输出/codec/初始化/prepare/损失组合比较，不宣称纯维数因果。
 
-报告ff_prior_rep_fidelity/docs/ANALYSIS.md；新review paper/review-traces/experiment-result-to-claim/20261021_rep_fidelity_run01。纯数组不能重算全部MuJoCo物理量、momentum_exchange全序列未存、paper claim audit unavailable/provisional等边界已写明。
-
-未训练、未混DEV入TRAIN、未扩库、未启动TEST。Diffusion学习或相对收益本轮未测试。下一阶段仅建议独立TRAIN任务的323完整输出+资格保持prepare有界学习闭环；不在07继续搜索rank、不自动追加。接续在报告提交收尾后暂停。
-终端 .\ff_prior_rep_fidelity\job.ps1 status|report；resume已唯一核完，不再重复。
-
-本轮接续automation已PAUSED，避免重复运行；新独立review实际完成。
+当前软件7测试通过，固定输入15411文件；正式重建/训练/评估尚待后台启动。终端 .\ff_prior_full_control\job.ps1 status|report|resume。后续建议不自动执行。
