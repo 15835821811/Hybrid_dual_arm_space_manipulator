@@ -1,0 +1,691 @@
+{
+  "scope": "Independent read-only raw evidence and neural math audit; no new experiment/training/physics/optimizer.step",
+  "checks": {
+    "identity": {
+      "source_files": 165,
+      "bound_input_files": 15411,
+      "producer_head": "f788a689ce019975527a236cdb645cf42cb90b68",
+      "archive_and_live_match": true
+    },
+    "data_codec": {
+      "TRAIN": 14222,
+      "VAL": 48,
+      "TRAIN_VAL_family_disjoint": true,
+      "TRAIN_DEV_task_disjoint": true,
+      "codec_recomputed_TRAIN_only_exact": true,
+      "all_rows_float64_roundtrip_max_rad": 1.6653345369377348e-16,
+      "qualification_levels": {
+        "MODEL_VALID": 13989,
+        "EXECUTION_VERIFIED": 281
+      }
+    },
+    "six_reconstructions": [
+      {
+        "id": "complex_train_00_larger_motion",
+        "float32_target_max_rad": 3.0952007762374834e-09,
+        "eligible": true,
+        "grids": [
+          512
+        ]
+      },
+      {
+        "id": "complex_train_00_static_detour",
+        "float32_target_max_rad": 3.422482852677433e-09,
+        "eligible": true,
+        "grids": [
+          512
+        ]
+      },
+      {
+        "id": "complex_train_01_larger_motion",
+        "float32_target_max_rad": 1.8219376007877486e-09,
+        "eligible": true,
+        "grids": [
+          512
+        ]
+      },
+      {
+        "id": "complex_train_01_static_detour",
+        "float32_target_max_rad": 3.5653790336764857e-09,
+        "eligible": true,
+        "grids": [
+          512
+        ]
+      },
+      {
+        "id": "complex_train_02_larger_motion",
+        "float32_target_max_rad": 4.13809614352445e-09,
+        "eligible": true,
+        "grids": [
+          512
+        ]
+      },
+      {
+        "id": "complex_train_02_static_detour",
+        "float32_target_max_rad": 7.314925998258559e-09,
+        "eligible": true,
+        "grids": [
+          512
+        ]
+      }
+    ],
+    "training_consumption": {
+      "updates_in_all_optimizer_states": 6000,
+      "committed_segments_recreated": 300,
+      "all_batch_t_noise_segment_digests_recreated": true,
+      "TRAIN_rows_seen": 14222,
+      "draws": 384000,
+      "min_row_draws": 13,
+      "max_row_draws": 136,
+      "full16_teacher_batches_from_source_and_counter": 1200,
+      "graph_paths_from_batch8": 9600,
+      "neural_calls_per_teacher_batch": 16,
+      "note": "All segment inputs/counters reconstructed; retained gradient checks cover four fixed updates, not all 6000."
+    },
+    "four_update_neural_VJP_manual_AdamW": [
+      {
+        "update": 1,
+        "v_loss": 0.7767383456230164,
+        "teacher_loss": null,
+        "teacher_norm_scale": 0.0,
+        "gradient_max_abs_errors": {
+          "base": 0.0,
+          "teacher": 0.0,
+          "mixed": 0.0
+        },
+        "manual_AdamW_weight_max_abs_error": 0.0,
+        "manual_AdamW_moments_max_abs_error": 0.0,
+        "full_DDIM_forward_calls_for_VJP": 0,
+        "optimizer_step_called": false
+      },
+      {
+        "update": 5,
+        "v_loss": 1.049514889717102,
+        "teacher_loss": 1.2142352116204769,
+        "teacher_norm_scale": 0.06366490472441723,
+        "gradient_max_abs_errors": {
+          "base": 0.0,
+          "teacher": 0.0,
+          "mixed": 0.0
+        },
+        "manual_AdamW_weight_max_abs_error": 0.0,
+        "manual_AdamW_moments_max_abs_error": 0.0,
+        "full_DDIM_forward_calls_for_VJP": 16,
+        "optimizer_step_called": false
+      },
+      {
+        "update": 3000,
+        "v_loss": 0.69989413022995,
+        "teacher_loss": 1.9489255046112035,
+        "teacher_norm_scale": 0.04657349533745995,
+        "gradient_max_abs_errors": {
+          "base": 0.0,
+          "teacher": 0.0,
+          "mixed": 0.0
+        },
+        "manual_AdamW_weight_max_abs_error": 0.0,
+        "manual_AdamW_moments_max_abs_error": 0.0,
+        "full_DDIM_forward_calls_for_VJP": 16,
+        "optimizer_step_called": false
+      },
+      {
+        "update": 6000,
+        "v_loss": 0.873877763748169,
+        "teacher_loss": 2.279050254273846,
+        "teacher_norm_scale": 0.03289757282502959,
+        "gradient_max_abs_errors": {
+          "base": 0.0,
+          "teacher": 0.0,
+          "mixed": 0.0
+        },
+        "manual_AdamW_weight_max_abs_error": 0.0,
+        "manual_AdamW_moments_max_abs_error": 0.0,
+        "full_DDIM_forward_calls_for_VJP": 16,
+        "optimizer_step_called": false
+      }
+    ],
+    "DEV_candidates": {
+      "total": 180,
+      "eligible": 15,
+      "model_valid": 15,
+      "frozen_goal_pass": 180,
+      "max_queries": 109,
+      "max_intervals": 15360,
+      "max_wall_s": 6.52537089958787
+    },
+    "APPLICATION_DEV_candidates": {
+      "total": 10,
+      "eligible": 0,
+      "model_valid": 0,
+      "frozen_goal_pass": 10,
+      "max_queries": 109,
+      "max_intervals": 15360,
+      "max_wall_s": 7.162391099147499
+    },
+    "new_executions": {
+      "total": 16,
+      "native_plus_replay_steps": 183000,
+      "execution_unit_outcomes": {
+        "DEV:NO_CANDIDATE": 23,
+        "DEV:EXECUTION_VERIFIED": 13,
+        "APPLICATION_DEV:NO_CANDIDATE": 2
+      },
+      "raw_reports": [
+        {
+          "directory": "comparison/DEV/0/batch_v1_new_val_0001_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008465061171890975,
+          "max_hold_position_m": 0.001554529808511856,
+          "max_hold_rotation_rad": 0.002492194076907134,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/0/batch_v1_new_val_0002_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008461396471667638,
+          "max_hold_position_m": 0.0018065997739078509,
+          "max_hold_rotation_rad": 0.004575846609129284,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/0/batch_v1_new_val_0006_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008528057411231816,
+          "max_hold_position_m": 0.0009355917979294195,
+          "max_hold_rotation_rad": 0.0010798770175891484,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/0/DEV_01/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008515839069283455,
+          "max_hold_position_m": 0.0011051839740749115,
+          "max_hold_rotation_rad": 0.0021068389422713484,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/0/DEV_02/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008465183820769676,
+          "max_hold_position_m": 0.00104162110292456,
+          "max_hold_rotation_rad": 0.0014670854106008685,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/1/batch_v1_new_val_0000_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008471210464671357,
+          "max_hold_position_m": 0.0012137529771964655,
+          "max_hold_rotation_rad": 0.0023871674298786704,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/1/batch_v1_new_val_0001_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008463600225228391,
+          "max_hold_position_m": 0.000977583016387853,
+          "max_hold_rotation_rad": 0.0024708319987394433,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/1/batch_v1_new_val_0002_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008462141815964178,
+          "max_hold_position_m": 0.0015129591129521515,
+          "max_hold_rotation_rad": 0.0016177065904135943,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/1/batch_v1_new_val_0005_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008461050127673559,
+          "max_hold_position_m": 0.0012293992385353986,
+          "max_hold_rotation_rad": 0.0018744970803471494,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/1/DEV_01/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008467891099561331,
+          "max_hold_position_m": 0.0007317752981445007,
+          "max_hold_rotation_rad": 0.003763292635037578,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/2/batch_v1_new_val_0000_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008466441926510944,
+          "max_hold_position_m": 0.0013848605387008438,
+          "max_hold_rotation_rad": 0.003115805964992091,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/2/batch_v1_new_val_0003_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008489296866515924,
+          "max_hold_position_m": 0.0013406863969063164,
+          "max_hold_rotation_rad": 0.002634647378749977,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "comparison/DEV/2/batch_v1_new_val_0005_a0/execution",
+          "steps": 10500,
+          "min_clearance_m": 0.008465587288041414,
+          "max_hold_position_m": 0.0008971683037523153,
+          "max_hold_rotation_rad": 0.0030758458743242703,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "reconstruction/complex_train_00_static_detour/execution",
+          "steps": 15500,
+          "min_clearance_m": 0.008480809867702747,
+          "max_hold_position_m": 7.787625215339102e-07,
+          "max_hold_rotation_rad": 6.611501414288495e-07,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "reconstruction/complex_train_01_static_detour/execution",
+          "steps": 15500,
+          "min_clearance_m": 0.008460677827425725,
+          "max_hold_position_m": 1.0533194999960343e-06,
+          "max_hold_rotation_rad": 1.0190907653325036e-06,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        },
+        {
+          "directory": "reconstruction/complex_train_02_static_detour/execution",
+          "steps": 15500,
+          "min_clearance_m": 0.008510376699409836,
+          "max_hold_position_m": 1.6215780796570486e-06,
+          "max_hold_rotation_rad": 1.3481868879000056e-06,
+          "gates": {
+            "complete_native_time": true,
+            "derivative_limits": true,
+            "dual_goal_hold": true,
+            "finite": true,
+            "identity": true,
+            "independent_replay": true,
+            "joint_limits": true,
+            "manifold": true,
+            "momentum": true,
+            "no_external_wrench": true,
+            "no_hidden_reset": true,
+            "raw_torque_limits": true,
+            "tracking": true,
+            "whole_body_clearance": true
+          },
+          "native_and_replay_equal": true
+        }
+      ],
+      "historical_physics_rerun": false
+    },
+    "new_failed_gates": {
+      "DEV:geometry_refinement": 165,
+      "APPLICATION_DEV:geometry": 9,
+      "APPLICATION_DEV:geometry_refinement": 10
+    },
+    "unguided_full_denominator": {
+      "total": 96,
+      "new_eligible": 0,
+      "old_eligible": 24,
+      "new_model_valid": 8,
+      "new_frozen_goal_pass": 0,
+      "same_task_and_seed_all": true
+    },
+    "historical_full_denominators": {
+      "DEV:old_aligned": {
+        "candidate_denominator": 180,
+        "eligible": 180,
+        "execution_unit_denominator": 36,
+        "saved_historical_outcomes": {
+          "EXECUTION_VERIFIED": 36
+        },
+        "identity_only_reuse": true
+      },
+      "DEV:structured": {
+        "candidate_denominator": 180,
+        "eligible": 180,
+        "execution_unit_denominator": 36,
+        "saved_historical_outcomes": {
+          "EXECUTION_VERIFIED": 36
+        },
+        "identity_only_reuse": true
+      },
+      "DEV:learned_mean": {
+        "candidate_denominator": 180,
+        "eligible": 180,
+        "execution_unit_denominator": 36,
+        "saved_historical_outcomes": {
+          "EXECUTION_VERIFIED": 36
+        },
+        "identity_only_reuse": true
+      },
+      "APPLICATION_DEV:old_aligned": {
+        "candidate_denominator": 10,
+        "eligible": 5,
+        "execution_unit_denominator": 2,
+        "saved_historical_outcomes": {
+          "EXECUTION_VERIFIED": 1,
+          "NO_CANDIDATE": 1
+        },
+        "identity_only_reuse": true
+      },
+      "APPLICATION_DEV:structured": {
+        "candidate_denominator": 10,
+        "eligible": 3,
+        "execution_unit_denominator": 2,
+        "saved_historical_outcomes": {
+          "EXECUTION_VERIFIED": 1,
+          "NO_CANDIDATE": 1
+        },
+        "identity_only_reuse": true
+      },
+      "APPLICATION_DEV:learned_mean": {
+        "candidate_denominator": 10,
+        "eligible": 0,
+        "execution_unit_denominator": 2,
+        "saved_historical_outcomes": {
+          "NO_CANDIDATE": 2
+        },
+        "identity_only_reuse": true
+      }
+    },
+    "ledger": {
+      "no_unknown_work": true,
+      "completed_units": 633,
+      "calls": {
+        "TRAIN_execution.coupled": 0,
+        "TRAIN_execution.distance": 2141893,
+        "TRAIN_execution.fk": 0,
+        "TRAIN_execution.forward": 116268,
+        "TRAIN_execution.mass_matrix": 69756,
+        "TRAIN_execution.physics_steps": 46500,
+        "TRAIN_execution.rrt": 0,
+        "TRAIN_execution.sqp": 0,
+        "TRAIN_execution.torque_rollout": 3,
+        "TRAIN_reconstruction.coupled": 12,
+        "TRAIN_reconstruction.distance": 141478,
+        "TRAIN_reconstruction.fk": 12324,
+        "TRAIN_reconstruction.forward": 36,
+        "TRAIN_reconstruction.mass_matrix": 9240,
+        "TRAIN_reconstruction.physics_steps": 0,
+        "TRAIN_reconstruction.rrt": 0,
+        "TRAIN_reconstruction.sqp": 0,
+        "TRAIN_reconstruction.torque_rollout": 0,
+        "candidate.coupled": 16021,
+        "candidate.distance": 106640936,
+        "candidate.fk": 6954237,
+        "candidate.forward": 17351,
+        "candidate.mass_matrix": 4668458,
+        "candidate.physics_steps": 0,
+        "candidate.rrt": 0,
+        "candidate.sqp": 0,
+        "candidate.torque_rollout": 0,
+        "execution.coupled": 0,
+        "execution.distance": 6308023,
+        "execution.fk": 0,
+        "execution.forward": 341328,
+        "execution.mass_matrix": 204776,
+        "execution.physics_steps": 136500,
+        "execution.rrt": 0,
+        "execution.sqp": 0,
+        "execution.torque_rollout": 13,
+        "unguided.coupled": 288,
+        "unguided.distance": 6796682,
+        "unguided.fk": 492480,
+        "unguided.forward": 960,
+        "unguided.mass_matrix": 344640,
+        "unguided.physics_steps": 0,
+        "unguided.rrt": 0,
+        "unguided.sqp": 0,
+        "unguided.torque_rollout": 0
+      },
+      "reserved_coupled_upper": 21800
+    },
+    "paper_claim_audit": {
+      "status": "unavailable",
+      "verdict_label": "provisional — no paper claim audit available"
+    }
+  },
+  "errors": [],
+  "status": "PASS"
+}
