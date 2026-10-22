@@ -14,3 +14,5 @@
 
 9软件测试通过；未启动前没有新物理结果，不写通过。入口 .\ff_prior_preserve323\job.ps1 status|report|resume。
 长期科学优势、静态五障碍抓捕与动态航点目标不因本轮收尾宣称完成。
+
+已实际后台启动：源码d5e1b7c5，worker52924、launcher113220；接续automation ACTIVE。当前只按状态确认运行，实验门尚待真实结果。
