@@ -1,11 +1,9 @@
 # 持续工程交付进度
 
-|阶段|实际状态|产物|下步|
-|---|---|---|---|
-|D1 diffusion_demo_001|已后台启动；实际阶段见status|单次原三障碍5提案/1执行重放、全套可视化|结束收尾后接D2|
-|D2 实际终态动态衔接|未运行；依赖D1真终态|明确桥接/七航点/移动目标与完整状态|先冻准确合同，不重置初态|
-|D3 原五障碍闭环|未运行，short steer仅草案|原任务避障与连续组合|不以Diffusion优势为推进门|
+|阶段|真实状态|证据与下一步|
+|---|---|---|
+|D1 diffusion_demo_001|FINISHED / EXECUTION_VERIFIED|366.5秒；5提案2合格，1执行13750步与完整836重放13750步通过；双视频/交互/7组曲线完成；独立C1 yes/high|
+|D2 terminal_tracking_001|准确合同已冻结，待启动|182源码/94输入，8软件/初始化检查通过；真实27.5秒末态接原七航点27秒，最多27000新原生含重放；继承卫星零速度，移动卫星不冒充通过|
+|D3 原五障碍|未启动|保留原任务与缺口，不以优势为门|
 
-历史P0—P5已收尾，不重跑。原物理门保留，DEV不入TRAIN；不扩库、不TEST。持续范围见ff_prior_fullchain/docs/CONTINUOUS_DELIVERY_GOAL.md。
-
-源码8456203e；176源码/87输入绑定，8软件检查及实体渲染探针/JS语法通过。一个Diffusion单元，无新优势对照。后台自动生成全套媒体，工程资格待实际结果。
+无新训练、扩库、优势对照或TEST。D1完成resume唯一核验191文件不变。原用户修改保留，源码依据提交加冻结zip/hash。报告ff_prior_diffusion_demo/docs/ANALYSIS.md；新独立审查paper/review-traces/experiment-result-to-claim/20261022_diffusion_demo。动态与静态系统贡献分开，长期工程未完成。

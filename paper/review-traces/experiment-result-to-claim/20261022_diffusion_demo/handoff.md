@@ -1,0 +1,13 @@
+# Reviewer handoff
+
+The independent reviewer confirms the narrowly scoped single static three-obstacle C1 with high confidence. C2 is NOT_EVALUATED; the long-term engineering objective remains incomplete. The exact requested scope and input list are in `prompt.md`; the raw reviewer findings are in `response.md`; normalized judgment and routing are in `verdict.json` and `routing.json`.
+
+The reviewer read the relevant skill and tracing instructions, the current protocol, the current run's raw controls/states/scans/metadata/selection/ledger/media, and hash-bound source. `check_saved_evidence.py` performs only file/hash/array/spline algebra and ffprobe inspection. It generated `compact_evidence.json` and `inputs.json`. The system Python lacked SciPy; the same read-only script was then run successfully with the project's existing `.venv/Scripts/python.exe -B`. No package installation was performed. No physics, optimizer, sampling, old-run audit or resume command was run. Only this trace directory was written.
+
+Validation: 68 required evidence checks pass. One extra pristine-Git check is false and disclosed: the pre-existing `v6_lite/hierarchical_qp.py` patch is part of the 176-file hash-bound source archive. Cite producer commit 8456203e **plus frozen source_hashes/executed_source.zip**, not an entirely pristine Git tree. This does not affect the observed native controller/replay path or block engineering. The exact checks and metrics remain in `compact_evidence.json`.
+
+The review verified 2/5 qualified proposals, correct 04/02 repair selection and 04 execution selection, 13750 native + 13750 independent replay steps, 13751×836 state equality, complete initial state, zero saved external wrenches, exact raw/applied torques, unchanged task/limits, and 27501 saved geometry scans. Media hashes, MP4 frame counts, full CSV and HTML saved-state indices agree. Overview endpoint PNG and summary chart were inspected visually.
+
+Actions for the executor: update the current run closeout/tracker/findings using this verdict and source qualification; deliver the existing media; preserve dynamic continuous handoff and five-obstacle gaps; continue the already authorized bounded engineering work from the actual terminal full state. No advantage study or extra static physics is required for this routing.
+
+Skipped intentionally: all new physical execution, old-run revalidation, advantages, statistical inference, ablations, training, generalization claims and hardware/contact capture. A full paper claim audit is absent; paper-writing claims remain provisional, without holding up engineering continuation.

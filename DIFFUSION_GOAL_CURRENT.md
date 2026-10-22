@@ -110,3 +110,7 @@ D1准确协议为ff_prior_diffusion_demo/docs/EXPERIMENT_PLAN.md；D2/D3的准�
 
 
 D1已实际后台启动：diffusion_demo_001，源码8456203e，原三障碍5采样/1执行机会与全套可视化；无新增优势对照。运行状态以control/status为准，启动不是物理通过。
+
+
+## 最新D1收尾与D2准确交接
+D1已实际完成：5提案2合格、1/1原生执行与836重放通过，媒体齐全，独立C1 yes/high。本次静态成功可直接推进工程，不再做优势对照。D2准确协议ff_prior_terminal_tracking/docs/EXPERIMENT_PLAN.md：从D1真实27.5秒末态连续接原七航点，保持原三障碍与刚性臂指定预抓捕位姿；实际卫星零速度保持，真正移动卫星另列未完成。无默认初态重启、无失败重标。D3五障碍缺口不撤销。

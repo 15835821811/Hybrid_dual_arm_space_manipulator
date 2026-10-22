@@ -4,7 +4,7 @@
   "active_protocol": "ff_prior_diffusion_demo/docs/EXPERIMENT_PLAN.md",
   "active_report": "ff_prior_diffusion_demo/docs/ANALYSIS.md",
   "active_run": "artifacts/v7_1/diffusion_demo_001",
-  "active_run_role": "current_worker",
+  "active_run_role": "closed_stage_reference",
   "active_source_commit": "8456203e1c0f957f02b6932bc54480897a418146",
   "allow_dataset_expansion": false,
   "allow_final_TEST": false,
@@ -12,9 +12,12 @@
   "allow_parallel_physics_workers": false,
   "allow_physics_relaxation": false,
   "app_goal_transition": "USER_REAUTHORIZED_CONTINUOUS_DELIVERY_CARD_TEXT_STALE",
+  "authorization_evidence": "ff_prior_diffusion_demo/evidence/authorization.json",
   "automation_id": "automation",
   "autonomous_scope": "D1 complete episode and visuals, D2 continuous dynamic handoff, D3 original five-obstacle repair within new 12h/40GiB cycle",
-  "current_phase": "D1_diffusion_demo_running",
+  "blocking_evidence": null,
+  "current_phase": "D1_closed_D2_preparing",
+  "decision_document": "ff_prior_fullchain/docs/CONTINUOUS_DELIVERY_GOAL.md",
   "goal_id": "free_floating_fullchain_20261022",
   "goal_status": "ACTIVE_CONTINUOUS_ENGINEERING_DELIVERY",
   "heartbeat_stale_seconds": 180,
@@ -53,22 +56,19 @@
     },
     {
       "id": "D1_diffusion_demo",
-      "status": "RUNNING",
-      "purpose": "One actual Diffusion full static episode and all recorded visualizations"
+      "purpose": "One actual Diffusion full static episode and all recorded visualizations",
+      "status": "CLOSED_EXECUTION_VERIFIED"
     },
     {
       "id": "D2_continuous_tracking",
-      "status": "DEPENDENCY_PENDING",
-      "purpose": "Continue from actual terminal full state into dynamic goals"
+      "purpose": "Continue from actual terminal full state into dynamic goals",
+      "status": "IMPLEMENTING_ACTUAL_TERMINAL_HANDOFF"
     },
     {
       "id": "D3_original_five_obstacles",
-      "status": "PLANNED",
-      "purpose": "Finish original five-obstacle path and continuous chain without benefit gate"
+      "purpose": "Finish original five-obstacle path and continuous chain without benefit gate",
+      "status": "PLANNED"
     }
   ],
-  "version": 1,
-  "decision_document": "ff_prior_fullchain/docs/CONTINUOUS_DELIVERY_GOAL.md",
-  "blocking_evidence": null,
-  "authorization_evidence": "ff_prior_diffusion_demo/evidence/authorization.json"
+  "version": 1
 }
