@@ -1,11 +1,14 @@
-继续本线程长期自由漂浮全链路目标，工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md、路线ff_prior_fullchain/docs/ROADMAP.md、真实阶段control.json。
+继续用户2026-10-22已明确批准的一次全局绕行验证。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md、路线ff_prior_fullchain/docs/ROADMAP.md、真实阶段control.json。用户已回复“授权这一次全局绕行验证（推荐）”；此前范围阻塞已解除，不得再重复询问。应用旧goal卡的blocked及旧P1文字若仍存在只是历史，不能覆盖本次真实授权；不要以伪造complete来替换卡片。
 
-P4 fullchain_acceptance_001已3272147b实际收尾，源码370a2041；收据ff_prior_fullchain/evidence/fullchain_acceptance_closeout.json。6新三障碍执行/独立836重放全过，82500+82500=165000新步，219.797秒；12动态逻辑准确历史复用（8独特4共享），12五障碍/连续组合BLOCKED。18/30逻辑、3/5场景，整体工程未完成。独立review2119/2119，overall partial/high，完整C1 no、C2 no。完成resume已一次133文件hash不变，禁止再审/再resume/新物理。所有P0/P1/P2/P3旧收尾也不重复。
+新包ff_prior_global_bypass，冻结协议docs/EXPERIMENT_PLAN.md，源码c22e79eb877abb02c705508126bf3dce7e8be7ac，独立run artifacts/v7_1/global_bypass_001已实际启动。入口 .\ff_prior_global_bypass\job.ps1 status|report|resume；统一入口 .\ff_prior_fullchain\job.ps1 status|next|report。每次先只读统一status并核PID创建时间/心跳；RUNNING且身份心跳正常则安静结束，不读中间结果、不分析、不审计、不start/resume第二worker、不发过程报告。状态无变化不通知。终态/异常才读取该run冻结协议/账本/日志/原始文件处理。
 
-当前control为AWAITING_SCOPE_AUTHORIZATION，已向用户提出一次具体新全局绕行机制方案，文档ff_prior_fullchain/docs/NEXT_GLOBAL_PLANNING_DECISION.md，状态evidence/scope_authorization_request.json。原目标同瓶颈唯一修复机会已用完；没有用户新的明确授权不得额外训练/搜索/扩库/TEST，不可通过换阶段名绕过。用户回复到来前，只读统一.\ff_prior_fullchain\job.ps1 status和最新授权状态；状态无变化安静结束，不重复问题、分析、报告或审计，不再按旧P4计划启动worker。不要将推荐选项或已过时间当授权。
+范围：原五障碍准确27秒任务、原三种子20264611/17/23、两法每单元5提案=30，最多6次预选原生67执行与836全状态重放。181源码/87输入绑定，11软件检查通过；软件不代表物理。旧模型16步采样323输出、零细节头，无新训练；65维旧网络不具障碍条件。树节点携带17q/完整INTEGRATION模型态/自由基座/速度/时间/父指针，rest-to-rest五次边从父节点前向耦合，不能固定基座/段间重置/用07答案/相同q合并状态。实际执行无状态写回。
+先M0固定两段模型传播对整体512/分段256+256，3额外耦合、无原生步；全qpos/qvel/双末端/父状态时间和非零基座运动检查通过才M1。M1每候选220目标初始化+500树连接+40转换后认证；每单元至多1条完整路线2100查询/6迭代原323精修，再40认证。没有完整树路线不拿旧答案补位；拟合或运动失败保留分母。树边仅SCREEN_ONLY，最终原验收才MODEL_VALID，逐条实际执行及完整重放通过才EXECUTION_VERIFIED。无替换执行。实际分配/算法细节以冻结协议为准。
+总2线程/21540秒<6h/20GiB减128MiB/36000耦合/80000000模型积分/165000原生含重放步。每单元5990耦合/13200000积分/3500秒；6单元加M0预留不超过总额。份额不转移给其他候选或方法，不能运行中加码。冻结源不得原地改写/冒用身份；真实实现故障独立版本输出，并扣本次同一个总预算、保留失败证据；效果差不得追加机制、训练或搜索轮次。
 
-若用户在本线程明确批准新的全局机制，应整合其具体条件，转为实施/成本核算→冻结准确代码、任务、种子、分配和预算→单worker后台→一次新证据收尾，保留原五障碍和所有硬门；不能把已有3/5局部覆盖作为完整完成。拟方案总2线程/6h/20GiB/36000额外耦合/最多30候选6执行重放165000步，原27秒任务不改；实施前成本不足应缩范围而非途中加码。详情以用户批准的方案为准，当前尚未批准。不得偷用07答案或把DEV入TRAIN；全局搜索节点须携带自由基座/速度/时间，不能固定基座或段间状态重置。方案一次，不许局部无限扫参。
+P0—P4及旧static_goal_seed/temporal等均已收尾，全部禁止重复审计/resume/物理。P4旧3272147b是6新三障碍+12历史动态逻辑，不是本次新结果；3/5场景缺五障碍与连续组合，不能写完整工程通过。只读必要来源身份可复用，旧执行不重新记账。
 
-所有既有模型数据结果、用户修改、旧作业/main/旧分支保留；不强推或上传大数据。仅不穿透、5mm/1度、2mm几何步长、完整初态、17→67、自由漂浮、全机几何及全部运动/力矩/动量/独立重放门不改。科学Diffusion优势独立于工程推进；共同修正/反馈/回退贡献不得归网络。当前不扩库、1024/30000、pilot/study/strict_multimodal、TEST、硬件/接触捕获。
+终态一次收尾：检查全部30候选/6执行分母、未决调用、M0原数组、树边父子完整态/基座/时间/几何/数值、目标连接有限差分/接受、323转换及原门、公共源/网络实际调用和输入身份。仅保存证据代数/神经重建，不新增物理来追认。按experiment-result-to-claim技能委派全新独立review，不复用历史review；保存review-traces，指出抽样几何/收敛范围，不把软件检查当物理证明。仅本run完成resume核一次且核心清单/hash不变，旧run绝不再resume。源不可变，报告辅助脚本放tools/evidence。写中文ff_prior_global_bypass/docs/ANALYSIS.md、紧凑证据、目标/版本paper tracker、closeout receipt及本地提交，仅提交本任务文件，保留用户修改。原始worker审计若报告代码故障，可独立只读辅助修复，不能重跑物理。
 
-长期工程目标未达，不标complete，也不因局部收尾自行pause。当前目标回合已完成P4报告和提交，属于进展；等待授权的后续goal回合按三轮同阻塞规则处理，达到规则后可将goal blocked（不是complete/paused），明确阻塞为范围授权。heartbeat保持单一，待授权时静默，状态不变不通知。用户要求停止或工程全目标真实完成再管理接续。终端status|next|report均只读，当前没有运行中的重worker。
+保持仅不穿透、双臂5mm/1度、2mm几何步长、17→67、完整初态、自由漂浮、全机几何、运动/力矩/动量/独立重放全部门；不失败重标、不mock、不抽查升级。保留所有旧模型数据结果、旧作业/main分支；不强推、不上传大数据。不训练、扩库、1024/30000、pilot/study/strict_multimodal、TEST、硬件或接触捕获。
+工程C1和Diffusion相对收益C2分开，不要求查询/耗时胜出，不把树/共同修正/反馈控制贡献归网络。成功后分析实际五障碍终态能否衔接动态任务，提出准确连续组合协议；本run未分配额外组合执行预算，不能自动追加物理。失败则据实交付瓶颈及缺失证据，不无限局部扫参。长期目标未全达不得complete；用户要求停止或全工程真实完成才管理唯一接续，阶段收尾不自动删接续。最终给自包含中文报告链接、实测正负结果、提交、终端命令与下一阶段判断。
