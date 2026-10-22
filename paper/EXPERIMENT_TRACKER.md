@@ -1,21 +1,18 @@
 # Experiment Tracker：持续工程全链路
 
-更新2026-10-22。P1第二轮真实结束并完成新独立审查；P2a独立实现已冻结，源码3d759e8f已提交且后台实际启动。长期工程目标ACTIVE，P1五障碍未通过；科学收益单列。
+更新2026-10-22。P2a第一版结束、独立审查和完成resume已收尾；唯一响应余量修复准备冻结。长期工程目标ACTIVE；P1五障碍、P2b和学习链仍未完成。
 
-|Run|阶段|真实状态|证据与限制|
-|---|---|---|---|
-|preserve323_bounded_001|P0|CLOSED_NEGATIVE|3e659ce4已收尾，禁止重复resume/审计|
-|static_fullchain_001|P1|CLOSED_DEPLOYMENT_FAILURE|旧长路径故障，未知调用保留，不resume|
-|static_fullchain_002|P1|CLOSED_PARTIAL|60提案、24修正、23最终认证、1预算未决、36仅初筛；12合格，6实际执行重放通过；三障碍6/6单元，五障碍0/6且未执行|
-|dynamic_reference_001|P2a|RUNNING|原4TRAIN来源，C2样条受约束重建，27秒/原门，最多4执行重放；3数值软件测试通过不等于物理通过|
-|动态DEV交接|P2b|QUEUED_DEPENDENCY|P2a通过后另冻原动态任务/12执行上限|
-|时序候选|P3|QUEUED_DEPENDENCY|现有32TRAIN/8VAL逐条认证；单候选，数据不足可BLOCKED，不扩库|
-|固定整链开发验收|P4|QUEUED_DEPENDENCY|五场景、最多30执行；静态五障碍仍缺，不能提前通过|
+|Run/阶段|真实状态|证据与限制|
+|---|---|---|
+|P0 preserve323|CLOSED_NEGATIVE|3e659ce4，禁止重复resume/审计|
+|static_fullchain_001|CLOSED_DEPLOYMENT_FAILURE|未知调用保留|
+|static_fullchain_002|CLOSED_PARTIAL|三障碍6/6单元执行重放，五障碍0/6；60提案、23完整验证、1预算未决、36仅筛选，12合格6实际执行|
+|dynamic_reference_001|CLOSED_PARTIAL|4/4参考、3/4真实执行，四次完整重放差0；t00仅实际加速度失败。108000步，未新增TRAIN或训练|
+|dynamic_margin_001|PREPARING_NOT_STARTED|固定rho=.9695632054405793；最多1新执行+3精确历史复用，原任务门不变|
+|P2b动态DEV交接|BLOCKED_DEPENDENCY|4/4门未过；12逻辑单位、297000新步剩余，至少1精确复用，不改任务凑数|
+|P3时序候选|QUEUED|原32TRAIN/8VAL资格；一个候选，数据不足则BLOCKED|
+|P4整链开发验收|QUEUED|最多30执行，五障碍与完整连续组合仍缺|
 
-P1新review：paper/review-traces/experiment-result-to-claim/20261022_static_fullchain_v2_run01/verdict.json。C1 partial/high；C2 partial/medium仅三障碍执行精度，成功率优势no。三种子保持段最坏臂位置均值2.577016→0.078901mm；五障碍11完成验证全部终点失败，8同时碰撞。251完整修正记录中226内层SLSQP未报告success，不能写成收敛。4211+39只读核对通过，未重跑物理。
+新独立review：paper/review-traces/experiment-result-to-claim/20261022_dynamic_reference_run01；C1局部partial/high，C2 NOT_EVALUATED；缺少PAPER_CLAIM_AUDIT，论文结论provisional。166源码/86输入和完整状态/控制/几何/原目标核对通过；不能把表示过门当执行通过。完成resume仅一次，64核心文件hash完全保持，UTF-8完整输出已存。
 
-完成resume仅一次：2476核心文件不变、exit0，stdout因编码捕获失败未保存，收据如实记录。报告ff_prior_static_fullchain_v2/docs/ANALYSIS.md。没有新训练、TRAIN新增或TEST；6未执行合格路径只模型级，6实际执行才执行级。
-
-控制文件与运行status为实时事实，不以本表排队状态代替运行状态。P1缺口不阻断独立P2；同瓶颈至多一次机制修复、消耗仍计原总预算。唯一持续heartbeat保留，不在局部收尾时暂停。
-
-P2a启动回执ff_prior_dynamic_reference/evidence/launch_receipt.json；单worker身份/PID创建时间核验通过。原P1报告提交19a7c744。
+报告ff_prior_dynamic_reference/docs/ANALYSIS.md。修复经验rho来自已保存TRAIN实际加速度与参考之差，须新执行；旧失败永久保留。P2总步数432000不增，修复27000从未启动P2b转移；只运行一次，不调门、不扩库、不启动TEST。控制文件与run/status为实时事实。

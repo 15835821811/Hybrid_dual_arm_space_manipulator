@@ -38,4 +38,8 @@
 
 static_fullchain_002已完成新独立审查和一次完成resume/hash：60提案、23完整验证+1预算未决、36仅初筛；12合格，6实际执行重放全过。三障碍闭合，五障碍未闭合。C1 partial；C2仅三障碍执行精度partial，成功率优势no。完整报告ff_prior_static_fullchain_v2/docs/ANALYSIS.md。不能把三障碍成功写成双场景静态门通过。
 
-下一真实阶段P2a：ff_prior_dynamic_reference/docs/EXPERIMENT_PLAN.md。原4TRAIN来源的C2受约束重建，保持27秒、原目标/初态/物理门；最多4新执行重放，2线程/2小时/8GiB。软件3测试通过，运行是否已启动以control/status为准。P2a不是新训练，也不扩库；P2b动态交接、P3学习与P4整链仍按路线逐阶段冻结。P1五障碍保留一个机制修复机会，原阶段剩余64566耦合/14021.469秒，不盲目追加。
+P2a dynamic_reference_001已完成：4/4参考合格，3/4真实执行合格；四条独立重放完整状态差均0。t00唯一实际加速度超门，原4/4门未通过；独立review partial/high。完成resume已仅一次核64文件/hash不变，禁止重复。报告ff_prior_dynamic_reference/docs/ANALYSIS.md。
+
+下一唯一同瓶颈修复dynamic_margin_001先冻结再运行：依据TRAIN实际响应残差固定内部加速度比例0.9695632054405793，物理门、27秒、原目标/初态/控制器不改。仅t00新增一次执行重放，t01–03须完整身份与参考逐元素一致才复用；不一致保持BLOCKED。27000步从P2b预算转移，P2总432000步不增，P2b最多297000新步、12逻辑单位仍保留。失败后不调rho追加，转向不依赖的P3资格/接口工作。当前是否启动以control/status为准。
+
+P2b动态交接、P3学习与P4整链按路线逐阶段冻结，不因控制器通过而归因Diffusion。P1五障碍保留一个机制修复机会，原阶段剩余64566耦合/14021.469秒，不盲目追加。

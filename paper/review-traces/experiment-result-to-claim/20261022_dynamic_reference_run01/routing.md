@@ -1,0 +1,10 @@
+# Routing action
+
+1. Record `partial`, 4/4 reference certification, 3/4 new execution verification, original 4/4 prerequisite and P2b **BLOCKED**. Keep t00 as an actual failure; do not rewrite run001 or use numerical tolerance to erase it.
+2. Close run001 with the executor's compact evidence audit, one completion-only resume/hash check, Chinese report and local commit. The reviewer did not invoke resume and does not certify a check not yet received.
+3. One further mechanism is evidence-supported as an experiment: use a separately frozen internal acceleration reference fraction `rho=0.9695632054405793`, computed as `1−2×0.015218397279710373`. Keep velocity shrinkage, 27 seconds, original targets, controller, knots, fitting objective and all final gates. This is empirical tracking headroom; no theorem or guaranteed pass is claimed.
+4. A new run may account for three exact historical reuses and one preselected t00 execution/replay only after proving the three realized references and full execution identity are unchanged. All four remain in the denominator. Any mismatch is BLOCKED and gives no implicit extra-run authority. Do not describe this design as four new executions.
+5. Because run001 exhausted 108000 steps, any new 27000 steps must be assigned before launch from the unstarted P2b allocation, leaving 297000 there and total P2 ≤ 432000; shared P2a time/output balances must be explicit. The original P2b 12 logical units remain fixed. No matching historical unit means an incomplete blocked unit, not a changed seed/task/split or a relaxed denominator.
+6. Only genuine 4/4 closure under the original gates may clear the P2b prerequisite. It does not prove P2b success. If the single repair fails, preserve the failure and proceed only with independent P3 provenance/qualification/interface tasks. The planned 8 TRAIN / 4 VAL qualification minimum still gates training.
+
+No ablation or confirmed paper-writing route is triggered. C2 stays untested, and absence of `paper/PAPER_CLAIM_AUDIT.json` leaves downstream writing provisional.
