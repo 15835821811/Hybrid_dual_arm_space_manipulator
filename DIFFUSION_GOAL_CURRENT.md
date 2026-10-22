@@ -26,6 +26,6 @@
 
 沿用唯一automation，每15分钟只读当前运行状态/PID，健康运行保持安静；结束时一次收尾，再推进下一已授权阶段，不再因单个实验结束暂停整条接续。终端入口：.\ff_prior_fullchain\job.ps1 status|next|report。
 
-应用旧卡实际为blocked而非paused，仍描述P0局部目标。不能为更名提前complete；P0真实收尾后再完成旧有界卡并建立本长期目标卡。当前文件目标与ACTIVE接续已经负责推进。
+已核旧卡实际为blocked而非paused；P0真实收尾提交3e659ce4后已完成旧有界目标，并创建本长期目标卡，状态active。工具回执见ff_prior_fullchain/evidence/app_goal_transition.json。唯一ACTIVE接续已切换为持续全链路，不复跑P0。
 
 只有静态避障、连续状态交接、动态追踪、训练采样评价与独立重放均有真实证据及可复现交付，才称本阶段工程全链路完成。Diffusion优势和未见泛化单列；不得因局部训练/候选门通过或预算耗尽宣称长期科学目标完成。

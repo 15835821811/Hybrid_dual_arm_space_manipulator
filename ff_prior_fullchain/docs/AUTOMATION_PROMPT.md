@@ -1,17 +1,19 @@
-继续本线程用户2026-10-22最新授权的持续全链路目标：从公开初态、障碍、世界目标和时间条件出发，完成路径生成、全机避障、刚性臂预抓捕接近、原生67力矩执行与独立重放，再接移动卫星和连续体七不规则航点追踪，以及真实训练/完整采样/公平对照。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效长期目标DIFFUSION_GOAL_CURRENT.md，详细路线ff_prior_fullchain/docs/ROADMAP.md，当前阶段ff_prior_fullchain/control.json。不是再做一个孤立的小损失试验。工程全链路与Diffusion相对收益分开裁决；优势未成立不禁止推进工程阶段，失败不能写通过，回退规划器/共同控制器的成功不能归给网络。
+继续本线程用户2026-10-22明确授权的持续工程全链路目标。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md，路线ff_prior_fullchain/docs/ROADMAP.md，真实阶段ff_prior_fullchain/control.json。新应用长期目标卡已active，旧preserve323有界目标已真实收尾complete，不得把旧complete当作长期工程/科学目标完成。
 
-每次先执行只读 .\ff_prior_fullchain\job.ps1 status，读取control.json所指active_run的status及PID/创建时间。RUNNING、PID身份匹配且心跳健康时安静结束，不读中间结果、不分析、不重复审计、不启动第二worker或重做resume。只在完成、失败、阶段真正切换或需要用户处理时通知。当前唯一run是artifacts/v7_1/preserve323_bounded_001，源码d5e1b7c5，冻结协议ff_prior_preserve323/docs/EXPERIMENT_PLAN.md，原入口 .\ff_prior_preserve323\job.ps1 status|report|resume。该运行完整保持原预算、数据隔离、数值/学习门与条件下游；新长期目标不得改其源码或放行失败门。
+目标：从公开初态、障碍、世界目标和时间条件产生路径，经自由漂浮全机避障修正、原生67力矩执行与独立重放，完成刚性臂非接触预抓捕接近，再接移动卫星与连续体七不规则航点追踪；完整训练/采样/引导/对照及报告。工程可行与Diffusion收益分别裁决，优势不再是工程推进门；回退规划器、共同修正器和反馈控制器的贡献不能归给网络。当前65维网络输入没有障碍/完整时序，不能称自主动态避障网络。
 
-当前P0仍采用323输出、旧aligned低102冻结、221细节训练、分层fit16×2与检查16×2、检查任务对应34行排除、14188适配TRAIN/48VAL。M1最多3轮完整323Jacobian；fit门及独立检查门通过才训练一个6000更新候选，后续96无引导、原DEV新180/36及应用新10/2，旧身份合格对照复用；未运行不报候选成功率。具体门与预算以冻结协议和源码为准，不用本摘要替代。2线程/6h/20GiB/160000耦合。原始结果完整保留。状态异常先诊断，未知工作不重放；必要代码bug修复使用新版本/输出，不能覆盖冻结身份或因效果不好追加训练。
+每次先运行 .\ff_prior_fullchain\job.ps1 status，读取control所指run status并核PID创建时间。RUNNING且身份和心跳正常就安静结束，不读中间结果、不分析、不重审、不重复start/resume，不新增第二重worker。状态不变不通知，只在完成、失败、真正阶段切换或需要用户处理时通知。状态异常先读该run冻结协议和日志诊断，不杀旧作业、不重放未知工作。新bug修复独立版本输出，不能覆盖冻结身份。
 
-P0终态后只做本轮必要收尾：核原始TRAIN_baseline/fit/check/gate、分层原资格保护、低102保持、独立排除、完整梯度/神经VJP/保存参数增量，若后续运行核实际训练消费/重载、无引导、原DEV与静态应用逐任务种子配对、实际执行与历史复用。核189源码及准确绑定清单，数量以原preflight为准。依experiment-result-to-claim技能委派一次全新无历史独立审查，不复用旧review；使用保存数据的只读审计，不追加物理仿真来追认。完成resume仅用本包tools/check_completed_resume.py一次，保存核心清单/hash不变，不重做旧run的resume。写中文ff_prior_preserve323/docs/ANALYSIS.md、紧凑证据、新review-traces，版本tracker和本地提交，只提交任务文件。写ff_prior_fullchain/evidence/preserve323_closeout.json，字段run、closed、commit、analysis、independent_review、completed_resume指真实文件。closed仅表示有界工作收尾，不表示全部物理或科学门通过。
+交接基点P0 preserve323_bounded_001已3e659ce4收尾：32梯度通过、64临时更新，三个参数比例均未达原1%学习门，fit和check各8/32不增，权重完全回退；M2正式训练、VAL、DEV、新执行全部未运行。独立审查partial/high，原审计PASS；完成resume已仅一次核2022文件/hash不变。ff_prior_fullchain/evidence/preserve323_closeout.json是收尾回执。禁止再次执行该run的resume/审计/训练，也不重新审查历史对照。旧模型继续保留。本轮科学负结果不改门追认。
 
-P0完成后不要按旧定时提示暂停整个接续。保留局部失败结论、使用合格旧模型组件，按新路线自动继续已授权的有界开发阶段：P1静态三/五障碍任务输入→323提案→共同精细碰撞/目标修正→执行重放；P2修复旧4TRAIN动态表示的加速度问题并接已有合格控制器，验证规划到追踪状态连续；P3既有合格TRAIN/VAL上的一个有时间/完整任务/障碍条件的候选和确定性对照；P4固定开发套件的整链验收与交付。先读相关已完成源码/报告，复用身份匹配证据，不重做已经解决的rank/prepare/存在性诊断。DEV07路径只做回归，不加载为部署答案、不入TRAIN。下一阶段准确协议、任务/种子/预算/源码冻结后才启动独立后台worker，并更新control.json、统一目标与版本tracker。每阶段预算和停止/分支规则见ROADMAP；同一时刻只一个新重任务，不无限重复局部调参。一个分支失败，完成报告后继续不依赖它的工程工作；不能把所有后续都错误绑定到Diffusion必须先有优势。
+当前下一步是P1_static_fullchain，具体实施交接ff_prior_fullchain/docs/P1_HANDOFF.md。自主读取源码完成新包，将公开initializer/通用几何绕行/真实Diffusion提案接入完整323修正、目标/几何验证、实际执行和独立重放。不能直接调用旧trust入口的已知00/07最终路径来冒充自主规划；07仅回归，不入TRAIN。先做有意义的软件与资源核算，冻结两原静态场景/3种子/两方法各5提案共60、最多12执行/重放，准确共同搜索分配和源码身份之后，启动独立static_fullchain_001后台。新修正预算可不同于旧late4，但两新方法同预算且披露不可直接做旧113查询纯归因。总上限2线程/6h/20GiB/160000耦合，不途中加码。准确任务和控制来源使用原本冻结字段，不换容易目标。
 
-应用目标卡当前旧有界目标显示blocked，实际worker活着；状态不是工作完成证据。工具不支持原地改未完成目标正文或恢复状态，不因此阻断文件目标和heartbeat。只有P0原有界工作客观全部收尾后才能把旧卡complete，然后创建新的长期目标卡，内容取DIFFUSION_GOAL_CURRENT.md的持续目标与终止门。不要为更名提前complete，不把局部卡片complete解释为长期科学完成。
+P1后按ROADMAP持续执行P2动态受约束表示与连续状态交接、P3有时序/环境条件的一个学习候选和确定性序列对照、P4固定开发套件整链验收。各阶段先冻结具体代码/任务/种子/预算再实际运行，并更新control.json指向真实当前run，不显示已结束run为正在运行。修复既有4TRAIN的Hermite加速度问题时保持原27秒和参考目标，不改时间或放宽门。已有合法控制器可推进工程，不等待网络相对胜出。P3只能用既有已认证TRAIN/VAL，DEV及07不入训练；数据不足则标该分支BLOCKED并继续独立工程工作，不擅自生成大库。一个训练候选，不因效果差重复训练。每阶段最多一次有证据的同瓶颈机制修复，禁止无限局部lr/权重/rank试错。
 
-所有阶段保持仅不穿透、双臂世界5mm/1度、2mm几何步长、完整初态、17→67、自由漂浮、全机几何、运动/力矩/独立重放原物理门；动态原合同不放宽。原软件测试不是物理证据，未执行仅MODEL_VALID，逐条实际力矩与重放通过才EXECUTION_VERIFIED。新数据/旧数据/新执行/历史复用分开，失败和缺失分母保留。不失败重标、mock、固定基座、隐藏重置或抽查升级。保留main/旧分支、所有旧模型数据结果、用户修改和旧作业；不强推、不上传大数据、不停止旧进程。
+各run终态完成一次原始结果收尾：记录全部候选/执行失败和缺失分母，来源/数据消费/模型重载、无引导/prepare/引导/回退/执行的逐层统计。完成的新实验按experiment-result-to-claim委派全新独立review，只读保存证据，不重复历史审计，不追加物理来追认。完成resume只验证一次且核心清单/hash不变；报告辅助脚本放tools/evidence，冻结源不改。保存中文ANALYSIS、紧凑证据、review-traces、版本paper tracker、本地提交；新/旧执行与MODEL_VALID/EXECUTION_VERIFIED分别报告。收尾后自动推进下一已授权阶段，不因单个局部实验结束就暂停接续。
 
-当前仍不扩库、不1024/30000生产、不pilot/study/strict_multimodal、不最终TEST、不硬件或接触捕获试验。对既有数据重新认证可以按冻结预算进行，开发路径不得回灌TRAIN。用户的“不惜一切代价”表示持续推进和机制改进，不是放宽物理/诚信合同、无上限资源或预设一定有优势。TEST只记录就绪门及待授权，不接触或调参。查询和耗时只记录，不要求胜出。
+始终保持仅不穿透、5mm/1度、2mm几何步长、完整初态、17→67、自由漂浮、全机几何及全部原运动/力矩/独立重放门。实际状态不可裁剪/重置，不失败重标，不mock，不抽查升级全库；通过模型不等于执行通过。原物理门不能为追求优势放宽。保留main/旧分支/旧模型数据结果/用户修改/旧作业，不强推、不上传大数据、不自动停旧任务。
 
-终端 .\ff_prior_fullchain\job.ps1 status|next|report 始终显示真实当前阶段；命令本身只读，无后台重复启动。每个阶段最终交付自包含中文报告、实测结果和失败边界、提交、下一阶段和命令。只有全链路开发交付条件客观满足才完成长期工程目标，再分别说明科学优势与TEST状态。若确实无可推进的独立工作且需要用户输入，具体说明缺口；遵守goal工具blocked规则，避免无意义轮询。不要因为局部阶段完成自动暂停持续接续；用户要求停止，或本轮定义的全链路工程交付已完成，才按实际授权收尾管理接续。
+当前不扩库、不1024/30000生产、不pilot/study/strict_multimodal、不最终TEST、不硬件或接触捕获；既有数据逐条重新认证与开发场景不自动写入TRAIN。查询和耗时记录但不要求胜出。不惜代价表示持续机制改进，不是无限算力、放松物理或保证科学正结论。最终TEST就绪及授权单列，禁止读取TEST调参。
+
+终端 .\ff_prior_fullchain\job.ps1 status|next|report 为只读统一入口。每阶段交付自包含报告链接、实测正负结果、提交、命令及下一阶段。只有公开任务到避障接近、实际执行、连续交接、动态追踪与学习评价均有真实证据及可复现交付才完成长期工程目标；科学优势另判。确无可推进工作时按goal工具规则报告具体阻塞和需要的输入，避免无意义轮询。不要因单个阶段完成自动暂停持续接续；用户要求停止或本目标工程交付实际完成才收尾管理接续。
