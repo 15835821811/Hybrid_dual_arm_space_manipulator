@@ -1,50 +1,50 @@
 {
-  "version": 1,
-  "goal_id": "free_floating_fullchain_20261022",
-  "goal_status": "ACTIVE_DEVELOPMENT",
-  "current_phase": "P2_dynamic_representation_tracking",
-  "active_run": "artifacts/v7_1/dynamic_reference_001",
-  "active_module": "ff_prior_dynamic_reference.job",
-  "active_protocol": "ff_prior_dynamic_reference/docs/EXPERIMENT_PLAN.md",
-  "active_report": "ff_prior_dynamic_reference/docs/ANALYSIS.md",
-  "active_closeout_receipt": "ff_prior_fullchain/evidence/dynamic_reference_closeout.json",
-  "active_source_commit": "3d759e8f",
-  "heartbeat_stale_seconds": 180,
-  "next_phase": "P2a_single_response_margin_repair",
-  "automation_id": "automation",
-  "app_goal_transition": "NEW_LONG_TERM_GOAL_ACTIVE",
-  "autonomous_scope": "serial bounded development, implementation, training, simulation execution, replay and reporting",
+  "active_closeout_receipt": "ff_prior_fullchain/evidence/dynamic_margin_closeout.json",
+  "active_module": "ff_prior_dynamic_margin.job",
+  "active_protocol": "ff_prior_dynamic_margin/docs/EXPERIMENT_PLAN.md",
+  "active_report": "ff_prior_dynamic_margin/docs/ANALYSIS.md",
+  "active_run": "artifacts/v7_1/dynamic_margin_001",
+  "active_run_role": "current_worker",
+  "active_source_commit": "d5ba2106",
   "allow_dataset_expansion": false,
   "allow_final_TEST": false,
-  "allow_physics_relaxation": false,
-  "allow_parallel_physics_workers": false,
   "allow_hardware_or_contact_capture": false,
+  "allow_parallel_physics_workers": false,
+  "allow_physics_relaxation": false,
+  "app_goal_transition": "NEW_LONG_TERM_GOAL_ACTIVE",
+  "automation_id": "automation",
+  "autonomous_scope": "serial bounded development, implementation, training, simulation execution, replay and reporting",
+  "current_phase": "P2_dynamic_representation_tracking",
+  "goal_id": "free_floating_fullchain_20261022",
+  "goal_status": "ACTIVE_DEVELOPMENT",
+  "heartbeat_stale_seconds": 180,
+  "next_phase": "P2b_dynamic_DEV_continuous_handoff_if_qualified_else_P3",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
-      "status": "CLOSED_NEGATIVE_RESULT",
-      "purpose": "Finish current frozen experiment without changing its gates or source."
+      "purpose": "Finish current frozen experiment without changing its gates or source.",
+      "status": "CLOSED_NEGATIVE_RESULT"
     },
     {
       "id": "P1_static_fullchain",
-      "status": "CLOSED_PARTIAL_3OBS_PASS_5OBS_GAP",
-      "purpose": "Generate and execute obstacle-avoiding capture approaches from public task inputs in the original three/five-obstacle scenes."
+      "purpose": "Generate and execute obstacle-avoiding capture approaches from public task inputs in the original three/five-obstacle scenes.",
+      "status": "CLOSED_PARTIAL_3OBS_PASS_5OBS_GAP"
     },
     {
       "id": "P2_dynamic_representation_tracking",
-      "status": "P2A_CLOSED_PARTIAL_MARGIN_REPAIR_PREPARING",
-      "purpose": "Repair constrained dynamic representation and connect the existing valid tracking controller without state resets."
+      "purpose": "Repair constrained dynamic representation and connect the existing valid tracking controller without state resets.",
+      "status": "P2A_MARGIN_REPAIR_RUNNING"
     },
     {
       "id": "P3_temporal_diffusion_integration",
-      "status": "QUEUED",
-      "purpose": "Train and evaluate one time-conditioned planner using eligible existing TRAIN/VAL; report the network contribution separately."
+      "purpose": "Train and evaluate one time-conditioned planner using eligible existing TRAIN/VAL; report the network contribution separately.",
+      "status": "QUEUED"
     },
     {
       "id": "P4_development_acceptance",
-      "status": "QUEUED",
-      "purpose": "Freeze and run the integrated development suite, independent review and reproducible delivery; TEST remains unstarted."
+      "purpose": "Freeze and run the integrated development suite, independent review and reproducible delivery; TEST remains unstarted.",
+      "status": "QUEUED"
     }
   ],
-  "active_run_role": "completed_pending_next_source_freeze"
+  "version": 1
 }
