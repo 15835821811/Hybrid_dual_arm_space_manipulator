@@ -187,3 +187,8 @@ global_bypass_001，生产源码c22e79eb，1079.469秒。M0有限分段一致性
 ## D2b双侧九障碍已完成（2026-10-22）
 
 新的九障碍应用场景从静态到原七航点连续54.5秒，新54500原生含重放全部通过，七点7/7、完整836差0；报告ff_prior_dual_obstacle_chain/docs/ANALYSIS.md。保留原5障碍任务，不用新9球替代其缺口。按CONTINUOUS_DELIVERY_GOAL继续D3准确实现/冻结；不重跑九障碍、不对照优势。
+
+
+## D3已启动（2026-10-22）
+
+world_steer_001，源码099f2a93，15软件检查、183源码/87输入。原五障碍27秒，3种子15候选，最多3静态执行；单Diffusion系统，无优势对照。短时世界改进状态保留并从完整父状态继续，完整路线经323认证后才执行。当前RUNNING，不写成通过；准确协议ff_prior_world_steer/docs/EXPERIMENT_PLAN.md。
