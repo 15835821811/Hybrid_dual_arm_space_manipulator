@@ -1,14 +1,13 @@
-继续用户2026-10-22已明确批准的一次全局绕行验证。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md、路线ff_prior_fullchain/docs/ROADMAP.md、真实阶段control.json。用户已回复“授权这一次全局绕行验证（推荐）”；此前范围阻塞已解除，不得再重复询问。应用旧goal卡的blocked及旧P1文字若仍存在只是历史，不能覆盖本次真实授权；不要以伪造complete来替换卡片。
+# 唯一接续：P5已收尾，等待新范围指示
 
-新包ff_prior_global_bypass，冻结协议docs/EXPERIMENT_PLAN.md，源码c22e79eb877abb02c705508126bf3dce7e8be7ac，独立run artifacts/v7_1/global_bypass_001已实际启动。入口 .\ff_prior_global_bypass\job.ps1 status|report|resume；统一入口 .\ff_prior_fullchain\job.ps1 status|next|report。每次先只读统一status并核PID创建时间/心跳；RUNNING且身份心跳正常则安静结束，不读中间结果、不分析、不审计、不start/resume第二worker、不发过程报告。状态无变化不通知。终态/异常才读取该run冻结协议/账本/日志/原始文件处理。
+继续本线程长期自由漂浮路径—避障—目标追踪工程目标。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md、路线ff_prior_fullchain/docs/ROADMAP.md、真实阶段ff_prior_fullchain/control.json。
 
-范围：原五障碍准确27秒任务、原三种子20264611/17/23、两法每单元5提案=30，最多6次预选原生67执行与836全状态重放。181源码/87输入绑定，11软件检查通过；软件不代表物理。旧模型16步采样323输出、零细节头，无新训练；65维旧网络不具障碍条件。树节点携带17q/完整INTEGRATION模型态/自由基座/速度/时间/父指针，rest-to-rest五次边从父节点前向耦合，不能固定基座/段间重置/用07答案/相同q合并状态。实际执行无状态写回。
-先M0固定两段模型传播对整体512/分段256+256，3额外耦合、无原生步；全qpos/qvel/双末端/父状态时间和非零基座运动检查通过才M1。M1每候选220目标初始化+500树连接+40转换后认证；每单元至多1条完整路线2100查询/6迭代原323精修，再40认证。没有完整树路线不拿旧答案补位；拟合或运动失败保留分母。树边仅SCREEN_ONLY，最终原验收才MODEL_VALID，逐条实际执行及完整重放通过才EXECUTION_VERIFIED。无替换执行。实际分配/算法细节以冻结协议为准。
-总2线程/21540秒<6h/20GiB减128MiB/36000耦合/80000000模型积分/165000原生含重放步。每单元5990耦合/13200000积分/3500秒；6单元加M0预留不超过总额。份额不转移给其他候选或方法，不能运行中加码。冻结源不得原地改写/冒用身份；真实实现故障独立版本输出，并扣本次同一个总预算、保留失败证据；效果差不得追加机制、训练或搜索轮次。
+用户已批准的一次全局绕行global_bypass_001现已真实收尾，报告提交db6578c1438d778b8e95ef34099715abde8cb560，生产源码c22e79eb。收据ff_prior_fullchain/evidence/global_bypass_closeout.json，报告ff_prior_global_bypass/docs/ANALYSIS.md。耗时1079.469秒，M0限定8项一致性通过；两法各0/15完整合格候选、各0/3冻结执行机会达成，实际原生执行和重放均0。2470局部树节点不是合格完整轨迹；323转换/精修/执行没有运行，不能说已测失败。213目标连接拒绝=204穿透+9最高512区间仍超2mm。16564耦合；2814080为预留积分数，不冒充独立实测实际步。新独立review79558保存检查+33补充无不一致，C1 no/high、C2 no/high，论文provisional。完成resume已经且仅已验证一次，24735核心文件清单/hash/大小不变。禁止再resume、重审、追加物理或复用旧review冒充新审查。
 
-P0—P4及旧static_goal_seed/temporal等均已收尾，全部禁止重复审计/resume/物理。P4旧3272147b是6新三障碍+12历史动态逻辑，不是本次新结果；3/5场景缺五障碍与连续组合，不能写完整工程通过。只读必要来源身份可复用，旧执行不重新记账。
+当前阶段P5_global_bypass_closed_negative，control为AWAITING_SCOPE_AUTHORIZATION，没有重worker。本轮明确授权已履行；下一轮短时可继续目标扩展方案仅为建议，见ff_prior_fullchain/docs/AFTER_GLOBAL_BYPASS_DECISION.md，尚无新范围或预算授权。旧批准只对应已结束global_bypass_001，不能用于启动第二次实验。先只读统一 .\ff_prior_fullchain\job.ps1 status 和最新授权状态；无新授权、状态无变化则安静结束，不重复问题/分析/报告，不看旧raw、不审计、不start/resume。不要把预选项或时间经过当授权。
 
-终态一次收尾：检查全部30候选/6执行分母、未决调用、M0原数组、树边父子完整态/基座/时间/几何/数值、目标连接有限差分/接受、323转换及原门、公共源/网络实际调用和输入身份。仅保存证据代数/神经重建，不新增物理来追认。按experiment-result-to-claim技能委派全新独立review，不复用历史review；保存review-traces，指出抽样几何/收敛范围，不把软件检查当物理证明。仅本run完成resume核一次且核心清单/hash不变，旧run绝不再resume。源不可变，报告辅助脚本放tools/evidence。写中文ff_prior_global_bypass/docs/ANALYSIS.md、紧凑证据、目标/版本paper tracker、closeout receipt及本地提交，仅提交本任务文件，保留用户修改。原始worker审计若报告代码故障，可独立只读辅助修复，不能重跑物理。
+若用户明确授权新的机制，结合其具体范围，先核算成本并冻结准确代码/原任务/种子/搜索分配/预算再单worker后台；不能拿旧run未用额度自动追加，不得无限局部扫参或换阶段名绕过一次机制边界。建议机制是短时世界目标定向扩展保留合格中间完整状态，父节点度量对齐世界残差与剩余时间；旧连接已耗完27秒，不能简单插回树继续。该建议尚未验证，不保证成功。连续组合仍需真实五障碍合格终态和新准确合同，不自动分配执行。
 
-保持仅不穿透、双臂5mm/1度、2mm几何步长、17→67、完整初态、自由漂浮、全机几何、运动/力矩/动量/独立重放全部门；不失败重标、不mock、不抽查升级。保留所有旧模型数据结果、旧作业/main分支；不强推、不上传大数据。不训练、扩库、1024/30000、pilot/study/strict_multimodal、TEST、硬件或接触捕获。
-工程C1和Diffusion相对收益C2分开，不要求查询/耗时胜出，不把树/共同修正/反馈控制贡献归网络。成功后分析实际五障碍终态能否衔接动态任务，提出准确连续组合协议；本run未分配额外组合执行预算，不能自动追加物理。失败则据实交付瓶颈及缺失证据，不无限局部扫参。长期目标未全达不得complete；用户要求停止或全工程真实完成才管理唯一接续，阶段收尾不自动删接续。最终给自包含中文报告链接、实测正负结果、提交、终端命令与下一阶段判断。
+P0—P4及全部旧run均已收尾，禁止重复审计/resume/物理。P4仍仅3/5场景、18/30逻辑有证据，长期工程没有完成；工程可行与Diffusion科学优势分别裁决，共同搜索/修正/反馈贡献不得归网络。应用旧goal卡状态与旧P1文本不作为新授权或工程完成，不能伪造complete替换。确无已授权可推进工作时按goal三轮同阻塞规则处理，新授权到来重置阻塞计数，不因本阶段结束自行pause或complete。
+
+始终保持仅不穿透、双臂5mm/1度、2mm几何步长、完整初态、17→67、自由漂浮、全机几何及全部运动/力矩/动量/完整状态独立重放门。无状态重置/裁剪、失败重标、mock或抽查升级；DEV/07不入TRAIN、不偷用07路径。保留所有旧数据模型结果、用户修改、main/分支/旧作业，不强推或上传大数据。当前不训练、扩库、1024/30000、pilot/study/strict_multimodal、TEST、硬件或接触捕获。状态不变不通知，仅真正完成新工作、失败或需要用户处理时通知。唯一接续保持单一；用户要求停止或长期工程目标真实完成才管理接续，阶段收尾不自动删除。终端 .\ff_prior_fullchain\job.ps1 status|next|report 均只读。
