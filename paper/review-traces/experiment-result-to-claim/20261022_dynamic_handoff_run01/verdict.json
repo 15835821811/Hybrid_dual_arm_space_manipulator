@@ -1,0 +1,136 @@
+{
+  "experiment": "dynamic_handoff_001",
+  "source": "artifacts/v7_1/dynamic_handoff_001",
+  "producer_head": "549c4a2ec13781c667a07f35be777368759b70a7",
+  "review_role": "independent paper architect/reviewer",
+  "claim_supported": "partial",
+  "confidence": "high",
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "paper_verdict_status": "provisional — no paper claim audit available",
+  "intended_claim": "P2b: two fixed dynamic scenes and two methods each have at least one fully accepted continuous execution/replay; assess contribution toward complete C1 and positive Diffusion C2 separately.",
+  "engineering_local_gate_passed": true,
+  "P2b_gate_passed": true,
+  "engineering_gate": {
+    "status": "PASS",
+    "rule": "Each of two frozen scenes × two methods has at least one complete accepted continuous native execution with independent recorded torque replay; source/raw audit passes; all failures/unique and logical denominators retained.",
+    "all_units_passed": false
+  },
+  "C1_full_engineering_chain": "NOT_ESTABLISHED",
+  "C2_positive_diffusion_contribution": "NOT_SUPPORTED",
+  "what_results_support": [
+    "Original stationary/drifting task and full initial identities are unchanged; 168 frozen sources and zip, 86 bound inputs match.",
+    "Both methods have at least one accepted 27-second execution/replay per fixed scene; the predetermined local engineering gate passes.",
+    "Eight saved native/replay pairs agree exactly through 836-dimensional full integration states, including 4.5s and 25.5s transition slices.",
+    "Six 16-step DDIM outputs reconstruct exactly with the frozen checkpoint/codec, saved base/condition and preset sampling seeds.",
+    "Four of six unique prior executions pass; two drifting failures are retained and fail only the 5mm dynamic-position gate."
+  ],
+  "what_results_dont_support": [
+    "12/12 success, six independent baseline repetitions, or robust success over unseen tasks.",
+    "A complete temporal/environment-conditioned diffusion planner or dynamic MODEL_VALID certification for raw Z.",
+    "A positive contribution of the endpoint prior: all paired position means/P95 increase, drifting tails worsen and two prior samples fail.",
+    "Complete C1 delivery, five-obstacle chain closure, P3 completion, or P4 obstacle-approach-to-moving-tracking combination.",
+    "Filter-only causation, continuous-time collision certificate, or hardware/contact capture claims."
+  ],
+  "missing_evidence": [
+    "P1 five-obstacle complete-source execution gap remains outside this review.",
+    "P3 qualified existing TRAIN/VAL temporal dataset and full-condition learning/equal-budget comparison are still required.",
+    "P4 one continuous combined obstacle approach to moving tracking acceptance is not run.",
+    "Raw network Z has no full dynamic acceptance; successful common-feedback execution cannot supply that grade.",
+    "No counterfactual filter intervention or full task-Jacobian causal trace exists for the failure mechanism.",
+    "No paper/PAPER_CLAIM_AUDIT.json; downstream paper claims remain provisional."
+  ],
+  "suggested_claim_revision": "Two frozen development tasks support auditable continuous dynamic handoff by a shared feedback controller with an optional endpoint null-space prior, meeting the predefined local engineering gate. Four of six prior samples pass; two drifting samples violate peak position tolerance. Positive Diffusion contribution and the complete engineering chain remain unestablished.",
+  "next_experiments_needed": [
+    "Close out this fixed run with all denominators; do not append same-run proposals or rerun completed physics.",
+    "Proceed to the already planned P3 source/qualification checks; begin its single frozen training branch only if its eligibility gate is met (at least 8 TRAIN/4 VAL).",
+    "Keep DEV/07 and uncertified raw Z out of TRAIN; do not expand the task library.",
+    "Resolve the existing five-obstacle gap and later freeze/run P4 under its own budget for a full C1 claim.",
+    "For any future causal filter claim, preregister a safe controlled comparison; no such experiment was performed or newly authorized by this review."
+  ],
+  "denominators": {
+    "unique_executions": 8,
+    "unique_passed": 6,
+    "logical_units": 12,
+    "logical_passed": 10,
+    "shared_baselines": 4,
+    "method_scene": [
+      {
+        "scene": "stationary",
+        "method": "task_controller",
+        "unique_executed": 1,
+        "unique_passed": 1,
+        "logical_passed": 3
+      },
+      {
+        "scene": "stationary",
+        "method": "diffusion_null_prior",
+        "unique_executed": 3,
+        "unique_passed": 3,
+        "logical_passed": 3
+      },
+      {
+        "scene": "drifting",
+        "method": "task_controller",
+        "unique_executed": 1,
+        "unique_passed": 1,
+        "logical_passed": 3
+      },
+      {
+        "scene": "drifting",
+        "method": "diffusion_null_prior",
+        "unique_executed": 3,
+        "unique_passed": 1,
+        "logical_passed": 1
+      }
+    ]
+  },
+  "failed_units": [
+    "u09",
+    "u11"
+  ],
+  "failure_gate": "dynamic_position",
+  "continuous_time_certificate": false,
+  "raw_Z_MODEL_VALID": false,
+  "audit": {
+    "source_files": 168,
+    "bound_inputs": 86,
+    "source_and_input_hash_mismatches": 0,
+    "zip_source_set_exact": true,
+    "native_execution_steps": 108000,
+    "saved_replay_steps": 108000,
+    "recorded_full_replay_max_error": 0.0,
+    "NN_samples": 6,
+    "frozen_experiment_network_calls": 96,
+    "review_reconstruction_network_calls": 96,
+    "DDIM_Z_exact": true,
+    "DDIM_step_records_exact": true,
+    "new_review_physics_steps": 0,
+    "new_review_geometry_queries": 0,
+    "new_review_optimizer_calls": 0,
+    "new_review_training_updates": 0,
+    "new_review_resume_calls": 0,
+    "geometry_scope": "All saved states/minima/pairs, per-native aggregation and midpoint interpolation inspected; frozen geometry code checked; no fresh distance query or independent recomputation of geometric-motion bound."
+  },
+  "completed_resume_receipt": {
+    "path": "ff_prior_dynamic_handoff/evidence/completed_resume.json",
+    "executor_calls": 1,
+    "core_files": 135,
+    "unchanged": true,
+    "returncode": 0,
+    "resume": "NO_WORK_ALREADY_COMPLETE",
+    "reviewer_repeated_resume": false
+  },
+  "routing_action": "narrow_claim_and_supplement_via_existing_P3_qualification_then_P4; local_P2b_confirmed",
+  "review_files": [
+    "prompt.md",
+    "inputs.json",
+    "audit_saved.py",
+    "audit.json",
+    "paired_ledger_audit.json",
+    "response.md",
+    "verdict.json",
+    "routing.md",
+    "handoff.md"
+  ]
+}

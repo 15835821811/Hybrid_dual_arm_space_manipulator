@@ -1,0 +1,2214 @@
+{
+  "source_count": 168,
+  "binding_count": 86,
+  "producer_head": "549c4a2ec13781c667a07f35be777368759b70a7",
+  "source_mismatches": [],
+  "binding_mismatches": [],
+  "zip_hash_mismatches": [],
+  "zip_exact_source_set": true,
+  "scope": "saved arrays, frozen source reading, pure algebra and neural inference only",
+  "additional_physics_steps": 0,
+  "additional_optimizer_calls": 0,
+  "additional_training_updates": 0,
+  "units": [
+    {
+      "id": "u00",
+      "scene": "stationary",
+      "method": "task_controller",
+      "proposal_seed": 20261020,
+      "new_execution": true,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.06500489433638496,
+          0.036142774847100344
+        ],
+        "p95": [
+          0.11154496794664626,
+          0.28241105630286306
+        ],
+        "maximum": [
+          0.13964200601831805,
+          0.3171813926713679
+        ],
+        "final": [
+          0.0004111375208301418,
+          0.00012707564776660166
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          8.169703231480174e-05,
+          4.799743907235627e-05
+        ],
+        "p95": [
+          0.0002669365856466713,
+          0.0004329788910550823
+        ],
+        "maximum": [
+          0.0017953483405760205,
+          0.0009856880533780858
+        ],
+        "final": [
+          1.1058471292233088e-06,
+          1.7977788761327186e-07
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": true,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [],
+      "raw_torque_ratio": 0.025325683560236647,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 0.0,
+        "rigid_rotation_matrix": 0.0
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 6.773232228316884,
+        "reported_maximum_geometry_step_m": 0.00015464240753540438,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 0.0,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1102164071802561e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          }
+        ],
+        "maximum_delta": 0.1902959470150148,
+        "max_delta_time_s": 0.22000000000000017,
+        "failed_position_intervals": [],
+        "peak_position_time_s": [
+          0.2600000000000002,
+          3.6959999999998145
+        ]
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 1.1967123964354287e-07,
+          "qvel_change_across_sides": 6.733866457522353e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 2.5657659434574764e-08,
+          "qvel_change_across_sides": 6.130838631426561e-07
+        }
+      ],
+      "base_translation_range_m": [
+        0.0020490533114301936,
+        0.0052036183041257135,
+        0.0007421360051216161
+      ],
+      "actual_domain_margin_rad": 0.08934734356467122,
+      "tracking_max_rad": 0.0006128106467171435,
+      "manifold_max_rad": 6.267113201920832e-07
+    },
+    {
+      "id": "u01",
+      "scene": "stationary",
+      "method": "diffusion_null_prior",
+      "proposal_seed": 20261020,
+      "new_execution": true,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.06504645186319326,
+          0.036434487626705356
+        ],
+        "p95": [
+          0.11171934546470703,
+          0.2825568960300089
+        ],
+        "maximum": [
+          0.13957299838204687,
+          0.3172635227000979
+        ],
+        "final": [
+          0.000510878410149621,
+          0.0002112980293961211
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.00014444016272537128,
+          5.2813957321976876e-05
+        ],
+        "p95": [
+          0.0004493023678529629,
+          0.00048473091709146397
+        ],
+        "maximum": [
+          0.0017962158007344298,
+          0.0009838865554796605
+        ],
+        "final": [
+          6.617350942822522e-06,
+          2.4932237056596998e-06
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": true,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [],
+      "raw_torque_ratio": 0.025309566830029773,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 0.0,
+        "rigid_rotation_matrix": 0.0
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 4.22316059418712,
+        "reported_maximum_geometry_step_m": 0.00015466519574793282,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 2.7755575615628914e-17,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1101806729777938e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 5.499999999999616,
+            "last_s": 8.679999999999568,
+            "frames": 160,
+            "sample_span_s": 3.1799999999999518
+          },
+          {
+            "first_s": 13.040000000001024,
+            "last_s": 26.979999999995925,
+            "frames": 698,
+            "sample_span_s": 13.939999999994901
+          }
+        ],
+        "maximum_delta": 0.1902044505047518,
+        "max_delta_time_s": 0.22000000000000017,
+        "failed_position_intervals": [],
+        "peak_position_time_s": [
+          0.2600000000000002,
+          3.6939999999998148
+        ]
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 2.022624118885874e-07,
+          "qvel_change_across_sides": 6.486600015281592e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 4.989520792987893e-08,
+          "qvel_change_across_sides": 4.941551887267933e-06
+        }
+      ],
+      "base_translation_range_m": [
+        0.0020350322463341393,
+        0.005201869914206842,
+        0.0006229341960855675
+      ],
+      "actual_domain_margin_rad": 0.039999928618564606,
+      "tracking_max_rad": 0.0006704512158166587,
+      "manifold_max_rad": 6.267474894584499e-07
+    },
+    {
+      "id": "u02",
+      "scene": "stationary",
+      "method": "task_controller",
+      "proposal_seed": 20262020,
+      "new_execution": false,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "reused_from": "artifacts/v7_1/dynamic_handoff_001/u00",
+      "actual_new_steps": 0,
+      "reused_task_exact": true,
+      "reused_initial_exact": true,
+      "reused_robot_exact": true,
+      "reused_trace_hash_exact": true,
+      "reused_metrics_gates_exact": true,
+      "new_independent_replication": false
+    },
+    {
+      "id": "u03",
+      "scene": "stationary",
+      "method": "diffusion_null_prior",
+      "proposal_seed": 20262020,
+      "new_execution": true,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.06507254658063093,
+          0.03645589502991356
+        ],
+        "p95": [
+          0.11173378097463936,
+          0.28254723972045737
+        ],
+        "maximum": [
+          0.13956980695721924,
+          0.31725827862441597
+        ],
+        "final": [
+          0.0004875878707704738,
+          0.00033955247736255423
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.00014850683788177312,
+          5.244568905023359e-05
+        ],
+        "p95": [
+          0.0004662695281585581,
+          0.0004482389930493261
+        ],
+        "maximum": [
+          0.0017973687618450243,
+          0.0009846141165480219
+        ],
+        "final": [
+          6.128395037910094e-06,
+          4.05947051248101e-07
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": true,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [],
+      "raw_torque_ratio": 0.025311811153609136,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 0.0,
+        "rigid_rotation_matrix": 0.0
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 4.455978165449959,
+        "reported_maximum_geometry_step_m": 0.0001546199222391241,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 1.3877787807814457e-17,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1101894080050624e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 5.499999999999616,
+            "last_s": 8.679999999999568,
+            "frames": 160,
+            "sample_span_s": 3.1799999999999518
+          },
+          {
+            "first_s": 13.100000000001044,
+            "last_s": 26.979999999995925,
+            "frames": 695,
+            "sample_span_s": 13.879999999994881
+          }
+        ],
+        "maximum_delta": 0.19017253558650307,
+        "max_delta_time_s": 0.22000000000000017,
+        "failed_position_intervals": [],
+        "peak_position_time_s": [
+          0.2600000000000002,
+          3.6939999999998148
+        ]
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 1.852180460011621e-07,
+          "qvel_change_across_sides": 6.459304377447075e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 8.476988573688938e-08,
+          "qvel_change_across_sides": 8.277170076108255e-06
+        }
+      ],
+      "base_translation_range_m": [
+        0.002031016072720053,
+        0.0052021055903133835,
+        0.0006184976302826922
+      ],
+      "actual_domain_margin_rad": 0.03999992822410081,
+      "tracking_max_rad": 0.0006708510458962036,
+      "manifold_max_rad": 6.267109460460565e-07
+    },
+    {
+      "id": "u04",
+      "scene": "stationary",
+      "method": "task_controller",
+      "proposal_seed": 20263020,
+      "new_execution": false,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "reused_from": "artifacts/v7_1/dynamic_handoff_001/u00",
+      "actual_new_steps": 0,
+      "reused_task_exact": true,
+      "reused_initial_exact": true,
+      "reused_robot_exact": true,
+      "reused_trace_hash_exact": true,
+      "reused_metrics_gates_exact": true,
+      "new_independent_replication": false
+    },
+    {
+      "id": "u05",
+      "scene": "stationary",
+      "method": "diffusion_null_prior",
+      "proposal_seed": 20263020,
+      "new_execution": true,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.06504359326786266,
+          0.036431049972269945
+        ],
+        "p95": [
+          0.111688402152529,
+          0.2824449046209123
+        ],
+        "maximum": [
+          0.1395718352242821,
+          0.31728762537163596
+        ],
+        "final": [
+          0.0004909642925094244,
+          0.00020315360310808314
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.00014201303270812763,
+          3.814789261079127e-05
+        ],
+        "p95": [
+          0.0004535122071078376,
+          0.0003143493575989188
+        ],
+        "maximum": [
+          0.0017974890802093726,
+          0.0009853036678369943
+        ],
+        "final": [
+          7.377558541716876e-06,
+          4.6705730200260855e-07
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": true,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [],
+      "raw_torque_ratio": 0.025310792088126685,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 0.0,
+        "rigid_rotation_matrix": 0.0
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 4.345040427156999,
+        "reported_maximum_geometry_step_m": 0.00015444425018423008,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 2.7755575615628914e-17,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1102230246251565e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 5.519999999999614,
+            "last_s": 8.679999999999568,
+            "frames": 159,
+            "sample_span_s": 3.159999999999954
+          },
+          {
+            "first_s": 13.160000000001064,
+            "last_s": 26.979999999995925,
+            "frames": 692,
+            "sample_span_s": 13.819999999994861
+          }
+        ],
+        "maximum_delta": 0.19018551781340293,
+        "max_delta_time_s": 0.22000000000000017,
+        "failed_position_intervals": [],
+        "peak_position_time_s": [
+          0.2600000000000002,
+          3.6939999999998148
+        ]
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 4.544526523617663e-07,
+          "qvel_change_across_sides": 6.648788823751024e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 7.236217103561565e-08,
+          "qvel_change_across_sides": 5.337211055610278e-06
+        }
+      ],
+      "base_translation_range_m": [
+        0.0019948265932617924,
+        0.005206449113925829,
+        0.0005617328775544575
+      ],
+      "actual_domain_margin_rad": 0.03999992823318943,
+      "tracking_max_rad": 0.0006703418246503667,
+      "manifold_max_rad": 6.267341507242528e-07
+    },
+    {
+      "id": "u06",
+      "scene": "drifting",
+      "method": "task_controller",
+      "proposal_seed": 20261021,
+      "new_execution": true,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.057618300692386056,
+          0.037201892123789736
+        ],
+        "p95": [
+          0.1021117326163853,
+          0.2846884296438765
+        ],
+        "maximum": [
+          0.6112227352626511,
+          0.31891511968533526
+        ],
+        "final": [
+          0.0004135216014969969,
+          0.00016183215509211742
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.00014694459447745165,
+          0.0001023016522478964
+        ],
+        "p95": [
+          0.00038723132751991286,
+          0.0004993414017307924
+        ],
+        "maximum": [
+          0.005035268184417475,
+          0.00502318277585584
+        ],
+        "final": [
+          1.242290575740896e-06,
+          2.297632594191205e-06
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": true,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [],
+      "raw_torque_ratio": 0.02521384495347725,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 5.551115123125783e-16,
+        "rigid_rotation_matrix": 2.220446049250313e-16
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 2.000029822073288,
+        "reported_maximum_geometry_step_m": 0.00015819460018183922,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 1.1102230246251565e-16,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1102060839662115e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 13.380000000001138,
+            "last_s": 15.080000000001705,
+            "frames": 86,
+            "sample_span_s": 1.7000000000005677
+          }
+        ],
+        "maximum_delta": 0.8740422351993546,
+        "max_delta_time_s": 13.580000000001204,
+        "failed_position_intervals": [],
+        "peak_position_time_s": [
+          13.554000000001196,
+          3.7079999999998132
+        ]
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 4.6052722576985644e-07,
+          "qvel_change_across_sides": 6.512976553559339e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 5.303651949475213e-07,
+          "qvel_change_across_sides": 8.794345791795707e-07
+        }
+      ],
+      "base_translation_range_m": [
+        0.0018193820385947173,
+        0.005358485977605675,
+        0.0013478471838014917
+      ],
+      "actual_domain_margin_rad": 0.12795529283440366,
+      "tracking_max_rad": 0.0008065593252622738,
+      "manifold_max_rad": 6.24767034218543e-07
+    },
+    {
+      "id": "u07",
+      "scene": "drifting",
+      "method": "diffusion_null_prior",
+      "proposal_seed": 20261021,
+      "new_execution": true,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.08838118000634743,
+          0.04513820182241544
+        ],
+        "p95": [
+          0.10363891683856963,
+          0.2984470306661127
+        ],
+        "maximum": [
+          3.278618949606329,
+          0.4943343525929145
+        ],
+        "final": [
+          0.0006215488434335042,
+          0.000274912181228272
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.0006173003881051964,
+          0.0005073198348771786
+        ],
+        "p95": [
+          0.0005353958838461836,
+          0.0007179320263819685
+        ],
+        "maximum": [
+          0.03592324878502018,
+          0.030031269111951756
+        ],
+        "final": [
+          5.212714969007881e-06,
+          6.940960961349957e-06
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": true,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [],
+      "raw_torque_ratio": 0.025198439623646943,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 5.551115123125783e-16,
+        "rigid_rotation_matrix": 2.220446049250313e-16
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 2.000322355284071,
+        "reported_maximum_geometry_step_m": 0.0002779825758652525,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 2.220446049250313e-16,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1102060839662115e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 5.339999999999634,
+            "last_s": 8.459999999999495,
+            "frames": 157,
+            "sample_span_s": 3.1199999999998607
+          },
+          {
+            "first_s": 12.600000000000877,
+            "last_s": 14.100000000001378,
+            "frames": 76,
+            "sample_span_s": 1.500000000000501
+          },
+          {
+            "first_s": 14.140000000001391,
+            "last_s": 15.400000000001812,
+            "frames": 64,
+            "sample_span_s": 1.2600000000004208
+          },
+          {
+            "first_s": 19.020000000000337,
+            "last_s": 26.979999999995925,
+            "frames": 399,
+            "sample_span_s": 7.959999999995588
+          }
+        ],
+        "maximum_delta": 1.7905124062109263,
+        "max_delta_time_s": 13.620000000001218,
+        "failed_position_intervals": [],
+        "peak_position_time_s": [
+          13.53800000000119,
+          13.636000000001223
+        ]
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 3.6979063897015635e-07,
+          "qvel_change_across_sides": 6.335101443628779e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 6.728542121369613e-07,
+          "qvel_change_across_sides": 9.537112998845958e-06
+        }
+      ],
+      "base_translation_range_m": [
+        0.0018441983893134446,
+        0.005352195034101508,
+        0.0013023693290231298
+      ],
+      "actual_domain_margin_rad": 0.04000000058865494,
+      "tracking_max_rad": 0.00169313133950591,
+      "manifold_max_rad": 6.250566582858934e-07
+    },
+    {
+      "id": "u08",
+      "scene": "drifting",
+      "method": "task_controller",
+      "proposal_seed": 20262021,
+      "new_execution": false,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "reused_from": "artifacts/v7_1/dynamic_handoff_001/u06",
+      "actual_new_steps": 0,
+      "reused_task_exact": true,
+      "reused_initial_exact": true,
+      "reused_robot_exact": true,
+      "reused_trace_hash_exact": true,
+      "reused_metrics_gates_exact": true,
+      "new_independent_replication": false
+    },
+    {
+      "id": "u09",
+      "scene": "drifting",
+      "method": "diffusion_null_prior",
+      "proposal_seed": 20262021,
+      "new_execution": true,
+      "status": "EXECUTION_FAILED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.1846821382060035,
+          0.06254296425543479
+        ],
+        "p95": [
+          0.10503066479010283,
+          0.30936927512919055
+        ],
+        "maximum": [
+          6.753215517492319,
+          1.1214957497660827
+        ],
+        "final": [
+          0.0005617087391605847,
+          0.00016204992430339705
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.0006914830786793059,
+          0.0010353417414411174
+        ],
+        "p95": [
+          0.0005726718518423736,
+          0.0009605270970253065
+        ],
+        "maximum": [
+          0.025312597463515215,
+          0.040043887575969224
+        ],
+        "final": [
+          8.718498787935422e-06,
+          6.442522269714721e-06
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": false,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [
+        "dynamic_position"
+      ],
+      "raw_torque_ratio": 0.025199094167870313,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 5.551115123125783e-16,
+        "rigid_rotation_matrix": 2.220446049250313e-16
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 2.008669157632904,
+        "reported_maximum_geometry_step_m": 0.00029702261175027574,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 2.220446049250313e-16,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1102230246251565e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 5.339999999999634,
+            "last_s": 8.459999999999495,
+            "frames": 157,
+            "sample_span_s": 3.1199999999998607
+          },
+          {
+            "first_s": 12.600000000000877,
+            "last_s": 14.600000000001545,
+            "frames": 101,
+            "sample_span_s": 2.000000000000668
+          },
+          {
+            "first_s": 14.960000000001665,
+            "last_s": 15.440000000001826,
+            "frames": 25,
+            "sample_span_s": 0.4800000000001603
+          },
+          {
+            "first_s": 22.199999999998575,
+            "last_s": 26.979999999995925,
+            "frames": 240,
+            "sample_span_s": 4.779999999997351
+          }
+        ],
+        "maximum_delta": 1.88909691800923,
+        "max_delta_time_s": 13.740000000001258,
+        "failed_position_intervals": [
+          {
+            "first_s": 13.554000000001196,
+            "last_s": 13.910000000001315,
+            "frames": 179,
+            "sample_span_s": 0.3560000000001189
+          }
+        ],
+        "peak_position_time_s": [
+          13.726000000001253,
+          13.842000000001292
+        ],
+        "peak_control_tick_s": 13.720000000001251,
+        "filter_delta_at_peak": 1.8876620865906302,
+        "max_command_deviation_at_peak_rad_s": 0.9108872565410995,
+        "clearance_at_peak_mm": 2.0957234399554157,
+        "causal_conclusion": "Temporal association only; no counterfactual filter removal or alternate controller was run."
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 1.806323371312396e-07,
+          "qvel_change_across_sides": 6.380948805927004e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 8.189528297123522e-07,
+          "qvel_change_across_sides": 1.6828538345768987e-05
+        }
+      ],
+      "base_translation_range_m": [
+        0.0018205909836343898,
+        0.005368856685329738,
+        0.001661469248189727
+      ],
+      "actual_domain_margin_rad": 0.03999999997700521,
+      "tracking_max_rad": 0.001719525304879732,
+      "manifold_max_rad": 6.250647146058275e-07
+    },
+    {
+      "id": "u10",
+      "scene": "drifting",
+      "method": "task_controller",
+      "proposal_seed": 20263021,
+      "new_execution": false,
+      "status": "EXECUTION_VERIFIED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "reused_from": "artifacts/v7_1/dynamic_handoff_001/u06",
+      "actual_new_steps": 0,
+      "reused_task_exact": true,
+      "reused_initial_exact": true,
+      "reused_robot_exact": true,
+      "reused_trace_hash_exact": true,
+      "reused_metrics_gates_exact": true,
+      "new_independent_replication": false
+    },
+    {
+      "id": "u11",
+      "scene": "drifting",
+      "method": "diffusion_null_prior",
+      "proposal_seed": 20263021,
+      "new_execution": true,
+      "status": "EXECUTION_FAILED",
+      "task_same_as_frozen_original": true,
+      "initial_matches_task": true,
+      "initial_id_matches": true,
+      "steps": 13500,
+      "raw_shapes": {
+        "time": [
+          13501
+        ],
+        "qpos": [
+          13501,
+          81
+        ],
+        "qvel": [
+          13501,
+          79
+        ],
+        "ee": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "desired": [
+          13501,
+          2,
+          4,
+          4
+        ],
+        "base": [
+          13501,
+          7
+        ],
+        "q17": [
+          13501,
+          17
+        ],
+        "qref": [
+          13501,
+          17
+        ],
+        "clearance": [
+          13501
+        ],
+        "momentum": [
+          13501,
+          6
+        ],
+        "exchange": [
+          13501,
+          6
+        ],
+        "skeleton_c": [
+          13501,
+          30,
+          3
+        ],
+        "skeleton_r": [
+          13501,
+          6,
+          3
+        ],
+        "ctrl": [
+          13500,
+          67
+        ],
+        "raw_torque": [
+          13500,
+          67
+        ],
+        "integration": [
+          13501,
+          836
+        ],
+        "reference_qd": [
+          13500,
+          17
+        ],
+        "reference_qdd": [
+          13500,
+          17
+        ]
+      },
+      "trace_sha_matches": true,
+      "replay_full_error": 0.0,
+      "integration_initial_exact": true,
+      "integration_time_qpos_qvel_ctrl_exact": true,
+      "max_timestep_error_s": 1.1084883011491797e-15,
+      "all_finite": true,
+      "position_mm": {
+        "mean": [
+          0.21833889497998749,
+          0.06522348498492417
+        ],
+        "p95": [
+          0.10522550242399142,
+          0.30964556850587194
+        ],
+        "maximum": [
+          7.626378337302847,
+          1.268962199695915
+        ],
+        "final": [
+          0.0005262930275393397,
+          0.0002451024937333733
+        ]
+      },
+      "rotation_deg": {
+        "mean": [
+          0.0007576723951477965,
+          0.0010321261172354533
+        ],
+        "p95": [
+          0.0007103056781508713,
+          0.001002966234900208
+        ],
+        "maximum": [
+          0.026953181012691684,
+          0.03971815443367985
+        ],
+        "final": [
+          2.295618166331547e-06,
+          7.453867860838894e-06
+        ]
+      },
+      "metric_max_discrepancy": 0.0,
+      "rotation_metric_max_discrepancy": 0.0,
+      "gates": {
+        "complete_native_time": true,
+        "independent_replay": true,
+        "whole_body_clearance": true,
+        "geometry_step": true,
+        "dynamic_position": false,
+        "dynamic_rotation": true,
+        "relative_hold": true,
+        "joint_limits": true,
+        "derivative_limits": true,
+        "raw_torque": true,
+        "tracking": true,
+        "manifold": true,
+        "momentum": true,
+        "finite": true,
+        "no_hidden_reset": true,
+        "no_external_wrench": true
+      },
+      "gate_mismatches": [],
+      "failed_gates": [
+        "dynamic_position"
+      ],
+      "raw_torque_ratio": 0.02519677813192627,
+      "raw_to_applied_error": 0.0,
+      "world_desired_algebra_errors": {
+        "continuum_position_m": 0.0,
+        "continuum_rotation_matrix": 0.0,
+        "rigid_position_m": 5.551115123125783e-16,
+        "rigid_rotation_matrix": 2.220446049250313e-16
+      },
+      "geometry_saved": {
+        "query_states": 27001,
+        "pair_records": 27001,
+        "native_states_exact": true,
+        "midpoint_max_error": 1.2212453270876722e-15,
+        "aggregate_minimum_error": 0.0,
+        "minimum_mm": 2.003778755126988,
+        "reported_maximum_geometry_step_m": 0.00029431215424769255,
+        "scope": "All saved scan states/minima and quaternion midpoint interpolation checked; frozen scan code/pair policy inspected. No new geometry queries or continuous-time proof."
+      },
+      "filter_audit": {
+        "ticks": 1350,
+        "timestamps_match_native": true,
+        "delta_recompute_error": 2.220446049250313e-16,
+        "filtered_command_ramp_error": 0.0,
+        "qref_integrated_from_ramp_error": 1.1100874993535959e-16,
+        "active_intervals": [
+          {
+            "first_s": 0.1400000000000001,
+            "last_s": 0.3000000000000002,
+            "frames": 9,
+            "sample_span_s": 0.16000000000000011
+          },
+          {
+            "first_s": 5.319999999999636,
+            "last_s": 8.459999999999495,
+            "frames": 158,
+            "sample_span_s": 3.1399999999998585
+          },
+          {
+            "first_s": 12.58000000000087,
+            "last_s": 14.640000000001558,
+            "frames": 104,
+            "sample_span_s": 2.060000000000688
+          },
+          {
+            "first_s": 14.900000000001645,
+            "last_s": 15.480000000001839,
+            "frames": 30,
+            "sample_span_s": 0.5800000000001937
+          },
+          {
+            "first_s": 19.380000000000138,
+            "last_s": 26.979999999995925,
+            "frames": 381,
+            "sample_span_s": 7.599999999995788
+          }
+        ],
+        "maximum_delta": 1.8489407619134013,
+        "max_delta_time_s": 13.820000000001285,
+        "failed_position_intervals": [
+          {
+            "first_s": 13.53800000000119,
+            "last_s": 13.994000000001343,
+            "frames": 229,
+            "sample_span_s": 0.4560000000001523
+          }
+        ],
+        "peak_position_time_s": [
+          13.764000000001266,
+          13.880000000001305
+        ],
+        "peak_control_tick_s": 13.760000000001265,
+        "filter_delta_at_peak": 1.827442312770494,
+        "max_command_deviation_at_peak_rad_s": 0.9069469775815567,
+        "clearance_at_peak_mm": 2.093303317821566,
+        "causal_conclusion": "Temporal association only; no counterfactual filter removal or alternate controller was run."
+      },
+      "transitions": [
+        {
+          "boundary_s": 4.5,
+          "index": 2250,
+          "time_error": 2.7355895326763857e-13,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 2.402157568016233e-07,
+          "qvel_change_across_sides": 7.403729266081127e-06
+        },
+        {
+          "boundary_s": 25.5,
+          "index": 12750,
+          "time_error": 3.254285729781259e-12,
+          "slice_exact": true,
+          "replay_full_integration_slice_exact": true,
+          "base_qpos_change_across_sides": 7.997435906570427e-07,
+          "qvel_change_across_sides": 1.537328070356017e-05
+        }
+      ],
+      "base_translation_range_m": [
+        0.0018338849894522253,
+        0.0053552009496810535,
+        0.0016857357966563802
+      ],
+      "actual_domain_margin_rad": 0.04000000016613825,
+      "tracking_max_rad": 0.0017193541593716888,
+      "manifold_max_rad": 6.250671956841043e-07
+    }
+  ],
+  "neural_reconstruction": {
+    "samples": [
+      {
+        "unit": "u01",
+        "seed": 20261020,
+        "seed_matches": true,
+        "calls": 16,
+        "Z_exact": true,
+        "Z_max_error": 0.0,
+        "DDIM_steps_exact": true,
+        "maximum_update_residual": 2.220446049250313e-16,
+        "condition_dimension": 65,
+        "latent_dimension": 102,
+        "decoded_shape": [
+          19,
+          17
+        ],
+        "raw_Z_dynamic_validation": "NOT_PERFORMED; not MODEL_VALID"
+      },
+      {
+        "unit": "u03",
+        "seed": 20262020,
+        "seed_matches": true,
+        "calls": 16,
+        "Z_exact": true,
+        "Z_max_error": 0.0,
+        "DDIM_steps_exact": true,
+        "maximum_update_residual": 8.881784197001252e-16,
+        "condition_dimension": 65,
+        "latent_dimension": 102,
+        "decoded_shape": [
+          19,
+          17
+        ],
+        "raw_Z_dynamic_validation": "NOT_PERFORMED; not MODEL_VALID"
+      },
+      {
+        "unit": "u05",
+        "seed": 20263020,
+        "seed_matches": true,
+        "calls": 16,
+        "Z_exact": true,
+        "Z_max_error": 0.0,
+        "DDIM_steps_exact": true,
+        "maximum_update_residual": 2.220446049250313e-16,
+        "condition_dimension": 65,
+        "latent_dimension": 102,
+        "decoded_shape": [
+          19,
+          17
+        ],
+        "raw_Z_dynamic_validation": "NOT_PERFORMED; not MODEL_VALID"
+      },
+      {
+        "unit": "u07",
+        "seed": 20261021,
+        "seed_matches": true,
+        "calls": 16,
+        "Z_exact": true,
+        "Z_max_error": 0.0,
+        "DDIM_steps_exact": true,
+        "maximum_update_residual": 2.220446049250313e-16,
+        "condition_dimension": 65,
+        "latent_dimension": 102,
+        "decoded_shape": [
+          19,
+          17
+        ],
+        "raw_Z_dynamic_validation": "NOT_PERFORMED; not MODEL_VALID"
+      },
+      {
+        "unit": "u09",
+        "seed": 20262021,
+        "seed_matches": true,
+        "calls": 16,
+        "Z_exact": true,
+        "Z_max_error": 0.0,
+        "DDIM_steps_exact": true,
+        "maximum_update_residual": 2.220446049250313e-16,
+        "condition_dimension": 65,
+        "latent_dimension": 102,
+        "decoded_shape": [
+          19,
+          17
+        ],
+        "raw_Z_dynamic_validation": "NOT_PERFORMED; not MODEL_VALID"
+      },
+      {
+        "unit": "u11",
+        "seed": 20263021,
+        "seed_matches": true,
+        "calls": 16,
+        "Z_exact": true,
+        "Z_max_error": 0.0,
+        "DDIM_steps_exact": true,
+        "maximum_update_residual": 2.220446049250313e-16,
+        "condition_dimension": 65,
+        "latent_dimension": 102,
+        "decoded_shape": [
+          19,
+          17
+        ],
+        "raw_Z_dynamic_validation": "NOT_PERFORMED; not MODEL_VALID"
+      }
+    ],
+    "audit_inference_calls": 96,
+    "frozen_experiment_calls": 96,
+    "weights_unchanged": true,
+    "new_training_updates": 0,
+    "codec_rank": 6,
+    "condition_scope": "65 = public endpoint condition 48 + initializer terminal delta 17; no complete waypoint/target-motion/obstacle condition."
+  },
+  "denominators": {
+    "unique_executions": 8,
+    "unique_passed": 6,
+    "logical_units": 12,
+    "logical_passed": 10,
+    "shared_baselines": 4,
+    "method_scene": [
+      {
+        "scene": "stationary",
+        "method": "task_controller",
+        "unique_executed": 1,
+        "unique_passed": 1,
+        "logical_passed": 3
+      },
+      {
+        "scene": "stationary",
+        "method": "diffusion_null_prior",
+        "unique_executed": 3,
+        "unique_passed": 3,
+        "logical_passed": 3
+      },
+      {
+        "scene": "drifting",
+        "method": "task_controller",
+        "unique_executed": 1,
+        "unique_passed": 1,
+        "logical_passed": 3
+      },
+      {
+        "scene": "drifting",
+        "method": "diffusion_null_prior",
+        "unique_executed": 3,
+        "unique_passed": 1,
+        "logical_passed": 1
+      }
+    ]
+  },
+  "local_engineering_gate_passed": true,
+  "budget": {
+    "elapsed_s": 344.4529999997467,
+    "inflight": null,
+    "limits": {
+      "TEST": false,
+      "ddim_steps": 16,
+      "dt": 0.002,
+      "duration": 27.0,
+      "expansion": false,
+      "logical_units": 12,
+      "max_bytes": 12884901888,
+      "max_native_replay_steps": 297000,
+      "planned_unique_executions": 8,
+      "proposal_seeds": {
+        "drifting": [
+          20261021,
+          20262021,
+          20263021
+        ],
+        "stationary": [
+          20261020,
+          20262020,
+          20263020
+        ]
+      },
+      "stage": "P2b_original_dynamic_handoff",
+      "steps_each": 13500,
+      "task_seeds": {
+        "drifting": 20261021,
+        "stationary": 20261020
+      },
+      "threads": 1,
+      "training": false,
+      "wall_s": 14400
+    },
+    "native_steps_reserved": 108000,
+    "output_bytes": 1123600576,
+    "replay_steps_reserved": 108000
+  },
+  "status": {
+    "elapsed_s": 345.546999999322,
+    "heartbeat": 1792650260.6755812,
+    "pid": 15036,
+    "progress": {
+      "status": "EXECUTION_FAILED",
+      "unit": "u11"
+    },
+    "report": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\dynamic_handoff_001\\REPORT.md",
+    "stage": "complete",
+    "started_at": 1792649915.124323,
+    "status": "FINISHED_WITH_BLOCKED_ITEMS"
+  },
+  "saved_final_bytes": 1123600908,
+  "paper_claim_audit": "unavailable",
+  "qualification_limit": "Saved execution/replay audit; no new numerical simulation, geometry query, optimizer, training, TEST, resume, or historical physical reaudit."
+}
