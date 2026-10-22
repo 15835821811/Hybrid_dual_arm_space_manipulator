@@ -9,7 +9,7 @@
 |static_fullchain_002|CLOSED_PARTIAL|三障碍6/6单元执行重放，五障碍0/6；60提案、23完整验证、1预算未决、36仅筛选，12合格6实际执行|
 |dynamic_reference_001|CLOSED_PARTIAL|4/4参考、3/4真实执行，四次完整重放差0；t00仅实际加速度失败。108000步，未新增TRAIN或训练|
 |dynamic_margin_001|CLOSED_LOCAL_PASS|1新执行通过+3精确历史复用，组合4/4；实际加速度0.970613倍原限；旧失败保留|
-|P2b动态DEV交接|IMPLEMENTING|修复组合4/4，独立审查局部PASS；原2任务×3噪声×2方法，基线共享；预算297000新步|
+|P2b动态DEV交接|RUNNING|修复组合4/4，独立审查局部PASS；原2任务×3噪声×2方法，基线共享；预算297000新步|
 |P3时序候选|QUEUED|原32TRAIN/8VAL资格；一个候选，数据不足则BLOCKED|
 |P4整链开发验收|QUEUED|最多30执行，五障碍与完整连续组合仍缺|
 
@@ -22,3 +22,5 @@
 修复实际76.985秒/27000新步，完整状态重放差0，完成resume仅一次46文件不变。零训练/扩库/DEV/TEST；五障碍与长期学习目标仍未完成。
 
 新review已完成：20261022_dynamic_margin_run01，局部P2a yes/PASS，整体partial/high，C2未评估；不预判P2b。
+
+P2b dynamic_handoff_001源码549c4a2e已实际后台启动；168源码/86输入，两原任务身份精确。12逻辑单位、最多8独特执行+4精确共享，1线程/4h/12GiB/297000步上限；网络6×16完整DDIM，无训练。新baseline观测补齐完整中间状态，不把共享算独立重复。P2a收尾a10cb8dd。
