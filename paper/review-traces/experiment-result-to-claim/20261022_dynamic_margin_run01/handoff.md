@@ -1,0 +1,15 @@
+# Reviewer handoff
+
+Independent judgment completed: local P2a PASS; overall claim_supported partial; high confidence for the bounded check; C2 not evaluated; downstream paper writing provisional because PAPER_CLAIM_AUDIT is absent.
+
+Wrote only this trace directory: exact task prompt, hashed input inventory, raw reviewer response, structured verdict, routing, local findings note, read-only audit script, console record and computed evidence. The explicit “only this trace” task scope takes precedence over the skill's default request to append project-root findings; the executor can consume this completed verdict into project notes. No frozen code, run artifact or original failure was edited.
+
+Validation used SHA256, complete array comparisons, per-span polynomial extrema, objective/stationarity algebra, original limits, saved-control/full-state equality, world-reference reconstruction, URDF forward transforms and conservative mesh displacement bounds at every saved native/midpoint state. No project module was imported, and no simulator, model compiler, optimizer, training, resume or DEV/TEST operation was invoked. Historical physical auditing was not repeated; old references/identities/initial arrays/results and native/replay file hashes were used strictly for reuse eligibility.
+
+An initial local audit serialization failed on a NumPy Boolean; serialization was fixed inside this trace and rerun. The geometry algebra was then strengthened to include every saved midpoint directly rather than infer midpoint geometry motion from endpoint transforms. These were read-only audit reruns, with zero new physical or optimization work. Final audit completed successfully and all requested checks support the local gate.
+
+Key numbers: 168 source hashes, 151 input hashes, old 166 source hashes and all 64 old artifact bindings match. t00 planner/native acceleration ratios 0.970608708096 / 0.970613193346, world position maxima 0.231939 / 0.675595 mm, minimum clearance 4.849672 mm, full replay difference zero. Three historical reuses qualify exactly. New physical/replay steps 27000; monitor time 76.985 s; saved run bytes 146201093.
+
+Scope limitations: saved geometric distances come from the inspected frozen verifier; they were not recalculated with a second distance engine. The independent 154-geometry sampled displacement bound is 0.239990 mm, and neither it nor the original 2 mm sampling rule is a continuous-time collision certificate. CPU thread evidence is a source/launch cap, not OS utilization telemetry. The reviewed source archive/manifest, not a clean-tree assumption, is authoritative. Generalization, complete C1, P2b and C2 remain open.
+
+Remaining executor actions: consume this review without changing its scope; preserve five cumulative attempts and the old failure; retain the already performed no-work resume/hash closeout; complete reporting/commit according to the authorized workflow. Any subsequent P2b protocol/reuse plan requires its own exact identity qualification and original 12-unit accounting under 297000 new steps.
