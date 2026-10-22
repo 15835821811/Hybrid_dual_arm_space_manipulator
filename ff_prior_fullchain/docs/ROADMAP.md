@@ -104,3 +104,7 @@ M1失败时，本轮训练/VAL/DEV仍BLOCKED；不得放行。收尾后把这个
 ## P1实际交接更新：2026-10-22
 
 static_fullchain_001在34.844秒因原子输出长路径中断，原58文件与源码保留，独立review C1/C2均no（未产生完整物理/性能证据）。不resume未知工作。独立修复static_fullchain_002已实际启动，源码8d3d562a；短ID与实际221字符路径写读验证，12软件检查通过。扣除旧失败预留后仍在P1原总预算内。当前唯一本轮重worker由control/status核验，健康时静默。002终态需新的独立review，不能借用001故障审查。之后按原路线继续P2。
+
+## P1完成与P2a交接
+
+2026-10-22：002完成并独立审查C1 partial、C2局部精度partial。真实60/24/23/12/6提案/选中/完整认证/合格/执行，另1预算未决；三障碍实际6/6执行重放，五障碍0合格。完整报告ff_prior_static_fullchain_v2/docs/ANALYSIS.md。当前推进P2a独立受约束参考，协议ff_prior_dynamic_reference/docs/EXPERIMENT_PLAN.md。上文“002运行中”“P1准备”等保留为历史交接，实时状态以control.json为准。暂不追加P1试验，保留五障碍缺口与原总预算内一次机制修复机会。未来P2b仍须另冻准确任务/模型/种子，不能将本次4TRAIN验证冒充动态DEV完成。

@@ -1,0 +1,105 @@
+{
+  "status": "PASS",
+  "check_count": 4211,
+  "errors": [],
+  "source_files": 173,
+  "binding_files": 7,
+  "network_inference_reconstructions": 30,
+  "network_inference_calls": 480,
+  "network_max_difference": 0.0,
+  "candidate_count": 60,
+  "repair_iteration_count": 251,
+  "callbacks": {
+    "all": 38050,
+    "restored": 28471,
+    "infeasible_raw": 28471
+  },
+  "execution_count": 6,
+  "total_native_and_replay_steps": 165000,
+  "counts": {
+    "structured_geometry|prepare_scale|1.0": 30,
+    "structured_geometry|selected": 12,
+    "structured_geometry|eligible": 6,
+    "diffusion_geometry|prepare_scale|1.0": 30,
+    "diffusion_geometry|selected": 12,
+    "diffusion_geometry|eligible": 6,
+    "structured_geometry|partial_iteration_no_record": 1
+  },
+  "method_stats": {
+    "structured_geometry": {
+      "proposals": 30,
+      "selected_validated": 11,
+      "qualified": 6,
+      "raw_position_worst_arm_mm": {
+        "n": 30,
+        "mean": 127.75199421123503,
+        "median": 127.75199421123506,
+        "p95": 127.75199421123506,
+        "max": 127.75199421123506
+      },
+      "prepared_position_worst_arm_mm": {
+        "n": 30,
+        "mean": 127.73756387874259,
+        "median": 127.75199153932526,
+        "p95": 128.87477043893307,
+        "max": 128.96488496129388
+      },
+      "validated_position_worst_arm_mm": {
+        "n": 11,
+        "mean": 18.06494991347323,
+        "median": 3.9853601945044232,
+        "p95": 38.91604240793546,
+        "max": 39.43013706753946
+      },
+      "executed_hold_position_worst_arm_mm": {
+        "n": 3,
+        "mean": 2.5770164597946716,
+        "median": 2.344670455237554,
+        "p95": 3.6588004906081393,
+        "max": 3.804814938982649
+      },
+      "coupled_calls": 39589
+    },
+    "diffusion_geometry": {
+      "proposals": 30,
+      "selected_validated": 12,
+      "qualified": 6,
+      "raw_position_worst_arm_mm": {
+        "n": 30,
+        "mean": 100.57705798882448,
+        "median": 95.48266035125314,
+        "p95": 127.16964496621269,
+        "max": 128.91908629580257
+      },
+      "prepared_position_worst_arm_mm": {
+        "n": 30,
+        "mean": 100.51023497291125,
+        "median": 95.99977368354034,
+        "p95": 127.42489467758638,
+        "max": 128.91908511258006
+      },
+      "validated_position_worst_arm_mm": {
+        "n": 12,
+        "mean": 24.160623525940334,
+        "median": 20.180684193664433,
+        "p95": 58.96806536107502,
+        "max": 66.82570337630273
+      },
+      "executed_hold_position_worst_arm_mm": {
+        "n": 3,
+        "mean": 0.07890092305276285,
+        "median": 0.05460553405472755,
+        "p95": 0.13431201647875002,
+        "max": 0.14316829230364142
+      },
+      "coupled_calls": 42845
+    }
+  },
+  "paper_claim_audit_exists": false,
+  "limitations": [
+    "No new simulation, kinematics, geometry query, optimizer solve, optimizer.step, training or resume.",
+    "Public initializer algebra uses saved public Jacobian and initial endpoint poses; the Jacobian mass/kinematics were source-inspected but not regenerated.",
+    "Geometry minima are reconciled from recorded scan arrays; geometry engine distances are not recomputed.",
+    "Replay is reconciled from saved independent replay arrays and source, not newly simulated."
+  ]
+}

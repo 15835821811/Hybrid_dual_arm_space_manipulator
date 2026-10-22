@@ -1,25 +1,19 @@
 # Experiment Tracker：持续工程全链路
 
-更新2026-10-22T10:59:51。P0已完成负结果收尾，P1已实际启动，源码25b98dd6；统一status核对PID创建时间和心跳。
+更新2026-10-22。P1第二轮真实结束并完成新独立审查；P2a独立实现已冻结，等待源码提交后启动。长期工程目标ACTIVE，P1五障碍未通过；科学收益单列。
 
-|Run ID|Milestone|Purpose|System|Split|Status|Notes|
-|---|---|---|---|---|---|---|
-|preserve323_bounded_001|P0|旧功能保持与独立检查|冻结低102/细节221|固定TRAIN|CLOSED_NEGATIVE|902.969秒；32J通过、64临时更新、0接受、fit/check各8/32；新review partial/high；2022文件完成resume不变|
-|preserve323后续|P0|6000候选/无引导/DEV|未训练|VAL/DEV|BLOCKED_NOT_RUN|保持原冻结门；无新力矩执行|
-|static_fullchain_001|P1|公开任务到静态避障执行|先验+几何规划/结构对照|原APPLICATION_DEV|FAILED_DEPLOYMENT|34.844秒，第一单元写入原子临时文件失败；inflight未知工作保留，不resume、不作性能结论|
-|动态表示及交接（待冻结）|P2|加速度保真、连续状态跟踪|受约束参考+合法反馈|既有TRAIN/动态DEV|QUEUED|不依赖Diffusion相对优势|
-|时序学习（待冻结）|P3|任务条件完整采样|一候选/确定性序列|既有合格TRAIN/VAL|QUEUED_DEPENDENCY|无扩库、无DEV训练|
-|开发整链验收（待冻结）|P4|避障接近到移动追踪|最终冻结系统|开发套件|QUEUED_DEPENDENCY|最终TEST未启动|
+|Run|阶段|真实状态|证据与限制|
+|---|---|---|---|
+|preserve323_bounded_001|P0|CLOSED_NEGATIVE|3e659ce4已收尾，禁止重复resume/审计|
+|static_fullchain_001|P1|CLOSED_DEPLOYMENT_FAILURE|旧长路径故障，未知调用保留，不resume|
+|static_fullchain_002|P1|CLOSED_PARTIAL|60提案、24修正、23最终认证、1预算未决、36仅初筛；12合格，6实际执行重放通过；三障碍6/6单元，五障碍0/6且未执行|
+|dynamic_reference_001|P2a|FROZEN_NOT_STARTED|原4TRAIN来源，C2样条受约束重建，27秒/原门，最多4执行重放；3数值软件测试通过不等于物理通过|
+|动态DEV交接|P2b|QUEUED_DEPENDENCY|P2a通过后另冻原动态任务/12执行上限|
+|时序候选|P3|QUEUED_DEPENDENCY|现有32TRAIN/8VAL逐条认证；单候选，数据不足可BLOCKED，不扩库|
+|固定整链开发验收|P4|QUEUED_DEPENDENCY|五场景、最多30执行；静态五障碍仍缺，不能提前通过|
 
-科学判决、软件完成、模型数据资格和真实执行分开。仅一个ACTIVE持续heartbeat；旧局部目标完成后替换为长期工程目标，不能把此处局部完成当作科学优势成立。
+P1新review：paper/review-traces/experiment-result-to-claim/20261022_static_fullchain_v2_run01/verdict.json。C1 partial/high；C2 partial/medium仅三障碍执行精度，成功率优势no。三种子保持段最坏臂位置均值2.577016→0.078901mm；五障碍11完成验证全部终点失败，8同时碰撞。251完整修正记录中226内层SLSQP未报告success，不能写成收敛。4211+39只读核对通过，未重跑物理。
 
+完成resume仅一次：2476核心文件不变、exit0，stdout因编码捕获失败未保存，收据如实记录。报告ff_prior_static_fullchain_v2/docs/ANALYSIS.md。没有新训练、TRAIN新增或TEST；6未执行合格路径只模型级，6实际执行才执行级。
 
-目标与调度交接：P0收尾提交3e659ce4；旧局部卡已完成、新长期卡active；同一automation保持ACTIVE每15分钟，P1实施准备，未启动新重worker。终端next指向IMPLEMENT_AND_FREEZE_NEXT_PHASE。
-
-P1本轮输入冻结hash：516b5d1373a003dbce90739f621203bc1fe50032d8a2bc5be7c4c4fad2675079。没有读取旧00/07解作为规划输入；未运行新物理时不记通过。
-
-P1启动回执：ff_prior_static_fullchain/evidence/launch_receipt.json。启动时PID及创建时间核验通过；初始状态已进入dense_feedback_search。运行中不分析中间结果，终态后一次独立审查/收尾，再推进P2。
-
-|static_fullchain_002|P1独立部署修复|短目录与实际路径写读验证|同公开两方法/同目标种子|APPLICATION_DEV|RUNNING|源码8d3d562a，实际PID/创建时间核验通过；12项软件检查通过，最长221字符；旧失败预留13000耦合扣减，新147000上限；原物理门保持|
-
-当前仅static_fullchain_002重worker；首轮001源及58文件保留、不resume，独立部署故障审查另列。当前后台结果未完成，不读取中间结果或提前宣布资格/收益。
+控制文件与运行status为实时事实，不以本表排队状态代替运行状态。P1缺口不阻断独立P2；同瓶颈至多一次机制修复、消耗仍计原总预算。唯一持续heartbeat保留，不在局部收尾时暂停。

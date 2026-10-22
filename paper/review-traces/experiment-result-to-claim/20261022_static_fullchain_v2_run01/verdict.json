@@ -1,0 +1,59 @@
+{
+  "experiment": "artifacts/v7_1/static_fullchain_002",
+  "review_role": "fresh independent paper architect/reviewer",
+  "claim_supported": "partial",
+  "confidence": "medium",
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "writing_verdict": "provisional — no paper claim audit available",
+  "engineering_static_gate": false,
+  "C1": {
+    "claim_supported": "partial",
+    "confidence": "high",
+    "what_results_support": "原三障碍开发场景的公开输入→完整323修正→原生67力矩→独立重放工程可行性，6/6冻结单元实际执行通过。",
+    "what_results_dont_support": "两个原3/5障碍场景均完成，五障碍成功，鲁棒性、未见泛化、动态交接、接触或硬件。",
+    "missing_evidence": "五障碍至少一条合格原生执行及重放；本轮0合格且0实际执行。",
+    "suggested_claim_revision": "完整系统在原三障碍开发场景的三个配对种子取得执行重放成功；五障碍仍未通过。",
+    "next_experiments_needed": "P2可独立推进；同P1瓶颈若重做最多一次机制明确修复，冻结新身份与原总预算，不进行无限扫参。"
+  },
+  "C2": {
+    "claim_supported": "partial",
+    "confidence": "medium",
+    "success_rate_advantage": "no",
+    "general_relative_advantage": "no",
+    "descriptive_three_obstacle_execution_precision": "supported",
+    "what_results_support": "三障碍三个配对种子的完整方法保持段双臂最坏位置误差均下降，均值2.577016→0.078901mm。",
+    "what_results_dont_support": "提高认证产出/执行成功率、五障碍改善、整体误差尾部/统计显著性/网络独立绕障/计算优势。",
+    "missing_evidence": "跨场景独立重复与包含失败/预算未决的完整分布；n=3不是稳健尾部证据。",
+    "suggested_claim_revision": "冻结上限下，两方法合格率和执行单元通过率相同；Diffusion初始化完整系统在三障碍已执行子集显示更小终点误差。",
+    "next_experiments_needed": "先收尾并缩窄陈述；若研究泛化收益须另冻协议和样本，不据本轮追加训练或扫参。"
+  },
+  "denominators": {
+    "proposals": 60,
+    "selected_for_repair": 24,
+    "fully_validated": 23,
+    "budget_unresolved": 1,
+    "screen_only": 36,
+    "qualified": 12,
+    "frozen_execution_units": 12,
+    "actual_executed": 6,
+    "execution_verified": 6
+  },
+  "audit": {
+    "main_checks": 4211,
+    "supplement_checks": 39,
+    "status": "PASS_WITH_SCOPE_LIMITS",
+    "network_outputs_exact": 30,
+    "complete_iteration_records": 251,
+    "source_files": 173,
+    "binding_files": 7,
+    "complete_native_replay_pairs": 6
+  },
+  "routing_action": "narrow/supplement C1; descriptive-only C2 endpoint finding; proceed independent P2; no confirmed full-claim writing",
+  "unverified": [
+    "No new geometry/physics/FK/mass/Jacobian recalculation or replay.",
+    "No old training/old07 provenance audit; only frozen metadata and current runtime path source inspected.",
+    "No KKT/optimizer global convergence proof.",
+    "Completed resume stdout unavailable; unchanged history relies on executor receipt with independently matched current manifest."
+  ]
+}
