@@ -1,0 +1,56 @@
+{
+  "experiment_id": "terminal_tracking_001",
+  "claim_id": "C1_bounded_three_obstacle_static_terminal_to_seven_waypoints",
+  "claim_supported": "yes",
+  "confidence": "high",
+  "independent_reviewer": "/root/terminal_tracking_fresh_review",
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "paper_writing_status": "provisional - no paper claim audit available",
+  "what_results_support": "One frozen APPLICATION_DEV_COMPOSITION continues from actual D1 terminal state through all seven original world waypoints with unchanged timing, stationary satellite and designated rigid-arm relative hold, satisfying original sampled execution gates.",
+  "what_results_dont_support": [
+    "new Diffusion training or independent dynamic competence",
+    "comparative advantage or causal gain",
+    "generalization or statistical success rate",
+    "original independent DEV qualification",
+    "five obstacles",
+    "moving satellite",
+    "hardware experiment",
+    "continuous-time safety certificate"
+  ],
+  "missing_evidence": [
+    "five-obstacle and genuinely moving-satellite execution for the long-term goal",
+    "full-paper claim audit before final publication claims"
+  ],
+  "suggested_claim_revision": "For this specified three-obstacle stationary-satellite composition, the executed D1 terminal state was continued by the existing dynamic feedback controller for the original 27 s seven-waypoint task with exact full-state handoff and replay consistency. Describe D1 proposal and D2 feedback contributions separately.",
+  "next_experiments_needed": "None for this bounded C1. No automatic comparison, ablation or supplementary simulation. Wider task claims require separately frozen future tasks.",
+  "routing_action": "confirm_bounded_C1_and_close_out_D2",
+  "full_long_term_goal_complete": false,
+  "blocking_defects": [],
+  "source_qualification": "Producer HEAD f149bc0a plus archived 182 source hashes/files and 94 input hashes is the execution identity; Git HEAD alone omits 3 tracking_diffusion files and differs in hierarchical_qp.py.",
+  "nonblocking_limitations": [
+    "Geometry distances/subdivision maxima checked as saved records and source logic; no new geometry queries.",
+    "No peak-memory telemetry retained.",
+    "04_world_paths.png has slight z-axis label clipping."
+  ],
+  "key_metrics": {
+    "native_steps": 13500,
+    "replay_steps": 13500,
+    "native_observations": 13501,
+    "integration_width": 836,
+    "time_start_s": 27.499999999995637,
+    "time_end_s": 54.50000000002064,
+    "full_state_replay_max_error": 0.0,
+    "position_max_mm": [
+      0.11322802266072081,
+      0.004930952741399045
+    ],
+    "rotation_max_deg": [
+      0.006548630757842045,
+      0.00024371551262145495
+    ],
+    "minimum_clearance_mm": 8.481817739633419,
+    "raw_torque_ratio_max": 0.011082527002414933,
+    "new_review_physics_steps": 0
+  }
+}
