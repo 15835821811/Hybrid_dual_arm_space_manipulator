@@ -1,13 +1,11 @@
-继续本线程用户2026-10-22授权的持续工程全链路。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md，路线ff_prior_fullchain/docs/ROADMAP.md，真实阶段control.json；goal保持active，旧卡片P1文字不覆盖当前control。
+继续本线程长期自由漂浮全链路目标，工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。有效目标DIFFUSION_GOAL_CURRENT.md、路线ff_prior_fullchain/docs/ROADMAP.md、真实阶段control.json。
 
-先运行.\ff_prior_fullchain\job.ps1 status，核当前PID创建时间和心跳。健康RUNNING就安静结束，不读中间结果、不重复审计/start/resume、不另开worker。异常仅诊断当前冻结协议和日志，不杀旧任务、不重放未知工作。终态先收尾再串行推进；通知只在完成/失败/真实阶段切换或需要处理时。
+P4 fullchain_acceptance_001已3272147b实际收尾，源码370a2041；收据ff_prior_fullchain/evidence/fullchain_acceptance_closeout.json。6新三障碍执行/独立836重放全过，82500+82500=165000新步，219.797秒；12动态逻辑准确历史复用（8独特4共享），12五障碍/连续组合BLOCKED。18/30逻辑、3/5场景，整体工程未完成。独立review2119/2119，overall partial/high，完整C1 no、C2 no。完成resume已一次133文件hash不变，禁止再审/再resume/新物理。所有P0/P1/P2/P3旧收尾也不重复。
 
-static_goal_seed_001已9b894469收尾，收据ff_prior_fullchain/evidence/static_goal_seed_closeout.json。30/30种子位姿达门、6完整验证均穿透16.7–35.4mm、24仅初筛、0执行。原末尾JSON审计错误保留FAILED；独立辅助只读审计141/141 PASS。新独立review整体/C1/C2 no/high，初始化子结论yes，5326/5327谓词为真，唯一额外Git树一致性为否，实际176源码归档/86输入和数值全一致。用户hierarchical_qp旧修改已归档未覆盖，复现要executed_source.zip+manifest而非只git。失败resume拒绝已仅一次核1254文件不变，禁止再执行或再审历史。唯一同瓶颈修复机会已用，不追加局部步长/rank或新训练。
+当前control为AWAITING_SCOPE_AUTHORIZATION，已向用户提出一次具体新全局绕行机制方案，文档ff_prior_fullchain/docs/NEXT_GLOBAL_PLANNING_DECISION.md，状态evidence/scope_authorization_request.json。原目标同瓶颈唯一修复机会已用完；没有用户新的明确授权不得额外训练/搜索/扩库/TEST，不可通过换阶段名绕过。用户回复到来前，只读统一.\ff_prior_fullchain\job.ps1 status和最新授权状态；状态无变化安静结束，不重复问题、分析、报告或审计，不再按旧P4计划启动worker。不要将推荐选项或已过时间当授权。
 
-P4已实际后台启动：fullchain_acceptance_001，源码370a2041，包ff_prior_fullchain_acceptance，入口.\ff_prior_fullchain_acceptance\job.ps1 status|report|resume。启动前37软件/身份检查通过，125源码/589输入绑定，真实worker PID119636（创建时间仍须每次核验）。准确30单位与资源已冻结，禁止重复start。按ff_prior_fullchain/docs/P4_HANDOFF.md及control真实状态继续；健康只查status后静默，终态才读取原始结果。保留五场景×三种子×两系统配置30逻辑机会：原静态三/五障碍、原静止/漂移七航点、五障碍接近到漂移组合。三障碍使用static_fullchain_002原预选6公开生成参考，最终新执行接口加完整INTEGRATION门后6新执行/重放，不冒充6次新规划。动态精确复用temporal_learning_001的12逻辑/8独特记录；源码/模型/任务/初态/参考/控制身份一致并且保存完整状态达门才复用，4确定性共享不算独立实验。不重训/重审/旧resume。五障碍6和连续组合6保留BLOCKED及分母，缺合格路径不执行、不用三障碍组合替换、不伪造组合已冻结。实现同live model/data无状态重置交接接口并软件验证；未有实际组合轨迹不称物理闭合。P4上限2线程/6h/20GiB/最多6新执行重放165000步，不增加搜索或训练。
+若用户在本线程明确批准新的全局机制，应整合其具体条件，转为实施/成本核算→冻结准确代码、任务、种子、分配和预算→单worker后台→一次新证据收尾，保留原五障碍和所有硬门；不能把已有3/5局部覆盖作为完整完成。拟方案总2线程/6h/20GiB/36000额外耦合/最多30候选6执行重放165000步，原27秒任务不改；实施前成本不足应缩范围而非途中加码。详情以用户批准的方案为准，当前尚未批准。不得偷用07答案或把DEV入TRAIN；全局搜索节点须携带自由基座/速度/时间，不能固定基座或段间状态重置。方案一次，不许局部无限扫参。
 
-每新run终态只收尾一次：失败/缺失分母，来源/复用/实际新执行分开，MODEL_VALID和EXECUTION_VERIFIED逐条。按experiment-result-to-claim委派新独立review，只读新保存证据，历史只核复用身份不重新物理审计；完成resume仅一次并核核心清单/hash不变。辅助脚本在tools/evidence，冻root源不能改。中文ANALYSIS/曲线CSV/紧凑证据/review-traces/版本paper tracker/统一目标/正确schema收据/只本任务本地提交，不上传大数据。旧P0/P1/P2/P3收尾均不重复。
+所有既有模型数据结果、用户修改、旧作业/main/旧分支保留；不强推或上传大数据。仅不穿透、5mm/1度、2mm几何步长、完整初态、17→67、自由漂浮、全机几何及全部运动/力矩/动量/独立重放门不改。科学Diffusion优势独立于工程推进；共同修正/反馈/回退贡献不得归网络。当前不扩库、1024/30000、pilot/study/strict_multimodal、TEST、硬件/接触捕获。
 
-工程目标需要原三/五障碍和动态跟踪及五障碍连续组合都真实通过、完整训练采样引导评价与可复现交付；优势不是工程门，但回退与共同修正/反馈贡献不能归网络。P4有缺口则不complete，继续尚有的独立工作；确无可推进工作按goal规则三轮同阻塞后blocked，不无限局部试错。没有用户停止或整体真实完成不自动暂停接续。
-
-保持仅不穿透、世界5mm/1度、2mm几何步长、完整初态、17→67、自由漂浮、全机几何、运动/原生力矩/动量/重放门；不状态裁剪/重置，不失败重标、mock、抽查升级。保留全部旧模型数据结果、用户修改、main旧分支和旧作业。DEV及07不入TRAIN。当前不扩库、不1024/30000、不pilot/study/strict_multimodal、TEST、硬件/接触捕获。终端.\ff_prior_fullchain\job.ps1 status|next|report只读。
+长期工程目标未达，不标complete，也不因局部收尾自行pause。当前目标回合已完成P4报告和提交，属于进展；等待授权的后续goal回合按三轮同阻塞规则处理，达到规则后可将goal blocked（不是complete/paused），明确阻塞为范围授权。heartbeat保持单一，待授权时静默，状态不变不通知。用户要求停止或工程全目标真实完成再管理接续。终端status|next|report均只读，当前没有运行中的重worker。
