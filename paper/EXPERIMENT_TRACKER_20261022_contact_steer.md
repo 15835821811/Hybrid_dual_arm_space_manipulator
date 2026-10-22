@@ -1,6 +1,6 @@
 # 原五障碍碰撞反馈修复
 
-日期：2026-10-22。阶段：IMPLEMENTED_AND_SOFTWARE_CHECKED；后台尚未启动。实验结果未发生，不写通过。
+日期：2026-10-22。阶段：RUNNING；后台已实际启动，生产源码73be5249。实验结果待定，不写通过。
 
 包 ff_prior_contact_steer，拟独立输出 artifacts/v7_1/contact_steer_001。协议 ff_prior_contact_steer/docs/EXPERIMENT_PLAN.md。13项软件/资源检查通过，0物理执行。206来源文件绑定；三原种子组各复用一个公开模型前缀：u00/candidate00/node132、u01/candidate03/node146、u02/candidate04/node131；准确根到父完整链、采样种子和初态由selection/binding冻结。
 
