@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "goal_id": "free_floating_fullchain_20261022",
+  "goal_status": "ACTIVE_DEVELOPMENT",
+  "current_phase": "P1_static_fullchain",
+  "active_run": "artifacts/v7_1/preserve323_bounded_001",
+  "active_module": "ff_prior_preserve323.job",
+  "active_protocol": "ff_prior_preserve323/docs/EXPERIMENT_PLAN.md",
+  "active_report": "ff_prior_preserve323/docs/ANALYSIS.md",
+  "active_closeout_receipt": "ff_prior_fullchain/evidence/preserve323_closeout.json",
+  "active_source_commit": "d5e1b7c5",
+  "heartbeat_stale_seconds": 180,
+  "next_phase": "P1_static_fullchain",
+  "automation_id": "automation",
+  "app_goal_transition": "REPLACE_ONLY_AFTER_CURRENT_BOUNDED_OBJECTIVE_ACTUALLY_CLOSED",
+  "autonomous_scope": "serial bounded development, implementation, training, simulation execution, replay and reporting",
+  "allow_dataset_expansion": false,
+  "allow_final_TEST": false,
+  "allow_physics_relaxation": false,
+  "allow_parallel_physics_workers": false,
+  "allow_hardware_or_contact_capture": false,
+  "phases": [
+    {
+      "id": "P0_preserve323_closeout",
+      "status": "CLOSED_NEGATIVE_RESULT",
+      "purpose": "Finish current frozen experiment without changing its gates or source."
+    },
+    {
+      "id": "P1_static_fullchain",
+      "status": "IMPLEMENTATION_PREPARED_NOT_LAUNCHED",
+      "purpose": "Generate and execute obstacle-avoiding capture approaches from public task inputs in the original three/five-obstacle scenes."
+    },
+    {
+      "id": "P2_dynamic_representation_tracking",
+      "status": "QUEUED",
+      "purpose": "Repair constrained dynamic representation and connect the existing valid tracking controller without state resets."
+    },
+    {
+      "id": "P3_temporal_diffusion_integration",
+      "status": "QUEUED",
+      "purpose": "Train and evaluate one time-conditioned planner using eligible existing TRAIN/VAL; report the network contribution separately."
+    },
+    {
+      "id": "P4_development_acceptance",
+      "status": "QUEUED",
+      "purpose": "Freeze and run the integrated development suite, independent review and reproducible delivery; TEST remains unstarted."
+    }
+  ],
+  "active_run_role": "last_completed_run_pending_next_stage_freeze"
+}

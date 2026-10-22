@@ -1,0 +1,54 @@
+{
+  "experiment_id": "preserve323_bounded_001",
+  "review_role": "fresh independent paper architect/reviewer",
+  "claim_supported": "partial",
+  "confidence": "high",
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_label": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "C1": {
+    "claim_supported": "partial",
+    "supported": "Frozen low102 functionality, held-out adaptation exclusion, real detail proposals, fit qualification preservation for three rejected scales, and rollback are verified.",
+    "not_supported": "No accepted adaptation or demonstrated mitigation of regression with improvement. Independent check is baseline identity after rollback, not updated-candidate generalization."
+  },
+  "C2": {
+    "claim_supported": "no",
+    "evidence_status": "NOT_TESTED_DUE_TO_M1_BLOCK",
+    "interpretation": "No formal candidate training, VAL, DEV, or new execution result exists; this is absent evidence, not measured downstream failure."
+  },
+  "what_results_support": "189 source and 19222 frozen-input hashes match; 32 saved Jacobians pass independent reconstruction; first/last saved VJP and manual AdamW match exactly; 64 sampled low outputs match old DDIM; 192 raw controls reproduce exactly; all three fit scales retain 8/8 protected outputs, but none passes acceptance; retained state equals initialization.",
+  "what_results_dont_support": "Useful accepted adaptation, check-pool generalization of an updated candidate, no-regression across unprotected strata, isolated causal benefit of protection, new execution certification, unguided VAL/DEV gain, or engineering full-chain completion.",
+  "missing_evidence": [
+    "An accepted updated candidate meeting the frozen M1 gates",
+    "Independent check outcomes for an updated candidate",
+    "Formal 6000-update candidate and frozen VAL/DEV comparisons",
+    "Nonempty qualified protection evidence in complex strata and fit large-motion stratum",
+    "Per-task native67 execution and independent replay for the engineering chain",
+    "Paper claim audit"
+  ],
+  "suggested_claim_revision": "The bounded diagnostic preserved old low-dimensional sampling functionality and rejected all three insufficient proposals while preserving fitted qualified outputs; it restored the original state and did not establish adaptation, generalization, or execution gains.",
+  "routing_action": "pivot",
+  "next_experiments_needed": [
+    "Close this frozen bounded run without gate changes or further local hyperparameter sweeps.",
+    "Under a separately versioned engineering protocol, integrate static obstacle planning, full-state 17-to-67 execution, native torque validation and independent replay, then dynamic waypoint tracking. Gains are not a prerequisite for that new engineering objective.",
+    "If learning is revisited, first test a mechanism-level parameterization with adequate endpoint authority; the saved normalized Jacobians suggest very weak detail-coordinate endpoint sensitivity."
+  ],
+  "numerical_summary": {
+    "fit_qualified_baseline": "8/32",
+    "fit_qualified_each_trial": "8/32",
+    "fit_qualified_retained": "8/32",
+    "check_qualified_baseline_and_final": "8/32",
+    "proposal_mean_Q_improvements_percent": [0.42702721716793013, 0.09115155835197619, 0.027664913061142826],
+    "required_proposal_mean_Q_improvement_percent": 1.0,
+    "accepted_proposals": 0,
+    "temporary_updates": 64,
+    "Jacobians": 32,
+    "coupled_calls": 21312,
+    "new_native_physics_steps": 0,
+    "retained_weight_max_delta": 0.0,
+    "detail_to_low_J_Frobenius_ratio_median": 0.0006083370004904263
+  },
+  "evidence_checks": ["independent_saved_check.json", "neural_control_check.json"],
+  "review_limit": "Saved-data verification only; no physics simulation, existing audit, optimizer.step, training, or resume invoked."
+}
