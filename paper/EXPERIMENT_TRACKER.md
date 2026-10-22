@@ -10,7 +10,7 @@
 |dynamic_reference_001|CLOSED_PARTIAL|4/4参考、3/4真实执行，四次完整重放差0；t00仅实际加速度失败。108000步，未新增TRAIN或训练|
 |dynamic_margin_001|CLOSED_LOCAL_PASS|1新执行通过+3精确历史复用，组合4/4；实际加速度0.970613倍原限；旧失败保留|
 |P2b动态DEV交接|CLOSED_LOCAL_PASS|6/8独特、10/12逻辑；先验4/6、基线2/2；8完整重放差0，收益不支持|
-|P3时序候选|P3A_CLOSED_PASS_P3B_IMPLEMENTING|8/8TRAIN+4/4VAL合格；4旧复用+8新执行；训练尚未开始|
+|P3时序候选|P3B_RUNNING|temporal_learning_001；先TRAIN诊断，条件正式训练/VAL/原DEV；结果待实际运行|
 |P4整链开发验收|QUEUED|最多30执行，五障碍与完整连续组合仍缺|
 
 新独立review：paper/review-traces/experiment-result-to-claim/20261022_dynamic_reference_run01；C1局部partial/high，C2 NOT_EVALUATED；缺少PAPER_CLAIM_AUDIT，论文结论provisional。166源码/86输入和完整状态/控制/几何/原目标核对通过；不能把表示过门当执行通过。完成resume仅一次，64核心文件hash完全保持，UTF-8完整输出已存。
@@ -36,3 +36,5 @@ P3a temporal_data_001已实际后台启动，源码292021c2；29项软件检查�
 ## P3a当前资格完成
 
 temporal_data_001已完成：固定8TRAIN/4VAL全部EXECUTION_VERIFIED，4精确旧复用+8新执行重放，剩余28来源不升级。新最大位置2.112068mm/姿态0.021865度，完整836维重放差0。独立review局部PASS、整体partial/high，C2未评估。耗时377.453秒/216000新步/1152681165字节；完成resume仅一次146文件hash不变。报告ff_prior_temporal_data/docs/ANALYSIS.md。进入一个完整时序候选及确定性序列基线的实施/冻结，训练尚未开始；后续预算扣已用，当前run以control为准。
+
+P3b temporal_learning_001已实际后台启动，源码681965a0，40软件检查通过（零真实优化器/原生步）。新公共条件1014维+271×36局部时序，完整273×17参考中271×17自由输出；两个175361参数时序卷积网络。先各32步临时TRAIN完整采样诊断且回退，通过才各3000正式更新。仅8TRAIN/4VAL，VAL无梯度。完整采样系数监督不冒充当前非线性世界损失。随后8VAL无世界修正执行上限、原DEV12逻辑/8独特执行上限，全部物理门不变；当前正式训练进度以status为准。新预算18000秒/16GiB/432000步，与P3a实耗合计低于P3原6h/20GiB。
