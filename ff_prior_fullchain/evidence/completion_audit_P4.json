@@ -1,0 +1,83 @@
+{
+  "goal": "free_floating_fullchain_20261022",
+  "phase": "P4",
+  "requirements": [
+    {
+      "requirement": "public_three_obstacle_planning",
+      "status": "PROVEN_LOCAL",
+      "evidence": "ff_prior_static_fullchain_v2/docs/ANALYSIS.md",
+      "scope": "Public proposals from P1; no new planning in P4"
+    },
+    {
+      "requirement": "public_five_obstacle_planning",
+      "status": "CONTRADICTED_CURRENT_ATTEMPT",
+      "evidence": "ff_prior_static_goal_seed/evidence/statistics.json",
+      "scope": "30 seeds reach endpoint, all6 fully validated paths still collide"
+    },
+    {
+      "requirement": "complete_323_representation",
+      "status": "PROVEN_LOCAL",
+      "evidence": "ff_prior_fullchain_acceptance/evidence/statistics.json",
+      "scope": "Fixed6 full323 static references executed; not all-path learnability"
+    },
+    {
+      "requirement": "native67_static_execution_replay",
+      "status": "PROVEN_LOCAL",
+      "evidence": "artifacts/v7_1/fullchain_acceptance_001/summary.json",
+      "scope": "6 new static paths; 836 full-state error0; five-obstacle missing"
+    },
+    {
+      "requirement": "moving_target_seven_waypoint_tracking",
+      "status": "PROVEN_LOCAL_HISTORICAL_REUSE",
+      "evidence": "ff_prior_temporal_learning/docs/ANALYSIS.md",
+      "scope": "12 logical,8 unique,4 shared; exact reuse only"
+    },
+    {
+      "requirement": "five_obstacle_to_dynamic_state_continuity",
+      "status": "MISSING",
+      "evidence": "ff_prior_fullchain_acceptance/evidence/selection.json",
+      "scope": "No qualified first-stage state; combo not frozen/executed; software interface only"
+    },
+    {
+      "requirement": "environment_time_conditioned_learning",
+      "status": "PROVEN_WITH_NEGATIVE_GENERALIZATION_RESULT",
+      "evidence": "ff_prior_temporal_learning/docs/ANALYSIS.md",
+      "scope": "8TRAIN/4VAL, two3000-update networks, unguided0/4 each, guidedDEV pass"
+    },
+    {
+      "requirement": "diffusion_relative_advantage",
+      "status": "NOT_ESTABLISHED",
+      "evidence": "ff_prior_fullchain_acceptance/evidence/statistics.json",
+      "scope": "Local static hold difference, dynamic mixed; no success superiority"
+    },
+    {
+      "requirement": "unchanged_physical_gates",
+      "status": "PROVEN_FOR_EXECUTED_SCOPE",
+      "evidence": "artifacts/v7_1/fullchain_acceptance_001/physical_contract.json",
+      "scope": "No penetration,5mm/1deg,2mm,freefloat,17to67,motion/torque/momentum"
+    },
+    {
+      "requirement": "old_models_results_user_edits_preserved",
+      "status": "PROVEN_BOUND_INPUT_SCOPE",
+      "evidence": "ff_prior_fullchain_acceptance/evidence/binding.json",
+      "scope": "589 inputs and old source hashes preserved; no data push or resets"
+    },
+    {
+      "requirement": "reproducible_commands_evidence_reports",
+      "status": "PROVEN_DELIVERY",
+      "evidence": "ff_prior_fullchain_acceptance/docs/ANALYSIS.md",
+      "scope": "Chinese report, CSV, recorded paths, source archives, fresh independent review and once resume; commit recorded by closeout receipt"
+    },
+    {
+      "requirement": "no_expansion_or_TEST",
+      "status": "PROVEN_THIS_RUN",
+      "evidence": "artifacts/v7_1/fullchain_acceptance_001/summary.json",
+      "scope": "NewTRAIN/updates/proposals/TEST0"
+    }
+  ],
+  "engineering_complete": false,
+  "goal_must_not_be_marked_complete": true,
+  "next_scope_authorization_required": true,
+  "source_commit": "370a2041a4af0e4615fae259b2e863d4b676e490",
+  "independent_review": "paper/review-traces/experiment-result-to-claim/20261022_fullchain_acceptance_run01/verdict.json"
+}

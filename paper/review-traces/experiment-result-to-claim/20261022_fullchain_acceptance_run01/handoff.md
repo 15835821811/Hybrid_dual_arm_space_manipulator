@@ -1,0 +1,9 @@
+# Reviewer handoff
+
+已按全新独立paper architect/reviewer角色完成新run的RESULT-TO-CLAIM。见raw_response.md、verdict.json、routing.json与raw_checks.py/json。inputs.json保存942项输入hash/时间戳；pid_check.json证实记录PID均退出；source_provenance_note.json区分36换行差异与1旧用户依赖差异。
+
+只写本trace目录；没有运行模拟器、碰撞查询、训练、optimizer、旧run审计、resume、目标修改或commit。动态仅核准确身份/原报告和既有完整状态review。6条新静态保存数组全部读取，2119项核对通过。
+
+raw_checks.py第一次因连续关节URDF不含limit而退出，在审查脚本中修正后通过；Git producer比较的错误前缀已修正，归档本身始终匹配。没有修改实验或生产源码。几何extent和交换动量尺度无法从独立保存的每geom/raw mass数据重新生成，审查边界已明确，未伪称新物理复审。
+
+主执行者已完成一次终态resume安全核验，保存receipt为PASS/NO_WORK_ALREADY_COMPLETE、133文件hash不变；reviewer只读receipt，未执行resume。报告/曲线/版本记录和本地提交由主执行者负责；后续不可重复resume。完整工程仍有五障碍与连续组合缺口；本阶段终态不等于长期目标complete，未来实验建议不授权新run。
