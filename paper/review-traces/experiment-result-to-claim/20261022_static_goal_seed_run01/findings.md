@@ -1,0 +1,7 @@
+# Compact research finding
+
+2026-10-22, static_goal_seed_001: independent result-to-claim verdict **no**, confidence **high**, provisional because PAPER_CLAIM_AUDIT unavailable. New public nonlinear full-path goal seeding reaches Q≤0.5 for30/30 saved seeds; all seeds still penetrate. Six preselected repaired paths pass original target/convergence/refinement gates but fail geometry, with clearance −16.700 to −35.421 mm, all worst pairs v7_capture_3/fore_arm_link.24 unselected paths remain screen-only.0 MODEL_VALID,0 native executions,0 verified replays. Positive Diffusion contribution is not established.
+
+Worker remains FAILED due postprocessing JSON-list/ndarray TypeError after six DONE units; all saved accounting reconstructs exactly (29202 coupled,18298744 intervals,0 native). All176 frozen source hashes and86 inputs match. Git head alone is insufficient for reproduction because frozen archive contains a user modification in hierarchical_qp.py; use full archive+manifest. No frozen files were changed.
+
+Route: proceed only to already-authorized independent P4 integration/development, carrying five-obstacle gap; overall engineering goal incomplete. No further local goal/collision retuning, expansion, new training or TEST. Missing C1 requires an actually qualified path then complete native67+INTEGRATION replay evidence; no automatic new experiment is authorized by this gap list. Executor may append this compact finding to root findings.md without altering its existing content.
