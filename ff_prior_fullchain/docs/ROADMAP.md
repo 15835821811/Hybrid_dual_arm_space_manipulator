@@ -99,3 +99,8 @@ M1失败时，本轮训练/VAL/DEV仍BLOCKED；不得放行。收尾后把这个
 ```
 
 这些命令只读，绝不重启实验。当前具体worker仍使用ff_prior_preserve323原入口；接续在每次阶段切换后更新control.json及版本tracker，确保终端显示当前真实任务。
+
+
+## P1实际交接更新：2026-10-22
+
+static_fullchain_001在34.844秒因原子输出长路径中断，原58文件与源码保留，独立review C1/C2均no（未产生完整物理/性能证据）。不resume未知工作。独立修复static_fullchain_002已实际启动，源码8d3d562a；短ID与实际221字符路径写读验证，12软件检查通过。扣除旧失败预留后仍在P1原总预算内。当前唯一本轮重worker由control/status核验，健康时静默。002终态需新的独立review，不能借用001故障审查。之后按原路线继续P2。

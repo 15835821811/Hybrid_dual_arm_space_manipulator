@@ -20,4 +20,6 @@ P1本轮输入冻结hash：516b5d1373a003dbce90739f621203bc1fe50032d8a2bc5be7c4c
 
 P1启动回执：ff_prior_static_fullchain/evidence/launch_receipt.json。启动时PID及创建时间核验通过；初始状态已进入dense_feedback_search。运行中不分析中间结果，终态后一次独立审查/收尾，再推进P2。
 
-|static_fullchain_002|P1独立部署修复|短目录与实际路径写读验证|同公开两方法/同目标种子|APPLICATION_DEV|FROZEN_PENDING_LAUNCH|12项软件检查通过，最长221字符；旧失败预留13000耦合扣减，新147000上限；原物理门保持|
+|static_fullchain_002|P1独立部署修复|短目录与实际路径写读验证|同公开两方法/同目标种子|APPLICATION_DEV|RUNNING|源码8d3d562a，实际PID/创建时间核验通过；12项软件检查通过，最长221字符；旧失败预留13000耦合扣减，新147000上限；原物理门保持|
+
+当前仅static_fullchain_002重worker；首轮001源及58文件保留、不resume，独立部署故障审查另列。当前后台结果未完成，不读取中间结果或提前宣布资格/收益。
