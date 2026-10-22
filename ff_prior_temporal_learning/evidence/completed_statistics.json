@@ -1,0 +1,2143 @@
+{
+  "run": "artifacts/v7_1/temporal_learning_001",
+  "source_commit": "681965a0",
+  "counts": {
+    "DEV": {
+      "deterministic_sequence": {
+        "logical": 6,
+        "unique_executions": 2,
+        "verified": 6
+      },
+      "temporal_diffusion": {
+        "logical": 6,
+        "unique_executions": 6,
+        "verified": 6
+      }
+    },
+    "VAL": {
+      "deterministic_sequence": {
+        "logical": 4,
+        "unique_executions": 4,
+        "verified": 0
+      },
+      "temporal_diffusion": {
+        "logical": 4,
+        "unique_executions": 4,
+        "verified": 0
+      }
+    }
+  },
+  "groups": {
+    "VAL/deterministic_sequence": {
+      "logical": 4,
+      "verified": 0,
+      "actual_executions": 4,
+      "unit_max_position_mm": {
+        "mean": 15.376448578795852,
+        "median": 14.78652357832295,
+        "p95": 19.29257572989865,
+        "maximum": 19.996515231368747
+      },
+      "unit_max_rotation_deg": {
+        "mean": 0.6892815836685455,
+        "median": 0.5906619998818021,
+        "p95": 1.0430982882239708,
+        "maximum": 1.1051542631626634
+      },
+      "truncated": 4,
+      "averaging": "per-unit maximum, not pooled time; deterministic DEV reuses are not independent replications"
+    },
+    "VAL/temporal_diffusion": {
+      "logical": 4,
+      "verified": 0,
+      "actual_executions": 4,
+      "unit_max_position_mm": {
+        "mean": 397.5889494950107,
+        "median": 396.99847758489705,
+        "p95": 410.9547532458649,
+        "maximum": 412.520547796649
+      },
+      "unit_max_rotation_deg": {
+        "mean": 2.2908828938847625,
+        "median": 2.300080132775863,
+        "p95": 2.957443894489595,
+        "maximum": 3.014481942972273
+      },
+      "truncated": 0,
+      "averaging": "per-unit maximum, not pooled time; deterministic DEV reuses are not independent replications"
+    },
+    "DEV/deterministic_sequence": {
+      "logical": 6,
+      "verified": 6,
+      "actual_executions": 2,
+      "unit_max_position_mm": {
+        "mean": 0.6836178704920859,
+        "median": 0.6836178704920859,
+        "p95": 1.0344955406967262,
+        "maximum": 1.0344955406967262
+      },
+      "unit_max_rotation_deg": {
+        "mean": 0.006422743151115885,
+        "median": 0.006422743151115885,
+        "p95": 0.011109740290540786,
+        "maximum": 0.011109740290540786
+      },
+      "truncated": 0,
+      "averaging": "per-unit maximum, not pooled time; deterministic DEV reuses are not independent replications"
+    },
+    "DEV/temporal_diffusion": {
+      "logical": 6,
+      "verified": 6,
+      "actual_executions": 6,
+      "unit_max_position_mm": {
+        "mean": 0.7173427868692358,
+        "median": 0.733884632596199,
+        "p95": 0.8124097439436235,
+        "maximum": 0.8319824915761227
+      },
+      "unit_max_rotation_deg": {
+        "mean": 0.0020394845174772245,
+        "median": 0.0021893730242878487,
+        "p95": 0.002428034495734508,
+        "maximum": 0.0024441425989171314
+      },
+      "truncated": 0,
+      "averaging": "per-unit maximum, not pooled time; deterministic DEV reuses are not independent replications"
+    }
+  },
+  "units": [
+    {
+      "method": "deterministic_sequence",
+      "source_unit": "v00",
+      "split": "VAL",
+      "unit": "v00",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "complete_native_time",
+        "dynamic_position",
+        "relative_hold",
+        "whole_body_clearance"
+      ],
+      "stop_reason": "penetration: -1.3510277223089161e-05 m at 4.265999999999752s",
+      "steps": 2133,
+      "complete": false,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 6.693389715299788,
+        "median": 5.239088548766226,
+        "p95": 15.013463158138297,
+        "maximum": 15.303585221568111
+      },
+      "rotation_deg": {
+        "mean": 0.220931889409517,
+        "median": 0.16473115603461047,
+        "p95": 0.468272530923681,
+        "maximum": 0.4706480717479143
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          4.804296290908312,
+          6.691273748236128
+        ],
+        "p95": [
+          10.3307300189944,
+          15.013463158138297
+        ],
+        "maximum": [
+          10.386082754322173,
+          15.303585221568111
+        ],
+        "final": [
+          10.379468085047906,
+          15.303585221568111
+        ]
+      },
+      "position_gate_failed_frames": 1088,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 2134,
+      "observed_duration_s": 4.265999999999752,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": -0.013510277223089161,
+      "reference_velocity_ratio": 0.37874480322664844,
+      "reference_acceleration_ratio": 0.8331666914464992,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": false,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.0,
+        "physics_validated": false,
+        "scale": 1.0
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.381023445856965,
+        "acceleration_ratio": 0.8331666914464992
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 0.8192731073219381,
+        "prepared": 0.8192731073219381
+      },
+      "q17_second_difference_acceleration_ratio": 0.8340516629699868
+    },
+    {
+      "method": "temporal_diffusion",
+      "source_unit": "v00",
+      "split": "VAL",
+      "unit": "v01",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "derivative_limits",
+        "dynamic_position",
+        "dynamic_rotation",
+        "relative_hold"
+      ],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 352.67840356776594,
+        "median": 378.5677559189173,
+        "p95": 409.68069310229885,
+        "maximum": 412.520547796649
+      },
+      "rotation_deg": {
+        "mean": 1.3188153133798064,
+        "median": 1.348091620543323,
+        "p95": 2.5089051737715855,
+        "maximum": 2.634228286421086
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          188.51439809114498,
+          352.6768701300928
+        ],
+        "p95": [
+          265.44433947909573,
+          409.68069310229885
+        ],
+        "maximum": [
+          271.1740549431995,
+          412.520547796649
+        ],
+        "final": [
+          162.81829120144812,
+          411.45673231268296
+        ]
+      },
+      "position_gate_failed_frames": 13319,
+      "rotation_gate_failed_frames": 8427,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.53984126550971,
+      "reference_velocity_ratio": 0.0879014538978282,
+      "reference_acceleration_ratio": 0.9999998999999974,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9128407624043086,
+        "physics_validated": false,
+        "scale": 0.0683366652551255
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 2.1364473685412397,
+        "acceleration_ratio": 14.633431354407458
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 0.6343233171565132,
+        "prepared": 97.4736260629299
+      },
+      "q17_second_difference_acceleration_ratio": 1.0031254849572624
+    },
+    {
+      "method": "deterministic_sequence",
+      "source_unit": "v01",
+      "split": "VAL",
+      "unit": "v10",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "complete_native_time",
+        "dynamic_position",
+        "relative_hold",
+        "whole_body_clearance"
+      ],
+      "stop_reason": "penetration: -3.104603378513427e-05 m at 4.047999999999776s",
+      "steps": 2024,
+      "complete": false,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 7.498912841855148,
+        "median": 7.795838901184587,
+        "p95": 13.892698078380715,
+        "maximum": 14.26946193507779
+      },
+      "rotation_deg": {
+        "mean": 0.3134235688242881,
+        "median": 0.3256656706770506,
+        "p95": 0.48178363772308475,
+        "maximum": 0.4898762361922246
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          6.131381143562303,
+          7.492001241126953
+        ],
+        "p95": [
+          12.83046872530751,
+          13.892698078380715
+        ],
+        "maximum": [
+          12.9890254042319,
+          14.26946193507779
+        ],
+        "final": [
+          12.9890254042319,
+          14.26946193507779
+        ]
+      },
+      "position_gate_failed_frames": 1285,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 2025,
+      "observed_duration_s": 4.047999999999776,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": -0.03104603378513427,
+      "reference_velocity_ratio": 0.3663328613556943,
+      "reference_acceleration_ratio": 0.7757609498204264,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": false,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.0,
+        "physics_validated": false,
+        "scale": 1.0
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.4606625020132521,
+        "acceleration_ratio": 0.7757609498204264
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 0.25113097506314613,
+        "prepared": 0.25113097506314613
+      },
+      "q17_second_difference_acceleration_ratio": 0.7760929115193088
+    },
+    {
+      "method": "temporal_diffusion",
+      "source_unit": "v01",
+      "split": "VAL",
+      "unit": "v11",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "derivative_limits",
+        "dynamic_position",
+        "dynamic_rotation",
+        "relative_hold"
+      ],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 344.8100411318272,
+        "median": 369.7505332149284,
+        "p95": 389.2806783309484,
+        "maximum": 391.91503771170574
+      },
+      "rotation_deg": {
+        "mean": 0.7046756662871305,
+        "median": 0.6920846646380475,
+        "p95": 1.3453982187335405,
+        "maximum": 1.5488893670150499
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          195.80274747622397,
+          344.809304008557
+        ],
+        "p95": [
+          281.660419192047,
+          389.2806783309484
+        ],
+        "maximum": [
+          288.6220634224509,
+          391.91503771170574
+        ],
+        "final": [
+          156.96517817622004,
+          391.0741023910185
+        ]
+      },
+      "position_gate_failed_frames": 13303,
+      "rotation_gate_failed_frames": 3472,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.540645871636473,
+      "reference_velocity_ratio": 0.09980131788002167,
+      "reference_acceleration_ratio": 0.9999999000000003,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9203851776525238,
+        "physics_validated": false,
+        "scale": 0.05038235385092072
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 2.3262676322531157,
+        "acceleration_ratio": 19.848217154739494
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 0.5599588196309265,
+        "prepared": 102.83260165385181
+      },
+      "q17_second_difference_acceleration_ratio": 1.0016912997942717
+    },
+    {
+      "method": "deterministic_sequence",
+      "source_unit": "v02",
+      "split": "VAL",
+      "unit": "v20",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "complete_native_time",
+        "dynamic_position",
+        "dynamic_rotation",
+        "relative_hold",
+        "whole_body_clearance"
+      ],
+      "stop_reason": "penetration: -3.5176641411725326e-06 m at 13.47600000000117s",
+      "steps": 6738,
+      "complete": false,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 9.408746550913229,
+        "median": 8.417109908190096,
+        "p95": 18.059266753394073,
+        "maximum": 19.996515231368747
+      },
+      "rotation_deg": {
+        "mean": 0.4083420402754767,
+        "median": 0.349038682986356,
+        "p95": 0.9885013272332513,
+        "maximum": 1.1051542631626634
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          6.638714042124349,
+          9.267525820060195
+        ],
+        "p95": [
+          10.819830605951644,
+          18.059266753394073
+        ],
+        "maximum": [
+          11.29015556859545,
+          19.996515231368747
+        ],
+        "final": [
+          5.257166206837499,
+          19.996515231368747
+        ]
+      },
+      "position_gate_failed_frames": 5494,
+      "rotation_gate_failed_frames": 306,
+      "observed_frames": 6739,
+      "observed_duration_s": 13.47600000000117,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": -0.0035176641411725326,
+      "reference_velocity_ratio": 0.42511027511054883,
+      "reference_acceleration_ratio": 0.7845779821624199,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": false,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.0,
+        "physics_validated": false,
+        "scale": 1.0
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.43180019839078376,
+        "acceleration_ratio": 0.7845779821624199
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 1.8606647580229716,
+        "prepared": 1.8606647580229716
+      },
+      "q17_second_difference_acceleration_ratio": 0.7853570568911936
+    },
+    {
+      "method": "temporal_diffusion",
+      "source_unit": "v02",
+      "split": "VAL",
+      "unit": "v21",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "derivative_limits",
+        "dynamic_position",
+        "dynamic_rotation",
+        "relative_hold"
+      ],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 335.6794885582929,
+        "median": 360.29987799039594,
+        "p95": 378.0824091508395,
+        "maximum": 383.83829501359975
+      },
+      "rotation_deg": {
+        "mean": 0.903032585315235,
+        "median": 0.9362240340270843,
+        "p95": 1.6509620973958756,
+        "maximum": 1.9659319791306398
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          188.70613158805793,
+          335.67528842912174
+        ],
+        "p95": [
+          270.91162626272603,
+          378.0824091508395
+        ],
+        "maximum": [
+          277.57583143816584,
+          383.83829501359975
+        ],
+        "final": [
+          151.0857555512547,
+          383.83829501359975
+        ]
+      },
+      "position_gate_failed_frames": 13277,
+      "rotation_gate_failed_frames": 6202,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.54046708512295,
+      "reference_velocity_ratio": 0.1443389758503838,
+      "reference_acceleration_ratio": 0.9999999000000003,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.8758824139779595,
+        "physics_validated": false,
+        "scale": 0.07780687268721843
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 2.4803059238784897,
+        "acceleration_ratio": 12.852333803724168
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 1.671867705922394,
+        "prepared": 97.33957298564694
+      },
+      "q17_second_difference_acceleration_ratio": 1.0029712876679504
+    },
+    {
+      "method": "deterministic_sequence",
+      "source_unit": "v03",
+      "split": "VAL",
+      "unit": "v30",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "complete_native_time",
+        "dynamic_position",
+        "relative_hold",
+        "whole_body_clearance"
+      ],
+      "stop_reason": "penetration: -1.5928253270621503e-05 m at 4.143999999999766s",
+      "steps": 2072,
+      "complete": false,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 5.4304732856636155,
+        "median": 3.7582182997462863,
+        "p95": 11.52774894503076,
+        "maximum": 11.936231927168766
+      },
+      "rotation_deg": {
+        "mean": 0.2848732295482662,
+        "median": 0.2264333516508155,
+        "p95": 0.6794104498914503,
+        "maximum": 0.6914477635713796
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          4.179771032181271,
+          5.207755378734029
+        ],
+        "p95": [
+          8.830898007552317,
+          11.52774894503076
+        ],
+        "maximum": [
+          8.998890042615521,
+          11.936231927168766
+        ],
+        "final": [
+          8.998890042615521,
+          11.936231927168766
+        ]
+      },
+      "position_gate_failed_frames": 940,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 2073,
+      "observed_duration_s": 4.143999999999766,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": -0.015928253270621504,
+      "reference_velocity_ratio": 0.3810695760971051,
+      "reference_acceleration_ratio": 0.80555888942481,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": false,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.0,
+        "physics_validated": false,
+        "scale": 1.0
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.5833821323110416,
+        "acceleration_ratio": 0.80555888942481
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 0.9800868106282422,
+        "prepared": 0.9800868106282424
+      },
+      "q17_second_difference_acceleration_ratio": 0.8057813101591382
+    },
+    {
+      "method": "temporal_diffusion",
+      "source_unit": "v03",
+      "split": "VAL",
+      "unit": "v31",
+      "status": "EXECUTION_FAILED",
+      "new_execution": true,
+      "failed_gates": [
+        "derivative_limits",
+        "dynamic_position",
+        "dynamic_rotation",
+        "relative_hold"
+      ],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 346.10074177142883,
+        "median": 371.40657007318333,
+        "p95": 399.6121836269974,
+        "maximum": 402.08191745808836
+      },
+      "rotation_deg": {
+        "mean": 1.468147249106752,
+        "median": 1.4863171194095581,
+        "p95": 2.8438227339590263,
+        "maximum": 3.014481942972273
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          192.82177320477177,
+          346.09215991963276
+        ],
+        "p95": [
+          272.92459360880906,
+          399.6121836269974
+        ],
+        "maximum": [
+          275.3954658417564,
+          402.08191745808836
+        ],
+        "final": [
+          166.7060232663631,
+          400.29032035616086
+        ]
+      },
+      "position_gate_failed_frames": 13307,
+      "rotation_gate_failed_frames": 8789,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.540634200615344,
+      "reference_velocity_ratio": 0.13023661533442366,
+      "reference_acceleration_ratio": 0.9999998999999988,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.8925811436320293,
+        "physics_validated": false,
+        "scale": 0.05940789055870493
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 2.192244399011747,
+        "acceleration_ratio": 16.832779124043007
+      },
+      "coefficient_MSE_to_qualified_VAL": {
+        "raw": 1.2546245601768082,
+        "prepared": 103.17127383899282
+      },
+      "q17_second_difference_acceleration_ratio": 1.0016761735079371
+    },
+    {
+      "method": "deterministic_sequence",
+      "scene": "stationary",
+      "seed_group": 0,
+      "split": "DEV",
+      "unit": "d000",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09688771709638976,
+        "median": 0.08877546384924766,
+        "p95": 0.2894336396474651,
+        "maximum": 0.3327402002874456
+      },
+      "rotation_deg": {
+        "mean": 0.00024105875619705693,
+        "median": 0.00013999945461599627,
+        "p95": 0.0006984141584908198,
+        "maximum": 0.0017357460116909857
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.06985566018120203,
+          0.04123931535252408
+        ],
+        "p95": [
+          0.11544195942209438,
+          0.2841902829660212
+        ],
+        "maximum": [
+          0.3327402002874456,
+          0.3164308669396634
+        ],
+        "final": [
+          0.020008662226753286,
+          0.005853873293417124
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.514691979403464,
+      "reference_velocity_ratio": 0.4005806938478543,
+      "reference_acceleration_ratio": 0.6,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.7188657765693607,
+        "physics_validated": false,
+        "scale": 0.22319254928445834
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.7000681020756647,
+        "acceleration_ratio": 4.480435853284254
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.5782746543225156,
+          "median": 0.5813216383080662,
+          "p95": 0.7346857759081762,
+          "maximum": 0.7738261851339651
+        },
+        "constraint_correction_norm": {
+          "mean": 2.920568116794095e-05,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.019052071786317515
+        },
+        "preferred_norm": {
+          "mean": 0.5246266004099851,
+          "median": 0.5612246936409299,
+          "p95": 0.5939446353598382,
+          "maximum": 0.6022092205184181
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7012027021427649
+    },
+    {
+      "method": "temporal_diffusion",
+      "scene": "stationary",
+      "seed_group": 0,
+      "split": "DEV",
+      "unit": "d001",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.10204223935645888,
+        "median": 0.08993204552639376,
+        "p95": 0.29740973063165466,
+        "maximum": 0.7503834364024685
+      },
+      "rotation_deg": {
+        "mean": 0.00021842137140386814,
+        "median": 0.00014270812585923776,
+        "p95": 0.0006699937447846806,
+        "maximum": 0.0023797101861866383
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.07576423316151244,
+          0.04308023522686634
+        ],
+        "p95": [
+          0.11766480585279343,
+          0.28642908294368463
+        ],
+        "maximum": [
+          0.7503834364024685,
+          0.3201598460188362
+        ],
+        "final": [
+          0.024507455370013462,
+          0.0075645354584522005
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.50978406434369,
+      "reference_velocity_ratio": 0.47360118296243997,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9092487207731145,
+        "physics_validated": false,
+        "scale": 0.03842711099516752
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 3.328349066621008,
+        "acceleration_ratio": 26.023291215562814
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.7227595017249105,
+          "median": 0.7280557630015514,
+          "p95": 0.8847202420207266,
+          "maximum": 0.9457570091963247
+        },
+        "constraint_correction_norm": {
+          "mean": 0.0006190586253017468,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.17661631786307824
+        },
+        "preferred_norm": {
+          "mean": 0.6588113942322968,
+          "median": 0.6998479040519128,
+          "p95": 0.7519856061272738,
+          "maximum": 0.7656708719477784
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.6842943972289184
+    },
+    {
+      "method": "deterministic_sequence",
+      "scene": "stationary",
+      "seed_group": 1,
+      "split": "DEV",
+      "unit": "d010",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": false,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09688771709638976,
+        "median": 0.08877546384924766,
+        "p95": 0.2894336396474651,
+        "maximum": 0.3327402002874456
+      },
+      "rotation_deg": {
+        "mean": 0.00024105875619705693,
+        "median": 0.00013999945461599627,
+        "p95": 0.0006984141584908198,
+        "maximum": 0.0017357460116909857
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.06985566018120203,
+          0.04123931535252408
+        ],
+        "p95": [
+          0.11544195942209438,
+          0.2841902829660212
+        ],
+        "maximum": [
+          0.3327402002874456,
+          0.3164308669396634
+        ],
+        "final": [
+          0.020008662226753286,
+          0.005853873293417124
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.514691979403464,
+      "reference_velocity_ratio": 0.4005806938478543,
+      "reference_acceleration_ratio": 0.6,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.7188657765693607,
+        "physics_validated": false,
+        "scale": 0.22319254928445834
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.7000681020756647,
+        "acceleration_ratio": 4.480435853284254
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.5782746543225156,
+          "median": 0.5813216383080662,
+          "p95": 0.7346857759081762,
+          "maximum": 0.7738261851339651
+        },
+        "constraint_correction_norm": {
+          "mean": 2.920568116794095e-05,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.019052071786317515
+        },
+        "preferred_norm": {
+          "mean": 0.5246266004099851,
+          "median": 0.5612246936409299,
+          "p95": 0.5939446353598382,
+          "maximum": 0.6022092205184181
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7012027021427649
+    },
+    {
+      "method": "temporal_diffusion",
+      "scene": "stationary",
+      "seed_group": 1,
+      "split": "DEV",
+      "unit": "d011",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.10058837855135865,
+        "median": 0.08979740335762755,
+        "p95": 0.2954252804626395,
+        "maximum": 0.6085439476675605
+      },
+      "rotation_deg": {
+        "mean": 0.00022170007181852584,
+        "median": 0.00015243582764333166,
+        "p95": 0.0006677698112149879,
+        "maximum": 0.0015620971348588367
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.07423062992441215,
+          0.04278751631402503
+        ],
+        "p95": [
+          0.1175385357081038,
+          0.2850621315955597
+        ],
+        "maximum": [
+          0.6085439476675605,
+          0.31961475219486063
+        ],
+        "final": [
+          0.024557445156877123,
+          0.0072943824152668256
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.509832728996008,
+      "reference_velocity_ratio": 0.4128800580821669,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.8946079297556386,
+        "physics_validated": false,
+        "scale": 0.05542664101305025
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 3.277991649426171,
+        "acceleration_ratio": 18.041863654781988
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.7154742456162061,
+          "median": 0.71899576451601,
+          "p95": 0.8799306894105263,
+          "maximum": 0.9542891392744509
+        },
+        "constraint_correction_norm": {
+          "mean": 0.0002658418412163582,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.075277838716361
+        },
+        "preferred_norm": {
+          "mean": 0.6529921642682927,
+          "median": 0.6928905751070946,
+          "p95": 0.7421967095736195,
+          "maximum": 0.7606452363067935
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7010691800563925
+    },
+    {
+      "method": "deterministic_sequence",
+      "scene": "stationary",
+      "seed_group": 2,
+      "split": "DEV",
+      "unit": "d020",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": false,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09688771709638976,
+        "median": 0.08877546384924766,
+        "p95": 0.2894336396474651,
+        "maximum": 0.3327402002874456
+      },
+      "rotation_deg": {
+        "mean": 0.00024105875619705693,
+        "median": 0.00013999945461599627,
+        "p95": 0.0006984141584908198,
+        "maximum": 0.0017357460116909857
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.06985566018120203,
+          0.04123931535252408
+        ],
+        "p95": [
+          0.11544195942209438,
+          0.2841902829660212
+        ],
+        "maximum": [
+          0.3327402002874456,
+          0.3164308669396634
+        ],
+        "final": [
+          0.020008662226753286,
+          0.005853873293417124
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.514691979403464,
+      "reference_velocity_ratio": 0.4005806938478543,
+      "reference_acceleration_ratio": 0.6,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.7188657765693607,
+        "physics_validated": false,
+        "scale": 0.22319254928445834
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.7000681020756647,
+        "acceleration_ratio": 4.480435853284254
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.5782746543225156,
+          "median": 0.5813216383080662,
+          "p95": 0.7346857759081762,
+          "maximum": 0.7738261851339651
+        },
+        "constraint_correction_norm": {
+          "mean": 2.920568116794095e-05,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.019052071786317515
+        },
+        "preferred_norm": {
+          "mean": 0.5246266004099851,
+          "median": 0.5612246936409299,
+          "p95": 0.5939446353598382,
+          "maximum": 0.6022092205184181
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7012027021427649
+    },
+    {
+      "method": "temporal_diffusion",
+      "scene": "stationary",
+      "seed_group": 2,
+      "split": "DEV",
+      "unit": "d021",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.10083077485439056,
+        "median": 0.0897012513675612,
+        "p95": 0.2957711020261693,
+        "maximum": 0.6420695157332075
+      },
+      "rotation_deg": {
+        "mean": 0.00021418284209153644,
+        "median": 0.00014870774131870302,
+        "p95": 0.0006082615104399003,
+        "maximum": 0.0014722111363250421
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.07447451275540647,
+          0.04278466126138969
+        ],
+        "p95": [
+          0.1173175502137644,
+          0.2852852776324475
+        ],
+        "maximum": [
+          0.6420695157332075,
+          0.31918450993988806
+        ],
+        "final": [
+          0.02462807592984496,
+          0.007288416396887613
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 8.511071213240518,
+      "reference_velocity_ratio": 0.4198812558216475,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9026047450828658,
+        "physics_validated": false,
+        "scale": 0.056298888841503796
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 3.6703797365027855,
+        "acceleration_ratio": 17.762338130957847
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.712304524329436,
+          "median": 0.7161304276874303,
+          "p95": 0.8828108944767289,
+          "maximum": 0.9449511861466144
+        },
+        "constraint_correction_norm": {
+          "mean": 0.00024103260157635003,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.08105899156347693
+        },
+        "preferred_norm": {
+          "mean": 0.6496845501243846,
+          "median": 0.6914610408528401,
+          "p95": 0.7411907499256235,
+          "maximum": 0.7635304059087231
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7006894736868954
+    },
+    {
+      "method": "deterministic_sequence",
+      "scene": "drifting",
+      "seed_group": 0,
+      "split": "DEV",
+      "unit": "d100",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09544056715967661,
+        "median": 0.07508322451141806,
+        "p95": 0.2995155674163082,
+        "maximum": 1.0344955406967262
+      },
+      "rotation_deg": {
+        "mean": 0.0003230741053557514,
+        "median": 0.00014541934799079456,
+        "p95": 0.0011064186119494745,
+        "maximum": 0.011109740290540786
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.0670622286715505,
+          0.04211159657091591
+        ],
+        "p95": [
+          0.10571380898032375,
+          0.2863284191265338
+        ],
+        "maximum": [
+          1.0344955406967262,
+          0.3196329400522334
+        ],
+        "final": [
+          0.020631576792829936,
+          0.005151668230592427
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 2.000486931737273,
+      "reference_velocity_ratio": 0.6219743641207448,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.7140023972513583,
+        "physics_validated": false,
+        "scale": 0.22138652333313286
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.7057791143857558,
+        "acceleration_ratio": 4.5169863320688375
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.598761837439221,
+          "median": 0.5978158091884651,
+          "p95": 0.7349437422266885,
+          "maximum": 0.7692348661298084
+        },
+        "constraint_correction_norm": {
+          "mean": 0.012944192606317642,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.8458258910188466
+        },
+        "preferred_norm": {
+          "mean": 0.5424016035787788,
+          "median": 0.5860081553091451,
+          "p95": 0.6393625672905986,
+          "maximum": 0.6477832426772901
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7993755181012752
+    },
+    {
+      "method": "temporal_diffusion",
+      "scene": "drifting",
+      "seed_group": 0,
+      "split": "DEV",
+      "unit": "d101",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.0939157150899789,
+        "median": 0.07495842433899615,
+        "p95": 0.29960115944285853,
+        "maximum": 0.7536915010461258
+      },
+      "rotation_deg": {
+        "mean": 0.00021537497391268488,
+        "median": 0.00012128680262123817,
+        "p95": 0.0006986110171349964,
+        "maximum": 0.0022706508615722163
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.0663402324297315,
+          0.04248713033783734
+        ],
+        "p95": [
+          0.10609948609874884,
+          0.28846824519122444
+        ],
+        "maximum": [
+          0.7536915010461258,
+          0.32291795200403156
+        ],
+        "final": [
+          0.02443140139932567,
+          0.006660557246458989
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 2.0000326218928643,
+      "reference_velocity_ratio": 0.46952897946566663,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9225237121201288,
+        "physics_validated": false,
+        "scale": 0.04416585547935641
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 2.8341282848899496,
+        "acceleration_ratio": 22.64192302280685
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.7401615297646414,
+          "median": 0.7482066670799673,
+          "p95": 0.8773640779614822,
+          "maximum": 0.940228894575007
+        },
+        "constraint_correction_norm": {
+          "mean": 0.009494938278380462,
+          "median": 0.0,
+          "p95": 0.0696840675901464,
+          "maximum": 0.3364660520382281
+        },
+        "preferred_norm": {
+          "mean": 0.6760413391011413,
+          "median": 0.7219938691002032,
+          "p95": 0.7919727790491929,
+          "maximum": 0.8070343353191973
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7431661251722232
+    },
+    {
+      "method": "deterministic_sequence",
+      "scene": "drifting",
+      "seed_group": 1,
+      "split": "DEV",
+      "unit": "d110",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": false,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09544056715967661,
+        "median": 0.07508322451141806,
+        "p95": 0.2995155674163082,
+        "maximum": 1.0344955406967262
+      },
+      "rotation_deg": {
+        "mean": 0.0003230741053557514,
+        "median": 0.00014541934799079456,
+        "p95": 0.0011064186119494745,
+        "maximum": 0.011109740290540786
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.0670622286715505,
+          0.04211159657091591
+        ],
+        "p95": [
+          0.10571380898032375,
+          0.2863284191265338
+        ],
+        "maximum": [
+          1.0344955406967262,
+          0.3196329400522334
+        ],
+        "final": [
+          0.020631576792829936,
+          0.005151668230592427
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 2.000486931737273,
+      "reference_velocity_ratio": 0.6219743641207448,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.7140023972513583,
+        "physics_validated": false,
+        "scale": 0.22138652333313286
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.7057791143857558,
+        "acceleration_ratio": 4.5169863320688375
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.598761837439221,
+          "median": 0.5978158091884651,
+          "p95": 0.7349437422266885,
+          "maximum": 0.7692348661298084
+        },
+        "constraint_correction_norm": {
+          "mean": 0.012944192606317642,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.8458258910188466
+        },
+        "preferred_norm": {
+          "mean": 0.5424016035787788,
+          "median": 0.5860081553091451,
+          "p95": 0.6393625672905986,
+          "maximum": 0.6477832426772901
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7993755181012752
+    },
+    {
+      "method": "temporal_diffusion",
+      "scene": "drifting",
+      "seed_group": 1,
+      "split": "DEV",
+      "unit": "d111",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09473971217848794,
+        "median": 0.07506653675322611,
+        "p95": 0.3005998403836615,
+        "maximum": 0.8319824915761227
+      },
+      "rotation_deg": {
+        "mean": 0.00020691579268874392,
+        "median": 0.00011913961676008024,
+        "p95": 0.00070375654441526,
+        "maximum": 0.0024441425989171314
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.06723822803556888,
+          0.04269416407443318
+        ],
+        "p95": [
+          0.10601405829842714,
+          0.28934817568960036
+        ],
+        "maximum": [
+          0.8319824915761227,
+          0.32351132486026585
+        ],
+        "final": [
+          0.025332202120421966,
+          0.006744176881638026
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 2.000030299874892,
+      "reference_velocity_ratio": 0.5127481584719819,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9082205042426716,
+        "physics_validated": false,
+        "scale": 0.027492607720884764
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 3.6230938070681917,
+        "acceleration_ratio": 36.373410269130275
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.748724379511687,
+          "median": 0.757171963730037,
+          "p95": 0.8935634528203845,
+          "maximum": 0.9545878343936289
+        },
+        "constraint_correction_norm": {
+          "mean": 0.01039952078436465,
+          "median": 0.0,
+          "p95": 0.0649292580783462,
+          "maximum": 0.36221216918685606
+        },
+        "preferred_norm": {
+          "mean": 0.683497756671398,
+          "median": 0.730739220357008,
+          "p95": 0.8029038998172585,
+          "maximum": 0.8255414458393197
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7524924130072885
+    },
+    {
+      "method": "deterministic_sequence",
+      "scene": "drifting",
+      "seed_group": 2,
+      "split": "DEV",
+      "unit": "d120",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": false,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09544056715967661,
+        "median": 0.07508322451141806,
+        "p95": 0.2995155674163082,
+        "maximum": 1.0344955406967262
+      },
+      "rotation_deg": {
+        "mean": 0.0003230741053557514,
+        "median": 0.00014541934799079456,
+        "p95": 0.0011064186119494745,
+        "maximum": 0.011109740290540786
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.0670622286715505,
+          0.04211159657091591
+        ],
+        "p95": [
+          0.10571380898032375,
+          0.2863284191265338
+        ],
+        "maximum": [
+          1.0344955406967262,
+          0.3196329400522334
+        ],
+        "final": [
+          0.020631576792829936,
+          0.005151668230592427
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 2.000486931737273,
+      "reference_velocity_ratio": 0.6219743641207448,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.7140023972513583,
+        "physics_validated": false,
+        "scale": 0.22138652333313286
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 0.7057791143857558,
+        "acceleration_ratio": 4.5169863320688375
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.598761837439221,
+          "median": 0.5978158091884651,
+          "p95": 0.7349437422266885,
+          "maximum": 0.7692348661298084
+        },
+        "constraint_correction_norm": {
+          "mean": 0.012944192606317642,
+          "median": 0.0,
+          "p95": 0.0,
+          "maximum": 0.8458258910188466
+        },
+        "preferred_norm": {
+          "mean": 0.5424016035787788,
+          "median": 0.5860081553091451,
+          "p95": 0.6393625672905986,
+          "maximum": 0.6477832426772901
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7993755181012752
+    },
+    {
+      "method": "temporal_diffusion",
+      "scene": "drifting",
+      "seed_group": 2,
+      "split": "DEV",
+      "unit": "d121",
+      "status": "EXECUTION_VERIFIED",
+      "new_execution": true,
+      "failed_gates": [],
+      "stop_reason": null,
+      "steps": 13500,
+      "complete": true,
+      "metric_scope": "observed prefix only if incomplete; missing remainder is not scored as success",
+      "position_mm": {
+        "mean": 0.09395387639708198,
+        "median": 0.07522661397881165,
+        "p95": 0.2993058965467292,
+        "maximum": 0.7173858287899295
+      },
+      "rotation_deg": {
+        "mean": 0.00021884139599078614,
+        "median": 0.00012160366304661247,
+        "p95": 0.0007391518943386013,
+        "maximum": 0.002108095187003481
+      },
+      "position_per_arm_mm": {
+        "mean": [
+          0.0663830901006911,
+          0.04261489012078417
+        ],
+        "p95": [
+          0.10678221948842857,
+          0.28815185534416077
+        ],
+        "maximum": [
+          0.7173858287899295,
+          0.3229329964480264
+        ],
+        "final": [
+          0.024882522306135735,
+          0.006488259634075742
+        ]
+      },
+      "position_gate_failed_frames": 0,
+      "rotation_gate_failed_frames": 0,
+      "observed_frames": 13501,
+      "observed_duration_s": 26.999999999995914,
+      "replay_full_state_max": 0.0,
+      "controls_equal": true,
+      "minimum_clearance_mm": 2.000034332167021,
+      "reference_velocity_ratio": 0.4906435335973862,
+      "reference_acceleration_ratio": 0.6000000000000005,
+      "prepare": {
+        "actual_state_changed": false,
+        "changed": true,
+        "gates": {
+          "acceleration": true,
+          "finite": true,
+          "initial_q": true,
+          "initial_v": true,
+          "position": true,
+          "velocity": true
+        },
+        "maximum_change_rad": 0.9071473472021078,
+        "physics_validated": false,
+        "scale": 0.04257200418450589
+      },
+      "raw_derivative_hull": {
+        "velocity_ratio": 2.7455340247810556,
+        "acceleration_ratio": 23.489612931212445
+      },
+      "feedback": {
+        "world_correction_norm": {
+          "mean": 0.7399123615514333,
+          "median": 0.7482962714850321,
+          "p95": 0.8834814783423993,
+          "maximum": 0.9407569306952237
+        },
+        "constraint_correction_norm": {
+          "mean": 0.012457665921588427,
+          "median": 0.0,
+          "p95": 0.07547852248150991,
+          "maximum": 0.4303754998276676
+        },
+        "preferred_norm": {
+          "mean": 0.6757071190844193,
+          "median": 0.7221920442875553,
+          "p95": 0.793809509348075,
+          "maximum": 0.8119170344890322
+        }
+      },
+      "q17_second_difference_acceleration_ratio": 0.7629445691381687
+    }
+  ],
+  "paired_DEV": [
+    {
+      "scene": "stationary",
+      "seed_group": 0,
+      "deterministic": "d000",
+      "diffusion": "d001",
+      "position_mm_delta": {
+        "mean": 0.005154522260069128,
+        "median": 0.0011565816771461068,
+        "p95": 0.007976090984189554,
+        "maximum": 0.4176432361150229
+      },
+      "rotation_deg_delta": {
+        "mean": -2.2637384793188788e-05,
+        "median": 2.7086712432414933e-06,
+        "p95": -2.8420413706139254e-05,
+        "maximum": 0.0006439641744956526
+      }
+    },
+    {
+      "scene": "stationary",
+      "seed_group": 1,
+      "deterministic": "d010",
+      "diffusion": "d011",
+      "position_mm_delta": {
+        "mean": 0.00370066145496889,
+        "median": 0.0010219395083798932,
+        "p95": 0.005991640815174393,
+        "maximum": 0.27580374738011487
+      },
+      "rotation_deg_delta": {
+        "mean": -1.9358684378531087e-05,
+        "median": 1.2436373027335394e-05,
+        "p95": -3.0644347275831925e-05,
+        "maximum": -0.00017364887683214898
+      }
+    },
+    {
+      "scene": "stationary",
+      "seed_group": 2,
+      "deterministic": "d020",
+      "diffusion": "d021",
+      "position_mm_delta": {
+        "mean": 0.003943057758000801,
+        "median": 0.0009257875183135422,
+        "p95": 0.006337462378704195,
+        "maximum": 0.30932931544576187
+      },
+      "rotation_deg_delta": {
+        "mean": -2.6875914105520488e-05,
+        "median": 8.708286702706754e-06,
+        "p95": -9.015264805091949e-05,
+        "maximum": -0.0002635348753659435
+      }
+    },
+    {
+      "scene": "drifting",
+      "seed_group": 0,
+      "deterministic": "d100",
+      "diffusion": "d101",
+      "position_mm_delta": {
+        "mean": -0.001524852069697713,
+        "median": -0.00012480017242191832,
+        "p95": 8.55920265503407e-05,
+        "maximum": -0.2808040396506004
+      },
+      "rotation_deg_delta": {
+        "mean": -0.0001076991314430665,
+        "median": -2.4132545369556392e-05,
+        "p95": -0.0004078075948144781,
+        "maximum": -0.00883908942896857
+      }
+    },
+    {
+      "scene": "drifting",
+      "seed_group": 1,
+      "deterministic": "d110",
+      "diffusion": "d111",
+      "position_mm_delta": {
+        "mean": -0.0007008549811886727,
+        "median": -1.6687758191955004e-05,
+        "p95": 0.0010842729673533058,
+        "maximum": -0.20251304912060353
+      },
+      "rotation_deg_delta": {
+        "mean": -0.00011615831266700746,
+        "median": -2.6279731230714323e-05,
+        "p95": -0.00040266206753421447,
+        "maximum": -0.008665597691623655
+      }
+    },
+    {
+      "scene": "drifting",
+      "seed_group": 2,
+      "deterministic": "d120",
+      "diffusion": "d121",
+      "position_mm_delta": {
+        "mean": -0.0014866907625946252,
+        "median": 0.00014338946739358982,
+        "p95": -0.00020967086957901504,
+        "maximum": -0.3171097119067967
+      },
+      "rotation_deg_delta": {
+        "mean": -0.00010423270936496523,
+        "median": -2.381568494418209e-05,
+        "p95": -0.00036726671761087317,
+        "maximum": -0.009001645103537305
+      }
+    }
+  ],
+  "actual_native_steps": 174967,
+  "actual_replay_steps": 174967,
+  "training": {
+    "deterministic_sequence": {
+      "TRAIN_rows": 8,
+      "VAL_rows_in_gradient": 0,
+      "actual_updates": 3000,
+      "data_consumption": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "final_TRAIN_probe": {
+        "ddim": [],
+        "finite": true,
+        "loss": 0.0010221431773261714,
+        "maximum_normalized_error": 0.5617364645004272,
+        "seeds": [
+          20264200,
+          20264201,
+          20264202,
+          20264203,
+          20264204,
+          20264205,
+          20264206,
+          20264207
+        ]
+      },
+      "formal_and_final_probe_calls": 3001,
+      "full_sampling_training_examples": 24000,
+      "full_sampling_training_updates": 3000,
+      "initial_weight_hash": "0f78f3ec4124a35ff6a9a0f507dc641898b125f71725bf5d379bad3b89426ac8",
+      "network_calls_including_diagnostic": 3035,
+      "optimizer_steps": [
+        3000
+      ],
+      "parameters": 175361,
+      "reload_exact": true,
+      "weight_hash": "2494526cfb2e2f8d7b9b7cfa3dbba022e4a14c50e33207a970d5b50974ff5b57",
+      "weights_changed": true
+    },
+    "temporal_diffusion": {
+      "TRAIN_rows": 8,
+      "VAL_rows_in_gradient": 0,
+      "actual_updates": 3000,
+      "data_consumption": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "final_TRAIN_probe": {
+        "ddim": [
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 999
+          },
+          {
+            "decomposition_residual": 4.440892098500626e-16,
+            "t": 932
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 866
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 799
+          },
+          {
+            "decomposition_residual": 4.440892098500626e-16,
+            "t": 733
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 666
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 599
+          },
+          {
+            "decomposition_residual": 4.440892098500626e-16,
+            "t": 533
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 466
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 400
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 333
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 266
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 200
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 133
+          },
+          {
+            "decomposition_residual": 1.7763568394002505e-15,
+            "t": 67
+          },
+          {
+            "decomposition_residual": 8.881784197001252e-16,
+            "t": 0
+          }
+        ],
+        "finite": true,
+        "loss": 0.2826531808960978,
+        "maximum_normalized_error": 2.6140465326763547,
+        "seeds": [
+          20264200,
+          20264201,
+          20264202,
+          20264203,
+          20264204,
+          20264205,
+          20264206,
+          20264207
+        ]
+      },
+      "formal_and_final_probe_calls": 15016,
+      "full_sampling_training_examples": 1500,
+      "full_sampling_training_updates": 750,
+      "initial_weight_hash": "0f78f3ec4124a35ff6a9a0f507dc641898b125f71725bf5d379bad3b89426ac8",
+      "network_calls_including_diagnostic": 15560,
+      "optimizer_steps": [
+        3000
+      ],
+      "parameters": 175361,
+      "reload_exact": true,
+      "weight_hash": "b647ab07bd052ac0557822661ae4bd5bf4cbc8675c988850c2ef28c27d5956fb",
+      "weights_changed": true
+    }
+  },
+  "source_summary_sha256": "0c5db541fba0fbe9c9d75a449a3865e9ec0ef70a084d3ee8c298624d4f99ca0f",
+  "no_new_physics_or_optimization": true,
+  "zero_missing_units": true
+}
