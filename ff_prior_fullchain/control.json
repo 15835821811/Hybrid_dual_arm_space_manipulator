@@ -11,15 +11,15 @@
   "allow_hardware_or_contact_capture": false,
   "allow_parallel_physics_workers": false,
   "allow_physics_relaxation": false,
-  "app_goal_transition": "P5_AUTHORIZATION_FULFILLED_LONG_TERM_GOAL_INCOMPLETE",
+  "app_goal_transition": "USER_REAUTHORIZED_CONTINUOUS_DELIVERY_CARD_TEXT_STALE",
   "automation_id": "automation",
-  "autonomous_scope": "current authorized run closed; no new experiment authorized",
-  "current_phase": "P5_global_bypass_closed_negative",
+  "autonomous_scope": "D1 complete episode and visuals, D2 continuous dynamic handoff, D3 original five-obstacle repair within new 12h/40GiB cycle",
+  "current_phase": "D1_diffusion_demo_implementation",
   "goal_id": "free_floating_fullchain_20261022",
-  "goal_status": "AWAITING_SCOPE_AUTHORIZATION",
+  "goal_status": "ACTIVE_CONTINUOUS_ENGINEERING_DELIVERY",
   "heartbeat_stale_seconds": 180,
-  "implementation_handoff": "ff_prior_global_bypass/docs/EXPERIMENT_PLAN.md",
-  "next_phase": "NEW_SHORT_HORIZON_WORLD_GOAL_MECHANISM_REQUIRES_AUTHORIZATION",
+  "implementation_handoff": "ff_prior_diffusion_demo/docs/EXPERIMENT_PLAN.md",
+  "next_phase": "D2_ACTUAL_TERMINAL_DYNAMIC_HANDOFF",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -50,10 +50,25 @@
       "id": "P5_global_bypass",
       "purpose": "One explicitly authorized floating-state global bypass mechanism on original five obstacles",
       "status": "CLOSED_NEGATIVE_NO_COMPLETE_ROUTE"
+    },
+    {
+      "id": "D1_diffusion_demo",
+      "status": "IMPLEMENTING",
+      "purpose": "One actual Diffusion full static episode and all recorded visualizations"
+    },
+    {
+      "id": "D2_continuous_tracking",
+      "status": "DEPENDENCY_PENDING",
+      "purpose": "Continue from actual terminal full state into dynamic goals"
+    },
+    {
+      "id": "D3_original_five_obstacles",
+      "status": "PLANNED",
+      "purpose": "Finish original five-obstacle path and continuous chain without benefit gate"
     }
   ],
   "version": 1,
-  "decision_document": "ff_prior_fullchain/docs/AFTER_GLOBAL_BYPASS_DECISION.md",
+  "decision_document": "ff_prior_fullchain/docs/CONTINUOUS_DELIVERY_GOAL.md",
   "blocking_evidence": "ff_prior_global_bypass/evidence/statistics.json",
-  "authorization_evidence": "ff_prior_global_bypass/evidence/authorization.json"
+  "authorization_evidence": "ff_prior_diffusion_demo/evidence/authorization.json"
 }

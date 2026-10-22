@@ -177,3 +177,8 @@ global_bypass_001，生产源码c22e79eb，1079.469秒。M0有限分段一致性
 原审计2734/2734，独立review C1 no/high、C2 no/high；79558保存检查与33补充检查无失败，15条16步神经提案重建完全一致，未新增物理。模型/筛选证据不等于轨迹/执行资格。完成resume仅一次，24735文件hash/大小/清单不变。报告ff_prior_global_bypass/docs/ANALYSIS.md，收据ff_prior_fullchain/evidence/global_bypass_closeout.json；长期工程未完成。
 
 下一步只建议短时可继续目标扩展＋世界残差/剩余时间一致的选点，具体见ff_prior_fullchain/docs/AFTER_GLOBAL_BYPASS_DECISION.md，尚未实施或获得新范围预算。禁止再用本轮余额加试；不训练、扩库、TEST，不放宽物理。唯一接续保持静默等新指示，不重审/resume旧工作。
+
+
+## 新持续授权与当前优先级
+
+用户要求先跑一个完整Diffusion系统并交付全部可视化，不继续优势验证。新有效D1/D2/D3路线与周期预算见CONTINUOUS_DELIVERY_GOAL.md；旧P5一次范围已经完成，不阻止本次新授权。原五障碍仍保留为长期必达缺口。

@@ -1,0 +1,220 @@
+{
+  "before_new_physics": true,
+  "candidate_denominator": 5,
+  "complete_diffusion_episode": true,
+  "entries": [
+    {
+      "initial_status": "PASS",
+      "sample_id": "capture_3_obstacles",
+      "scene": {
+        "family_id": "capture_3_nested",
+        "legacy_target": "included_by_robot_model_and_complete_initial_state",
+        "motion": "STATIC",
+        "objects": [
+          {
+            "object_id": "capture_0",
+            "position": [
+              1.2,
+              -0.4,
+              0.07
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.025,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "object_id": "capture_1",
+            "position": [
+              1.13,
+              -0.34,
+              0.13
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.025,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "object_id": "capture_2",
+            "position": [
+              1.27,
+              -0.34,
+              -0.009999999999999995
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.025,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "schema": "ff_prior_static_scene_1"
+      },
+      "split": "APPLICATION_DEV",
+      "task": {
+        "condition": {
+          "duration": 27.0,
+          "goals": [
+            [
+              [
+                1.0,
+                -0.0,
+                0.0,
+                1.9300000000000013
+              ],
+              [
+                0.0,
+                2.6794896468285145e-08,
+                0.9999999999999997,
+                0.6259999999999999
+              ],
+              [
+                -0.0,
+                -0.9999999999999997,
+                2.6794896468285145e-08,
+                5.385774190125315e-09
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            [
+              [
+                -0.9999999999606786,
+                8.867920658586097e-06,
+                -9.213238747866361e-11,
+                1.2
+              ],
+              [
+                -1.3255044512759358e-11,
+                8.894682981541724e-06,
+                0.999999999960441,
+                -0.235
+              ],
+              [
+                8.867920659054791e-06,
+                0.9999999999211209,
+                -8.894682981097635e-06,
+                0.05
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          ],
+          "initial_features": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.7853981633974483,
+            0.0,
+            1.5707963267948966,
+            0.0,
+            0.7853981633974483,
+            0.0
+          ],
+          "pose_mask": [
+            [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        "contract": {
+          "acceptance": {
+            "actual_clearance_m": 0.0,
+            "calibration_status": "INHERITED_DEV_FROZEN_FOR_THIS_SMOKE_NOT_PRODUCTION",
+            "deadline_s": 30.0,
+            "hold_s": 0.5,
+            "manifold_residual_rad": 0.02,
+            "momentum_atol": 1e-05,
+            "momentum_relative_tolerance": 0.002,
+            "planning_clearance_m": 0.0,
+            "position_error_m": 0.005,
+            "replay_atol": 1e-10,
+            "rotation_error_rad": 0.017453292519943295,
+            "subdivisions": 2,
+            "tracking_error_rad": 0.02
+          },
+          "initial_state_id": "d1c78257cff7b077ceaca2bcd8ca6e3b2cd865639399f6c42bdfae648b31c983",
+          "pair_policy_hash": "adf6bf2323e62fdb728246613a55a4396bab0e5039db095f6983377bb44b8d32",
+          "robot_hash": "dcd1054bb7c527edab312c48edb962708375536d4ad67537f0d01261b0d61633"
+        },
+        "source": "MODEL_DERIVED",
+        "task_hash": "5c43f3e30e6b03b8ffa04aea0f1845b6d7fbfd7125b897d2fc3f72202c7613ed"
+      }
+    }
+  ],
+  "execution_denominator": 1,
+  "original_tasks_and_seeds_unchanged": true,
+  "private_answer_paths_used": false,
+  "relative_advantage_benchmark": false,
+  "task_split": "APPLICATION_DEV",
+  "units": [
+    {
+      "id": "u00",
+      "method": "diffusion_geometry",
+      "proposal_seeds": [
+        20264611,
+        20264612,
+        20264613,
+        20264614,
+        20264615
+      ],
+      "seed": 20264611,
+      "source_unit": "u01",
+      "task_hash": "5c43f3e30e6b03b8ffa04aea0f1845b6d7fbfd7125b897d2fc3f72202c7613ed",
+      "task_id": "capture_3_obstacles"
+    }
+  ]
+}
