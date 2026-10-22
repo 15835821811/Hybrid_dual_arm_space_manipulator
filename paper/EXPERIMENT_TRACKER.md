@@ -10,7 +10,7 @@
 |dynamic_reference_001|CLOSED_PARTIAL|4/4参考、3/4真实执行，四次完整重放差0；t00仅实际加速度失败。108000步，未新增TRAIN或训练|
 |dynamic_margin_001|CLOSED_LOCAL_PASS|1新执行通过+3精确历史复用，组合4/4；实际加速度0.970613倍原限；旧失败保留|
 |P2b动态DEV交接|CLOSED_LOCAL_PASS|6/8独特、10/12逻辑；先验4/6、基线2/2；8完整重放差0，收益不支持|
-|P3时序候选|P3A_RUNNING|预选8TRAIN/4VAL；4历史复用+8新执行上限；正式训练未开始|
+|P3时序候选|P3A_CLOSED_PASS_P3B_IMPLEMENTING|8/8TRAIN+4/4VAL合格；4旧复用+8新执行；训练尚未开始|
 |P4整链开发验收|QUEUED|最多30执行，五障碍与完整连续组合仍缺|
 
 新独立review：paper/review-traces/experiment-result-to-claim/20261022_dynamic_reference_run01；C1局部partial/high，C2 NOT_EVALUATED；缺少PAPER_CLAIM_AUDIT，论文结论provisional。166源码/86输入和完整状态/控制/几何/原目标核对通过；不能把表示过门当执行通过。完成resume仅一次，64核心文件hash完全保持，UTF-8完整输出已存。
@@ -32,3 +32,7 @@ dynamic_handoff_001已完成新独立审查：6/8独特实际执行、10/12逻�
 转P3a：固定既有32TRAIN/8VAL来源，预选前8TRAIN/前4VAL；前4TRAIN精确复用，余8条至多一次新执行重放，失败不替换。只认证现有来源，不扩库；其余28条不升级。至少8/4合格后才另冻一个时序候选与序列基线。学习门失败保留BLOCKED并继续原P1五障碍独立修复。新阶段是否已启动仅以control/status为准。
 
 P3a temporal_data_001已实际后台启动，源码292021c2；29项软件检查通过，214输入文件绑定。固定8TRAIN/4VAL，4精确历史复用+最多8新执行重放；剩余28来源不升级。单线程/3000秒/5GiB/216000新步，上限来自P3总6h/20GiB。原学习门8/4不变，训练尚未启动。当前真实阶段/PID心跳以control/status为准。
+
+## P3a当前资格完成
+
+temporal_data_001已完成：固定8TRAIN/4VAL全部EXECUTION_VERIFIED，4精确旧复用+8新执行重放，剩余28来源不升级。新最大位置2.112068mm/姿态0.021865度，完整836维重放差0。独立review局部PASS、整体partial/high，C2未评估。耗时377.453秒/216000新步/1152681165字节；完成resume仅一次146文件hash不变。报告ff_prior_temporal_data/docs/ANALYSIS.md。进入一个完整时序候选及确定性序列基线的实施/冻结，训练尚未开始；后续预算扣已用，当前run以control为准。

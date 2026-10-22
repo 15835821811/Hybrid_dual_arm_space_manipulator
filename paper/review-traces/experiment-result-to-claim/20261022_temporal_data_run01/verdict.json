@@ -1,0 +1,58 @@
+{
+  "audit_skill": "experiment-result-to-claim",
+  "review_role": "independent paper architect/reviewer",
+  "review_trace": "20261022_temporal_data_run01",
+  "experiment": "temporal_data_001",
+  "producer_head": "292021c273c2db591677f30e64a6fa6c99bcb0e8",
+  "claim_supported": "partial",
+  "confidence": "high",
+  "local_qualification": {
+    "claim_supported": "yes",
+    "verdict": "PASS",
+    "confidence": "high",
+    "train_qualified": 8,
+    "train_denominator": 8,
+    "validation_qualified": 4,
+    "validation_denominator": 4,
+    "historical_exact_reuse": 4,
+    "new_executions": 8,
+    "unselected_not_upgraded": 28
+  },
+  "C1": {
+    "claim_supported": "partial",
+    "confidence": "high",
+    "reason": "Qualified fixed existing temporal labels are one completed engineering prerequisite; a learned temporal execution pipeline and the wider engineering objective are not established by this stage."
+  },
+  "C2": {
+    "claim_supported": "no",
+    "confidence": "high",
+    "evaluation_status": "not_evaluated",
+    "reason": "No learned temporal model or deterministic sequence baseline was trained or compared; no scientific advantage can be inferred."
+  },
+  "what_results_support": "The fixed first 8 TRAIN / first 4 VAL existing-source labels satisfy the unchanged current execution qualification gate: 4 exact historical reuses and 8 new native/replay executions.",
+  "what_results_dont_support": "Learning success; Diffusion benefit; generation of 12 new trajectories; qualification of all 40 sources; hardware, continuous-time, or broad generalization claims.",
+  "missing_evidence": [
+    "Frozen single temporal Diffusion candidate versus deterministic sequence baseline training and execution results",
+    "Evidence for remaining full C1 engineering requirements",
+    "Paper-to-evidence claim audit"
+  ],
+  "suggested_claim_revision": "State only fixed-source data qualification, separating four historical exact reuses and eight newly executed/replayed trajectories, as the prerequisite for the planned temporal learning test.",
+  "next_experiments_needed": [
+    "Freeze and complete only the already planned one temporal candidate and one deterministic sequence baseline, preserving budgets, splits, original physical gates and failure denominators; then rerun result-to-claim."
+  ],
+  "routing_action": "confirm_local_qualification_and_supplement_overall_claim",
+  "can_proceed_existing_single_temporal_candidate": true,
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "paper_verdict": "provisional — no paper claim audit available",
+  "checks_total": 1913,
+  "checks_failed": 0,
+  "new_review_physics_steps": 0,
+  "new_review_geometry_queries": 0,
+  "new_review_training_updates": 0,
+  "review_resume_calls": 0,
+  "maximum_new_position_error_mm": 2.1120683560182534,
+  "maximum_new_rotation_error_deg": 0.021865414916931187,
+  "minimum_new_saved_clearance_mm": 4.845486642493799,
+  "generated_at": "2026-10-22T07:01:25.640706+00:00"
+}
