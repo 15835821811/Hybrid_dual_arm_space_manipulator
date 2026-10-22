@@ -1,0 +1,196 @@
+{
+  "audit_skill": "experiment-result-to-claim",
+  "experiment": "global_bypass_001",
+  "review_role": "fresh independent paper architect/reviewer",
+  "review_trace": "paper/review-traces/experiment-result-to-claim/20261022_global_bypass_run01",
+  "generated_at": "2026-10-22T11:11:14.789308+00:00",
+  "claim_supported": "no",
+  "confidence": "high",
+  "confidence_scope": "High confidence that this completed run does not support the claims; not a proof of impossibility or equivalence.",
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Original five-obstacle 27 s public-input tree yields at least one full323-qualified native67-executed full-state-replayed path",
+      "claim_supported": "no",
+      "confidence": "high",
+      "reason_code": "NO_COMPLETE_GLOBAL_ROUTE",
+      "observed": {
+        "complete_routes": 0,
+        "candidates": 30,
+        "MODEL_VALID": 0,
+        "verified_units": 0,
+        "frozen_units": 6,
+        "actual_executions": 0,
+        "conditional_execution_failure_rate": null
+      }
+    },
+    {
+      "id": "C2",
+      "claim": "Diffusion provides measured benefit over structured public geometry under matched budgets",
+      "claim_supported": "no",
+      "confidence": "high",
+      "reason_code": "NO_PRIMARY_TASK_GAIN_ESTABLISHED",
+      "observed": {
+        "structured_geometry": {
+          "attempts": 2451,
+          "accepted_tree_nodes": 1280,
+          "saved_connector_propagations": 6098,
+          "inferred_tree_total_coupled": 7448,
+          "inferred_seed_coupled": 825,
+          "reserved_intervals": 1392640,
+          "saved_edge_actual_intervals": 605226,
+          "goal_connections_with_iteration_logs": 24,
+          "goal_iterations": 75,
+          "goal_accepted_iterations": 51,
+          "failed_goal_trials_without_edge_trace": 0,
+          "minimum_tree_Q_distribution": {
+            "min": 13.896440502166985,
+            "median": 31.877671047625576,
+            "max": 39.93115398613261
+          },
+          "seed_Q_distribution": {
+            "min": 0.005899436768099304,
+            "median": 0.006802119898053605,
+            "max": 0.007954135520939966
+          },
+          "maximum_node_elapsed_s": 8.41026901199326,
+          "maximum_depth": 15,
+          "best_saved_last_goal_trial_Q": 16.479239361898387,
+          "candidate_qualified": 0,
+          "candidate_denominator": 15,
+          "verified_units": 0,
+          "frozen_units": 3,
+          "actual_executions": 0,
+          "conditional_execution_failure_rate": null
+        },
+        "diffusion_geometry": {
+          "attempts": 2465,
+          "accepted_tree_nodes": 1190,
+          "saved_connector_propagations": 5915,
+          "inferred_tree_total_coupled": 7445,
+          "inferred_seed_coupled": 843,
+          "reserved_intervals": 1420416,
+          "saved_edge_actual_intervals": 576563,
+          "goal_connections_with_iteration_logs": 24,
+          "goal_iterations": 85,
+          "goal_accepted_iterations": 62,
+          "failed_goal_trials_without_edge_trace": 0,
+          "minimum_tree_Q_distribution": {
+            "min": 17.045557410196853,
+            "median": 29.12653426875351,
+            "max": 40.758874924893846
+          },
+          "seed_Q_distribution": {
+            "min": 0.014907138347601738,
+            "median": 0.07572359481110248,
+            "max": 0.3787844288638978
+          },
+          "maximum_node_elapsed_s": 7.288899810394159,
+          "maximum_depth": 13,
+          "best_saved_last_goal_trial_Q": 15.412429022585528,
+          "candidate_qualified": 0,
+          "candidate_denominator": 15,
+          "verified_units": 0,
+          "frozen_units": 3,
+          "actual_executions": 0,
+          "conditional_execution_failure_rate": null
+        }
+      },
+      "does_not_imply": [
+        "method equivalence",
+        "intrinsic impossibility",
+        "general inferiority"
+      ]
+    }
+  ],
+  "subclaims": [
+    {
+      "id": "S1_original_identity",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "rationale": "Exact original task/seed/order and full836 state IDs"
+    },
+    {
+      "id": "S2_real_diffusion_proposals",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "rationale": "15 x 16 neural-only reconstruction; network_raw exact"
+    },
+    {
+      "id": "S3_M0_local_continuation",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "rationale": "Full saved qpos/qvel/EE/time consistency only; not model/path qualification"
+    },
+    {
+      "id": "S4_saved_parent_child_continuation",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "rationale": "All2470 inserted nodes and12013 saved connector traces checked"
+    },
+    {
+      "id": "S5_full_geometry_and_numerical_qualification",
+      "claim_supported": "partial",
+      "confidence": "high",
+      "rationale": "Saved screen reports/arrays consistent; no independent physical re-evaluation or whole-route qualification"
+    },
+    {
+      "id": "S6_goal_connection_auditability",
+      "claim_supported": "partial",
+      "confidence": "high",
+      "rationale": "160 derivative algebra checks and213 failed trial associations; full center/perturbation trajectories missing"
+    },
+    {
+      "id": "S7_completed_bounded_accounting",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "rationale": "No registered unresolved work; budgets reconciled; parent completed-resume receipt only"
+    }
+  ],
+  "what_results_support": [
+    "Frozen inputs/seeds/full initial state are preserved",
+    "Old checkpoint generates the recorded16-step proposals",
+    "M0 and saved tree-state continuation are internally consistent",
+    "Both methods produced no complete route under this fixed budget"
+  ],
+  "what_results_dont_support": [
+    "C1 engineering success",
+    "C2 Diffusion benefit",
+    "full model/path/native qualification from M0 or TREE_SCREEN_ONLY",
+    "unique causal bottleneck, task infeasibility, representation failure or controller failure"
+  ],
+  "missing_evidence": [
+    "complete route plus original323/native67/full836 replay",
+    "primary-metric Diffusion gain and appropriate replicated tasks",
+    "full state/qpos/qvel/time for goal center and17 perturbations",
+    "independent full geometry/residual evidence for stronger physics assertions",
+    "paper claim audit"
+  ],
+  "suggested_claim_revision": "Fixed-budget negative result on original five-obstacle27s development task; tested model state continuation is consistent but engineering feasibility and Diffusion benefit remain unestablished.",
+  "next_experiments_needed": [
+    "No further experiment is authorized in this run",
+    "Future separately authorized protocol must retain original task/gates and audit goal derivative propagation, then demonstrate complete route and native replay before asserting success"
+  ],
+  "paper_claim_audit": "unavailable",
+  "provisional": true,
+  "provisional_reason": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "validation": {
+    "saved_checks": 79558,
+    "saved_check_failures": [],
+    "supplemental_checks": 33,
+    "supplemental_passed": true,
+    "neural_rows": 30,
+    "neural_forward_calls": 240,
+    "goal_failed_trials": {
+      "COLLISION_EARLY_STOP": 204,
+      "MAX_DENSITY_STEP_FAIL": 9
+    },
+    "new_physics_calls": 0,
+    "optimizer_updates": 0,
+    "reviewer_resume_calls": 0
+  },
+  "routing_action": "pivot",
+  "current_run_action": "close_negative_without_further_execution",
+  "long_term_goal_complete": false
+}

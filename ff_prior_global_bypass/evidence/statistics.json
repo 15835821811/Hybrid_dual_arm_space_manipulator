@@ -1,0 +1,622 @@
+{
+  "budget": {
+    "actual_coupled": 16564,
+    "actual_native_and_replay_steps": 0,
+    "integration_intervals": 2814080,
+    "limits": {
+      "TEST": false,
+      "TRAIN_added": 0,
+      "accepted_node_cap": 400,
+      "active_buffer_m": 0.004,
+      "active_pair_cap": 240,
+      "bow_control_cap_rad": 0.3,
+      "bow_margin_m": 0.06,
+      "candidate_denominator": 30,
+      "candidate_wall_s": 410,
+      "claim_scope": "development engineering feasibility; diffusion benefit separately judged",
+      "collision_scale_m": 0.003,
+      "coupled_cap": 36000,
+      "cpu_threads": 2,
+      "dense_grids": [
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384
+      ],
+      "detail_initialization_seed": 20264601,
+      "difference_rad": 0.0001,
+      "edge_grids": [
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "edge_margin_m": 0.0002,
+      "edge_max_joint_step_rad": 0.18,
+      "edge_max_step_m": 0.002,
+      "execution_reserve_s": 360,
+      "execution_units": 6,
+      "expand": false,
+      "fit_endpoint_weight": 10.0,
+      "fit_samples": 513,
+      "full_integration_replay_required": true,
+      "goal_relabel": false,
+      "integration_cap": 80000000,
+      "line_scales": [
+        1.0,
+        0.5,
+        0.25,
+        0.125,
+        0.0625,
+        0.03125
+      ],
+      "mechanism_attempts": 1,
+      "methods": [
+        "structured_geometry",
+        "diffusion_geometry"
+      ],
+      "native_steps_cap": 165000,
+      "network_steps": 16,
+      "output_bytes_cap": 21340618752,
+      "physics_relaxed": false,
+      "proposals_per_unit": 5,
+      "qualification": "original nonpenetration, dual world 5mm/1deg, 2mm geometry, full motion/native67/replay gates",
+      "ratio_accept": 0.1,
+      "ratio_expand": 0.75,
+      "ratio_shrink": 0.25,
+      "raw_intervals": 256,
+      "repair_clearance_m": 0.0002,
+      "repair_coupled_cap": 2100,
+      "repair_integration_cap": 6200000,
+      "repair_iterations": 6,
+      "repair_wall_s": 950,
+      "restore_bisections": 50,
+      "screen_intervals": 512,
+      "screen_rank": "certified eligible first; then original goal+geometry merit; then candidate id",
+      "search_attempt_cap": 400,
+      "search_coupled_cap": 500,
+      "search_integration_cap": 900000,
+      "seed_coupled_cap": 220,
+      "seed_integration_cap": 150000,
+      "seeds": [
+        20264611,
+        20264617,
+        20264623
+      ],
+      "selected_repairs": 1,
+      "solver_max_iterations": 160,
+      "sparse_agreement_m": 0.001,
+      "sparse_agreement_rad": 0.003490658503988659,
+      "sparse_base_grids": [
+        512,
+        1024,
+        2048
+      ],
+      "tasks": [
+        "capture_5_obstacles"
+      ],
+      "training_updates": 0,
+      "tree_endpoint_difference_rad": 0.0001,
+      "tree_endpoint_iterations": 6,
+      "tree_endpoint_step_rad": 0.12,
+      "tree_goal_connection_period": 32,
+      "tree_goal_probability": 0.25,
+      "tree_goal_reserve_s": 4.0,
+      "tree_min_duration_s": 0.35,
+      "tree_proposal_probability": 0.3,
+      "tree_sample_continuum_scale": 0.1,
+      "tree_sample_rigid_scale": 0.65,
+      "tree_time_margin": 1.1,
+      "tree_uniform_probability": 0.15,
+      "trust_initial_rad": 0.0375,
+      "trust_min_rad": 0.001171875,
+      "trust_rad": 0.15,
+      "unit_coupled_cap": 5990,
+      "unit_integration_cap": 13200000,
+      "unit_wall_s": 3500,
+      "validation_coupled_cap": 40,
+      "validation_integration_cap": 200000,
+      "validation_intervals": [
+        256,
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384
+      ],
+      "version": "forward_floating_state_rrt_quintic_to323_v1",
+      "wall_s": 21540
+    },
+    "reserved_coupled": 16564
+  },
+  "collision_pairs": [
+    {
+      "count": 566,
+      "geoms": [
+        "v7_capture_3",
+        "collision_0069"
+      ]
+    },
+    {
+      "count": 447,
+      "geoms": [
+        "v7_capture_2",
+        "collision_0072"
+      ]
+    },
+    {
+      "count": 198,
+      "geoms": [
+        "v7_capture_0",
+        "collision_0072"
+      ]
+    },
+    {
+      "count": 164,
+      "geoms": [
+        "v7_capture_3",
+        "collision_0070"
+      ]
+    },
+    {
+      "count": 153,
+      "geoms": [
+        "v7_capture_4",
+        "collision_0072"
+      ]
+    },
+    {
+      "count": 122,
+      "geoms": [
+        "v7_capture_4",
+        "collision_0071"
+      ]
+    },
+    {
+      "count": 97,
+      "geoms": [
+        "v7_capture_0",
+        "collision_0070"
+      ]
+    },
+    {
+      "count": 97,
+      "geoms": [
+        "v7_capture_0",
+        "collision_0071"
+      ]
+    },
+    {
+      "count": 75,
+      "geoms": [
+        "v7_capture_4",
+        "collision_0070"
+      ]
+    },
+    {
+      "count": 69,
+      "geoms": [
+        "v7_capture_2",
+        "collision_0071"
+      ]
+    },
+    {
+      "count": 54,
+      "geoms": [
+        "v7_capture_3",
+        "collision_0071"
+      ]
+    },
+    {
+      "count": 52,
+      "geoms": [
+        "v7_capture_1",
+        "collision_0071"
+      ]
+    },
+    {
+      "count": 46,
+      "geoms": [
+        "collision_0072",
+        "target_satellite_collision"
+      ]
+    },
+    {
+      "count": 38,
+      "geoms": [
+        "v7_capture_3",
+        "collision_0072"
+      ]
+    },
+    {
+      "count": 29,
+      "geoms": [
+        "v7_capture_2",
+        "collision_0070"
+      ]
+    },
+    {
+      "count": 26,
+      "geoms": [
+        "v7_capture_1",
+        "collision_0070"
+      ]
+    },
+    {
+      "count": 4,
+      "geoms": [
+        "v7_capture_1",
+        "collision_0072"
+      ]
+    },
+    {
+      "count": 3,
+      "geoms": [
+        "v7_capture_4",
+        "collision_0069"
+      ]
+    },
+    {
+      "count": 3,
+      "geoms": [
+        "collision_0071",
+        "target_satellite_collision"
+      ]
+    },
+    {
+      "count": 1,
+      "geoms": [
+        "collision_0070",
+        "target_satellite_collision"
+      ]
+    }
+  ],
+  "core_bytes": 742231479,
+  "core_files": 24735,
+  "edge_counts": {
+    "accepted": 2631,
+    "complete": 9769,
+    "numerical_failures": 0,
+    "penetrating": 2244,
+    "propagations": 12013,
+    "refinement_only": 7138
+  },
+  "edge_grids": {
+    "32": 4884,
+    "64": 2584,
+    "128": 2520,
+    "256": 1794,
+    "512": 231
+  },
+  "goal_accepted_updates": 113,
+  "goal_edge_pass_trials": 113,
+  "goal_iterations": 160,
+  "goal_session_denominator_note": "only sessions with saved iteration records; do not assert all function invocations recorded",
+  "goal_sessions_no_final_descent": 47,
+  "goal_trials": 326,
+  "m0_max_qpos_difference": 0.0,
+  "m0_max_qvel_difference": 0.0,
+  "methods": {
+    "diffusion_geometry": {
+      "accepted_goal_session_best": {
+        "Q": {
+          "count": 23,
+          "mean": 41.23797036260993,
+          "median": 42.3670726444633,
+          "minimum": 15.412429022585528,
+          "p95": 63.081104843606546,
+          "worst": 64.26953510948594
+        },
+        "position_mm": {
+          "count": 23,
+          "mean": 206.18985181304964,
+          "median": 211.8353632223165,
+          "minimum": 77.06214511292764,
+          "p95": 315.4055242180328,
+          "worst": 321.34767554742973
+        },
+        "rotation_deg": {
+          "count": 23,
+          "mean": 14.269764735056691,
+          "median": 12.414377766542444,
+          "minimum": 3.944810199927921,
+          "p95": 29.286819624936808,
+          "worst": 44.11818052132305
+        }
+      },
+      "attempts": 2465,
+      "best_tree_world_pose": {
+        "Q": {
+          "count": 15,
+          "mean": 28.718323093438887,
+          "median": 29.126534268753506,
+          "minimum": 17.045557410196853,
+          "p95": 38.53842127054406,
+          "worst": 40.758874924893846
+        },
+        "position_mm": {
+          "count": 15,
+          "mean": 143.59161546719443,
+          "median": 145.63267134376753,
+          "minimum": 85.22778705098428,
+          "p95": 192.69210635272032,
+          "worst": 203.7943746244692
+        },
+        "rotation_deg": {
+          "count": 15,
+          "mean": 11.863729621931684,
+          "median": 12.559023551858504,
+          "minimum": 2.009661918018563,
+          "p95": 19.723972106604247,
+          "worst": 22.33886520407718
+        }
+      },
+      "candidate_denominator": 15,
+      "coupled": 8288,
+      "goal_accepted_updates": 62,
+      "goal_iterations": 85,
+      "goal_sessions_no_final_descent": 23,
+      "goal_sessions_recorded": 24,
+      "nodes": 1190,
+      "q_nearest_selected_pose": {
+        "Q": {
+          "count": 15,
+          "mean": 39.71525282314717,
+          "median": 38.18713995536626,
+          "minimum": 23.582270672759897,
+          "p95": 60.26729971100923,
+          "worst": 69.52143183237102
+        },
+        "position_mm": {
+          "count": 15,
+          "mean": 198.57626411573582,
+          "median": 190.9356997768313,
+          "minimum": 117.91135336379949,
+          "p95": 301.3364985550462,
+          "worst": 347.6071591618551
+        },
+        "rotation_deg": {
+          "count": 15,
+          "mean": 14.134135425969554,
+          "median": 12.560141481195426,
+          "minimum": 6.27549771608368,
+          "p95": 26.37688428654074,
+          "worst": 34.17603876148736
+        }
+      },
+      "qualified": 0,
+      "seed_pose": {
+        "Q": {
+          "count": 15,
+          "mean": 0.10287976882296809,
+          "median": 0.07572359481110248,
+          "minimum": 0.014907138347601738,
+          "p95": 0.288776281886022,
+          "worst": 0.3787844288638978
+        },
+        "position_mm": {
+          "count": 15,
+          "mean": 0.5143988441148404,
+          "median": 0.3786179740555124,
+          "minimum": 0.07453569173800868,
+          "p95": 1.44388140943011,
+          "worst": 1.893922144319489
+        },
+        "rotation_deg": {
+          "count": 15,
+          "mean": 0.022171916163284063,
+          "median": 0.012085938537121059,
+          "minimum": 0.0008685419345414839,
+          "p95": 0.06069604293434511,
+          "worst": 0.08286817943051784
+        }
+      },
+      "time_reserve_rejections": 0
+    },
+    "structured_geometry": {
+      "accepted_goal_session_best": {
+        "Q": {
+          "count": 22,
+          "mean": 40.3938246311711,
+          "median": 42.63221160319608,
+          "minimum": 16.479239361898387,
+          "p95": 52.6062605136079,
+          "worst": 56.587956649074066
+        },
+        "position_mm": {
+          "count": 22,
+          "mean": 201.96149707709054,
+          "median": 213.1610580159804,
+          "minimum": 82.22842307666254,
+          "p95": 263.0313025680395,
+          "worst": 282.93978324537034
+        },
+        "rotation_deg": {
+          "count": 22,
+          "mean": 14.681953181095965,
+          "median": 14.818670435765693,
+          "minimum": 6.088218218483715,
+          "p95": 23.288249290268247,
+          "worst": 24.768552588163892
+        }
+      },
+      "attempts": 2451,
+      "best_tree_world_pose": {
+        "Q": {
+          "count": 15,
+          "mean": 29.669399131871106,
+          "median": 31.877671047625576,
+          "minimum": 13.896440502166984,
+          "p95": 39.40113775349311,
+          "worst": 39.93115398613261
+        },
+        "position_mm": {
+          "count": 15,
+          "mean": 148.34699565935554,
+          "median": 159.3883552381279,
+          "minimum": 69.48220251083492,
+          "p95": 197.00568876746556,
+          "worst": 199.65576993066304
+        },
+        "rotation_deg": {
+          "count": 15,
+          "mean": 12.48932353298333,
+          "median": 12.472245878925474,
+          "minimum": 4.453003128594759,
+          "p95": 19.252286132781613,
+          "worst": 19.288648320501984
+        }
+      },
+      "candidate_denominator": 15,
+      "coupled": 8273,
+      "goal_accepted_updates": 51,
+      "goal_iterations": 75,
+      "goal_sessions_no_final_descent": 24,
+      "goal_sessions_recorded": 24,
+      "nodes": 1280,
+      "q_nearest_selected_pose": {
+        "Q": {
+          "count": 15,
+          "mean": 37.035327472072744,
+          "median": 36.68496770978152,
+          "minimum": 13.896440502166984,
+          "p95": 54.86282951575627,
+          "worst": 55.23064950253473
+        },
+        "position_mm": {
+          "count": 15,
+          "mean": 185.17663736036377,
+          "median": 183.4248385489076,
+          "minimum": 69.48220251083492,
+          "p95": 274.3141475787814,
+          "worst": 276.15324751267366
+        },
+        "rotation_deg": {
+          "count": 15,
+          "mean": 14.300853907601496,
+          "median": 12.816411154921905,
+          "minimum": 3.408581089066841,
+          "p95": 24.857431543258045,
+          "worst": 26.49862506400558
+        }
+      },
+      "qualified": 0,
+      "seed_pose": {
+        "Q": {
+          "count": 15,
+          "mean": 0.00681563029915594,
+          "median": 0.006802119898053604,
+          "minimum": 0.005899436768099305,
+          "p95": 0.007645680207095696,
+          "worst": 0.007954135520939966
+        },
+        "position_mm": {
+          "count": 15,
+          "mean": 0.03407815149577971,
+          "median": 0.03401059949026802,
+          "minimum": 0.029497183840496523,
+          "p95": 0.038228401035478476,
+          "worst": 0.03977067760469983
+        },
+        "rotation_deg": {
+          "count": 15,
+          "mean": 0.0015102688812563543,
+          "median": 0.0015121588791221247,
+          "minimum": 0.0013257659683258284,
+          "p95": 0.0016753218787890088,
+          "worst": 0.0016978674365789538
+        }
+      },
+      "time_reserve_rejections": 0
+    }
+  },
+  "new_physics_in_analysis": 0,
+  "recorded_goal_sessions": 48,
+  "run": "artifacts/v7_1/global_bypass_001",
+  "scope": "saved evidence only; best prefix is not a complete solution",
+  "status": {
+    "elapsed_s": 1079.4689999995753,
+    "heartbeat": 1792665514.9602747,
+    "pid": 177640,
+    "progress": {},
+    "report": "E:\\\u684c\u9762\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\global_bypass_001\\REPORT.md",
+    "stage": "complete",
+    "started_at": 1792664435.4768806,
+    "status": "FINISHED_WITH_BLOCKED_ITEMS"
+  },
+  "tree_stops": {
+    "SEARCH_BUDGET_RESERVED": 30
+  },
+  "units": [
+    {
+      "attempts": 747,
+      "best_world_Q": 23.582270672759897,
+      "coupled": 2759,
+      "method": "diffusion_geometry",
+      "nodes": 385,
+      "qualified": 0,
+      "recorded_goal_sessions": 7,
+      "seed": 20264611,
+      "unit": "u00"
+    },
+    {
+      "attempts": 789,
+      "best_world_Q": 23.11772747523948,
+      "coupled": 2754,
+      "method": "structured_geometry",
+      "nodes": 438,
+      "qualified": 0,
+      "recorded_goal_sessions": 6,
+      "seed": 20264611,
+      "unit": "u01"
+    },
+    {
+      "attempts": 823,
+      "best_world_Q": 13.896440502166984,
+      "coupled": 2756,
+      "method": "structured_geometry",
+      "nodes": 408,
+      "qualified": 0,
+      "recorded_goal_sessions": 9,
+      "seed": 20264617,
+      "unit": "u02"
+    },
+    {
+      "attempts": 873,
+      "best_world_Q": 20.547711280162986,
+      "coupled": 2755,
+      "method": "diffusion_geometry",
+      "nodes": 412,
+      "qualified": 0,
+      "recorded_goal_sessions": 8,
+      "seed": 20264617,
+      "unit": "u03"
+    },
+    {
+      "attempts": 845,
+      "best_world_Q": 17.045557410196853,
+      "coupled": 2774,
+      "method": "diffusion_geometry",
+      "nodes": 393,
+      "qualified": 0,
+      "recorded_goal_sessions": 9,
+      "seed": 20264623,
+      "unit": "u04"
+    },
+    {
+      "attempts": 839,
+      "best_world_Q": 18.51413566945295,
+      "coupled": 2763,
+      "method": "structured_geometry",
+      "nodes": 434,
+      "qualified": 0,
+      "recorded_goal_sessions": 9,
+      "seed": 20264623,
+      "unit": "u05"
+    }
+  ]
+}
