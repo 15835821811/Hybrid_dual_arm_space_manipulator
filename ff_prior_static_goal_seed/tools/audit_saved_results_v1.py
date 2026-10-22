@@ -118,4 +118,3 @@ def verify(out, ident):
     return {'status':'PASS' if all(checks.values()) else 'FAIL','checks':checks,'incomplete_units':notes,
         'scope':'raw identity, denominators, saved pose/gates/control and call accounting; no new physics',
         'fresh_independent_claim_review':'PENDING_AFTER_COMPLETION'}
-
