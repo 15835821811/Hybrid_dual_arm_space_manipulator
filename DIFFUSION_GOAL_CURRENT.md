@@ -41,3 +41,7 @@
 ```
 
 详细阶段协议和历史证据见`ff_prior_fullchain/docs/ROADMAP.md`；最新实际run、报告、下一步见`control.json`。
+
+## P4实际启动
+
+fullchain_acceptance_001已启动，源码370a2041，37软件/身份检查通过，125源码与589输入绑定。30逻辑机会中6新三障碍执行/重放、12动态历史精确复用、12五障碍及连续组合依赖BLOCKED。未新训练/提案/数据/TEST；不能把启动当工程通过。实际PID/心跳只读control/status。
