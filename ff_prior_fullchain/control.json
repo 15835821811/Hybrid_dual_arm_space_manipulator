@@ -1,11 +1,11 @@
 {
-  "active_closeout_receipt": "ff_prior_fullchain/evidence/dynamic_handoff_closeout.json",
-  "active_module": "ff_prior_dynamic_handoff.job",
-  "active_protocol": "ff_prior_dynamic_handoff/docs/EXPERIMENT_PLAN.md",
-  "active_report": "ff_prior_dynamic_handoff/docs/ANALYSIS.md",
-  "active_run": "artifacts/v7_1/dynamic_handoff_001",
-  "active_run_role": "closed_evidence",
-  "active_source_commit": "549c4a2e",
+  "active_closeout_receipt": "ff_prior_fullchain/evidence/temporal_data_closeout.json",
+  "active_module": "ff_prior_temporal_data.job",
+  "active_protocol": "ff_prior_temporal_data/docs/EXPERIMENT_PLAN.md",
+  "active_report": "ff_prior_temporal_data/docs/ANALYSIS.md",
+  "active_run": "artifacts/v7_1/temporal_data_001",
+  "active_run_role": "current_worker",
+  "active_source_commit": "292021c2",
   "allow_dataset_expansion": false,
   "allow_final_TEST": false,
   "allow_hardware_or_contact_capture": false,
@@ -14,11 +14,11 @@
   "app_goal_transition": "NEW_LONG_TERM_GOAL_ACTIVE",
   "automation_id": "automation",
   "autonomous_scope": "serial bounded development, implementation, training, simulation execution, replay and reporting",
-  "current_phase": "P2_dynamic_representation_tracking",
+  "current_phase": "P3_temporal_diffusion_integration",
   "goal_id": "free_floating_fullchain_20261022",
   "goal_status": "ACTIVE_DEVELOPMENT",
   "heartbeat_stale_seconds": 180,
-  "next_phase": "P3_temporal_diffusion_integration",
+  "next_phase": "P3b_temporal_learning_if_qualified_else_P1_remaining_repair",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -38,7 +38,7 @@
     {
       "id": "P3_temporal_diffusion_integration",
       "purpose": "Train and evaluate one time-conditioned planner using eligible existing TRAIN/VAL; report the network contribution separately.",
-      "status": "IMPLEMENTING_EXISTING_DATA_QUALIFICATION"
+      "status": "P3A_EXISTING_DATA_QUALIFICATION_RUNNING"
     },
     {
       "id": "P4_development_acceptance",
