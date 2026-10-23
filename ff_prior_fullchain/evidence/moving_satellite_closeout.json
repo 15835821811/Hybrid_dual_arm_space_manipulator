@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "closed_at_utc": "2026-10-23T12:22:51.776910+00:00",
+  "run": "artifacts/v7_1/moving_satellite_001",
+  "status": "CLOSED_EXECUTION_FAILED_MOMENTUM",
+  "worker_status": "FINISHED_WITH_BLOCKED_ITEMS",
+  "producer_head": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
+  "source_count": 185,
+  "bound_input_count": 274,
+  "physical_gate_count": 29,
+  "physical_gates_passed": 28,
+  "failed_gates": [
+    "momentum"
+  ],
+  "native_steps": 14500,
+  "replay_steps": 14500,
+  "replay_shape": [
+    14501,
+    836
+  ],
+  "replay_max_abs": 0.0,
+  "source_and_state_identity": {
+    "producer_head": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
+    "sources": 185,
+    "bound_inputs": 274,
+    "source_mismatches": [],
+    "archive_mismatches": [],
+    "bound_input_mismatches": [],
+    "predecessor_access": "closeout metadata only; inherited files hashed for identity but no old raw arrays loaded"
+  },
+  "momentum": {
+    "definition": "robot generalized base conjugate momentum M(q)*qvel at base DOFs; angular component expressed in base free-joint coordinates, not world-origin total angular momentum",
+    "initial_vector": [
+      -1.2752019149610489e-05,
+      3.082579064729715e-06,
+      -4.110218198919932e-05,
+      2.115122854229193e-05,
+      5.544881726791994e-05,
+      -6.2009288558663965e-06
+    ],
+    "final_vector": [
+      -1.2798452328175629e-05,
+      3.1110546676205056e-06,
+      -4.109823406837275e-05,
+      2.1235103891492288e-05,
+      5.539755875949462e-05,
+      -6.1508109868509304e-06
+    ],
+    "initial_norm": [
+      4.3145169490403017e-05,
+      5.966906504994827e-05
+    ],
+    "final_norm": [
+      4.315719970851054e-05,
+      5.9646052925487836e-05
+    ],
+    "peak_norm": [
+      4.315719970851054e-05,
+      5.966906504994827e-05
+    ],
+    "peak_indices": [
+      14500,
+      0
+    ],
+    "exchange_peak": [
+      0.015223997428951386,
+      0.017364663805364486
+    ],
+    "threshold": [
+      4.044799485790277e-05,
+      4.472932761072897e-05
+    ],
+    "initial_over_threshold": [
+      true,
+      true
+    ],
+    "peak_over_threshold_ratio": [
+      1.0669799543865013,
+      1.3340031750362327
+    ],
+    "peak_change_from_initial": [
+      5.4612142518940603e-08,
+      1.1033725428939223e-07
+    ],
+    "exceed_state_count": [
+      14501,
+      14501
+    ],
+    "first_exceed_index": [
+      0,
+      0
+    ],
+    "world_origin_angular_initial": [
+      2.391889735492636e-05,
+      5.4261309190327815e-05,
+      -6.828428866899869e-06
+    ],
+    "world_origin_angular_final": [
+      2.392258826528521e-05,
+      5.425051418741496e-05,
+      -6.8182870811952754e-06
+    ],
+    "world_origin_angular_change_peak": 1.993583975895941e-08
+  },
+  "satellite_ledger": {
+    "actual_displacement_m": [
+      0.0,
+      0.0,
+      0.05600200000003598
+    ],
+    "analytic_position_max_abs_m": 2.000000103669075e-06,
+    "analytic_velocity_max_abs_m_s": 5.23599989591967e-10,
+    "angular_balance_max_abs": 4.163336342344337e-17,
+    "angular_impulse_Nms": [
+      0.0,
+      -0.048,
+      0.0
+    ],
+    "coast_velocity_change_max_abs": 0.0,
+    "final_velocity_m_s": [
+      0.0,
+      0.0,
+      0.0020000000000000013
+    ],
+    "impulse_Ns": [
+      0.0,
+      0.0,
+      0.03999999999999997
+    ],
+    "initial_velocity_m_s": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "linear_balance_max_abs": 5.551115123125783e-17,
+    "original_no_external_wrench_scope": "robot unchanged; satellite exception only during authorized 2s origin",
+    "threshold_source": "pre-run frozen protocol; no post-run tuning",
+    "work_J": 4.0000000000000044e-05,
+    "work_energy_balance_max_abs_J": 6.098637220230962e-20
+  },
+  "new_coupled_calls": 0,
+  "new_neural_samples": 0,
+  "physical_retry_count": 0,
+  "worker_wall_s": 92.15599999949336,
+  "core_file_count": 28,
+  "core_bytes": 489816732,
+  "review": "paper/review-traces/experiment-result-to-claim/20261023_satellite_origin",
+  "review_verdict": {
+    "audit_skill": "experiment-result-to-claim",
+    "review_role": "fresh independent paper architect/reviewer",
+    "review_trace": "20261023_satellite_origin",
+    "run": "moving_satellite_001",
+    "claim_supported": "partial",
+    "confidence": "high",
+    "C1": {
+      "claim_supported": "no",
+      "confidence": "high",
+      "claim": "Complete all-gate moving-satellite engineering continuation",
+      "reason": "Unchanged original robot momentum gate fails at the initial state and every subsequent saved state."
+    },
+    "Caux": {
+      "claim_supported": "yes",
+      "confidence": "high",
+      "claim": "Bounded disclosed physical-force satellite origin, saved tracking/replay/body evidence, with explicit failed robot momentum qualification"
+    },
+    "what_results_support": [
+      "One 29 s APP_DEV continuation, 14500 execution and 14500 producer replay steps, full 14501x836 saved replay equality.",
+      "Satellite COM world+Z pulse: 1000 burn inputs, 0.04 N s impulse; final 0.002 m/s and 0.056002 m displacement; 27 s engine-off velocity invariant.",
+      "All other recorded original and satellite-ledger gates reproduce as passing; whole-body/body and active/omitted pair records reconciled.",
+      "Momentum failure already inherited at state zero under this low-motion run exchange-scaled threshold; tiny new drift is not the dominant residual."
+    ],
+    "what_results_dont_support": [
+      "All-gate engineering success or long-term goal completion.",
+      "Relaxing the gate, subtracting initial momentum, canceling robot against satellite momentum, or reclassifying this run as passing.",
+      "Hardware propulsion/fuel exhaust, continuous-time collision proof, Diffusion advantage or learned dynamic control, generalization or TEST.",
+      "Causal obstacle correction: no binding/violated saved row, geometry projection, or SLSQP solve."
+    ],
+    "missing_evidence": [
+      "A continuation satisfying the unchanged robot momentum requirement.",
+      "Ultimate historical mechanism of inherited residual not diagnosed; old raw runs remain sealed.",
+      "Whole-paper claim audit unavailable."
+    ],
+    "suggested_claim_revision": "A single disclosed-force origin and engine-off tracking continuation has consistent saved physical accounting and exact saved full-state replay, but fails the original robot momentum gate from its inherited initial state.",
+    "next_experiments_needed": [],
+    "future_work_constraint": "No further experiment authorized by this review; any later repair needs a separately frozen design and cannot alter this run or its gates.",
+    "routing_action": "narrow_claim_and_close_failed_C1_with_supported_Caux",
+    "pending_external_review": false,
+    "paper_claim_audit": "unavailable",
+    "writing_status": "provisional — no paper claim audit available",
+    "failed_gates": [
+      "momentum"
+    ],
+    "producer_gate_disagreements": {},
+    "unresolved_arithmetic_discrepancies": [],
+    "grouped_checks_passed": 24,
+    "grouped_checks_total": 24,
+    "limits": [
+      "Nearest-distance engine not re-queried; saved distances, indices, connectors, policy, static sphere bounds/body positions and displacement reconstructed.",
+      "No new physical integration/replay; saved producer replay compared arithmetically.",
+      "No old raw-array analysis; predecessor scalar report thresholds only."
+    ],
+    "source_identity": {
+      "producer_head": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
+      "sources": 185,
+      "bound_inputs": 274,
+      "source_mismatches": [],
+      "archive_mismatches": [],
+      "bound_input_mismatches": [],
+      "predecessor_access": "closeout metadata only; inherited files hashed for identity but no old raw arrays loaded"
+    },
+    "new_review_physics_steps": 0,
+    "new_review_replay_steps": 0,
+    "completed_resume_calls_by_reviewer": 0,
+    "generated_at": "2026-10-23T12:19:09.096766+00:00"
+  },
+  "completed_resume_receipt": "ff_prior_satellite_origin/evidence/completed_resume.json",
+  "completed_resume_receipt_sha256": "f59ea30d86bc1c097fef8e34141425205c4f29e82a2506c6ab86ecb62131b13a",
+  "completed_resume_calls": 1,
+  "media_index": "ff_prior_satellite_origin/delivery_001/index.html",
+  "media_manifest_sha256": "c8c75f4f5ef96ae42585489dbc57cda994139a015052a5a42e5a82884c0cc9ff",
+  "media_output_bytes": 148822651,
+  "media_duration_s": 83.4999999999868,
+  "media_physical_status": "EXECUTION_FAILED",
+  "report": "ff_prior_satellite_origin/docs/ANALYSIS.md",
+  "report_sha256": "b19bf242345f58162524327407c864e0ffb4bb3b5f55e8100e9ac3832d7c1a04",
+  "budget": "ff_prior_satellite_origin/evidence/closeout_budget.json",
+  "long_term_goal_complete": false,
+  "further_physics_authorized_by_this_receipt": false,
+  "automation": "deleted by earlier explicit user request; not recreated",
+  "server_start": "automatic approval rejected: blocked by policy; local file delivery",
+  "closed": true,
+  "commit": "a634f52199f398852ce4b81c93dbf8d53ab268e6",
+  "analysis": "ff_prior_satellite_origin/docs/ANALYSIS.md",
+  "independent_review": "paper/review-traces/experiment-result-to-claim/20261023_satellite_origin/response.md",
+  "completed_resume": "ff_prior_satellite_origin/evidence/completed_resume.json",
+  "raw_console_git_blob_checks": {
+    "stdout": {
+      "bytes": 483,
+      "sha256": "873fc88b0d7ab43f35269a4a02ab196456af2f8512df5f5fc22acfa97caa757e"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "final_new_inventory_bytes_before_receipt": 639384714,
+  "new_bytes_with_16MiB_metadata_git_reserve": 656161930,
+  "elapsed_unit_to_seal_s": 1642.5060625076294
+}
