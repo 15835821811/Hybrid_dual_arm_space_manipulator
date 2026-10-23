@@ -1,0 +1,92 @@
+{
+  "reviewer_role": "fresh independent paper architect/reviewer",
+  "run": "horizon_restore_001",
+  "scope": "one APP_DEV candidate; original capture_5_obstacles; no old raw reanalysis; no new physics",
+  "task_hash": "e66384242aaacf174ab1d7e642f0ba84b55ea580ab1b62951988409c75115496",
+  "claims": {
+    "C1": {
+      "confidence": "high",
+      "paper_claim_audit": "unavailable",
+      "paper_writing_status": "provisional — no paper claim audit available",
+      "pending_external_review": false,
+      "claim_supported": "yes",
+      "what_results_support": "This single frozen full-horizon 323-variable restoration system produced one MODEL_VALID candidate, executed 13750 native steps of 67-channel torque control from the original complete initial state through 27 s motion plus 0.5 s hold, and independently replayed all 13751 × 836 saved integration states with exact zero differences under the original gates.",
+      "what_results_dont_support": "No bare-network obstacle avoidance, relative advantage, generalization, continuous-time collision certificate, dynamic success, moving physical satellite or hardware success. Historical neural proposal 20264627 is an unqualified obstacle-unconditioned initialization, not the qualified planner.",
+      "missing_evidence": "For a stronger independent reconstruction claim, raw mass blocks/exchange arrays, compiled geometry radii and all sparse numerical solve histories are absent. These source-verification boundaries are explicit in saved_checks.json; they do not falsify or block this bounded observed-execution claim.",
+      "suggested_claim_revision": "限于原五障碍单个 APP_DEV 工程单元：完整323恢复系统经原模型认证、原67力矩执行门和独立836全状态重放通过；不能归因为网络单独通过。",
+      "next_experiments_needed": [],
+      "next_action": "confirm this bounded static engineering claim, then freeze the separately authorized dynamic contract from this run’s exact saved full terminal state and remaining original budget; do not add static experiments"
+    },
+    "Caux": {
+      "confidence": "high",
+      "paper_claim_audit": "unavailable",
+      "paper_writing_status": "provisional — no paper claim audit available",
+      "pending_external_review": false,
+      "claim_supported": "yes",
+      "what_results_support": "The frozen source-hash/archive identity, all 233 bound-input hashes, 323-variable linear motion constraints, all 8 finite-difference matrices and 32 diagnostic observations, 12 backtracking trials, acceptance/radius/stop rules, accounting, original execution gates and media provenance agree with the frozen protocol within the documented saved-evidence boundary.",
+      "what_results_dont_support": "Cannot call all SLSQP solves converged (first six hit 180 iterations), cannot call diagnostic half-step/sinusoidal observations a passed gradient safety gate, cannot call HEAD bfc4ea9 alone an exact clean-tree source snapshot, and cannot claim every physical quantity was independently reconstructed from saved arrays.",
+      "missing_evidence": "Full SLSQP callback histories, earlier dense-grid trajectory arrays, per-column numerical residual arrays and exact per-pair/pruning geometry logs are not retained. Immutable executed source enforces the relevant checks. One HEAD/archive difference is fully explained in source_provenance.json and remains visibly recorded.",
+      "suggested_claim_revision": "本轮遵循运行前冻结的142文件源码hash与executed_source.zip及233绑定输入；producer_head=bfc4ea9是Git基点，包含一个已归档冻结的原有hierarchical_qp工作树差异。全部可保存重算域完成全量核对，源码核验边界单列。",
+      "next_experiments_needed": [],
+      "next_action": "retain source provenance correction and evidence limitations in the analysis/receipt; hand off actual terminal state without changing this frozen run"
+    }
+  },
+  "routing": {
+    "action": "CONFIRM_BOUNDED_STATIC_AND_FREEZE_AUTHORIZED_DYNAMIC_CONTRACT",
+    "dynamic_handoff_blocked": false,
+    "unresolved_evidence_inconsistencies": [],
+    "dynamic_has_passed": false,
+    "original_seven_waypoints_preserved": true,
+    "must_use_saved_terminal_integration_state": true,
+    "terminal_state_digest": "ebfd85858591be85420250b54fbeaf9350cfac15979d712dc60dd4fb69dd618b",
+    "new_static_experiments_required": false
+  },
+  "checks": {
+    "total": 2249,
+    "passed": 2248,
+    "explained_source_HEAD_difference": 1,
+    "unresolved": 0
+  },
+  "assurance_limits": [
+    {
+      "id": "L1",
+      "scope": "Dense restoration earlier refinement grids",
+      "detail": "Final dense arrays and all grid numerical maxima are saved. Earlier dense-grid qpos/geom arrays are not saved; exact geometry-step and numerical residual recomputation would require prohibited new propagation. Grid order/stopping and source checks verified."
+    },
+    {
+      "id": "L2",
+      "scope": "Sparse finite differences",
+      "detail": "All 2584 perturbations save full goal/distance outputs, terminal poses and active/terminal qpos. Full nonuniform propagation histories, mass matrices and per-perturbation numerical residual summaries are not saved. Every call is guarded in hashed source; residual maxima cannot be independently rebuilt from archived columns."
+    },
+    {
+      "id": "L3",
+      "scope": "Geometry",
+      "detail": "All saved per-state minima, near-buffer rows, selected/omitted identities and scan states are completely checked. Per-pair exact distance evaluations/bounding-sphere rejection arrays and compiled geom_rbound are not archived here. Exact distance and geometry-step magnitudes depend on frozen collision/source provenance; no new collision/FK calls were made. No continuous-time certificate is asserted."
+    },
+    {
+      "id": "L4",
+      "scope": "Momentum",
+      "detail": "All 13751 saved base generalized momentum samples and numerator/threshold arithmetic are checked. Per-state mass blocks and momentum_exchange samples are not saved; exchange-scale denominator is checked against frozen implementation and report only."
+    },
+    {
+      "id": "L5",
+      "scope": "Source-only runtime properties",
+      "detail": "No hidden state writes and replay independence are supported by complete state/control alignment and hashed tracker/replay code. Recorded histories alone cannot establish arbitrary process instrumentation or independent anti-tamper provenance."
+    },
+    {
+      "id": "L6",
+      "scope": "Optimization",
+      "detail": "Returned feasible SLSQP steps, objectives, gradients, bounds, all trials and trust updates are checked. Full callback histories are not saved; best-among-all-feasible-iterates is source-verified, not retrospectively proven. SLSQP not rerun; iteration-limit statuses retained."
+    },
+    {
+      "id": "L7",
+      "scope": "Media",
+      "detail": "All manifest hashes, all 840 video frames decoded, all interactive selected EE/goals/time and 13751 CSV rows checked. Rendered body positions rely on source kinematics; no re-rendering or physics. Parent independently inspects UI screenshots."
+    },
+    {
+      "id": "L8",
+      "scope": "Paper-level assurance",
+      "detail": "paper/PAPER_CLAIM_AUDIT.json does not exist; downstream paper-writing verdict remains provisional. This is not an obstacle to this bounded engineering handoff."
+    }
+  ]
+}

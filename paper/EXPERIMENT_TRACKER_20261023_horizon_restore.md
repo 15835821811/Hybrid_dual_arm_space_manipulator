@@ -1,9 +1,12 @@
-# 原五障碍整条27秒323约束恢复
+# horizon_restore_001 已收尾 / 双侧布局待确认新运行范围
 
-|单元|范围|分母|状态|后续门|
-|---|---|---:|---|---|
-|horizon_restore_001/u00|原五障碍、原27秒、完整323、APP_DEV|1|RUNNING|原MODEL_VALID→一次执行与完整836重放→新独立审查→实际末态动态|
+|单元|固定分母|状态|证据|
+|---|---:|---|---|
+|horizon_restore_001/u00 原五障碍|1|CLOSED_EXECUTION_VERIFIED|MODEL_VALID、67力矩执行、完整836重放全通过；C1/Caux yes/high；一次完成resume PASS|
+|原五障碍动态 horizon_tracking_001|未冻结|NOT_STARTED_SUPERSEDED_BY_LAYOUT_STEERING|实现草稿保留；未启动物理，不偷换场景|
+|刚性2 / 连续体5新布局|布局选择1|DESIGN_READY_NEW_RUN_SCOPE_PENDING|原7航点、臂身约束、一次固定初态几何检查；新物理0|
 
-15项代数/资源/文件路径/坐标轴检查通过，0新耦合/原生/神经调用。不训练、不扩库、不比较优势、不TEST。初猜使用准确历史20264627提案所属u02/node149模型分支，0新采样。具体约束/调用上限见ff_prior_horizon_restore/docs/EXPERIMENT_PLAN.md。
-
-启动时源码提交bfc4ea9c436a32bb5fc9aa49db4e66857e11283f；142源码/233输入身份。2026-10-23启动一次，原生worker PID 76020，Windows创建时间1792722847.2701397与状态started_at1792722847.3668008匹配，统一status为WAIT_CURRENT_WORKER。未查看运行中数值结果；RUNNING不代表物理通过。预算/动态预留与坐标轴及轨迹媒体已冻结，接续automation保持ACTIVE。
+准确分析：ff_prior_horizon_restore/docs/ANALYSIS.md。新布局与预算：ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md。
+原五障碍Git基点bfc4ea9加142实际源码hash/zip及233输入为身份；保留一个用户已有hierarchical_qp归档差异，非纯clean-tree提交。
+2681耦合、1987216模型区间、27500原生含重放、468.375秒。2249检查中2248直接通过，1项Git差异解释，0未决。
+旧run禁止再审查/resume/物理；新布局不能在旧末态中变更障碍后拼接。长期目标未完成，无训练/扩库/对照/TEST。

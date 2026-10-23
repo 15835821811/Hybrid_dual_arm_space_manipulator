@@ -1,0 +1,64 @@
+{
+  "id": "D1",
+  "classification": "RESOLVED_PROVENANCE_DESCRIPTION_DIFFERENCE",
+  "path": "v6_lite/hierarchical_qp.py",
+  "producer_head": "bfc4ea9c436a32bb5fc9aa49db4e66857e11283f",
+  "execution_sha256": "479da0e42cf9c81496760e28325a3f9d12545b00256c3f64c8a069100b2d2003",
+  "git_blob_sha256": "fd80f1a950ff84cca1dd851ede1613e5e12e850ce33f45dbfe8947c6ca4313e7",
+  "git_head_equals_archive": false,
+  "normalized_AST_equal_outside_method": true,
+  "changed_method": "HierarchicalVelocityQP.solve",
+  "changed_method_calls_in_frozen_source": "none; class appears only in its definition and v6_lite package exports",
+  "references": [
+    {
+      "path": "v6_lite/__init__.py",
+      "line": 3,
+      "text": "from .hierarchical_qp import HierarchicalQPConfig, HierarchicalQPResult, HierarchicalVelocityQP"
+    },
+    {
+      "path": "v6_lite/__init__.py",
+      "line": 11,
+      "text": "\"HierarchicalVelocityQP\","
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 319,
+      "text": "class HierarchicalVelocityQP:"
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 1037,
+      "text": "posture_reference_q: np.ndarray | None = None,"
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 1038,
+      "text": "posture_reference_dq: np.ndarray | None = None,"
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 1093,
+      "text": "if posture_reference_q is None and posture_reference_dq is None:"
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 1096,
+      "text": "if posture_reference_q is None or posture_reference_dq is None:"
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 1098,
+      "text": "posture_q = np.asarray(posture_reference_q, dtype=np.float64)"
+    },
+    {
+      "path": "v6_lite/hierarchical_qp.py",
+      "line": 1099,
+      "text": "posture_dq = np.asarray(posture_reference_dq, dtype=np.float64)"
+    }
+  ],
+  "software_tests_timestamp": 1792722236.9725108,
+  "run_started_at": 1792722847.3668008,
+  "pre_run_tests_hash_equals_run_hash_equals_archive_equals_current": true,
+  "resolution": "The frozen protocol identifies execution source jointly by source_hashes and executed_source.zip. The producer HEAD alone is insufficient: one pre-existing working-tree change was included in the pre-run tested immutable hash set. Preserve this distinction in final reporting. The changed optional posture-control method is not invoked by this run, which uses ff_prior_static_goal_seed.tracker.command/track. No frozen-source mutation or unexplained physical evidence inconsistency was found.",
+  "blocks_dynamic_handoff": false
+}
