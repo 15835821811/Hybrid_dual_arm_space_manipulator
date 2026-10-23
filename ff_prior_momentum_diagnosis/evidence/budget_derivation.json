@@ -1,0 +1,167 @@
+{
+  "status": "PROPOSED_NOT_APPROVED_NOT_FROZEN_NO_PHYSICS",
+  "basis": "ff_prior_satellite_origin/planning/remaining_budget.json",
+  "conservative_before_diagnosis": {
+    "coupled": 10873,
+    "native_including_replay": 34340,
+    "wall_s": 8136.641,
+    "bytes": 688178186
+  },
+  "diagnosis_reservation": {
+    "wall_s": 1800,
+    "bytes": 67108864,
+    "native_steps": 0,
+    "coupled_calls": 0
+  },
+  "conservative_after_diagnosis": {
+    "coupled": 10873,
+    "native_including_replay": 34340,
+    "wall_s": 6336.641,
+    "bytes": 621069322
+  },
+  "proposed_unit_caps": {
+    "coupled": 40,
+    "reserved_model_intervals": 200000,
+    "native_including_replay": 83500,
+    "wall_s": 10800,
+    "bytes": 3221225472,
+    "candidates": 1,
+    "retries": 0
+  },
+  "exact_additional_required": {
+    "coupled": 0,
+    "native_including_replay": 49160,
+    "bytes": 2600156150,
+    "wall_s": 4463.359
+  },
+  "rounded_additional_requested": {
+    "coupled": 0,
+    "native_including_replay": 50000,
+    "wall_s": 4500,
+    "bytes": 2684354560
+  },
+  "remaining_if_extension_approved_and_full_caps_reserved": {
+    "coupled": 10833,
+    "native_including_replay": 840,
+    "wall_s": 36.641,
+    "bytes": 84198410
+  },
+  "phases": [
+    {
+      "id": "A",
+      "start_s": 0,
+      "end_s": 27.5,
+      "execution": 13750,
+      "replay": 13750
+    },
+    {
+      "id": "B",
+      "start_s": 27.5,
+      "end_s": 54.5,
+      "execution": 13500,
+      "replay": 13500
+    },
+    {
+      "id": "C",
+      "start_s": 54.5,
+      "end_s": 83.5,
+      "execution": 14500,
+      "replay": 14500
+    }
+  ],
+  "wall_caps_s": {
+    "implementation_software_freeze": 1800,
+    "model_qualification": 600,
+    "native_execution_replay": 3600,
+    "body_geometry_diagnostics": 900,
+    "new_unit_staged_independent_review": 1800,
+    "media": 1500,
+    "completed_resume_closeout": 600
+  },
+  "storage_envelope": [
+    {
+      "name": "native_replay_and_full_frequency_diagnostics",
+      "units": 41753,
+      "bytes_per_unit": 32000,
+      "bytes": 1336096000
+    },
+    {
+      "name": "all_control_sample_pair_lower_exact_status",
+      "units": 14223456,
+      "bytes_per_unit": 18,
+      "bytes": 256022208
+    },
+    {
+      "name": "active_constraint_rows_and_selection_reasons",
+      "units": 600000,
+      "bytes_per_unit": 512,
+      "bytes": 307200000
+    },
+    {
+      "name": "20ms_body_obstacle_aggregate_display_diagnostics",
+      "units": 2075472,
+      "bytes_per_unit": 128,
+      "bytes": 265660416
+    },
+    {
+      "name": "native_geometry_refinement_records",
+      "units": 100000,
+      "bytes_per_unit": 800,
+      "bytes": 80000000
+    },
+    {
+      "name": "complete_model_requalification",
+      "units": 512,
+      "bytes_per_unit": 1048576,
+      "bytes": 536870912
+    },
+    {
+      "name": "two_videos_3d_curves_exports",
+      "units": 256,
+      "bytes_per_unit": 1048576,
+      "bytes": 268435456
+    },
+    {
+      "name": "source_contract_review_metadata",
+      "units": 64,
+      "bytes_per_unit": 1048576,
+      "bytes": 67108864
+    }
+  ],
+  "storage_envelope_bytes": 3117393856,
+  "storage_headroom_bytes": 103831616,
+  "rk4_internal_force_stages": 334000,
+  "extra_observation_forward_calls_cap": 1000000,
+  "native_geometry_states_cap": 100000,
+  "geometry_distance_query_loose_cap": 1100000000,
+  "query_bound": "3406 legal pairs per scan times 200000 model intervals +100000 native/refinement states + twice 4176 diagnostic ticks, below 1.1e9; time/bytes guards stop first. Not expected runtime.",
+  "source_archive": "Source and contract text archived; shared existing mesh/model inputs bound by hash without large duplicate files.",
+  "recording_guard": "Count uncompressed envelopes and actual variable-length JSON bytes before physics; stop rather than discard rows or reduce checks.",
+  "original_global_caps": {
+    "coupled": 80000,
+    "native": 312500,
+    "wall_s": 43200,
+    "bytes": 42949672960
+  },
+  "proposed_global_caps_if_approved": {
+    "coupled": 80000,
+    "native": 362500,
+    "wall_s": 47700,
+    "bytes": 45634027520
+  },
+  "original_D3_caps": {
+    "coupled": 60000,
+    "native": 165000,
+    "wall_s": 21540,
+    "bytes": 21474836480
+  },
+  "proposed_D3_caps_if_approved": {
+    "coupled": 60000,
+    "native": 215000,
+    "wall_s": 26040,
+    "bytes": 24159191040
+  },
+  "old_reservations_reclaimed": false,
+  "ceilings_changed_now": false,
+  "worker_started": false
+}

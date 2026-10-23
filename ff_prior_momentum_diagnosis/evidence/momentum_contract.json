@@ -1,0 +1,78 @@
+{
+  "status": "ORIGINAL_GATE_SPECIFIED_NOT_CHANGED",
+  "scope": "robot only, satellite excluded",
+  "base_dofs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "group_slices": [
+    [
+      0,
+      3
+    ],
+    [
+      3,
+      6
+    ]
+  ],
+  "momentum": "p_b=M(q)[base_dofs,:] @ qvel",
+  "exchange": "e_b=M(q)[base_dofs,actuated_joint_dofs] @ qvel[actuated_joint_dofs]",
+  "linear_frame": "world free-joint translation",
+  "angular_frame": "local base free-joint rotation",
+  "units": [
+    "kg*m/s",
+    "kg*m^2/s"
+  ],
+  "metric": "Euclidean norm; maximum over EVERY phase native frame including initial",
+  "threshold": "atol + relative_tolerance * maximum exchange norm in SAME phase",
+  "dynamic_atol": 1e-05,
+  "dynamic_relative_tolerance": 0.002,
+  "static_threshold": "unchanged original bound physical_contract acceptance values",
+  "windows": [
+    {
+      "phase": "A",
+      "start_s": 0,
+      "end_s": 27.5,
+      "frames": 13751
+    },
+    {
+      "phase": "B",
+      "start_s": 27.5,
+      "end_s": 54.5,
+      "frames": 13501
+    },
+    {
+      "phase": "C",
+      "start_s": 54.5,
+      "end_s": 83.5,
+      "frames": 14501
+    }
+  ],
+  "no_initial_subtraction": true,
+  "no_prior_or_whole_chain_peak_reuse": true,
+  "no_artificial_exchange_increase": true,
+  "world_diagnostic": "P=p_b[:3]; H_world_origin=R_base@p_b[3:]+x_base cross P",
+  "world_diagnostic_replaces_gate": false,
+  "full_integration_dimension": 836,
+  "replay_atol": 1e-10,
+  "original_failure": {
+    "initial_norm": [
+      4.3145169490403017e-05,
+      5.966906504994827e-05
+    ],
+    "threshold": [
+      4.044799485790277e-05,
+      4.472932761072897e-05
+    ],
+    "failed_frames": 14501
+  },
+  "sources": [
+    "ff_prior_balanced_restore/physical_audit.py",
+    "ff_prior_balanced_brake/evaluation.py",
+    "ff_prior_satellite_origin/evaluation.py"
+  ]
+}

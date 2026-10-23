@@ -1,0 +1,105 @@
+{
+  "status": "SPEC_READY_BUDGET_EXTENSION_PENDING",
+  "unit": "momentum_rebuild_001",
+  "module": "ff_prior_momentum_rebuild.job",
+  "production_implemented": false,
+  "source_base_commit": "a8a01145b8fa760c0ae404ab9382a0b68a4ee901",
+  "method": "Native MuJoCo3.3.2 RK4 at unchanged2ms, from original full numeric initial state",
+  "old_integrator": "mjINT_IMPLICITFAST",
+  "new_integrator": "mjINT_RK4",
+  "allowed_model_difference": [
+    "opt.integrator"
+  ],
+  "physical_parameter_or_gate_changes": [],
+  "proposal_source_input_hashes": {
+    "ff_prior_balanced_restore/evidence/initial_state.npz": "5ad6c16207374d7368f2cff96d7e4ad7bd6c4aa92cc35e20aa2db451c28e91e6",
+    "artifacts/v7_1/balanced_restore_001/units/u00/validated/validation.json": "d3e93e9d84fc021082e6a74653d09b64fead6743103ced6a9290b6288f037693",
+    "ff_prior_balanced_restore/evidence/selection.json": "ae467e283508c9f82b2c78eb20f8aacd1870780e30ed137803eacc31869d8f27",
+    "ff_prior_balanced_scene/evidence/layout.json": "6cd81ed5ae1d765641922d1f269a2311fd18f4cc1820b0123c5be0d9ce1c1f4f",
+    "ff_prior_balanced_brake/evidence/contract.json": "9353a0386dbcd0a9336594db73885d7c411c7f29434f9256451193ab78373b7b",
+    "ff_prior_satellite_origin/evidence/contract.json": "5e328b9cd9b90dd7802bde5c339f6fca4683083671148d2239179d0a65ddb712",
+    "ff_prior/robot_adapter.py": "01ddac44b2039353dcc017f383dc3f995cdd616e3019420dd4b1444303aa3605",
+    "ff_prior/initial_state.py": "778109409d1b05cff456167e9f7d3799a4b4751d273c85052df50dfd33ae7689",
+    "ff_prior_balanced_restore/tracker.py": "7ddd7f59282c7e3b3ca320f74c9e3c187090310492490245e1fda9d135d0215f",
+    "ff_prior_balanced_restore/physical_audit.py": "abb9a2a1338234506c3b8952d70e70dfbb272f0a6bec1590f8668f1133aeeb0e",
+    "ff_prior_static_goal_seed/validation.py": "3480662a672600687ca5d0cde817fc67b9eb684d4e299354e410dc2c0b6ff4bb",
+    "ff_prior_balanced_brake/environment.py": "559189e9ff5047ba528d94edab862cbe5cd914becd42d3510f522ca7b2fe4a09",
+    "ff_prior_balanced_brake/evaluation.py": "07b63f988508a5f0eeb943edd678602e6e921ade44e01a64c63a250e7b9f345d",
+    "ff_prior_satellite_origin/environment.py": "bdb3f642c0236dab379c4942e61339d34796cf4e17ce09d82c72cb571d8b0653",
+    "ff_prior_satellite_origin/evaluation.py": "689dbfcff1b15e195948b80051a5d726ca79683c544bbfb1dd9ddd822eb779e2",
+    "ff_prior_satellite_origin/force.py": "3e75c56cecd8a419af0351549c7f996dc03c87337f95dab2fdfcd183adf7a943",
+    "ff_prior_satellite_origin/ledger.py": "cc912591e3d298e7ffdf3101d94698e7e3f8cac52bbedc324ddafc24049f1c57"
+  },
+  "static_reference": {
+    "source": "artifacts/v7_1/balanced_restore_001/units/u00/validated/validation.json",
+    "field": "Z",
+    "shape": [
+      19,
+      17
+    ],
+    "reference_hash": "d53cd69ca1d5e38c0ceecea0cd484d651b89b6c15d4ff0da016164fdfa93f16b",
+    "optimization": false,
+    "new_model_qualification_required": true
+  },
+  "new_network_samples": 0,
+  "new_seeds": 0,
+  "candidate_count": 1,
+  "initial": "original836 numeric vector, explicitly bound to new identity after equal physical arrays proof",
+  "forbidden_initial": "old54.5s terminal must not be corrected/injected/relabeled as a new chain",
+  "actual_initializations": 1,
+  "actual_phase_resets": 0,
+  "handoff": "One live actual MjData; phase controller constructors borrow data. No reset/setState/qpos/qvel/time writes after initial load.",
+  "control_memory": "reference_q/reference_qd and filter memory inherited from new actual predecessor, not old archived terminal",
+  "references": "Original public world goals, seven exact waypoints/orientations/durations, C2 bypass and final holds unchanged; no error-based goal reanchoring.",
+  "controls": "Same feedforward/67torque controller and discrete braking filter; native2ms zero-order held input, no planner callback inside RK4 stages",
+  "force": "same world+Z COM0.02*(1-cos(pi*t))N at2ms midpoint for2s, thenzero27s; robot external forcezero",
+  "phases": [
+    {
+      "id": "A",
+      "start_s": 0,
+      "end_s": 27.5,
+      "execution": 13750,
+      "replay": 13750
+    },
+    {
+      "id": "B",
+      "start_s": 27.5,
+      "end_s": 54.5,
+      "execution": 13500,
+      "replay": 13500
+    },
+    {
+      "id": "C",
+      "start_s": 54.5,
+      "end_s": 83.5,
+      "execution": 14500,
+      "replay": 14500
+    }
+  ],
+  "replay": "One independent replay MjData, initialized once at0; saved controls/wrenches only, no actual intermediate state copied",
+  "stage_release": "A gates+replay+necessary independent review beforeB; B beforeC; both actual and replay objects wait without simulation advancement. One new staged review, no old review repeated.",
+  "recording": "all native states and original geometry refinements; all active/omitted control pair IDs/distances/reasons; 20ms body distance aggregates for display never replace full physics gates",
+  "stop_on": [
+    "any physics gate",
+    "any budget cap",
+    "unknown/interrupted worker",
+    "identity mismatch",
+    "model rejection"
+  ],
+  "failure": "preserve real prefix; block downstream; no retry/parameter tuning/second candidate",
+  "freeze_preconditions": [
+    "budget extension explicitly resolved",
+    "production implementation complete",
+    "zero-physics software checks",
+    "physical arrays equal except integrator, initial836 equal",
+    "source zip and full input hashes frozen",
+    "single worker lock and counters"
+  ],
+  "budget": "ff_prior_momentum_diagnosis/evidence/budget_derivation.json",
+  "success_unknown": true,
+  "training": false,
+  "expansion": false,
+  "TEST": false,
+  "advantage_comparison": false,
+  "worker_started": false
+}
