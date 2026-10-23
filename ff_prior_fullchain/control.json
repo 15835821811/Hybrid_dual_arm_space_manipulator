@@ -1,11 +1,13 @@
 {
-  "active_closeout_receipt": "ff_prior_fullchain/evidence/horizon_restore_closeout.json",
-  "active_module": "ff_prior_horizon_restore.job",
-  "active_protocol": "ff_prior_horizon_restore/docs/EXPERIMENT_PLAN.md",
-  "active_report": "ff_prior_horizon_restore/docs/ANALYSIS.md",
-  "active_run": "artifacts/v7_1/horizon_restore_001",
-  "active_run_role": "most_recent_closed_run",
-  "active_source_commit": "bfc4ea9c436a32bb5fc9aa49db4e66857e11283f",
+  "active_closeout_receipt": "ff_prior_fullchain/evidence/balanced_restore_closeout.json",
+  "active_module": "ff_prior_balanced_restore.job",
+  "active_protocol": "ff_prior_balanced_restore/docs/EXPERIMENT_PLAN.md",
+  "active_report": "ff_prior_balanced_restore/docs/ANALYSIS.md",
+  "active_run": "artifacts/v7_1/balanced_restore_001",
+  "active_run_role": "most_recent_terminal_run_under_review",
+  "active_source_commit": "5a21e08868cbff6a90d93e8225a43b77e8302bcd",
+  "active_worker": false,
+  "additional_local_repair_allowed": false,
   "allow_dataset_expansion": false,
   "allow_final_TEST": false,
   "allow_hardware_or_contact_capture": false,
@@ -15,14 +17,16 @@
   "authorization_evidence": "ff_prior_balanced_restore/evidence/authorization.json",
   "automation_id": "automation",
   "autonomous_scope": "2026-10-23 explicitly authorized one balanced 2R5C full initial-state static-to-dynamic APP_DEV composition within original remaining cycle budget",
-  "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
-  "current_phase": "D3_balanced_2R5C_implementation",
+  "current_phase": "D3_balanced_2R5C_static",
+  "current_user_steering": "ff_prior_balanced_restore/evidence/authorization.json",
   "decision_document": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
+  "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
   "goal_id": "free_floating_fullchain_20261022",
   "goal_status": "ACTIVE_NEW_BALANCED_SCOPE_AUTHORIZED",
   "heartbeat_stale_seconds": 180,
   "implementation_handoff": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
-  "next_phase": "D3_AUTHORIZED_BALANCED_STATIC_IMPLEMENT_AND_FREEZE",
+  "next_phase": "D3_BALANCED_STATIC_REVIEW_BEFORE_AUTHORIZED_DYNAMIC",
+  "next_phase_action": "User turn launches exactly one frozen static worker; terminal closeout and review required before same-scene dynamic input freeze.",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -77,13 +81,9 @@
     {
       "id": "D3_balanced_2R5C_fullchain",
       "purpose": "One new complete same-scene static actual terminal to original seven waypoints with whole-arm evidence",
-      "status": "IMPLEMENTING_AUTHORIZED"
+      "status": "STATIC_EXECUTION_VERIFIED_REVIEW_PENDING"
     }
   ],
-  "version": 1,
-  "active_worker": false,
-  "additional_local_repair_allowed": false,
-  "next_phase_action": "Implement and freeze exactly one authorized balanced 2R5C complete composition; static qualification/execution/full replay/review precedes actual terminal dynamic.",
-  "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
-  "current_user_steering": "ff_prior_balanced_restore/evidence/authorization.json"
+  "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
+  "version": 1
 }

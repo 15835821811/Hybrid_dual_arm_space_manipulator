@@ -1,0 +1,2019 @@
+{
+  "model_geometry_reconstructed": [
+    {
+      "intervals": 256,
+      "maximum_geometry_step_m": 0.02297014776349214
+    },
+    {
+      "intervals": 512,
+      "maximum_geometry_step_m": 0.011512914086020412,
+      "aligned_geometry_m": 2.3053848093541407e-05
+    },
+    {
+      "intervals": 1024,
+      "maximum_geometry_step_m": 0.005758457030275574,
+      "aligned_geometry_m": 6.125350521200342e-06
+    },
+    {
+      "intervals": 2048,
+      "maximum_geometry_step_m": 0.002879460856557612,
+      "aligned_geometry_m": 1.4494132553425528e-06
+    },
+    {
+      "intervals": 4096,
+      "maximum_geometry_step_m": 0.0014397639449247393,
+      "aligned_geometry_m": 3.6736838232667307e-07
+    }
+  ],
+  "body_observation": {
+    "samples": 13751,
+    "prefix_samples": 9912,
+    "suffix_samples": 3839,
+    "links": 71,
+    "obstacles": 7,
+    "geometries_per_state": 525,
+    "all_distance_values": 6834247,
+    "all_connector_values": 41005482,
+    "full_exact_queries": 7219275,
+    "additional_exact_queries": 2015475,
+    "original_partial_status": "PARTIAL",
+    "original_elapsed_s": 607.8815879998729,
+    "additional_wall_s": 29.892378091812134,
+    "combined_elapsed_field_inherited_not_total": 607.8815879998729,
+    "obstacle_minima": [
+      {
+        "obstacle": "R1",
+        "minimum_m": 0.004928859801306862,
+        "native_index": 1326,
+        "time": 2.6519999999999295,
+        "link": "back_arm_link",
+        "arm": "rigid",
+        "nearest_geom": "collision_0068",
+        "samples_with_any_link_within_display_10mm": 947
+      },
+      {
+        "obstacle": "R2",
+        "minimum_m": 0.028975987790530518,
+        "native_index": 6033,
+        "time": 12.066000000000699,
+        "link": "end_link",
+        "arm": "rigid",
+        "nearest_geom": "collision_0072",
+        "samples_with_any_link_within_display_10mm": 0
+      },
+      {
+        "obstacle": "C1",
+        "minimum_m": 0.0008821774804385306,
+        "native_index": 3211,
+        "time": 6.421999999999515,
+        "link": "link_28",
+        "arm": "continuum",
+        "nearest_geom": "collision_0059",
+        "samples_with_any_link_within_display_10mm": 949
+      },
+      {
+        "obstacle": "C2",
+        "minimum_m": 0.062329055967833426,
+        "native_index": 1233,
+        "time": 2.46599999999995,
+        "link": "link_28",
+        "arm": "continuum",
+        "nearest_geom": "collision_0059",
+        "samples_with_any_link_within_display_10mm": 0
+      },
+      {
+        "obstacle": "C3",
+        "minimum_m": 0.10270297111341756,
+        "native_index": 7121,
+        "time": 14.242000000001426,
+        "link": "link_29",
+        "arm": "continuum",
+        "nearest_geom": "collision_0061",
+        "samples_with_any_link_within_display_10mm": 0
+      },
+      {
+        "obstacle": "C4",
+        "minimum_m": 0.00026212704365300224,
+        "native_index": 9910,
+        "time": 19.819999999999894,
+        "link": "link_14",
+        "arm": "continuum",
+        "nearest_geom": "collision_0031",
+        "samples_with_any_link_within_display_10mm": 4199
+      },
+      {
+        "obstacle": "C5",
+        "minimum_m": 0.0074763761877024056,
+        "native_index": 1402,
+        "time": 2.803999999999913,
+        "link": "link_22",
+        "arm": "continuum",
+        "nearest_geom": "collision_0047",
+        "samples_with_any_link_within_display_10mm": 350
+      }
+    ],
+    "maximum_discrete_curvature": 1.3872303735330715,
+    "no_online_filter": true
+  },
+  "resume": {
+    "status": "PASS",
+    "files": 100,
+    "bytes": 570527800,
+    "stdout_bytes": 478,
+    "stderr_bytes": 0,
+    "independent_reviewer_did_not_resume": true
+  },
+  "checks": [
+    {
+      "name": "model_metadata_scene_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "metadata_all_zero_calls",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "B_left_inverse",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 2.220446049250313e-16,
+        "atol": 1e-12
+      }
+    },
+    {
+      "name": "index_qpos_consistent",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "index_dof_consistent",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model512_full_geometry_step",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model512_full_aligned_geometry",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model1024_full_geometry_step",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model1024_full_aligned_geometry",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model2048_full_geometry_step",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model2048_full_aligned_geometry",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model4096_full_geometry_step",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "model4096_full_aligned_geometry",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "iter0_center_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_center_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_all323_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0
+      }
+    },
+    {
+      "name": "iter0_all323_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0
+      }
+    },
+    {
+      "name": "iter0_probe0_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe0_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe1_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe1_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe2_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe2_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe3_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_probe3_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter0_solver_objective",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 1.6940658945086007e-21,
+        "atol": 1e-12
+      }
+    },
+    {
+      "name": "iter0_solver_gradient",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 5.421010862427522e-20,
+        "atol": 1e-11
+      }
+    },
+    {
+      "name": "iter0_return_motion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "iter0_trust_radius",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "iter1_center_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_center_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_all323_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0
+      }
+    },
+    {
+      "name": "iter1_all323_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0
+      }
+    },
+    {
+      "name": "iter1_probe0_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe0_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe1_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe1_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe2_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe2_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe3_active_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_probe3_terminal_configuration",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "iter1_solver_objective",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-12
+      }
+    },
+    {
+      "name": "iter1_solver_gradient",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-11
+      }
+    },
+    {
+      "name": "iter1_return_motion",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "iter1_trust_radius",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_partial_retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "completion_metadata_identity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full_completion_status",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_body_filter_events.json_hash_size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_body_obstacle_trace.npz_hash_size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original_no_new_native_or_coupled",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suffix_body_filter_events.json_hash_size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suffix_body_obstacle_trace.npz_hash_size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "suffix_no_new_native_or_coupled",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete_body_filter_events.json_hash_size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete_body_obstacle_trace.npz_hash_size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete_no_new_native_or_coupled",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "completion_topology",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_completion_keys",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "time_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "time_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "time_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_index_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_index_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_index_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "distance_m_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "distance_m_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "distance_m_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "nearest_geom_id_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "nearest_geom_id_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "nearest_geom_id_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "connector_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "connector_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "connector_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body_positions_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body_positions_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body_positions_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "continuum_curvature_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "continuum_curvature_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "continuum_curvature_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "command_before_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "command_before_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "command_before_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "command_after_full_prefix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "command_after_full_suffix_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "command_after_finite_or_declared_nan",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full_body_time",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "full_body_native_index",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "all_event_concat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full_events_time_index",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no_actual_online_filter_events",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_events_describe_static_no_filter",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full_body_shape",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_body_nonpenetrating",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_connector_lengths",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 3.1086244689504383e-15,
+        "atol": 2e-12
+      }
+    },
+    {
+      "name": "all_nearest_geom_in_link0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link0_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link1_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link2_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link3_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link4_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link5_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link6_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link7_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link8_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link9_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link10_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link11_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link12_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link13_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link14_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link15_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link16_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link17_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link18_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link19_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link20_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link21_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link22_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link23_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link24_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link25_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link26_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link27",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link27_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link28",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link28_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link29",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link29_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link30",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link30_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link31",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link31_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link32",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link32_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link33",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link33_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link34",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link34_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link35",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link35_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link36",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link36_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link37",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link37_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link38",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link38_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link39",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link39_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link40",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link40_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link41",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link41_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link42",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link42_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link43",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link43_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link44",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link44_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link45",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link45_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link46",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link46_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link47",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link47_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link48",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link48_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link49",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link49_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link50",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link50_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link51",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link51_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link52",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link52_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link53",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link53_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link54",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link54_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link55",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link55_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link56",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link56_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link57",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link57_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link58",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link58_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link59",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link59_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link60",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link60_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link61",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link61_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link62",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link62_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link63",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link63_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link64",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link64_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link65",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link65_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link66",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link66_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link67",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link67_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link68",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link68_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link69",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link69_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_nearest_geom_in_link70",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "link70_bodyid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_curvature_rederived",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-14
+      }
+    },
+    {
+      "name": "all_body_minima_ge_whole_machine",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all_continuum_tip_origin",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 2.220446049250313e-16,
+        "atol": 1e-12
+      }
+    },
+    {
+      "name": "all_rigid_tip_origin",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 1e-12
+      }
+    },
+    {
+      "name": "all_query_count_exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "body_global_minimum_matches_execution",
+      "passed": true,
+      "detail": {
+        "max_abs_error": 0.0,
+        "atol": 0
+      }
+    },
+    {
+      "name": "resume_hash_size_manifests_identical",
+      "passed": true,
+      "detail": {
+        "pre_manifest_only_metadata": [
+          "timestamp",
+          "scope",
+          "written_before_subprocess"
+        ],
+        "hash_size_entries_equal": true
+      }
+    },
+    {
+      "name": "resume_manifest_complete_file_set",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_REPORT.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_budget.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_events.jsonl",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_executed_source.zip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_launcher.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_ledger.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_media.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_physical_contract.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_run.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_scenes/balanced_2R5C/initial_audit.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_scenes/balanced_2R5C/limits.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_status.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/body_diagnostics/body_filter_events.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/body_diagnostics/body_obstacle_metadata.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/body_diagnostics/body_obstacle_trace.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/calls.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/frozen_task.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/geometry_scans.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/geometry_scans.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/initial_state.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/initial_state.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/native_budget.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/native_trace.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/replay_trace.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution/report.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/execution_selection.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/guess_identity.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/native_reservation.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/initial.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/initial.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/00/jacobian.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/00/probes.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/00/record.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/00/trial0.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/00/trial0.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/01/jacobian.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/01/probes.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/01/record.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/01/trial0.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/iter/01/trial0.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/restore/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_1024.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_1024_geometry_scans.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_1024_geometry_scans.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_1024_numerical.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_2048.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_2048_geometry_scans.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_2048_geometry_scans.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_2048_numerical.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_256.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_256_numerical.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_4096.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_4096_geometry_scans.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_4096_geometry_scans.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_4096_numerical.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_512.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_512_geometry_scans.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_512_geometry_scans.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/grid_512_numerical.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/prediction.npz",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/validated/validation.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/01_summary.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/01_summary.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/02_joint_motion.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/02_joint_motion.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/03_torque_tracking.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/03_torque_tracking.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/04_base_manifold.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/04_base_manifold.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/05_world_paths.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/05_world_paths.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/06_independent_replay.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/06_independent_replay.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/07_world_coordinates.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/07_world_coordinates.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/09_body_distance_heatmap.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/09_body_distance_heatmap.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/10_obstacle_nearest_body.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/10_obstacle_nearest_body.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/11_continuum_curvature.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/11_continuum_curvature.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/12_continuum_shape.pdf",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/12_continuum_shape.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/index.html",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/manifest.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/obstacle_body_minimum_summary.csv",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/obstacle_nearest_body.csv",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/overview.mp4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/overview_000.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/overview_210.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/overview_419.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/timeseries.csv",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/top.mp4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/top_000.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/top_210.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_units/u00/visuals/top_419.png",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_worker.stderr.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_file_worker.stdout.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_totals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_raw_stdout",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_raw_stderr",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "resume_no_work_completed",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "summary": {
+    "checks": 349,
+    "passed": 349,
+    "failed": []
+  }
+}
