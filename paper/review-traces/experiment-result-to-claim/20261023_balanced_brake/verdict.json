@@ -1,0 +1,91 @@
+{
+  "schema": "fresh_independent_result_to_claim_v1",
+  "review_role": "paper architect/reviewer",
+  "review_trace": "20261023_balanced_brake",
+  "run": "artifacts/v7_1/balanced_brake_001",
+  "generated_at": "2026-10-23T08:56:18.822562+00:00",
+  "claim_supported": "yes",
+  "confidence": "high",
+  "scope": "Single fixed 2R5C simulation, same accepted actual static terminal followed by original seven-waypoint dynamic continuation and final hold; saved-evidence audit, not general guarantee.",
+  "claims": {
+    "C1": {
+      "claim_supported": "yes",
+      "confidence": "high",
+      "confirmed_claim": "From the bound full 836-value actual terminal of the closed same-scene static stage at 27.5 s, this one balanced_brake_001 execution completed the original seven waypoints through 54.5 s, including the 1.5 s final hold. All 19 producer gates passed, 17 were reconstructed from all saved arrays and two are source/report/replay-supported with explicit reconstruction limits. Complete 13501 x 836 replay is bit-identical."
+    },
+    "Caux": {
+      "claim_supported": "yes",
+      "confidence": "high",
+      "confirmed_claim": "New dynamic diagnostics completely cover 1350 filter decisions, all original and tightened braking interval terms and endpoint records, 4598100 controller pair-tick entries, 191956 selected constraint rows, and 1351 body/obstacle samples. Independent arithmetic confirms chosen-command feasibility, braking-envelope consistency and saved whole-arm geometric influence records. This is descriptive evidence, not a counterfactual or optimality claim."
+    },
+    "bare_diffusion_advantage": {
+      "claim_supported": "no",
+      "reason": "No new neural samples or comparator. Historical Diffusion only supplied an initial guess before accepted static full323 restoration; dynamic motion uses public C2 reference, feedback and new bounds."
+    },
+    "moving_physical_satellite": {
+      "claim_supported": "no",
+      "reason": "The inherited satellite velocity is exactly zero and all saved satellite states remain constant."
+    },
+    "generalization_or_hardware_or_continuous_time_guarantee": {
+      "claim_supported": "no",
+      "reason": "One fixed simulation; no additional seeds, scene families, hardware, counterfactual comparison, or continuous-time proof."
+    }
+  },
+  "what_results_support": "Bounded engineering repair completes previously unfinished W6/W7 and final hold in this fixed simulation; all saved execution, complete replay and diagnostic arithmetic are mutually consistent.",
+  "what_results_dont_support": "Universal joint/geometry/torque feasibility, collision-free continuous time, physical spacecraft drift, hardware reliability, naked network advantage, or learned autonomous path choice.",
+  "missing_evidence": [
+    "Native geom_xpos/geom_xmat/geom radii sequence not saved: reported maximum geometry surface motion cannot be independently reconstructed without prohibited FK/geometry.",
+    "Recorded distance minima/witnesses/Jacobians/selection are exhaustively algebra-crosschecked; primitive distance/Jacobian correctness not re-derived from robot model.",
+    "Mass matrices/inertial quantities not saved: momentum and raw torque are checked from saved signals against gates, not independently recomputed from rigid-body dynamics.",
+    "no_hidden_reset is a source/replay/clock/terminal-supported provenance assertion, not a theorem inferable from state arrays alone.",
+    "SLSQP Hessian/KKT evidence not saved: feasibility and recorded decision logic checked; optimality not certified.",
+    "Historical 265-entry binding contains old raw hashes; historical raw are not reopened; predecessor qualification is inherited from closed review/metadata."
+  ],
+  "suggested_claim_revision": "In the frozen 2R5C APP_DEV scenario, the system with exact discrete braking bounds completed the original seven waypoints and final hold from the accepted same-scene static terminal; full saved native/replay and diagnostic checks passed.",
+  "next_experiments_needed": "None for this specifically authorized bounded repair conclusion. Broader causal, generalization or moving-satellite claims would require a separately authorized design; do not auto-run.",
+  "routing_action": "confirm_bounded_engineering_claim_and_close_this_run; preserve failed predecessor; no further physical execution or completed resume",
+  "paper_claim_audit": "unavailable",
+  "paper_writing_status": "provisional — no paper claim audit available",
+  "pending_external_review": false,
+  "full_long_term_goal_complete": false,
+  "independent_checks": 94104,
+  "checks_passed": 94104,
+  "unresolved_checks": 0,
+  "producer_reported_gates": 19,
+  "saved_array_reconstructed_gates": 17,
+  "source_report_supported_gates": [
+    "geometry_step",
+    "no_hidden_reset"
+  ],
+  "new_physics_steps": 0,
+  "new_geometry_queries": 0,
+  "new_coupled_calls": 0,
+  "new_neural_samples": 0,
+  "resume_calls_by_reviewer": 0,
+  "source_identity": {
+    "producer_head": "0def32650ed74718dbff43476f257dcd70c9ff49",
+    "actual_source_count": 189,
+    "actual_source_bundle_hash": "fe47ab84aae4ecd8be4f712fb26a3af76bb27942ff74d68f86422561b29f5c30",
+    "executed_source_zip_sha256": "949afa29906c3c2cf683e34455bad0ed0f422884a164d26e2748df50399677be",
+    "hierarchical_qp_actual_sha256": "479da0e42cf9c81496760e28325a3f9d12545b00256c3f64c8a069100b2d2003",
+    "hierarchical_qp_commit_sha256": "fd80f1a950ff84cca1dd851ede1613e5e12e850ce33f45dbfe8947c6ca4313e7",
+    "hierarchical_qp_differs_from_commit": true,
+    "not_pure_git_HEAD": true
+  },
+  "frozen_bound_input_count": 265,
+  "historical_raw_reopened": false,
+  "evidence": {
+    "numerical_audit": "numerical_audit.json",
+    "brake_effect_summary": "brake_effect_summary.json",
+    "brake_effect_ticks": "brake_effect_ticks.csv",
+    "inputs": "inputs.json"
+  },
+  "material_limitations": [
+    "geometry_step native geom poses absent; reported 0.1781189695 mm is source-supported below 2 mm but not independently recomputed",
+    "Mass/inertial/Jacobian primitive computations are not regenerated; all stored outputs and algebra are checked",
+    "No hidden reset has full terminal/clock/control/replay/source evidence but is not inferred from array values alone",
+    "Conditional braking assumes future abs(q-reference)<=0.02; does not guarantee future geometry, tracking, torque or task feasibility",
+    "Producer media remains PARTIAL_MEDIA; separate final delivery metadata reports COMPLETE with inherited reviewed static completion",
+    "One SLSQP internal candidate bound-clipping warning; all actual final commands verified in all original and tightened bounds; worker stderr320bytes is distinct from resume stderr0bytes"
+  ]
+}
