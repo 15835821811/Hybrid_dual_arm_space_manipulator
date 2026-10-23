@@ -1,0 +1,144 @@
+{
+  "schema": "balanced_brake_independent_software_preflight_v1",
+  "status": "PASS_SOFTWARE_PREFLIGHT_ONLY",
+  "blocking_findings": [],
+  "checks_passed": 9,
+  "checks": [
+    {
+      "name": "right_endpoint_ramp_coefficients",
+      "status": "PASS",
+      "details": {
+        "alpha": 0.009000000000000001,
+        "beta": 0.011
+      }
+    },
+    {
+      "name": "independent_substep_stopping_sum",
+      "status": "PASS",
+      "details": {
+        "cases": 44,
+        "max_abs_error": 8.881784197001252e-16
+      }
+    },
+    {
+      "name": "independent_future_original_bounds_and_no_mutation",
+      "status": "PASS",
+      "details": {
+        "scenarios": 16,
+        "dimensions": 17,
+        "feasible_components": 270,
+        "endpoint_error_checks": 97230,
+        "maximum_roundoff_violation": 0.0,
+        "tolerance": 3e-13
+      }
+    },
+    {
+      "name": "tracking_prerequisite_fails_closed",
+      "status": "PASS",
+      "details": null
+    },
+    {
+      "name": "unchanged_original_execution_task_and_physical_gates",
+      "status": "PASS",
+      "details": [
+        "environment.py",
+        "evaluation.py",
+        "reference.py",
+        "budget.py",
+        "experiment.py",
+        "visuals.py"
+      ]
+    },
+    {
+      "name": "unchanged_geometry_selection_and_serialization",
+      "status": "PASS",
+      "details": null
+    },
+    {
+      "name": "unchanged_protocol_except_version",
+      "status": "PASS",
+      "details": null
+    },
+    {
+      "name": "same_frozen_terminal_bytes_and_public_task",
+      "status": "PASS",
+      "details": {
+        "terminal_sha256": "dbad27f54620aaf9342df6e5d0a96de52efb1404e8f68e4316b3873a3e912bed",
+        "absolute_start_time": 27.499999999995637,
+        "waypoint_count": 7,
+        "obstacle_ids": [
+          "R1",
+          "R2",
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ]
+      }
+    },
+    {
+      "name": "new_allocation_and_conservative_cycle_budget",
+      "status": "PASS",
+      "details": {
+        "D3_after": {
+          "bytes": 4906128987,
+          "coupled": 49127,
+          "native_including_replay": 101660,
+          "wall_s": 5115.796
+        },
+        "fullcycle_after": {
+          "bytes": 42487092827,
+          "coupled": 69127,
+          "native_including_replay": 249160,
+          "wall_s": 26799.195299685998
+        }
+      }
+    }
+  ],
+  "reviewed_files": {
+    "ff_prior_balanced_brake/braking.py": "0da0e6ceb48af3394a97972e66acbab7b866e9f77f99253e360d8ef7fcb228eb",
+    "ff_prior_balanced_brake/controller_observation.py": "9c1a86b9e2cc70d3c17521dee9cd50f986df6fbe3de6644a535e6ee5b356d127",
+    "ff_prior_balanced_brake/inputs.py": "c9f13b310467c928f63b6e2ac604397ac91c3077550a0f5b63c95bd5bf430468",
+    "ff_prior_balanced_brake/protocol.py": "c549512a3216744953be13d78815d86084f133b5285b7a944a8bb9d06e9fa5c3",
+    "ff_prior_balanced_brake/docs/EXPERIMENT_PLAN.md": "9e3dcea967afc78aa7f45960dc3d718688ac5590879fcc2ccaedddea99092a5b",
+    "ff_prior_balanced_brake/evidence/budget_derivation.json": "32aff768fe867d50395e3c659d2c15f16ffea12a74f071490a3176316f28d0a7",
+    "ff_prior_balanced_brake/environment.py": "559189e9ff5047ba528d94edab862cbe5cd914becd42d3510f522ca7b2fe4a09",
+    "ff_prior_balanced_brake/evaluation.py": "07b63f988508a5f0eeb943edd678602e6e921ade44e01a64c63a250e7b9f345d",
+    "ff_prior_balanced_brake/reference.py": "a3dfba6c9940a2648b0dd01be34b1e56656cb7d918fd9058c16ebdba44d58ee1",
+    "ff_prior_balanced_brake/budget.py": "a41a7ccab5f1260498057ab6a156b7f1798e68a8bd8072c18b9e4dce6f526b7a",
+    "ff_prior_balanced_brake/experiment.py": "3264e12a7a34213de8f687dfce4f8b7d8627092ad258858487a901fda846e583",
+    "ff_prior_balanced_brake/visuals.py": "52b19a9b238fb598f5968e12901348fe56c2c726c4679c9312de0f19e861c449",
+    "ff_prior_balanced_brake/job.py": "34cac7e15dc8c9681b73d1be185095d0d7f6f60d9710df4ce0c012911a9d35e6"
+  },
+  "new_physics_steps": 0,
+  "new_coupled_calls": 0,
+  "new_geometry_queries": 0,
+  "new_fk_calls": 0,
+  "old_raw_arithmetic_analysis": false,
+  "source_changes_made_by_reviewer": false,
+  "method": "AST-isolated NumPy arithmetic; source and frozen metadata comparisons; terminal byte hashes only; no robot module import or model instantiation",
+  "limits": [
+    "Conditional joint/reference stopping certificate assumes future abs(q-reference)<=existing 0.02 gate. It does not certify geometry, torque, task tracking or physical success.",
+    "Float64 independent explicit-substep tolerance 3e-13 is an arithmetic comparison tolerance, not a changed physical threshold.",
+    "Root separately performs the already-frozen actual-terminal interface checks; this review does not repeat them or reinterpret old execution evidence."
+  ],
+  "diagnostic_review": "Original component bounds, braking interval, final intersection, current error, limiting future ticks/stopping references, desired and filtered commands are recorded; the chosen command can be checked by pure arithmetic.",
+  "budget_note": {
+    "plan_worker_fullcycle_subtotal_s": 26115.796,
+    "new_readonly_media_s": 600.0,
+    "previous_readonly_overhead_s": [
+      30.160764,
+      4.895535,
+      48.343
+    ],
+    "authoritative_fullcycle_s": 26799.195299685998,
+    "provenance": "Parent clarification of prior read-only overhead; no repeated old raw cost analysis"
+  },
+  "claims": {
+    "physical_pass": false,
+    "all_seven_waypoints_completed": false,
+    "final_hold_completed": false,
+    "repair_effectiveness_demonstrated": false
+  }
+}

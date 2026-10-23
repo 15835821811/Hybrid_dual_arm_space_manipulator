@@ -15,7 +15,7 @@ from ff_prior_fullchain.job import process_probe
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('stage',choices=['restore','tracking'])
+    parser.add_argument('stage',choices=['restore','tracking','brake'])
     args=parser.parse_args()
     package=ROOT/('ff_prior_balanced_'+args.stage)
     run=ROOT/'artifacts/v7_1'/('balanced_'+args.stage+'_001')

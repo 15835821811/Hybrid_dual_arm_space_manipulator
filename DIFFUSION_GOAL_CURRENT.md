@@ -1,3 +1,7 @@
+# 2026-10-23 最新明确授权：修正后两点与最终保持
+
+用户要求“后两点及最终保持未完成检查原因并修正”。失败balanced_tracking_001保留并收尾；新独立balanced_brake_001修复离散制动可行性，从已验证同场景真实静态末态起步，保持原7点/时序/全部门。冻结一轮1200秒/2GiB/27000原生含完整重放，计划0耦合，单worker。旧等待或禁止额外运行文字不能覆盖本次明确修复授权。授权证据ff_prior_balanced_brake/evidence/authorization.json；计划ff_prior_balanced_brake/docs/EXPERIMENT_PLAN.md。长期目标不标complete/paused。
+
 # 当前有效目标：自由漂浮路径—避障—连续目标追踪
 
 ## 2026-10-23新明确授权：双侧2+5完整工程单元
