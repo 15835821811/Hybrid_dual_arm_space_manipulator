@@ -1,12 +1,12 @@
 {
-  "active_binding_commit": "0def32650ed74718dbff43476f257dcd70c9ff49",
-  "active_closeout_receipt": "ff_prior_fullchain/evidence/balanced_brake_closeout.json",
-  "active_module": "ff_prior_balanced_brake.job",
-  "active_protocol": "ff_prior_balanced_brake/docs/EXPERIMENT_PLAN.md",
-  "active_report": "ff_prior_balanced_brake/docs/ANALYSIS.md",
-  "active_run": "artifacts/v7_1/balanced_brake_001",
+  "active_binding_commit": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
+  "active_closeout_receipt": "ff_prior_fullchain/evidence/moving_satellite_closeout.json",
+  "active_module": "ff_prior_satellite_origin.job",
+  "active_protocol": "ff_prior_satellite_origin/docs/EXPERIMENT_PLAN.md",
+  "active_report": "ff_prior_satellite_origin/docs/ANALYSIS.md",
+  "active_run": "artifacts/v7_1/moving_satellite_001",
   "active_run_role": "most_recent_closed_run",
-  "active_source_commit": "0def32650ed74718dbff43476f257dcd70c9ff49",
+  "active_source_commit": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
   "active_worker": false,
   "additional_local_repair_allowed": false,
   "allow_dataset_expansion": false,
@@ -18,16 +18,16 @@
   "authorization_evidence": "ff_prior_satellite_origin/evidence/authorization.json",
   "automation_id": null,
   "autonomous_scope": "Single explicitly authorized physical satellite origin continuation; no additional approval required.",
-  "current_phase": "D3_physical_satellite_origin_frozen",
+  "current_phase": "D3_physical_satellite_origin_closed_momentum_failure",
   "current_user_steering": "ff_prior_satellite_origin/evidence/authorization.json",
-  "decision_document": "ff_prior_satellite_origin/docs/EXPERIMENT_PLAN.md",
+  "decision_document": "ff_prior_satellite_origin/docs/ANALYSIS.md",
   "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
   "goal_id": "moving_satellite_continuation_20261023",
-  "goal_status": "ACTIVE_AUTHORIZED_IMPLEMENTATION",
+  "goal_status": "INCOMPLETE_ORIGINAL_MOMENTUM_GATE_FAILED",
   "heartbeat_stale_seconds": 180,
-  "implementation_handoff": "ff_prior_satellite_origin/docs/EXPERIMENT_PLAN.md",
-  "next_phase": "D3_SATELLITE_ORIGIN_FROZEN_READY_SINGLE_WORKER",
-  "next_phase_action": "Implement, bind actual 54.5s full terminal and controller memory, freeze force/impulse/momentum gates and remaining budget, then exactly one worker for 2s physical origin plus 27s coast tracking and full replay.",
+  "implementation_handoff": "ff_prior_satellite_origin/docs/ANALYSIS.md",
+  "next_phase": "D3_SATELLITE_ORIGIN_CLOSED_READONLY_MOMENTUM_DECISION",
+  "next_phase_action": "Physical origin and coast evidence delivered; original robot momentum failed from inherited initial state. No automatic second unit, rerun, resume, relaxed gate or old audit.",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -87,7 +87,7 @@
     {
       "id": "D3_physical_satellite_origin",
       "purpose": "Physical origin and uninterrupted real moving-satellite tracking after the qualified 54.5s terminal",
-      "status": "AUTHORIZED_IMPLEMENTATION_NOT_YET_FROZEN"
+      "status": "CLOSED_EXECUTION_FAILED_MOMENTUM_REPLAY_EXACT_MEDIA_DELIVERED"
     }
   ],
   "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
@@ -99,5 +99,6 @@
     "duration_s": 2.0,
     "body": "target_satellite",
     "robot_external_force_allowed": false
-  }
+  },
+  "new_momentum_failure_impasse_turns": 1
 }

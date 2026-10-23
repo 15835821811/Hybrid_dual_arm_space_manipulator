@@ -1,0 +1,5 @@
+# Research finding
+
+`moving_satellite_001`: C1 complete all-gate continuation **no/high**; Caux disclosed physical satellite origin plus recorded tracking/replay/body evidence **yes/high**, explicitly conditional on failed robot momentum; overall partial. The robot momentum gate fails in both groups from new initial state and in all 14,501 saved states. Peak/threshold ratios are 1.06698 and 1.33400. Initial inherited momentum dominates new drift; this continuation's lower exchange magnitude makes the unchanged gate's numerical threshold smaller than the sealed predecessor's.
+
+One 29-second APP_DEV execution and complete saved 836-state replay agree exactly; satellite final Z velocity is 0.002 m/s and displacement is 0.056002 m under the disclosed 2-second COM force followed by 27 seconds engine-off. All other producer gates reproduce as passing. No unresolved arithmetic discrepancy; no physical retry or gate change. Narrow the claim and close the bounded trial as failed C1. No paper claim audit: provisional writing only. See response.md and audit_results.json for exact limits.

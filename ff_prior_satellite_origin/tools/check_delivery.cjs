@@ -1,0 +1,21 @@
+// Offline HTML/resource/canvas-code QA, not a browser screenshot or physics test.
+const fs=require('fs'),path=require('path'),vm=require('vm');
+const pkg=path.resolve(__dirname,'..'),dest=path.join(pkg,'delivery_001');
+const html=fs.readFileSync(path.join(dest,'index.html'),'utf8');
+const refs=[...html.matchAll(/(?:src|href)="([^"#]+)"/g)].map(x=>x[1]);
+const missing=refs.filter(p=>!p.includes('://')&&!fs.existsSync(path.join(dest,p)));
+if(missing.length)throw new Error('Missing media '+missing.join(','));
+const ctx=new Proxy({measureText:t=>({width:t.length*6})},{get:(o,k)=>k in o?o[k]:(...args)=>{}});
+const elements={};
+const get=id=>elements[id]??=(id==='c'?{clientWidth:1100,getContext:()=>ctx,setPointerCapture:()=>{}}:{});
+const sandbox={document:{getElementById:get},devicePixelRatio:1,window:{},requestAnimationFrame:()=>{}};
+vm.createContext(sandbox);
+const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
+vm.runInContext(script,sandbox,{timeout:20000});
+const outcome=vm.runInContext(`(()=>{let invalid=[];for(let j=0;j<D.time.length;j++){i=j;draw();if(!Number.isFinite(D.time[i])||D.ee_poses[i].length!==2||D.goal_poses[i].length!==2)invalid.push(j);}let jumps={};for(const key of ['burn','coast','end']){document.getElementById(key).onclick();jumps[key]=D.time[i];}return{frames:D.time.length,invalid,first_time:D.time[0],last_time:D.time.at(-1),jumps,waypoints:D.waypoints.length,execution_level:D.execution_level}})()`,sandbox,{timeout:30000});
+if(outcome.invalid.length||outcome.waypoints!==7)throw new Error('Invalid display data');
+const figures=[...html.matchAll(/<h2>(\d\d_[^<]+)<\/h2>/g)].map(x=>x[1]);
+if(new Set(figures).size!==figures.length)throw new Error('Duplicate figure sections');
+const result={status:'PASS',scope:'offline resource and JavaScript execution using a canvas/DOM test double; not browser visual verification',resource_references:refs.length,missing_resources:missing,...outcome,unique_figure_sections:figures.length,visual_review:['actual overview at shutdown inspected','actual top view near final state inspected','dense video world labels can overlap; interactive labels separated with leader lines'],new_physics_steps:0};
+fs.writeFileSync(path.join(pkg,'evidence','delivery_qa.json'),JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify(result));
