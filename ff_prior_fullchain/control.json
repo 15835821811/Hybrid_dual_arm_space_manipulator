@@ -20,14 +20,14 @@
   "autonomous_scope": "Single explicitly authorized physical satellite origin continuation; no additional approval required.",
   "current_phase": "D3_physical_satellite_origin_closed_momentum_failure",
   "current_user_steering": "ff_prior_satellite_origin/evidence/authorization.json",
-  "decision_document": "ff_prior_satellite_origin/docs/ANALYSIS.md",
+  "decision_document": "ff_prior_satellite_origin/planning/EXPERIMENT_PLAN.md",
   "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
   "goal_id": "moving_satellite_continuation_20261023",
   "goal_status": "INCOMPLETE_ORIGINAL_MOMENTUM_GATE_FAILED",
   "heartbeat_stale_seconds": 180,
-  "implementation_handoff": "ff_prior_satellite_origin/docs/ANALYSIS.md",
-  "next_phase": "D3_SATELLITE_ORIGIN_CLOSED_READONLY_MOMENTUM_DECISION",
-  "next_phase_action": "Physical origin and coast evidence delivered; original robot momentum failed from inherited initial state. No automatic second unit, rerun, resume, relaxed gate or old audit.",
+  "implementation_handoff": "ff_prior_satellite_origin/planning/EXPERIMENT_PLAN.md",
+  "next_phase": "D3_MOMENTUM_CONTINUATION_PLAN_READY_NO_AUTOMATIC_PHYSICS",
+  "next_phase_action": "Read-only momentum contract and admissible repair feasibility first. Same continuation remains failed; full 83.5s rebuild exceeds remaining native budget. No new worker or automatic retry.",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -100,5 +100,8 @@
     "body": "target_satellite",
     "robot_external_force_allowed": false
   },
-  "new_momentum_failure_impasse_turns": 1
+  "new_momentum_failure_impasse_turns": 1,
+  "latest_visualization": "ff_prior_satellite_origin/delivery_002/index.html",
+  "latest_planning_goal": "ff_prior_satellite_origin/planning/execution_goal.json",
+  "latest_planning_budget": "ff_prior_satellite_origin/planning/remaining_budget.json"
 }
