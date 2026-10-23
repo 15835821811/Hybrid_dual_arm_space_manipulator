@@ -1,3 +1,7 @@
+# 2026-10-23 修复单元已通过并永久收尾
+
+balanced_brake_001已完成原2R5C同场景真实静态末态接27秒动态，七点7/7及最后1.5秒保持，19门通过，13500执行+13500独立重放，13501×836差0。新独立审查确认，收据ff_prior_fullchain/evidence/balanced_brake_closeout.json。一次完成resume已PASS，81文件621708601bytes不变，禁止再resume/审查/追加物理。完整54.5秒视频/三维/坐标系/末端轨迹/臂身曲线交付http://127.0.0.1:8771/index.html；原失败run保留。实体卫星零速继承，长期物理一致移动起源仍未完成；不把长期goal设complete/paused，不自动新轮次。
+
 # 2026-10-23 最新明确授权：修正后两点与最终保持
 
 用户要求“后两点及最终保持未完成检查原因并修正”。失败balanced_tracking_001保留并收尾；新独立balanced_brake_001修复离散制动可行性，从已验证同场景真实静态末态起步，保持原7点/时序/全部门。冻结一轮1200秒/2GiB/27000原生含完整重放，计划0耦合，单worker。旧等待或禁止额外运行文字不能覆盖本次明确修复授权。授权证据ff_prior_balanced_brake/evidence/authorization.json；计划ff_prior_balanced_brake/docs/EXPERIMENT_PLAN.md。长期目标不标complete/paused。
