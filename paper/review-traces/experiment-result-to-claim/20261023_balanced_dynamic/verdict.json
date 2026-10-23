@@ -1,0 +1,326 @@
+{
+  "audit_skill": "experiment-result-to-claim",
+  "review_role": "fresh independent paper architect/reviewer",
+  "review_trace": "20261023_balanced_dynamic",
+  "generated_at": "2026-10-23T08:33:24.141082+00:00",
+  "experiment": "artifacts/v7_1/balanced_tracking_001",
+  "claim_supported": "no",
+  "confidence": "high",
+  "verdict": "FAIL_FULL_COMPOSITION_WITH_SUPPORTED_PREFIX",
+  "claims": {
+    "C1": {
+      "claim": "Full frozen 2R+5C static approach, actual complete terminal handoff, original seven-waypoint 27 s dynamic tracking and final hold with full planned replay.",
+      "claim_supported": "no",
+      "confidence": "high",
+      "what_results_support": [
+        "Qualified static predecessor is inherited only through closed review/closeout and matching bound terminal.",
+        "Actual836 handoff and an executed19.66s dynamic prefix with exact complete replay of all9830 executed steps."
+      ],
+      "what_results_dont_support": [
+        "27s dynamic completion, seven waypoint arrivals, final1.5s hold,13500-step execution/replay, or full static-dynamic engineering success."
+      ],
+      "missing_evidence": [
+        "3670 planned native steps, W6/W7 arrivals, all final-hold states, corresponding replay and367 planned body-observation states were never executed."
+      ],
+      "suggested_claim_revision": "The fixed engineering attempt failed after19.66s of dynamic execution because the local velocity box became empty; preserve all original failure outcomes.",
+      "next_experiments_needed": [
+        "No experiment is authorized by this review. Any separately user-authorized repair must have a distinct frozen identity and fresh assessment; never overwrite or retrospectively qualify this run."
+      ]
+    },
+    "Cprefix": {
+      "claim": "Scene-specific actual full-terminal continuity and recorded native execution from27.5s through47.16s, with complete836 replay of every executed step.",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "what_results_support": [
+        "9831×836 saved state elements equal replay exactly; all qpos/qvel and9830×67 control values match.",
+        "Full actual terminal, initial/reference and absolute clock chain agree.",
+        "All reconstructible recorded physical-prefix gates and all saved geometry reductions agree with report.",
+        "W1–W5 arrival times are covered; all recorded position/rotation samples satisfy5mm/1degree."
+      ],
+      "what_results_dont_support": [
+        "Completion of unexecuted remainder or final hold.",
+        "Independent reconstruction of unsaved native geometry-motion and mass-matrix quantities.",
+        "Continuous-time safety or cross-scene/generalization claims."
+      ],
+      "missing_evidence": [
+        "Per-native geom centers, rotations and rbound are not saved; maximum geometry step is frozen-producer evidence, not independently reconstructed without FK.",
+        "All saved distances, active selections, omissions, identities, connectors and curvature were audited. No new exact query or FK was performed; unsaved geometric intermediates and full producer completeness cannot be independently proven.",
+        "Full mass matrices, generalized map, task Jacobian, Hessian and desired-control derivation intermediates are unavailable. Saved momentum thresholds, inequalities and commands are reproducible; physical momentum derivation and controller optimality are not.",
+        "no_hidden_reset is a producer constant gate. Source, time continuity and full independent replay support the recorded native chain; samples alone do not prove absence of every possible hidden intermediate operation.",
+        "Zero saved external-force channels and source flow support no external wrench at saved states, not an independent continuous-time proof."
+      ],
+      "suggested_claim_revision": "Use only the complete recorded19.66s prefix and its full executed-step replay; retain frozen-producer provenance for nonreconstructible gates.",
+      "next_experiments_needed": [
+        "None for this narrowly bounded saved-prefix claim."
+      ]
+    },
+    "Caux": {
+      "claim": "Complete planned27s arm-body distances/shapes and full constraint/command participation evidence.",
+      "claim_supported": "partial",
+      "confidence": "high",
+      "executed_prefix_description_supported": "yes",
+      "what_results_support": [
+        "All984 actual control ticks/failed terminal are observed:489048 body distances, connector identities and shapes/curvature checked.",
+        "All3351504 pair/tick dispositions and139886 selected rows checked,0 omitted saved active rows.",
+        "All983 valid filter outcomes and command ramps checked;207 binding rows (C4:58,C5:149),146 selected final rows with unavailable filtered command."
+      ],
+      "what_results_dont_support": [
+        "1351-sample planned completion or diagnostic evidence for unexecuted states.",
+        "All selected rows being binding; all distant/capped query values being exact.",
+        "Counterfactual benefit or a no-filter comparison."
+      ],
+      "missing_evidence": [
+        "367 planned observations correspond to unexecuted times and cannot be filled from existing states.",
+        "Full task Hessian/Jacobians and per-geom raw body distances are unsaved."
+      ],
+      "suggested_claim_revision": "Descriptive arm-body/constraint evidence is complete at every executed control tick and failed terminal; planned full-task status remains PARTIAL.",
+      "next_experiments_needed": [
+        "None to fill the original failed run; never fabricate missing future states."
+      ]
+    }
+  },
+  "what_results_support": [
+    "9831×836 saved state elements equal replay exactly; all qpos/qvel and9830×67 control values match.",
+    "Full actual terminal, initial/reference and absolute clock chain agree.",
+    "All reconstructible recorded physical-prefix gates and all saved geometry reductions agree with report.",
+    "W1–W5 arrival times are covered; all recorded position/rotation samples satisfy5mm/1degree."
+  ],
+  "what_results_dont_support": [
+    "27s dynamic completion, seven waypoint arrivals, final1.5s hold,13500-step execution/replay, or full static-dynamic engineering success."
+  ],
+  "missing_evidence": [
+    "3670 planned native steps, W6/W7 arrivals, all final-hold states, corresponding replay and367 planned body-observation states were never executed.",
+    "paper/PAPER_CLAIM_AUDIT.json unavailable"
+  ],
+  "suggested_claim_revision": "The fixed engineering attempt failed after19.66s of dynamic execution because the local velocity box became empty; preserve all original failure outcomes.",
+  "next_experiments_needed": [
+    "No experiment is authorized by this review. Any separately user-authorized repair must have a distinct frozen identity and fresh assessment; never overwrite or retrospectively qualify this run."
+  ],
+  "pending_external_review": false,
+  "paper_claim_audit": "unavailable",
+  "writing_status": "provisional — no paper claim audit available",
+  "routing_action": "close_failed_original_run; retain narrow executed-prefix and partial body evidence; any separately authorized repair requires distinct identity and fresh review",
+  "checks": {
+    "total": 18737,
+    "passed": 18737,
+    "failed": 0
+  },
+  "source_commit": "c9e8980eeb7a560e61cf3403456168e4a3e9013d",
+  "original_algorithm_base_commit": "5a21e08868cbff6a90d93e8225a43b77e8302bcd",
+  "source_files": 187,
+  "bound_inputs": 256,
+  "steps": 9830,
+  "planned_steps": 13500,
+  "replay_steps": 9830,
+  "replay_full_state_values": 8218716,
+  "replay_max_error": 0.0,
+  "handoff_full836_exact": true,
+  "actual_absolute_start_s": 27.499999999995637,
+  "actual_absolute_end_s": 47.16000000001167,
+  "executed_duration_s": 19.660000000016034,
+  "complete_native_time": false,
+  "relative_hold": false,
+  "waypoint_arrivals_covered": 5,
+  "waypoint_denominator": 7,
+  "waypoints": [
+    {
+      "waypoint": 1,
+      "scheduled_time": 31.999999999995637,
+      "recorded_through_arrival": true,
+      "arrival_error_mm": 0.010724435750213368,
+      "nearest_tick_time": 31.999999999993143,
+      "terminal_distance_if_unreached_mm": null
+    },
+    {
+      "waypoint": 2,
+      "scheduled_time": 35.479548146112265,
+      "recorded_through_arrival": true,
+      "arrival_error_mm": 0.058225313191121085,
+      "nearest_tick_time": 35.479999999997396,
+      "terminal_distance_if_unreached_mm": null
+    },
+    {
+      "waypoint": 3,
+      "scheduled_time": 39.092160704245785,
+      "recorded_through_arrival": true,
+      "arrival_error_mm": 0.0216196543256514,
+      "nearest_tick_time": 39.09200000000181,
+      "terminal_distance_if_unreached_mm": null
+    },
+    {
+      "waypoint": 4,
+      "scheduled_time": 42.549767078824466,
+      "recorded_through_arrival": true,
+      "arrival_error_mm": 0.05725487985207414,
+      "nearest_tick_time": 42.55000000000604,
+      "terminal_distance_if_unreached_mm": null
+    },
+    {
+      "waypoint": 5,
+      "scheduled_time": 46.04161393972279,
+      "recorded_through_arrival": true,
+      "arrival_error_mm": 0.022764033224785773,
+      "nearest_tick_time": 46.042000000010304,
+      "terminal_distance_if_unreached_mm": null
+    },
+    {
+      "waypoint": 6,
+      "scheduled_time": 49.5132175140364,
+      "recorded_through_arrival": false,
+      "arrival_error_mm": null,
+      "nearest_tick_time": 47.16000000001167,
+      "terminal_distance_if_unreached_mm": 143.22379376657736
+    },
+    {
+      "waypoint": 7,
+      "scheduled_time": 52.99999999999564,
+      "recorded_through_arrival": false,
+      "arrival_error_mm": null,
+      "nearest_tick_time": 47.16000000001167,
+      "terminal_distance_if_unreached_mm": 252.65275949844312
+    }
+  ],
+  "body_observations": {
+    "actual": 984,
+    "planned": 1351,
+    "status": "PARTIAL",
+    "executed_prefix_complete": true
+  },
+  "filter_rows": {
+    "selected": 139886,
+    "omitted_saved_active": 0,
+    "binding": 207,
+    "successful_ticks": 983,
+    "failed_ticks": 1
+  },
+  "failure_mechanism": {
+    "conflicting_indices": [
+      5
+    ],
+    "minimum_distance_m": 0.002087062266046224,
+    "minimum_margin_m": 0.0010870622660462239,
+    "slsqp_used": false,
+    "filtered_available": false,
+    "coordinate_5": {
+      "q_measured": 0.8738168829174784,
+      "q_reference": 0.8730491490443973,
+      "previous_velocity": 0.37546324985089763,
+      "lower": 0.3454632498508976,
+      "upper": 0.3447324683300863,
+      "gap": 0.0007307815208112967,
+      "lower_component_index": 2,
+      "upper_component_index": 1,
+      "lower_components": [
+        -0.5599999999999999,
+        -7.335267531669913,
+        0.3454632498508976,
+        -9168.624914470643,
+        -3057.209540156484,
+        -1529.0428105364012,
+        -917.6509642717514,
+        -611.8924639311178,
+        -437.1375624745795,
+        -327.8934000612759,
+        -255.04905911709514,
+        -204.0475909214506,
+        -166.9480289357323
+      ],
+      "upper_components": [
+        0.5599999999999999,
+        0.3447324683300863,
+        0.40546324985089766,
+        431.3750855293552,
+        142.7904598435159,
+        70.95718946359861,
+        42.34903572824861,
+        28.10753606888213,
+        20.00529466827753,
+        14.963742795866978,
+        11.617607549571485,
+        9.285742411882723,
+        7.597425609722229
+      ]
+    }
+  },
+  "minimum_clearance_mm": 0.2682224310845485,
+  "position_max_mm": [
+    2.2420155996742315,
+    0.04455193025715229
+  ],
+  "rotation_max_deg": [
+    0.012679991009815489,
+    0.0038640874964356677
+  ],
+  "completed_resume": {
+    "complete_manifest_hash_size_unchanged": true,
+    "core_bytes": 426455409,
+    "core_files": 80,
+    "exactly_one_invocation": true,
+    "module": "ff_prior_balanced_tracking.job",
+    "new_physical_work_allowed": false,
+    "pre_manifest_persisted_first": true,
+    "response": {
+      "elapsed_s": 83.60900000017136,
+      "heartbeat": 1792743410.5787125,
+      "pid": 124892,
+      "progress": {
+        "frame": 801,
+        "total": 820,
+        "view": "top"
+      },
+      "report": "E:\\桌面\\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\\Hybrid_dual_arm_space_manipulator\\artifacts\\v7_1\\balanced_tracking_001\\REPORT.md",
+      "resume": "NO_WORK_ALREADY_COMPLETE",
+      "stage": "complete",
+      "started_at": 1792743326.9694202,
+      "status": "FINISHED_WITH_BLOCKED_ITEMS"
+    },
+    "returncode": 0,
+    "status": "PASS",
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 500,
+      "sha256": "cd4e0673398f515784f1609b3f5d7b0a381c3d7d0153df8d9c554988d5ae361e"
+    }
+  },
+  "original_media": {
+    "status": "PARTIAL_MEDIA",
+    "frames": 820,
+    "fps": 15,
+    "playback_duration_s": 54.666666666666664,
+    "recorded_combined_duration_s": 47.16000000001167,
+    "original_run_unchanged": true,
+    "independent_delivery_outside_this_verdict": true
+  },
+  "independent_reconstruction_limits": [
+    "Per-native geom centers, rotations and rbound are not saved; maximum geometry step is frozen-producer evidence, not independently reconstructed without FK.",
+    "All saved distances, active selections, omissions, identities, connectors and curvature were audited. No new exact query or FK was performed; unsaved geometric intermediates and full producer completeness cannot be independently proven.",
+    "Full mass matrices, generalized map, task Jacobian, Hessian and desired-control derivation intermediates are unavailable. Saved momentum thresholds, inequalities and commands are reproducible; physical momentum derivation and controller optimality are not.",
+    "no_hidden_reset is a producer constant gate. Source, time continuity and full independent replay support the recorded native chain; samples alone do not prove absence of every possible hidden intermediate operation.",
+    "Zero saved external-force channels and source flow support no external wrench at saved states, not an independent continuous-time proof.",
+    "No new neural benefit, causal obstacle-avoidance advantage, whole-gradient validation, physical satellite drift, continuous-time safety certificate, hardware result or generalization follows."
+  ],
+  "new_reviewer_physics_steps": 0,
+  "new_reviewer_replay_steps": 0,
+  "new_reviewer_coupled_calls": 0,
+  "new_reviewer_geometry_queries": 0,
+  "new_reviewer_optimizer_calls": 0,
+  "reviewer_resume_invocations": 0,
+  "new_neural_samples": 0,
+  "training_updates": 0,
+  "comparison_runs": 0,
+  "TEST": false,
+  "numerical_outputs": [
+    "numerical_audit.json"
+  ],
+  "input_manifests": [
+    "inputs.json"
+  ],
+  "auditing_scripts": [
+    "audit_saved.py",
+    "audit_finish.py"
+  ],
+  "future_repair_assessed": false
+}
