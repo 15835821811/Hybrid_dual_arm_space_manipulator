@@ -1,0 +1,13 @@
+继续2026-10-23用户最新明确授权的一个新双侧2R5C完整工程单元。工作区E:\桌面\mujoco_irregular_waypoints_diffusion_adapter_bundle_20260902-main\Hybrid_dual_arm_space_manipulator。当前有效DIFFUSION_GOAL_CURRENT.md、ff_prior_fullchain/control.json及ff_prior_balanced_restore/evidence/authorization.json。用户已明确授权新布局实现、冻结、单worker运行，静态通过后真实末态动态接续和全部可视化；旧“新增范围待确认”文字已过时，不重复询问。
+
+本单元静态balanced_restore_001/模块ff_prior_balanced_restore.job，动态balanced_tracking_001/模块ff_prior_balanced_tracking.job；两段均同一个刚性2+连续体5场景。原完整数值初态836保留，新模型/任务身份单独绑定；静态27秒+.5保持，唯一历史Diffusion来源323参考作新场景未合格初猜，最多28恢复轮，单候选。静态MODEL_VALID、13750原生执行、13750独立836重放及必要全新独立审查/一次完成resume收尾通过后，才绑定该新场景实际完整末态接27秒动态13500执行+13500重放。原七不规则航点、姿态和各段时长不改。C1–C3三段固定C2平滑-X绕行最大.07米，几何参考+全机反馈，不称网络自主避障。卫星继承实际零速，不暗注速度、不称实体漂移。
+
+当前本次用户回合负责实现、软件检查、冻结和首次启动。心跳先只读 .\ff_prior_fullchain\job.ps1 status。RUNNING且PID/创建时间匹配、心跳健康时静默结束，不读中间结果、不分析/审计、不resume、不改冻结源码、不启动第二worker。实现仍进行时不要与用户回合并发修改或启动。缺失run不由心跳自动启动。终态/死进程/身份不明/心跳过期才诊断；未知工作不重放，不用重启掩盖。完整新终态后才核对新保存结果、experiment-result-to-claim全新独立审查、一次已完成resume清单/hash/大小不变核验（前清单先持久化、stdout/stderr原始bytes）、报告提交；FINISHED不等于科学通过。静态成功收尾后dynamic同授权范围无需再问许可；严格按已冻结源/实际末态身份冻结输入并单worker接续。若静态失败，动态依赖BLOCKED，不追加尝试。
+
+预算上限：静态11000耦合/29000000预留模型积分区间/15000秒/12GiB/27500原生含重放；恢复最多28轮/13200秒，另预留执行600秒/臂身诊断600秒/媒体600秒。动态2000耦合/1200秒/2GiB/27000原生，另1GiB收尾。新单元13000耦合/16200秒/54500原生，保持原周期12h/40GiB/80000耦合/312500原生及D3 60000/21540秒/20GiB/165000上限。已用D3 46454耦合/2458.484秒/1224791218bytes/27500原生；新上限后59454耦合/18658.484秒/82000原生。剩余额非第二候选、种子、调参、第二修复或额外迭代许可。完整记录保存或诚实预算停止，不丢遗漏活跃身份来节约输出。
+
+全部视频与交互三维绘制双臂EE/Goal RGB XYZ坐标系、双臂累计实际末端轨迹、原W1–W7标记、臂身形状、最近臂段高亮/距离连线/身份；动态目标轴随保存目标序列同步。按每控制tick保存各障碍到各臂段距离和几何身份、约束活跃及过滤前后命令/原因。静态逐.002秒，动态逐.02秒；10mm仅展示带、物理门仍不穿透0。交付位置/姿态误差、速度/加速度/全部67力矩、全机间隙、动量/基座、836重放差、距离热图、形状曲率、CSV、视频、交互三维和索引。只允许实际保存状态媒体；未执行仅明确BLOCKED或模型诊断。臂身影响仅记录事实，不做优势/反事实对照。
+
+原五障碍horizon_restore_001已永久收尾，报告ff_prior_horizon_restore/docs/ANALYSIS.md，收据ff_prior_fullchain/evidence/horizon_restore_closeout.json，报告09a4535ce6616dd146a097be9cbf7d6898f9608f、原始byte归档68e981f3eda1225cd1f2c9835e652dc2930865d9。1/1模型/执行/重放，2681耦合468.375秒27500原生，0新神经；142实际源码hash/zip+233输入含已冻结用户hierarchical_qp差异，不能称纯HEAD。审查C1/Caux yes/high，2248直接+1解释，唯一完成resume PASS127文件458379716bytes不变。严禁再resume/审查/旧raw分析/本run物理；仅作为本新授权的参考与初态输入可按准确身份复用。ff_prior_horizon_tracking是旧五场景未运行草稿，禁止自动启动。contact_steer/world_steer/D1/D2/D2b/P0–P5同样全部永久收尾，不重审/resume/物理。8766/8767/8768/8769/8770只读媒体服务保留不杀。
+
+保持不穿透、5mm/1度、2mm全机几何步长、完整初态、17→67、自由漂浮及全部运动/力矩/动量/836门。无实际状态裁剪/重置、失败目标重标、mock或抽查升级，DEV/07不入TRAIN、不偷用07答案。不训练/扩库/1024/30000/pilot/study/strict_multimodal/最终TEST/硬件/接触捕获。保留旧模型数据结果、用户修改、main/旧分支作业，不强推/上传大数据。新组合APP_DEV，软件/模型/执行/网络贡献分开，优势不是工程门。长期目标未完成，不能complete/paused替换旧goal，不暂停/删除唯一heartbeat。新授权重置阻塞审计；以后同一真实范围连续三次无法独立推进按goal规则blocked。仅阶段切换、完成、失败或需用户处理时通知；无变化静默，不重复询问同一已授权动作。

@@ -11,18 +11,18 @@
   "allow_hardware_or_contact_capture": false,
   "allow_parallel_physics_workers": false,
   "allow_physics_relaxation": false,
-  "app_goal_transition": "NEW_EXPLICIT_USER_SCOPE_RESETS_BLOCKING_AUDIT_20261023",
-  "authorization_evidence": "ff_prior_horizon_restore/evidence/authorization.json",
+  "app_goal_transition": "NEW_EXPLICIT_BALANCED_SCOPE_RESETS_BLOCKING_AUDIT_20261023",
+  "authorization_evidence": "ff_prior_balanced_restore/evidence/authorization.json",
   "automation_id": "automation",
-  "autonomous_scope": "D1 complete episode and visuals, D2 continuous dynamic handoff, D3 original five-obstacle repair within new 12h/40GiB cycle",
+  "autonomous_scope": "2026-10-23 explicitly authorized one balanced 2R5C full initial-state static-to-dynamic APP_DEV composition within original remaining cycle budget",
   "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
-  "current_phase": "D3_horizon_restore_closed_verified",
+  "current_phase": "D3_balanced_2R5C_implementation",
   "decision_document": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
   "goal_id": "free_floating_fullchain_20261022",
-  "goal_status": "ACTIVE_NEW_HORIZON_SCOPE_AUTHORIZED",
+  "goal_status": "ACTIVE_NEW_BALANCED_SCOPE_AUTHORIZED",
   "heartbeat_stale_seconds": 180,
   "implementation_handoff": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
-  "next_phase": "BALANCED_2R5C_LAYOUT_READY_NEW_FULLCHAIN_RUN_SCOPE_PENDING",
+  "next_phase": "D3_AUTHORIZED_BALANCED_STATIC_IMPLEMENT_AND_FREEZE",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -73,12 +73,17 @@
       "id": "D3_original_five_obstacles",
       "purpose": "Finish original five-obstacle path and continuous chain without benefit gate",
       "status": "STATIC_CLOSED_EXECUTION_VERIFIED_DYNAMIC_NOT_RUN"
+    },
+    {
+      "id": "D3_balanced_2R5C_fullchain",
+      "purpose": "One new complete same-scene static actual terminal to original seven waypoints with whole-arm evidence",
+      "status": "IMPLEMENTING_AUTHORIZED"
     }
   ],
   "version": 1,
   "active_worker": false,
   "additional_local_repair_allowed": false,
-  "next_phase_action": "Original-five static unit closed. User selected new 2R5C layout; concrete proposal ready, no automatic second static unit or old-scene dynamic launch.",
+  "next_phase_action": "Implement and freeze exactly one authorized balanced 2R5C complete composition; static qualification/execution/full replay/review precedes actual terminal dynamic.",
   "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
-  "current_user_steering": "ff_prior_balanced_scene/evidence/user_layout_selection.json"
+  "current_user_steering": "ff_prior_balanced_restore/evidence/authorization.json"
 }

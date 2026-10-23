@@ -1,0 +1,345 @@
+{
+  "before_new_physics": true,
+  "candidate_denominator": 1,
+  "entries": [
+    {
+      "sample_id": "balanced_2R5C",
+      "scene": {
+        "family_id": "balanced_2rigid_5continuum_proposal_v1",
+        "legacy_target": "included_by_robot_model_and_complete_initial_state",
+        "motion": "STATIC",
+        "objects": [
+          {
+            "object_id": "R1",
+            "position": [
+              0.82,
+              -0.91,
+              0.22
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.035,
+              0,
+              0
+            ]
+          },
+          {
+            "object_id": "R2",
+            "position": [
+              1.24,
+              -0.43,
+              -0.045
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.03,
+              0,
+              0
+            ]
+          },
+          {
+            "object_id": "C1",
+            "position": [
+              1.7922176651134116,
+              0.6690964054361727,
+              0.05878155702153602
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.025,
+              0,
+              0
+            ]
+          },
+          {
+            "object_id": "C2",
+            "position": [
+              1.8110905971478566,
+              0.4201267926426048,
+              0.07547869624321848
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.025,
+              0,
+              0
+            ]
+          },
+          {
+            "object_id": "C3",
+            "position": [
+              1.7972572450431306,
+              0.5196424510809674,
+              -0.1656602684897293
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.025,
+              0,
+              0
+            ]
+          },
+          {
+            "object_id": "C4",
+            "position": [
+              1.12,
+              0.75,
+              0.025
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.028,
+              0,
+              0
+            ]
+          },
+          {
+            "object_id": "C5",
+            "position": [
+              1.5,
+              0.54,
+              -0.04
+            ],
+            "quaternion_wxyz": [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "shape": "sphere",
+            "size": [
+              0.028,
+              0,
+              0
+            ]
+          }
+        ],
+        "schema": "ff_prior_static_scene_1"
+      },
+      "split": "APP_DEV",
+      "task": {
+        "condition": {
+          "duration": 27.0,
+          "goals": [
+            [
+              [
+                1.0,
+                -0.0,
+                0.0,
+                1.9300000000000013
+              ],
+              [
+                0.0,
+                2.6794896468285145e-08,
+                0.9999999999999997,
+                0.6259999999999999
+              ],
+              [
+                -0.0,
+                -0.9999999999999997,
+                2.6794896468285145e-08,
+                5.385774190125315e-09
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            [
+              [
+                -0.9999999999606786,
+                8.867920658586097e-06,
+                -9.213238747866361e-11,
+                1.2
+              ],
+              [
+                -1.3255044512759358e-11,
+                8.894682981541724e-06,
+                0.999999999960441,
+                -0.235
+              ],
+              [
+                8.867920659054791e-06,
+                0.9999999999211209,
+                -8.894682981097635e-06,
+                0.05
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          ],
+          "initial_features": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.7853981633974483,
+            0.0,
+            1.5707963267948966,
+            0.0,
+            0.7853981633974483,
+            0.0
+          ],
+          "pose_mask": [
+            [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        "contract": {
+          "acceptance": {
+            "actual_clearance_m": 0.0,
+            "calibration_status": "INHERITED_DEV_FROZEN_FOR_THIS_SMOKE_NOT_PRODUCTION",
+            "deadline_s": 30.0,
+            "hold_s": 0.5,
+            "manifold_residual_rad": 0.02,
+            "momentum_atol": 1e-05,
+            "momentum_relative_tolerance": 0.002,
+            "planning_clearance_m": 0.0,
+            "position_error_m": 0.005,
+            "replay_atol": 1e-10,
+            "rotation_error_rad": 0.017453292519943295,
+            "subdivisions": 2,
+            "tracking_error_rad": 0.02
+          },
+          "initial_state_id": "7b6828930bbaa45d4938841d8f3cb9092d88835c630125b04e05bcedde3783ba",
+          "pair_policy_hash": "2971b29e445bdf724b8ccfa672681f826b62c39799eff35c0a941b8e7eaeb640",
+          "robot_hash": "58d28517792adb94710b0f8a979ad0ea862644c70e2b8fb8eb31c1ca17fdfb1f"
+        },
+        "source": "MODEL_DERIVED",
+        "task_hash": "07422bb7c2471cd5b3d51f5dfa64bb4fd734712c74f6702d8dd46ad9e61e92d7"
+      }
+    }
+  ],
+  "execution_denominator": 1,
+  "new_network_samples": 0,
+  "original_numeric_initial_state_preserved": true,
+  "original_static_conditions_preserved": true,
+  "original_waypoints_sha256": "0fb426c9c5c1e49958262cbc5bb4b4bdf33adf8df53b08a5cf453d616d8c1131",
+  "scope": "one APP_DEV balanced2R5C composition; no comparison or TEST",
+  "source_neural_lineage": {
+    "execution_denominator": 1,
+    "extension": "constant planner q until 27s, optimization guess only",
+    "historical_prefix_level": "TREE_SCREEN_ONLY",
+    "id": "u00",
+    "method": "diffusion_geometry_full_horizon",
+    "prefix_end_s": 26.0,
+    "prefix_file": "ff_prior_horizon_restore/evidence/prefix.npz",
+    "proposal_seed": 20264627,
+    "repair_candidate_denominator": 1,
+    "seed": 20264623,
+    "source_Q": 2.897692388317609,
+    "source_node": 149,
+    "source_node_chain": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      23,
+      104,
+      132,
+      140,
+      143,
+      146,
+      149
+    ],
+    "source_prior_candidate": 4,
+    "source_tree": "artifacts/v7_1/contact_steer_001/units/u02/tree",
+    "source_unit": "u02",
+    "task_id": "capture_5_obstacles"
+  },
+  "units": [
+    {
+      "candidate_denominator": 1,
+      "execution_denominator": 1,
+      "guess_file": "ff_prior_balanced_restore/evidence/guess.npz",
+      "id": "u00",
+      "method": "historical_diffusion_full323_newscene_restoration",
+      "new_scene_qualification": "UNQUALIFIED_GUESS",
+      "proposal_seed": 20264627,
+      "seed": 20264623,
+      "source_qualification": "MODEL_VALID_IN_OLD_SCENE_ONLY",
+      "source_reference_hash": "aaf0c9797c725e366814d292f7d812791ca7f621cbd31640bb355f339eefb26a",
+      "source_run": "horizon_restore_001",
+      "task_id": "balanced_2R5C"
+    }
+  ]
+}
