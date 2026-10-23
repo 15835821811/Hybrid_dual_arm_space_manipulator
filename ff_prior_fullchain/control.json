@@ -14,20 +14,20 @@
   "allow_hardware_or_contact_capture": false,
   "allow_parallel_physics_workers": false,
   "allow_physics_relaxation": false,
-  "app_goal_transition": "NEW_EXPLICIT_BRAKE_REPAIR_RESETS_BLOCKING_AUDIT_20261023",
-  "authorization_evidence": "ff_prior_balanced_brake/evidence/authorization.json",
-  "automation_id": "automation",
-  "autonomous_scope": "2026-10-23 explicitly authorized one balanced 2R5C full initial-state static-to-dynamic APP_DEV composition within original remaining cycle budget",
-  "current_phase": "D3_balanced_2R5C_brake_closed_verified",
-  "current_user_steering": "ff_prior_balanced_brake/evidence/authorization.json",
-  "decision_document": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
+  "app_goal_transition": "NEW_EXPLICIT_CONTINUOUS_GOAL_CREATED_20261023_BLOCKING_COUNT_RESET",
+  "authorization_evidence": "ff_prior_moving_origin/evidence/authorization.json",
+  "automation_id": null,
+  "autonomous_scope": "Read-only origin plan and budget accounting completed; subsequent implementation and execution conditional on a physically compatible explicitly accepted origin contract. Existing gates remain enforced.",
+  "current_phase": "D3_moving_satellite_origin_plan",
+  "current_user_steering": "ff_prior_moving_origin/evidence/authorization.json",
+  "decision_document": "ff_prior_moving_origin/docs/ORIGIN_AND_BUDGET.md",
   "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
-  "goal_id": "free_floating_fullchain_20261022",
-  "goal_status": "CURRENT_REPAIR_DELIVERED_LONG_TERM_INCOMPLETE",
+  "goal_id": "moving_satellite_continuation_20261023",
+  "goal_status": "ACTIVE_CONTINUOUS_GOAL_ORIGIN_SCOPE_UNRESOLVED",
   "heartbeat_stale_seconds": 180,
-  "implementation_handoff": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
-  "next_phase": "BALANCED_2R5C_FULLCHAIN_DELIVERED_NO_AUTOMATIC_PHYSICS",
-  "next_phase_action": "Current repair scope delivered and permanently closed. No repeated audits/resume/physical work; long-term physical moving-satellite origin remains unresolved.",
+  "implementation_handoff": "ff_prior_moving_origin/docs/ORIGIN_AND_BUDGET.md",
+  "next_phase": "MOVING_SATELLITE_ORIGIN_GATE_CONFLICT_AWAITING_SCOPE_DECISION",
+  "next_phase_action": "Origin and remaining-budget plan delivered. Under unchanged zero-force gates the stationary uncoupled satellite cannot start moving. Do not launch physics, inject velocity, reset state, or bypass the force gate. Resolve the disclosed origin-scope decision first.",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -83,8 +83,15 @@
       "id": "D3_balanced_2R5C_fullchain",
       "purpose": "One new complete same-scene static actual terminal to original seven waypoints with whole-arm evidence",
       "status": "STATIC_AND_REPAIRED_DYNAMIC_EXECUTION_REPLAY_VERIFIED_MEDIA_DELIVERED"
+    },
+    {
+      "id": "D3_physical_satellite_origin",
+      "purpose": "Physical origin and uninterrupted real moving-satellite tracking after the qualified 54.5s terminal",
+      "status": "PLAN_DELIVERED_GATE_CONFLICT_NO_PHYSICS"
     }
   ],
   "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
-  "version": 1
+  "version": 1,
+  "automation_status": "DELETED_BY_USER_REQUEST",
+  "origin_scope_unresolved_turns": 1
 }
