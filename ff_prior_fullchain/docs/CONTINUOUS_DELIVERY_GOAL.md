@@ -1,6 +1,10 @@
+# 2026-10-23 当前有效授权：实体卫星2秒公开推力起源→27秒关机追踪
+
+最新用户明确授权并要求继续：从54.5秒真实完整末态起步，只对卫星施加公开2秒物理推力，保存推力、冲量和动量账本；机器人无外力及其余全部物理门保持。实现/核算/冻结后单worker一次执行与完整重放，交付全部可视化。不注入速度、不重置、不训练/扩库/优势对照/TEST。证据 ff_prior_satellite_origin/evidence/authorization.json。G1已完成，G2实现中，尚未冻结或启动。原起源范围阻塞已解除，阻塞计数归零；App卡接口没有active恢复操作，不能以虚假complete/新goal替换。旧heartbeat保持删除。以下待授权/blocked文字仅是历史，不能覆盖本节。
+
 # 2026-10-23 当前连续目标：实体移动卫星的物理起源与追踪
 
-用户最新要求先给物理一致起源、原周期剩余预算并建立连续执行目标。App goal已新建为active，旧15分钟heartbeat已按用户要求删除，不重新创建。最新方案与预算：ff_prior_moving_origin/docs/ORIGIN_AND_BUDGET.md、ff_prior_moving_origin/evidence/remaining_budget.json。
+用户最新要求先给物理一致起源、原周期剩余预算并建立连续执行目标。App goal已建立，现为blocked（起源受力范围连续三轮未决），旧15分钟heartbeat已按用户要求删除，不重新创建。最新方案与预算：ff_prior_moving_origin/docs/ORIGIN_AND_BUDGET.md、ff_prior_moving_origin/evidence/remaining_budget.json。
 
 当前2R5C已交付54.5秒实际连续链、原七点7/7与最后保持；卫星仍为零速独立自由刚体。源码核对表明当前零重力、无起动执行器、无接触/外力的模型不能使它自行起动。2秒公开卫星推力→27秒关机追踪只是具体条件备选，冲量0.04N·s、解析增速2mm/s；它会改变起源段的无外力条件，未获准实施，绝不把原无外力布尔门硬写为通过。
 

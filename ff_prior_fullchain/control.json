@@ -14,20 +14,20 @@
   "allow_hardware_or_contact_capture": false,
   "allow_parallel_physics_workers": false,
   "allow_physics_relaxation": false,
-  "app_goal_transition": "NEW_EXPLICIT_CONTINUOUS_GOAL_CREATED_20261023_BLOCKING_COUNT_RESET",
-  "authorization_evidence": "ff_prior_moving_origin/evidence/authorization.json",
+  "app_goal_transition": "LATEST_USER_RESUMED; APP_CARD_API_HAS_NO_ACTIVE_TRANSITION",
+  "authorization_evidence": "ff_prior_satellite_origin/evidence/authorization.json",
   "automation_id": null,
-  "autonomous_scope": "Read-only origin plan and budget accounting completed; subsequent implementation and execution conditional on a physically compatible explicitly accepted origin contract. Existing gates remain enforced.",
-  "current_phase": "D3_moving_satellite_origin_plan",
-  "current_user_steering": "ff_prior_moving_origin/evidence/authorization.json",
-  "decision_document": "ff_prior_moving_origin/docs/ORIGIN_AND_BUDGET.md",
+  "autonomous_scope": "Single explicitly authorized physical satellite origin continuation; no additional approval required.",
+  "current_phase": "D3_physical_satellite_origin_frozen",
+  "current_user_steering": "ff_prior_satellite_origin/evidence/authorization.json",
+  "decision_document": "ff_prior_satellite_origin/docs/EXPERIMENT_PLAN.md",
   "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
   "goal_id": "moving_satellite_continuation_20261023",
-  "goal_status": "ACTIVE_CONTINUOUS_GOAL_ORIGIN_SCOPE_UNRESOLVED",
+  "goal_status": "ACTIVE_AUTHORIZED_IMPLEMENTATION",
   "heartbeat_stale_seconds": 180,
-  "implementation_handoff": "ff_prior_moving_origin/docs/ORIGIN_AND_BUDGET.md",
-  "next_phase": "MOVING_SATELLITE_ORIGIN_GATE_CONFLICT_AWAITING_SCOPE_DECISION",
-  "next_phase_action": "Origin and remaining-budget plan delivered. Under unchanged zero-force gates the stationary uncoupled satellite cannot start moving. Do not launch physics, inject velocity, reset state, or bypass the force gate. Resolve the disclosed origin-scope decision first.",
+  "implementation_handoff": "ff_prior_satellite_origin/docs/EXPERIMENT_PLAN.md",
+  "next_phase": "D3_SATELLITE_ORIGIN_FROZEN_READY_SINGLE_WORKER",
+  "next_phase_action": "Implement, bind actual 54.5s full terminal and controller memory, freeze force/impulse/momentum gates and remaining budget, then exactly one worker for 2s physical origin plus 27s coast tracking and full replay.",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -87,11 +87,17 @@
     {
       "id": "D3_physical_satellite_origin",
       "purpose": "Physical origin and uninterrupted real moving-satellite tracking after the qualified 54.5s terminal",
-      "status": "PLAN_DELIVERED_GATE_CONFLICT_NO_PHYSICS"
+      "status": "AUTHORIZED_IMPLEMENTATION_NOT_YET_FROZEN"
     }
   ],
   "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
   "version": 1,
   "automation_status": "DELETED_BY_USER_REQUEST",
-  "origin_scope_unresolved_turns": 1
+  "origin_scope_unresolved_turns": 0,
+  "goal_state_receipt": "ff_prior_moving_origin/evidence/goal_blocked_receipt.json",
+  "satellite_origin_force_exception": {
+    "duration_s": 2.0,
+    "body": "target_satellite",
+    "robot_external_force_allowed": false
+  }
 }
