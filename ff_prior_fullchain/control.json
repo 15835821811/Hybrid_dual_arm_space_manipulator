@@ -4,7 +4,7 @@
   "active_protocol": "ff_prior_horizon_restore/docs/EXPERIMENT_PLAN.md",
   "active_report": "ff_prior_horizon_restore/docs/ANALYSIS.md",
   "active_run": "artifacts/v7_1/horizon_restore_001",
-  "active_run_role": "current_worker",
+  "active_run_role": "most_recent_closed_run",
   "active_source_commit": "bfc4ea9c436a32bb5fc9aa49db4e66857e11283f",
   "allow_dataset_expansion": false,
   "allow_final_TEST": false,
@@ -16,13 +16,13 @@
   "automation_id": "automation",
   "autonomous_scope": "D1 complete episode and visuals, D2 continuous dynamic handoff, D3 original five-obstacle repair within new 12h/40GiB cycle",
   "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
-  "current_phase": "D3_horizon_restore_running",
-  "decision_document": "ff_prior_fullchain/docs/AFTER_CONTACT_STEER_DECISION.md",
+  "current_phase": "D3_horizon_restore_closed_verified",
+  "decision_document": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
   "goal_id": "free_floating_fullchain_20261022",
   "goal_status": "ACTIVE_NEW_HORIZON_SCOPE_AUTHORIZED",
   "heartbeat_stale_seconds": 180,
-  "implementation_handoff": "ff_prior_horizon_restore/docs/EXPERIMENT_PLAN.md",
-  "next_phase": "D3_SINGLE_FULL27S_323_UNIT_THEN_TERMINAL_CLOSEOUT",
+  "implementation_handoff": "ff_prior_balanced_scene/docs/LAYOUT_AND_BUDGET.md",
+  "next_phase": "BALANCED_2R5C_LAYOUT_READY_NEW_FULLCHAIN_RUN_SCOPE_PENDING",
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -72,12 +72,13 @@
     {
       "id": "D3_original_five_obstacles",
       "purpose": "Finish original five-obstacle path and continuous chain without benefit gate",
-      "status": "FULL_HORIZON_UNIT_RUNNING"
+      "status": "STATIC_CLOSED_EXECUTION_VERIFIED_DYNAMIC_NOT_RUN"
     }
   ],
   "version": 1,
-  "active_worker": true,
+  "active_worker": false,
   "additional_local_repair_allowed": false,
-  "next_phase_action": "Run exactly one frozen horizon_restore_001 worker; after terminal closeout only a verified actual terminal state may seed the authorized dynamic stage",
-  "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document."
+  "next_phase_action": "Original-five static unit closed. User selected new 2R5C layout; concrete proposal ready, no automatic second static unit or old-scene dynamic launch.",
+  "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
+  "current_user_steering": "ff_prior_balanced_scene/evidence/user_layout_selection.json"
 }
