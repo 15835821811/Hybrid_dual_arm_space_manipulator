@@ -1,0 +1,111 @@
+{
+  "status": "PROPOSAL_READY_PRODUCTION_NOT_IMPLEMENTED_BUDGET_EXTENSION_PENDING",
+  "unit": "guided_diffusion_chain_001",
+  "module_proposed": "ff_prior_guided_chain.job",
+  "source_base_commit": "0caa6936628fb84ecd685f80e6270583f835b74c",
+  "plan": "ff_prior_guided_chain_plan/docs/EXPERIMENT_PLAN.md",
+  "existing_model_reuse": "frozen static102 prior plus deterministic221 details; frozen temporal271x17 prior",
+  "production_implemented": false,
+  "frozen": false,
+  "worker_started": false,
+  "candidate_chains": 1,
+  "candidates_per_phase": 1,
+  "retries": 0,
+  "phases": [
+    {
+      "id": "A",
+      "from_s": 0,
+      "to_s": 27.5,
+      "execution": 13750,
+      "replay": 13750,
+      "variables": 323,
+      "neural_calls": 16,
+      "seed": 2026102601
+    },
+    {
+      "id": "B",
+      "from_s": 27.5,
+      "to_s": 54.5,
+      "execution": 13500,
+      "replay": 13500,
+      "variables": 4590,
+      "neural_calls": 16,
+      "seed": 2026102602
+    },
+    {
+      "id": "C",
+      "from_s": 54.5,
+      "to_s": 83.5,
+      "execution": 14500,
+      "replay": 14500,
+      "variables": 4590,
+      "neural_calls": 16,
+      "seed": 2026102603
+    }
+  ],
+  "ddim_steps": 16,
+  "guidance_steps_zero_based": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "reference_contracts": [
+    "ff_prior_balanced_scene/evidence/layout.json",
+    "ff_prior_balanced_brake/evidence/contract.json",
+    "ff_prior_satellite_origin/evidence/contract.json"
+  ],
+  "original_initial": "ff_prior_balanced_restore/evidence/initial_state.npz",
+  "original_initial_sha256": "5ad6c16207374d7368f2cff96d7e4ad7bd6c4aa92cc35e20aa2db451c28e91e6",
+  "integrator_proposed": "mjINT_RK4",
+  "native_dt": 0.002,
+  "physical_model_allowed_difference": [
+    "opt.integrator"
+  ],
+  "physics_gate_changes": [],
+  "reference_changes": "New neural-guided joint trajectories; original public world goals, seven points, timing, holds and C2 reference unchanged.",
+  "actual_initializations": 1,
+  "replay_initializations": 1,
+  "actual_phase_resets": 0,
+  "state_injection": false,
+  "subtract_initial_momentum": false,
+  "force_exception": "Only existing public2s satelliteCOM thrust, thenzero27s; robot external0",
+  "sampler": "NN clean trajectory -> motion/boundary QP -> floating propagation -> full-machine guidance -> recode -> DDIM transition.",
+  "predictor": "New inherited-momentum full-state propagation; no mj_step in planner. All native calls would be counted.",
+  "fd_dimensions": [
+    323,
+    4590,
+    4590
+  ],
+  "fd_h_rad": 0.0001,
+  "max_constraint_rows": 4044,
+  "geometry_selected_cap": 512,
+  "torque_selected_cap": 256,
+  "solver_maxiter": 180,
+  "line_search": [
+    1.0,
+    0.5,
+    0.25,
+    0.125
+  ],
+  "all_pair_gate_required": true,
+  "initial_phase_windows_unchanged": true,
+  "stage_release": "Model gates, execution gates, whole836 replay and necessary new review before next phase; same actual/replay objects.",
+  "freeze_requires": [
+    "additional_budget_resolved",
+    "production_implementation",
+    "software_and_counter_checks",
+    "source_zip_and_input_hashes",
+    "identical_original_initial_values",
+    "equal_physical_arrays_except_integrator",
+    "full_cost_and_record_envelope",
+    "single_worker_lock"
+  ],
+  "budget": "ff_prior_guided_chain_plan/evidence/budget_derivation.json",
+  "success_unknown": true,
+  "training": false,
+  "expansion": false,
+  "TEST": false,
+  "advantage_comparison": false,
+  "preserve_old_sealed_runs": true
+}

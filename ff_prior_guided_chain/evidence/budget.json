@@ -1,0 +1,171 @@
+{
+  "status": "AUTHORIZED_CAPS_APPLIED_NEW_UNIT_RESERVED",
+  "basis": "ff_prior_momentum_diagnosis/evidence/budget_derivation.json",
+  "conservative_before_this_plan": {
+    "coupled": 10873,
+    "native": 34340,
+    "wall_s": 6336.641,
+    "bytes": 621069322
+  },
+  "this_plan_reservation": {
+    "coupled": 0,
+    "native": 0,
+    "wall_s": 1800,
+    "bytes": 33554432
+  },
+  "available_after_reservation": {
+    "coupled": 10873,
+    "native": 34340,
+    "wall_s": 4536.641,
+    "bytes": 587514890
+  },
+  "proposed_total_unit_caps": {
+    "coupled": 40000,
+    "native": 83500,
+    "wall_s": 43200,
+    "bytes": 8589934592
+  },
+  "exact_additional_required": {
+    "coupled": 29127,
+    "native": 49160,
+    "wall_s": 38663.359,
+    "bytes": 8002419702
+  },
+  "rounded_extension_proposal": {
+    "coupled": 30000,
+    "native": 50000,
+    "wall_s": 39600,
+    "bytes": 8053063680
+  },
+  "after_extension_and_full_reservation": {
+    "coupled": 873,
+    "native": 840,
+    "wall_s": 936.6410000000033,
+    "bytes": 50643978
+  },
+  "phases": [
+    {
+      "id": "A",
+      "from_s": 0,
+      "to_s": 27.5,
+      "execution": 13750,
+      "replay": 13750,
+      "variables": 323,
+      "neural_calls": 16,
+      "seed": 2026102601
+    },
+    {
+      "id": "B",
+      "from_s": 27.5,
+      "to_s": 54.5,
+      "execution": 13500,
+      "replay": 13500,
+      "variables": 4590,
+      "neural_calls": 16,
+      "seed": 2026102602
+    },
+    {
+      "id": "C",
+      "from_s": 54.5,
+      "to_s": 83.5,
+      "execution": 14500,
+      "replay": 14500,
+      "variables": 4590,
+      "neural_calls": 16,
+      "seed": 2026102603
+    }
+  ],
+  "coupled_derivation": {
+    "fd_columns": 38012,
+    "centers_dense": 72,
+    "directional_checks": 192,
+    "line_search": 288,
+    "final_certification": 192,
+    "public_initializer": 220,
+    "sparse_dense_agreement": 96
+  },
+  "coupled_enumerated": 39072,
+  "coupled_headroom_for_same_schedules_only": 928,
+  "model_interval_derivation": {
+    "columns": 77848576,
+    "checks": 393216,
+    "dense_centers_and_trials": 1935360,
+    "certification": 3145728,
+    "initializer": 450560,
+    "agreement": 196608
+  },
+  "model_interval_enumerated": 83970048,
+  "reserved_model_interval_cap": 90000000,
+  "neural_calls_cap": 48,
+  "ddim_steps_per_phase": 16,
+  "guidance_steps_per_phase": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "candidates_per_phase": 1,
+  "complete_chain_candidates": 1,
+  "retries": 0,
+  "rk4_internal_dynamics_stages": 334000,
+  "max_sparse_feedback_intervals": 2048,
+  "max_dense_intervals": 16384,
+  "geometry_query_guard": 3000000000,
+  "static_model_mass_kinematic_calls_guard": 400000000,
+  "wall_allocations_s": {
+    "implementation_and_software": 7200,
+    "full_trajectory_generation_guidance_and_model_gates": 21600,
+    "native_execution_and_continuous_replay": 3600,
+    "body_evidence_and_visuals": 5400,
+    "staged_new_review_and_closeout": 5400
+  },
+  "storage_allocations_bytes": {
+    "native_replay_full_frequency_records": 1610612736,
+    "guidance_jacobians_residuals_sampler_trace": 2147483648,
+    "model_propagation_records": 1073741824,
+    "geometry_body_constraints": 2147483648,
+    "videos_three_d_curves": 805306368,
+    "source_identity_and_review": 268435456,
+    "headroom": 536870912
+  },
+  "measurement_note": "Proposed stop ceilings, not measured runtime or a guarantee of success. 2048/16384 mesh caps cause NUMERICAL_UNRESOLVED if physical refinement cannot be met. Every mj_step even in a sandbox consumes native budget; proposed planner uses no mj_step.",
+  "old_reservations_reclaimed": false,
+  "original_caps_changed": true,
+  "new_worker_started": false,
+  "previous_momentum_only_proposal_replaced_not_added": true,
+  "planning_calls": {
+    "optimizer_updates": 0,
+    "forward_calls": 0,
+    "samples": 0,
+    "coupled": 0,
+    "native": 0,
+    "geometry": 0
+  },
+  "original_global_caps": {
+    "coupled": 80000,
+    "native": 312500,
+    "wall_s": 43200,
+    "bytes": 42949672960
+  },
+  "original_D3_caps": {
+    "coupled": 60000,
+    "native": 165000,
+    "wall_s": 21540,
+    "bytes": 21474836480
+  },
+  "proposed_global_caps_if_approved": {
+    "coupled": 110000,
+    "native": 362500,
+    "wall_s": 82800,
+    "bytes": 51002736640
+  },
+  "proposed_D3_caps_if_approved": {
+    "coupled": 90000,
+    "native": 215000,
+    "wall_s": 61140,
+    "bytes": 29527900160
+  },
+  "time_and_storage_basis": "Conservative engineering stop envelopes, not benchmark estimates. Old budget reservations remain reserved. Both D3 and cycle caps would need the proposed increments.",
+  "guidance_scope": "One deterministic trajectory per phase, 4 guidance updates at DDIM steps12..15; fixed finite-difference columns and fixed line search, no post-denoising recovery loop.",
+  "approved": true
+}
