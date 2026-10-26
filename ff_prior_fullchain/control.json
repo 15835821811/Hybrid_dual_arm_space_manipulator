@@ -1,12 +1,12 @@
 {
-  "active_binding_commit": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
-  "active_closeout_receipt": "ff_prior_fullchain/evidence/moving_satellite_closeout.json",
-  "active_module": "ff_prior_satellite_origin.job",
-  "active_protocol": "ff_prior_satellite_origin/docs/EXPERIMENT_PLAN.md",
-  "active_report": "ff_prior_satellite_origin/docs/ANALYSIS.md",
-  "active_run": "artifacts/v7_1/moving_satellite_001",
+  "active_binding_commit": "4474adeb7225ff86412e1b1ea33bff70ab22d63f",
+  "active_closeout_receipt": "ff_prior_fullchain/evidence/guided_chain_closeout.json",
+  "active_module": "ff_prior_guided_chain.job",
+  "active_protocol": "ff_prior_guided_chain/docs/IMPLEMENTATION_AND_FREEZE.md",
+  "active_report": "ff_prior_guided_chain/docs/ANALYSIS.md",
+  "active_run": "artifacts/v7_1/guided_diffusion_chain_001",
   "active_run_role": "most_recent_closed_run",
-  "active_source_commit": "9e4fb4fb85ea45d3b307a18885786c1f5a3f6b53",
+  "active_source_commit": "4474adeb7225ff86412e1b1ea33bff70ab22d63f",
   "active_worker": false,
   "additional_local_repair_allowed": false,
   "allow_dataset_expansion": false,
@@ -17,17 +17,42 @@
   "app_goal_transition": "LATEST_USER_RESUMED; APP_CARD_API_HAS_NO_ACTIVE_TRANSITION",
   "authorization_evidence": "ff_prior_guided_chain/evidence/authorization.json",
   "automation_id": null,
+  "automation_status": "DELETED_BY_USER_REQUEST",
   "autonomous_scope": "Latest explicit user approval includes extra resources and one integrated guided chain.",
-  "current_phase": "D3_guided_diffusion_chain_implementation",
+  "budget_extension": {
+    "bytes": 8053063680,
+    "coupled": 30000,
+    "native": 50000,
+    "wall_s": 39600
+  },
+  "current_phase": "D3_guided_diffusion_chain_closed_derivative_failure",
   "current_user_steering": "ff_prior_guided_chain/evidence/authorization.json",
-  "decision_document": "ff_prior_guided_chain_plan/docs/EXPERIMENT_PLAN.md",
+  "decision_document": "ff_prior_guided_chain/docs/ANALYSIS.md",
+  "effective_D3_caps": {
+    "bytes": 29527900160,
+    "coupled": 90000,
+    "native": 215000,
+    "wall_s": 61140
+  },
+  "effective_global_caps": {
+    "bytes": 51002736640,
+    "coupled": 110000,
+    "native": 362500,
+    "wall_s": 82800
+  },
   "generic_status_action_note": "IMPLEMENT_AND_FREEZE_NEXT_PHASE is a generic routing label, not authorization to start another experiment. Consult next_phase and decision_document.",
   "goal_id": "moving_satellite_continuation_20261023",
-  "goal_status": "INCOMPLETE_ORIGINAL_MOMENTUM_GATE_FAILED",
+  "goal_state_receipt": "ff_prior_moving_origin/evidence/goal_blocked_receipt.json",
+  "goal_status": "LONG_TERM_INCOMPLETE_CURRENT_UNIT_CLOSED_NEGATIVE",
   "heartbeat_stale_seconds": 180,
   "implementation_handoff": "ff_prior_guided_chain_plan/evidence/implementation_spec.json",
-  "next_phase": "D3_GUIDED_CHAIN_AUTHORIZED_IMPLEMENT_COST_AND_FREEZE",
-  "next_phase_action": "Implement all phases, verify costs/software and freeze; then one worker. Additional budget explicitly approved.",
+  "latest_planning_budget": "ff_prior_guided_chain/evidence/budget.json",
+  "latest_planning_goal": "ff_prior_guided_chain_plan/evidence/execution_goal.json",
+  "latest_visualization": "artifacts/v7_1/guided_diffusion_chain_001/delivery/index.html",
+  "new_momentum_failure_impasse_turns": 0,
+  "next_phase": "READ_ONLY_DERIVATIVE_REPAIR_DECISION_NO_AUTOMATIC_RUN",
+  "next_phase_action": "One frozen chain ended at first guidance derivative check. Preserve gates; diagnose geometric derivative and abort archival before any separately frozen new unit. No automatic retry.",
+  "origin_scope_unresolved_turns": 0,
   "phases": [
     {
       "id": "P0_preserve323_closeout",
@@ -92,39 +117,24 @@
     {
       "id": "D3_guided_diffusion_chain",
       "purpose": "New neural whole-trajectory generation plus full-machine guidance and unchanged-gate momentum rebuild, original0s to83.5s",
-      "status": "AUTHORIZED_IMPLEMENTATION_NOT_FROZEN"
+      "status": "CLOSED_GUIDANCE_DERIVATIVE_FAILED_NO_MODEL_CERTIFICATION_NO_NATIVE",
+      "neural_forward_calls": 13,
+      "completed_ddim_steps": 12,
+      "coupled": 342,
+      "native": 0,
+      "replay": 0
     }
   ],
   "previous_scope_blocking_evidence": "ff_prior_fullchain/evidence/contact_steer_scope_blocking.json",
-  "version": 1,
-  "automation_status": "DELETED_BY_USER_REQUEST",
-  "origin_scope_unresolved_turns": 0,
-  "goal_state_receipt": "ff_prior_moving_origin/evidence/goal_blocked_receipt.json",
   "satellite_origin_force_exception": {
-    "duration_s": 2.0,
     "body": "target_satellite",
+    "duration_s": 2.0,
     "robot_external_force_allowed": false
   },
-  "new_momentum_failure_impasse_turns": 0,
-  "latest_visualization": "ff_prior_satellite_origin/delivery_002/index.html",
-  "latest_planning_goal": "ff_prior_guided_chain_plan/evidence/execution_goal.json",
-  "latest_planning_budget": "ff_prior_guided_chain/evidence/budget.json",
-  "budget_extension": {
-    "coupled": 30000,
-    "native": 50000,
-    "wall_s": 39600,
-    "bytes": 8053063680
-  },
-  "effective_global_caps": {
-    "coupled": 110000,
-    "native": 362500,
-    "wall_s": 82800,
-    "bytes": 51002736640
-  },
-  "effective_D3_caps": {
-    "coupled": 90000,
-    "native": 215000,
-    "wall_s": 61140,
-    "bytes": 29527900160
-  }
+  "version": 1,
+  "new_guidance_failure_impasse_turns": 1,
+  "latest_actual_visualization": "ff_prior_satellite_origin/delivery_002/index.html",
+  "latest_visualization_kind": "MODEL_ONLY_NO_NEW_NATIVE",
+  "latest_closeout_budget": "ff_prior_guided_chain_closeout/evidence/final_budget.json",
+  "latest_result_review": "paper/review-traces/experiment-result-to-claim/20261026_guided_chain/verdict.json"
 }
