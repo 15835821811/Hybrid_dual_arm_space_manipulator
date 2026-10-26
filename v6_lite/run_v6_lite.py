@@ -535,15 +535,20 @@ def build_scenarios(
     return tuple(scenarios)
 
 
-def run_scenario(spec, run_config, qp_config, scenario, trace_dir):
+def run_scenario(spec, run_config, qp_config, scenario, trace_dir, *, reference_provider=None):
     if (run_config.pcc_mode == "bounded_interval_pcc"
             and run_config.dispatch_clock_policy == "wall_deadline"):
+        if reference_provider is not None:
+            raise ValueError("planning references currently require the synchronous research path")
         if run_config.wall_executor_backend == "native":
             from v6_lite.runtime_native_executor import run_native_scenario as run_wall_scenario
         else:
             from v6_lite.runtime_wall_executor import run_wall_scenario
         return run_wall_scenario(spec, run_config, qp_config, scenario, trace_dir)
-    return run_synchronous_scenario(spec, run_config, qp_config, scenario, trace_dir)
+    if reference_provider is None:
+        return run_synchronous_scenario(spec, run_config, qp_config, scenario, trace_dir)
+    return run_synchronous_scenario(spec, run_config, qp_config, scenario, trace_dir,
+                                    reference_provider=reference_provider)
 
 
 def _select_acceptance_checks(checks, clock_policy):
@@ -561,6 +566,8 @@ def run_synchronous_scenario(
     qp_config: HierarchicalQPConfig,
     scenario: V6LiteScenario,
     trace_dir: Path,
+    *,
+    reference_provider=None,
 ) -> dict[str, Any]:
     scenario_initialization_started = time.perf_counter()
     verification_config = WholeBodyVerificationConfig(
@@ -599,6 +606,15 @@ def run_synchronous_scenario(
     mujoco.mj_forward(model, data)
     initial_qpos = np.asarray(data.qpos).copy()
     initial_qvel = np.asarray(data.qvel).copy()
+    if reference_provider is not None:
+        initial_ctrl = np.asarray(data.ctrl).copy()
+        initial_time = float(data.time)
+        reference_provider.prepare(spec, model, data, scenario)
+        if (not np.array_equal(data.qpos, initial_qpos)
+                or not np.array_equal(data.qvel, initial_qvel)
+                or not np.array_equal(data.ctrl, initial_ctrl)
+                or float(data.time) != initial_time):
+            raise RuntimeError("reference provider modified the actual execution state")
     qpos_write_count_after_initialization = 0
     qvel_write_count_after_initialization = 0
 
@@ -735,6 +751,14 @@ def run_synchronous_scenario(
         "shape_clearance_latency": [],
     }
     task_qpos_trace: list[np.ndarray] = []
+    if reference_provider is not None:
+        log.update({key: [] for key in (
+            "generated_reference_q", "generated_reference_dq",
+            "generated_rigid_position", "generated_rigid_rotation",
+            "generated_continuum_position", "generated_continuum_rotation",
+            "generated_reference_time_s", "actual_full_qpos", "actual_full_qvel",
+            "actual_generated_q_error_norm",)})
+        task_log.update({"generated_reference_q": [], "generated_reference_dq": []})
     if interval_admission is not None:
         task_log.update({
             "interval_preflight_latency_s": [],
@@ -848,6 +872,21 @@ def run_synchronous_scenario(
             continuum_target, continuum_target_velocity = scenario.continuum_target.sample(
                 current_time
             )
+            continuum_target_rotation = scenario.continuum_target_rotation_world
+            continuum_target_angular_velocity = np.zeros(3, dtype=np.float64)
+            posture_kwargs = {}
+            if reference_provider is not None:
+                planned = reference_provider.sample(current_time)
+                rigid_target = planned["rigid_target_position"]
+                rigid_target_velocity = planned["rigid_target_velocity"]
+                rigid_target_rotation = planned["rigid_target_rotation"]
+                target_angular_velocity = planned["rigid_target_angular_velocity"]
+                continuum_target = planned["continuum_target_position"]
+                continuum_target_velocity = planned["continuum_target_velocity"]
+                continuum_target_rotation = planned["continuum_target_rotation"]
+                continuum_target_angular_velocity = planned["continuum_target_angular_velocity"]
+                posture_kwargs = {key: planned[key] for key in (
+                    "posture_reference_q", "posture_reference_dq")}
             try:
                 result = qp.solve(
                     data,
@@ -857,12 +896,13 @@ def run_synchronous_scenario(
                 rigid_target_angular_velocity=target_angular_velocity,
                 continuum_target_position=continuum_target,
                 continuum_target_velocity=continuum_target_velocity,
-                continuum_target_rotation=scenario.continuum_target_rotation_world,
-                continuum_target_angular_velocity=np.zeros(3, dtype=np.float64),
+                continuum_target_rotation=continuum_target_rotation,
+                continuum_target_angular_velocity=continuum_target_angular_velocity,
                 state_timestamp_s=current_time,
                 target_timestamp_s=current_time,
                     ramp_start_velocity=command_velocity,
                     prepared_state=interval_admission is not None,
+                    **posture_kwargs,
                 )
             except Exception as error:
                 if interval_admission is None:
@@ -978,6 +1018,11 @@ def run_synchronous_scenario(
             segment_step = 0
             task_qpos_trace.append(np.asarray(data.qpos).copy())
             task_log["time"].append(current_time)
+            if reference_provider is not None:
+                task_log["generated_reference_q"].append(
+                    np.asarray(planned["posture_reference_q"]).copy())
+                task_log["generated_reference_dq"].append(
+                    np.asarray(planned["posture_reference_dq"]).copy())
             task_log["wall_time_since_start_s"].append(
                 time.perf_counter() - scenario_wall_start
             )
@@ -1383,6 +1428,22 @@ def run_synchronous_scenario(
         )
         log["planner_q"].append(spec.decode_position(low_q))
         log["planner_dq"].append(spec.decode_velocity(low_dq))
+        if reference_provider is not None:
+            planned_after_step = reference_provider.sample(float(data.time))
+            generated_q = np.asarray(planned_after_step["posture_reference_q"])
+            log["generated_reference_q"].append(generated_q.copy())
+            log["generated_reference_dq"].append(
+                np.asarray(planned_after_step["posture_reference_dq"]).copy())
+            log["generated_reference_time_s"].append(float(data.time))
+            for arm in ("rigid", "continuum"):
+                log[f"generated_{arm}_position"].append(
+                    np.asarray(planned_after_step[f"{arm}_target_position"]).copy())
+                log[f"generated_{arm}_rotation"].append(
+                    np.asarray(planned_after_step[f"{arm}_target_rotation"]).copy())
+            log["actual_full_qpos"].append(np.asarray(data.qpos).copy())
+            log["actual_full_qvel"].append(np.asarray(data.qvel).copy())
+            log["actual_generated_q_error_norm"].append(
+                float(np.linalg.norm(spec.decode_position(low_q) - generated_q)))
         log["command_velocity"].append(command_velocity.copy())
         log["reference_q"].append(reference_q.copy())
         log["reference_velocity"].append(reference_dq.copy())

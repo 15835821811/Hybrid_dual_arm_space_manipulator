@@ -1,0 +1,1 @@
+Independent review: partial; C2 no; no paper claim audit. Historical criteria/results remain unchanged. User subsequently prioritized mechanism feasibility and actual bounded expansion over relative query/time superiority. Apply this steering prospectively; retain physical gates and failures. No further residual-amplitude cost sweep is required. Full goal remains active.

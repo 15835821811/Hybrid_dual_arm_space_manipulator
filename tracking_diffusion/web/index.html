@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>双臂轨迹生成实验台</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><div><span class="eyebrow">DUAL-ARM · MUJOCO</span><h1>轨迹生成实验台</h1><p>自由漂浮基座 · 柔性臂曲线跟踪 · 刚性臂移动目标跟踪</p></div><div class="connection"><span id="connection">连接中</span><span id="source" class="badge">实时数据</span><small id="runId">等待新任务</small></div></header>
+<div id="alert" role="alert" hidden></div>
+<main>
+<aside>
+<section class="card controls"><h2>运行任务 <span class="number">01</span></h2>
+<label for="mode">生成方式</label><select id="mode"><option value="diffusion">条件扩散 + 生成时引导</option><option value="teacher">教师控制器 · 数据来源</option><option value="feedback-only">仅反馈 · 对照实验</option></select>
+<small id="checkpoint">检查本地权重…</small>
+<small id="batchProgress">读取批量数据进度…</small><label for="recording">生成过程记录</label><select id="recording"><option value="light">轻量 · 展示实际采样步骤</option><option value="full">详细 · 保存每一步去噪</option></select>
+<label for="seed">任务种子</label><input id="seed" type="number" min="0" max="2147483647" step="1" value="20261012">
+<div class="row"><div><label for="samplingSeed">模型采样种子</label><input id="samplingSeed" type="number" min="0" value="73"></div><div><label for="guidance">生成时约束引导</label><select id="guidance"><option value="on">开启 · 后段注入</option><option value="off">关闭梯度 · 保留投影</option></select></div></div>
+<div class="row"><div><label for="duration">任务长度</label><select id="duration"><option value="27">27 秒 · 完整任务</option><option value="3">3 秒 · 接口试跑</option></select></div><div><label for="speed">显示节奏</label><select id="speed"><option value="1">按仿真时间</option><option value="0">最快计算</option></select></div></div>
+<button id="start" class="primary" disabled>生成并执行</button><div class="row"><button id="pause" disabled>暂停计算</button><button id="cancel" class="danger" disabled>终止任务</button></div>
+<p class="note">初始姿态固定，任务种子决定完整曲线和目标运动。基座保持自由；所有运动由力矩输入推进。</p>
+</section>
+<section class="card"><h2>论文流程 <span class="number">02</span></h2><ol class="goals"><li><b>完整轨迹数据</b><span id="dataStatus">读取当前数据版本…</span></li><li><b>条件扩散训练</b><span id="trainingStatus">读取当前权重版本…</span></li><li><b>生成时注入约束</b><span id="inferenceStatus">读取当前推理配置…</span></li><li><b>真实动力学执行</b><span>每 0.1 s 生成，500 Hz 力矩步进；显示完整误差与失败</span></li></ol><p id="experimentStatus" class="note">读取第二轮实验进度…</p><p class="note">固定初态和障碍；七航点每轴 ±10 mm。数据与测试规模按当前模型记录显示，不是论文规模复现。</p></section>
+<section class="card"><h2>历史回放 <span class="number">03</span></h2><label for="runs">已保存的运行</label><select id="runs"><option value="">暂无记录</option></select><div class="row"><button id="loadReplay">读取回放</button><button id="returnLive">返回实时</button></div><div id="replayControls" hidden><label for="replaySlider">仿真帧 <span id="replayTime">0.00 s</span></label><input id="replaySlider" type="range" min="0" max="0" value="0"><button id="playReplay">播放回放</button></div><p class="note">回放读取保存的真实事件；不会重新计算或移动仿真模型。</p></section>
+</aside>
+<div class="workspace">
+<section class="card scene-card"><div class="panel-head"><div><h2>双臂运动现场</h2><p id="status">准备就绪</p></div><div class="views" role="group" aria-label="观察视角"><button data-view="perspective" class="active">空间</button><button data-view="xy">XY</button><button data-view="xz">XZ</button><button data-view="yz">YZ</button><button id="resetView">复位</button></div></div>
+<div class="stagebar"><span data-stage="initializing">参考轨迹</span><span data-stage="denoising">轨迹生成</span><span data-stage="selection">候选筛选</span><span data-stage="execution">动力学执行</span><span data-stage="verification">结果核验</span></div>
+<div class="scene-wrap"><canvas id="scene" aria-label="MuJoCo 实际双臂骨架、期望曲线、实际末端轨迹与障碍物"></canvas><div class="scene-caption">世界坐标 / m · MuJoCo 骨架<br>拖动旋转 · 滚轮缩放</div><div id="emptyScene">启动任务，查看真实轨迹与执行过程</div></div>
+<div class="legend"><span class="teal">柔性臂</span><span class="amber">刚性臂</span><span class="dash">虚线：期望轨迹</span><span>实线：实际轨迹</span><span class="red">障碍物</span></div>
+<div class="progress"><progress id="progress" max="27" value="0"></progress><span id="simTime">0.00 / 27.00 s</span></div>
+</section>
+<div class="metrics"><div class="card"><small>柔性臂位置误差</small><strong id="errorC">—</strong><span>mm · 当前</span></div><div class="card"><small>刚性臂位置误差</small><strong id="errorR">—</strong><span>mm · 当前</span></div><div class="card"><small>最小安全余量</small><strong id="margin">—</strong><span>mm · 当前检查</span></div><div class="card"><small>峰值力矩占比</small><strong id="torque">—</strong><span>限幅前需求 / 上限</span></div></div>
+<div class="charts"><section class="card"><div class="panel-head"><div><h2>跟踪误差</h2><p>实际末端与同一时刻参考位置的距离</p></div><span class="unit">mm</span></div><canvas id="errors" aria-label="双臂实时位置误差曲线"></canvas><div class="legend"><span class="teal">柔性臂</span><span class="amber">刚性臂</span><span>横轴：仿真时间 / s</span></div></section>
+<section class="card"><div class="panel-head"><div><h2>从噪声到轨迹</h2><p id="denoiseInfo">扩散模式将展示真实采样中间结果</p></div><select id="joint" aria-label="查看规划坐标"></select></div><canvas id="denoise" aria-label="各去噪步骤的候选关节轨迹"></canvas><label for="candidateStage">候选阶段</label><select id="candidateStage"><option value="denoising">实际去噪过程</option><option value="before_late_guidance">开始引导时的干净估计</option><option value="after_gradient">最后一次梯度引导后</option><option value="after_projection">最终关节投影后</option></select><div class="row denoise-toolbar"><button id="animateDenoise">播放去噪</button><input id="denoiseStep" aria-label="去噪步骤" type="range" min="0" max="32" value="32"><span id="denoiseLabel">—</span></div><p id="candidateInfo" class="note">展示 0.5 秒候选段；纵轴为规划坐标 rad。虚线表示未通过关节边界。</p></section></div>
+<section class="card"><div class="panel-head"><h2>核验结果</h2><span id="resultBadge" class="badge">待运行</span></div><div id="result" class="result-placeholder">完成执行后显示全程误差、路径段误差、碰撞余量和计算延迟。</div><p class="note">界面实时显示仿真数据；“实时”不代表已证明控制计算满足硬实时期限。500 Hz 离散碰撞检查不等于连续时间安全证明。</p></section>
+<section class="card"><div class="panel-head"><h2>计算记录</h2><span id="physics" class="unit">0 次物理步进</span></div><div id="logs" role="log" aria-live="polite"><p>等待启动本地计算。</p></div></section>
+</div>
+</main><footer>任务级数据 → 条件扩散训练 → 去噪中约束引导 → 真实力矩执行 → 结果记录 <span>PAPER WORKFLOW / V2</span></footer>
+</body></html>

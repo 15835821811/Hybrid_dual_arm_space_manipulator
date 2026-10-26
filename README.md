@@ -1,3 +1,11 @@
+> **最新源码快照：2026-10-26** · 分支 `snapshot/latest-20261026`
+>
+> 本分支保存自由漂浮双臂、整轨迹 Diffusion 引导、2R5C 场景、七航点追踪及公开卫星推力起源的当前源码、配置和阶段报告。最新 `guided_diffusion_chain_001` 在首个全机引导导数检查处停止；没有新的原生执行或独立重放，83.5 秒完整链与 RK4 动量修复尚未通过验收。
+>
+> 当前状态以 [DIFFUSION_GOAL_CURRENT.md](DIFFUSION_GOAL_CURRENT.md)、[control.json](ff_prior_fullchain/control.json) 和 [最新报告](ff_prior_guided_chain/docs/ANALYSIS.md) 为准。下方 V6-lite 说明保留为历史版本说明。
+>
+> 本次只做版本发布，不运行实验。大型本地数据集、权重、原始轨迹和未版本化媒体不随本次新增上传；相关运行需要单独准备原报告绑定的输入。源码工作区 SHA-256 清单见 [PUBLICATION_SNAPSHOT.json](PUBLICATION_SNAPSHOT.json)。
+
 # Hybrid Dual-Arm Space Manipulator — V6-lite
 
 这是 V6-lite 的独立实验仓库。当前实现为 V6.2-C.1 `bounded_interval_pcc`：保留 B.2 功能，加入端到端发布时序、等价工作区优化与延迟拒绝。C.1 的离线功能与重复计时验收通过，持续墙钟执行验收未通过；历史 B.2 的重复计时失败继续保留。在线使用一个 17 维加权速度 QP、十步执行斜坡与 67 路力矩伺服。A.1 / `legacy_pcc` 保留为历史对照。[机器可读状态](v6_lite/controller_status.json)区分历史结果与当前验收状态。
