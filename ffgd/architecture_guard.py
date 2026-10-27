@@ -20,6 +20,10 @@ def _file_audit(event,args):
     reading=('r' in mode or '+' in mode) if isinstance(mode,str) else (flags & os.O_ACCMODE)!=os.O_WRONLY
     if not reading:return
     resolved=os.path.normcase(os.path.abspath(os.fsdecode(filename)))
+    # Zip/NPZ creation opens w+b for seeking while writing. O_TRUNC guarantees
+    # no prior contents are consumed, and only this fresh run's output is allowed.
+    if flags & os.O_TRUNC and owner.output_directory is not None and resolved.startswith(owner.output_directory+os.sep):
+        owner.created_outputs.add(resolved);return
     owner.reads.add(resolved)
     if owner.allowed_data_reads is not None and Path(resolved).suffix.lower() in _data_extensions and resolved not in owner.allowed_data_reads:
         owner.blocked.append('data_read:'+resolved)
@@ -27,9 +31,10 @@ def _file_audit(event,args):
 
 
 class LegacySentinel(importlib.abc.MetaPathFinder):
-    def __init__(self,allowed_data_reads=None):
-        self.calls=0;self.modules=set();self.blocked=[];self.reads=set();self.methods={}
+    def __init__(self,allowed_data_reads=None,output_directory=None):
+        self.calls=0;self.modules=set();self.blocked=[];self.reads=set();self.methods={};self.created_outputs=set()
         self.allowed_data_reads=None if allowed_data_reads is None else {os.path.normcase(os.path.abspath(p)) for p in allowed_data_reads}
+        self.output_directory=None if output_directory is None else os.path.normcase(os.path.abspath(output_directory))
 
     def find_spec(self,fullname,path=None,target=None):
         if fullname.startswith(PREFIXES):
@@ -66,4 +71,5 @@ class LegacySentinel(importlib.abc.MetaPathFinder):
         return dict(forbidden_calls=self.blocked,observed_ffgd_calls=self.calls,modules=sorted(self.modules),
                     module_identities=identities,actual_methods=[dict(module=m,function=f,source=p,line=line,executed_code_sha256=self.methods[(m,f,p,line)]) for m,f,p,line in sorted(self.methods)],
                     files_read=sorted(self.reads),file_audit_enforced=self.allowed_data_reads is not None,
+                    created_outputs=sorted(self.created_outputs),output_directory=self.output_directory,
                     allowed_data_reads=sorted(self.allowed_data_reads) if self.allowed_data_reads is not None else None)

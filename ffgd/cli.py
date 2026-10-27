@@ -72,9 +72,22 @@ def main(argv=None):
             profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
             from .architecture_guard import LegacySentinel
             from .orchestration import atomic_json
-            with LegacySentinel(allowed_data_reads=[config['checkpoint'],Path(config['checkpoint']).with_suffix('.identity.json')]) as sentinel:
-                candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'))
-            atomic_json(path/'architecture_sentinel.json',sentinel.report())
+            sentinel=LegacySentinel(allowed_data_reads=[config['checkpoint'],Path(config['checkpoint']).with_suffix('.identity.json')],output_directory=path)
+            try:
+                with sentinel:
+                    candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'))
+            except Exception as error:
+                if not (path/'planning_result.json').exists():
+                    records=[]
+                    for index,seed in enumerate(budget.seeds):
+                        record_file=path/f'candidate_{index:03d}'/'candidate.json'
+                        record=json.loads(record_file.read_text()) if record_file.exists() else dict(index=index,seed=seed,sampled=False,validated=False,status='NOT_RUN_SETUP_FAILURE')
+                        if record['status']=='STARTED':record.update(status='INCOMPLETE_EXPERIMENT_FAILURE')
+                        records.append(record)
+                    atomic_json(path/'planning_result.json',dict(status='EXPERIMENT_FAILED',requested_candidates=len(budget.seeds),records=records,
+                                sampled=sum(r['sampled'] for r in records),valid=0,selected_index=None,error=str(error)))
+                raise
+            finally:atomic_json(path/'architecture_sentinel.json',sentinel.report())
             return dict(passed=candidate is not None,**result)
         return unit('planning',planning,dict(max_wall_seconds=budget.max_wall_seconds+60,candidates=len(budget.seeds),steps=budget.sampling.steps))
     if args.command=='execute':
