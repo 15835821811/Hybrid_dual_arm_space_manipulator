@@ -24,11 +24,22 @@ def run(output,config):
     r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'])
     with np.load(root/'candidate_000/denoising.npz') as data:initial=data['clean'][-1].copy()
     mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);rows=[];reference=None
-    for active in (False,True,True,False):
+    compiled_comparison=config.get('compiled_comparison',False)
+    modes=('eager_mass_rows','compiled_mass_rows','compiled_mass_rows','eager_mass_rows') if compiled_comparison else ('eager','eager_mass_rows','eager_mass_rows','eager')
+    for mode in modes:
+        active=mode!='eager'
         check_budget();tree=DifferentiableTree(r);tree.use_momentum_mass_rows=active
-        energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True)
+        compile_seconds=0.
+        if mode=='compiled_mass_rows':
+            from .compiled_physics import compile_tree
+            compile_seconds=compile_tree(tree)['seconds']
+        energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,
+                                collision_aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean')))
         energy.weights.update(manifest.get('guide_weights',{}));x=tensor(initial).requires_grad_();start=time.perf_counter()
-        with LegacySentinel([]) as sentinel:
+        energy.weights.update(config.get('guide_weights',{}))
+        # The earlier optimized executor stalled on task Jacobians. This is
+        # an isolated comparison, never an implicit main-sampler fallback.
+        with torch.jit.optimized_execution(not compiled_comparison),LegacySentinel([]) as sentinel:
             terms=energy.evaluate(mean+scale*x);forward=time.perf_counter()-start
             J=residual_jacobian(energy.last_task_residual,x,batch_size=4).numpy()
             gradient=torch.autograd.grad(terms['total'],x)[0].numpy()
@@ -37,11 +48,12 @@ def run(output,config):
         value_error=float(np.max(abs(values-reference[0])/np.maximum(1.,abs(reference[0]))))
         gradient_error=float(np.linalg.norm(gradient-reference[1])/max(1.,np.linalg.norm(reference[1])))
         jacobian_error=float(np.linalg.norm(J-reference[2])/max(1.,np.linalg.norm(reference[2])))
-        rows.append(dict(base_rows_only=active,forward_seconds=forward,total_seconds=elapsed,normalized_value_error=value_error,
+        rows.append(dict(backend=mode,base_rows_only=active,compile_seconds=compile_seconds,forward_seconds=forward,total_seconds=elapsed,normalized_value_error=value_error,
                          gradient_relative_error=gradient_error,jacobian_relative_error=jacobian_error,
                          terms={k:float(v.detach()) for k,v in terms.items()},full_free_dimension=len(x),task_residual_dimension=len(J)))
         atomic_json(output/'progress.json',rows);atomic_json(output/f'audit_{len(rows)}.json',sentinel.report())
         del energy,terms,x,tree
     return dict(passed=all(row['normalized_value_error']<1e-10 and row['gradient_relative_error']<1e-10 and row['jacobian_relative_error']<1e-10 for row in rows),
-                source_run=str(root),rows=rows,scope='exact base mass-row optimization equivalence; all 67 actuator demands still use full mass matrix',
+                source_run=str(root),rows=rows,scope='exact whole-path backend equivalence; all 67 actuator demands still use full mass matrix',
+                compiled_comparison=compiled_comparison,jit_optimize=not compiled_comparison,
                 candidate_count_added=0,main_backend_enabled=False)

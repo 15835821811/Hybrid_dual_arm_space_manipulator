@@ -21,7 +21,7 @@ def inventory(runs,exclude=None):
         command=manifest.get('command',[])
         units.append(dict(run=folder.name,status=manifest.get('status','UNKNOWN'),command=command,
                           wall_seconds=manifest.get('wall_seconds'),source_hash=manifest.get('source_hash')))
-        if len(command)<4 or command[3]!='plan':continue
+        if len(command)<4 or command[3] not in ('plan','benchmark'):continue
         metadata=read('planning_manifest.json',{});result=read('planning_result.json',{})
         supplemental=read('failure_denominator.json',{})
         seeds=metadata.get('budget',{}).get('seeds',[])
@@ -38,7 +38,7 @@ def inventory(runs,exclude=None):
                 failure_gates=row.get('validation',{}).get('failures'),error=row.get('error'),
                 candidate_wall_seconds=row.get('candidate_wall_seconds'),cumulative_wall_seconds=row.get('cumulative_wall_seconds',row.get('elapsed_seconds'))))
         if len(records)>requested:issues.append(dict(run=folder.name,error='candidate records exceed requested denominator'))
-        version=dict(source_hash=manifest.get('source_hash'),checkpoint=metadata.get('checkpoint',{}).get('sha256'),
+        version=dict(source_hash=manifest.get('source_hash'),method=metadata.get('method',manifest.get('budget',{}).get('method')),checkpoint=metadata.get('checkpoint',{}).get('sha256'),
                      budget=metadata.get('budget'),guide_weights=metadata.get('guide_weights'),physics_backend=metadata.get('physics_backend'),
                      collision_aggregation=metadata.get('collision_aggregation','pair_mean'))
         group=hashlib.sha256(json.dumps(version,sort_keys=True).encode()).hexdigest()

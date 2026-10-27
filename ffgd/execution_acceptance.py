@@ -56,7 +56,8 @@ def execute_selected(path,planning_directory):
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(path/'validation_before_execution.json',validation)
     if validation['status']!='PLAN_VALID':return dict(passed=False,status='PRE_EXECUTION_REJECTED',validation=validation)
-    atomic_json(path/'provenance.json',dict(planning_directory=str(planning_directory.resolve()),candidate_hash=candidate.identity,profile=profile))
+    atomic_json(path/'provenance.json',dict(planning_directory=str(planning_directory.resolve()),candidate_hash=candidate.identity,profile=profile,
+                                          method=manifest.get('method'),comparison_only=manifest.get('comparison_only',False)))
     bundle,summary=track(r,snapshot,candidate,path,profile)
     if summary['status']=='RESOURCE_BUDGET_ABORT':
         actual=dict(status='INCOMPLETE_BUDGET',independent_replay='NOT_RUN',safety_enabled=True,task_based_cartesian_assist=False)

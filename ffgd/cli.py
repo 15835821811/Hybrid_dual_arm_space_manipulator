@@ -22,6 +22,14 @@ def main(argv=None):
     if args.command=='report':
         from .evidence_report import run
         return unit('evidence_report',run,dict(max_wall_seconds=30))
+    if args.command=='benchmark':
+        from pathlib import Path
+        if not args.config:p.error('benchmark requires an explicit comparison config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        planning=json.loads(Path(config['planning_config']).read_text(encoding='utf-8-sig'))
+        from .baselines.compare import run
+        return unit('baseline_comparison',lambda path:run(path,config),dict(max_wall_seconds=planning['budget']['max_wall_seconds']+60,
+                    candidates=len(planning['budget']['seeds']),method=config['method']))
     if args.command=='doctor':
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
