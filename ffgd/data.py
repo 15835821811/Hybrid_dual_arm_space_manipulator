@@ -37,6 +37,73 @@ def sample_initial_position(robot,config,group,rng):
     return q
 
 
+def merge_prior(path,config):
+    """Concatenate validated prior batches without changing physical examples.
+
+    Family ids are namespaced, never resplit. Parent ledgers retain every failed
+    attempt, including ancestors of coordinate-only dataset transformations.
+    """
+    sources=config['source_datasets']
+    if len(sources)<2 or len(set(map(str,sources)))!=len(sources):raise ValueError('DISTINCT_PRIOR_SOURCES_REQUIRED')
+    parents=[];batches=[];next_group=0;max_tokens=0;reference=None
+    keys=('model_hash','state_mask','control_points','free_dim','geometry_policy_hash','boundary_origin','profile')
+    for index,directory in enumerate(sources):
+        check_budget();directory=Path(directory)
+        manifest=json.loads((directory/'dataset_manifest.json').read_text(encoding='utf-8'))
+        data_hash=hashlib.sha256((directory/'prior.npz').read_bytes()).hexdigest()
+        if data_hash!=manifest['data_hash'] or manifest['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
+        contract={k:manifest.get(k,'pivot_zero' if k=='boundary_origin' else None) for k in keys}
+        if any(v is None for v in contract.values()):raise ValueError('INCOMPLETE_PRIOR_CONTRACT')
+        if reference is None:reference=contract
+        if contract!=reference:raise ValueError('PRIOR_MERGE_CONTRACT_MISMATCH')
+        if any(p['data_hash']==data_hash for p in parents):raise ValueError('DUPLICATE_PRIOR_DATA')
+        with np.load(directory/'prior.npz') as source:arrays={k:source[k] for k in source.files}
+        if 'source_dataset_index' in arrays:raise ValueError('NESTED_MERGE_REQUIRES_FLAT_SOURCE_LIST')
+        if len(arrays['z'])!=manifest['accepted']:raise ValueError('SOURCE_COUNT_MISMATCH')
+        train=arrays['is_train']
+        if set(arrays['group'][train]) & set(arrays['group'][~train]):raise ValueError('FAMILY_SPLIT_LEAK')
+        original_groups=arrays['group'].copy()
+        unique,inverse=np.unique(original_groups,return_inverse=True)
+        arrays['group']=inverse+next_group;next_group+=len(unique)
+        arrays['source_dataset_index']=np.full(len(train),index,dtype=np.int64)
+        arrays['source_group']=original_groups
+        max_tokens=max(max_tokens,arrays['tokens'].shape[1]);batches.append(arrays)
+        parents.append(dict(dataset=str(directory.resolve()),data_hash=data_hash,
+            manifest_hash=hashlib.sha256((directory/'dataset_manifest.json').read_bytes()).hexdigest(),
+            attempts=manifest['attempts'],accepted=manifest['accepted'],
+            attempt_directory=manifest.get('parent_attempt_directory',str((directory/'attempts').resolve())),
+            reason_counts=manifest.get('reason_counts',{})))
+    for arrays in batches:
+        extra=max_tokens-arrays['tokens'].shape[1]
+        arrays['tokens']=np.pad(arrays['tokens'],((0,0),(0,extra),(0,0)))
+        arrays['padding']=np.pad(arrays['padding'],((0,0),(0,extra)),constant_values=True)
+    if any(set(a)!=set(batches[0]) for a in batches):raise ValueError('PRIOR_ARRAY_SCHEMA_MISMATCH')
+    merged={k:np.concatenate([a[k] for a in batches]) for k in batches[0]}
+    # Equality is checked again against files, including all unpadded conditions.
+    start=0
+    for parent in parents:
+        with np.load(Path(parent['dataset'])/'prior.npz') as source:
+            stop=start+len(source['z'])
+            for key in source.files:
+                actual=merged['source_group' if key=='group' else key][start:stop]
+                if key in ('tokens','padding'):actual=actual[:,:source[key].shape[1]]
+                np.testing.assert_array_equal(actual,source[key])
+            start=stop
+    np.savez_compressed(path/'prior.npz',**merged)
+    from collections import Counter
+    reasons=Counter()
+    for parent in parents:reasons.update(parent['reason_counts'])
+    manifest=dict(schema='ffgd_prior_union_v1',source_kind='FF_MODEL_PRIOR',**reference,
+        attempts=sum(p['attempts'] for p in parents),accepted=len(merged['z']),
+        train=int(merged['is_train'].sum()),val=int((~merged['is_train']).sum()),
+        data_hash=hashlib.sha256((path/'prior.npz').read_bytes()).hexdigest(),dataset_path=str(path),
+        parents=parents,reason_counts=dict(reasons),transformation_config=config,
+        new_physical_trajectories=0,execution_verified=False,
+        physical_validation='Inherited native results from byte-identical source examples; family split unchanged')
+    atomic_json(path/'dataset_manifest.json',manifest)
+    return dict(passed=True,**manifest)
+
+
 def reencode_origin(path,config):
     """Relabel immutable model-prior paths in an invertible affine coordinate system.
 

@@ -36,10 +36,13 @@ def main(argv=None):
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
     if args.command=='data':
-        from .data import generate,reencode_origin
+        from .data import generate,reencode_origin,merge_prior
         from pathlib import Path
         if not args.config:p.error('data requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        if config.get('operation')=='merge_prior':
+            if args.run:p.error('prior merge does not support --run resume')
+            return unit('prior_union',lambda path:merge_prior(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))
         if config.get('operation')=='reencode_boundary_origin':
             if args.run:p.error('boundary-origin reencoding does not support --run resume')
             return unit('prior_coordinate_reencoding',lambda path:reencode_origin(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))
