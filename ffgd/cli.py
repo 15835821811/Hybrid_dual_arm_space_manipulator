@@ -119,7 +119,14 @@ def main(argv=None):
                     profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
                     candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'))
             except Exception as error:
-                if not (path/'planning_result.json').exists():
+                from .architecture_guard import ArchitectureViolation
+                result_file=path/'planning_result.json'
+                if isinstance(error,ArchitectureViolation) and result_file.exists():
+                    rejected=json.loads(result_file.read_text(encoding='utf-8'))
+                    rejected['model_selection_before_architecture_rejection']=dict(status=rejected['status'],selected_index=rejected.get('selected_index'))
+                    rejected.update(status='ARCHITECTURE_REJECTED',selected_index=None,architecture_rejected=True,error=str(error))
+                    atomic_json(result_file,rejected)
+                elif not result_file.exists():
                     records=[]
                     for index,seed in enumerate(seeds):
                         record_file=path/f'candidate_{index:03d}'/'candidate.json'

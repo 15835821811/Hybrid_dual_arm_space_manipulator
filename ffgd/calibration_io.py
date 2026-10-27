@@ -2,7 +2,6 @@
 from pathlib import Path
 import json
 from .architecture_guard import LegacySentinel
-from .model_io import load_model
 from .orchestration import atomic_json
 
 
@@ -17,9 +16,11 @@ def run(path,config):
         if config.get('task_file'):
             from .problem_io import load_problem
             robot,snapshot,task,problem=load_problem(task_file);problem_loaded=True
-        model,state,identity=load_model(checkpoint,'cpu')
+        from .model_io import load_model
+        model,state,identity=load_model(checkpoint,config.get('device','cpu'))
     report=guard.report();atomic_json(path/'load_guard.json',report)
     return dict(passed=not report['forbidden_calls'] and report['file_audit_enforced'],
                 scope='real public input/robot/checkpoint loading with strict file audit; not a planning run',checkpoint=identity,
                 public_problem_loaded=problem_loaded,
+                device=config.get('device','cpu'),
                 model_parameters=sum(p.numel() for p in model.parameters()))

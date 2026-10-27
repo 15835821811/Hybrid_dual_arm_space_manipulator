@@ -40,6 +40,12 @@ class LegacySentinel(importlib.abc.MetaPathFinder):
         self.call_backend=call_backend
         self.calls=0;self.modules=set();self.blocked=[];self.reads=set();self.methods={};self.created_outputs=set()
         self.allowed_data_reads=None if allowed_data_reads is None else {os.path.normcase(os.path.abspath(p)) for p in allowed_data_reads}
+        # CPython's import machinery probes this exact standard-library archive,
+        # including when it does not exist. It is interpreter code, not planner
+        # trajectory data; never allow arbitrary zip files or whole directories.
+        archive=Path(sys.base_prefix)/f'python{sys.version_info.major}{sys.version_info.minor}.zip'
+        self.runtime_code_archives={os.path.normcase(os.path.abspath(archive))}
+        if self.allowed_data_reads is not None:self.allowed_data_reads.update(self.runtime_code_archives)
         self.output_directory=None if output_directory is None else os.path.normcase(os.path.abspath(output_directory))
 
     def find_spec(self,fullname,path=None,target=None):
@@ -74,6 +80,8 @@ class LegacySentinel(importlib.abc.MetaPathFinder):
         if self.call_backend=='profile':sys.setprofile(self.previous)
         else:sys.settrace(self.previous)
         sys.meta_path.remove(self)
+        if self.blocked and args[0] is None:
+            raise ArchitectureViolation('ARCHITECTURE_VIOLATION_CAUGHT_INSIDE_PLANNER: '+self.blocked[0])
 
     def report(self):
         identities=[]
@@ -88,5 +96,6 @@ class LegacySentinel(importlib.abc.MetaPathFinder):
                     module_identities=identities,actual_methods=[dict(module=m,function=f,source=p,line=line,executed_code_sha256=self.methods[(m,f,p,line)]) for m,f,p,line in sorted(self.methods)],
                     files_read=sorted(self.reads),file_audit_enforced=self.allowed_data_reads is not None,
                     created_outputs=sorted(self.created_outputs),output_directory=self.output_directory,
+                    runtime_code_archives=sorted(self.runtime_code_archives),
                     source_identity_note='Executed bytecode hashes are authoritative for loaded functions; source.zip is the start-time source snapshot. On-disk sources may contain later edits.',
                     allowed_data_reads=sorted(self.allowed_data_reads) if self.allowed_data_reads is not None else None)
