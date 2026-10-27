@@ -223,3 +223,5 @@ V10free实际ARCH01-10审计20261027T100610_architecture_audit_140e42通过，jo
 只读学习先验根因补查artifacts/ffgd/orchestration/prior_derivative_coverage.json：TRAIN1604条加速度峰值中位.691/99%.993，全部<=1；先前保存的5条裸先验中2条越界(1.4388、1.0021)。TRAIN标准化自由变量相关矩阵满秩323但条件数2.62e5，表明高频/跨控制点相关性很强；这是诊断，不证明任何重训方案有效，不改当前权重/表示或启动扩库。继续当前相关族，若任务族结果指向先验覆盖/相关性问题，再做受控表示/训练对照，不能仅靠不断加大引导迭代。
 
 等待arm五候选时，仅扩展现有mass-rows-diagnostic准备CPU吞吐对照full_path_threads_diagnostic.json，固定同完整批处理/能量/梯度/J/输入，在1/2/4/4/2/1线程反序比较；最大预留4/32CPU、单重型worker仍保持。NOT_RUN，主plan仍1线程且当前worker不变；需arm结束后才能执行，不因理论并行就启用。资源ledger现在按显式budget记录预留CPU(默认仍1)，无门槛/求解预算改动。
+
+隔离C比较身份修复：旧未运行实现虽不调用网络，却借用TRAIN scaler做坐标预条件；现在C直接用物理正交自由坐标，既不加载checkpoint也不借TRAIN统计，D保持同A权重/归一化。4项baseline软件测试通过，包含不存在checkpoint与非法神经设备条件下仍不触碰模型的入口身份测试(优化/验收mock仅用于软件身份，非机器人证据)。C/D真实集成仍NOT_RUN，当前主arm worker不受影响；此改动是为确保后续学习归因可信，不预设哪方法胜出。

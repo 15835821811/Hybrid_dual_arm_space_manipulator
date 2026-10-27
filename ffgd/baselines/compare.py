@@ -92,8 +92,16 @@ def run(output,config):
     if limits!=expected:raise ValueError('comparison physical caps must match the declared A worst-case budget')
     r,snapshot,task,problem=load_problem(config['task']);profile=json.loads(Path(planning['profile']).read_text())
     codec=boundary_codec(r,snapshot,task.duration,budget.control_points)
-    model,checkpoint,identity=load_model(planning['checkpoint'],planning.get('device','cpu'))
-    if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
+    model=None;identity={};condition=None
+    if method=='D_POST_OPTIMIZATION':
+        model,checkpoint,identity=load_model(planning['checkpoint'],planning.get('device','cpu'))
+        if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
+        mean_array=checkpoint['mean'];scale_array=checkpoint['scale']
+    else:
+        # C uses physical free coordinates, without reading a checkpoint or
+        # borrowing statistics from TRAIN. The orthonormal boundary basis is
+        # still full rank and the physical control-change cap remains identical.
+        mean_array=np.zeros(codec.free_dim);scale_array=np.ones(codec.free_dim)
     tree=DifferentiableTree(r)
     if planning.get('physics_backend','eager')=='eager_mass_rows':tree.use_momentum_mass_rows=True
     elif planning.get('physics_backend') in ('batched_bodyframe','batched_full_path'):
@@ -103,17 +111,20 @@ def run(output,config):
     prop=Propagator(tree,snapshot);geometry=Geometry(r)
     energy=MultiSpaceEnergy(prop,codec,geometry,task,budget.intervals,collect_task_residual=True,collision_aggregation=planning.get('collision_aggregation','pair_mean'),joint_peak_penalty=planning.get('joint_peak_penalty',False))
     energy.weights.update(planning.get('guide_weights',{}))
-    mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale'])
-    metric=acceleration_metric(codec,checkpoint['scale'],r.spec.planner_acceleration_limits,energy.grid,budget.sampling.acceleration_metric_weight)
-    jac=tensor(codec.N*checkpoint['scale'][None,:]);tokens=encode_condition(r,snapshot,task,prop.H.numpy())
-    condition=normalize_condition(tokens[None],np.zeros((1,len(tokens)),bool),checkpoint,planning.get('device','cpu'))
+    mean=tensor(mean_array);scale=tensor(scale_array)
+    metric=acceleration_metric(codec,scale_array,r.spec.planner_acceleration_limits,energy.grid,budget.sampling.acceleration_metric_weight)
+    jac=tensor(codec.N*scale_array[None,:])
+    if method=='D_POST_OPTIMIZATION':
+        tokens=encode_condition(r,snapshot,task,prop.H.numpy())
+        condition=normalize_condition(tokens[None],np.zeros((1,len(tokens)),bool),checkpoint,planning.get('device','cpu'))
     from dataclasses import asdict
     atomic_json(output/'submitted_problem.json',problem)
     problem=dict(problem,initial={'snapshot_file':'initial_state.npz'})
     atomic_json(output/'problem.json',problem)
     np.savez_compressed(output/'initial_state.npz',state=snapshot.state,mask=snapshot.mask,model_hash=snapshot.model_hash)
     atomic_json(output/'planning_manifest.json',dict(method=method,comparison_only=True,budget=asdict(budget),physical_budget=limits,
-        checkpoint=identity,shared_train_scaler=True,learned_network_used=method=='D_POST_OPTIMIZATION',profile=profile,
+        checkpoint=identity,shared_train_scaler=method=='D_POST_OPTIMIZATION',learned_network_used=method=='D_POST_OPTIMIZATION',profile=profile,
+        free_coordinate_scaling='TRAIN_ONLY_DIAGONAL' if method=='D_POST_OPTIMIZATION' else 'PHYSICAL_ORTHONORMAL_FREE_COORDINATES',
         guide_weights=energy.weights,collision_aggregation=energy.collision_aggregation,joint_peak_penalty=energy.joint_peak_penalty,physics_backend=planning.get('physics_backend','eager'),
         robot_model_hash=r.model_hash,robot_physical_hash=r.physical_hash,scene_hash=r.scene.identity,
         timing_includes_setup_and_network=True,learning_benefit_status='NOT_RUN'))
@@ -139,16 +150,16 @@ def run(output,config):
             if method=='D_POST_OPTIMIZATION':
                 actual=[];hook=model.register_forward_pre_hook(lambda model,args:actual.append(args[0].detach().cpu().numpy().copy()))
                 try:
-                    naked=sample(model,condition,codec.free_dim,seed,SamplingBudget(steps=budget.sampling.steps,guide_steps=0),mean=checkpoint['mean'],scale=checkpoint['scale'])
+                    naked=sample(model,condition,codec.free_dim,seed,SamplingBudget(steps=budget.sampling.steps,guide_steps=0),mean=mean_array,scale=scale_array)
                 finally:
                     hook.remove();row['observed_network_calls']=len(actual)
                     if actual:np.save(folder/'observed_network_inputs.npy',np.stack(actual))
-                initial=(naked['free']-checkpoint['mean'])/checkpoint['scale']
+                initial=(naked['free']-mean_array)/scale_array
                 np.savez_compressed(folder/'unguided.npz',**{k:np.stack([s[k] for s in naked['trace']]) for k in ('input','clean','output')})
             else:
                 d=r.restore(snapshot);q0=r.Bplus@d.qpos[r.qpos_ids]
                 z=nonlearned_initial(codec,q0,r.upper-r.lower,seed,index)
-                initial=(z-checkpoint['mean'])/checkpoint['scale']
+                initial=(z-mean_array)/scale_array
             np.save(folder/'initial_normalized_free.npy',initial)
             row['initial_hash']=hashlib.sha256(initial.tobytes()).hexdigest()
             final,optimization=optimize(initial,objective,metric,jac,budget.sampling,limits,progress)
@@ -156,7 +167,7 @@ def run(output,config):
             row['optimization']= {k:v for k,v in optimization.items() if k!='trace'}
             if optimization['status']!='FINISHED':row['status']=optimization['status']
             else:
-                z=checkpoint['mean']+checkpoint['scale']*final;candidate=Candidate(codec.decode(z),task.duration,seed)
+                z=mean_array+scale_array*final;candidate=Candidate(codec.decode(z),task.duration,seed)
                 np.savez_compressed(folder/'candidate.npz',control=candidate.control,free=z,duration=task.duration,seed=seed)
                 row.update(sampled=True,identity=candidate.identity)
                 report=validate(candidate,snapshot,task,prop,codec,geometry,profile);atomic_json(folder/'validation.json',report)
