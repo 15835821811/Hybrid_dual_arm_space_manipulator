@@ -74,7 +74,7 @@ def unit(name, callback, budget):
                   process_identity=identity,command=[sys.executable,'-m','ffgd.cli',*sys.argv[1:]],source_hash=source_hash(),budget=budget)
     manifest['git_head']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     memory=psutil.virtual_memory();disk=shutil.disk_usage(ROOT)
-    manifest['resources']=dict(available_ram=memory.available,max_rss=int(.8*memory.available),free_disk=disk.free,logical_cpus=os.cpu_count(),reserved_cpus=1)
+    manifest['resources']=dict(available_ram=memory.available,max_rss=int(.8*memory.available),free_disk=disk.free,logical_cpus=os.cpu_count(),reserved_cpus=budget.get('reserved_cpus',1))
     if disk.free<10*1024**3:
         if heavy:lock.unlink()
         raise RuntimeError('RESOURCE_DISK_BELOW_10_GIB')

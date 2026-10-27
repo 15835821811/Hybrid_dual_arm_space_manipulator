@@ -219,3 +219,7 @@ V10free五候选全部完成20261027T094234_planning_05f840：2/5有效，3拒�
 V10free实际ARCH01-10审计20261027T100610_architecture_audit_140e42通过，joint_peak打开的物理反事实及真实状态消费已覆盖；第二任务仍引用V8诊断，不当作V10相关族完成。现已启动同配置arm_body_box五seed。对照V10free启动source.zip，17个主链模块字节完全相同；仅后续执行只读诊断/隔离baseline源有变化，全项目source_hash不同，旧run完整来源保留。完整M4和学习收益仍未完成。
 
 最终同源码53项软件20261027T100657_software_79699c通过(76s)，包括原生批处理VJP和新增执行速度残差检查。当前arm_body_box五候选worker：20261027T100838_planning_731808，PID131860/create1793095717.9756744，session65801；先核实真实PID身份，完成原5seed，预选合格才执行/独立重放。源码/核心/配置不变，尚未完成不能标相关族通过。之后剩余DEV顺序irregular_times、rigid_body_box、continuum_near_limit、rigid_near_limit、short_duration_torque、short_irregular_torque。
+
+只读学习先验根因补查artifacts/ffgd/orchestration/prior_derivative_coverage.json：TRAIN1604条加速度峰值中位.691/99%.993，全部<=1；先前保存的5条裸先验中2条越界(1.4388、1.0021)。TRAIN标准化自由变量相关矩阵满秩323但条件数2.62e5，表明高频/跨控制点相关性很强；这是诊断，不证明任何重训方案有效，不改当前权重/表示或启动扩库。继续当前相关族，若任务族结果指向先验覆盖/相关性问题，再做受控表示/训练对照，不能仅靠不断加大引导迭代。
+
+等待arm五候选时，仅扩展现有mass-rows-diagnostic准备CPU吞吐对照full_path_threads_diagnostic.json，固定同完整批处理/能量/梯度/J/输入，在1/2/4/4/2/1线程反序比较；最大预留4/32CPU、单重型worker仍保持。NOT_RUN，主plan仍1线程且当前worker不变；需arm结束后才能执行，不因理论并行就启用。资源ledger现在按显式budget记录预留CPU(默认仍1)，无门槛/求解预算改动。

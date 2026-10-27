@@ -98,7 +98,7 @@ def main(argv=None):
         from pathlib import Path
         if not args.config:p.error('mass-rows-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        return unit('mass_rows_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=300,whole_path_gradient_jacobian_passes=4))
+        return unit('mass_rows_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=300,whole_path_gradient_jacobian_passes=len(config.get('thread_counts',[1]*4)),reserved_cpus=max(config.get('thread_counts',[1]))))
     if args.command=='plan':
         from pathlib import Path
         if not args.config or not args.task:p.error('plan requires --config and --task')

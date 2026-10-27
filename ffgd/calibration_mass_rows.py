@@ -1,6 +1,7 @@
 """Full-matrix versus exact base-row whole-path values, gradients and Jacobians."""
 import json
 import time
+import os
 from pathlib import Path
 import numpy as np
 import torch
@@ -32,7 +33,16 @@ def run(output,config):
     if config.get('full_path_comparison'):
         if compiled_comparison or config.get('bodyframe_comparison'):raise ValueError('compare one backend change at a time')
         modes=('batched_bodyframe','batched_full_path','batched_full_path','batched_bodyframe')
-    for mode in modes:
+    threads=config.get('thread_counts')
+    if threads is not None:
+        if any(config.get(k) for k in ('compiled_comparison','bodyframe_comparison','full_path_comparison')):
+            raise ValueError('thread comparison must keep the physics backend fixed')
+        if not threads or any(type(n) is not int or not 1<=n<=min(8,os.cpu_count() or 1) for n in threads):
+            raise ValueError('invalid bounded CPU thread counts')
+        modes=('batched_full_path',)*len(threads)
+    else:threads=[1]*len(modes)
+    for mode,cpu_threads in zip(modes,threads):
+        torch.set_num_threads(cpu_threads)
         active=mode!='eager'
         check_budget();tree=DifferentiableTree(r);tree.use_momentum_mass_rows=active
         tree.use_batched_bodyframe_momentum=mode in ('batched_bodyframe','batched_full_path')
@@ -57,7 +67,7 @@ def run(output,config):
         value_error=float(np.max(abs(values-reference[0])/np.maximum(1.,abs(reference[0]))))
         gradient_error=float(np.linalg.norm(gradient-reference[1])/max(1.,np.linalg.norm(reference[1])))
         jacobian_error=float(np.linalg.norm(J-reference[2])/max(1.,np.linalg.norm(reference[2])))
-        rows.append(dict(backend=mode,base_rows_only=active,compile_seconds=compile_seconds,forward_seconds=forward,total_seconds=elapsed,normalized_value_error=value_error,
+        rows.append(dict(backend=mode,cpu_threads=cpu_threads,base_rows_only=active,compile_seconds=compile_seconds,forward_seconds=forward,total_seconds=elapsed,normalized_value_error=value_error,
                          gradient_relative_error=gradient_error,jacobian_relative_error=jacobian_error,
                          terms={k:float(v.detach()) for k,v in terms.items()},full_free_dimension=len(x),task_residual_dimension=len(J)))
         atomic_json(output/'progress.json',rows);atomic_json(output/f'audit_{len(rows)}.json',sentinel.report())
