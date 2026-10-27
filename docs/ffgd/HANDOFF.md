@@ -126,3 +126,19 @@ CLI `weight-diagnostic --config configs/ffgd/weight_diagnostic_v4.json` is
 prepared (NOT_RUN), compares one step at the immutable final guided vector
 under4constraint weights; never returns/executes a repaired candidate.
 If V4 passes all native gates, skip that unnecessary diagnostic and execute it.
+
+UPDATE: V4 20261027T055956_planning_f9149f completed REJECTED on geometry
+only: minimum native clearance -0.006507m. All world task/velocity/acceleration/
+actuator/momentum/boundary gates passed. No execution. Weight diagnostic
+20261027T061922_weight_diagnostic_b9f955 failed on numpy.bool_ JSON serialization
+after computing derivatives; cast fixed, same diagnostic rerunning (read state).
+Never use its one-step rays as repaired plans; only calibrate the next cold run.
+
+Weight diagnostic20261027T062126_weight_diagnostic_9b75c6 PASSED native scalar
+relativeerror1.23e-14. At the fixed failed guided point, weight1 rejected both
+line trials. Weight10 accepted: task .02192->.01755 and collision .002286->
+.0000505; acceleration hullratio .648. Weights100/1000 were less effective
+in this one-step comparison. Next V5 changes ONLY collision guide weight1->10,
+keeping joint/actuator1 (their gradients were zero in the probe), same cold
+seed13001/task/weights/checkpoint/60steps18guides3updates. Gates unchanged.
+Never execute the diagnostic ray. Run plan_profile_v5.json on arm_body_box.

@@ -29,7 +29,7 @@ def run(output,config):
     gradients={name:torch.autograd.grad(terms[name],x,retain_graph=True)[0].detach() for name in energy.weights}
     values={name:float(value.detach()) for name,value in terms.items()}
     oracle=energy.native_evaluate((mean+scale*x).detach().numpy())
-    value_error=max(abs(values[k]-oracle[k])/max(1.,abs(oracle[k])) for k in oracle)
+    value_error=float(max(abs(values[k]-oracle[k])/max(1.,abs(oracle[k])) for k in oracle))
     metric=acceleration_metric(codec,checkpoint['scale'],r.spec.planner_acceleration_limits,energy.grid,manifest['budget']['sampling']['acceleration_metric_weight'])+J.T@J
     factor=torch.linalg.cholesky(metric);jac=tensor(codec.N*checkpoint['scale'][None,:]);budget=manifest['budget']['sampling'];rows=[];proposals=[]
     for weight in config.get('constraint_weights',[1.,10.,100.,1000.]):
@@ -44,7 +44,7 @@ def run(output,config):
         for trial in range(budget['line_trials']):
             check_budget();proposal=x0-(2.**(-trial))*delta.numpy();z=checkpoint['mean']+checkpoint['scale']*proposal
             after=energy.native_evaluate(z);C=codec.decode(z);spline=BSpline(knots(codec.n),C,3)
-            trials.append(dict(line_scale=2.**(-trial),energies=after,weighted_before=before,accepted=after['total']<=before,
+            trials.append(dict(line_scale=2.**(-trial),energies=after,weighted_before=before,accepted=bool(after['total']<=before),
                                velocity_hull_ratio=float(np.max(abs(spline.derivative(1).c)/task.duration/r.spec.planner_velocity_limits)),
                                acceleration_hull_ratio=float(np.max(abs(spline.derivative(2).c)/task.duration**2/r.spec.planner_acceleration_limits))))
             if after['total']<=before:break
