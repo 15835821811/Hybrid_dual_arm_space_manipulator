@@ -165,8 +165,10 @@ def main(argv=None):
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig')) if args.config else {}
         return unit('selected_execution',lambda path:execute_selected(path,args.run,config),dict(max_wall_seconds=900,physics_substeps=config.get('physics_substeps',1)))
     if args.command=='validate':
-        from .artifact_checks import validate_saved,validate_execution_states
+        from .artifact_checks import validate_saved,validate_execution_states,compare_tracking_prediction
         if not args.run:p.error('validate requires --run planning-directory; optional --unit candidate-index')
+        if args.unit=='tracking-prediction':
+            return unit('tracking_prediction_diagnostic',lambda path:compare_tracking_prediction(path,args.run),dict(max_wall_seconds=600,native_execution_steps=0))
         if args.unit=='actual-states':
             from pathlib import Path
             tracking_profile=json.loads(Path(args.config).read_text(encoding='utf-8-sig')) if args.config else None
