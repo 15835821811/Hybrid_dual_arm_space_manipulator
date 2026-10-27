@@ -195,3 +195,5 @@ V8原生执行20261027T083007_selected_execution_77b070 PASSED：2500步/5s，�
 
 五候选free组已完成3/5：前两条PLAN_VALID，第3条(seed13003)仅acceleration拒绝，hull与guide网格峰值均1.57960176(关节3、t=.19047619s)，非时间漏采；final joint代价仅.0005274，均值稀释是待相关任务族共同诊断的机制。未执行/修复该候选，继续原5seed，后续无需补seed。
 执行验收补齐全保存状态(含末态)的q17/q67界、既有17轴速度/加速度及abs(B)映射67轴包络；加速度只在scratch上用已记录输入原生复算，不积分、不修改actual。末态安全检查前移；原控制器及保护保留。两个输入/中断重放回归通过。障碍执行只读补查20261027T091036_execution_state_audit_6084f1通过2501状态，速度比.47874/加速度比.77929，原结果文件不改。跟踪/流形额外硬阈值尚未冻结，M5仍NOT_RUN。现有validate --run <execution> --unit actual-states可复查；属于限60s只读检查，不启第二重型worker。
+
+旧free执行全状态只读补查20261027T091405_execution_state_audit_459d52通过，0新增积分；完整软件20261027T091414_software_c14190通过50项。现执行验收含保存末态和实际导数界，原profile未改；跟踪/流形专门硬阈值NOT_FROZEN，M5仍NOT_RUN。
