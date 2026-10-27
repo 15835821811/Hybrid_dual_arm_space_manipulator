@@ -29,10 +29,14 @@ def run(output,config):
     if config.get('bodyframe_comparison'):
         if compiled_comparison:raise ValueError('compare one backend change at a time')
         modes=('eager_mass_rows','batched_bodyframe','batched_bodyframe','eager_mass_rows')
+    if config.get('full_path_comparison'):
+        if compiled_comparison or config.get('bodyframe_comparison'):raise ValueError('compare one backend change at a time')
+        modes=('batched_bodyframe','batched_full_path','batched_full_path','batched_bodyframe')
     for mode in modes:
         active=mode!='eager'
         check_budget();tree=DifferentiableTree(r);tree.use_momentum_mass_rows=active
-        tree.use_batched_bodyframe_momentum=mode=='batched_bodyframe'
+        tree.use_batched_bodyframe_momentum=mode in ('batched_bodyframe','batched_full_path')
+        tree.use_batched_path_physics=mode=='batched_full_path'
         compile_seconds=0.
         if mode=='compiled_mass_rows':
             from .compiled_physics import compile_tree

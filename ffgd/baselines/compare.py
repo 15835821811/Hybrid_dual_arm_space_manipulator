@@ -21,7 +21,7 @@ from ..propagation import Propagator
 from ..geometry import Geometry
 from ..costs import MultiSpaceEnergy
 from ..guidance_metric import acceleration_metric, residual_jacobian
-from ..validation import validate
+from ..validation import validate,selection_score
 from ..orchestration import atomic_json, check_budget
 
 
@@ -96,8 +96,9 @@ def run(output,config):
     if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
     tree=DifferentiableTree(r)
     if planning.get('physics_backend','eager')=='eager_mass_rows':tree.use_momentum_mass_rows=True
-    elif planning.get('physics_backend')=='batched_bodyframe':
+    elif planning.get('physics_backend') in ('batched_bodyframe','batched_full_path'):
         tree.use_momentum_mass_rows=True;tree.use_batched_bodyframe_momentum=True
+        tree.use_batched_path_physics=planning.get('physics_backend')=='batched_full_path'
     elif planning.get('physics_backend','eager')!='eager':raise ValueError('uncalibrated comparison backend')
     prop=Propagator(tree,snapshot);geometry=Geometry(r)
     energy=MultiSpaceEnergy(prop,codec,geometry,task,budget.intervals,collect_task_residual=True,collision_aggregation=planning.get('collision_aggregation','pair_mean'),joint_peak_penalty=planning.get('joint_peak_penalty',False))
@@ -160,7 +161,7 @@ def run(output,config):
                 row.update(sampled=True,validated=True,status=report['status'],validation=report,identity=candidate.identity)
                 if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('BASELINE_WALL_BUDGET_EXHAUSTED_DURING_VALIDATION')
                 if report['status']=='PLAN_VALID':
-                    score=max(max(e['position_m']/.005,e['rotation_rad']/(np.pi/180)) for e in report['task_errors'])+report['max_nominal_torque_ratio']
+                    score=selection_score(report,task)
                     row['selection_score']=score;valid.append((score,index))
         except (ValueError,RuntimeError,np.linalg.LinAlgError) as error:
             import traceback

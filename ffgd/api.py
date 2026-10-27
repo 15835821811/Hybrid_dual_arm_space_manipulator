@@ -19,7 +19,7 @@ from .costs import MultiSpaceEnergy
 from .diffusion import sample,SamplingBudget
 from .conditioning import encode_condition,CONDITION_SCHEMA
 from .model_io import load_model,normalize_condition
-from .validation import validate,input_identity
+from .validation import validate,input_identity,selection_score
 from .orchestration import atomic_json,check_budget
 from .architecture_guard import ArchitectureViolation
 
@@ -63,11 +63,12 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
         from .compiled_physics import compile_tree
         compile_seconds=compile_tree(tree,output/'compiled_tree.pt')['seconds']
     elif physics_backend=='eager_mass_rows':tree.use_momentum_mass_rows=True
-    elif physics_backend=='batched_bodyframe':
+    elif physics_backend in ('batched_bodyframe','batched_full_path'):
         tree.use_momentum_mass_rows=True;tree.use_batched_bodyframe_momentum=True
+        tree.use_batched_path_physics=physics_backend=='batched_full_path'
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     prop=Propagator(tree,initial);geometry=Geometry(robot)
-    if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')
+    if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe','batched_full_path'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric,collision_aggregation=collision_aggregation,joint_peak_penalty=joint_peak_penalty)
     if guide_weights is not None:
         if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
@@ -158,7 +159,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
             # verdict, but never select a result obtained after the wall cap.
             if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('PLANNING_WALL_BUDGET_EXHAUSTED_DURING_VALIDATION')
             if report['status']=='PLAN_VALID':
-                score=max(max(e['position_m']/.005,e['rotation_rad']/(np.pi/180)) for e in report['task_errors'])+report['max_nominal_torque_ratio']
+                score=selection_score(report,task)
                 record['selection_score']=score;valid.append((score,index,candidate))
                 # Save low-rate model prediction only; native execution is separate.
                 grid=np.unique(np.r_[np.linspace(0,task.duration,65),[p.time for p in task.poses]])

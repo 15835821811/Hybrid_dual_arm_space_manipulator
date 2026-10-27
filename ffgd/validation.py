@@ -16,6 +16,20 @@ def input_identity(candidate,snapshot,task):
     return hashlib.sha256((candidate.identity+snapshot.model_hash+array_hash(snapshot.state)+json.dumps(dict(duration=task.duration,poses=records),sort_keys=True)).encode()).hexdigest()
 
 
+def selection_score(report,task):
+    """Rank only independently valid candidates using declared active targets."""
+    errors=report.get('task_errors',[])
+    if report.get('status')!='PLAN_VALID' or len(errors)!=len(task.poses):
+        raise ValueError('SELECTION_REQUIRES_COMPLETE_VALID_REPORT')
+    normalized=[]
+    for error,target in zip(errors,task.poses):
+        if error['time']!=target.time or error['tip']!=target.tip:
+            raise ValueError('SELECTION_TASK_REPORT_MISMATCH')
+        if target.position_enabled:normalized.append(error['position_m']/target.position_tolerance)
+        if target.rotation_enabled:normalized.append(error['rotation_rad']/target.rotation_tolerance)
+    return max(normalized,default=0.)+report['max_nominal_torque_ratio']
+
+
 def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_intervals=2048):
     before=input_identity(candidate,snapshot,task);r=propagator.robot;m=r.model
     r.verify_identity()

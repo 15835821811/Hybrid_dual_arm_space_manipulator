@@ -22,8 +22,9 @@ def run(output,config):
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('WEIGHT_DIAGNOSTIC_CHECKPOINT_MISMATCH')
     r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'])
     aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
-    tree=DifferentiableTree(r);tree.use_momentum_mass_rows=manifest.get('physics_backend') in ('eager_mass_rows','batched_bodyframe')
-    tree.use_batched_bodyframe_momentum=manifest.get('physics_backend')=='batched_bodyframe'
+    tree=DifferentiableTree(r);tree.use_momentum_mass_rows=manifest.get('physics_backend') in ('eager_mass_rows','batched_bodyframe','batched_full_path')
+    tree.use_batched_bodyframe_momentum=manifest.get('physics_backend') in ('batched_bodyframe','batched_full_path')
+    tree.use_batched_path_physics=manifest.get('physics_backend')=='batched_full_path'
     peak=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False))
     energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,collision_aggregation=aggregation,joint_peak_penalty=peak)
     energy.weights.update(manifest.get('guide_weights',{}))

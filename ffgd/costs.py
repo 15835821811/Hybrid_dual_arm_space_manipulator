@@ -53,19 +53,25 @@ class MultiSpaceEnergy:
         support_pairs=0
         task_residuals=[]
         b,a=r.base_dofs,r.dof_ids
+        batched=None
+        if getattr(tree,'use_batched_path_physics',False):
+            batched=tree.path_kinematics_actuation(out['qpos'],out['velocity'],out['qdd'])
         for i,t in enumerate(self.grid):
             x,v=out['qpos'][i],out['velocity'][i]
-            k=tree.kinematics(x,v)
+            k=tree.kinematics(x,v) if batched is None else {name:value[i] for name,value in batched[0].items()}
             gaps=self.collision_guide.gaps(k);minima.append(gaps.min())
             support_pairs+=self.collision_guide.last_query['support_pairs']
             penalties=hinge((self.buffer-gaps)/self.buffer)
             # Time-normalized mean plus worst-pair pressure cannot dilute a
             # local violation by adding thousands of safe geometry pairs.
             collision.append(penalties.mean()+(penalties.max() if self.collision_aggregation=='pair_mean_plus_max' else 0.))
-            M=tree.mass(x,k);h=tree.inverse(x,v,torch.zeros_like(v),k)
-            aa=tree.B@out['qdd'][i]
-            ab=-torch.linalg.solve(M[b[:,None],b],M[b[:,None],a]@aa+h[b])
-            tau=M[a[:,None],b]@ab+M[a[:,None],a]@aa+h[a];raw.append(tau)
+            if batched is None:
+                M=tree.mass(x,k);h=tree.inverse(x,v,torch.zeros_like(v),k)
+                aa=tree.B@out['qdd'][i]
+                ab=-torch.linalg.solve(M[b[:,None],b],M[b[:,None],a]@aa+h[b])
+                tau=M[a[:,None],b]@ab+M[a[:,None],a]@aa+h[a]
+            else:tau=batched[1][i]
+            raw.append(tau)
             actuator.append(hinge(tau.abs()/(tensor(r.spec.torque_limits)*self.torque_fraction)-1).mean())
             smooth.append(out['qdd'][i].square().mean())
             for target in self.task.poses:

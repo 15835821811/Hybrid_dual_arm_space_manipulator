@@ -153,3 +153,20 @@ class DifferentiableTree:
         ab=-torch.linalg.solve(M[b[:,None],b],M[b[:,None],a]@aa+h[b])
         tau=M[a[:,None],b]@ab+M[a[:,None],a]@aa+h[a]
         return tau,ab
+
+    def path_kinematics_actuation(self,qpos,velocity,qdd):
+        """Batch independent time nodes, retaining full native-size dynamics.
+
+        Sequential base propagation has already completed before this call.
+        This changes tensor scheduling only: every body, velocity term, matrix
+        column and all 67 actuator demands remain in the differentiation graph.
+        """
+        b,a=self.robot.base_dofs,self.robot.dof_ids
+        def node(x,v,acc):
+            k=self.kinematics(x,v)
+            M=self.mass(x,k);h=self.inverse(x,v,torch.zeros_like(v),k)
+            aa=self.B@acc
+            ab=-torch.linalg.solve(M[b[:,None],b],M[b[:,None],a]@aa+h[b])
+            tau=M[a[:,None],b]@ab+M[a[:,None],a]@aa+h[a]
+            return k,tau
+        return torch.vmap(node)(qpos,velocity,qdd)

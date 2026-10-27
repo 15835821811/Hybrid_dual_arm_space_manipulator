@@ -60,10 +60,11 @@ def geometry_audit(path,count=32):
                 limitations='piecewise differentiable; zero-distance degenerate witness explicitly rejected; feature switches not smooth')
 
 
-def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collision_aggregation='pair_mean',bodyframe_backend=False,joint_peak_penalty=False):
+def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collision_aggregation='pair_mean',bodyframe_backend=False,joint_peak_penalty=False,full_path_backend=False):
     torch.set_num_threads(1)
     r=Robot();tree=DifferentiableTree(r);geometry=Geometry(r);rng=np.random.default_rng(32026)
     tree.use_batched_bodyframe_momentum=bodyframe_backend
+    tree.use_batched_path_physics=full_path_backend
     if compiled_backend:
         from .compiled_physics import compile_tree
         metadata=compile_tree(tree,path/'tree.pt')
@@ -105,4 +106,4 @@ def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collis
                  passed=all(v['passed'] for checks in directions for v in checks) and all(np.linalg.norm(v)>1e-10 for v in grads.values()) and all(forward_errors[k]<=1e-6+1e-8*abs(native[k]) for k in native))
         rows.append(row);(path/f'case_{case}.json').write_text(json.dumps(row,indent=2),encoding='utf-8')
         print(json.dumps({k:v for k,v in row.items() if k!='directions'}),flush=True)
-    return dict(passed=all(r['passed'] for r in rows),rows=rows,collision_aggregation=collision_aggregation,bodyframe_backend=bodyframe_backend,joint_peak_penalty=joint_peak_penalty,scope='active five terms and total; full-convex-support whole-path AD against independent native/NumPy FD')
+    return dict(passed=all(r['passed'] for r in rows),rows=rows,collision_aggregation=collision_aggregation,bodyframe_backend=bodyframe_backend,joint_peak_penalty=joint_peak_penalty,full_path_backend=full_path_backend,scope='active five terms and total; full-convex-support whole-path AD against independent native/NumPy FD')
