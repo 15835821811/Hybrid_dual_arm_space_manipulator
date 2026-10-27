@@ -20,8 +20,33 @@ from .contracts import TaskSpec,PoseConstraint
 from .orchestration import atomic_json,check_budget,source_hash
 
 
+def execution_plan_binding(execution_root,planning_runs):
+    """Bind native evidence to the selected trajectory of an audited run."""
+    from .contracts import Candidate
+    root=Path(execution_root)
+    provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
+    planning=Path(provenance['planning_directory']).resolve()
+    if planning not in {Path(p).resolve() for p in planning_runs}:raise ValueError('EXECUTION_OUTSIDE_AUDITED_PLANS')
+    result=json.loads((planning/'planning_result.json').read_text(encoding='utf-8'))
+    index=result.get('selected_index')
+    if result['status']!='PLAN_VALID' or index is None:raise ValueError('EXECUTION_WITHOUT_SELECTED_PLAN')
+    with np.load(planning/f'candidate_{index:03d}'/'candidate.npz') as data:
+        candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
+    record=result['records'][index]
+    summary=json.loads((root/'result.json').read_text(encoding='utf-8'))['execution']
+    if record['index']!=index or any(value!=candidate.identity for value in
+            (record['identity'],provenance['candidate_hash'],summary['candidate_hash'])):
+        raise ValueError('EXECUTION_SELECTED_IDENTITY_MISMATCH')
+    with np.load(root/'execution.npz') as data:
+        if not np.array_equal(data['control_points'],candidate.control) or float(data['duration'])!=candidate.duration:
+            raise ValueError('EXECUTION_REFERENCE_NOT_SELECTED_PLAN')
+    return dict(planning_run=str(planning),selected_index=index,candidate_hash=candidate.identity,
+                saved_execution_reference_matches=True)
+
+
 def audit(path,config):
     torch.set_num_threads(1);runs=[Path(p) for p in config['planning_runs']]
+    execution_bindings={str(p):execution_plan_binding(p,runs) for p in config.get('execution_runs',[])}
     learning=json.loads((Path(config['learning_checks_run'])/'result.json').read_text(encoding='utf-8'))
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     expected_origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')
@@ -116,6 +141,7 @@ def audit(path,config):
             # reinterpret a clipped/aborted run as unassisted planning success.
             raw_max=summary['raw_torque_ratio'];native_steps=len(data['ctrl'])
         execution_rows.append(dict(run=str(root),model_plan_valid=validation['status']=='PLAN_VALID',
+                                   plan_binding=execution_bindings[str(source)],
                                    safety_enabled=acceptance['safety_enabled'],cartesian_assist=acceptance['task_based_cartesian_assist'],
                                    raw_torque_ratio=raw_max,native_steps=native_steps,status=acceptance['status'],
                                    safety_intervention=summary['status']!='FINISHED' or raw_max is None or raw_max>1.,
