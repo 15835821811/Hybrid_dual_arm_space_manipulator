@@ -30,3 +30,26 @@ def test_native_substeps_hold_control_and_replay_without_state_injection(tmp_pat
     assert np.max(abs(bundle['ctrl']))>0
     assert execution.replay(r,bundle,initial)['max_state_abs']==0
     assert report['state_writes_after_restore']==0 and report['control_period']==.002
+
+
+def test_recorded_sweep_uses_executed_dt_after_substep_refinement(tmp_path,monkeypatch):
+    import json
+    from types import SimpleNamespace
+    import ffgd.problem_io as io
+    from ffgd.calibration_momentum import recorded_input_sweep
+    planning=Robot();initial=planning.snapshot(planning.new_data())
+    r,snapshot=execution.refine_physics(planning,initial,2)
+    source=tmp_path/'source';source.mkdir();out=tmp_path/'sweep';out.mkdir()
+    candidate=Candidate(np.tile(r.spec.planner_zero,(24,1)),.02,1)
+    profile=dict(physical_geometry_clearance_m=0.,replay_state_atol=1e-10)
+    bundle,report=execution.track(r,snapshot,candidate,source,profile,control_substeps=2)
+    (source/'provenance.json').write_text(json.dumps(dict(planning_directory=str(tmp_path),
+        profile=profile,candidate_hash=candidate.identity,physics_substeps=2,physics_dt=.001,
+        execution_model_hash=r.model_hash,control_period=.002)))
+    monkeypatch.setattr(io,'load_problem',lambda _:(planning,initial,SimpleNamespace(duration=.02),{}))
+    result=recorded_input_sweep(out,dict(execution_directory=str(source)))
+    assert result['passed']
+    assert [row['physics_dt'] for row in result['rows']]==[.001,.0005,.00025]
+    assert [row['native_steps'] for row in result['rows']]==[20,40,80]
+    assert result['rows'][0]['source_state_error']==0
+    assert all(row['held_control_period']==.002 and row['recorded_input_period']==.001 for row in result['rows'])

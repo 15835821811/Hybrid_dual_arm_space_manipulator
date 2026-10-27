@@ -27,6 +27,12 @@ def recorded_input_sweep(path,config):
     root=Path(config['execution_directory'])
     provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
     original,initial,task,_=load_problem(Path(provenance['planning_directory'])/'problem.json')
+    # The input ledger belongs to the executed model, which may already use
+    # substeps. Using the planning dt here would stretch the recorded time axis.
+    from .execution import refine_physics
+    original,initial=refine_physics(original,initial,provenance.get('physics_substeps',1))
+    if original.model_hash!=provenance.get('execution_model_hash',original.model_hash):raise ValueError('EXECUTION_MODEL_IDENTITY_MISMATCH')
+    if abs(float(original.model.opt.timestep)-provenance.get('physics_dt',float(original.model.opt.timestep)))>1e-15:raise ValueError('EXECUTION_TIMESTEP_MISMATCH')
     with np.load(root/'execution.npz') as z:source={k:z[k] for k in z.files}
     np.testing.assert_array_equal(source['initial_state'],initial.state)
     if len(source['states'])!=len(source['ctrl'])+1:raise ValueError('INCOMPLETE_INPUT_LEDGER')
@@ -67,7 +73,8 @@ def recorded_input_sweep(path,config):
         np.savez_compressed(out/'execution.npz',**bundle)
         rr=replay(r,bundle,snap)
         peaks=[float(np.max(np.linalg.norm(bundle['momentum_residual'][:,j:j+3],axis=1))) for j in (0,3)]
-        row=dict(factor=factor,physics_dt=dt/factor,held_control_period=dt,status=status,native_steps=n,
+        row=dict(factor=factor,physics_dt=dt/factor,recorded_input_period=dt,
+                 held_control_period=provenance.get('control_period',dt),status=status,native_steps=n,
                  linear_momentum_residual=peaks[0],angular_momentum_residual=peaks[1],
                  min_clearance=min(clearance),replay=rr,model_hash=r.model_hash,
                  initial_state_bytes_unchanged=True,only_timestep_changed=True,
