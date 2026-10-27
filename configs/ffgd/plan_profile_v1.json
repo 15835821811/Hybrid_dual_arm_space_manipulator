@@ -1,0 +1,24 @@
+{
+  "schema": "ffgd_planning_budget_v1",
+  "checkpoint": "E:/ffgd-core/artifacts/ffgd/runs/20261027T043312_training_711731/best.pt",
+  "profile": "configs/ffgd/numerical_profile_v1.json",
+  "device": "cuda",
+  "budget": {
+    "seeds": [
+      13001
+    ],
+    "control_points": 24,
+    "intervals": 32,
+    "max_wall_seconds": 900,
+    "sampling": {
+      "steps": 60,
+      "guide_steps": 18,
+      "updates_per_step": 1,
+      "line_trials": 2,
+      "step_size": 0.01,
+      "max_update_norm": 0.1,
+      "max_control_change": 0.02
+    }
+  },
+  "purpose": "M4 first learned guided trajectory and timing; one predeclared seed, no postprocessing"
+}
