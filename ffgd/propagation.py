@@ -83,6 +83,8 @@ class Propagator:
         This experimental path is off unless the tree flag is set.
         """
         r=self.robot
+        if np.any(r.model.dof_armature[r.base_dofs]):
+            raise ValueError('BODYFRAME_BATCH_REQUIRES_ZERO_BASE_ARMATURE')
         reference=self.qpos.clone()
         reference[r.base_qpos]=tensor([0.,0.,0.,1.,0.,0.,0.])
         positions=reference[None].expand(len(coordinates),-1).clone()

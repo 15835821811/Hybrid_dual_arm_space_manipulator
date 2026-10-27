@@ -182,3 +182,7 @@ V8原反例已启动20261027T075858_planning_e7658f，PID165984/create1793087938
 输入合同检查：任务/场景未知语义原已明确拒绝，无需重写。修复两项实际缺口：Robot.restore拒绝非完整mjSTATE_INTEGRATION快照，防止缺失速度/ctrl被默认清零；Pose/Box旋转正交检查明确rtol=0，避免默认1e-5相对松弛。8项适配/输入/原生中断控制重放测试通过，8个未改DEV配置仍合法；并非放宽验收或改变状态。完整回归继续。
 
 完整软件20261027T082101_software_768926通过47项（先于批量质量矩阵实验）。新的实验性Propagator.bodyframe_mass_rows利用浮动子树质量矩阵刚体变换等变性，在单位基座姿态批量计算全部机器人质量块；世界固定原点动量和基座速度显式变换，完整67路力矩仍原图。默认关闭，主API不接受此后端。3状态非零H/基座姿态原生速度及q/base梯度对照通过，质量行共2tests通过；首次int32 index_copy错误已events保留。下一步仅在当前V8结束后运行mass-rows-diagnostic --config configs/ffgd/bodyframe_equivalence_v8.json及test --suite full-space-bodyframe，未执行NOT_RUN。不得跳过完整能量/J/native FD校准启用。
+
+V8 20261027T075858_planning_e7658f已完成PASSED：相同冷seed13001/训练权重/冻结障碍任务/60x18x3预算，原生最小间隙+.003695668m，全部模型门通过，运行1833.8s。原失败V4-V7保留且不改判。严格入口哨兵无禁止调用。执行已发起（查state真实PID），随后单独重放。原反例通过不代表相关任务族、ARCH总门或五候选协议通过。下一阶段优先验证bodyframe批量后端以减少完整任务族成本；不启用未验证后端。
+
+V8原生执行20261027T083007_selected_execution_77b070 PASSED：2500步/5s，实际间隙+.003718868m，raw力矩比.09722，0裁剪/安全中止/状态注入，P/L残差.00019071/.00018755，实际流形偏差1.08e-6（M6仍待处理，不修改实际状态）。独立CLI重放20261027T083042_independent_replay_07157e PASSED，最大状态差0。M4仍RUNNING，相关任务族/五候选/完整ARCH未过。当前已发起bodyframe_equivalence_v8整路径校准，查state真实PID；主后端未启用。
