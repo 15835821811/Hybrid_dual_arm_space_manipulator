@@ -17,7 +17,7 @@ from .propagation import Propagator
 from .geometry import Geometry
 from .costs import MultiSpaceEnergy
 from .diffusion import sample,SamplingBudget
-from .conditioning import encode_condition
+from .conditioning import encode_condition,CONDITION_SCHEMA
 from .model_io import load_model,normalize_condition
 from .validation import validate,input_identity
 from .orchestration import atomic_json,check_budget
@@ -76,9 +76,12 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     metric=acceleration_metric(codec,checkpoint['scale'],robot.spec.planner_acceleration_limits,energy.grid,budget.sampling.acceleration_metric_weight)
     start=total_start;records=[];valid=[]
     manifest=dict(budget=asdict(budget),checkpoint=checkpoint_identity,robot_model_hash=robot.model_hash,
+                  candidate_scope='FIXED_SEED_DIAGNOSTIC' if len(budget.seeds)<5 else 'MULTI_NOISE_TASK_EVALUATION',
+                  minimum_five_candidate_protocol_met=len(budget.seeds)>=5,
                   robot_physical_hash=robot.physical_hash,scene_hash=robot.scene.identity,geometry_policy_hash=geometry.policy_hash,
                   disabled_guide_terms=list(disabled_guide_terms),independent_validation_terms_disabled=[],cold_start=True,
                   guide_weights=energy.weights,
+                  network_condition_schema=CONDITION_SCHEMA,external_scene_in_physics_and_validation=True,
                   physics_backend=physics_backend,compile_seconds=compile_seconds,setup_wall_seconds=time.perf_counter()-total_start,
                   guidance_metric_condition=float(torch.linalg.cond(metric)),
                   method=('GUIDED_DIFFUSION_ABLATION' if disabled_guide_terms else 'GUIDED_DIFFUSION') if budget.sampling.guide_steps else 'LEARNED_PRIOR_WITHOUT_GUIDANCE')

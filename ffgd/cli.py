@@ -11,7 +11,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','compiled'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -58,6 +58,12 @@ def main(argv=None):
         if not args.config:p.error('guidance-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('guidance_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,one_step_rays=5))
+    if args.command=='condition-diagnostic':
+        from .calibration_condition import run
+        from pathlib import Path
+        if not args.config:p.error('condition-diagnostic requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('condition_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,samples=2,steps=60))
     if args.command=='plan':
         from .problem_io import load_problem,planning_config
         from .api import plan

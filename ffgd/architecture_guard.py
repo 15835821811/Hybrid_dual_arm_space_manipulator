@@ -67,9 +67,10 @@ class LegacySentinel(importlib.abc.MetaPathFinder):
         identities=[]
         for name in sorted(self.modules):
             source=Path(sys.modules[name].__file__)
-            identities.append(dict(module=name,path=str(source.resolve()),sha256=hashlib.sha256(source.read_bytes()).hexdigest()))
+            identities.append(dict(module=name,path=str(source.resolve()),on_disk_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest()))
         return dict(forbidden_calls=self.blocked,observed_ffgd_calls=self.calls,modules=sorted(self.modules),
                     module_identities=identities,actual_methods=[dict(module=m,function=f,source=p,line=line,executed_code_sha256=self.methods[(m,f,p,line)]) for m,f,p,line in sorted(self.methods)],
                     files_read=sorted(self.reads),file_audit_enforced=self.allowed_data_reads is not None,
                     created_outputs=sorted(self.created_outputs),output_directory=self.output_directory,
+                    source_identity_note='Executed bytecode hashes are authoritative for loaded functions; source.zip is the start-time source snapshot. On-disk sources may contain later edits.',
                     allowed_data_reads=sorted(self.allowed_data_reads) if self.allowed_data_reads is not None else None)

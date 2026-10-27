@@ -1,108 +1,109 @@
 # FFGD handoff
 
-Goal ACTIVE. M0-M3 passed their scoped implementation exits. M4 RUNNING.
-Overall architecture/engineering/learning-benefit gates remain NOT_RUN.
+Goal ACTIVE. M0-M3 passed scoped exits. M4 RUNNING. M5-M8 stage gates NOT_RUN.
+Overall architecture/engineering/learning-benefit remain NOT_RUN; one vertical
+DEV success does not complete any later milestone.
+
 Workspace E:/ffgd-core, branch codex/ffgd-core-rebuild, pinned base
 b0e34e75e94ec53f1cd0a9cde246d4c727a596ce. Original dirty checkout is preserved;
-its tracked diff was independently compared and unchanged. No push.
+tracked diff independently compared unchanged. No push/cloud/deletion.
+CPU .venv/Scripts/python.exe; GPU .venv-gpu/Scripts/python.exe.
+Python3.10.19/MuJoCo3.3.2/torch2.6.0+cu124/RTX4080. One heavy worker.
+Read MASTER/state, actual PID/create-time/command and checkpoint each session.
+`python -m ffgd.cli resume` now verifies identities and recovers stale bookkeeping;
+it never blindly retries a failure or starts a background agent. Foreign host or
+AccessDenied is unverifiable, not assumed dead. Source/config snapshots per run.
 
-CPU: .venv/Scripts/python.exe; GPU: .venv-gpu/Scripts/python.exe.
-Python 3.10.19, MuJoCo 3.3.2, torch 2.6.0+cu124, RTX 4080.
-Read state.json, live PID/create-time/command and latest checkpoint before work.
-Source/config snapshots and all failures are retained per run.
+M2 evidence: 256 dynamics comparisons,64 geometry-pressure cases, full323-variable
+gradients,9 native executions/replays(21000steps). A nonsmooth support switch was
+separately diagnosed; old failed runs unchanged. Native witness-gradient approach
+was retired in favor of differentiable full convex-support geometry. All native
+geometry remains independent. Numerical profile v1 is frozen; absolute momentum
+budgets .001 each, physical geometry0, goals5mm/1deg, replay1e-10.
 
-M2: 256 dynamics comparisons; 64 geometry-pressure cases; full-energy and
-323-variable gradients; 9 native executions/replays (21000 steps).
-One nonsmooth finite-difference feature switch is separately diagnosed; its
-failed run is unchanged. Physical calibration was on small 2-second references.
-Latest full software regression: 17 passed, 20261027T045009_software_ba87c1.
-
-M3 data: artifacts/ffgd/runs/20261027T034523_prior_data_d6601f:
-2000 valid / 2711 attempted, TRAIN 1604 / VAL 396, family-disjoint, rank 323.
-586 acceleration, 91 collision and 34 incomplete-refinement rejections remain.
-Data hash: 065ec2aed993a47403e2947a52e3f81f12d3a4055976582889b2993fcc6f8217.
-Training: 20261027T043312_training_711731, 3000 updates, VAL v-MSE 0.346681.
-Best checkpoint: artifacts/ffgd/runs/20261027T043312_training_711731/best.pt
+M3 data20261027T034523_prior_data_d6601f:2000valid/2711attempts,TRAIN1604/VAL396,
+family-disjoint/full rank323.586acceleration,91collision,34incomplete-refinement
+rejections retained. Hash065ec2aed993a47403e2947a52e3f81f12d3a4055976582889b2993fcc6f8217.
+Training20261027T043312_training_711731:3000updates, bestVALvMSE .346681.
+Best checkpoint artifacts/ffgd/runs/20261027T043312_training_711731/best.pt
 SHA256 b80ce0d14e2c95bde6191f7f0e0a0ecd8b65c8c19f5883b0b889dcb8eccfbf0f.
-Learning checks: 20261027T043411_learning_checks_85441c, five full-noise
-60-step samples; reload/repeat errors zero, boundary residual <=1.3e-12.
-Endpoint position errors 0.073-0.474 m: these are NOT valid executable plans.
-Prior covers zero velocity/momentum starts only. No learning benefit established.
-The serial M3 queue m3_queue_99464 finished; do not assume its old PID is alive.
+Learning checks20261027T043411_learning_checks_85441c:5new-noise60-step samples,
+finite/full323/boundary-valid/reload-repeat identical. Not all model-valid.
+Prior covers zero velocity/momentum starts. No learning benefit established.
+Old M3 queue FINISHED; no live queue or unseen agent is assumed.
 
-Current M4 command:
-.venv-gpu/Scripts/python.exe -m ffgd.cli plan --config configs/ffgd/plan_profile_v3.json --task configs/ffgd/dev_v1/free_translation.json
-V1 run 20261027T043505_planning_7df1ee was REJECTED on task only:
-continuum/rigid position errors .29171/.03628 m; all other native gates passed.
-Its 60 calls, 18 guide updates, input consumption and untouched candidate were recorded.
-Root probes 20261027T044229_guidance_diagnostic_28d753 and
-20261027T044506_guidance_diagnostic_dcf601 showed the .1 normalized step cap
-was weak; larger raw steps create acceleration spikes. The DDIM clean-to-state
-gain is .057-.857 before the last step; network energy gains offset the guides.
-V2 uses the SAME seed 13001 and frozen task/weights, 60 network calls, 18 guided
-steps, max 3 updates each, max 2 line trials. Full-rank acceleration metric weight
-10, energy-scaled Polyak step, normalized cap 1, physical control cap .1 rad.
-All updates are in denoising; no postprocessing. No candidate has passed yet.
-Inspect actual native validation, denoising trace and timing; diagnose failures,
-then proceed to the eight frozen DEV tasks. Do not add arbitrary seeds.
+M4 first fixed task free_translation, seed13001, same checkpoint:
+V1 20261027T043505_planning_7df1ee REJECTED task only(.2917/.0363m).
+V2 20261027T045128_planning_5746f7 REJECTED task only(.0330/.0277m,
+.1946/.1294rad). All other native candidate gates passed. Failures remain.
+Root experiments showed weak capped raw gradients and task Jacobian singular
+values .3104..58.0644. Full-rank acceleration1000 + Jtask.T@Jtask metric,
+Polyak2, normcap2, physicalcap.16 are used INSIDE last18/60 denoising steps,
+max3updates and2line trials each. No last-step extra optimization or repair.
+Jacobian includes whole floating-path propagation, never terminal-only IK.
+Native 8directions x3eps Jacobian calibration20261027T051107_guidance_diagnostic_3f0055
+passed(valueerror1.26e-13). Near-pi SO3 derivative cancellation fixed; old failed
+test20261027T051120_software_0ceae3 retained, subsequent tests passed.
+Compiled residual-Jacobian20261027T050212_guidance_diagnostic_fbff1a exceeded
+180s; verified-owned PID terminated after~422CPU s. Task metric REQUIRES eager.
 
-Independent validate/replay, selected execute and partial architecture-audit
-CLI are implemented; they still need real learned-plan evidence. Architecture
-contract/order/execution-policy gates remain NOT_RUN until reviewed/tested.
-TorchScript physics passed 32 native value cases and a full 323-variable,
-all-energy gradient case in 20261027T044747_compiled_calibration_3c3723.
-It is ENABLED only in V2 config; default backend stays eager. Compilation time
-is recorded. V2 live status/PID must be read from state, not inferred here. benchmark/report/resume still explicitly fail as unimplemented.
-No final-scene or unseen-task experiment has run. No unattended agent promised.
+V3 20261027T051345_planning_cb9d2e PASSED all native model gates,1177.7s:
+position .00123395/.00009262m;rotation .00190452/.00011926rad;
+clearance .00846159m, nominal torque ratio .079523,1045validation gridpoints.
+Candidate048e47afeea36931ab734ddc16052813b16b2b0c54883c95d3baf9bef3f9ac67.
+Native execution20261027T053343_selected_execution_312958 PASSED2000steps:
+actual positions .00122838/.00011053m, no clipping/abort/Cartesian assist,
+P/L residual .00030336/.00034808, maxmanifold residual8.08e-7.
+Independent replay in execution AND separate CLI20261027T053550_independent_replay_5a0256
+passed with state difference0 and single initial restoration. This measured
+nonzero manifold residual still needs a supported M6 continuation policy.
 
-V2 completed REJECTED, task-only: .0330/.0277 m and .1946/.1294 rad.
-All other native candidate gates passed. No learned plan has passed yet.
-Task-Jacobian root experiment 20261027T050930_guidance_diagnostic_79094a:
-12 singular values range .3104 to 58.0644. Acceleration weight1000 plus
-Jtask.T@Jtask reduces task energy126.8 to .293 in a bounded one-step ray,
-max acceleration ratio .8373. This diagnostic returned/executed no plan.
-Native residual/Jacobian calibration 20261027T051107_guidance_diagnostic_3f0055
-passed 8 directions x3 epsilon, native value error1.26e-13.
-Compiled residual-Jacobian run 20261027T050212_guidance_diagnostic_fbff1a
-exceeded180s and failed; verified-owned PID36004 was terminated at~422 CPU s.
-Eager completed derivatives26.8s. Task metric now requires eager backend and
-checks budget between every residual row; no compiled Jacobian retry assumed.
-V3 same seed13001/task/checkpoint: 60 network/18 guided, at most3 updates and
-2 line trials each; full-rank accel1000+task-J metric refreshed each guided
-noise level, reused only within its3 updates; Polyak2, normcap2, physicalcap.16.
-No postprocessing or final-step extra work. Before launch verify software tests.
+Batch-four VJP calibration20261027T053430_guidance_diagnostic_1068c3 PASSED:
+derivatives16.8s vs26.8s scalar; originalclean/gradient identical, one-step
+proposal difference4.28e-14, native Jacobian check passed. Evidence summary
+orchestration/batched_jacobian_equivalence.json. Main config now
+configs/ffgd/plan_profile_v3_batched.json, same mathematical budget/seed.
 
-SO(3) near-pi derivative cancellation fixed using symmetric-axis extraction;
-20261027T051120_software_0ceae3 remains FAILED; regression
-20261027T051241_software_f98e5c passed all19 software tests.
-V3 is authorized to launch; read live state for actual launch/completion.
+CURRENT: frozen arm_body_box planning20261027T053742_planning_228010,
+PID90188/create1793079460.9813397; VERIFY live identity, not this stale text.
+Command .venv-gpu/Scripts/python.exe -m ffgd.cli plan --config configs/ffgd/plan_profile_v3_batched.json --task configs/ffgd/dev_v1/arm_body_box.json
+Its previous setup20261027T053603_planning_f09cb1 failed before sampling because
+strict input audit misclassified NPZ w+b creation. Fixed only O_TRUNC files
+inside fresh output directory; historical input reads still fail. Failure and
+requested1/sampled0 denominator retained. Three guard regression tests passed.
 
-V3 actually started as 20261027T051345_planning_cb9d2e, PID93680
-(create time1793078023.5965364); verify identity/current state before acting.
-It uses its archived pre-audit code a7f6aa5d, scalar-row Jacobian.
-At step47 the guided energy was .417, NOT a final validity conclusion.
-While it runs, additional IO/contract audit code was added for FUTURE runs.
-New strict sentinel allows checkpoint AND its .identity.json only; records
-file reads and actual code hashes. IO probe20261027T051927_software_e514d0
-failed on the initially undeclared identity sidecar; corrected exact allowlist
-probe20261027T052001_software_7ff773 passed. No data directory was whitelisted.
-Regression20261027T052121_software_b600a8 passed25 tests. Architecture audit
-now implements source/interface rank checks, filename/object-order physical
-+network equivalence and separate execution safety reporting; real full audit
-NOT_RUN. Older planning artifacts lack the new file-read gate and must not be
-retroactively claimed to contain it.
-Batched VJP diagnostic config guidance_diagnostic_task_metric_batched.json
-is prepared but NOT_RUN. Software batch/scalar parity passed; real native
-Jacobian and performance must pass before enabling batch>1 in main planning.
-After V3 finishes: inspect immutable validation; if valid execute selected
-natively and replay, then run the prepared batched diagnostic, then the frozen
-arm_body_box with an explicitly versioned budget. Do not launch competing
-heavy workers. Query counters now count energy/mass/pair/backward work for
-future matched-budget accounting.
+Strict runtime sentinel now records file reads, actual function code hashes,
+module identities and denied legacy calls; permits checkpoint+identity sidecar.
+IO preflight20261027T052001_software_7ff773 passed, earlier sidecar allowlist
+failure20261027T051927_software_e514d0 remains. V3 free run predates file audit,
+so cannot retroactively claim it contains that gate. New runs include query
+counters for energy/mass/pair/backward work. Full ARCH audit still NOT_RUN.
+Architecture audit implements static interfaces/rank, semantic filename/order
+physics+network comparison, counterfactual terms and execution safety separation.
+Latest full software regression20261027T052121_software_b600a8:25passed;
+after that recovery2tests and native budget-abort/replay test passed. Execution
+now saves atomic partial inputs/states every500steps and final complete ledger
+on budget abort; interrupted partial replay never implies completed execution.
 
-Recovery CLI is now implemented: `python -m ffgd.cli resume` verifies MASTER,
-branch, checkpoint hash and actual worker identity; it does not blindly restart
-failed experiments. Real probe confirmed PID93680 still live and all hashes.
-Two recovery tests passed, including stale-identity recovery that leaves the
-actual live process untouched and never marks the interrupted unit successful.
-AccessDenied/foreign-host locks are unverifiable, not assumed dead.
+NEXT: inspect current obstacle candidate, classify actual failure if any; if
+valid execute/replay it. Continue all8frozen DEV then40, complete real ARCH01-10
+(including filename/order and active obstacle counterfactuals). Re-run free task
+under the strict audited version for complete architecture/repro evidence.
+Do not change gates, add blind seeds or relabel old failed versions. M5 needs
+20 frozen tasks, M6 hold/moving target/full nonzero state, M7 final combination,
+M8 matched-budget research/clean reproduction. benchmark/report unimplemented;
+resume implemented as verified recovery. No final scene has been run.
+
+IMPORTANT: current one-seed V1/V2/V3/arm runs are diagnostic versions only.
+MASTER6.1 requires at least5distinct noise candidates per evaluated task; full
+M4 cannot pass on these single-seed successes. Freeze the5-seed group after
+root corrections, retain all5 outcomes, then execute task-level selections.
+Current arm run's untrained scene token was identified as a train/inference
+schema mismatch: data had zero external-box tokens. Prepared correction uses
+initial-state/timed-pose tokens only, with ALL scene geometry still in every
+guide and native validator. MASTER6.1 explicitly permits this split.
+Current process retains its archived old schema; do not relabel it.
+condition_diagnostic_v1.json is prepared (NOT_RUN), compares same cold seed
+with/without untrained scene token against identical physical task/scene.
+New scene contract regression passed2 tests. Latest full software run
+20261027T054101_software_ee192b passed29 tests before this correction.
