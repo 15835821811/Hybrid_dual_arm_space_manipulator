@@ -20,7 +20,7 @@ def run(output,config):
     torch.set_num_threads(1);root=Path(config['planning_run']);manifest=json.loads((root/'planning_manifest.json').read_text())
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('GUARD_CALIBRATION_CHECKPOINT_MISMATCH')
-    r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'])
+    r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
     energy=MultiSpaceEnergy(Propagator(DifferentiableTree(r),snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True)
     with np.load(root/'candidate_000/denoising.npz') as data:z=checkpoint['mean']+checkpoint['scale']*data['guided'][-1]
     rows=[];gradients=[];jacobians=[]

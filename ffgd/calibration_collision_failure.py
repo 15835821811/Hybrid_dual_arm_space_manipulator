@@ -23,7 +23,7 @@ def run(output,config):
         candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
     if candidate.identity!=record['identity']:raise ValueError('CANDIDATE_IDENTITY_MISMATCH')
     r,snapshot,task,_=load_problem(root/'problem.json');geometry=Geometry(r);guide=ConvexSupportGuide(geometry)
-    prop=Propagator(DifferentiableTree(r),snapshot);codec=boundary_codec(r,snapshot,task.duration,len(candidate.control))
+    prop=Propagator(DifferentiableTree(r),snapshot);codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'))
     z=codec.encode(candidate.control);rows=[];arrays={}
     for intervals,label in ((manifest['budget']['intervals'],'guide'),(1024,'dense')):
         check_budget();grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[p.time for p in task.poses]])

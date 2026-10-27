@@ -92,11 +92,11 @@ def run(output,config):
                   gradient_evaluations=budget.sampling.guide_steps*budget.sampling.updates_per_step,jacobian_refreshes=budget.sampling.guide_steps)
     if limits!=expected:raise ValueError('comparison physical caps must match the declared A worst-case budget')
     r,snapshot,task,problem=load_problem(config['task']);profile=json.loads(Path(planning['profile']).read_text())
-    codec=boundary_codec(r,snapshot,task.duration,budget.control_points)
+    codec=boundary_codec(r,snapshot,task.duration,budget.control_points,origin=budget.boundary_origin)
     model=None;identity={};condition=None
     if method=='D_POST_OPTIMIZATION':
         model,checkpoint,identity=load_model(planning['checkpoint'],planning.get('device','cpu'))
-        if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!='pivot_zero':raise ValueError('BOUNDARY_ORIGIN_NOT_ENABLED_IN_COMPARISON')
+        if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!=budget.boundary_origin:raise ValueError('BOUNDARY_ORIGIN_MISMATCH')
         if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
         mean_array=checkpoint['mean'];scale_array=checkpoint['scale']
     else:

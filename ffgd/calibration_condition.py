@@ -22,7 +22,7 @@ def run(output,config):
     with np.load(dataset) as data:
         training=data['tokens'][data['is_train']];padding=data['padding'][data['is_train']]
         scene_tokens=int(np.count_nonzero(training[...,4][~padding]))
-    r,snapshot,task,problem=load_problem(config['problem']);codec=boundary_codec(r,snapshot,task.duration)
+    r,snapshot,task,problem=load_problem(config['problem']);codec=boundary_codec(r,snapshot,task.duration,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
     prop=Propagator(DifferentiableTree(r),snapshot);energy=MultiSpaceEnergy(prop,codec,Geometry(r),task)
     rows=[];samples={}
     for include_scene in (True,False):

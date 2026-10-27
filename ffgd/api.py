@@ -33,6 +33,7 @@ class PlanningBudget:
     intervals: int = 32
     max_wall_seconds: float = 1800.
     cpu_threads: int = 1
+    boundary_origin: str = 'pivot_zero'
 
     def __post_init__(self):
         object.__setattr__(self,'seeds',tuple(self.seeds))
@@ -40,27 +41,28 @@ class PlanningBudget:
         if self.control_points<6 or self.intervals<1 or self.max_wall_seconds<=0:raise ValueError('invalid planning budget')
         if type(self.cpu_threads) is not int or not 1<=self.cpu_threads<=min(8,max(1,(os.cpu_count() or 1)-1)):
             raise ValueError('invalid bounded CPU thread budget')
+        if self.boundary_origin not in ('pivot_zero','initial_position'):raise ValueError('unknown boundary coordinate origin')
         if 0<self.sampling.guide_steps<3:raise ValueError('main guidance must include at least two nonfinal steps')
 
 
-def boundary_codec(robot,snapshot,duration,n=24):
+def boundary_codec(robot,snapshot,duration,n=24,origin='pivot_zero'):
     d=robot.restore(snapshot);q=robot.Bplus@d.qpos[robot.qpos_ids];v=robot.Bplus@d.qvel[robot.dof_ids]
     # Declared baseline template: fixed initial q/v/a; terminal v/a zero,
     # terminal joint position unconstrained. Dynamic a0 policy added with M6.
     bc=[Boundary(0,k,tuple(range(17)),tuple(q if k==0 else v if k==1 else np.zeros(17))) for k in (0,1,2)]
     bc += [Boundary(duration,k,tuple(range(17)),(0.,)*17) for k in (1,2)]
-    return BoundaryCodec(n,17,duration,bc)
+    return BoundaryCodec(n,17,duration,bc,origin=origin)
 
 
 def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager',collision_aggregation='pair_mean',joint_peak_penalty=False):
     """All candidates remain in the denominator, including numerical failures."""
     total_start=time.perf_counter();torch.set_num_threads(budget.cpu_threads);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
-    if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!='pivot_zero':raise ValueError('BOUNDARY_ORIGIN_NOT_ENABLED_IN_MAIN')
+    if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!=budget.boundary_origin:raise ValueError('BOUNDARY_ORIGIN_MISMATCH')
     if checkpoint.get('update',0)<1 or checkpoint.get('training_config',{}).get('scope')=='SOFTWARE_TEST':raise ValueError('MAIN_PLANNER_REQUIRES_TRAINED_PRIOR')
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
-    codec=boundary_codec(robot,initial,task.duration,budget.control_points)
+    codec=boundary_codec(robot,initial,task.duration,budget.control_points,origin=budget.boundary_origin)
     if len(checkpoint['mean'])!=codec.free_dim:raise ValueError('CHECKPOINT_BOUNDARY_TEMPLATE_MISMATCH')
     tree=DifferentiableTree(robot)
     compile_seconds=0.

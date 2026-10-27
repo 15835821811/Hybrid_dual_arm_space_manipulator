@@ -22,7 +22,7 @@ def run(output,config):
     manifest=json.loads((root/'planning_manifest.json').read_text())
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('MASS_ROWS_CHECKPOINT_MISMATCH')
-    r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'])
+    r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
     with np.load(root/'candidate_000/denoising.npz') as data:initial=data['clean'][-1].copy()
     mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);rows=[];reference=None
     compiled_comparison=config.get('compiled_comparison',False)

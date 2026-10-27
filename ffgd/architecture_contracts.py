@@ -63,7 +63,7 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
         manifest={} if manifest is None else manifest
         intervals=manifest.get('budget',{}).get('intervals',32)
         energy=MultiSpaceEnergy(prop,codec,Geometry(robot),task,intervals)
-        other_codec=api.boundary_codec(other,other_snapshot,other_task.duration,codec.n)
+        other_codec=api.boundary_codec(other,other_snapshot,other_task.duration,codec.n,origin=codec.origin)
         alternate=MultiSpaceEnergy(other_prop,other_codec,Geometry(other),other_task,intervals)
         for objective in (energy,alternate):
             objective.weights.update(manifest.get('guide_weights',{}))

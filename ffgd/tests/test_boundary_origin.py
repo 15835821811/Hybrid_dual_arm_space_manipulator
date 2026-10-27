@@ -35,8 +35,8 @@ def test_new_origin_cannot_silently_fill_missing_initial_state():
         BoundaryCodec(8,2,2.,[Boundary(0,0,(0,),(1.,))],origin='initial_position')
 
 
-def test_experimental_origin_weights_cannot_enter_unmigrated_main(tmp_path,monkeypatch):
+def test_coordinate_origin_mismatch_cannot_silently_decode_weights(tmp_path,monkeypatch):
     from ffgd import api
     monkeypatch.setattr(api,'load_model',lambda *args:(None,{'dataset_manifest':{'boundary_origin':'initial_position'}},{}))
-    with pytest.raises(ValueError,match='BOUNDARY_ORIGIN_NOT_ENABLED_IN_MAIN'):
+    with pytest.raises(ValueError,match='BOUNDARY_ORIGIN_MISMATCH'):
         api.plan(None,None,None,'unused',api.PlanningBudget(),{},tmp_path)

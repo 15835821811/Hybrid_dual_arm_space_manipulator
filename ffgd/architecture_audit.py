@@ -71,7 +71,7 @@ def audit(path,config):
         model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
         if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('AUDIT_CHECKPOINT_MISMATCH')
         with np.load(root/f'candidate_{index:03d}'/'denoising.npz') as d:z=checkpoint['mean']+checkpoint['scale']*d['clean'][step]
-        codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points']);tree=DifferentiableTree(r);g=Geometry(r)
+        codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'));tree=DifferentiableTree(r);g=Geometry(r)
         from .architecture_contracts import static_contract,semantic_equivalence
         contract=static_contract(r,snapshot,task,codec)
         semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)

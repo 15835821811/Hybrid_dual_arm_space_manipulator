@@ -26,7 +26,7 @@ def _run(path,config):
     manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('DIAGNOSTIC_CHECKPOINT_MISMATCH')
-    r,snapshot,task,problem=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,24)
+    r,snapshot,task,problem=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
     tree=DifferentiableTree(r)
     tree.use_momentum_mass_rows=config.get('mass_rows',False)
     if config.get('compiled_backend'):

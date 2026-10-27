@@ -112,7 +112,7 @@ def execute_selected(path,planning_directory,config=None):
     manifest=json.loads((planning_directory/'planning_manifest.json').read_text(encoding='utf-8'));profile=manifest['profile']
     with np.load(folder/'candidate.npz') as data:candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
     if candidate.identity!=planned['records'][index]['identity']:raise ValueError('SELECTED_CANDIDATE_HASH_CHANGED')
-    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control));prop=Propagator(DifferentiableTree(r),snapshot)
+    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'));prop=Propagator(DifferentiableTree(r),snapshot)
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(path/'validation_before_execution.json',validation)
     if validation['status']!='PLAN_VALID':return dict(passed=False,status='PRE_EXECUTION_REJECTED',validation=validation)
