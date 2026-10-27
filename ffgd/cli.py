@@ -75,7 +75,7 @@ def main(argv=None):
         from pathlib import Path
         if not args.config:p.error('guard-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        return unit('guard_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,physical_energy_gradient_passes=4))
+        return unit('guard_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=300,physical_energy_gradient_jacobian_passes=4))
     if args.command=='plan':
         from .problem_io import load_problem,planning_config
         from .api import plan

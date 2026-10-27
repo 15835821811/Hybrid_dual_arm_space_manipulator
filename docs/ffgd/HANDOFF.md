@@ -152,3 +152,5 @@ already-loaded forbidden calls in both backends and whole-experiment abort
 after an architecture violation instead of treating it as a failed seed.
 After V5: if valid execute/replay; then consider guard performance diagnostic
 before the minimum-five-candidate evaluations. Do not run competing heavy jobs.
+
+Full software regression20261027T063930_software_dd8049 passed34tests. Guard performance diagnostic now includes exact batched task Jacobians as well as full energies/gradients, four reversed-order passes,300s bounded budget; still NOT_RUN and default backend remains profile.
