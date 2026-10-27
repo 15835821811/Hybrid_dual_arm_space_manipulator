@@ -35,7 +35,7 @@ def rotation_log(R,angle=None):
 
 
 class MultiSpaceEnergy:
-    def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean',joint_peak_penalty=False):
+    def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean',joint_peak_penalty=False,task_objective='center_squared'):
         if codec.duration!=task.duration:raise ValueError('time contract mismatch')
         self.p,self.codec,self.geometry,self.task=propagator,codec,geometry,task
         self.grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[x.time for x in task.poses]])
@@ -46,6 +46,8 @@ class MultiSpaceEnergy:
         if collision_aggregation not in ('pair_mean','pair_mean_plus_max'):raise ValueError('unknown collision aggregation')
         self.collision_aggregation=collision_aggregation
         self.joint_peak_penalty=joint_peak_penalty
+        if task_objective not in ('center_squared','tolerance_squared_hinge'):raise ValueError('unknown task objective')
+        self.task_objective=task_objective
 
     def evaluate(self,z,return_path=False):
         out=self.p.rollout(self.codec,z,grid=self.grid);tree=self.p.tree;r=self.p.robot
@@ -79,11 +81,15 @@ class MultiSpaceEnergy:
                 body=r.tips[target.tip];pos=k['position'][body]
                 if target.tip==0:pos=pos+k['rotation'][body]@tensor([.0475,0,0])
                 if target.position_enabled:
-                    residual=(pos-tensor(target.position))/target.position_tolerance;task=task+residual.square().sum()
+                    residual=(pos-tensor(target.position))/target.position_tolerance
+                    task=task+(hinge(torch.linalg.vector_norm(residual)-1) if self.task_objective=='tolerance_squared_hinge' else residual.square().sum())
+                    # The preconditioner retains the raw target Jacobian even
+                    # inside tolerance; it is a metric, not the loss gradient.
                     if self.collect_task_residual:task_residuals.append(residual)
                 if target.rotation_enabled:
                     R=tensor(target.rotation).T@k['rotation'][body];angle=rotation_angle(R)
-                    task=task+(angle/target.rotation_tolerance)**2
+                    normalized=angle/target.rotation_tolerance
+                    task=task+(hinge(normalized-1) if self.task_objective=='tolerance_squared_hinge' else normalized**2)
                     if self.collect_task_residual:task_residuals.append(rotation_log(R,angle)/target.rotation_tolerance)
         q,qd,qdd=out['q'],out['qd'],out['qdd']
         joint=hinge((tensor(r.lower)-q)/(tensor(r.upper-r.lower))).mean(-1)+hinge((q-tensor(r.upper))/tensor(r.upper-r.lower)).mean(-1)
@@ -110,6 +116,7 @@ class MultiSpaceEnergy:
         self.last_diagnostics=dict(grid_points=len(self.grid),all_eligible_pairs=len(self.geometry.pairs),
                                    collision_aggregation=self.collision_aggregation,
                                    joint_peak_penalty=self.joint_peak_penalty,
+                                   task_objective=self.task_objective,
                                    support_pair_evaluations=support_pairs,broadphase_pair_evaluations=len(self.grid)*len(self.geometry.pairs),
                                    mass_evaluations=3*len(self.grid)-1,
                                    minimum_proxy_gap=float(torch.stack(minima).min().detach()),
@@ -142,8 +149,12 @@ class MultiSpaceEnergy:
                 if t!=target.time:continue
                 body=r.tips[target.tip];R=d.xmat[body].reshape(3,3);pos=d.xpos[body].copy()
                 if target.tip==0:pos+=R@np.array([.0475,0,0])
-                if target.position_enabled:task+=np.sum(((pos-target.position)/target.position_tolerance)**2)
-                if target.rotation_enabled:task+=(Rotation.from_matrix(target.rotation.T@R).magnitude()/target.rotation_tolerance)**2
+                if target.position_enabled:
+                    normalized=np.linalg.norm(pos-target.position)/target.position_tolerance
+                    task+=h(normalized-1) if self.task_objective=='tolerance_squared_hinge' else normalized**2
+                if target.rotation_enabled:
+                    normalized=Rotation.from_matrix(target.rotation.T@R).magnitude()/target.rotation_tolerance
+                    task+=h(normalized-1) if self.task_objective=='tolerance_squared_hinge' else normalized**2
         joint=h((r.lower-q)/(r.upper-r.lower)).mean(-1)+h((q-r.upper)/(r.upper-r.lower)).mean(-1)
         joint+=h(abs(qd)/r.spec.planner_velocity_limits-1).mean(-1)+h(abs(qdd)/r.spec.planner_acceleration_limits-1).mean(-1)
         limited=m.jnt_limited[r.joints].astype(bool);limits=m.jnt_range[r.joints][limited];qa=q@r.B.T

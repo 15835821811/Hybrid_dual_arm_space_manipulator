@@ -26,7 +26,7 @@ def run(output,config):
     tree.use_batched_bodyframe_momentum=manifest.get('physics_backend') in ('batched_bodyframe','batched_full_path')
     tree.use_batched_path_physics=manifest.get('physics_backend')=='batched_full_path'
     peak=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False))
-    energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,collision_aggregation=aggregation,joint_peak_penalty=peak)
+    energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,collision_aggregation=aggregation,joint_peak_penalty=peak,task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')))
     energy.weights.update(manifest.get('guide_weights',{}))
     energy.weights.update(config.get('guide_weights',{}))
     candidate_index=int(config.get('candidate_index',0))
@@ -53,6 +53,7 @@ def run(output,config):
             check_budget();proposal=x0-(2.**(-trial))*delta.numpy();z=checkpoint['mean']+checkpoint['scale']*proposal
             after=energy.native_evaluate(z);C=codec.decode(z);spline=BSpline(knots(codec.n),C,3)
             trials.append(dict(line_scale=2.**(-trial),energies=after,weighted_before=before,accepted=bool(after['total']<=before),
+                               planner_position_hull_violation_rad=float(np.maximum(C-r.upper,r.lower-C).max()),
                                velocity_hull_ratio=float(np.max(abs(spline.derivative(1).c)/task.duration/r.spec.planner_velocity_limits)),
                                acceleration_hull_ratio=float(np.max(abs(spline.derivative(2).c)/task.duration**2/r.spec.planner_acceleration_limits))))
             if after['total']<=before:break
@@ -62,6 +63,7 @@ def run(output,config):
     return dict(passed=value_error<1e-6,scope='bounded weight-sensitivity diagnostic; no plan returned, repaired or executed',
                 source_run=str(root),native_value_relative_error=value_error,original_terms=values,
                 collision_aggregation=aggregation,
+                task_objective=energy.task_objective,
                 joint_peak_penalty=peak,candidate_index=candidate_index,
                 gradient_norms={name:float(torch.linalg.vector_norm(g)) for name,g in gradients.items()},
                 preconditioned_gradient_norms={name:float(torch.linalg.vector_norm(torch.cholesky_solve(g[:,None],factor))) for name,g in gradients.items()},
