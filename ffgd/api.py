@@ -92,6 +92,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     atomic_json(output/'planning_manifest.json',manifest)
     np.savez_compressed(output/'initial_state.npz',state=initial.state,mask=initial.mask,model_hash=initial.model_hash)
     for index,seed in enumerate(budget.seeds):
+        candidate_start=time.perf_counter()
         folder=output/f'candidate_{index:03d}';folder.mkdir(exist_ok=False)
         record=dict(index=index,seed=seed,status='STARTED',sampled=False,validated=False)
         atomic_json(folder/'candidate.json',record)
@@ -161,7 +162,10 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
             import traceback
             (folder/'failure.txt').write_text(traceback.format_exc(),encoding='utf-8')
             record.update(status='FAILED_NUMERICAL' if 'BUDGET' not in str(error) else 'INCOMPLETE_BUDGET',error=str(error))
-        record['elapsed_seconds']=time.perf_counter()-start;records.append(record);atomic_json(folder/'candidate.json',record)
+        record['candidate_wall_seconds']=time.perf_counter()-candidate_start
+        record['elapsed_seconds']=time.perf_counter()-start
+        record['cumulative_wall_seconds']=record['elapsed_seconds']
+        records.append(record);atomic_json(folder/'candidate.json',record)
         atomic_json(output/'progress.json',dict(completed=len(records),requested=len(budget.seeds),valid=len(valid)))
         print(json.dumps(dict(candidate=index,seed=seed,status=record['status'],elapsed_seconds=record['elapsed_seconds'])),flush=True)
     valid.sort(key=lambda value:(value[0],value[1]))

@@ -62,7 +62,7 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
         report['input_unchanged']=True
         r.verify_identity()
         return report
-    grid,xs,vs=last;d=mujoco.MjData(m);min_clearance=10.;max_torque=0.;base_residual=0.;task_errors=[];momentum_linear=0.;momentum_angular=0.
+    grid,xs,vs=last;d=mujoco.MjData(m);min_clearance=10.;minimum_geometry_location=None;max_torque=0.;base_residual=0.;task_errors=[];momentum_linear=0.;momentum_angular=0.
     from .propagation import native_subtree_momentum
     accelerations=codec.evaluate(z,grid,2)
     distance_queries=0
@@ -71,7 +71,10 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
         momentum=native_subtree_momentum(r,d,forward=False)-propagator.H.numpy()
         momentum_linear=max(momentum_linear,float(np.linalg.norm(momentum[:3])))
         momentum_angular=max(momentum_angular,float(np.linalg.norm(momentum[3:])))
-        scan=geometry.native_scan(d);min_clearance=min(min_clearance,scan['minimum'])
+        scan=geometry.native_scan(d)
+        if scan['minimum']<min_clearance:
+            min_clearance=scan['minimum'];minimum_geometry_location=dict(time=float(t),pair=scan['pair'],
+                geom_names=[m.geom(g).name for g in scan['pair']] if scan['pair'] is not None else [])
         distance_queries+=scan['queries']
         M=r.mass(d);h=d.qfrc_bias-d.qfrc_passive;a,b=r.dof_ids,r.base_dofs
         aa=r.B@accelerations[i];ab=-np.linalg.solve(M[np.ix_(b,b)],M[np.ix_(b,a)]@aa+h[b])
@@ -90,6 +93,7 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
                  world_momentum=momentum_linear<=profile['momentum_linear_kg_m_s'] and momentum_angular<=profile['momentum_angular_kg_m2_s'])
     failures=[k for k,v in gates.items() if not v]
     report.update(status='PLAN_VALID' if not failures else 'REJECTED',failures=failures,minimum_clearance=min_clearance,
+                  minimum_geometry_location=minimum_geometry_location,
                   max_nominal_torque_ratio=max_torque,base_residual=base_residual,task_errors=task_errors,
                   continuous_time_collision_proof=False,grid_points=len(grid),output_candidate_hash=candidate.identity)
     report.update(momentum_linear=momentum_linear,momentum_angular=momentum_angular)
