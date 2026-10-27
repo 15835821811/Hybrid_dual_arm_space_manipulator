@@ -34,7 +34,7 @@ def _run(path,config):
         compile_tree(tree)
     aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
     joint_peak=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False))
-    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation,joint_peak_penalty=joint_peak)
+    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation,joint_peak_penalty=joint_peak,task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')))
     energy.weights.update(manifest.get('guide_weights',{}))
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
@@ -49,7 +49,9 @@ def _run(path,config):
     J=None;residual_energy_error=None
     if config.get('task_metric'):
         residual=energy.last_task_residual
-        residual_energy_error=float(abs(residual.square().sum()-terms['task']).detach())
+        # The raw pose Jacobian remains the metric in a tolerance interior;
+        # only the exact-center objective equals its squared residual norm.
+        if energy.task_objective=='center_squared':residual_energy_error=float(abs(residual.square().sum()-terms['task']).detach())
         from .guidance_metric import residual_jacobian
         J=residual_jacobian(residual,x,lambda count,total:atomic_json(path/'derivative_progress.json',dict(rows=count,total=total,seconds=time.perf_counter()-start)),config.get('jacobian_batch_size',1))
     if stage!=metric_stage:
@@ -111,5 +113,6 @@ def _run(path,config):
                 jit_optimize=config.get('jit_optimize',True),compiled_backend=config.get('compiled_backend',False),
                 collision_aggregation=aggregation,
                 joint_peak_penalty=joint_peak,
+                task_objective=energy.task_objective,metric_uses_raw_pose_residual=True,
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')

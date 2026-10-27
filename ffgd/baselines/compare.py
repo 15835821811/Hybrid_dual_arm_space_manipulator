@@ -111,7 +111,7 @@ def run(output,config):
         tree.use_batched_path_physics=planning.get('physics_backend')=='batched_full_path'
     elif planning.get('physics_backend','eager')!='eager':raise ValueError('uncalibrated comparison backend')
     prop=Propagator(tree,snapshot);geometry=Geometry(r)
-    energy=MultiSpaceEnergy(prop,codec,geometry,task,budget.intervals,collect_task_residual=True,collision_aggregation=planning.get('collision_aggregation','pair_mean'),joint_peak_penalty=planning.get('joint_peak_penalty',False))
+    energy=MultiSpaceEnergy(prop,codec,geometry,task,budget.intervals,collect_task_residual=True,collision_aggregation=planning.get('collision_aggregation','pair_mean'),joint_peak_penalty=planning.get('joint_peak_penalty',False),task_objective=planning.get('task_objective','center_squared'))
     energy.weights.update(planning.get('guide_weights',{}))
     mean=tensor(mean_array);scale=tensor(scale_array)
     metric=acceleration_metric(codec,scale_array,r.spec.planner_acceleration_limits,energy.grid,budget.sampling.acceleration_metric_weight)
@@ -127,7 +127,7 @@ def run(output,config):
     atomic_json(output/'planning_manifest.json',dict(method=method,comparison_only=True,budget=asdict(budget),physical_budget=limits,
         checkpoint=identity,shared_train_scaler=method=='D_POST_OPTIMIZATION',learned_network_used=method=='D_POST_OPTIMIZATION',profile=profile,
         free_coordinate_scaling='TRAIN_ONLY_DIAGONAL' if method=='D_POST_OPTIMIZATION' else 'PHYSICAL_ORTHONORMAL_FREE_COORDINATES',
-        guide_weights=energy.weights,collision_aggregation=energy.collision_aggregation,joint_peak_penalty=energy.joint_peak_penalty,physics_backend=planning.get('physics_backend','eager'),
+        guide_weights=energy.weights,collision_aggregation=energy.collision_aggregation,joint_peak_penalty=energy.joint_peak_penalty,task_objective=energy.task_objective,physics_backend=planning.get('physics_backend','eager'),
         robot_model_hash=r.model_hash,robot_physical_hash=r.physical_hash,scene_hash=r.scene.identity,
         timing_includes_setup_and_network=True,learning_benefit_status='NOT_RUN'))
     records=[];valid=[]

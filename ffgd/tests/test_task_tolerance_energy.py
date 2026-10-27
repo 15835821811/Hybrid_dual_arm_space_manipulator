@@ -22,7 +22,7 @@ def test_tolerance_loss_native_agreement_and_interior_gradient():
     for displacement in (0.,.002,.008):
         target=PoseConstraint(4.,0,position+np.array([displacement,0,0]),rotation,position_tolerance=.005,rotation_enabled=False)
         task=TaskSpec(4.,(target,))
-        energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=2,task_objective='tolerance_squared_hinge')
+        energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=2,task_objective='tolerance_squared_hinge',collect_task_residual=True)
         z=tensor(z0).requires_grad_();value=energy.evaluate(z)['task']
         gradient=torch.autograd.grad(value,z)[0]
         expected=max(displacement/.005-1,0)**2
@@ -30,5 +30,6 @@ def test_tolerance_loss_native_agreement_and_interior_gradient():
         assert abs(energy.native_evaluate(z0)['task']-expected)<1e-9
         if displacement<.005:assert torch.count_nonzero(gradient)==0
         else:assert torch.linalg.vector_norm(gradient)>1e-6
+        if displacement==.002:assert torch.linalg.vector_norm(energy.last_task_residual)>.39
         legacy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=2)
         assert abs(legacy.native_evaluate(z0)['task']-(displacement/.005)**2)<1e-9

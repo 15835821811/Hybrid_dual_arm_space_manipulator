@@ -91,6 +91,7 @@ def audit(path,config):
             energy.weights.update(manifest.get('guide_weights',{}))
             energy.collision_aggregation=manifest.get('collision_aggregation','pair_mean')
             energy.joint_peak_penalty=manifest.get('joint_peak_penalty',False)
+            energy.task_objective=manifest.get('task_objective','center_squared')
         ablations=[]
         with torch.no_grad():
             before={k:float(v) for k,v in base.evaluate(tensor(z)).items()}

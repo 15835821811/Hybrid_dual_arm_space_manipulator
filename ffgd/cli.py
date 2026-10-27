@@ -84,7 +84,7 @@ def main(argv=None):
         from pathlib import Path
         if not args.config:p.error('weight-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        return unit('weight_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,weight_profiles=len(config.get('constraint_weights',[1,10,100,1000]))))
+        return unit('weight_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,weight_profiles=len(config.get('constraint_weights',[1,10,100,1000]))*len(config.get('step_caps',[None]))))
     if args.command=='guard-diagnostic':
         from .calibration_guard import run
         from pathlib import Path
@@ -135,7 +135,7 @@ def main(argv=None):
                     problem['initial']={'snapshot_file':'initial_state.npz'}
                     atomic_json(path/'problem.json',problem)
                     profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
-                    candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'),config.get('collision_aggregation','pair_mean'),config.get('joint_peak_penalty',False))
+                    candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'),config.get('collision_aggregation','pair_mean'),config.get('joint_peak_penalty',False),config.get('task_objective','center_squared'))
             except Exception as error:
                 from .architecture_guard import ArchitectureViolation
                 result_file=path/'planning_result.json'

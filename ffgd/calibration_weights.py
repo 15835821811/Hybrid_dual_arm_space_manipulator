@@ -1,5 +1,6 @@
 """One-step multi-space weight sensitivity at a saved failed sample, not a solver."""
 import json
+from itertools import product
 from pathlib import Path
 import numpy as np
 import torch
@@ -39,13 +40,16 @@ def run(output,config):
     value_error=float(max(abs(values[k]-oracle[k])/max(1.,abs(oracle[k])) for k in oracle))
     metric=acceleration_metric(codec,checkpoint['scale'],r.spec.planner_acceleration_limits,energy.grid,manifest['budget']['sampling']['acceleration_metric_weight'])+J.T@J
     factor=torch.linalg.cholesky(metric);jac=tensor(codec.N*checkpoint['scale'][None,:]);budget=manifest['budget']['sampling'];rows=[];proposals=[]
-    for weight in config.get('constraint_weights',[1.,10.,100.,1000.]):
+    profiles=list(product(config.get('constraint_weights',[1.,10.,100.,1000.]),config.get('step_caps',[budget.get('max_step_coefficient')])))
+    if not profiles or len(profiles)>8:raise ValueError('diagnostic must declare one to eight fixed profiles')
+    for weight,cap in profiles:
         if not np.isfinite(weight) or weight<=0:raise ValueError('invalid diagnostic weight')
+        if cap is not None and (not np.isfinite(cap) or cap<=0):raise ValueError('invalid diagnostic coefficient cap')
         check_budget();energy.weights.update(collision=weight,joint=weight,actuator=weight)
         gradient=sum(energy.weights[k]*g for k,g in gradients.items());before=sum(energy.weights[k]*values[k] for k in energy.weights)
         direction=torch.cholesky_solve(gradient[:,None],factor).squeeze(1)
-        coefficient=budget['step_size']*before/max(float(gradient@direction),1e-30)
-        if budget.get('max_step_coefficient') is not None:coefficient=min(coefficient,budget['max_step_coefficient'])
+        uncapped=budget['step_size']*before/max(float(gradient@direction),1e-30)
+        coefficient=uncapped if cap is None else min(uncapped,cap)
         delta=coefficient*direction;delta*=min(1.,budget['max_update_norm']/max(float(torch.linalg.vector_norm(delta)),1e-30))
         delta*=min(1.,budget['max_control_change']/max(float(torch.max(abs(jac@delta))),1e-30))
         trials=[]
@@ -57,7 +61,10 @@ def run(output,config):
                                velocity_hull_ratio=float(np.max(abs(spline.derivative(1).c)/task.duration/r.spec.planner_velocity_limits)),
                                acceleration_hull_ratio=float(np.max(abs(spline.derivative(2).c)/task.duration**2/r.spec.planner_acceleration_limits))))
             if after['total']<=before:break
-        rows.append(dict(constraint_weight=weight,trials=trials,step_coefficient=coefficient));proposals.append(proposal)
+        rows.append(dict(constraint_weight=weight,max_step_coefficient=cap,trials=trials,step_coefficient=coefficient,
+                         uncapped_step_coefficient=uncapped,directional_descent=float(gradient@direction),
+                         proposed_normalized_norm=float(torch.linalg.vector_norm(delta)),
+                         proposed_maximum_control_change=float(torch.max(abs(jac@delta)))));proposals.append(proposal)
         atomic_json(output/'weight_rays.json',rows)
     np.savez_compressed(output/'diagnostic_inputs.npz',original_clean=x0,one_step_proposals=proposals,**{name:g.numpy() for name,g in gradients.items()})
     return dict(passed=value_error<1e-6,scope='bounded weight-sensitivity diagnostic; no plan returned, repaired or executed',
