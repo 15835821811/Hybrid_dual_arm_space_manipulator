@@ -26,9 +26,13 @@ def run(output,config):
     mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);rows=[];reference=None
     compiled_comparison=config.get('compiled_comparison',False)
     modes=('eager_mass_rows','compiled_mass_rows','compiled_mass_rows','eager_mass_rows') if compiled_comparison else ('eager','eager_mass_rows','eager_mass_rows','eager')
+    if config.get('bodyframe_comparison'):
+        if compiled_comparison:raise ValueError('compare one backend change at a time')
+        modes=('eager_mass_rows','batched_bodyframe','batched_bodyframe','eager_mass_rows')
     for mode in modes:
         active=mode!='eager'
         check_budget();tree=DifferentiableTree(r);tree.use_momentum_mass_rows=active
+        tree.use_batched_bodyframe_momentum=mode=='batched_bodyframe'
         compile_seconds=0.
         if mode=='compiled_mass_rows':
             from .compiled_physics import compile_tree

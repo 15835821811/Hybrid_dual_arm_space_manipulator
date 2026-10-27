@@ -10,7 +10,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m ffgd.cli')
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
-    t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','compiled'],required=True);t.add_argument('--samples',type=int)
+    t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','full-space-bodyframe','compiled'],required=True);t.add_argument('--samples',type=int)
     for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
@@ -161,7 +161,7 @@ def main(argv=None):
         if not args.run:p.error('replay requires --run execution-directory')
         return unit('independent_replay',lambda path:replay_saved(path,args.run),dict(max_wall_seconds=600))
     if args.command=='test':
-        if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space','full-space-peak') else 32
+        if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space','full-space-peak','full-space-bodyframe') else 32
         if args.samples<1:p.error('samples must be positive')
         if args.suite=='architecture':
             def software(path):
@@ -196,10 +196,11 @@ def main(argv=None):
         if args.suite=='feature-switch':
             from .calibration_feature_switch import run
             return unit('feature_switch',run,dict(max_wall_seconds=180,cases=1,epsilon_steps=6))
-        if args.suite in ('full-space','full-space-peak'):
+        if args.suite in ('full-space','full-space-peak','full-space-bodyframe'):
             from .calibration_constraints import energy_gradients
-            aggregation='pair_mean_plus_max' if args.suite=='full-space-peak' else 'pair_mean'
-            return unit('full_space_peak_gradients' if args.suite=='full-space-peak' else 'full_space_gradients',lambda path:energy_gradients(path,args.samples,24,collision_aggregation=aggregation),dict(max_wall_seconds=900,cases=args.samples,free_dim=323))
+            aggregation='pair_mean' if args.suite=='full-space' else 'pair_mean_plus_max'
+            name={'full-space':'full_space_gradients','full-space-peak':'full_space_peak_gradients','full-space-bodyframe':'full_space_bodyframe_gradients'}[args.suite]
+            return unit(name,lambda path:energy_gradients(path,args.samples,24,collision_aggregation=aggregation,bodyframe_backend=args.suite=='full-space-bodyframe'),dict(max_wall_seconds=900,cases=args.samples,free_dim=323))
         if args.suite=='compiled':
             from .calibration import physics
             from .calibration_constraints import energy_gradients

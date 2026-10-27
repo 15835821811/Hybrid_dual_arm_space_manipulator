@@ -180,3 +180,5 @@ V8原反例已启动20261027T075858_planning_e7658f，PID165984/create1793087938
 完整软件20261027T080753_software_8133f4通过44项。之后修复主方法与比较方法验收耗时越过墙钟上限后仍可能选择的计时缺口；保留物理validation但拒绝超预算选择。新增软件时间注入反例及基线测试4项通过，不算物理成功。V8仍使用启动快照，不能追认包含此修改。
 
 输入合同检查：任务/场景未知语义原已明确拒绝，无需重写。修复两项实际缺口：Robot.restore拒绝非完整mjSTATE_INTEGRATION快照，防止缺失速度/ctrl被默认清零；Pose/Box旋转正交检查明确rtol=0，避免默认1e-5相对松弛。8项适配/输入/原生中断控制重放测试通过，8个未改DEV配置仍合法；并非放宽验收或改变状态。完整回归继续。
+
+完整软件20261027T082101_software_768926通过47项（先于批量质量矩阵实验）。新的实验性Propagator.bodyframe_mass_rows利用浮动子树质量矩阵刚体变换等变性，在单位基座姿态批量计算全部机器人质量块；世界固定原点动量和基座速度显式变换，完整67路力矩仍原图。默认关闭，主API不接受此后端。3状态非零H/基座姿态原生速度及q/base梯度对照通过，质量行共2tests通过；首次int32 index_copy错误已events保留。下一步仅在当前V8结束后运行mass-rows-diagnostic --config configs/ffgd/bodyframe_equivalence_v8.json及test --suite full-space-bodyframe，未执行NOT_RUN。不得跳过完整能量/J/native FD校准启用。

@@ -74,6 +74,30 @@ class Propagator:
         v=torch.zeros(r.model.nv,dtype=q.dtype);v[b]=vb;v[a]=va
         return x,v
 
+    def bodyframe_mass_rows(self,coordinates):
+        """Exact base rows at identity base pose, batched over joint states.
+
+        The robot is a floating subtree; the separate target has zero coupling
+        to these rows. No bodies or columns are dropped. The physical momentum
+        and base velocities are transformed explicitly in velocity_from_rows.
+        This experimental path is off unless the tree flag is set.
+        """
+        r=self.robot
+        reference=self.qpos.clone()
+        reference[r.base_qpos]=tensor([0.,0.,0.,1.,0.,0.,0.])
+        positions=reference[None].expand(len(coordinates),-1).clone()
+        positions=positions.index_copy(1,torch.as_tensor(r.qpos_ids,dtype=torch.long),coordinates@self.tree.B.T)
+        return torch.vmap(lambda x:self.tree.mass_rows(x,r.base_dofs))(positions)
+
+    def velocity_from_rows(self,base,q,qd,rows):
+        r=self.robot;R=quat_matrix(base[3:]);P,L=self.H[:3],self.H[3:]
+        target=torch.cat((R.T@P,R.T@(L-torch.linalg.cross(base[:3],P))))
+        va=self.tree.B@qd
+        body_velocity=torch.linalg.solve(rows[:,r.base_dofs],target-rows[:,r.dof_ids]@va)
+        vb=torch.cat((R@body_velocity[:3],body_velocity[3:]))
+        v=torch.zeros(r.model.nv,dtype=q.dtype);v[r.base_dofs]=vb;v[r.dof_ids]=va
+        return self.state(base,q),v
+
     def rollout(self,codec,z,intervals=32,check_boundary=True,grid=None):
         times=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid,dtype=float)
         if times[0] != 0 or times[-1] != codec.duration or np.any(np.diff(times)<=0):raise ValueError('invalid propagation grid')
@@ -84,12 +108,16 @@ class Propagator:
             if np.max(abs(q[0].detach().numpy()-self.initial_q))>1e-10 or np.max(abs(qd[0].detach().numpy()-self.initial_v))>1e-10:
                 raise ValueError('REFERENCE_INITIAL_BOUNDARY_MISMATCH')
         base=self.base;xs=[];vs=[]
+        mass_rows=None
+        if getattr(self.tree,'use_batched_bodyframe_momentum',False):
+            mass_rows=self.bodyframe_mass_rows(torch.cat((q,qm)))
         for j in range(intervals+1):
-            x,v=self.velocity(base,q[j],qd[j]);xs.append(x);vs.append(v)
+            x,v=self.velocity(base,q[j],qd[j]) if mass_rows is None else self.velocity_from_rows(base,q[j],qd[j],mass_rows[j])
+            xs.append(x);vs.append(v)
             if j<intervals:
                 dt=times[j+1]-times[j]
                 bm=integrate_base(base,v[self.robot.base_dofs],dt/2)
-                _,v_mid=self.velocity(bm,qm[j],vm[j])
+                _,v_mid=self.velocity(bm,qm[j],vm[j]) if mass_rows is None else self.velocity_from_rows(bm,qm[j],vm[j],mass_rows[intervals+1+j])
                 base=integrate_base(base,v_mid[self.robot.base_dofs],dt)
         return dict(time=times,q=q,qd=qd,qdd=qdd,qpos=torch.stack(xs),velocity=torch.stack(vs))
 
