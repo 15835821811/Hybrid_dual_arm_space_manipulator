@@ -1,0 +1,32 @@
+{
+  "schema": "ffgd_planning_budget_v1",
+  "checkpoint": "E:/ffgd-core/artifacts/ffgd/runs/20261027T043312_training_711731/best.pt",
+  "profile": "configs/ffgd/numerical_profile_v1.json",
+  "device": "cuda",
+  "budget": {
+    "seeds": [
+      13001
+    ],
+    "control_points": 24,
+    "intervals": 32,
+    "max_wall_seconds": 1800,
+    "sampling": {
+      "steps": 60,
+      "guide_steps": 18,
+      "updates_per_step": 3,
+      "line_trials": 2,
+      "step_size": 1.0,
+      "max_update_norm": 1.0,
+      "max_control_change": 0.1,
+      "step_rule": "polyak",
+      "acceleration_metric_weight": 10.0
+    }
+  },
+  "purpose": "M4 fixed-seed root-cause revision: energy-scaled, full-rank metric guidance; three bounded updates across 18 denoising steps; no postprocessing.",
+  "physics_backend": "torchscript",
+  "evidence": [
+    "20261027T044229_guidance_diagnostic_28d753",
+    "20261027T044506_guidance_diagnostic_dcf601",
+    "20261027T044747_compiled_calibration_3c3723"
+  ]
+}

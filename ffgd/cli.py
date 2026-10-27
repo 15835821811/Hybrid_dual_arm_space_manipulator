@@ -10,8 +10,8 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m ffgd.cli')
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
-    t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','learning-checks','architecture-audit','plan','validate','execute','replay','benchmark','report','resume'):
+    t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','compiled'],required=True);t.add_argument('--samples',type=int)
+    for name in ('data','train','learning-checks','architecture-audit','guidance-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -43,6 +43,12 @@ def main(argv=None):
         if not args.config:p.error('architecture-audit requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('architecture_audit',lambda path:audit(path,config),dict(max_wall_seconds=600))
+    if args.command=='guidance-diagnostic':
+        from .calibration_guidance import run
+        from pathlib import Path
+        if not args.config:p.error('guidance-diagnostic requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('guidance_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,one_step_rays=5))
     if args.command=='plan':
         from .problem_io import load_problem,planning_config
         from .api import plan
@@ -58,7 +64,7 @@ def main(argv=None):
             from .architecture_guard import LegacySentinel
             from .orchestration import atomic_json
             with LegacySentinel() as sentinel:
-                candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'))
+                candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'))
             atomic_json(path/'architecture_sentinel.json',sentinel.report())
             return dict(passed=candidate is not None,**result)
         return unit('planning',planning,dict(max_wall_seconds=budget.max_wall_seconds+60,candidates=len(budget.seeds),steps=budget.sampling.steps))
@@ -113,6 +119,14 @@ def main(argv=None):
         if args.suite=='full-space':
             from .calibration_constraints import energy_gradients
             return unit('full_space_gradients',lambda path:energy_gradients(path,args.samples,24),dict(max_wall_seconds=900,cases=args.samples,free_dim=323))
+        if args.suite=='compiled':
+            from .calibration import physics
+            from .calibration_constraints import energy_gradients
+            def compiled(path):
+                (path/'physics').mkdir();(path/'gradients').mkdir()
+                a=physics(path/'physics',32,True);b=energy_gradients(path/'gradients',1,24,True)
+                return dict(passed=a['passed'] and b['passed'],physics=a,gradients=b,scope='optional exact-graph TorchScript CPU backend calibration')
+            return unit('compiled_calibration',compiled,dict(max_wall_seconds=600,native_cases=32,full_free_gradient_cases=1))
     p.error(f'{args.command} is NOT_IMPLEMENTED; follow earliest dependency in next')
 
 

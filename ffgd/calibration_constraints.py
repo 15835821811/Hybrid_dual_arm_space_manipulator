@@ -60,9 +60,13 @@ def geometry_audit(path,count=32):
                 limitations='piecewise differentiable; zero-distance degenerate witness explicitly rejected; feature switches not smooth')
 
 
-def energy_gradients(path,count=3,control_points=8):
+def energy_gradients(path,count=3,control_points=8,compiled_backend=False):
     torch.set_num_threads(1)
     r=Robot();tree=DifferentiableTree(r);geometry=Geometry(r);rng=np.random.default_rng(32026)
+    if compiled_backend:
+        from .compiled_physics import compile_tree
+        metadata=compile_tree(tree,path/'tree.pt')
+        (path/'compile.json').write_text(json.dumps({k:v for k,v in metadata.items() if k not in ('original','compiled')},indent=2))
     rows=[]
     for case in range(count):
         check_budget()

@@ -18,14 +18,17 @@ class SamplingBudget:
     step_size: float = .01
     max_update_norm: float = .1
     max_control_change: float = .02
+    step_rule: str = 'constant'
+    acceleration_metric_weight: float = 0.
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
         if not 1<=self.updates_per_step<=3 or not 1<=self.line_trials<=2:raise ValueError('invalid guidance budget')
         if self.guide_steps and (self.step_size<=0 or self.max_update_norm<=0 or self.max_control_change<=0):raise ValueError('invalid guidance scale')
+        if self.step_rule not in ('constant','polyak') or self.acceleration_metric_weight<0:raise ValueError('invalid guidance rule/metric')
 
 
-def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False):
+def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
     """One candidate, exactly the requested network calls; never adds seeds."""
     device=next(model.parameters()).device
     generator=torch.Generator(device=device).manual_seed(seed)
@@ -39,6 +42,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
     if mean.shape!=(free_dim,) or scale.shape!=(free_dim,) or bool((scale<=0).any()):raise ValueError('invalid reversible scaler')
     if budget.guide_steps and energy is None:raise ValueError('missing physical energy')
     trace=[];calls=0
+    metric_factor=None if metric is None else torch.linalg.cholesky(metric)
     model.eval()
     for index,k in enumerate(schedule):
         input_x=x.detach().clone()
@@ -62,7 +66,15 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                 if step_terms is None:step_terms={name:float(value.detach()) for name,value in terms.items()}
                 grad=torch.autograd.grad(terms['total'],variable)[0]
                 if not torch.isfinite(grad).all() or not torch.isfinite(terms['total']):raise ValueError('NONFINITE_GUIDANCE')
-                delta=budget.step_size*grad
+                direction=grad if metric_factor is None else torch.cholesky_solve(grad[:,None],metric_factor).squeeze(1)
+                directional_descent=float(grad@direction)
+                coefficient=budget.step_size
+                if budget.step_rule=='polyak':
+                    # All five energies are nonnegative. Their common lower bound
+                    # zero supplies a conservative energy-scaled step, with the
+                    # same two bounded acceptance trials as constant guidance.
+                    coefficient*=max(float(terms['total'].detach()),0.)/max(directional_descent,1e-30)
+                delta=coefficient*direction
                 delta=delta*min(1.,budget.max_update_norm/max(float(torch.linalg.vector_norm(delta)),1e-30))
                 before=float(terms['total'].detach());accepted=False;after=before;chosen=0.
                 physical_change=None
@@ -77,6 +89,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     if np.isfinite(trial_value) and trial_value<=before:
                         guided=proposal;after=trial_value;accepted=True;chosen=step;break
                 updates.append(dict(gradient_norm=float(torch.linalg.vector_norm(grad)),before=before,after=after,accepted=accepted,
+                                    preconditioned_gradient_norm=float(torch.linalg.vector_norm(direction)),directional_descent=directional_descent,step_coefficient=coefficient,step_rule=budget.step_rule,
                                     line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
                                     terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
                                     proposed_maximum_control_change=physical_change,

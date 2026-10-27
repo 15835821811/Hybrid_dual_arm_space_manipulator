@@ -47,16 +47,22 @@ def boundary_codec(robot,snapshot,duration,n=24):
     return BoundaryCodec(n,17,duration,bc)
 
 
-def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None):
+def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager'):
     """All candidates remain in the denominator, including numerical failures."""
-    torch.set_num_threads(1);output=Path(output);output.mkdir(parents=True,exist_ok=True)
+    total_start=time.perf_counter();torch.set_num_threads(1);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
     if checkpoint.get('update',0)<1 or checkpoint.get('training_config',{}).get('scope')=='SOFTWARE_TEST':raise ValueError('MAIN_PLANNER_REQUIRES_TRAINED_PRIOR')
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
     codec=boundary_codec(robot,initial,task.duration,budget.control_points)
     if len(checkpoint['mean'])!=codec.free_dim:raise ValueError('CHECKPOINT_BOUNDARY_TEMPLATE_MISMATCH')
-    tree=DifferentiableTree(robot);prop=Propagator(tree,initial);geometry=Geometry(robot)
+    tree=DifferentiableTree(robot)
+    compile_seconds=0.
+    if physics_backend=='torchscript':
+        from .compiled_physics import compile_tree
+        compile_seconds=compile_tree(tree,output/'compiled_tree.pt')['seconds']
+    elif physics_backend!='eager':raise ValueError('unknown physics backend')
+    prop=Propagator(tree,initial);geometry=Geometry(robot)
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals)
     if guide_weights is not None:
         if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
@@ -65,11 +71,15 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     for name in disabled_guide_terms:energy.weights[name]=0.
     tokens=encode_condition(robot,initial,task,prop.H.numpy())
     condition=normalize_condition(tokens[None],np.zeros((1,len(tokens)),bool),checkpoint,device)
-    start=time.perf_counter();records=[];valid=[]
+    from .guidance_metric import acceleration_metric
+    metric=acceleration_metric(codec,checkpoint['scale'],robot.spec.planner_acceleration_limits,energy.grid,budget.sampling.acceleration_metric_weight)
+    start=total_start;records=[];valid=[]
     manifest=dict(budget=asdict(budget),checkpoint=checkpoint_identity,robot_model_hash=robot.model_hash,
                   robot_physical_hash=robot.physical_hash,scene_hash=robot.scene.identity,geometry_policy_hash=geometry.policy_hash,
                   disabled_guide_terms=list(disabled_guide_terms),independent_validation_terms_disabled=[],cold_start=True,
                   guide_weights=energy.weights,
+                  physics_backend=physics_backend,compile_seconds=compile_seconds,setup_wall_seconds=time.perf_counter()-total_start,
+                  guidance_metric_condition=float(torch.linalg.cond(metric)),
                   method=('GUIDED_DIFFUSION_ABLATION' if disabled_guide_terms else 'GUIDED_DIFFUSION') if budget.sampling.guide_steps else 'LEARNED_PRIOR_WITHOUT_GUIDANCE')
     manifest['profile']=profile
     manifest['profile_hash']=hashlib.sha256(json.dumps(profile,sort_keys=True).encode()).hexdigest()
@@ -105,7 +115,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
             hook=model.register_forward_pre_hook(lambda model,args:actual_inputs.append(args[0].detach().cpu().numpy().copy()))
             try:
                 result=sample(model,condition,codec.free_dim,seed,budget.sampling,checked_energy,checkpoint['mean'],checkpoint['scale'],observer=observe,
-                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64),audit_inactive_energy=True)
+                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64),audit_inactive_energy=True,metric=metric)
             finally:
                 hook.remove();record['observed_network_calls']=len(actual_inputs)
                 record['physical_energy_evaluations']=energy_calls

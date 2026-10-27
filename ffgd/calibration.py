@@ -81,9 +81,13 @@ def gradients(path,count=3):
                 full_PROP_gate='NOT_RUN',full_GRAD_gate='NOT_RUN')
 
 
-def physics(path,count=32):
+def physics(path,count=32,compiled_backend=False):
     torch.set_num_threads(1)
     robot=Robot(); tree=DifferentiableTree(robot);m=robot.model;d=robot.new_data()
+    if compiled_backend:
+        from .compiled_physics import compile_tree
+        metadata=compile_tree(tree,path/'tree.pt')
+        (path/'compile.json').write_text(json.dumps({k:v for k,v in metadata.items() if k not in ('original','compiled')},indent=2))
     rng=np.random.default_rng(27102026)
     rows=[];start=time.perf_counter()
     for i in range(count):

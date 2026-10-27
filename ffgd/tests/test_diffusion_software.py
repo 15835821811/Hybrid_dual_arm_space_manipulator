@@ -48,3 +48,16 @@ def test_control_change_cap_and_complete_energy_audit():
         assert row['energy_status']=='MEASURED'
         assert np.max(abs(10*(row['guided']-row['clean'])))<=.005+1e-12
         for update in row['updates']:assert update['accepted_maximum_control_change']<=.005+1e-12
+
+
+def test_full_rank_metric_polyak_is_bounded_descent():
+    torch.set_num_threads(1);torch.manual_seed(18)
+    model=ConditionalDenoiser(max_free=20,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32));metric=torch.diag(torch.linspace(1,20,13,dtype=torch.float64))
+    def energy(x):return dict(total=((x-.3)@(metric@(x-.3)))/2)
+    budget=SamplingBudget(steps=5,guide_steps=3,updates_per_step=3,step_size=1.,step_rule='polyak',max_update_norm=1.)
+    result=sample(model,condition,13,2,budget,energy,metric=metric,control_jacobian=torch.eye(13,dtype=torch.float64))
+    for row in result['trace']:
+        for update in row['updates']:
+            assert update['directional_descent']>0 and update['accepted']
+            assert update['after']<update['before'] and np.isfinite(update['step_coefficient'])
