@@ -192,3 +192,6 @@ V8原生执行20261027T083007_selected_execution_77b070 PASSED：2500步/5s，�
 五候选首次启动20261027T083629_planning_47c9e8加载阶段FAILED，0候选生成/请求5分母保留。根因Windows没有os.O_ACCMODE，冷导入写pyc触发raw-fd审计分支。改为O_WRONLY|O_RDWR位掩码，仍拒绝未声明读取；12项哨兵回归通过。新增测试首次缺少ArchitectureViolation导入导致1失败/11通过，已修复并保留events。下一动作按原v9_eval5/free_translation配置重新启动，非换seed。
 
 当前五候选真实worker：20261027T083755_planning_bb2f7d，PID125388（启动时间和命令以state为准），v9_eval5/free_translation，正在运行，不能启动第二重型worker。49项完整软件20261027T083824_software_28a076通过；证据索引20261027T083957_evidence_report_a3ac5b一致。下次继续核实当前run，再只执行其最终预选的合格候选/重放，继续同版本arm_body和其他冻结DEV、实际ARCH；不得将单候选诊断当五候选任务完成。C/D集成smoke与compiled_equivalence_v8仍NOT_RUN，批量bodyframe已通过并优先采用。
+
+五候选free组已完成3/5：前两条PLAN_VALID，第3条(seed13003)仅acceleration拒绝，hull与guide网格峰值均1.57960176(关节3、t=.19047619s)，非时间漏采；final joint代价仅.0005274，均值稀释是待相关任务族共同诊断的机制。未执行/修复该候选，继续原5seed，后续无需补seed。
+执行验收补齐全保存状态(含末态)的q17/q67界、既有17轴速度/加速度及abs(B)映射67轴包络；加速度只在scratch上用已记录输入原生复算，不积分、不修改actual。末态安全检查前移；原控制器及保护保留。两个输入/中断重放回归通过。障碍执行只读补查20261027T091036_execution_state_audit_6084f1通过2501状态，速度比.47874/加速度比.77929，原结果文件不改。跟踪/流形额外硬阈值尚未冻结，M5仍NOT_RUN。现有validate --run <execution> --unit actual-states可复查；属于限60s只读检查，不启第二重型worker。

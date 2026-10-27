@@ -5,6 +5,41 @@ from scipy.spatial.transform import Rotation
 from .contracts import Snapshot
 
 
+def inspect_state_bounds(robot,bundle):
+    """Read-only all-state checks, including the final state and applied inputs.
+
+    The 67-axis derivative envelopes are induced by the existing 17-axis
+    limits and |B|, not newly asserted hardware speed ratings. Acceleration is
+    recomputed natively on scratch data with the recorded control for that step.
+    """
+    r=robot;m=r.model;limited=m.jnt_limited[r.joints].astype(bool);bounds=m.jnt_range[r.joints]
+    from .orchestration import check_budget
+    maxima=dict(planner_velocity_ratio=0.,mapped_q67_velocity_ratio=0.,planner_acceleration_ratio=0.,mapped_q67_acceleration_ratio=0.)
+    q17_ok=q67_ok=True
+    velocity_envelope=abs(r.B)@r.spec.planner_velocity_limits
+    acceleration_envelope=abs(r.B)@r.spec.planner_acceleration_limits
+    if len(bundle['states'])!=len(bundle['ctrl'])+1:raise ValueError('INCOMPLETE_INTEGRATION_INPUT_LEDGER')
+    for i,state in enumerate(bundle['states']):
+        if i%64==0:check_budget()
+        d=r.restore(Snapshot(r.model_hash,int(bundle['mask']),state))
+        low=d.qpos[r.qpos_ids];q=r.Bplus@low;v=d.qvel[r.dof_ids]
+        q17_ok=q17_ok and bool(np.all(q>=r.lower) and np.all(q<=r.upper))
+        q67_ok=q67_ok and bool(np.all(low[limited]>=bounds[limited,0]) and np.all(low[limited]<=bounds[limited,1]))
+        if i<len(bundle['ctrl']):
+            d.ctrl[:]=bundle['ctrl'][i];d.qfrc_applied[:]=bundle['qfrc_applied'][i];d.xfrc_applied[:]=bundle['xfrc_applied'][i]
+        mujoco.mj_forward(m,d);a=d.qacc[r.dof_ids]
+        values=dict(planner_velocity_ratio=float(np.max(abs(r.Bplus@v)/r.spec.planner_velocity_limits)),
+                    mapped_q67_velocity_ratio=float(np.max(abs(v)/velocity_envelope)),
+                    planner_acceleration_ratio=float(np.max(abs(r.Bplus@a)/r.spec.planner_acceleration_limits)),
+                    mapped_q67_acceleration_ratio=float(np.max(abs(a)/acceleration_envelope)))
+        for key,value in values.items():maxima[key]=max(maxima[key],value) if np.isfinite(value) else float('inf')
+    return dict(gates=dict(actual_q17=q17_ok,actual_q67=q67_ok,**{key:value<=1. for key,value in maxima.items()}),
+                maxima=maxima,states_checked=len(bundle['states']),includes_final_state=True,
+                derivative_limits_source='existing planner limits; q67 envelopes = abs(B) @ planner limits',
+                acceleration_observation='native scratch forward with each recorded applied input; final state uses last applied control',
+                actual_states_modified=False,tracking_manifold_thresholds='NOT_FROZEN')
+
+
 def inspect_actual(robot,bundle,summary,task,profile,replay_report):
     r=robot;m=r.model;dt=m.opt.timestep;tasks=[];states=bundle['states'];n=len(bundle['ctrl'])
     for target in task.poses:
@@ -19,6 +54,7 @@ def inspect_actual(robot,bundle,summary,task,profile,replay_report):
         pe=float(np.linalg.norm(pos-target.position));re=float(Rotation.from_matrix(target.rotation.T@R).magnitude())
         tasks.append(dict(time=target.time,tip=target.tip,position_m=pe,rotation_rad=re,
                           passed=(not target.position_enabled or pe<=target.position_tolerance) and (not target.rotation_enabled or re<=target.rotation_tolerance)))
+    bounds=inspect_state_bounds(r,bundle)
     gates=dict(native_completion=summary['status']=='FINISHED' and n==summary['planned_steps'],task=all(t['passed'] for t in tasks),
                physical_geometry=summary['min_clearance']>=profile['physical_geometry_clearance_m'],
                raw_torque=summary['raw_torque_ratio'] is not None and summary['raw_torque_ratio']<=1.,
@@ -26,8 +62,9 @@ def inspect_actual(robot,bundle,summary,task,profile,replay_report):
                world_angular_momentum=summary['angular_momentum_residual']<=profile['momentum_angular_kg_m2_s'],
                independent_replay=replay_report['max_state_abs']<=profile['replay_state_atol'],
                native_state_only=summary['state_writes_after_restore']==0)
+    gates.update(bounds['gates'])
     return dict(status='EXECUTION_VALID' if all(gates.values()) else 'FAILED',gates=gates,task_errors=tasks,
-                replay=replay_report,safety_enabled=True,task_based_cartesian_assist=False,
+                replay=replay_report,state_bounds=bounds,safety_enabled=True,task_based_cartesian_assist=False,
                 safety_interventions=dict(clipped_control_steps=summary.get('clipped_control_steps'),safety_abort=summary.get('safety_abort')),
                 scope='discrete timed poses; continuous hold/tracking not yet supported')
 

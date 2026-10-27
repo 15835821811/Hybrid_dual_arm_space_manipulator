@@ -52,7 +52,6 @@ def track(robot,snapshot,candidate,output,profile):
             checkpoint('execution_partial.npz')
             atomic_json(output/'execution_progress.json',dict(status='RUNNING',native_steps=len(controls),planned_steps=steps,candidate_hash=selected_hash))
         if status!='FINISHED':break
-        if i==steps:break
         if i%64==0:
             try:check_budget()
             except RuntimeError as error:
@@ -65,6 +64,7 @@ def track(robot,snapshot,candidate,output,profile):
             status='SAFETY_ABORT_JOINT';break
         if np.any(q17<r.lower) or np.any(q17>r.upper):
             status='SAFETY_ABORT_PLANNER_JOINT';break
+        if i==steps:break
         qd=basis(len(candidate.control),i*dt,candidate.duration,1)@candidate.control
         qdd=basis(len(candidate.control),i*dt,candidate.duration,2)@candidate.control
         applied,raw=command(r,data,q,qd,qdd)

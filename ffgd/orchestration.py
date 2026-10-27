@@ -54,7 +54,7 @@ def source_hash():
 
 def unit(name, callback, budget):
     global _deadline,_memory_limit
-    heavy=name not in ('software','evidence_report');lock=ORCH/'heavy_worker.lock'
+    heavy=name not in ('software','evidence_report','execution_state_audit');lock=ORCH/'heavy_worker.lock'
     process=psutil.Process();identity=dict(pid=os.getpid(),host=platform.node(),create_time=process.create_time(),command=process.cmdline())
     if heavy:
         if lock.exists():

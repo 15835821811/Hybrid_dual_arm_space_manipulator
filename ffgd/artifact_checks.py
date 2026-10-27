@@ -38,6 +38,22 @@ def replay_saved(output,execution_directory):
     if len(bundle['states'])!=len(bundle['ctrl'])+1:raise ValueError('INCOMPLETE_INTEGRATION_INPUT_LEDGER')
     np.testing.assert_array_equal(snapshot.state,bundle['initial_state'])
     report=replay(r,bundle,snapshot)
+    from .execution_acceptance import inspect_state_bounds
+    bounds=inspect_state_bounds(r,bundle)
     return dict(passed=report['max_state_abs']<=provenance['profile']['replay_state_atol'],source=str(root),replay=report,
+                actual_state_bounds=bounds,actual_state_bounds_passed=all(bounds['gates'].values()),
                 model_hash=r.model_hash,source_reports_modified=False,source_file=filename,
                 scope='replay of recorded inputs only; does not establish execution completion or task success')
+
+
+def validate_execution_states(output,execution_directory):
+    """Inspect immutable execution records without integrating or editing them."""
+    from .execution_acceptance import inspect_state_bounds
+    root=Path(execution_directory);provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
+    r,snapshot,task,problem=load_problem(Path(provenance['planning_directory'])/'problem.json')
+    with np.load(root/'execution.npz') as data:bundle={k:data[k] for k in data.files}
+    np.testing.assert_array_equal(snapshot.state,bundle['initial_state'])
+    report=inspect_state_bounds(r,bundle)
+    return dict(passed=all(report['gates'].values()),source=str(root),state_bounds=report,
+                source_reports_modified=False,native_integration_steps=0,
+                scope='saved actual position/velocity/applied-input acceleration bounds only; not a new execution or full M5 acceptance')

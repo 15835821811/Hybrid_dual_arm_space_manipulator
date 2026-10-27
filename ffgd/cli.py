@@ -153,8 +153,10 @@ def main(argv=None):
         if not args.run:p.error('execute requires --run planning-directory')
         return unit('selected_execution',lambda path:execute_selected(path,args.run),dict(max_wall_seconds=900))
     if args.command=='validate':
-        from .artifact_checks import validate_saved
+        from .artifact_checks import validate_saved,validate_execution_states
         if not args.run:p.error('validate requires --run planning-directory; optional --unit candidate-index')
+        if args.unit=='actual-states':
+            return unit('execution_state_audit',lambda path:validate_execution_states(path,args.run),dict(max_wall_seconds=60,native_integration_steps=0))
         return unit('independent_validation',lambda path:validate_saved(path,args.run,args.unit),dict(max_wall_seconds=600))
     if args.command=='replay':
         from .artifact_checks import replay_saved
