@@ -118,3 +118,11 @@ accelratio.581. Corrected prior collision energy.0286 with all2938pairs, so
 this is an active obstacle pressure task. No gate changed.
 Next/current command uses plan_profile_v4.json and arm_body_box.json, same
 seed13001/budget/guide weights. Check state for actual launch/PID.
+
+V4 actually started20261027T055956_planning_f9149f PID204764/create1793080794.5176945.
+Verify status. First guided steps reduce task energy strongly but collision
+penalty remains active. If final native geometry rejects, a bounded diagnostic
+CLI `weight-diagnostic --config configs/ffgd/weight_diagnostic_v4.json` is
+prepared (NOT_RUN), compares one step at the immutable final guided vector
+under4constraint weights; never returns/executes a repaired candidate.
+If V4 passes all native gates, skip that unnecessary diagnostic and execute it.
