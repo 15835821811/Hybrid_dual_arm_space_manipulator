@@ -96,6 +96,8 @@ def run(output,config):
     if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
     tree=DifferentiableTree(r)
     if planning.get('physics_backend','eager')=='eager_mass_rows':tree.use_momentum_mass_rows=True
+    elif planning.get('physics_backend')=='batched_bodyframe':
+        tree.use_momentum_mass_rows=True;tree.use_batched_bodyframe_momentum=True
     elif planning.get('physics_backend','eager')!='eager':raise ValueError('uncalibrated comparison backend')
     prop=Propagator(tree,snapshot);geometry=Geometry(r)
     energy=MultiSpaceEnergy(prop,codec,geometry,task,budget.intervals,collect_task_residual=True,collision_aggregation=planning.get('collision_aggregation','pair_mean'))

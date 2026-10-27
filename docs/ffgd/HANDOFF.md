@@ -186,3 +186,5 @@ V8原反例已启动20261027T075858_planning_e7658f，PID165984/create1793087938
 V8 20261027T075858_planning_e7658f已完成PASSED：相同冷seed13001/训练权重/冻结障碍任务/60x18x3预算，原生最小间隙+.003695668m，全部模型门通过，运行1833.8s。原失败V4-V7保留且不改判。严格入口哨兵无禁止调用。执行已发起（查state真实PID），随后单独重放。原反例通过不代表相关任务族、ARCH总门或五候选协议通过。下一阶段优先验证bodyframe批量后端以减少完整任务族成本；不启用未验证后端。
 
 V8原生执行20261027T083007_selected_execution_77b070 PASSED：2500步/5s，实际间隙+.003718868m，raw力矩比.09722，0裁剪/安全中止/状态注入，P/L残差.00019071/.00018755，实际流形偏差1.08e-6（M6仍待处理，不修改实际状态）。独立CLI重放20261027T083042_independent_replay_07157e PASSED，最大状态差0。M4仍RUNNING，相关任务族/五候选/完整ARCH未过。当前已发起bodyframe_equivalence_v8整路径校准，查state真实PID；主后端未启用。
+
+批量后端校准20261027T083121_mass_rows_diagnostic_d6884f通过：相同完整323维能量/gradient/J误差<=6.4e-16，反向顺序计时42.5/42.9s对11.6/10.6s。20261027T083343_full_space_bodyframe_gradients_56504b三例全五项活跃/8方向/3epsilon原生FD通过。主API现在显式支持batched_bodyframe；不会自动fallback。冻结plan_profile_v9_eval5.json：五seed13001..13005，所有8个DEV原hash不变，每候选60/18/3/2预算不变，总墙钟13500。先free_translation相关族，再arm_body及其余固定任务，所有候选保留；完整ARCH和M4仍未通过。
