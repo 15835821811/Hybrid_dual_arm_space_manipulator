@@ -17,7 +17,7 @@ from .propagation import Propagator
 from .geometry import Geometry
 from .costs import MultiSpaceEnergy
 from .contracts import TaskSpec,PoseConstraint
-from .orchestration import atomic_json,check_budget
+from .orchestration import atomic_json,check_budget,source_hash
 
 
 def audit(path,config):
@@ -28,6 +28,7 @@ def audit(path,config):
         result=json.loads((root/'planning_result.json').read_text(encoding='utf-8'))
         manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
         sentinel=json.loads((root/'architecture_sentinel.json').read_text(encoding='utf-8'))
+        unit_manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
         r,snapshot,task,problem=load_problem(root/'problem.json')
         pose_counts.add(len(task.poses));scene_hashes.add(manifest['scene_hash'])
         conditions.add(hashlib.sha256(json.dumps(problem['task'],sort_keys=True).encode()).hexdigest())
@@ -54,7 +55,8 @@ def audit(path,config):
                            energy_measured_every_step=all(row['energy_status']=='MEASURED' for row in trace))
             candidates.append(candidate)
             if selected_for_counterfactual is None and active:selected_for_counterfactual=(root,record['index'],active[0])
-        rows.append(dict(run=str(root),candidates=candidates,unique_noise=len(set(noise_hashes))==len(noise_hashes),
+        rows.append(dict(run=str(root),sampling_source_hash=unit_manifest['source_hash'],physics_backend=manifest.get('physics_backend'),
+                         candidates=candidates,unique_noise=len(set(noise_hashes))==len(noise_hashes),
                          runtime_sentinel_clear=not sentinel['forbidden_calls'] and sentinel['observed_ffgd_calls']>0,
                          file_audit_enforced=sentinel.get('file_audit_enforced',False),actual_methods_recorded=bool(sentinel.get('actual_methods')),
                          execution_called_during_planning=any(module in sentinel['modules'] for module in ('ffgd.execution','ffgd.execution_acceptance')),
@@ -70,7 +72,7 @@ def audit(path,config):
         codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points']);tree=DifferentiableTree(r);g=Geometry(r)
         from .architecture_contracts import static_contract,semantic_equivalence
         contract=static_contract(r,snapshot,task,codec)
-        semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model)
+        semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)
         atomic_json(path/'contracts.json',dict(static=contract,semantic=semantic))
         p=Propagator(tree,snapshot);base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
         changed=[]
@@ -80,6 +82,7 @@ def audit(path,config):
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
         obstacle=MultiSpaceEnergy(Propagator(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])
+        for energy in (base,goal,obstacle):energy.weights.update(manifest.get('guide_weights',{}))
         ablations=[]
         with torch.no_grad():
             before={k:float(v) for k,v in base.evaluate(tensor(z)).items()}
@@ -122,6 +125,7 @@ def audit(path,config):
         'ARCH_10':bool(execution_rows and contract and contract['controller_reference_only']) and not any(row['execution_called_during_planning'] for row in rows) and all(e['model_plan_valid'] and e['safety_enabled'] and not e['cartesian_assist'] and e['independent_replay'] for e in execution_rows)}
     return dict(passed=all(value is True for value in gates.values()),gates=gates,runs=rows,interventions=interventions,
                 tested_task_conditions=len(conditions),tested_pose_counts=sorted(pose_counts),tested_scenes=len(scene_hashes),
-                architecture_status='PARTIAL',engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
+                architecture_status='ARCHITECTURE_PASSED' if all(value is True for value in gates.values()) else 'PARTIAL',
+                analysis_source_hash=source_hash(),engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
                 contracts=contract,semantic_equivalence=semantic,executions=execution_rows,
                 limitation='Mechanism evidence only; learning advantage and final engineering completion are separate gates.')

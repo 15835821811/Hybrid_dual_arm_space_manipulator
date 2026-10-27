@@ -44,7 +44,7 @@ def static_contract(robot,snapshot,task,codec):
                 controller_reference_only=controller_reference_only,controller_parameters=command_parameters)
 
 
-def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoint,model):
+def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoint,model,manifest=None):
     """Renaming/metadata/object order must preserve both physics and network."""
     source_run=Path(source_run);value=json.loads((source_run/'problem.json').read_text(encoding='utf-8'))
     value['initial']={'snapshot_file':str((source_run/'initial_state.npz').resolve())}
@@ -60,9 +60,12 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
     with torch.no_grad():
         left=model(x,torch.tensor([100]),normalize_condition(tokens[None],mask,checkpoint,'cpu'))
         right=model(x,torch.tensor([100]),normalize_condition(other_tokens[None],mask,checkpoint,'cpu'))
-        energy=MultiSpaceEnergy(prop,codec,Geometry(robot),task)
+        manifest={} if manifest is None else manifest
+        intervals=manifest.get('budget',{}).get('intervals',32)
+        energy=MultiSpaceEnergy(prop,codec,Geometry(robot),task,intervals)
         other_codec=api.boundary_codec(other,other_snapshot,other_task.duration,codec.n)
-        alternate=MultiSpaceEnergy(other_prop,other_codec,Geometry(other),other_task)
+        alternate=MultiSpaceEnergy(other_prop,other_codec,Geometry(other),other_task,intervals)
+        for objective in (energy,alternate):objective.weights.update(manifest.get('guide_weights',{}))
         a={k:float(v) for k,v in energy.evaluate(tensor(z)).items()}
         b={k:float(v) for k,v in alternate.evaluate(tensor(z)).items()}
     energy_error=max(abs(a[k]-b[k]) for k in a);network_error=float(torch.max(abs(left-right)))
