@@ -23,6 +23,8 @@ from .orchestration import atomic_json,check_budget,source_hash
 def audit(path,config):
     torch.set_num_threads(1);runs=[Path(p) for p in config['planning_runs']]
     learning=json.loads((Path(config['learning_checks_run'])/'result.json').read_text(encoding='utf-8'))
+    model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
+    expected_origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')
     rows=[];conditions=set();scene_hashes=set();pose_counts=set();selected_for_counterfactual=None
     for root in runs:
         result=json.loads((root/'planning_result.json').read_text(encoding='utf-8'))
@@ -56,6 +58,8 @@ def audit(path,config):
             candidates.append(candidate)
             if selected_for_counterfactual is None and active:selected_for_counterfactual=(root,record['index'],active[0])
         rows.append(dict(run=str(root),sampling_source_hash=unit_manifest['source_hash'],physics_backend=manifest.get('physics_backend'),
+                         checkpoint_identity_matches=manifest['checkpoint']['sha256']==identity['sha256'],
+                         boundary_origin_matches=manifest['budget'].get('boundary_origin','pivot_zero')==expected_origin,
                          candidates=candidates,unique_noise=len(set(noise_hashes))==len(noise_hashes),
                          runtime_sentinel_clear=not sentinel['forbidden_calls'] and sentinel['observed_ffgd_calls']>0,
                          file_audit_enforced=sentinel.get('file_audit_enforced',False),actual_methods_recorded=bool(sentinel.get('actual_methods')),
@@ -68,7 +72,6 @@ def audit(path,config):
     if selected_for_counterfactual:
         check_budget();root,index,step=selected_for_counterfactual
         r,snapshot,task,problem=load_problem(root/'problem.json');manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
-        model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
         if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('AUDIT_CHECKPOINT_MISMATCH')
         with np.load(root/f'candidate_{index:03d}'/'denoising.npz') as d:z=checkpoint['mean']+checkpoint['scale']*d['clean'][step]
         codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'));tree=DifferentiableTree(r);g=Geometry(r)
@@ -123,7 +126,7 @@ def audit(path,config):
         'ARCH_03':bool(checked) and all(c['consumed'] and c['active_nonfinal_steps']>=2 and c['repair_calls']==0 for c in checked),
         'ARCH_04':bool(interventions and interventions['goal_effect'] and interventions['collision_effect']) and all(a['removed_only_guide_term'] and a['primitive_terms_unchanged'] for a in interventions['guide_term_ablations']) and all(all(v>1e-10 for v in c['state_intervention_effect']) for c in checked) and all(not r['independent_validation_terms_disabled'] for r in rows),
         'ARCH_05':bool(checked) and all(c['noise_identity'] and c['network_calls']==c['requested_calls'] for c in checked) and all(row['unique_noise'] for row in rows),
-        'ARCH_06':learning['passed'] and all(s['condition_shuffle_norm']>1e-8 and s['unlearned_prediction_difference']>1e-8 and s['weight_intervention_norm']>1e-8 for s in learning['samples']),
+        'ARCH_06':learning['passed'] and learning['checkpoint']['sha256']==identity['sha256'] and all(row['checkpoint_identity_matches'] and row['boundary_origin_matches'] for row in rows) and all(s['condition_shuffle_norm']>1e-8 and s['unlearned_prediction_difference']>1e-8 and s['weight_intervention_norm']>1e-8 for s in learning['samples']),
         'ARCH_07':bool(contract and contract['passed']),
         'ARCH_08':bool(semantic and semantic['passed']) and len(pose_counts)>=2,
         'ARCH_09':bool(rows) and all(row['denominator_complete'] for row in rows),
