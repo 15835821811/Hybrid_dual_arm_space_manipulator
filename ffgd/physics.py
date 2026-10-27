@@ -129,6 +129,17 @@ class DifferentiableTree:
         T=(k['inertia']@k['alpha'][:,:,None]).squeeze(-1)+torch.linalg.cross(k['omega'],Iw)
         return (k['Jcom'].transpose(-1,-2)@F[:,:,None]).sum(0).squeeze(-1)+(k['Jangular'].transpose(-1,-2)@T[:,:,None]).sum(0).squeeze(-1)+self.armature*acceleration+self.damping*velocity
 
+    def mass_rows(self,qpos,rows,kin=None):
+        """Exact requested rows, retaining every column and every moving body.
+
+        The momentum solve consumes only six base rows; computing the unused
+        joint-joint block makes its reverse graph unnecessarily expensive.
+        Nominal actuation continues to use mass(), including all 67 motors.
+        """
+        k=self.kinematics(qpos) if kin is None else kin
+        Jc,Jw=k['Jcom'],k['Jangular']
+        return (Jc[:,:,rows].transpose(-1,-2)@(self.mass_values[:,None,None]*Jc)).sum(0) + (Jw[:,:,rows].transpose(-1,-2)@k['inertia']@Jw).sum(0) + torch.diag(self.armature)[rows]
+
     def momentum(self,qpos,velocity):
         k=self.kinematics(qpos,velocity); ids=self.robot_bodies
         linear=self.mass_values[ids,None]*(k['Jcom'][ids]@velocity)

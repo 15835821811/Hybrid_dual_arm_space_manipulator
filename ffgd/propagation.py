@@ -65,11 +65,12 @@ class Propagator:
 
     def velocity(self,base,q,qd):
         r=self.robot;t=self.tree
-        x=self.state(base,q);M=t.mass(x);b,a=r.base_dofs,r.dof_ids
+        x=self.state(base,q);b,a=r.base_dofs,r.dof_ids
+        M=t.mass_rows(x,b) if getattr(t,'use_momentum_mass_rows',False) else t.mass(x)[b]
         P,L=self.H[:3],self.H[3:]
         generalized=torch.cat((P,quat_matrix(base[3:]).T@(L-torch.linalg.cross(base[:3],P))))
         va=t.B@qd
-        vb=torch.linalg.solve(M[b[:,None],b],generalized-M[b[:,None],a]@va)
+        vb=torch.linalg.solve(M[:,b],generalized-M[:,a]@va)
         v=torch.zeros(r.model.nv,dtype=q.dtype);v[b]=vb;v[a]=va
         return x,v
 
