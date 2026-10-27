@@ -19,6 +19,9 @@ def main(argv=None):
     if args.command=='resume':
         from .recovery import resume
         result=resume();print(json.dumps(result,indent=2,ensure_ascii=False));return 0 if result['ready'] else 1
+    if args.command=='report':
+        from .evidence_report import run
+        return unit('evidence_report',run,dict(max_wall_seconds=30))
     if args.command=='doctor':
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))

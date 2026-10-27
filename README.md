@@ -10,11 +10,13 @@
 .venv/Scripts/python.exe -m ffgd.cli status
 .venv/Scripts/python.exe -m ffgd.cli next
 .venv/Scripts/python.exe -m ffgd.cli resume
+.venv/Scripts/python.exe -m ffgd.cli report
 .venv/Scripts/python.exe -m ffgd.cli test --suite architecture
 ```
 
 数据、训练与规划通过 `data --config`、`train --config`、`plan --config --task` 指定版本化配置；
 `resume` 核对主任务书、分支、checkpoint 和真实进程身份，恢复中断记账并返回最早未通过门的下一动作；不会盲目重试失败实验或启动后台代理。
+`report` 生成只读证据索引，保留失败和未执行候选的分母，按源码/权重/预算分组；它不替代最终工程与学习收益验收。
 `execute --run` 只执行已独立验收并预选的候选。训练需使用 `.venv-gpu/Scripts/python.exe`。
 主入口不读取旧成功路径、不调用旧搜索/恢复/bypass，也没有采样后的轨迹修复。
 下面原快照说明与旧入口保留作历史资料和独立基线，旧失败与验收范围不变。
