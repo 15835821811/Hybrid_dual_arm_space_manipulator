@@ -58,6 +58,10 @@ def execute_selected(path,planning_directory):
     if validation['status']!='PLAN_VALID':return dict(passed=False,status='PRE_EXECUTION_REJECTED',validation=validation)
     atomic_json(path/'provenance.json',dict(planning_directory=str(planning_directory.resolve()),candidate_hash=candidate.identity,profile=profile))
     bundle,summary=track(r,snapshot,candidate,path,profile)
+    if summary['status']=='RESOURCE_BUDGET_ABORT':
+        actual=dict(status='INCOMPLETE_BUDGET',independent_replay='NOT_RUN',safety_enabled=True,task_based_cartesian_assist=False)
+        atomic_json(path/'acceptance.json',actual)
+        return dict(passed=False,execution=summary,acceptance=actual)
     replay_report=replay(r,bundle,snapshot);actual=inspect_actual(r,bundle,summary,task,profile,replay_report)
     atomic_json(path/'acceptance.json',actual)
     return dict(passed=actual['status']=='EXECUTION_VALID',execution=summary,acceptance=actual)

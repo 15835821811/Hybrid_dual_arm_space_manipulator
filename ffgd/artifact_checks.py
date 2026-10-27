@@ -33,9 +33,11 @@ def validate_saved(output,planning_directory,candidate_index=None):
 def replay_saved(output,execution_directory):
     root=Path(execution_directory);provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
     r,snapshot,task,problem=load_problem(Path(provenance['planning_directory'])/'problem.json')
-    with np.load(root/'execution.npz') as data:bundle={k:data[k] for k in data.files}
+    filename='execution.npz' if (root/'execution.npz').exists() else 'execution_partial.npz'
+    with np.load(root/filename) as data:bundle={k:data[k] for k in data.files}
     if len(bundle['states'])!=len(bundle['ctrl'])+1:raise ValueError('INCOMPLETE_INTEGRATION_INPUT_LEDGER')
     np.testing.assert_array_equal(snapshot.state,bundle['initial_state'])
     report=replay(r,bundle,snapshot)
     return dict(passed=report['max_state_abs']<=provenance['profile']['replay_state_atol'],source=str(root),replay=report,
-                model_hash=r.model_hash,source_reports_modified=False)
+                model_hash=r.model_hash,source_reports_modified=False,source_file=filename,
+                scope='replay of recorded inputs only; does not establish execution completion or task success')

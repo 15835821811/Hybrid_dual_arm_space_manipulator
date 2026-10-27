@@ -7,8 +7,10 @@ Only mj_step updates physical state after initial restoration.
 import json
 import numpy as np
 import mujoco
+import os
 from .trajectory import basis
 from .geometry import Geometry
+from .orchestration import check_budget,atomic_json
 
 
 def command(robot,data,q,qd,qdd):
@@ -28,6 +30,15 @@ def track(robot,snapshot,candidate,output,profile):
     if abs(steps*dt-candidate.duration)>1e-10:raise ValueError('duration is not integral native steps')
     states=[];raws=[];controls=[];forces=[];external=[];momentum=[];clearance=[];residual=[];tracking=[]
     status='FINISHED';initial_H=native_momentum(r,data);selected_hash=candidate.identity
+    def recorded_bundle():
+        return dict(states=np.asarray(states),ctrl=np.asarray(controls),raw_torque=np.asarray(raws),qfrc_applied=np.asarray(forces),
+                    xfrc_applied=np.asarray(external),momentum_residual=np.asarray(momentum),clearance=np.asarray(clearance),
+                    manifold_residual=np.asarray(residual),tracking_q67=np.asarray(tracking),
+                    initial_state=snapshot.state,mask=snapshot.mask,control_points=candidate.control,duration=candidate.duration)
+    def checkpoint(filename):
+        temporary=output/(filename+'.tmp')
+        with temporary.open('wb') as stream:np.savez_compressed(stream,**recorded_bundle())
+        os.replace(temporary,output/filename)
     for i in range(steps+1):
         mujoco.mj_forward(m,data)
         states.append(r.snapshot(data).state.copy())
@@ -37,8 +48,16 @@ def track(robot,snapshot,candidate,output,profile):
         residual.append(low-r.B@q17)
         q=basis(len(candidate.control),i*dt,candidate.duration)@candidate.control
         tracking.append(low-r.B@q)
+        if i%500==0:
+            checkpoint('execution_partial.npz')
+            atomic_json(output/'execution_progress.json',dict(status='RUNNING',native_steps=len(controls),planned_steps=steps,candidate_hash=selected_hash))
         if status!='FINISHED':break
         if i==steps:break
+        if i%64==0:
+            try:check_budget()
+            except RuntimeError as error:
+                if 'RESOURCE_' not in str(error):raise
+                status='RESOURCE_BUDGET_ABORT';break
         if scan['minimum']<profile['physical_geometry_clearance_m']:
             status='SAFETY_ABORT_GEOMETRY';break
         limited=m.jnt_limited[r.joints].astype(bool);bounds=m.jnt_range[r.joints]
@@ -56,11 +75,8 @@ def track(robot,snapshot,candidate,output,profile):
         # Record the post-input native state on the next loop before stopping,
         # so an interrupted/failed execution still has N+1 states for N inputs.
         if np.any(data.warning.number):status='SIMULATOR_WARNING'
-    bundle=dict(states=np.asarray(states),ctrl=np.asarray(controls),raw_torque=np.asarray(raws),qfrc_applied=np.asarray(forces),
-                xfrc_applied=np.asarray(external),momentum_residual=np.asarray(momentum),clearance=np.asarray(clearance),
-                manifold_residual=np.asarray(residual),tracking_q67=np.asarray(tracking),
-                initial_state=snapshot.state,mask=snapshot.mask,control_points=candidate.control,duration=candidate.duration)
-    np.savez_compressed(output/'execution.npz',**bundle)
+    bundle=recorded_bundle();checkpoint('execution.npz')
+    atomic_json(output/'execution_progress.json',dict(status=status,native_steps=len(controls),planned_steps=steps,candidate_hash=selected_hash))
     summary=dict(status=status,planned_steps=steps,actual_steps=len(controls),model_hash=r.model_hash,candidate_hash=selected_hash,
                  controller='floating_ff_torque_pd_v1',state_writes_after_restore=0,geometry_safety='abort on exact native penetration',
                  min_clearance=float(min(clearance)),raw_torque_ratio=float(np.max(abs(bundle['raw_torque'])/r.spec.torque_limits)) if len(raws) else None,
