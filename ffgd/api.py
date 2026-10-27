@@ -48,7 +48,7 @@ def boundary_codec(robot,snapshot,duration,n=24):
     return BoundaryCodec(n,17,duration,bc)
 
 
-def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager',collision_aggregation='pair_mean'):
+def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager',collision_aggregation='pair_mean',joint_peak_penalty=False):
     """All candidates remain in the denominator, including numerical failures."""
     total_start=time.perf_counter();torch.set_num_threads(1);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
@@ -68,7 +68,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     prop=Propagator(tree,initial);geometry=Geometry(robot)
     if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')
-    energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric,collision_aggregation=collision_aggregation)
+    energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric,collision_aggregation=collision_aggregation,joint_peak_penalty=joint_peak_penalty)
     if guide_weights is not None:
         if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
         energy.weights.update(guide_weights)
@@ -86,6 +86,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                   disabled_guide_terms=list(disabled_guide_terms),independent_validation_terms_disabled=[],cold_start=True,
                   guide_weights=energy.weights,
                   collision_aggregation=collision_aggregation,
+                  joint_peak_penalty=joint_peak_penalty,
                   network_condition_schema=CONDITION_SCHEMA,external_scene_in_physics_and_validation=True,
                   physics_backend=physics_backend,compile_seconds=compile_seconds,setup_wall_seconds=time.perf_counter()-total_start,
                   guidance_metric_condition=float(torch.linalg.cond(metric)),

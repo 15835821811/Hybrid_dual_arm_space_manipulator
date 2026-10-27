@@ -35,7 +35,7 @@ def rotation_log(R,angle=None):
 
 
 class MultiSpaceEnergy:
-    def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean'):
+    def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean',joint_peak_penalty=False):
         if codec.duration!=task.duration:raise ValueError('time contract mismatch')
         self.p,self.codec,self.geometry,self.task=propagator,codec,geometry,task
         self.grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[x.time for x in task.poses]])
@@ -45,6 +45,7 @@ class MultiSpaceEnergy:
         self.collect_task_residual=collect_task_residual;self.last_task_residual=None
         if collision_aggregation not in ('pair_mean','pair_mean_plus_max'):raise ValueError('unknown collision aggregation')
         self.collision_aggregation=collision_aggregation
+        self.joint_peak_penalty=joint_peak_penalty
 
     def evaluate(self,z,return_path=False):
         out=self.p.rollout(self.codec,z,grid=self.grid);tree=self.p.tree;r=self.p.robot
@@ -89,10 +90,20 @@ class MultiSpaceEnergy:
         time=tensor(self.grid)
         def integral(values):return torch.trapezoid(torch.stack(values) if isinstance(values,list) else values,time)/self.task.duration
         terms=dict(task=task/len(self.task.poses),collision=integral(collision),joint=integral(joint),actuator=integral(actuator),smoothness=integral(smooth))
+        if self.joint_peak_penalty:
+            # Keep the original time average, but do not let one violated
+            # joint/knot vanish among safe coordinates or a long duration.
+            peaks=[hinge((tensor(r.lower)-q)/tensor(r.upper-r.lower)).max(),
+                   hinge((q-tensor(r.upper))/tensor(r.upper-r.lower)).max(),
+                   hinge(qd.abs()/tensor(r.spec.planner_velocity_limits)-1).max(),
+                   hinge(qdd.abs()/tensor(r.spec.planner_acceleration_limits)-1).max()]
+            if limited.any():peaks.extend([hinge((tensor(limits[:,0])-actual)/span).max(),hinge((actual-tensor(limits[:,1]))/span).max()])
+            terms['joint']=terms['joint']+torch.stack(peaks).max()
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
         self.last_task_residual=(torch.cat(task_residuals)*np.sqrt(self.weights['task']/len(self.task.poses))) if task_residuals else None
         self.last_diagnostics=dict(grid_points=len(self.grid),all_eligible_pairs=len(self.geometry.pairs),
                                    collision_aggregation=self.collision_aggregation,
+                                   joint_peak_penalty=self.joint_peak_penalty,
                                    support_pair_evaluations=support_pairs,broadphase_pair_evaluations=len(self.grid)*len(self.geometry.pairs),
                                    mass_evaluations=3*len(self.grid)-1,
                                    minimum_proxy_gap=float(torch.stack(minima).min().detach()),
@@ -135,6 +146,11 @@ class MultiSpaceEnergy:
             joint+=h((limits[:,0]-actual)/span).mean(-1)+h((actual-limits[:,1])/span).mean(-1)
         def integral(v):return float(np.trapz(v,self.grid)/self.task.duration)
         terms=dict(task=task/len(self.task.poses),collision=integral(coll),joint=integral(joint),actuator=integral(act),smoothness=integral((qdd**2).mean(-1)))
+        if self.joint_peak_penalty:
+            peaks=[np.max(h((r.lower-q)/(r.upper-r.lower))),np.max(h((q-r.upper)/(r.upper-r.lower))),
+                   np.max(h(abs(qd)/r.spec.planner_velocity_limits-1)),np.max(h(abs(qdd)/r.spec.planner_acceleration_limits-1))]
+            if limited.any():peaks.extend([np.max(h((limits[:,0]-actual)/span)),np.max(h((actual-limits[:,1])/span))])
+            terms['joint']+=max(peaks)
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
         return terms
 

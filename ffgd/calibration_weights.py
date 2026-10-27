@@ -22,11 +22,14 @@ def run(output,config):
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('WEIGHT_DIAGNOSTIC_CHECKPOINT_MISMATCH')
     r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'])
     aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
-    tree=DifferentiableTree(r);tree.use_momentum_mass_rows=manifest.get('physics_backend')=='eager_mass_rows'
-    energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,collision_aggregation=aggregation)
+    tree=DifferentiableTree(r);tree.use_momentum_mass_rows=manifest.get('physics_backend') in ('eager_mass_rows','batched_bodyframe')
+    tree.use_batched_bodyframe_momentum=manifest.get('physics_backend')=='batched_bodyframe'
+    peak=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False))
+    energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,collision_aggregation=aggregation,joint_peak_penalty=peak)
     energy.weights.update(manifest.get('guide_weights',{}))
     energy.weights.update(config.get('guide_weights',{}))
-    with np.load(root/'candidate_000/denoising.npz') as data:x0=data[config.get('stage','clean')][-1].copy()
+    candidate_index=int(config.get('candidate_index',0))
+    with np.load(root/f'candidate_{candidate_index:03d}'/'denoising.npz') as data:x0=data[config.get('stage','clean')][-1].copy()
     x=tensor(x0).requires_grad_();mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);terms=energy.evaluate(mean+scale*x)
     J=residual_jacobian(energy.last_task_residual,x,batch_size=4)
     gradients={name:torch.autograd.grad(terms[name],x,retain_graph=True)[0].detach() for name in energy.weights}
@@ -58,6 +61,7 @@ def run(output,config):
     return dict(passed=value_error<1e-6,scope='bounded weight-sensitivity diagnostic; no plan returned, repaired or executed',
                 source_run=str(root),native_value_relative_error=value_error,original_terms=values,
                 collision_aggregation=aggregation,
+                joint_peak_penalty=peak,candidate_index=candidate_index,
                 gradient_norms={name:float(torch.linalg.vector_norm(g)) for name,g in gradients.items()},
                 preconditioned_gradient_norms={name:float(torch.linalg.vector_norm(torch.cholesky_solve(g[:,None],factor))) for name,g in gradients.items()},
                 one_step_rays=rows,main_candidate_count_added=0)

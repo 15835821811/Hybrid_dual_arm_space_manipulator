@@ -40,7 +40,7 @@ def inventory(runs,exclude=None):
         if len(records)>requested:issues.append(dict(run=folder.name,error='candidate records exceed requested denominator'))
         version=dict(source_hash=manifest.get('source_hash'),method=metadata.get('method',manifest.get('budget',{}).get('method')),checkpoint=metadata.get('checkpoint',{}).get('sha256'),
                      budget=metadata.get('budget'),guide_weights=metadata.get('guide_weights'),physics_backend=metadata.get('physics_backend'),
-                     collision_aggregation=metadata.get('collision_aggregation','pair_mean'))
+                     collision_aggregation=metadata.get('collision_aggregation','pair_mean'),joint_peak_penalty=metadata.get('joint_peak_penalty',False))
         group=hashlib.sha256(json.dumps(version,sort_keys=True).encode()).hexdigest()
         planning.append(dict(run=folder.name,unit_status=manifest['status'],result_status=result.get('status','NOT_RUN' if manifest['status']=='RUNNING' else 'INCOMPLETE_OR_SETUP_FAILURE'),
             group=group,version=version,scope='FIXED_SEED_DIAGNOSTIC' if requested<5 else 'MULTI_NOISE_TASK_EVALUATION',

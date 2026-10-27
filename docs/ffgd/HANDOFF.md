@@ -197,3 +197,5 @@ V8原生执行20261027T083007_selected_execution_77b070 PASSED：2500步/5s，�
 执行验收补齐全保存状态(含末态)的q17/q67界、既有17轴速度/加速度及abs(B)映射67轴包络；加速度只在scratch上用已记录输入原生复算，不积分、不修改actual。末态安全检查前移；原控制器及保护保留。两个输入/中断重放回归通过。障碍执行只读补查20261027T091036_execution_state_audit_6084f1通过2501状态，速度比.47874/加速度比.77929，原结果文件不改。跟踪/流形额外硬阈值尚未冻结，M5仍NOT_RUN。现有validate --run <execution> --unit actual-states可复查；属于限60s只读检查，不启第二重型worker。
 
 旧free执行全状态只读补查20261027T091405_execution_state_audit_459d52通过，0新增积分；完整软件20261027T091414_software_c14190通过50项。现执行验收含保存末态和实际导数界，原profile未改；跟踪/流形专门硬阈值NOT_FROZEN，M5仍NOT_RUN。
+
+第4候选(seed13004)同样仅acceleration拒绝，峰值1.071429倍/关节12，joint平均代价3.78e-6。当前五候选不改实现/seed。已在现有MultiSpaceEnergy准备默认关闭joint_peak_penalty：原时间平均加整路径所有关节/导数归一化违规最大平方，保持五项标量与去噪预算，不修改硬门。API/CLI/独立NumPy对照/架构反事实及基线显式记录该标志。NOT_RUN待当前worker结束后执行test --suite full-space-joint-peak，再weight-diagnostic --config configs/ffgd/joint_peak_diagnostic_c2.json及c3.json；诊断仅有限单步，不返回/执行修复轨迹。先完成当前组预选执行及实际ARCH，再据诊断决定新冷采样回归。

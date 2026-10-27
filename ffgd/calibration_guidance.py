@@ -33,7 +33,8 @@ def _run(path,config):
         from .compiled_physics import compile_tree
         compile_tree(tree)
     aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
-    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation)
+    joint_peak=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False))
+    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation,joint_peak_penalty=joint_peak)
     energy.weights.update(manifest.get('guide_weights',{}))
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
@@ -109,5 +110,6 @@ def _run(path,config):
                 intervals=config.get('intervals',manifest['budget']['intervals']),mass_rows=config.get('mass_rows',False),
                 jit_optimize=config.get('jit_optimize',True),compiled_backend=config.get('compiled_backend',False),
                 collision_aggregation=aggregation,
+                joint_peak_penalty=joint_peak,
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')
