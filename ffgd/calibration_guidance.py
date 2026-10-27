@@ -21,10 +21,11 @@ def run(path,config):
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('DIAGNOSTIC_CHECKPOINT_MISMATCH')
     r,snapshot,task,problem=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,24)
     tree=DifferentiableTree(r)
+    tree.use_momentum_mass_rows=config.get('mass_rows',False)
     if config.get('compiled_backend'):
         from .compiled_physics import compile_tree
         compile_tree(tree)
-    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=config.get('task_metric',False))
+    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False))
     energy.weights.update(manifest.get('guide_weights',{}))
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
@@ -97,5 +98,6 @@ def run(path,config):
                 residual_energy_error=residual_energy_error,derivative_seconds=derivative_seconds,
                 jacobian_batch_size=config.get('jacobian_batch_size',1),
                 stage=stage,metric_stage=metric_stage,
+                intervals=config.get('intervals',manifest['budget']['intervals']),mass_rows=config.get('mass_rows',False),
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')

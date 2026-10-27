@@ -62,9 +62,10 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     if physics_backend=='torchscript':
         from .compiled_physics import compile_tree
         compile_seconds=compile_tree(tree,output/'compiled_tree.pt')['seconds']
+    elif physics_backend=='eager_mass_rows':tree.use_momentum_mass_rows=True
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     prop=Propagator(tree,initial);geometry=Geometry(robot)
-    if budget.sampling.task_metric and physics_backend!='eager':raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_EAGER_BACKEND')
+    if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_EAGER_BACKEND')
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric)
     if guide_weights is not None:
         if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
