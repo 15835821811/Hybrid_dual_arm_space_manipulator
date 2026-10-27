@@ -1,0 +1,218 @@
+schema: ffgd_bootstrap_design_v1
+status: PROPOSED_NOT_EXECUTED
+# 本文件是Codex待实现/校准的配置模板，不是现有仓库已支持的配置。
+# 所有关键null必须在相应阶段通过真实探测/校准填写，不允许默认为PASS。
+
+source:
+  repository: 15835821811/Hybrid_dual_arm_space_manipulator
+  audited_branch: snapshot/trajectory-visualization-20261023
+  audited_commit: b0e34e75e94ec53f1cd0a9cde246d4c727a596ce
+  reference_repository: zhanglooong/htdcr-actuator-aware-diffusion-planning
+  reference_commit: 900d781ba63f0123dff95e49a76d51cb49a74803
+  new_branch_suggestion: codex/ffgd-core-rebuild
+  actual_worktree: null
+  preserve_user_changes: true
+  publish_remote: false
+
+scope:
+  mode: simulation_research
+  contact_capture: false
+  robot_external_thrusters: false
+  real_hardware: false
+  paid_cloud_resources: false
+  scenario_specific_planner: false
+  historical_solution_input: false
+  post_sampling_task_repair: false
+  legacy_search_allowed_only_in_baselines: true
+
+robot:
+  source_spec: model_test/robot_model_spec_v5.py
+  planner_dof_expected: 17
+  actuator_dof_expected: 67
+  model_hash: null
+  state_mask: mjSTATE_INTEGRATION
+  actual_state_length: null
+  preserve_parameters: true
+  actual_joint_limits: null
+  actual_torque_limits: null
+  map_offset_and_coordinate_conventions: null
+
+trajectory:
+  degree: 3
+  bootstrap_control_points: 24
+  codec: boundary_affine_nullspace
+  variable_boundary_types: true
+  zero_velocity_terminal_only_when_task_requests: true
+  terminal_configuration_known: false
+  analytic_derivatives: true
+  use_physical_time: true
+  time_optimization_in_first_version: false
+  free_dimensions_computed_from_constraints: true
+  latent_truncation: false
+
+physics:
+  differentiable_dtype: float64
+  native_reference_version_to_verify: '3.3.2'
+  native_integrator: inherit_pinned_model
+  native_dt_s_initial: 0.002
+  guide_integrator_design: lie_midpoint_v1
+  guide_integrator_implemented: false
+  bootstrap_zero_momentum_only: true
+  general_initial_momentum_required_before_final_continuation: true
+  full_path_gradient: true
+  full_parameter_finite_difference_as_default: false
+  state_dependent_matrices_must_be_differentiable: true
+  actual_state_projection: false
+  independent_world_momentum_ledger: true
+  momentum_tolerances: null
+  initial_manifold_residual_domain: null
+  numerical_calibration_hash: null
+
+geometry:
+  guide: calibrated_finite_volume_proxy
+  validator: native_whole_body_geometry
+  self_collision: true
+  inter_arm_collision: true
+  base_collision: true
+  target_entity_collision: true
+  special_grasp_exemptions: false
+  pair_policy_hash: null
+  guide_buffer_m_dev_initial: 0.002
+  guide_buffer_calibrated_m: null
+  empirical_bounds_are_not_formal_guarantees: true
+
+model:
+  type_design: conditional_control_token_transformer
+  hidden_dim_initial: 256
+  layers_initial: 4
+  heads_initial: 8
+  feedforward_ratio: 4
+  prediction_type: v
+  condition_design: initial_state_and_timed_task_tokens
+  obstacle_conditioning_in_network_required: false
+  obstacle_guidance_required: true
+  task_token_count_not_hardcoded_to_seven: true
+  normalization_fit_split: TRAIN
+  checkpoint_path: null
+  checkpoint_hash: null
+
+sampling:
+  diffusion_training_steps: 1000
+  beta_start: 0.0001
+  beta_end: 0.02
+  ddim_calls_initial: 60
+  exact_call_count_required: true
+  eta: 0.0
+  candidates_per_task: 5
+  require_all_candidates_valid: false
+  replenish_failed_seeds_until_success: false
+  guidance_on: clean_estimate
+  guidance_final_steps_initial: 18
+  guide_updates_per_step_initial: 1
+  line_search_trials_per_update_max: 2
+  max_updates_per_step_without_new_protocol: 3
+  guidance_step_scale: null
+  recompute_noise_after_clean_guidance: true
+  guide_state_must_reach_later_network_calls: true
+  full_horizon_optimizer_inside_last_step: false
+  return_immutable_final_control_points: true
+
+costs:
+  task: {enabled: true, weight: null}
+  collision: {enabled: true, weight: null}
+  joint: {enabled: true, weight: null}
+  actuator: {enabled: true, weight: null}
+  smoothness: {enabled: true, weight: null}
+  normalize_by_physical_tolerances: true
+  silently_skip_failed_cost_initialization: false
+  nominal_actuator_model: floating_base_joint_torque
+  tendon_model_claimed: false
+
+training:
+  debug_overfit_samples: 32
+  pilot_model_valid_samples_target: 2000
+  core_model_valid_samples_target: 20000
+  further_data_requires_coverage_diagnosis: true
+  optimizer_design: AdamW
+  learning_rate_initial: 0.0002
+  batch_size_initial: 64
+  batch_size_may_adapt_to_hardware: true
+  final_training_seeds: 3
+  updates_per_work_unit: null
+  final_checkpoint_selection_rule: null
+  split_before_fit_scalers: true
+  group_crop_and_retiming_lineage: true
+  test_for_tuning: false
+  dataset_manifest: null
+
+acceptance:
+  profile_state: TO_VERIFY_AND_CALIBRATE_BEFORE_FORMAL_RUN
+  inherited_position_tolerance_m_each_arm: 0.005
+  inherited_rotation_tolerance_deg_each_arm: 1.0
+  inherited_surface_clearance_min_m: 0.0
+  inherited_geometry_step_max_m: 0.002
+  raw_torque_violation_allowed: false
+  same_stack_replay_atol_initial: 1.0e-10
+  world_momentum_profile_hash: null
+  new_profiles_must_not_relabel_old_runs: true
+  boundary_residual_float64_target: 1.0e-10
+  fk_position_difference_target_m: 1.0e-6
+  fk_rotation_difference_target_rad: 1.0e-6
+  mass_relative_difference_target: 1.0e-6
+  direction_gradient_abs_target_normalized: 1.0e-6
+  direction_gradient_relative_target: 0.005
+  nonsmooth_cases_report_separately: true
+  immutable_validator: true
+  all_tasks_times_and_intervals_checked: true
+  candidate_selection_before_native_execution: true
+
+execution:
+  controller_version: null
+  retain_safety_protection: true
+  log_raw_and_applied_torque: true
+  task_reference_regeneration_in_controller: false
+  explicit_safety_assisted_label: true
+  independent_native_replay: true
+  physics_resume_only_after_equivalence_test: true
+  planning_clock_mode: research_simulation
+  claim_hard_realtime: false
+
+experiments:
+  fixed_dev_task_target: 40
+  fixed_dev_success_target: 36
+  closed_loop_dev_tasks: 20
+  closed_loop_dev_success_target: 18
+  final_demo_planning_seeds: 3
+  formal_unseen_tasks_target: 200
+  formal_physical_subset_target: 60
+  formal_physical_subset_frozen_before_results: true
+  multimodal_diagnostic_tasks_target: 20
+  formal_protocol_hash: null
+  final_scenario_config: null
+  variants:
+    - guided_diffusion
+    - diffusion_only
+    - multi_start_nonlearning_spline
+    - diffusion_then_matched_postprocess
+  mechanism_ablations_after_core:
+    - without_collision_guidance
+    - without_actuator_guidance
+
+orchestration:
+  total_goal_state_initial: NOT_STARTED
+  ordinary_failure_keeps_goal_active: true
+  advance_on_gate_pass: true
+  main_work_units: [M0, M1, M2, M3, M4, M5, M6, M7, M8]
+  heavy_workers_initial: 1
+  owned_process_identity_required: true
+  ram_vram_fraction_initial: 0.8
+  cpu_logical_cores_reserved_min: 1
+  disk_free_gib_initial: 10
+  next_unit_output_reservation_multiplier: 2
+  project_total_wall_limit: null
+  per_unit_budget_required: true
+  repeat_same_failed_mechanism_before_diagnosis_max: 3
+  atomic_checkpoints: true
+  immutable_completed_run_results: true
+  resume_from_handoff: true
+  automatic_new_codex_session_claimed: false
