@@ -18,4 +18,6 @@ def test_final_state_limits_and_unprojected_velocity_are_checked_readonly():
     assert report['includes_final_state'] and report['states_checked']==2
     assert not report['gates']['actual_q17']
     assert not report['gates']['mapped_q67_velocity_ratio']
+    assert report['manifold_residual_max']['velocity_rad_s']>0
+    assert report['reference_tracking_max'] is None
     for key,value in before.items():np.testing.assert_array_equal(bundle[key],value)

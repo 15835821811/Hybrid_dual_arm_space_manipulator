@@ -15,6 +15,14 @@ def inspect_state_bounds(robot,bundle):
     r=robot;m=r.model;limited=m.jnt_limited[r.joints].astype(bool);bounds=m.jnt_range[r.joints]
     from .orchestration import check_budget
     maxima=dict(planner_velocity_ratio=0.,mapped_q67_velocity_ratio=0.,planner_acceleration_ratio=0.,mapped_q67_acceleration_ratio=0.)
+    manifold=dict(position_rad=0.,velocity_rad_s=0.)
+    tracking=None
+    if 'control_points' in bundle:
+        from .trajectory import basis
+        times=np.arange(len(bundle['states']))*m.opt.timestep
+        planned_q=basis(len(bundle['control_points']),times,float(bundle['duration']))@bundle['control_points']
+        planned_v=basis(len(bundle['control_points']),times,float(bundle['duration']),1)@bundle['control_points']
+        tracking=dict(position_rad=0.,velocity_rad_s=0.)
     q17_ok=q67_ok=True
     velocity_envelope=abs(r.B)@r.spec.planner_velocity_limits
     acceleration_envelope=abs(r.B)@r.spec.planner_acceleration_limits
@@ -23,6 +31,11 @@ def inspect_state_bounds(robot,bundle):
         if i%64==0:check_budget()
         d=r.restore(Snapshot(r.model_hash,int(bundle['mask']),state))
         low=d.qpos[r.qpos_ids];q=r.Bplus@low;v=d.qvel[r.dof_ids]
+        manifold['position_rad']=max(manifold['position_rad'],float(np.max(abs(low-r.B@q))))
+        manifold['velocity_rad_s']=max(manifold['velocity_rad_s'],float(np.max(abs(v-r.B@(r.Bplus@v)))))
+        if tracking is not None:
+            tracking['position_rad']=max(tracking['position_rad'],float(np.max(abs(low-r.B@planned_q[i]))))
+            tracking['velocity_rad_s']=max(tracking['velocity_rad_s'],float(np.max(abs(v-r.B@planned_v[i]))))
         q17_ok=q17_ok and bool(np.all(q>=r.lower) and np.all(q<=r.upper))
         q67_ok=q67_ok and bool(np.all(low[limited]>=bounds[limited,0]) and np.all(low[limited]<=bounds[limited,1]))
         if i<len(bundle['ctrl']):
@@ -37,6 +50,7 @@ def inspect_state_bounds(robot,bundle):
                 maxima=maxima,states_checked=len(bundle['states']),includes_final_state=True,
                 derivative_limits_source='existing planner limits; q67 envelopes = abs(B) @ planner limits',
                 acceleration_observation='native scratch forward with each recorded applied input; final state uses last applied control',
+                manifold_residual_max=manifold,reference_tracking_max=tracking,
                 actual_states_modified=False,tracking_manifold_thresholds='NOT_FROZEN')
 
 

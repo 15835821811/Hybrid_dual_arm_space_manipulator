@@ -209,3 +209,5 @@ full-space-joint-peak原生梯度20261027T093550_full_space_joint_peak_gradients
 完整时刻批处理20261027T094028_mass_rows_diagnostic_203611整路径五项能量/gradient/18行J一致(相对误差<=3.1e-17)，10.7/9.2s降至5.8/5.6s；20261027T094125_full_space_batched_path_gradients_b7c1ae三例完整323维全部五项活跃原生FD通过。显式batched_full_path后端现可使用，完整67力矩/所有机体保留。冻结v10_eval5仅启用已校准joint_peak及等价批处理，原5seed/60x18x3x2/64网格/权重/硬门不改，下一步free原反例冷组及arm_body相关族和其余DEV；实际ARCH待新链复验，不能只凭这些数值校准认定核心回归完成。
 
 当前V10free五候选worker 20261027T094234_planning_05f840，PID203936/create1793094154.2365916，checkpoint仍best.pt b80ce0d1，冻结8DEV hash全部一致；核实进程后继续，不启动第二重型worker。53项软件20261027T094145_software_36c13a通过，启动快照在主API显式启用完整批处理之前，数值后端另有原生对照。只读v9完整去噪峰值轨迹记录artifacts/ffgd/orchestration/acceleration_root_cause_v9.json：c2全活跃段违规、末步修正仅1.58036→1.57960；c3/c4后期网络干净估计逐步超界而均值引导改善很小，支持通用局部风险稀释诊断。V10结果未出，不预判修复成功。
+
+现有执行状态检查补充q67位置/速度流形残差及位置/速度参考跟踪峰值，均从保存真实状态只读计算，不改controller/验收阈值、不写实际状态。2项相关软件回归通过；V9free只读补查20261027T094852_execution_state_audit_ee82aa通过2001状态，流形q8.08e-7rad/v1.65e-5rad/s，参考跟踪q9.04e-5rad/v8.69e-4rad/s，专门硬门仍NOT_FROZEN，不能据这些观测直接放宽初态域。
