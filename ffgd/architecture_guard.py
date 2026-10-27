@@ -7,7 +7,7 @@ import hashlib
 import marshal
 
 
-PREFIXES=('ff_prior','v6_lite','tracking_diffusion','ffgd.baselines')
+PREFIXES=('ff_prior','v6_lite','tracking_diffusion','ffgd.baselines','ffgd.execution')
 _audit_owner=None
 _audit_installed=False
 _data_extensions={'.npz','.npy','.pt','.pth','.pkl','.pickle','.json','.yaml','.yml','.csv','.h5','.hdf5','.zip'}

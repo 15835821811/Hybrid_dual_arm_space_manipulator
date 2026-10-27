@@ -95,3 +95,12 @@ def test_guard_report_preserves_executed_code_after_module_import_failure():
     assert report['actual_methods'][0]['executed_code_sha256']
     identity=next(row for row in report['module_identities'] if row['module']==module.__name__)
     assert identity['source_status']=='UNAVAILABLE_OR_IMPORT_FAILED'
+
+
+def test_controller_cannot_run_inside_planning_guard():
+    from ffgd.execution import command
+    from ffgd.architecture_guard import ArchitectureViolation
+    with LegacySentinel() as guard:
+        with pytest.raises(ArchitectureViolation,match='LEGACY_CALL_SENTINEL'):
+            command(None,None,None,None,None)
+    assert any('ffgd.execution.command' in name for name in guard.report()['forbidden_calls'])
