@@ -107,3 +107,14 @@ condition_diagnostic_v1.json is prepared (NOT_RUN), compares same cold seed
 with/without untrained scene token against identical physical task/scene.
 New scene contract regression passed2 tests. Latest full software run
 20261027T054101_software_ee192b passed29 tests before this correction.
+
+UPDATE: old-schema arm run20261027T053742_planning_228010 completed
+INCOMPLETE_VALIDATION, velocity/acceleration false, geometry step .00470m at
+2048intervals though integration error1.1e-6m. All60network/54guide gradients
+were recorded. No execution. Condition diagnostic20261027T055742_condition_diagnostic_e0c337
+completed: TRAIN external-scene tokens0; same noise, true-token naked energy
+13185 and accelratio1.293 vs corrected state/pose-only energy2960 and
+accelratio.581. Corrected prior collision energy.0286 with all2938pairs, so
+this is an active obstacle pressure task. No gate changed.
+Next/current command uses plan_profile_v4.json and arm_body_box.json, same
+seed13001/budget/guide weights. Check state for actual launch/PID.

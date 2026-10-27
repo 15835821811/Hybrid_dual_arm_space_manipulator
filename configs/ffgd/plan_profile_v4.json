@@ -1,0 +1,39 @@
+{
+  "schema": "ffgd_planning_budget_v1",
+  "checkpoint": "E:/ffgd-core/artifacts/ffgd/runs/20261027T043312_training_711731/best.pt",
+  "profile": "configs/ffgd/numerical_profile_v1.json",
+  "device": "cuda",
+  "budget": {
+    "seeds": [
+      13001
+    ],
+    "control_points": 24,
+    "intervals": 32,
+    "max_wall_seconds": 1800,
+    "sampling": {
+      "steps": 60,
+      "guide_steps": 18,
+      "updates_per_step": 3,
+      "line_trials": 2,
+      "step_size": 2.0,
+      "max_update_norm": 2.0,
+      "max_control_change": 0.16,
+      "step_rule": "polyak",
+      "acceleration_metric_weight": 1000.0,
+      "task_metric": true,
+      "jacobian_batch_size": 4
+    }
+  },
+  "purpose": "Fixed-seed diagnostic V4: correct trained state/pose condition schema; external boxes remain in full physical guidance and validation. All sampling/energy weights/budgets/seed unchanged from V3-batched.",
+  "physics_backend": "eager",
+  "evidence": [
+    "20261027T044229_guidance_diagnostic_28d753",
+    "20261027T044506_guidance_diagnostic_dcf601",
+    "20261027T044747_compiled_calibration_3c3723",
+    "20261027T050930_guidance_diagnostic_79094a",
+    "20261027T051107_guidance_diagnostic_3f0055",
+    "20261027T051241_software_f98e5c",
+    "20261027T053430_guidance_diagnostic_1068c3",
+    "20261027T055742_condition_diagnostic_e0c337"
+  ]
+}
