@@ -99,3 +99,10 @@ natively and replay, then run the prepared batched diagnostic, then the frozen
 arm_body_box with an explicitly versioned budget. Do not launch competing
 heavy workers. Query counters now count energy/mass/pair/backward work for
 future matched-budget accounting.
+
+Recovery CLI is now implemented: `python -m ffgd.cli resume` verifies MASTER,
+branch, checkpoint hash and actual worker identity; it does not blindly restart
+failed experiments. Real probe confirmed PID93680 still live and all hashes.
+Two recovery tests passed, including stale-identity recovery that leaves the
+actual live process untouched and never marks the interrupted unit successful.
+AccessDenied/foreign-host locks are unverifiable, not assumed dead.

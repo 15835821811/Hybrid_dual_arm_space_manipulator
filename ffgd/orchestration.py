@@ -59,10 +59,12 @@ def unit(name, callback, budget):
     if heavy:
         if lock.exists():
             owner=json.loads(lock.read_text())
+            if owner['host']!=platform.node():raise RuntimeError('HEAVY_WORKER_HOST_UNVERIFIABLE')
             try:
                 other=psutil.Process(owner['pid'])
                 live=owner['host']==platform.node() and abs(other.create_time()-owner['create_time'])<.01 and other.cmdline()==owner['command']
-            except (psutil.NoSuchProcess,psutil.AccessDenied):live=False
+            except psutil.NoSuchProcess:live=False
+            except psutil.AccessDenied as error:raise RuntimeError('HEAVY_WORKER_IDENTITY_UNVERIFIABLE') from error
             if live:raise RuntimeError(f"HEAVY_WORKER_ALREADY_RUNNING {owner['pid']}")
             event('stale_worker_lock',owner=owner);lock.unlink()
         with lock.open('x',encoding='utf-8') as f:json.dump(identity,f)

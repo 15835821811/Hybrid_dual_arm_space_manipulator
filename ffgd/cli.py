@@ -16,6 +16,9 @@ def main(argv=None):
     args=p.parse_args(argv)
     if args.command in ('status','next'):
         s=read_state();print(json.dumps(s if args.command=='status' else s['next_action'],indent=2,ensure_ascii=False));return 0
+    if args.command=='resume':
+        from .recovery import resume
+        result=resume();print(json.dumps(result,indent=2,ensure_ascii=False));return 0 if result['ready'] else 1
     if args.command=='doctor':
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
