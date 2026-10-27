@@ -33,7 +33,7 @@ def run(path,config):
         residual=energy.last_task_residual
         residual_energy_error=float(abs(residual.square().sum()-terms['task']).detach())
         from .guidance_metric import residual_jacobian
-        J=residual_jacobian(residual,x,lambda count,total:atomic_json(path/'derivative_progress.json',dict(rows=count,total=total,seconds=time.perf_counter()-start)))
+        J=residual_jacobian(residual,x,lambda count,total:atomic_json(path/'derivative_progress.json',dict(rows=count,total=total,seconds=time.perf_counter()-start)),config.get('jacobian_batch_size',1))
     gradient=torch.autograd.grad(terms['total'],x)[0].numpy();norm=float(np.linalg.norm(gradient));direction=gradient/norm
     derivative_seconds=time.perf_counter()-start
     verification=[];jacobian_verified=None
@@ -77,5 +77,6 @@ def run(path,config):
                 metric_weight=config.get('metric_weight',0),metric_condition=float(torch.linalg.cond(metric)),positive_descent_inner_product=float(gradient@direction),
                 task_metric=J is not None,task_jacobian_singular_values=torch.linalg.svdvals(J).tolist() if J is not None else None,
                 residual_energy_error=residual_energy_error,derivative_seconds=derivative_seconds,
+                jacobian_batch_size=config.get('jacobian_batch_size',1),
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')

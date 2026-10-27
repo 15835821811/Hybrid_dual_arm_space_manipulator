@@ -95,6 +95,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
             record.update(status='NOT_RUN_BUDGET_EXHAUSTED');records.append(record);atomic_json(folder/'candidate.json',record);continue
         try:
             energy_calls=0
+            query_counters=dict(completed_energy_evaluations=0,mass_evaluations=0,support_pair_evaluations=0,broadphase_pair_evaluations=0,
+                                full_energy_gradients=0,task_jacobian_rows=0,autograd_engine_calls=0)
             def observe(kind,value):
                 if kind=='initial':
                     np.save(folder/'initial_noise.npy',value)
@@ -102,6 +104,10 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                 elif kind=='before_step':
                     np.savez_compressed(folder/'current_step.npz',input=value['input'],index=value['index'],noise_level=value['noise_level'])
                 else:
+                    updates=value['updates'];query_counters['full_energy_gradients']+=len(updates);query_counters['autograd_engine_calls']+=len(updates)
+                    if updates and updates[0].get('task_metric'):
+                        rows=updates[0]['task_metric']['residual_dimension'];query_counters['task_jacobian_rows']+=rows
+                        query_counters['autograd_engine_calls']+=int(np.ceil(rows/budget.sampling.jacobian_batch_size))
                     arrays={k:v for k,v in value.items() if isinstance(v,np.ndarray)}
                     np.savez_compressed(folder/f'step_{value["index"]:03d}.npz',**arrays)
                     atomic_json(folder/f'step_{value["index"]:03d}.json',{k:v for k,v in value.items() if k not in arrays})
@@ -112,6 +118,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                 if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('PLANNING_WALL_BUDGET_EXHAUSTED')
                 terms=energy.evaluate(z);checked_energy.diagnostics=energy.last_diagnostics
                 checked_energy.task_residual=energy.last_task_residual
+                query_counters['completed_energy_evaluations']+=1
+                for key in ('mass_evaluations','support_pair_evaluations','broadphase_pair_evaluations'):query_counters[key]+=energy.last_diagnostics[key]
                 return terms
             actual_inputs=[]
             hook=model.register_forward_pre_hook(lambda model,args:actual_inputs.append(args[0].detach().cpu().numpy().copy()))
@@ -121,6 +129,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
             finally:
                 hook.remove();record['observed_network_calls']=len(actual_inputs)
                 record['physical_energy_evaluations']=energy_calls
+                record['query_counters']=query_counters
                 if actual_inputs:np.save(folder/'observed_network_inputs.npy',np.stack(actual_inputs))
             if len(actual_inputs)!=budget.sampling.steps:raise RuntimeError('ACTUAL_NETWORK_CALL_COUNT_MISMATCH')
             for i in range(1,len(actual_inputs)):

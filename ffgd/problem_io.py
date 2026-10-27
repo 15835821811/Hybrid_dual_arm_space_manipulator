@@ -13,6 +13,10 @@ def load_problem(path):
     path=Path(path);value=json.loads(path.read_text(encoding='utf-8-sig'))
     allowed={'schema','id','split','initial','task','scene','description'}
     if set(value)-allowed:raise ValueError('unknown public problem keys')
+    if set(value.get('scene',{}))-{'boxes'}:raise ValueError('unknown scene keys')
+    if set(value['task'])!={'duration','poses'}:raise ValueError('unknown or missing task keys')
+    for box in value.get('scene',{}).get('boxes',[]):
+        if set(box)-{'center','half_size','rotation'}:raise ValueError('unknown obstacle keys')
     scene=SceneSpec(tuple(BoxObstacle(b['center'],b['half_size'],b.get('rotation',np.eye(3))) for b in value.get('scene',{}).get('boxes',[])))
     r=Robot(scene=scene);d=r.new_data();initial=value['initial']
     if set(initial)-{'q17','v17','base_pose','base_velocity','target_pose','target_velocity','snapshot_file'}:raise ValueError('unknown initial-state keys')

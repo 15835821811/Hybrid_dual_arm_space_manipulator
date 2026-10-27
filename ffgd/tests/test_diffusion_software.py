@@ -78,3 +78,11 @@ def test_task_metric_preserves_all_coordinates_and_refreshes_inside_denoising():
             assert info['refresh_step']==row['index'] and info['full_free_dimension']==13 and info['residual_dimension']==3
             assert update['after']<=update['before'] and update['directional_descent']>0
     assert result['network_calls']==5 and result['post_sampling_trajectory_repair_calls']==0
+
+
+def test_batched_residual_vjps_match_all_scalar_rows():
+    from ffgd.guidance_metric import residual_jacobian
+    torch.manual_seed(29);A=torch.randn(11,17,dtype=torch.float64)
+    x=torch.randn(17,dtype=torch.float64,requires_grad=True);residual=torch.sin(A@x)+.1*(A@x).square()
+    scalar=residual_jacobian(residual,x)
+    for batch in (2,4,12):torch.testing.assert_close(residual_jacobian(residual,x,batch_size=batch),scalar,rtol=1e-12,atol=1e-12)

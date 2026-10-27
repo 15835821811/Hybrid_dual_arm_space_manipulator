@@ -64,6 +64,8 @@ def track(robot,snapshot,candidate,output,profile):
     summary=dict(status=status,planned_steps=steps,actual_steps=len(controls),model_hash=r.model_hash,candidate_hash=selected_hash,
                  controller='floating_ff_torque_pd_v1',state_writes_after_restore=0,geometry_safety='abort on exact native penetration',
                  min_clearance=float(min(clearance)),raw_torque_ratio=float(np.max(abs(bundle['raw_torque'])/r.spec.torque_limits)) if len(raws) else None,
+                 clipped_control_steps=int(np.count_nonzero(np.any(abs(bundle['raw_torque'])>r.spec.torque_limits,axis=1))) if len(raws) else 0,
+                 safety_abort=status.startswith('SAFETY_ABORT'),task_based_cartesian_assist=False,
                  linear_momentum_residual=float(np.max(np.linalg.norm(bundle['momentum_residual'][:,:3],axis=1))),
                  angular_momentum_residual=float(np.max(np.linalg.norm(bundle['momentum_residual'][:,3:],axis=1))),
                  max_manifold_residual=float(np.max(abs(bundle['manifold_residual']))),max_joint_tracking=float(np.max(abs(bundle['tracking_q67']))))

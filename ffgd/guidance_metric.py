@@ -21,12 +21,19 @@ def acceleration_metric(codec,scale,limits,grid,weight):
     return torch.tensor(np.eye(codec.free_dim)+weight*(A.T@A),dtype=torch.float64)
 
 
-def residual_jacobian(residual,variable,observer=None):
+def residual_jacobian(residual,variable,observer=None,batch_size=1):
     """Exact whole-graph reverse derivatives; no terminal-only approximation."""
     if residual is None or residual.ndim!=1:raise ValueError('missing task residual vector')
+    if not 1<=batch_size<=12:raise ValueError('invalid Jacobian VJP batch size')
     rows=[]
-    for index,value in enumerate(residual):
+    for index in range(0,len(residual),batch_size):
         check_budget()
-        rows.append(torch.autograd.grad(value,variable,retain_graph=True)[0].detach())
-        if observer:observer(index+1,len(residual))
-    return torch.stack(rows)
+        end=min(index+batch_size,len(residual))
+        if batch_size==1:
+            block=torch.autograd.grad(residual[index],variable,retain_graph=True)[0][None]
+        else:
+            cotangent=torch.eye(len(residual),dtype=residual.dtype,device=residual.device)[index:end]
+            block=torch.autograd.grad(residual,variable,grad_outputs=cotangent,retain_graph=True,is_grads_batched=True)[0]
+        rows.append(block.detach())
+        if observer:observer(end,len(residual))
+    return torch.cat(rows)

@@ -28,6 +28,7 @@ def inspect_actual(robot,bundle,summary,task,profile,replay_report):
                native_state_only=summary['state_writes_after_restore']==0)
     return dict(status='EXECUTION_VALID' if all(gates.values()) else 'FAILED',gates=gates,task_errors=tasks,
                 replay=replay_report,safety_enabled=True,task_based_cartesian_assist=False,
+                safety_interventions=dict(clipped_control_steps=summary.get('clipped_control_steps'),safety_abort=summary.get('safety_abort')),
                 scope='discrete timed poses; continuous hold/tracking not yet supported')
 
 

@@ -11,7 +11,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','compiled'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','learning-checks','architecture-audit','guidance-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -43,6 +43,12 @@ def main(argv=None):
         if not args.config:p.error('architecture-audit requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('architecture_audit',lambda path:audit(path,config),dict(max_wall_seconds=600))
+    if args.command=='architecture-io':
+        from .calibration_io import run
+        from pathlib import Path
+        if not args.config:p.error('architecture-io requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('software',lambda path:run(path,config),dict(max_wall_seconds=30))
     if args.command=='guidance-diagnostic':
         from .calibration_guidance import run
         from pathlib import Path
@@ -63,7 +69,7 @@ def main(argv=None):
             profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
             from .architecture_guard import LegacySentinel
             from .orchestration import atomic_json
-            with LegacySentinel() as sentinel:
+            with LegacySentinel(allowed_data_reads=[config['checkpoint'],Path(config['checkpoint']).with_suffix('.identity.json')]) as sentinel:
                 candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'))
             atomic_json(path/'architecture_sentinel.json',sentinel.report())
             return dict(passed=candidate is not None,**result)

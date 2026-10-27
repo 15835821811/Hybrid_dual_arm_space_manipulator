@@ -50,15 +50,17 @@ def audit(path,config):
             candidate=dict(index=record['index'],checked=True,status=record['status'],network_calls=record['observed_network_calls'],
                            requested_calls=manifest['budget']['sampling']['steps'],consumed=consumed,active_nonfinal_steps=len(active),
                            state_intervention_effect=counterfactual,noise_identity=record['initial_noise_hash']==noise_hash,
-                           repair_calls=record['post_sampling_trajectory_repair_calls'],readonly=record['validation'].get('input_unchanged',False),
+                           repair_calls=record['post_sampling_trajectory_repair_calls'],readonly=record.get('validation',{}).get('input_unchanged',False),
                            energy_measured_every_step=all(row['energy_status']=='MEASURED' for row in trace))
             candidates.append(candidate)
             if selected_for_counterfactual is None and active:selected_for_counterfactual=(root,record['index'],active[0])
         rows.append(dict(run=str(root),candidates=candidates,unique_noise=len(set(noise_hashes))==len(noise_hashes),
                          runtime_sentinel_clear=not sentinel['forbidden_calls'] and sentinel['observed_ffgd_calls']>0,
+                         file_audit_enforced=sentinel.get('file_audit_enforced',False),actual_methods_recorded=bool(sentinel.get('actual_methods')),
+                         execution_called_during_planning=any(module in sentinel['modules'] for module in ('ffgd.execution','ffgd.execution_acceptance')),
                          denominator_complete=len(result['records'])==result['requested_candidates'],
                          independent_validation_terms_disabled=manifest['independent_validation_terms_disabled']))
-    interventions=None
+    interventions=None;contract=None;semantic=None
     if selected_for_counterfactual:
         check_budget();root,index,step=selected_for_counterfactual
         r,snapshot,task,problem=load_problem(root/'problem.json');manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
@@ -66,6 +68,10 @@ def audit(path,config):
         if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('AUDIT_CHECKPOINT_MISMATCH')
         with np.load(root/f'candidate_{index:03d}'/'denoising.npz') as d:z=checkpoint['mean']+checkpoint['scale']*d['clean'][step]
         codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points']);tree=DifferentiableTree(r);g=Geometry(r)
+        from .architecture_contracts import static_contract,semantic_equivalence
+        contract=static_contract(r,snapshot,task,codec)
+        semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model)
+        atomic_json(path/'contracts.json',dict(static=contract,semantic=semantic))
         p=Propagator(tree,snapshot);base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
         changed=[]
         for item in task.poses:
@@ -74,26 +80,48 @@ def audit(path,config):
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
         obstacle=MultiSpaceEnergy(Propagator(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])
+        ablations=[]
         with torch.no_grad():
             before={k:float(v) for k,v in base.evaluate(tensor(z)).items()}
             after_goal={k:float(v) for k,v in goal.evaluate(tensor(z)).items()}
             after_obstacle={k:float(v) for k,v in obstacle.evaluate(tensor(z)).items()}
+            for name in base.weights:
+                weight=base.weights[name];base.weights[name]=0.
+                disabled={k:float(v) for k,v in base.evaluate(tensor(z)).items()};base.weights[name]=weight
+                ablations.append(dict(disabled_term=name,expected_total=before['total']-weight*before[name],observed_total=disabled['total'],
+                                      primitive_terms_unchanged=all(disabled[k]==before[k] for k in base.weights),
+                                      removed_only_guide_term=abs(disabled['total']-(before['total']-weight*before[name]))<1e-8))
         interventions=dict(source_run=str(root),candidate=index,step=step,before=before,goal_changed=after_goal,entity_geometry_changed=after_obstacle,
                            goal_effect=abs(before['task']-after_goal['task'])>1e-8,collision_effect=abs(before['collision']-after_obstacle['collision'])>1e-8,
-                           changed_inputs_only='public world goal positions; stationary target entity pose')
+                           changed_inputs_only='public world goal positions; stationary target entity pose',guide_term_ablations=ablations)
+    execution_rows=[]
+    for source in config.get('execution_runs',[]):
+        root=Path(source);result=json.loads((root/'result.json').read_text(encoding='utf-8'))
+        acceptance=result['acceptance'];summary=result['execution'];validation=json.loads((root/'validation_before_execution.json').read_text(encoding='utf-8'))
+        with np.load(root/'execution.npz') as data:
+            # Applied control is recorded independently of raw command. Do not
+            # reinterpret a clipped/aborted run as unassisted planning success.
+            raw_max=summary['raw_torque_ratio'];native_steps=len(data['ctrl'])
+        execution_rows.append(dict(run=str(root),model_plan_valid=validation['status']=='PLAN_VALID',
+                                   safety_enabled=acceptance['safety_enabled'],cartesian_assist=acceptance['task_based_cartesian_assist'],
+                                   raw_torque_ratio=raw_max,native_steps=native_steps,status=acceptance['status'],
+                                   safety_intervention=summary['status']!='FINISHED' or raw_max is None or raw_max>1.,
+                                   independent_replay=not acceptance['replay']['per_frame_state_injection'],
+                                   distinct_plan_and_execution_reports=True))
     checked=[c for row in rows for c in row['candidates'] if c['checked']]
     gates={
-        'ARCH_01':bool(rows) and all(x['runtime_sentinel_clear'] for x in rows),
+        'ARCH_01':bool(rows and contract and not contract['static_import_violations']) and all(x['runtime_sentinel_clear'] and x['file_audit_enforced'] and x['actual_methods_recorded'] for x in rows),
         'ARCH_02':bool(checked) and all(c['readonly'] for c in checked),
         'ARCH_03':bool(checked) and all(c['consumed'] and c['active_nonfinal_steps']>=2 and c['repair_calls']==0 for c in checked),
-        'ARCH_04':bool(interventions and interventions['goal_effect'] and interventions['collision_effect']) and all(all(v>1e-10 for v in c['state_intervention_effect']) for c in checked) and all(not r['independent_validation_terms_disabled'] for r in rows),
+        'ARCH_04':bool(interventions and interventions['goal_effect'] and interventions['collision_effect']) and all(a['removed_only_guide_term'] and a['primitive_terms_unchanged'] for a in interventions['guide_term_ablations']) and all(all(v>1e-10 for v in c['state_intervention_effect']) for c in checked) and all(not r['independent_validation_terms_disabled'] for r in rows),
         'ARCH_05':bool(checked) and all(c['noise_identity'] and c['network_calls']==c['requested_calls'] for c in checked) and all(row['unique_noise'] for row in rows),
         'ARCH_06':learning['passed'] and all(s['condition_shuffle_norm']>1e-8 and s['unlearned_prediction_difference']>1e-8 and s['weight_intervention_norm']>1e-8 for s in learning['samples']),
-        'ARCH_07':'NOT_RUN_STATIC_CONTRACT_REVIEW_REQUIRED',
-        'ARCH_08':'NOT_RUN_SEMANTIC_ORDER_AND_FILENAME_COMPARISON_REQUIRED',
+        'ARCH_07':bool(contract and contract['passed']),
+        'ARCH_08':bool(semantic and semantic['passed']) and len(pose_counts)>=2,
         'ARCH_09':bool(rows) and all(row['denominator_complete'] for row in rows),
-        'ARCH_10':'NOT_RUN_EXECUTION_POLICY_REVIEW_REQUIRED'}
+        'ARCH_10':bool(execution_rows and contract and contract['controller_reference_only']) and not any(row['execution_called_during_planning'] for row in rows) and all(e['model_plan_valid'] and e['safety_enabled'] and not e['cartesian_assist'] and e['independent_replay'] for e in execution_rows)}
     return dict(passed=all(value is True for value in gates.values()),gates=gates,runs=rows,interventions=interventions,
                 tested_task_conditions=len(conditions),tested_pose_counts=sorted(pose_counts),tested_scenes=len(scene_hashes),
                 architecture_status='PARTIAL',engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
-                limitation='Artifact mechanisms only; static contract and execution-policy gates need separate evidence.')
+                contracts=contract,semantic_equivalence=semantic,executions=execution_rows,
+                limitation='Mechanism evidence only; learning advantage and final engineering completion are separate gates.')

@@ -76,3 +76,26 @@ SO(3) near-pi derivative cancellation fixed using symmetric-axis extraction;
 20261027T051120_software_0ceae3 remains FAILED; regression
 20261027T051241_software_f98e5c passed all19 software tests.
 V3 is authorized to launch; read live state for actual launch/completion.
+
+V3 actually started as 20261027T051345_planning_cb9d2e, PID93680
+(create time1793078023.5965364); verify identity/current state before acting.
+It uses its archived pre-audit code a7f6aa5d, scalar-row Jacobian.
+At step47 the guided energy was .417, NOT a final validity conclusion.
+While it runs, additional IO/contract audit code was added for FUTURE runs.
+New strict sentinel allows checkpoint AND its .identity.json only; records
+file reads and actual code hashes. IO probe20261027T051927_software_e514d0
+failed on the initially undeclared identity sidecar; corrected exact allowlist
+probe20261027T052001_software_7ff773 passed. No data directory was whitelisted.
+Regression20261027T052121_software_b600a8 passed25 tests. Architecture audit
+now implements source/interface rank checks, filename/object-order physical
++network equivalence and separate execution safety reporting; real full audit
+NOT_RUN. Older planning artifacts lack the new file-read gate and must not be
+retroactively claimed to contain it.
+Batched VJP diagnostic config guidance_diagnostic_task_metric_batched.json
+is prepared but NOT_RUN. Software batch/scalar parity passed; real native
+Jacobian and performance must pass before enabling batch>1 in main planning.
+After V3 finishes: inspect immutable validation; if valid execute selected
+natively and replay, then run the prepared batched diagnostic, then the frozen
+arm_body_box with an explicitly versioned budget. Do not launch competing
+heavy workers. Query counters now count energy/mass/pair/backward work for
+future matched-budget accounting.

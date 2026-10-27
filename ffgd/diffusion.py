@@ -21,12 +21,14 @@ class SamplingBudget:
     step_rule: str = 'constant'
     acceleration_metric_weight: float = 0.
     task_metric: bool = False
+    jacobian_batch_size: int = 1
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
         if not 1<=self.updates_per_step<=3 or not 1<=self.line_trials<=2:raise ValueError('invalid guidance budget')
         if self.guide_steps and (self.step_size<=0 or self.max_update_norm<=0 or self.max_control_change<=0):raise ValueError('invalid guidance scale')
         if self.step_rule not in ('constant','polyak') or self.acceleration_metric_weight<0:raise ValueError('invalid guidance rule/metric')
+        if not 1<=self.jacobian_batch_size<=12:raise ValueError('invalid Jacobian VJP batch size')
 
 
 def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
@@ -74,7 +76,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     from .guidance_metric import residual_jacobian
                     import time
                     metric_start=time.perf_counter()
-                    J=residual_jacobian(getattr(energy,'task_residual',None),variable)
+                    J=residual_jacobian(getattr(energy,'task_residual',None),variable,batch_size=budget.jacobian_batch_size)
                     base_metric=torch.eye(free_dim,dtype=variable.dtype) if metric is None else metric
                     local_metric=base_metric+J.T@J
                     step_metric_factor=torch.linalg.cholesky(local_metric)
