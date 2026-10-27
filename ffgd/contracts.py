@@ -40,3 +40,33 @@ class Snapshot:
 
     def __post_init__(self):
         object.__setattr__(self, "state", immutable(self.state))
+
+
+@dataclass(frozen=True)
+class PoseConstraint:
+    time: float
+    tip: int
+    position: np.ndarray
+    rotation: np.ndarray
+    position_tolerance: float = .005
+    rotation_tolerance: float = np.pi/180
+    position_enabled: bool = True
+    rotation_enabled: bool = True
+
+    def __post_init__(self):
+        object.__setattr__(self,'position',immutable(self.position))
+        object.__setattr__(self,'rotation',immutable(self.rotation))
+        if self.position.shape!=(3,) or self.rotation.shape!=(3,3) or self.tip not in (0,1):raise ValueError('invalid pose')
+        if not np.isfinite([self.position_tolerance,self.rotation_tolerance,self.time]).all() or self.position_tolerance<=0 or self.rotation_tolerance<=0 or self.time<0:raise ValueError('invalid tolerance/time')
+        if not np.allclose(self.rotation.T@self.rotation,np.eye(3),atol=1e-10) or np.linalg.det(self.rotation)<0:raise ValueError('not SO(3)')
+
+
+@dataclass(frozen=True)
+class TaskSpec:
+    duration: float
+    poses: tuple
+
+    def __post_init__(self):
+        object.__setattr__(self,'poses',tuple(self.poses))
+        if self.duration<=0 or not np.isfinite(self.duration) or not self.poses:raise ValueError('invalid task')
+        if any(p.time>self.duration for p in self.poses):raise ValueError('task beyond duration')

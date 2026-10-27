@@ -1,0 +1,83 @@
+"""Native 67-torque reference tracking and independent input replay.
+
+Controller equation migrated explicitly from pinned floating_ff_torque_pd_v1.
+Safety retains torque limits, geometry/limit checks, nonfinite/warning aborts.
+Only mj_step updates physical state after initial restoration.
+"""
+import json
+import numpy as np
+import mujoco
+from .trajectory import basis
+from .geometry import Geometry
+
+
+def command(robot,data,q,qd,qdd):
+    r=robot;m=r.model;mujoco.mj_forward(m,data);M=r.mass(data)
+    a,b=r.dof_ids,r.base_dofs;h=data.qfrc_bias-data.qfrc_passive
+    qa,va,aa=r.B@q,r.B@qd,r.B@qdd
+    ab=-np.linalg.solve(M[np.ix_(b,b)],M[np.ix_(b,a)]@aa+h[b])
+    ff=M[np.ix_(a,b)]@ab+M[np.ix_(a,a)]@aa+h[a]
+    raw=ff+r.spec.position_kp*(qa-data.qpos[r.qpos_ids])+r.spec.velocity_kd*(va-data.qvel[a])
+    return np.clip(raw,-r.spec.torque_limits,r.spec.torque_limits),raw
+
+
+def track(robot,snapshot,candidate,output,profile):
+    from .propagation import native_momentum
+    r=robot;m=r.model;data=r.restore(snapshot);geometry=Geometry(r);dt=m.opt.timestep
+    steps=int(round(candidate.duration/dt))
+    if abs(steps*dt-candidate.duration)>1e-10:raise ValueError('duration is not integral native steps')
+    states=[];raws=[];controls=[];forces=[];external=[];momentum=[];clearance=[];residual=[];tracking=[]
+    status='FINISHED';initial_H=native_momentum(r,data);selected_hash=candidate.identity
+    for i in range(steps+1):
+        mujoco.mj_forward(m,data)
+        states.append(r.snapshot(data).state.copy())
+        scan=geometry.native_scan(data);clearance.append(scan['minimum'])
+        momentum.append(native_momentum(r,data)-initial_H)
+        low=data.qpos[r.qpos_ids];q17=r.Bplus@low
+        residual.append(low-r.B@q17)
+        q=basis(len(candidate.control),i*dt,candidate.duration)@candidate.control
+        tracking.append(low-r.B@q)
+        if i==steps:break
+        if scan['minimum']<profile['physical_geometry_clearance_m']:
+            status='SAFETY_ABORT_GEOMETRY';break
+        limited=m.jnt_limited[r.joints].astype(bool);bounds=m.jnt_range[r.joints]
+        if np.any(low[limited]<bounds[limited,0]) or np.any(low[limited]>bounds[limited,1]):
+            status='SAFETY_ABORT_JOINT';break
+        qd=basis(len(candidate.control),i*dt,candidate.duration,1)@candidate.control
+        qdd=basis(len(candidate.control),i*dt,candidate.duration,2)@candidate.control
+        applied,raw=command(r,data,q,qd,qdd)
+        if not np.isfinite(raw).all():status='NONFINITE_COMMAND';break
+        data.ctrl[r.actuator_ids]=applied
+        raws.append(raw);controls.append(data.ctrl.copy());forces.append(data.qfrc_applied.copy());external.append(data.xfrc_applied.copy())
+        mujoco.mj_step(m,data)
+        if np.any(data.warning.number):status='SIMULATOR_WARNING';break
+    bundle=dict(states=np.asarray(states),ctrl=np.asarray(controls),raw_torque=np.asarray(raws),qfrc_applied=np.asarray(forces),
+                xfrc_applied=np.asarray(external),momentum_residual=np.asarray(momentum),clearance=np.asarray(clearance),
+                manifold_residual=np.asarray(residual),tracking_q67=np.asarray(tracking),
+                initial_state=snapshot.state,mask=snapshot.mask,control_points=candidate.control,duration=candidate.duration)
+    np.savez_compressed(output/'execution.npz',**bundle)
+    summary=dict(status=status,planned_steps=steps,actual_steps=len(controls),model_hash=r.model_hash,candidate_hash=selected_hash,
+                 controller='floating_ff_torque_pd_v1',state_writes_after_restore=0,geometry_safety='abort on exact native penetration',
+                 min_clearance=float(min(clearance)),raw_torque_ratio=float(np.max(abs(bundle['raw_torque'])/r.spec.torque_limits)) if len(raws) else None,
+                 linear_momentum_residual=float(np.max(np.linalg.norm(bundle['momentum_residual'][:,:3],axis=1))),
+                 angular_momentum_residual=float(np.max(np.linalg.norm(bundle['momentum_residual'][:,3:],axis=1))),
+                 max_manifold_residual=float(np.max(abs(bundle['manifold_residual']))),max_joint_tracking=float(np.max(abs(bundle['tracking_q67']))))
+    (output/'execution.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
+    assert candidate.identity==selected_hash
+    return bundle,summary
+
+
+def replay(robot,bundle,snapshot):
+    """Restore only once, replay input sequence; never inject intermediate state."""
+    r=robot;m=r.model;d=r.restore(snapshot);errors=[]
+    mujoco.mj_forward(m,d)
+    for i in range(len(bundle['ctrl'])+1):
+        # Reproduce the controller's observation schedule; it updates derived/warmstart quantities.
+        mujoco.mj_forward(m,d)
+        errors.append(float(np.max(abs(r.snapshot(d).state-bundle['states'][i]))))
+        if i==len(bundle['ctrl']):break
+        # native_momentum in recorder and command also call forward; match observations.
+        mujoco.mj_forward(m,d);mujoco.mj_forward(m,d)
+        d.ctrl[:]=bundle['ctrl'][i];d.qfrc_applied[:]=bundle['qfrc_applied'][i];d.xfrc_applied[:]=bundle['xfrc_applied'][i]
+        mujoco.mj_step(m,d)
+    return dict(max_state_abs=max(errors),steps=len(bundle['ctrl']),state_restore_calls=1,per_frame_state_injection=False)

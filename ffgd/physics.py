@@ -51,6 +51,9 @@ class DifferentiableTree:
         self.rot = quat_matrix(tensor(m.body_quat))
         self.ipos = tensor(m.body_ipos)
         self.irot = quat_matrix(tensor(m.body_iquat))
+        # Match compiled same-frame shortcuts exactly (native local2Global).
+        self.ipos[np.asarray(m.body_sameframe)==1]=0
+        self.irot[np.isin(m.body_sameframe,[1,3])]=torch.eye(3,dtype=torch.float64)
         self.inertia = tensor(m.body_inertia)
         self.mass_values = tensor(m.body_mass)
         self.armature, self.damping = tensor(m.dof_armature), tensor(m.dof_damping)
@@ -119,8 +122,8 @@ class DifferentiableTree:
         Jc,Jw=k['Jcom'],k['Jangular']
         return (Jc.transpose(-1,-2)@(self.mass_values[:,None,None]*Jc)).sum(0) + (Jw.transpose(-1,-2)@k['inertia']@Jw).sum(0) + torch.diag(self.armature)
 
-    def inverse(self,qpos,velocity,acceleration):
-        k=self.kinematics(qpos,velocity,acceleration)
+    def inverse(self,qpos,velocity,acceleration,kin=None):
+        k=self.kinematics(qpos,velocity,acceleration) if kin is None else kin
         F=self.mass_values[:,None]*k['acom']
         Iw=(k['inertia']@k['omega'][:,:,None]).squeeze(-1)
         T=(k['inertia']@k['alpha'][:,:,None]).squeeze(-1)+torch.linalg.cross(k['omega'],Iw)

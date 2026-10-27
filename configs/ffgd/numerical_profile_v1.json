@@ -1,0 +1,15 @@
+{
+  "schema": "ffgd_numerical_calibration_v1",
+  "status": "FROZEN_BEFORE_EXECUTION_CALIBRATION",
+  "scope": "DEV calibration, no robot external force, no contact, duration up to 5 seconds",
+  "prop_position_m": 0.001,
+  "prop_rotation_rad": 0.003490658503988659,
+  "prop_finite_volume_m": 0.0004,
+  "momentum_linear_kg_m_s": 0.001,
+  "momentum_angular_kg_m2_s": 0.001,
+  "replay_state_atol": 1e-10,
+  "physical_geometry_clearance_m": 0.0,
+  "position_m": 0.005,
+  "rotation_rad": 0.017453292519943295,
+  "rationale": "Propagation uses 20 percent of inherited 5 mm / 1 degree gates; volume uses 20 percent of initial 2 mm guide buffer. Momentum budgets are absolute (not action-scaled): at 300 kg base mass and about 37 kg m^2 base inertia, over 5 s they correspond to roughly 17 um translation and 0.008 degrees rotation, below propagation budgets. This is a declared numeric calibration requirement, not a hardware guarantee."
+}

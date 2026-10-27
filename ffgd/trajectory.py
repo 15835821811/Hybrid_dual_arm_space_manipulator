@@ -51,15 +51,27 @@ class BoundaryCodec:
         if not np.isfinite(self.b).all():
             raise ValueError("nonfinite boundary")
         if len(rows):
-            _, R, piv = qr(self.A, pivoting=True, mode="economic")
-            tol = np.finfo(float).eps * max(self.A.shape) * np.linalg.norm(self.A, 2)
-            self.rank = int(np.sum(np.abs(np.diag(R)) > tol))
-            dep = piv[:self.rank]; free = np.sort(piv[self.rank:])
-            AD = self.A[:, dep]
-            particular = np.linalg.lstsq(AD, self.b, rcond=None)[0]
+            # Normalize physical derivative rows before rank decisions. Select
+            # earliest independent columns per joint, avoiding QR pivot ties
+            # that could reorder labels when duration rescales derivative rows.
+            scales=np.linalg.norm(self.A,axis=1)
+            if np.any(scales==0):raise ValueError('zero boundary row')
+            normalized=self.A/scales[:,None];normalized_b=self.b/scales
+            selected=[]
+            for joint in range(dof):
+                local=normalized[:,joint::dof];local=local[np.any(local!=0,axis=1)]
+                columns=[];rank=0
+                for column in range(n):
+                    newrank=np.linalg.matrix_rank(local[:,columns+[column]],tol=1e-12) if len(local) else 0
+                    if newrank>rank:columns.append(column);rank=newrank
+                selected.extend(column*dof+joint for column in columns)
+            dep=np.asarray(sorted(selected),dtype=int)
+            free=np.setdiff1d(np.arange(n*dof),dep);self.rank=len(dep)
+            AD = normalized[:, dep]
+            particular = np.linalg.lstsq(AD, normalized_b, rcond=None)[0]
             self.offset = np.zeros(n*dof); self.offset[dep] = particular
             N = np.zeros((n*dof, len(free))); N[free, np.arange(len(free))] = 1
-            N[dep] = -np.linalg.lstsq(AD, self.A[:, free], rcond=None)[0]
+            N[dep] = -np.linalg.lstsq(AD, normalized[:, free], rcond=None)[0]
             # Deterministic orthonormal basis, canonical signs.
             self.N, _ = np.linalg.qr(N, mode="reduced")
             for k, i in enumerate(free):

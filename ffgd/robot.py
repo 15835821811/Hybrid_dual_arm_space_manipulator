@@ -14,10 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class Robot:
-    def __init__(self):
+    def __init__(self,physics_dt=.002):
         self.spec = RobotModelSpecV5.from_urdf(
             ROOT / "dual_arm_space_robot_2026/urdf/dual_arm_space_robot_2026.urdf",
-            simulation_timestep=.002, continuum_kp=100., continuum_kd=5.,
+            simulation_timestep=physics_dt, continuum_kp=100., continuum_kd=5.,
             continuum_torque_limit=4., rigid_kp=200., rigid_kd=20., rigid_torque_limit=80.)
         s = mujoco.MjSpec.from_file(str(self.spec.source_urdf))
         s.compiler.fusestatic = False

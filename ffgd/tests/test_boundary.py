@@ -12,6 +12,8 @@ def default_codec(duration=4.):
 
 def test_full_323_and_derivatives():
     c=default_codec(); assert c.free_dim == 323
+    for duration in (1.,2.,8.,12.):
+        np.testing.assert_allclose(c.N,default_codec(duration).N,atol=1e-12,rtol=0)
     z=np.random.default_rng(1).normal(size=c.free_dim)
     C=c.decode(z)
     assert np.max(abs(c.A@C.ravel()-c.b)) < 1e-10
