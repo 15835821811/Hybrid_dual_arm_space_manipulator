@@ -54,7 +54,7 @@ def run(output,config):
         energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,
                                 collision_aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean')),
                                 joint_peak_penalty=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False)),
-                                task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')))
+                                task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')),planning_margins=config.get('planning_margins',manifest.get('planning_margins')))
         energy.weights.update(manifest.get('guide_weights',{}));x=tensor(initial).requires_grad_();start=time.perf_counter()
         energy.weights.update(config.get('guide_weights',{}))
         # The earlier optimized executor stalled on task Jacobians. This is

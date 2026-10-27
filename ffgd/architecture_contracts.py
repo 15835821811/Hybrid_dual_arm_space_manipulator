@@ -70,6 +70,7 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
             objective.collision_aggregation=manifest.get('collision_aggregation','pair_mean')
             objective.joint_peak_penalty=manifest.get('joint_peak_penalty',False)
             objective.task_objective=manifest.get('task_objective','center_squared')
+            objective.set_planning_margins(manifest.get('planning_margins'))
         a={k:float(v) for k,v in energy.evaluate(tensor(z)).items()}
         b={k:float(v) for k,v in alternate.evaluate(tensor(z)).items()}
     energy_error=max(abs(a[k]-b[k]) for k in a);network_error=float(torch.max(abs(left-right)))

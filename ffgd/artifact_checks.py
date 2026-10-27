@@ -113,10 +113,31 @@ def compare_tracking_prediction(output,execution_directory):
     xs,_=prop.native_rollout(codec,codec.encode(candidate.control),n,grid=times)
     position=np.zeros((n+1,2));rotation=np.zeros_like(position)
     base_position=np.zeros(n+1);base_rotation=np.zeros(n+1)
+    reference_velocity=codec.evaluate(codec.encode(candidate.control),times,1)
+    reference_acceleration=codec.evaluate(codec.encode(candidate.control),times,2)
+    velocity_errors=np.zeros((n+1,17));acceleration_errors=np.zeros_like(velocity_errors)
+    derivative_maxima={}
     predicted=mujoco.MjData(r.model);task_rows=[]
     for i,state in enumerate(bundle['states']):
         if i%64==0:check_budget()
         actual=r.restore(Snapshot(r.model_hash,int(bundle['mask']),state))
+        if i<n:
+            actual.ctrl[:]=bundle['ctrl'][i]
+            actual.qfrc_applied[:]=bundle['qfrc_applied'][i]
+            actual.xfrc_applied[:]=bundle['xfrc_applied'][i]
+        # Same applied-input convention as independent execution acceptance.
+        mujoco.mj_forward(r.model,actual)
+        for name,observed,reference,limits,errors in (
+            ('velocity',actual.qvel[r.dof_ids],reference_velocity[i],r.spec.planner_velocity_limits,velocity_errors),
+            ('acceleration',actual.qacc[r.dof_ids],reference_acceleration[i],r.spec.planner_acceleration_limits,acceleration_errors)):
+            reduced=r.Bplus@observed
+            errors[i]=(reduced-reference)/limits
+            for space,values,ref,envelope in (('q17',reduced,reference,limits),('q67',observed,r.B@reference,abs(r.B)@limits)):
+                ratios=abs(values)/envelope;j=int(np.argmax(ratios));key=f'{space}_{name}'
+                if key not in derivative_maxima or ratios[j]>derivative_maxima[key]['actual_ratio']:
+                    derivative_maxima[key]=dict(time=float(times[i]),joint=j,actual_ratio=float(ratios[j]),
+                        reference_ratio_at_same_time=float(abs(ref[j])/envelope[j]),
+                        signed_prediction_error_ratio=float((values[j]-ref[j])/envelope[j]))
         predicted.qpos[:]=xs[i]
         for data in (actual,predicted):mujoco.mj_kinematics(r.model,data)
         base_position[i]=np.linalg.norm(actual.qpos[r.base_qpos[:3]]-predicted.qpos[r.base_qpos[:3]])
@@ -136,7 +157,8 @@ def compare_tracking_prediction(output,execution_directory):
                         actual_goal_rotation_error_rad=float(Rotation.from_matrix(target.rotation.T@Ra).magnitude()),
                         position_tolerance_m=target.position_tolerance,rotation_tolerance_rad=target.rotation_tolerance))
     arrays=dict(time=times,tip_position_error_m=position,tip_rotation_error_rad=rotation,
-                base_position_error_m=base_position,base_rotation_error_rad=base_rotation)
+                base_position_error_m=base_position,base_rotation_error_rad=base_rotation,
+                q17_velocity_prediction_error_ratio=velocity_errors,q17_acceleration_prediction_error_ratio=acceleration_errors)
     np.savez_compressed(output/'prediction_errors.npz',**arrays)
     unchanged=all(file_hash(Path(p))==digest for p,digest in before.items())
     return dict(passed=unchanged and all(np.isfinite(v).all() for v in arrays.values()),source=str(root),
@@ -146,6 +168,9 @@ def compare_tracking_prediction(output,execution_directory):
                 initial_state_bytes_unchanged=True,actual_states_projected=False,
                 maximum_tip_position_error_m=position.max(0).tolist(),maximum_tip_rotation_error_rad=rotation.max(0).tolist(),
                 maximum_base_position_error_m=float(base_position.max()),maximum_base_rotation_error_rad=float(base_rotation.max()),
+                derivative_maxima=derivative_maxima,
+                maximum_q17_velocity_prediction_error_ratio=float(abs(velocity_errors).max()),
+                maximum_q17_acceleration_prediction_error_ratio=float(abs(acceleration_errors).max()),
                 task_times=task_rows,unmeasured_task_times=len(task.poses)-len(task_rows),
                 engineering_status='NOT_RUN',tracking_domain='NOT_ESTABLISHED',
                 scope='read-only measurement on saved executions; not a new execution, acceptance verdict, or certified tracking bound')

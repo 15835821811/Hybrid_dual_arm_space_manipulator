@@ -33,3 +33,18 @@ def test_execution_failure_survives_successful_retry_of_same_candidate(tmp_path)
     assert {r['status'] for r in rows}=={'FAILED','EXECUTION_VALID'}
     assert next(r for r in rows if r['run']=='original')['angular_momentum_residual']==.0012
     assert all(r['physics_dt'] is None for r in rows)  # Missing historical fields are never guessed.
+
+
+def test_same_source_different_objective_or_ablation_never_pools_candidates(tmp_path):
+    for name,changes in [('center',{}),('tolerance',{'task_objective':'tolerance_squared_hinge'}),
+                         ('ablated',{'disabled_guide_terms':['collision']}),('new_profile',{'profile_hash':'different'})]:
+        p=tmp_path/name;p.mkdir()
+        (p/'manifest.json').write_text(json.dumps(dict(status='PASSED',command=['python','-m','ffgd.cli','plan'],source_hash='same')))
+        metadata=dict(budget={'seeds':[1,2,3,4,5]},method='GUIDED_DIFFUSION',profile_hash='frozen')
+        metadata.update(changes)
+        (p/'planning_manifest.json').write_text(json.dumps(metadata))
+        (p/'planning_result.json').write_text(json.dumps(dict(requested_candidates=5,records=[
+            dict(index=i,status='PLAN_VALID' if i==0 else 'REJECTED',sampled=True,validated=True) for i in range(5)])))
+    report=inventory(tmp_path)
+    assert report['consistent'] and len(report['version_groups'])==4
+    assert all(r['requested']==5 and r['model_valid']==1 for r in report['version_groups'])

@@ -22,7 +22,7 @@ def run(output,config):
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('GUARD_CALIBRATION_CHECKPOINT_MISMATCH')
     r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
     energy=MultiSpaceEnergy(Propagator(DifferentiableTree(r),snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,
-                           collision_aggregation=manifest.get('collision_aggregation','pair_mean'),joint_peak_penalty=manifest.get('joint_peak_penalty',False),task_objective=manifest.get('task_objective','center_squared'))
+                           collision_aggregation=manifest.get('collision_aggregation','pair_mean'),joint_peak_penalty=manifest.get('joint_peak_penalty',False),task_objective=manifest.get('task_objective','center_squared'),planning_margins=manifest.get('planning_margins'))
     energy.weights.update(manifest.get('guide_weights',{}))
     with np.load(root/'candidate_000/denoising.npz') as data:z=checkpoint['mean']+checkpoint['scale']*data['guided'][-1]
     rows=[];gradients=[];jacobians=[]
