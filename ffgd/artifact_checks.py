@@ -33,6 +33,9 @@ def validate_saved(output,planning_directory,candidate_index=None):
 def replay_saved(output,execution_directory):
     root=Path(execution_directory);provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
     r,snapshot,task,problem=load_problem(Path(provenance['planning_directory'])/'problem.json')
+    from .execution import refine_physics
+    r,snapshot=refine_physics(r,snapshot,provenance.get('physics_substeps',1))
+    if r.model_hash!=provenance.get('execution_model_hash',r.model_hash):raise ValueError('EXECUTION_MODEL_IDENTITY_MISMATCH')
     filename='execution.npz' if (root/'execution.npz').exists() else 'execution_partial.npz'
     with np.load(root/filename) as data:bundle={k:data[k] for k in data.files}
     if len(bundle['states'])!=len(bundle['ctrl'])+1:raise ValueError('INCOMPLETE_INTEGRATION_INPUT_LEDGER')
@@ -51,6 +54,9 @@ def validate_execution_states(output,execution_directory):
     from .execution_acceptance import inspect_state_bounds
     root=Path(execution_directory);provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
     r,snapshot,task,problem=load_problem(Path(provenance['planning_directory'])/'problem.json')
+    from .execution import refine_physics
+    r,snapshot=refine_physics(r,snapshot,provenance.get('physics_substeps',1))
+    if r.model_hash!=provenance.get('execution_model_hash',r.model_hash):raise ValueError('EXECUTION_MODEL_IDENTITY_MISMATCH')
     with np.load(root/'execution.npz') as data:bundle={k:data[k] for k in data.files}
     np.testing.assert_array_equal(snapshot.state,bundle['initial_state'])
     report=inspect_state_bounds(r,bundle)

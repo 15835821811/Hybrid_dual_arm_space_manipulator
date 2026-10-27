@@ -83,7 +83,7 @@ def inspect_actual(robot,bundle,summary,task,profile,replay_report):
                 scope='discrete timed poses; continuous hold/tracking not yet supported')
 
 
-def execute_selected(path,planning_directory):
+def execute_selected(path,planning_directory,config=None):
     import json
     from pathlib import Path
     from .problem_io import load_problem
@@ -93,7 +93,7 @@ def execute_selected(path,planning_directory):
     from .propagation import Propagator
     from .geometry import Geometry
     from .validation import validate
-    from .execution import track,replay
+    from .execution import track,replay,refine_physics
     from .orchestration import atomic_json
     planning_directory=Path(planning_directory)
     planned=json.loads((planning_directory/'planning_result.json').read_text(encoding='utf-8'))
@@ -107,9 +107,15 @@ def execute_selected(path,planning_directory):
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(path/'validation_before_execution.json',validation)
     if validation['status']!='PLAN_VALID':return dict(passed=False,status='PRE_EXECUTION_REJECTED',validation=validation)
+    config={} if config is None else config
+    if set(config)-{'physics_substeps'}:raise ValueError('UNKNOWN_EXECUTION_CONFIG_FIELDS')
+    substeps=config.get('physics_substeps',1);planning_hash=r.model_hash;control_period=float(r.model.opt.timestep)
+    r,snapshot=refine_physics(r,snapshot,substeps)
     atomic_json(path/'provenance.json',dict(planning_directory=str(planning_directory.resolve()),candidate_hash=candidate.identity,profile=profile,
+                                          physics_substeps=substeps,physics_dt=float(r.model.opt.timestep),control_period=control_period,
+                                          planning_model_hash=planning_hash,execution_model_hash=r.model_hash,initial_state_bytes_unchanged=True,
                                           method=manifest.get('method'),comparison_only=manifest.get('comparison_only',False)))
-    bundle,summary=track(r,snapshot,candidate,path,profile)
+    bundle,summary=track(r,snapshot,candidate,path,profile,control_substeps=substeps)
     if summary['status']=='RESOURCE_BUDGET_ABORT':
         actual=dict(status='INCOMPLETE_BUDGET',independent_replay='NOT_RUN',safety_enabled=True,task_based_cartesian_assist=False)
         atomic_json(path/'acceptance.json',actual)

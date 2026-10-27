@@ -23,18 +23,39 @@ def command(robot,data,q,qd,qdd):
     return np.clip(raw,-r.spec.torque_limits,r.spec.torque_limits),raw
 
 
-def track(robot,snapshot,candidate,output,profile):
+def refine_physics(robot,snapshot,substeps):
+    """Rebind identical complete state to a model differing only in timestep."""
+    from .robot import Robot
+    from .contracts import Snapshot
+    if type(substeps) is not int or substeps not in (1,2,4):raise ValueError('UNSUPPORTED_PHYSICS_SUBSTEPS')
+    robot.verify_identity()
+    if snapshot.model_hash!=robot.model_hash:raise ValueError('snapshot model identity mismatch')
+    if substeps==1:return robot,snapshot
+    dt=float(robot.model.opt.timestep);refined=Robot(physics_dt=dt/substeps,scene=robot.scene)
+    refined.model.opt.timestep=dt
+    if refined.compiled_hash()!=robot.model_hash:raise ValueError('MODEL_DIFFERENCE_BEYOND_TIMESTEP')
+    refined.model.opt.timestep=dt/substeps
+    rebound=Snapshot(refined.model_hash,snapshot.mask,snapshot.state.copy())
+    np.testing.assert_array_equal(rebound.state,snapshot.state)
+    refined.restore(rebound)  # Validate full mask/shape without resetting fields.
+    return refined,rebound
+
+
+def track(robot,snapshot,candidate,output,profile,control_substeps=1):
     from .propagation import native_momentum
     r=robot;m=r.model;data=r.restore(snapshot);geometry=Geometry(r);dt=m.opt.timestep
+    if type(control_substeps) is not int or control_substeps not in (1,2,4):raise ValueError('UNSUPPORTED_PHYSICS_SUBSTEPS')
     steps=int(round(candidate.duration/dt))
     if abs(steps*dt-candidate.duration)>1e-10:raise ValueError('duration is not integral native steps')
+    if steps%control_substeps:raise ValueError('duration is not integral control periods')
     states=[];raws=[];controls=[];forces=[];external=[];momentum=[];clearance=[];residual=[];tracking=[]
     status='FINISHED';initial_H=native_momentum(r,data);selected_hash=candidate.identity
     def recorded_bundle():
         return dict(states=np.asarray(states),ctrl=np.asarray(controls),raw_torque=np.asarray(raws),qfrc_applied=np.asarray(forces),
                     xfrc_applied=np.asarray(external),momentum_residual=np.asarray(momentum),clearance=np.asarray(clearance),
                     manifold_residual=np.asarray(residual),tracking_q67=np.asarray(tracking),
-                    initial_state=snapshot.state,mask=snapshot.mask,control_points=candidate.control,duration=candidate.duration)
+                    initial_state=snapshot.state,mask=snapshot.mask,control_points=candidate.control,duration=candidate.duration,
+                    physics_dt=dt,control_substeps=control_substeps)
     def checkpoint(filename):
         temporary=output/(filename+'.tmp')
         with temporary.open('wb') as stream:np.savez_compressed(stream,**recorded_bundle())
@@ -65,9 +86,13 @@ def track(robot,snapshot,candidate,output,profile):
         if np.any(q17<r.lower) or np.any(q17>r.upper):
             status='SAFETY_ABORT_PLANNER_JOINT';break
         if i==steps:break
-        qd=basis(len(candidate.control),i*dt,candidate.duration,1)@candidate.control
-        qdd=basis(len(candidate.control),i*dt,candidate.duration,2)@candidate.control
-        applied,raw=command(r,data,q,qd,qdd)
+        if i%control_substeps==0:
+            qd=basis(len(candidate.control),i*dt,candidate.duration,1)@candidate.control
+            qdd=basis(len(candidate.control),i*dt,candidate.duration,2)@candidate.control
+            applied,raw=command(r,data,q,qd,qdd)
+        else:
+            # Hold the previous control; preserve the exact replay observation schedule.
+            mujoco.mj_forward(m,data)
         if not np.isfinite(raw).all():status='NONFINITE_COMMAND';break
         data.ctrl[r.actuator_ids]=applied
         raws.append(raw);controls.append(data.ctrl.copy());forces.append(data.qfrc_applied.copy());external.append(data.xfrc_applied.copy())
@@ -78,7 +103,8 @@ def track(robot,snapshot,candidate,output,profile):
     bundle=recorded_bundle();checkpoint('execution.npz')
     atomic_json(output/'execution_progress.json',dict(status=status,native_steps=len(controls),planned_steps=steps,candidate_hash=selected_hash))
     summary=dict(status=status,planned_steps=steps,actual_steps=len(controls),model_hash=r.model_hash,candidate_hash=selected_hash,
-                 controller='floating_ff_torque_pd_v1',state_writes_after_restore=0,geometry_safety='abort on exact native penetration',
+                 controller='floating_ff_torque_pd_v1',physics_dt=dt,control_period=dt*control_substeps,control_substeps=control_substeps,
+                 controller_updates=len(controls[::control_substeps]),state_writes_after_restore=0,geometry_safety='abort on exact native penetration at every physics substep',
                  min_clearance=float(min(clearance)),raw_torque_ratio=float(np.max(abs(bundle['raw_torque'])/r.spec.torque_limits)) if len(raws) else None,
                  clipped_control_steps=int(np.count_nonzero(np.any(abs(bundle['raw_torque'])>r.spec.torque_limits,axis=1))) if len(raws) else 0,
                  safety_abort=status.startswith('SAFETY_ABORT'),task_based_cartesian_assist=False,

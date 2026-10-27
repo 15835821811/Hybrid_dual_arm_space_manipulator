@@ -11,7 +11,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','compiled'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','momentum-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -93,6 +93,12 @@ def main(argv=None):
         if not args.config:p.error('collision-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('collision_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,grids=2))
+    if args.command=='momentum-diagnostic':
+        from pathlib import Path
+        from .calibration_momentum import recorded_input_sweep
+        if not args.config:p.error('momentum-diagnostic requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('recorded_momentum_sweep',lambda path:recorded_input_sweep(path,config),dict(max_wall_seconds=600,factors=[1,2,4]))
     if args.command=='mass-rows-diagnostic':
         from .calibration_mass_rows import run
         from pathlib import Path
@@ -150,8 +156,10 @@ def main(argv=None):
                     candidates=len(seeds),steps=config['budget'].get('sampling',{}).get('steps',60)))
     if args.command=='execute':
         from .execution_acceptance import execute_selected
+        from pathlib import Path
         if not args.run:p.error('execute requires --run planning-directory')
-        return unit('selected_execution',lambda path:execute_selected(path,args.run),dict(max_wall_seconds=900))
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig')) if args.config else {}
+        return unit('selected_execution',lambda path:execute_selected(path,args.run,config),dict(max_wall_seconds=900,physics_substeps=config.get('physics_substeps',1)))
     if args.command=='validate':
         from .artifact_checks import validate_saved,validate_execution_states
         if not args.run:p.error('validate requires --run planning-directory; optional --unit candidate-index')
