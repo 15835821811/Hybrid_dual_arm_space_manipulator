@@ -57,7 +57,7 @@ def main(argv=None):
         from pathlib import Path
         if not args.config:p.error('guidance-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        return unit('guidance_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,one_step_rays=5))
+        return unit('guidance_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,one_step_rays=len(config.get('coefficients',config.get('lengths',[.1,.25,.5,1.,2.])))))
     if args.command=='condition-diagnostic':
         from .calibration_condition import run
         from pathlib import Path

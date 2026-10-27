@@ -25,15 +25,26 @@ def run(path,config):
         from .compiled_physics import compile_tree
         compile_tree(tree)
     p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=config.get('task_metric',False))
-    with np.load(folder/'denoising.npz') as data:clean=data['clean'][-1].copy()
+    energy.weights.update(manifest.get('guide_weights',{}))
+    stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
+    if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
+    if stage!=metric_stage and config.get('verify_jacobian'):raise ValueError('Jacobian verification requires same diagnostic and metric input')
+    if stage!=metric_stage and not config.get('task_metric'):raise ValueError('different metric input requires task metric')
+    with np.load(folder/'denoising.npz') as data:
+        clean=data[stage][-1].copy();metric_input=data[metric_stage][-1].copy()
     mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);x=tensor(clean).requires_grad_()
-    start=time.perf_counter();terms=energy.evaluate(mean+scale*x)
+    start=time.perf_counter()
+    if stage!=metric_stage:x=tensor(metric_input).requires_grad_()
+    terms=energy.evaluate(mean+scale*x)
     J=None;residual_energy_error=None
     if config.get('task_metric'):
         residual=energy.last_task_residual
         residual_energy_error=float(abs(residual.square().sum()-terms['task']).detach())
         from .guidance_metric import residual_jacobian
         J=residual_jacobian(residual,x,lambda count,total:atomic_json(path/'derivative_progress.json',dict(rows=count,total=total,seconds=time.perf_counter()-start)),config.get('jacobian_batch_size',1))
+    if stage!=metric_stage:
+        del terms,residual
+        x=tensor(clean).requires_grad_();terms=energy.evaluate(mean+scale*x)
     gradient=torch.autograd.grad(terms['total'],x)[0].numpy();norm=float(np.linalg.norm(gradient));direction=gradient/norm
     derivative_seconds=time.perf_counter()-start
     verification=[];jacobian_verified=None
@@ -57,12 +68,19 @@ def run(path,config):
     metric=acceleration_metric(codec,checkpoint['scale'],r.spec.planner_acceleration_limits,energy.grid,config.get('metric_weight',0))
     if J is not None:metric=metric+J.T@J
     if config.get('metric_weight',0) or J is not None:
-        direction=torch.linalg.solve(metric,torch.tensor(gradient)).numpy();direction/=np.linalg.norm(direction)
-    for length in config.get('lengths',[.1,.25,.5,1.,2.]):
-        check_budget();proposal=clean-length*direction;z=checkpoint['mean']+checkpoint['scale']*proposal
+        direction=torch.linalg.solve(metric,torch.tensor(gradient)).numpy()
+        if 'coefficients' not in config:direction/=np.linalg.norm(direction)
+    for length in config.get('coefficients',config.get('lengths',[.1,.25,.5,1.,2.])):
+        check_budget();delta=length*direction
+        if 'coefficients' in config:
+            limits=manifest['budget']['sampling'];delta*=min(1.,limits['max_update_norm']/max(np.linalg.norm(delta),1e-30))
+            change=np.max(abs((codec.N*checkpoint['scale'][None,:])@delta))
+            delta*=min(1.,limits['max_control_change']/max(change,1e-30))
+        proposal=clean-delta;z=checkpoint['mean']+checkpoint['scale']*proposal
         values=energy.native_evaluate(z);C=codec.decode(z);base=codec.decode(checkpoint['mean']+checkpoint['scale']*clean)
         times=np.linspace(0,task.duration,1025)
-        row=dict(normalized_length=length,maximum_control_change=float(np.max(abs(C-base))),energies=values,
+        row=dict(normalized_length=float(np.linalg.norm(delta)),step_coefficient=length if 'coefficients' in config else None,
+                 accepted=bool(values['total']<=before['total']),maximum_control_change=float(np.max(abs(C-base))),energies=values,
                  maximum_velocity_ratio=float(np.max(abs(codec.evaluate(z,times,1))/r.spec.planner_velocity_limits)),
                  maximum_acceleration_ratio=float(np.max(abs(codec.evaluate(z,times,2))/r.spec.planner_acceleration_limits)))
         rows.append(row);proposals.append(proposal);atomic_json(path/'rays.json',rows)
@@ -78,5 +96,6 @@ def run(path,config):
                 task_metric=J is not None,task_jacobian_singular_values=torch.linalg.svdvals(J).tolist() if J is not None else None,
                 residual_energy_error=residual_energy_error,derivative_seconds=derivative_seconds,
                 jacobian_batch_size=config.get('jacobian_batch_size',1),
+                stage=stage,metric_stage=metric_stage,
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')

@@ -22,6 +22,7 @@ class SamplingBudget:
     acceleration_metric_weight: float = 0.
     task_metric: bool = False
     jacobian_batch_size: int = 1
+    max_step_coefficient: float | None = None
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
@@ -29,6 +30,7 @@ class SamplingBudget:
         if self.guide_steps and (self.step_size<=0 or self.max_update_norm<=0 or self.max_control_change<=0):raise ValueError('invalid guidance scale')
         if self.step_rule not in ('constant','polyak') or self.acceleration_metric_weight<0:raise ValueError('invalid guidance rule/metric')
         if not 1<=self.jacobian_batch_size<=12:raise ValueError('invalid Jacobian VJP batch size')
+        if self.max_step_coefficient is not None and (not np.isfinite(self.max_step_coefficient) or self.max_step_coefficient<=0):raise ValueError('invalid step coefficient cap')
 
 
 def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
@@ -94,6 +96,8 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     # zero supplies a conservative energy-scaled step, with the
                     # same two bounded acceptance trials as constant guidance.
                     coefficient*=max(float(terms['total'].detach()),0.)/max(directional_descent,1e-30)
+                uncapped_coefficient=coefficient
+                if budget.max_step_coefficient is not None:coefficient=min(coefficient,budget.max_step_coefficient)
                 delta=coefficient*direction
                 delta=delta*min(1.,budget.max_update_norm/max(float(torch.linalg.vector_norm(delta)),1e-30))
                 before=float(terms['total'].detach());accepted=False;after=before;chosen=0.
@@ -110,6 +114,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                         guided=proposal;after=trial_value;accepted=True;chosen=step;break
                 updates.append(dict(gradient_norm=float(torch.linalg.vector_norm(grad)),before=before,after=after,accepted=accepted,
                                     preconditioned_gradient_norm=float(torch.linalg.vector_norm(direction)),directional_descent=directional_descent,step_coefficient=coefficient,step_rule=budget.step_rule,
+                                    uncapped_step_coefficient=uncapped_coefficient,
                                     line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
                                     terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
                                     proposed_maximum_control_change=physical_change,

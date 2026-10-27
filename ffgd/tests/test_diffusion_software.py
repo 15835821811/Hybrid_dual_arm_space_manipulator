@@ -86,3 +86,21 @@ def test_batched_residual_vjps_match_all_scalar_rows():
     x=torch.randn(17,dtype=torch.float64,requires_grad=True);residual=torch.sin(A@x)+.1*(A@x).square()
     scalar=residual_jacobian(residual,x)
     for batch in (2,4,12):torch.testing.assert_close(residual_jacobian(residual,x,batch_size=batch),scalar,rtol=1e-12,atol=1e-12)
+
+
+def test_polyak_cap_handles_nonzero_energy_floor_without_extra_line_trials():
+    # A nonzero floor makes the zero-bound Polyak coefficient arbitrarily large.
+    # This is a software optimization fixture, not physical success evidence.
+    torch.set_num_threads(1);torch.manual_seed(45)
+    model=ConditionalDenoiser(max_free=12,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32))
+    def energy(x):return dict(total=10000.+.5*x.square().sum())
+    common=dict(steps=4,guide_steps=3,updates_per_step=3,step_rule='polyak',step_size=2.,max_update_norm=100.)
+    original=sample(model,condition,8,23,SamplingBudget(**common),energy)
+    capped=sample(model,condition,8,23,SamplingBudget(**common,max_step_coefficient=.25),energy)
+    assert any(not update['accepted'] for row in original['trace'] for update in row['updates'])
+    for row in capped['trace']:
+        for update in row['updates']:
+            assert update['accepted'] and update['after']<update['before']
+            assert update['step_coefficient']<=.25 and update['trials']<=2
+    assert capped['network_calls']==4 and capped['post_sampling_trajectory_repair_calls']==0
