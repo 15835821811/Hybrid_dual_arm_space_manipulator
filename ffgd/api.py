@@ -151,6 +151,9 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                           post_sampling_trajectory_repair_calls=result['post_sampling_trajectory_repair_calls'],identity=candidate.identity)
             report=validate(candidate,initial,task,prop,codec,geometry,profile)
             atomic_json(folder/'validation.json',report);record.update(validated=True,status=report['status'],validation=report)
+            # Validation belongs to total planning time. Preserve its physical
+            # verdict, but never select a result obtained after the wall cap.
+            if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('PLANNING_WALL_BUDGET_EXHAUSTED_DURING_VALIDATION')
             if report['status']=='PLAN_VALID':
                 score=max(max(e['position_m']/.005,e['rotation_rad']/(np.pi/180)) for e in report['task_errors'])+report['max_nominal_torque_ratio']
                 record['selection_score']=score;valid.append((score,index,candidate))

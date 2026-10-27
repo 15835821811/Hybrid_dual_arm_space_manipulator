@@ -119,9 +119,10 @@ def run(output,config):
         atomic_json(folder/'candidate.json',row)
         if time.perf_counter()-start>=budget.max_wall_seconds:
             row['status']='NOT_RUN_BUDGET_EXHAUSTED';records.append(row);atomic_json(folder/'candidate.json',row);continue
-        counts=dict(completed_energy_evaluations=0,mass_evaluations=0,support_pair_evaluations=0,broadphase_pair_evaluations=0)
+        counts=dict(attempted_energy_evaluations=0,completed_energy_evaluations=0,mass_evaluations=0,support_pair_evaluations=0,broadphase_pair_evaluations=0)
         def objective(x):
             if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('BASELINE_WALL_BUDGET_EXHAUSTED')
+            counts['attempted_energy_evaluations']+=1
             terms=energy.evaluate(mean+scale*x);objective.task_residual=energy.last_task_residual
             counts['completed_energy_evaluations']+=1
             for key in ('mass_evaluations','support_pair_evaluations','broadphase_pair_evaluations'):counts[key]+=energy.last_diagnostics[key]
@@ -155,6 +156,7 @@ def run(output,config):
                 row.update(sampled=True,identity=candidate.identity)
                 report=validate(candidate,snapshot,task,prop,codec,geometry,profile);atomic_json(folder/'validation.json',report)
                 row.update(sampled=True,validated=True,status=report['status'],validation=report,identity=candidate.identity)
+                if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('BASELINE_WALL_BUDGET_EXHAUSTED_DURING_VALIDATION')
                 if report['status']=='PLAN_VALID':
                     score=max(max(e['position_m']/.005,e['rotation_rad']/(np.pi/180)) for e in report['task_errors'])+report['max_nominal_torque_ratio']
                     row['selection_score']=score;valid.append((score,index))
