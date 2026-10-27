@@ -21,6 +21,7 @@ from .conditioning import encode_condition,CONDITION_SCHEMA
 from .model_io import load_model,normalize_condition
 from .validation import validate,input_identity
 from .orchestration import atomic_json,check_budget
+from .architecture_guard import ArchitectureViolation
 
 
 @dataclass(frozen=True)
@@ -156,6 +157,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                 np.savez_compressed(folder/'prediction.npz',time=grid,qpos=xs,qvel=vs,q=codec.evaluate(result['free'],grid),
                                     qd=codec.evaluate(result['free'],grid,1),qdd=codec.evaluate(result['free'],grid,2))
         except (ValueError,RuntimeError,np.linalg.LinAlgError) as error:
+            if isinstance(error,ArchitectureViolation):raise
             import traceback
             (folder/'failure.txt').write_text(traceback.format_exc(),encoding='utf-8')
             record.update(status='FAILED_NUMERICAL' if 'BUDGET' not in str(error) else 'INCOMPLETE_BUDGET',error=str(error))

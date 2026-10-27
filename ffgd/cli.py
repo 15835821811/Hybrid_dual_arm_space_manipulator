@@ -11,7 +11,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','compiled'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -70,6 +70,12 @@ def main(argv=None):
         if not args.config:p.error('weight-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('weight_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,weight_profiles=len(config.get('constraint_weights',[1,10,100,1000]))))
+    if args.command=='guard-diagnostic':
+        from .calibration_guard import run
+        from pathlib import Path
+        if not args.config:p.error('guard-diagnostic requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('guard_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,physical_energy_gradient_passes=4))
     if args.command=='plan':
         from .problem_io import load_problem,planning_config
         from .api import plan
@@ -93,7 +99,7 @@ def main(argv=None):
                     records=[]
                     for index,seed in enumerate(budget.seeds):
                         record_file=path/f'candidate_{index:03d}'/'candidate.json'
-                        record=json.loads(record_file.read_text()) if record_file.exists() else dict(index=index,seed=seed,sampled=False,validated=False,status='NOT_RUN_SETUP_FAILURE')
+                        record=json.loads(record_file.read_text()) if record_file.exists() else dict(index=index,seed=seed,sampled=False,validated=False,status='NOT_RUN_EXPERIMENT_FAILURE')
                         if record['status']=='STARTED':record.update(status='INCOMPLETE_EXPERIMENT_FAILURE')
                         records.append(record)
                     atomic_json(path/'planning_result.json',dict(status='EXPERIMENT_FAILED',requested_candidates=len(budget.seeds),records=records,

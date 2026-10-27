@@ -142,3 +142,13 @@ in this one-step comparison. Next V5 changes ONLY collision guide weight1->10,
 keeping joint/actuator1 (their gradients were zero in the probe), same cold
 seed13001/task/weights/checkpoint/60steps18guides3updates. Gates unchanged.
 Never execute the diagnostic ray. Run plan_profile_v5.json on arm_body_box.
+
+V5 actually running20261027T062443_planning_00217f PID197992; verify live
+state. At step47 collision penalty.001856, task.1433, not final validation.
+Prepared guard-diagnostic config guard_diagnostic_v1.json (NOT_RUN) compares
+profile vs call-only trace auditing on identical physical energies/gradients.
+Default is STILL profile. Seven software guard tests passed, including
+already-loaded forbidden calls in both backends and whole-experiment abort
+after an architecture violation instead of treating it as a failed seed.
+After V5: if valid execute/replay; then consider guard performance diagnostic
+before the minimum-five-candidate evaluations. Do not run competing heavy jobs.
