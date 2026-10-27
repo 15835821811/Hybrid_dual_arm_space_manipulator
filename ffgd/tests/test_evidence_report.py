@@ -19,3 +19,17 @@ def test_inventory_keeps_setup_failures_and_unstarted_candidate_denominator(tmp_
     active=next(r for r in report['planning_runs'] if r['run']=='running')
     assert len(active['candidates'])==5 and all(c['status']=='NOT_RUN' for c in active['candidates'][1:])
     assert active['candidates'][0]['candidate_wall_seconds'] is None
+
+
+def test_execution_failure_survives_successful_retry_of_same_candidate(tmp_path):
+    for name,passed in [('original',False),('refined',True)]:
+        p=tmp_path/name;p.mkdir()
+        (p/'manifest.json').write_text(json.dumps(dict(status='PASSED' if passed else 'FAILED_NEEDS_FIX',command=['python','-m','ffgd.cli','execute'])))
+        (p/'provenance.json').write_text(json.dumps(dict(planning_directory='same',candidate_hash='unchanged',method='GUIDED_DIFFUSION',comparison_only=False)))
+        (p/'result.json').write_text(json.dumps(dict(passed=passed,execution=dict(actual_steps=100 if passed else 50,angular_momentum_residual=.0006 if passed else .0012),acceptance=dict(status='EXECUTION_VALID' if passed else 'FAILED',gates={'world_angular_momentum':passed}))))
+    report=inventory(tmp_path);rows=report['execution_runs']
+    assert report['consistent'] and len(rows)==2
+    assert {r['candidate_hash'] for r in rows}=={'unchanged'}
+    assert {r['status'] for r in rows}=={'FAILED','EXECUTION_VALID'}
+    assert next(r for r in rows if r['run']=='original')['angular_momentum_residual']==.0012
+    assert all(r['physics_dt'] is None for r in rows)  # Missing historical fields are never guessed.

@@ -7,7 +7,7 @@ from .orchestration import ROOT,atomic_json,read_state,utc
 
 
 def inventory(runs,exclude=None):
-    runs=Path(runs);units=[];planning=[];issues=[]
+    runs=Path(runs);units=[];planning=[];executions=[];issues=[]
     for folder in sorted(runs.iterdir()):
         if not folder.is_dir() or folder==exclude:continue
         def read(name,default=None):
@@ -21,6 +21,20 @@ def inventory(runs,exclude=None):
         command=manifest.get('command',[])
         units.append(dict(run=folder.name,status=manifest.get('status','UNKNOWN'),command=command,
                           wall_seconds=manifest.get('wall_seconds'),source_hash=manifest.get('source_hash')))
+        if len(command)>=4 and command[3]=='execute':
+            provenance=read('provenance.json',{});result=read('result.json',{})
+            summary=result.get('execution',read('execution.json',{}));acceptance=result.get('acceptance',read('acceptance.json',{}))
+            executions.append(dict(run=folder.name,unit_status=manifest.get('status','UNKNOWN'),
+                source_hash=manifest.get('source_hash'),planning_directory=provenance.get('planning_directory'),
+                candidate_hash=provenance.get('candidate_hash'),method=provenance.get('method'),
+                comparison_only=provenance.get('comparison_only'),execution_model_hash=summary.get('model_hash'),
+                physics_dt=summary.get('physics_dt'),control_period=summary.get('control_period'),
+                status=acceptance.get('status','NOT_RUN' if manifest.get('status')=='RUNNING' else 'INCOMPLETE_OR_SETUP_FAILURE'),
+                gates=acceptance.get('gates'),planned_steps=summary.get('planned_steps'),actual_steps=summary.get('actual_steps'),
+                min_clearance=summary.get('min_clearance'),raw_torque_ratio=summary.get('raw_torque_ratio'),
+                linear_momentum_residual=summary.get('linear_momentum_residual'),angular_momentum_residual=summary.get('angular_momentum_residual'),
+                clipped_control_steps=summary.get('clipped_control_steps'),safety_abort=summary.get('safety_abort'),
+                replay=acceptance.get('replay'),task_errors=acceptance.get('task_errors'),wall_seconds=manifest.get('wall_seconds')))
         if len(command)<4 or command[3] not in ('plan','benchmark'):continue
         metadata=read('planning_manifest.json',{});result=read('planning_result.json',{})
         supplemental=read('failure_denominator.json',{})
@@ -53,7 +67,7 @@ def inventory(runs,exclude=None):
                            requested=sum(r['requested'] for r in members),sampled=sum(r['sampled'] for r in members),
                            model_valid=sum(r['model_valid'] for r in members)))
     return dict(consistent=not issues,issues=issues,units=units,unit_status_counts=dict(collections.Counter(r['status'] for r in units)),
-                planning_runs=planning,version_groups=groups,
+                planning_runs=planning,execution_runs=executions,version_groups=groups,
                 limitation='Inventory only. Diagnostic versions are separate; no pooled success rate or milestone promotion. Missing per-candidate timing in old runs stays null.')
 
 
