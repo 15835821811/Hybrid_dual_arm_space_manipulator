@@ -26,7 +26,7 @@
     }
   },
   "purpose": "Comparison implementation integration smoke only, not a paired research result and not the main planning budget.",
-  "physics_backend": "eager_mass_rows",
+  "physics_backend": "batched_full_path",
   "evidence": [
     "20261027T044229_guidance_diagnostic_28d753",
     "20261027T044506_guidance_diagnostic_dcf601",
@@ -44,7 +44,9 @@
     "20261027T071406_guidance_diagnostic_cdc6ad",
     "20261027T075112_full_space_peak_gradients_d9e987",
     "20261027T075301_weight_diagnostic_d832a5",
-    "20261027T075310_software_d6ef67"
+    "20261027T075310_software_d6ef67",
+    "20261027T094028_mass_rows_diagnostic_203611",
+    "20261027T094125_full_space_batched_path_gradients_b7c1ae"
   ],
   "guide_weights": {
     "task": 1.0,
@@ -53,5 +55,6 @@
     "actuator": 1.0,
     "smoothness": 0.001
   },
-  "collision_aggregation": "pair_mean_plus_max"
+  "collision_aggregation": "pair_mean_plus_max",
+  "joint_peak_penalty": true
 }

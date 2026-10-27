@@ -108,6 +108,8 @@ def run(output,config):
     jac=tensor(codec.N*checkpoint['scale'][None,:]);tokens=encode_condition(r,snapshot,task,prop.H.numpy())
     condition=normalize_condition(tokens[None],np.zeros((1,len(tokens)),bool),checkpoint,planning.get('device','cpu'))
     from dataclasses import asdict
+    atomic_json(output/'submitted_problem.json',problem)
+    problem=dict(problem,initial={'snapshot_file':'initial_state.npz'})
     atomic_json(output/'problem.json',problem)
     np.savez_compressed(output/'initial_state.npz',state=snapshot.state,mask=snapshot.mask,model_hash=snapshot.model_hash)
     atomic_json(output/'planning_manifest.json',dict(method=method,comparison_only=True,budget=asdict(budget),physical_budget=limits,

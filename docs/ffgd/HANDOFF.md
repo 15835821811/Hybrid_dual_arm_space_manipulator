@@ -211,3 +211,5 @@ full-space-joint-peak原生梯度20261027T093550_full_space_joint_peak_gradients
 当前V10free五候选worker 20261027T094234_planning_05f840，PID203936/create1793094154.2365916，checkpoint仍best.pt b80ce0d1，冻结8DEV hash全部一致；核实进程后继续，不启动第二重型worker。53项软件20261027T094145_software_36c13a通过，启动快照在主API显式启用完整批处理之前，数值后端另有原生对照。只读v9完整去噪峰值轨迹记录artifacts/ffgd/orchestration/acceleration_root_cause_v9.json：c2全活跃段违规、末步修正仅1.58036→1.57960；c3/c4后期网络干净估计逐步超界而均值引导改善很小，支持通用局部风险稀释诊断。V10结果未出，不预判修复成功。
 
 现有执行状态检查补充q67位置/速度流形残差及位置/速度参考跟踪峰值，均从保存真实状态只读计算，不改controller/验收阈值、不写实际状态。2项相关软件回归通过；V9free只读补查20261027T094852_execution_state_audit_ee82aa通过2001状态，流形q8.08e-7rad/v1.65e-5rad/s，参考跟踪q9.04e-5rad/v8.69e-4rad/s，专门硬门仍NOT_FROZEN，不能据这些观测直接放宽初态域。
+
+V10free第3候选seed13003仍加速度拒绝，1.57960→1.05207倍，其他全部模型门通过；54次固定去噪内更新未追加。局部风险稀释改善但未完全消除，旧/新失败均保留；完成原5seed后继续同版本arm_body和其他8DEV，不为5/5候选成功盲增seed。最后2候选仍运行。隔离C/D入口修复相对snapshot路径的重定位，保存submitted_problem并引用本run完整initial_state；主算法未变，C/D集成NOT_RUN，smoke配置已显式使用同个校准批处理/峰值项。
