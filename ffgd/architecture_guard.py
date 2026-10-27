@@ -21,7 +21,10 @@ def _file_audit(event,args):
     owner=_audit_owner
     if owner is None or event!='open' or not isinstance(args[0],(str,bytes,os.PathLike)):return
     filename,mode,flags=args
-    reading=('r' in mode or '+' in mode) if isinstance(mode,str) else (flags & os.O_ACCMODE)!=os.O_WRONLY
+    # Windows exposes O_RDONLY/WRONLY/RDWR but not O_ACCMODE. O_RDONLY is
+    # zero; mask the two write flags to distinguish read-only and read-write.
+    access_mask=os.O_WRONLY|os.O_RDWR
+    reading=('r' in mode or '+' in mode) if isinstance(mode,str) else (flags & access_mask)!=os.O_WRONLY
     if not reading:return
     resolved=os.path.normcase(os.path.abspath(os.fsdecode(filename)))
     # Zip/NPZ creation opens w+b for seeking while writing. O_TRUNC guarantees

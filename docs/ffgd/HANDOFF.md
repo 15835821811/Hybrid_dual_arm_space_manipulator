@@ -188,3 +188,5 @@ V8 20261027T075858_planning_e7658f已完成PASSED：相同冷seed13001/训练权
 V8原生执行20261027T083007_selected_execution_77b070 PASSED：2500步/5s，实际间隙+.003718868m，raw力矩比.09722，0裁剪/安全中止/状态注入，P/L残差.00019071/.00018755，实际流形偏差1.08e-6（M6仍待处理，不修改实际状态）。独立CLI重放20261027T083042_independent_replay_07157e PASSED，最大状态差0。M4仍RUNNING，相关任务族/五候选/完整ARCH未过。当前已发起bodyframe_equivalence_v8整路径校准，查state真实PID；主后端未启用。
 
 批量后端校准20261027T083121_mass_rows_diagnostic_d6884f通过：相同完整323维能量/gradient/J误差<=6.4e-16，反向顺序计时42.5/42.9s对11.6/10.6s。20261027T083343_full_space_bodyframe_gradients_56504b三例全五项活跃/8方向/3epsilon原生FD通过。主API现在显式支持batched_bodyframe；不会自动fallback。冻结plan_profile_v9_eval5.json：五seed13001..13005，所有8个DEV原hash不变，每候选60/18/3/2预算不变，总墙钟13500。先free_translation相关族，再arm_body及其余固定任务，所有候选保留；完整ARCH和M4仍未通过。
+
+五候选首次启动20261027T083629_planning_47c9e8加载阶段FAILED，0候选生成/请求5分母保留。根因Windows没有os.O_ACCMODE，冷导入写pyc触发raw-fd审计分支。改为O_WRONLY|O_RDWR位掩码，仍拒绝未声明读取；12项哨兵回归通过。新增测试首次缺少ArchitectureViolation导入导致1失败/11通过，已修复并保留events。下一动作按原v9_eval5/free_translation配置重新启动，非换seed。

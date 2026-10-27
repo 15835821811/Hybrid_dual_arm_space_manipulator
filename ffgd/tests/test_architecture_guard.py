@@ -134,3 +134,17 @@ def test_swallowed_violation_rejects_selected_result(tmp_path,monkeypatch):
     result=json.loads((output/'planning_result.json').read_text())
     assert result['status']=='ARCHITECTURE_REJECTED' and result['selected_index'] is None
     assert result['model_selection_before_architecture_rejection']['selected_index']==0
+
+
+def test_raw_file_descriptors_distinguish_writes_and_reads_on_windows(tmp_path):
+    import os
+    from ffgd.architecture_guard import ArchitectureViolation
+    output=tmp_path/'run';output.mkdir()
+    hidden=tmp_path/'hidden.npy';hidden.write_bytes(b'forbidden input')
+    with pytest.raises(ArchitectureViolation,match='UNDECLARED_PLANNER_DATA_READ'):
+        with LegacySentinel([],output_directory=output):
+            descriptor=os.open(str(output/'code.pyc'),os.O_WRONLY|os.O_CREAT|os.O_TRUNC)
+            os.write(descriptor,b'code cache');os.close(descriptor)
+            descriptor=os.open(str(output/'arrays.npz'),os.O_RDWR|os.O_CREAT|os.O_TRUNC)
+            os.close(descriptor)
+            os.open(str(hidden),os.O_RDONLY)
