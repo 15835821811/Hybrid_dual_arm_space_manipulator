@@ -61,3 +61,20 @@ def test_full_rank_metric_polyak_is_bounded_descent():
         for update in row['updates']:
             assert update['directional_descent']>0 and update['accepted']
             assert update['after']<update['before'] and np.isfinite(update['step_coefficient'])
+
+
+def test_task_metric_preserves_all_coordinates_and_refreshes_inside_denoising():
+    torch.set_num_threads(1);torch.manual_seed(19)
+    model=ConditionalDenoiser(max_free=20,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32));A=torch.randn(3,13,dtype=torch.float64)
+    def energy(x):
+        energy.task_residual=A@x-.2
+        return dict(total=energy.task_residual.square().sum()+.01*x.square().sum())
+    budget=SamplingBudget(steps=5,guide_steps=3,updates_per_step=3,task_metric=True,step_rule='polyak',step_size=2.,max_update_norm=1.)
+    result=sample(model,condition,13,2,budget,energy)
+    for row in result['trace']:
+        for update in row['updates']:
+            info=update['task_metric']
+            assert info['refresh_step']==row['index'] and info['full_free_dimension']==13 and info['residual_dimension']==3
+            assert update['after']<=update['before'] and update['directional_descent']>0
+    assert result['network_calls']==5 and result['post_sampling_trajectory_repair_calls']==0

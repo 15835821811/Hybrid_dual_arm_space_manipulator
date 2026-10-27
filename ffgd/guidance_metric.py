@@ -6,6 +6,7 @@ and no path optimization or post-sampling correction is performed here.
 """
 import numpy as np
 import torch
+from .orchestration import check_budget
 from .trajectory import basis
 
 
@@ -18,3 +19,14 @@ def acceleration_metric(codec,scale,limits,grid,weight):
     operator=operator*np.sqrt(quadrature[:,None,None]/codec.dof)
     A=operator.reshape(-1,codec.free_dim)
     return torch.tensor(np.eye(codec.free_dim)+weight*(A.T@A),dtype=torch.float64)
+
+
+def residual_jacobian(residual,variable,observer=None):
+    """Exact whole-graph reverse derivatives; no terminal-only approximation."""
+    if residual is None or residual.ndim!=1:raise ValueError('missing task residual vector')
+    rows=[]
+    for index,value in enumerate(residual):
+        check_budget()
+        rows.append(torch.autograd.grad(value,variable,retain_graph=True)[0].detach())
+        if observer:observer(index+1,len(residual))
+    return torch.stack(rows)

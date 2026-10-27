@@ -63,7 +63,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
         compile_seconds=compile_tree(tree,output/'compiled_tree.pt')['seconds']
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     prop=Propagator(tree,initial);geometry=Geometry(robot)
-    energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals)
+    if budget.sampling.task_metric and physics_backend!='eager':raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_EAGER_BACKEND')
+    energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric)
     if guide_weights is not None:
         if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
         energy.weights.update(guide_weights)
@@ -110,6 +111,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                 check_budget()
                 if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('PLANNING_WALL_BUDGET_EXHAUSTED')
                 terms=energy.evaluate(z);checked_energy.diagnostics=energy.last_diagnostics
+                checked_energy.task_residual=energy.last_task_residual
                 return terms
             actual_inputs=[]
             hook=model.register_forward_pre_hook(lambda model,args:actual_inputs.append(args[0].detach().cpu().numpy().copy()))

@@ -20,6 +20,7 @@ class SamplingBudget:
     max_control_change: float = .02
     step_rule: str = 'constant'
     acceleration_metric_weight: float = 0.
+    task_metric: bool = False
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
@@ -60,13 +61,30 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
             if not all(torch.isfinite(v) for v in diagnostic.values()):raise ValueError('NONFINITE_ENERGY_AUDIT')
             step_terms={name:float(value) for name,value in diagnostic.items()}
         if active:
+            step_metric_factor=metric_factor
+            metric_diagnostics=None
             for update in range(budget.updates_per_step):
                 variable=guided.detach().requires_grad_()
                 terms=energy(mean+scale*variable)
                 if step_terms is None:step_terms={name:float(value.detach()) for name,value in terms.items()}
+                if budget.task_metric and update==0:
+                    # Refresh at every guided noise level, reuse only within its
+                    # bounded (at most three) updates. Full physical gradient is
+                    # preconditioned; no free variable or constraint is removed.
+                    from .guidance_metric import residual_jacobian
+                    import time
+                    metric_start=time.perf_counter()
+                    J=residual_jacobian(getattr(energy,'task_residual',None),variable)
+                    base_metric=torch.eye(free_dim,dtype=variable.dtype) if metric is None else metric
+                    local_metric=base_metric+J.T@J
+                    step_metric_factor=torch.linalg.cholesky(local_metric)
+                    singular=torch.linalg.svdvals(J)
+                    metric_diagnostics=dict(refresh_step=index,residual_dimension=len(J),full_free_dimension=free_dim,
+                                            condition=float(torch.linalg.cond(local_metric)),jacobian_singular_values=singular.tolist(),
+                                            seconds=time.perf_counter()-metric_start)
                 grad=torch.autograd.grad(terms['total'],variable)[0]
                 if not torch.isfinite(grad).all() or not torch.isfinite(terms['total']):raise ValueError('NONFINITE_GUIDANCE')
-                direction=grad if metric_factor is None else torch.cholesky_solve(grad[:,None],metric_factor).squeeze(1)
+                direction=grad if step_metric_factor is None else torch.cholesky_solve(grad[:,None],step_metric_factor).squeeze(1)
                 directional_descent=float(grad@direction)
                 coefficient=budget.step_size
                 if budget.step_rule=='polyak':
@@ -94,6 +112,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                                     terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
                                     proposed_maximum_control_change=physical_change,
                                     accepted_maximum_control_change=physical_change*chosen if physical_change is not None else None,diagnostics=diagnostics))
+                updates[-1]['task_metric']=metric_diagnostics
         gc=guided.to(device=device,dtype=x.dtype)
         # Recompute noise from the same actual x_k, never mix old noise with guided clean.
         noise=(x-a*gc)/s
