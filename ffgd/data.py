@@ -18,6 +18,25 @@ from .orchestration import atomic_json,check_budget
 from .validation import validate
 
 
+def sample_initial_position(robot,config,group,rng):
+    """Public mechanical-domain sampling; no DEV task or target is consulted."""
+    q=robot.spec.planner_zero+rng.uniform(-config['initial_variation'],config['initial_variation'],17)
+    policy=config.get('initial_policy','home_box')
+    if policy=='home_box':return q
+    if policy!='factorized_limits':raise ValueError('UNKNOWN_INITIAL_PRIOR_POLICY')
+    fraction=float(config['initial_limit_fraction']);bins=int(config['initial_strata'])
+    if not 0<fraction<1 or bins<2:raise ValueError('INVALID_INITIAL_DOMAIN')
+    # Each group sweeps a different coordinate. The next cycle sweeps the next
+    # range stratum, including both signs for every coordinate, independent of
+    # rejection and family split. Rejected initial states are never resampled.
+    j=group%17;stratum=(group//17)%bins
+    u=(stratum+rng.uniform())/bins
+    midpoint=(robot.lower[j]+robot.upper[j])/2
+    halfwidth=(robot.upper[j]-robot.lower[j])*fraction/2
+    q[j]=midpoint+(2*u-1)*halfwidth
+    return q
+
+
 def reencode_origin(path,config):
     """Relabel immutable model-prior paths in an invertible affine coordinate system.
 
@@ -98,14 +117,14 @@ def generate(path,config,resume=None):
         # Attempt-local streams give exact resumption without a half-written RNG checkpoint.
         rng=np.random.default_rng(np.random.SeedSequence([config['seed'],attempt,1]))
         family_rng=np.random.default_rng(np.random.SeedSequence([config['seed'],group,2]))
-        q0=r.spec.planner_zero+family_rng.uniform(-config['initial_variation'],config['initial_variation'],17)
+        q0=sample_initial_position(r,config,group,family_rng)
         T=float(rng.choice(config['duration_choices']));d=r.new_data();d.qpos[r.qpos_ids]=r.B@q0
         snapshot=r.snapshot(d);prop=Propagator(tree,snapshot)
         key=(group,T)
         if key not in cache:
             if len(cache)>4:cache.clear()
             bc=[Boundary(0,j,tuple(range(17)),tuple(q0) if j==0 else (0.,)*17) for j in (0,1,2)]+[Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2)]
-            cache[key]=BoundaryCodec(n,17,T,bc)
+            cache[key]=BoundaryCodec(n,17,T,bc,origin=config.get('boundary_origin','pivot_zero'))
         codec=cache[key]
         phase=np.linspace(0,1,n);delta=rng.normal(0,config['motion_scale'],17)
         C=q0+phase[:,None]*delta
@@ -162,10 +181,15 @@ def generate(path,config,resume=None):
                 group=np.array([x['group'] for x in accepted]),attempt=np.array([x['attempt'] for x in accepted]))
     np.savez_compressed(path/'prior.npz',**arrays)
     manifest=dict(schema='ffgd_prior_v1',source_kind='FF_MODEL_PRIOR',attempts=len(attempts),accepted=len(accepted),
+                  boundary_origin=config.get('boundary_origin','pivot_zero'),
                   train=int(arrays['is_train'].sum()),val=int((~arrays['is_train']).sum()),model_hash=r.model_hash,config=config,
                   data_hash=hashlib.sha256((path/'prior.npz').read_bytes()).hexdigest(),state_mask=snapshot.mask,
                   execution_verified=False,geometry_policy_hash=geometry.policy_hash,control_points=n,free_dim=int(arrays['z'].shape[1]),
                   dataset_path=str(path),profile=profile,reason_counts={reason:sum(str(x['reason'])==reason for x in attempts) for reason in sorted(set(str(x['reason']) for x in attempts))},
                   limitations='native independently refined model-valid prior; zero velocity/momentum starts; not execution-verified or continuous collision proof')
+    manifest['initial_position_coverage']={split:dict(count=int(mask.sum()),
+        minimum=arrays['tokens'][mask,0,5:22].min(0).tolist(),
+        maximum=arrays['tokens'][mask,0,5:22].max(0).tolist())
+        for split,mask in [('TRAIN',arrays['is_train']),('VAL',~arrays['is_train'])] if mask.any()}
     atomic_json(path/'dataset_manifest.json',manifest)
     return dict(passed=len(accepted)==config['valid_target'],**manifest)

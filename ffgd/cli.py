@@ -79,7 +79,7 @@ def main(argv=None):
         from pathlib import Path
         if not args.config:p.error('condition-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        return unit('condition_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,samples=2,steps=60))
+        return unit('condition_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,samples=4 if config.get('mode')=='train_mean_factorial' else 2,steps=60))
     if args.command=='weight-diagnostic':
         from .calibration_weights import run
         from pathlib import Path
