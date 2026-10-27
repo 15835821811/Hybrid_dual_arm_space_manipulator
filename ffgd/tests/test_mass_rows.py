@@ -1,4 +1,4 @@
-"""Exact block extraction tests; main planner is still on the original backend."""
+"""Exact block extraction and VJP tests for the calibrated base-row backend."""
 import numpy as np
 import torch
 from ffgd.robot import Robot
