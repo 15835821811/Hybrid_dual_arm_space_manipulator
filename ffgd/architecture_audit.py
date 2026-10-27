@@ -84,7 +84,9 @@ def audit(path,config):
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
         obstacle=MultiSpaceEnergy(Propagator(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])
-        for energy in (base,goal,obstacle):energy.weights.update(manifest.get('guide_weights',{}))
+        for energy in (base,goal,obstacle):
+            energy.weights.update(manifest.get('guide_weights',{}))
+            energy.collision_aggregation=manifest.get('collision_aggregation','pair_mean')
         ablations=[]
         with torch.no_grad():
             before={k:float(v) for k,v in base.evaluate(tensor(z)).items()}

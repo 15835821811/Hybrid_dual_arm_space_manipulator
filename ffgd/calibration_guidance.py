@@ -32,7 +32,8 @@ def _run(path,config):
     if config.get('compiled_backend'):
         from .compiled_physics import compile_tree
         compile_tree(tree)
-    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False))
+    aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
+    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation)
     energy.weights.update(manifest.get('guide_weights',{}))
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
@@ -107,5 +108,6 @@ def _run(path,config):
                 stage=stage,metric_stage=metric_stage,
                 intervals=config.get('intervals',manifest['budget']['intervals']),mass_rows=config.get('mass_rows',False),
                 jit_optimize=config.get('jit_optimize',True),compiled_backend=config.get('compiled_backend',False),
+                collision_aggregation=aggregation,
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')

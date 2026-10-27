@@ -21,8 +21,11 @@ def run(output,config):
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('WEIGHT_DIAGNOSTIC_CHECKPOINT_MISMATCH')
     r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'])
-    energy=MultiSpaceEnergy(Propagator(DifferentiableTree(r),snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True)
+    aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
+    tree=DifferentiableTree(r);tree.use_momentum_mass_rows=manifest.get('physics_backend')=='eager_mass_rows'
+    energy=MultiSpaceEnergy(Propagator(tree,snapshot),codec,Geometry(r),task,manifest['budget']['intervals'],collect_task_residual=True,collision_aggregation=aggregation)
     energy.weights.update(manifest.get('guide_weights',{}))
+    energy.weights.update(config.get('guide_weights',{}))
     with np.load(root/'candidate_000/denoising.npz') as data:x0=data[config.get('stage','clean')][-1].copy()
     x=tensor(x0).requires_grad_();mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);terms=energy.evaluate(mean+scale*x)
     J=residual_jacobian(energy.last_task_residual,x,batch_size=4)
@@ -38,6 +41,7 @@ def run(output,config):
         gradient=sum(energy.weights[k]*g for k,g in gradients.items());before=sum(energy.weights[k]*values[k] for k in energy.weights)
         direction=torch.cholesky_solve(gradient[:,None],factor).squeeze(1)
         coefficient=budget['step_size']*before/max(float(gradient@direction),1e-30)
+        if budget.get('max_step_coefficient') is not None:coefficient=min(coefficient,budget['max_step_coefficient'])
         delta=coefficient*direction;delta*=min(1.,budget['max_update_norm']/max(float(torch.linalg.vector_norm(delta)),1e-30))
         delta*=min(1.,budget['max_control_change']/max(float(torch.max(abs(jac@delta))),1e-30))
         trials=[]
@@ -53,6 +57,7 @@ def run(output,config):
     np.savez_compressed(output/'diagnostic_inputs.npz',original_clean=x0,one_step_proposals=proposals,**{name:g.numpy() for name,g in gradients.items()})
     return dict(passed=value_error<1e-6,scope='bounded weight-sensitivity diagnostic; no plan returned, repaired or executed',
                 source_run=str(root),native_value_relative_error=value_error,original_terms=values,
+                collision_aggregation=aggregation,
                 gradient_norms={name:float(torch.linalg.vector_norm(g)) for name,g in gradients.items()},
                 preconditioned_gradient_norms={name:float(torch.linalg.vector_norm(torch.cholesky_solve(g[:,None],factor))) for name,g in gradients.items()},
                 one_step_rays=rows,main_candidate_count_added=0)

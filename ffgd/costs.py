@@ -35,7 +35,7 @@ def rotation_log(R,angle=None):
 
 
 class MultiSpaceEnergy:
-    def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False):
+    def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean'):
         if codec.duration!=task.duration:raise ValueError('time contract mismatch')
         self.p,self.codec,self.geometry,self.task=propagator,codec,geometry,task
         self.grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[x.time for x in task.poses]])
@@ -43,6 +43,8 @@ class MultiSpaceEnergy:
         self.weights=dict(task=1.,collision=1.,joint=1.,actuator=1.,smoothness=1e-3)
         self.collision_guide=ConvexSupportGuide(geometry)
         self.collect_task_residual=collect_task_residual;self.last_task_residual=None
+        if collision_aggregation not in ('pair_mean','pair_mean_plus_max'):raise ValueError('unknown collision aggregation')
+        self.collision_aggregation=collision_aggregation
 
     def evaluate(self,z,return_path=False):
         out=self.p.rollout(self.codec,z,grid=self.grid);tree=self.p.tree;r=self.p.robot
@@ -55,7 +57,10 @@ class MultiSpaceEnergy:
             k=tree.kinematics(x,v)
             gaps=self.collision_guide.gaps(k);minima.append(gaps.min())
             support_pairs+=self.collision_guide.last_query['support_pairs']
-            collision.append(hinge((self.buffer-gaps)/self.buffer).mean())
+            penalties=hinge((self.buffer-gaps)/self.buffer)
+            # Time-normalized mean plus worst-pair pressure cannot dilute a
+            # local violation by adding thousands of safe geometry pairs.
+            collision.append(penalties.mean()+(penalties.max() if self.collision_aggregation=='pair_mean_plus_max' else 0.))
             M=tree.mass(x,k);h=tree.inverse(x,v,torch.zeros_like(v),k)
             aa=tree.B@out['qdd'][i]
             ab=-torch.linalg.solve(M[b[:,None],b],M[b[:,None],a]@aa+h[b])
@@ -87,6 +92,7 @@ class MultiSpaceEnergy:
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
         self.last_task_residual=(torch.cat(task_residuals)*np.sqrt(self.weights['task']/len(self.task.poses))) if task_residuals else None
         self.last_diagnostics=dict(grid_points=len(self.grid),all_eligible_pairs=len(self.geometry.pairs),
+                                   collision_aggregation=self.collision_aggregation,
                                    support_pair_evaluations=support_pairs,broadphase_pair_evaluations=len(self.grid)*len(self.geometry.pairs),
                                    mass_evaluations=3*len(self.grid)-1,
                                    minimum_proxy_gap=float(torch.stack(minima).min().detach()),
@@ -113,7 +119,8 @@ class MultiSpaceEnergy:
             tau=M[np.ix_(a,b)]@ab+M[np.ix_(a,a)]@aa+bias[a]
             act.append(h(abs(tau)/(r.spec.torque_limits*self.torque_fraction)-1).mean())
             distances=self.collision_guide.numpy_gaps(d.geom_xpos[g.ids],d.geom_xmat[g.ids].reshape(-1,3,3))
-            coll.append(h((self.buffer-distances)/self.buffer).mean())
+            penalties=h((self.buffer-distances)/self.buffer)
+            coll.append(penalties.mean()+(penalties.max() if self.collision_aggregation=='pair_mean_plus_max' else 0.))
             for target in self.task.poses:
                 if t!=target.time:continue
                 body=r.tips[target.tip];R=d.xmat[body].reshape(3,3);pos=d.xpos[body].copy()

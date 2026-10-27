@@ -65,7 +65,9 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
         energy=MultiSpaceEnergy(prop,codec,Geometry(robot),task,intervals)
         other_codec=api.boundary_codec(other,other_snapshot,other_task.duration,codec.n)
         alternate=MultiSpaceEnergy(other_prop,other_codec,Geometry(other),other_task,intervals)
-        for objective in (energy,alternate):objective.weights.update(manifest.get('guide_weights',{}))
+        for objective in (energy,alternate):
+            objective.weights.update(manifest.get('guide_weights',{}))
+            objective.collision_aggregation=manifest.get('collision_aggregation','pair_mean')
         a={k:float(v) for k,v in energy.evaluate(tensor(z)).items()}
         b={k:float(v) for k,v in alternate.evaluate(tensor(z)).items()}
     energy_error=max(abs(a[k]-b[k]) for k in a);network_error=float(torch.max(abs(left-right)))
