@@ -34,7 +34,10 @@ class BoundaryCodec:
     Pivoted elimination is deterministic for the fixed boundary template.
     Dependent consistent rows are accepted; conflicting rows are rejected.
     """
-    def __init__(self, n, dof, duration, boundaries):
+    def __init__(self, n, dof, duration, boundaries, origin='pivot_zero'):
+        if origin not in ('pivot_zero','initial_position'):raise ValueError('unknown boundary coordinate origin')
+        boundaries=tuple(boundaries)
+        self.origin=origin
         self.n, self.dof, self.duration = n, dof, float(duration)
         rows, rhs = [], []
         for bc in boundaries:
@@ -81,6 +84,15 @@ class BoundaryCodec:
         else:
             self.rank = 0; self.offset = np.zeros(n*dof); self.N = np.eye(n*dof)
         self.free_dim = self.N.shape[1]
+        if origin=='initial_position':
+            # Change only the affine coordinate origin, never the admissible
+            # trajectory set or its full nullspace. Anchor uses initial position
+            # only; it receives no goal, historical path or scene identifier.
+            initial={j:value for bc in boundaries if bc.time==0 and bc.derivative==0 for j,value in zip(bc.joints,bc.values)}
+            if set(initial)!=set(range(dof)):raise ValueError('initial-position origin requires complete initial position')
+            anchor=np.tile([initial[j] for j in range(dof)],n)
+            self.offset=self.offset+self.N@(self.N.T@(anchor-self.offset))
+            if np.max(abs(self.A@self.offset-self.b))>1e-10:raise ValueError('coordinate origin violates boundary')
 
     def decode(self, z):
         if z.shape[-1] != self.free_dim:

@@ -56,6 +56,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     """All candidates remain in the denominator, including numerical failures."""
     total_start=time.perf_counter();torch.set_num_threads(budget.cpu_threads);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
+    if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!='pivot_zero':raise ValueError('BOUNDARY_ORIGIN_NOT_ENABLED_IN_MAIN')
     if checkpoint.get('update',0)<1 or checkpoint.get('training_config',{}).get('scope')=='SOFTWARE_TEST':raise ValueError('MAIN_PLANNER_REQUIRES_TRAINED_PRIOR')
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')

@@ -60,7 +60,7 @@ def geometry_audit(path,count=32):
                 limitations='piecewise differentiable; zero-distance degenerate witness explicitly rejected; feature switches not smooth')
 
 
-def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collision_aggregation='pair_mean',bodyframe_backend=False,joint_peak_penalty=False,full_path_backend=False):
+def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collision_aggregation='pair_mean',bodyframe_backend=False,joint_peak_penalty=False,full_path_backend=False,boundary_origin='pivot_zero'):
     torch.set_num_threads(1)
     r=Robot();tree=DifferentiableTree(r);geometry=Geometry(r);rng=np.random.default_rng(32026)
     tree.use_batched_bodyframe_momentum=bodyframe_backend
@@ -73,13 +73,16 @@ def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collis
     for case in range(count):
         check_budget()
         d=r.new_data();q0=r.spec.planner_zero+rng.uniform(-.05,.05,17)
+        if boundary_origin=='initial_position':
+            if case%3==1:q0[0]=.85
+            if case%3==2:q0[10]=2.9
         d.qpos[r.qpos_ids]=r.B@q0;mujoco.mj_forward(r.model,d)
         target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         d.qpos[target:target+3]=d.xpos[r.tips[0]]+np.array([.2,.013,.017])
         p=Propagator(tree,r.snapshot(d));T=(.3 if control_points==8 else .6)+(case%3)*.05
         bc=[Boundary(0,j,tuple(range(17)),tuple(q0) if j==0 else (0.,)*17) for j in (0,1,2)]
         if control_points==24:bc += [Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2)]
-        codec=BoundaryCodec(control_points,17,T,bc)
+        codec=BoundaryCodec(control_points,17,T,bc,origin=boundary_origin)
         C=np.tile(q0,(control_points,1))+rng.normal(0,.1,(control_points,17));z0=(C.ravel()-codec.offset)@codec.N
         k=tree.kinematics(tensor(d.qpos))
         tasks=tuple(PoseConstraint(T,j,k['position'][r.tips[j]].numpy()+np.array([.02,-.01,.03]),k['rotation'][r.tips[j]].numpy()) for j in (0,1))
@@ -106,4 +109,4 @@ def energy_gradients(path,count=3,control_points=8,compiled_backend=False,collis
                  passed=all(v['passed'] for checks in directions for v in checks) and all(np.linalg.norm(v)>1e-10 for v in grads.values()) and all(forward_errors[k]<=1e-6+1e-8*abs(native[k]) for k in native))
         rows.append(row);(path/f'case_{case}.json').write_text(json.dumps(row,indent=2),encoding='utf-8')
         print(json.dumps({k:v for k,v in row.items() if k!='directions'}),flush=True)
-    return dict(passed=all(r['passed'] for r in rows),rows=rows,collision_aggregation=collision_aggregation,bodyframe_backend=bodyframe_backend,joint_peak_penalty=joint_peak_penalty,full_path_backend=full_path_backend,scope='active five terms and total; full-convex-support whole-path AD against independent native/NumPy FD')
+    return dict(passed=all(r['passed'] for r in rows),rows=rows,boundary_origin=boundary_origin,collision_aggregation=collision_aggregation,bodyframe_backend=bodyframe_backend,joint_peak_penalty=joint_peak_penalty,full_path_backend=full_path_backend,scope='active five terms and total; full-convex-support whole-path AD against independent native/NumPy FD')

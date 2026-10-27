@@ -10,7 +10,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m ffgd.cli')
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
-    t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','compiled'],required=True);t.add_argument('--samples',type=int)
+    t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','full-space-origin','compiled'],required=True);t.add_argument('--samples',type=int)
     for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','momentum-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
@@ -34,10 +34,13 @@ def main(argv=None):
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
     if args.command=='data':
-        from .data import generate
+        from .data import generate,reencode_origin
         from pathlib import Path
         if not args.config:p.error('data requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        if config.get('operation')=='reencode_boundary_origin':
+            if args.run:p.error('boundary-origin reencoding does not support --run resume')
+            return unit('prior_coordinate_reencoding',lambda path:reencode_origin(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))
         return unit('prior_data',lambda path:generate(path,config,args.run),dict(max_wall_seconds=config['max_wall_seconds'],max_attempts=config['max_attempts']))
     if args.command=='train':
         from .training import train
@@ -173,7 +176,7 @@ def main(argv=None):
         if not args.run:p.error('replay requires --run execution-directory')
         return unit('independent_replay',lambda path:replay_saved(path,args.run),dict(max_wall_seconds=600))
     if args.command=='test':
-        if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path') else 32
+        if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','full-space-origin') else 32
         if args.samples<1:p.error('samples must be positive')
         if args.suite=='architecture':
             def software(path):
@@ -208,6 +211,9 @@ def main(argv=None):
         if args.suite=='feature-switch':
             from .calibration_feature_switch import run
             return unit('feature_switch',run,dict(max_wall_seconds=180,cases=1,epsilon_steps=6))
+        if args.suite=='full-space-origin':
+            from .calibration_constraints import energy_gradients
+            return unit('full_space_origin_gradients',lambda path:energy_gradients(path,args.samples,24,collision_aggregation='pair_mean_plus_max',bodyframe_backend=True,joint_peak_penalty=True,full_path_backend=True,boundary_origin='initial_position'),dict(max_wall_seconds=900,cases=args.samples,free_dim=323))
         if args.suite in ('full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path'):
             from .calibration_constraints import energy_gradients
             aggregation='pair_mean' if args.suite=='full-space' else 'pair_mean_plus_max'

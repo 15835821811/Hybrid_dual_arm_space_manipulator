@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import mujoco
-from .model_io import load_model,normalize_condition
+from .model_io import load_model,normalize_condition,file_hash
 from .model import ConditionalDenoiser
 from .diffusion import sample,SamplingBudget
 from .trajectory import Boundary,BoundaryCodec
@@ -21,6 +21,7 @@ def run(path,config):
     other,_,_=load_model(config['checkpoint'],device)
     torch.manual_seed(92342);unlearned=ConditionalDenoiser(**checkpoint['model_config']).to(device).eval()
     dataset=Path(config['dataset'])
+    if file_hash(dataset/'prior.npz')!=checkpoint['dataset_hash']:raise ValueError('LEARNING_CHECK_DATASET_MISMATCH')
     with np.load(dataset/'prior.npz') as stored:data={k:stored[k] for k in stored.files}
     ids=np.flatnonzero(~data['is_train'])[:5]
     if len(ids)<5:raise ValueError('five VAL conditions required')
@@ -30,7 +31,7 @@ def run(path,config):
         snapshot=Snapshot(r.model_hash,int(checkpoint['dataset_manifest']['state_mask']),data['initial_state'][item])
         prop=Propagator(tree,snapshot);T=float(data['duration'][item]);n=int(checkpoint['dataset_manifest']['control_points'])
         bc=[Boundary(0,j,tuple(range(17)),tuple(prop.initial_q if j==0 else prop.initial_v if j==1 else np.zeros(17))) for j in (0,1,2)]
-        bc.extend(Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2));codec=BoundaryCodec(n,17,T,bc)
+        bc.extend(Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2));codec=BoundaryCodec(n,17,T,bc,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
         condition=normalize_condition(data['tokens'][item:item+1],data['padding'][item:item+1],checkpoint,device)
         result=sample(model,condition,codec.free_dim,seed,budget,mean=checkpoint['mean'],scale=checkpoint['scale'])
         C=codec.decode(result['free']);error=float(np.max(abs(codec.A@C.ravel()-codec.b)))
@@ -74,6 +75,6 @@ def run(path,config):
         rows.append(row);outputs.append(result['free']);atomic_json(path/'progress.json',rows)
     variation=np.std(outputs,axis=0)
     return dict(passed=all(x['passed'] for x in rows) and float(variation.min())>1e-8,checkpoint=identity,samples=rows,minimum_sample_coordinate_std=float(variation.min()),
-                dataset_accepted=checkpoint['dataset_manifest']['accepted'],full_free_dim=len(checkpoint['mean']),
+                dataset_accepted=checkpoint['dataset_manifest']['accepted'],full_free_dim=len(checkpoint['mean']),boundary_origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'),
                 architecture_status='NOT_RUN',engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
                 scope='trained full-variable model, full-noise finite boundary decoding and dependency checks only')

@@ -18,6 +18,64 @@ from .orchestration import atomic_json,check_budget
 from .validation import validate
 
 
+def reencode_origin(path,config):
+    """Relabel immutable model-prior paths in an invertible affine coordinate system.
+
+    No new trajectories or labels derived from evaluation tasks. Physical input
+    arrays and TRAIN/VAL membership remain bit-identical; old rejected attempts
+    remain available through the explicit parent dependency.
+    """
+    from .contracts import Snapshot
+    torch.set_num_threads(1)
+    source=Path(config['source_dataset']);origin=config['boundary_origin']
+    if origin!='initial_position':raise ValueError('UNSUPPORTED_REENCODING_ORIGIN')
+    parent=json.loads((source/'dataset_manifest.json').read_text(encoding='utf-8'))
+    parent_hash=hashlib.sha256((source/'prior.npz').read_bytes()).hexdigest()
+    if parent_hash!=parent['data_hash'] or parent['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
+    if parent.get('boundary_origin','pivot_zero')!='pivot_zero':raise ValueError('SOURCE_ORIGIN_NOT_SUPPORTED')
+    with np.load(source/'prior.npz') as z:arrays={k:z[k] for k in z.files}
+    r=Robot()
+    if r.model_hash!=parent['model_hash']:raise ValueError('REENCODING_MODEL_MISMATCH')
+    labels=[];cache={};maximum=0.
+    preserved={k:hashlib.sha256(np.ascontiguousarray(v).tobytes()).hexdigest() for k,v in arrays.items() if k!='z'}
+    for i,(C,T,state) in enumerate(zip(arrays['control'],arrays['duration'],arrays['initial_state'])):
+        if i%16==0:check_budget()
+        d=r.restore(Snapshot(r.model_hash,parent['state_mask'],state))
+        if np.any(abs(d.qvel)>1e-12):raise ValueError('REENCODING_NONZERO_BOUNDARY_TEMPLATE_NOT_IMPLEMENTED')
+        q=r.Bplus@d.qpos[r.qpos_ids];key=(float(T),q.tobytes())
+        if key not in cache:
+            if len(cache)>8:cache.clear()
+            bc=[Boundary(0,j,tuple(range(17)),tuple(q) if j==0 else (0.,)*17) for j in (0,1,2)]+[Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2)]
+            cache[key]=(BoundaryCodec(len(C),17,T,bc),BoundaryCodec(len(C),17,T,bc,origin=origin))
+        old,new=cache[key]
+        np.testing.assert_allclose(old.decode(arrays['z'][i]),C,atol=1e-10,rtol=0)
+        np.testing.assert_array_equal(old.N,new.N)
+        label=new.encode(C);maximum=max(maximum,float(np.max(abs(new.decode(label)-C))));labels.append(label)
+        if (i+1)%200==0:print(json.dumps(dict(reencoded=i+1,total=len(arrays['z']),maximum_decode_error=maximum)),flush=True)
+    arrays['z']=np.stack(labels)
+    for k,h in preserved.items():
+        if hashlib.sha256(np.ascontiguousarray(arrays[k]).tobytes()).hexdigest()!=h:raise ValueError('PHYSICAL_DATA_OR_SPLIT_CHANGED')
+    if maximum>1e-10:raise ValueError('REENCODING_PHYSICAL_PATH_MISMATCH')
+    train=arrays['z'][arrays['is_train']];std=train.std(0)
+    normalized=(train-train.mean(0))/np.maximum(std,1e-8)
+    singular=np.linalg.svd(normalized,compute_uv=False)
+    diagnostics=dict(empirical_train_rank=int(np.linalg.matrix_rank(normalized)),free_dim=arrays['z'].shape[1],
+        train_std_min=float(std.min()),train_std_max=float(std.max()),
+        train_correlation_condition=float((singular[0]/singular[-1])**2),
+        standardized_constant_initial_reference_norm=float(np.linalg.norm(train.mean(0)/np.maximum(std,1e-8))))
+    np.savez_compressed(path/'prior.npz',**arrays)
+    manifest=dict(parent,schema='ffgd_prior_affine_origin_v2',boundary_origin=origin,
+        data_hash=hashlib.sha256((path/'prior.npz').read_bytes()).hexdigest(),dataset_path=str(path),
+        parent_dataset=str(source.resolve()),parent_data_hash=parent_hash,
+        parent_manifest_hash=hashlib.sha256((source/'dataset_manifest.json').read_bytes()).hexdigest(),
+        parent_attempt_directory=str((source/'attempts').resolve()),transformation_config=config,
+        unchanged_array_hashes=preserved,maximum_decode_error=maximum,new_physical_trajectories=0,
+        label_diagnostics=diagnostics,
+        physical_validation='Inherited parent native results on bit-identical control/initial/time arrays; no new physical validation claimed')
+    atomic_json(path/'dataset_manifest.json',manifest)
+    return dict(passed=diagnostics['empirical_train_rank']==diagnostics['free_dim'],**manifest)
+
+
 def generate(path,config,resume=None):
     if resume is not None:
         path=Path(resume)

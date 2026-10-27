@@ -96,6 +96,7 @@ def run(output,config):
     model=None;identity={};condition=None
     if method=='D_POST_OPTIMIZATION':
         model,checkpoint,identity=load_model(planning['checkpoint'],planning.get('device','cpu'))
+        if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!='pivot_zero':raise ValueError('BOUNDARY_ORIGIN_NOT_ENABLED_IN_COMPARISON')
         if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
         mean_array=checkpoint['mean'];scale_array=checkpoint['scale']
     else:
