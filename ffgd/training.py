@@ -9,10 +9,8 @@ from pathlib import Path
 import numpy as np
 import torch
 from .model import ConditionalDenoiser
+from .model_io import file_hash,load_model,normalize_condition
 from .orchestration import atomic_json,check_budget,source_hash,ORCH,read_state
-
-
-def file_hash(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def save_checkpoint(path,payload):
@@ -21,31 +19,21 @@ def save_checkpoint(path,payload):
     atomic_json(path.with_suffix('.identity.json'),dict(sha256=file_hash(path),update=payload['update'],dataset_hash=payload['dataset_hash']))
 
 
-def load_model(path,device='cpu'):
-    path=Path(path);identity=json.loads(path.with_suffix('.identity.json').read_text())
-    if file_hash(path)!=identity['sha256']:raise ValueError('CHECKPOINT_HASH_MISMATCH')
-    checkpoint=torch.load(path,map_location=device,weights_only=False)
-    model=ConditionalDenoiser(**checkpoint['model_config']).to(device)
-    model.load_state_dict(checkpoint['ema']);model.eval()
-    return model,checkpoint,identity
-
-
-def normalize_condition(tokens,padding,checkpoint,device):
-    x=(np.asarray(tokens)-checkpoint['condition_mean'])/checkpoint['condition_scale']
-    x=np.where(np.asarray(padding)[...,None],0.,x)
-    return dict(tokens=torch.tensor(x,device=device,dtype=torch.float32),padding_mask=torch.tensor(padding,device=device,dtype=torch.bool))
-
-
 def train(path,config,resume=None):
     torch.set_num_threads(1)
     if not torch.cuda.is_available() and config['device']=='cuda':raise RuntimeError('CUDA_REQUIRED_BY_TRAINING_CONFIG')
     device=torch.device(config['device']);seed=config['seed'];torch.manual_seed(seed);np.random.seed(seed);random.seed(seed)
     if device.type=='cuda':
         torch.cuda.manual_seed_all(seed)
-        torch.cuda.set_per_process_memory_fraction(.75)
+        free,total=torch.cuda.mem_get_info()
+        torch.cuda.set_per_process_memory_fraction(min(.75,.8*free/total))
     directory=Path(config['dataset']);manifest=json.loads((directory/'dataset_manifest.json').read_text())
     if manifest['data_hash']!=file_hash(directory/'prior.npz'):raise ValueError('DATASET_HASH_MISMATCH')
     if manifest['accepted']<config['minimum_dataset_size']:raise ValueError('INSUFFICIENT_DECLARED_DATASET')
+    if manifest['source_kind']!='FF_MODEL_PRIOR' and config.get('scope')!='SOFTWARE_TEST':raise ValueError('UNSUPPORTED_TRAINING_DATA_CLASS')
+    from .robot import Robot
+    robot=Robot()
+    if robot.model_hash!=manifest['model_hash']:raise ValueError('TRAINING_ROBOT_MODEL_MISMATCH')
     with np.load(directory/'prior.npz') as data:arrays={k:data[k] for k in data.files}
     trainids=np.flatnonzero(arrays['is_train']);valids=np.flatnonzero(~arrays['is_train'])
     if config.get('debug_train_subset'):trainids=trainids[:config['debug_train_subset']]
@@ -56,7 +44,7 @@ def train(path,config,resume=None):
     cm=train_tokens.mean(0);cs=np.maximum(train_tokens.std(0),.1)
     provenance=dict(mean=mean,scale=scale,condition_mean=cm,condition_scale=cs,
                     dataset_hash=manifest['data_hash'],dataset_manifest=manifest,normalizer_split='TRAIN',
-                    model_config=config['model'],training_config=config,source_hash=source_hash())
+                    model_config=config['model'],training_config=config,source_hash=source_hash(),robot_physical_hash=robot.physical_hash)
     model=ConditionalDenoiser(**config['model']).to(device);ema=copy.deepcopy(model).eval()
     for parameter in ema.parameters():parameter.requires_grad_(False)
     optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
@@ -121,8 +109,9 @@ def train(path,config,resume=None):
                 with (path/'validation.jsonl').open('a') as f:f.write(json.dumps(record)+'\n')
                 payload=checkpoint(update);save_checkpoint(path/'last.pt',payload)
                 if improved:save_checkpoint(path/'best.pt',payload)
-                s=read_state();s['latest_verified_checkpoint']=dict(path=str(path/'last.pt'),sha256=file_hash(path/'last.pt'),update=update)
-                atomic_json(ORCH/'state.json',s)
+                if config.get('scope')!='SOFTWARE_TEST':
+                    s=read_state();s['latest_verified_checkpoint']=dict(path=str(path/'last.pt'),sha256=file_hash(path/'last.pt'),update=update)
+                    atomic_json(ORCH/'state.json',s)
                 print(json.dumps(record),flush=True)
     except Exception:
         save_checkpoint(path/'interrupted.pt',checkpoint(updates));raise

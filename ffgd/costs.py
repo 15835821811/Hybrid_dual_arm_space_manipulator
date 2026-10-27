@@ -58,6 +58,9 @@ class MultiSpaceEnergy:
         def integral(values):return torch.trapezoid(torch.stack(values) if isinstance(values,list) else values,time)/self.task.duration
         terms=dict(task=task/len(self.task.poses),collision=integral(collision),joint=integral(joint),actuator=integral(actuator),smoothness=integral(smooth))
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
+        self.last_diagnostics=dict(grid_points=len(self.grid),all_eligible_pairs=len(self.geometry.pairs),
+                                   minimum_proxy_gap=float(torch.stack(minima).min().detach()),
+                                   maximum_raw_torque_ratio=float((torch.stack(raw).abs()/tensor(r.spec.torque_limits)).max().detach()))
         if return_path:return terms,dict(**out,raw_torque=torch.stack(raw),proxy_minimum=torch.stack(minima))
         return terms
 

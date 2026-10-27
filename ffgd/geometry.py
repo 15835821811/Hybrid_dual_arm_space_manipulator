@@ -1,6 +1,6 @@
-"""Whole-body finite-volume boxes and independent native mesh distances.
+"""Whole-body geometry inventory, diagnostic boxes and native mesh distances.
 
-The guide uses enclosing boxes in native mesh frames. SAT projection gaps are
+The box diagnostic uses enclosing boxes in native mesh frames. SAT projection gaps are
 conservative lower bounds, not exact Euclidean surface distances. All eligible
 pairs are rebuilt/evaluated every call; no permanently frozen near-pair subset.
 """

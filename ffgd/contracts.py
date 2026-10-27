@@ -70,3 +70,29 @@ class TaskSpec:
         object.__setattr__(self,'poses',tuple(self.poses))
         if self.duration<=0 or not np.isfinite(self.duration) or not self.poses:raise ValueError('invalid task')
         if any(p.time>self.duration for p in self.poses):raise ValueError('task beyond duration')
+
+
+@dataclass(frozen=True)
+class BoxObstacle:
+    center: np.ndarray
+    half_size: np.ndarray
+    rotation: np.ndarray
+
+    def __post_init__(self):
+        for field in ('center','half_size','rotation'):object.__setattr__(self,field,immutable(getattr(self,field)))
+        if self.center.shape!=(3,) or self.half_size.shape!=(3,) or np.any(self.half_size<=0):raise ValueError('invalid obstacle dimensions')
+        if self.rotation.shape!=(3,3) or not np.allclose(self.rotation.T@self.rotation,np.eye(3),atol=1e-10) or np.linalg.det(self.rotation)<0:raise ValueError('invalid obstacle rotation')
+
+    @property
+    def identity(self):return array_hash(np.r_[self.center,self.half_size,self.rotation.ravel()])
+
+
+@dataclass(frozen=True)
+class SceneSpec:
+    boxes: tuple = ()
+
+    def __post_init__(self):
+        object.__setattr__(self,'boxes',tuple(sorted(self.boxes,key=lambda box:box.identity)))
+
+    @property
+    def identity(self):return hashlib.sha256(''.join(b.identity for b in self.boxes).encode()).hexdigest()

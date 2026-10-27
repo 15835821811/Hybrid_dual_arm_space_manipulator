@@ -56,6 +56,7 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
     report.update(intervals=intervals,geometry_step_m=spatial_step,propagation_volume_error_m=error)
     if not converged:
         assert before==input_identity(candidate,snapshot,task)
+        report['input_unchanged']=True
         return report
     grid,xs,vs=last;d=mujoco.MjData(m);min_clearance=10.;max_torque=0.;base_residual=0.;task_errors=[];momentum_linear=0.;momentum_angular=0.
     from .propagation import native_subtree_momentum

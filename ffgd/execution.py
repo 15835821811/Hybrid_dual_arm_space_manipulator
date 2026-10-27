@@ -37,12 +37,15 @@ def track(robot,snapshot,candidate,output,profile):
         residual.append(low-r.B@q17)
         q=basis(len(candidate.control),i*dt,candidate.duration)@candidate.control
         tracking.append(low-r.B@q)
+        if status!='FINISHED':break
         if i==steps:break
         if scan['minimum']<profile['physical_geometry_clearance_m']:
             status='SAFETY_ABORT_GEOMETRY';break
         limited=m.jnt_limited[r.joints].astype(bool);bounds=m.jnt_range[r.joints]
         if np.any(low[limited]<bounds[limited,0]) or np.any(low[limited]>bounds[limited,1]):
             status='SAFETY_ABORT_JOINT';break
+        if np.any(q17<r.lower) or np.any(q17>r.upper):
+            status='SAFETY_ABORT_PLANNER_JOINT';break
         qd=basis(len(candidate.control),i*dt,candidate.duration,1)@candidate.control
         qdd=basis(len(candidate.control),i*dt,candidate.duration,2)@candidate.control
         applied,raw=command(r,data,q,qd,qdd)
@@ -50,7 +53,9 @@ def track(robot,snapshot,candidate,output,profile):
         data.ctrl[r.actuator_ids]=applied
         raws.append(raw);controls.append(data.ctrl.copy());forces.append(data.qfrc_applied.copy());external.append(data.xfrc_applied.copy())
         mujoco.mj_step(m,data)
-        if np.any(data.warning.number):status='SIMULATOR_WARNING';break
+        # Record the post-input native state on the next loop before stopping,
+        # so an interrupted/failed execution still has N+1 states for N inputs.
+        if np.any(data.warning.number):status='SIMULATOR_WARNING'
     bundle=dict(states=np.asarray(states),ctrl=np.asarray(controls),raw_torque=np.asarray(raws),qfrc_applied=np.asarray(forces),
                 xfrc_applied=np.asarray(external),momentum_residual=np.asarray(momentum),clearance=np.asarray(clearance),
                 manifold_residual=np.asarray(residual),tracking_q67=np.asarray(tracking),

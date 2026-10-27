@@ -1,3 +1,24 @@
+# FFGD 自由漂浮引导扩散重构（实施中）
+
+本隔离分支 `codex/ffgd-core-rebuild` 的新主入口为 `python -m ffgd.cli plan`。
+主链使用完整自由变量条件扩散、去噪内整路径物理引导、独立只读验收、67 路原生力矩执行与重放。
+实现与实际验收进度以 [主任务书](docs/ffgd/MASTER.md)、[交接](docs/ffgd/HANDOFF.md)
+及本地 `artifacts/ffgd/orchestration/state.json` 为准。当前整体目标未完成；代码接口存在不等于 M4–M8 已通过。
+
+```powershell
+.venv/Scripts/python.exe -m ffgd.cli doctor
+.venv/Scripts/python.exe -m ffgd.cli status
+.venv/Scripts/python.exe -m ffgd.cli next
+.venv/Scripts/python.exe -m ffgd.cli test --suite architecture
+```
+
+数据、训练与规划通过 `data --config`、`train --config`、`plan --config --task` 指定版本化配置；
+`execute --run` 只执行已独立验收并预选的候选。训练需使用 `.venv-gpu/Scripts/python.exe`。
+主入口不读取旧成功路径、不调用旧搜索/恢复/bypass，也没有采样后的轨迹修复。
+下面原快照说明与旧入口保留作历史资料和独立基线，旧失败与验收范围不变。
+
+---
+
 # 2026-10-23 末端轨迹可视化收尾快照
 
 此分支精确基于提交 `a8a01145b8fa760c0ae404ab9382a0b68a4ee901`，对应用户指定的“10mm变红提示、双臂末端累计轨迹、83.5秒视频、动量交接后续计划”阶段。未纳入其后的动量诊断、RK4/guided-chain推进，也未混入当前工作区未提交修改。

@@ -11,7 +11,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -31,6 +31,35 @@ def main(argv=None):
         if not args.config:p.error('train requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('training',lambda path:train(path,config,args.run),dict(max_wall_seconds=config['max_wall_seconds'],updates=config['updates']))
+    if args.command=='learning-checks':
+        from .learning_checks import run
+        from pathlib import Path
+        if not args.config:p.error('learning-checks requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('learning_checks',lambda path:run(path,config),dict(max_wall_seconds=300,samples=5,steps=60))
+    if args.command=='plan':
+        from .problem_io import load_problem,planning_config
+        from .api import plan
+        from pathlib import Path
+        if not args.config or not args.task:p.error('plan requires --config and --task')
+        config,budget=planning_config(args.config)
+        def planning(path):
+            robot,snapshot,task,problem=load_problem(args.task)
+            (path/'submitted_problem.json').write_text(json.dumps(problem,indent=2),encoding='utf-8')
+            problem['initial']={'snapshot_file':'initial_state.npz'}
+            (path/'problem.json').write_text(json.dumps(problem,indent=2),encoding='utf-8')
+            profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
+            from .architecture_guard import LegacySentinel
+            from .orchestration import atomic_json
+            with LegacySentinel() as sentinel:
+                candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()))
+            atomic_json(path/'architecture_sentinel.json',sentinel.report())
+            return dict(passed=candidate is not None,**result)
+        return unit('planning',planning,dict(max_wall_seconds=budget.max_wall_seconds+60,candidates=len(budget.seeds),steps=budget.sampling.steps))
+    if args.command=='execute':
+        from .execution_acceptance import execute_selected
+        if not args.run:p.error('execute requires --run planning-directory')
+        return unit('selected_execution',lambda path:execute_selected(path,args.run),dict(max_wall_seconds=900))
     if args.command=='test':
         if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space') else 32
         if args.samples<1:p.error('samples must be positive')

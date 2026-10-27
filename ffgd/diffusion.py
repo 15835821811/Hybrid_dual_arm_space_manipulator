@@ -17,18 +17,20 @@ class SamplingBudget:
     line_trials: int = 2
     step_size: float = .01
     max_update_norm: float = .1
+    max_control_change: float = .02
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
         if not 1<=self.updates_per_step<=3 or not 1<=self.line_trials<=2:raise ValueError('invalid guidance budget')
-        if self.guide_steps and (self.step_size<=0 or self.max_update_norm<=0):raise ValueError('invalid guidance scale')
+        if self.guide_steps and (self.step_size<=0 or self.max_update_norm<=0 or self.max_control_change<=0):raise ValueError('invalid guidance scale')
 
 
-def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None):
+def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None):
     """One candidate, exactly the requested network calls; never adds seeds."""
     device=next(model.parameters()).device
     generator=torch.Generator(device=device).manual_seed(seed)
     x=torch.randn(free_dim,generator=generator,device=device,dtype=torch.float32)
+    if observer:observer('initial',x.detach().cpu().numpy())
     alpha=torch.cumprod(1-torch.linspace(.0001,.02,1000,dtype=torch.float64),0)
     schedule=np.rint(np.linspace(999,0,budget.steps)).astype(int)
     if len(set(schedule))!=budget.steps:raise ValueError('schedule contains duplicate network calls')
@@ -40,6 +42,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
     model.eval()
     for index,k in enumerate(schedule):
         input_x=x.detach().clone()
+        if observer:observer('before_step',dict(index=index,noise_level=int(k),input=input_x.cpu().numpy()))
         with torch.no_grad():v=model(x[None,:],torch.tensor([k],device=device),condition)[0]
         calls+=1
         a=float(torch.sqrt(alpha[k]));s=float(torch.sqrt(1-alpha[k]))
@@ -55,6 +58,11 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                 delta=budget.step_size*grad
                 delta=delta*min(1.,budget.max_update_norm/max(float(torch.linalg.vector_norm(delta)),1e-30))
                 before=float(terms['total'].detach());accepted=False;after=before;chosen=0.
+                physical_change=None
+                if control_jacobian is not None:
+                    physical_change=float(torch.max(abs(control_jacobian@delta)))
+                    factor=min(1.,budget.max_control_change/max(physical_change,1e-30));delta=delta*factor;physical_change*=factor
+                diagnostics=dict(getattr(energy,'diagnostics',{}))
                 for trial in range(budget.line_trials):
                     step=2.**(-trial);proposal=(guided-step*delta).detach()
                     with torch.no_grad():after_terms=energy(mean+scale*proposal)
@@ -62,7 +70,8 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     if np.isfinite(trial_value) and trial_value<=before:
                         guided=proposal;after=trial_value;accepted=True;chosen=step;break
                 updates.append(dict(gradient_norm=float(torch.linalg.vector_norm(grad)),before=before,after=after,accepted=accepted,
-                                    line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()}))
+                                    line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
+                                    maximum_control_change=physical_change,diagnostics=diagnostics))
         gc=guided.to(device=device,dtype=x.dtype)
         # Recompute noise from the same actual x_k, never mix old noise with guided clean.
         noise=(x-a*gc)/s
@@ -72,5 +81,6 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
         trace.append(dict(index=index,noise_level=int(k),input=input_x.cpu().numpy(),clean=original.numpy(),guided=guided.detach().numpy(),
                           output=x.detach().cpu().numpy(),active=active,updates=updates,
                           decomposition_error=float(torch.max(abs(input_x-a*gc-s*noise)))))
+        if observer:observer('completed_step',trace[-1])
     return dict(free=(mean+scale*x.detach().cpu().double()).numpy(),seed=seed,network_calls=calls,trace=trace,
                 post_sampling_trajectory_repair_calls=0,initial_noise_hash=hashlib.sha256(trace[0]['input'].tobytes()).hexdigest())

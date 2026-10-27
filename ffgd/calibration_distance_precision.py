@@ -13,6 +13,7 @@ from .costs import MultiSpaceEnergy
 
 
 def run(path):
+    raise RuntimeError('RETIRED_DIAGNOSTIC: original witness precision and 500-iteration experiments remain immutable in their source.zip; production uses explicitly differentiable convex supports. Use feature-switch suite for the retained nonsmooth case.')
     torch.set_num_threads(1);r=Robot();m=r.model;tree=DifferentiableTree(r);g=Geometry(r);rng=np.random.default_rng(32026)
     fixtures=[]
     for case in range(52):

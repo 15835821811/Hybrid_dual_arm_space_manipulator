@@ -1,0 +1,138 @@
+"""Unique main planner: fresh noise -> guided diffusion -> read-only selection.
+
+No expert path, hidden solution, optimizer/search fallback or post-hoc repair is
+an accepted input. Model data/labels are only consumed by the training module.
+"""
+from dataclasses import dataclass,asdict
+import hashlib
+import json
+import time
+from pathlib import Path
+import numpy as np
+import torch
+from .contracts import Candidate
+from .trajectory import Boundary,BoundaryCodec,basis
+from .physics import DifferentiableTree
+from .propagation import Propagator
+from .geometry import Geometry
+from .costs import MultiSpaceEnergy
+from .diffusion import sample,SamplingBudget
+from .conditioning import encode_condition
+from .model_io import load_model,normalize_condition
+from .validation import validate,input_identity
+from .orchestration import atomic_json,check_budget
+
+
+@dataclass(frozen=True)
+class PlanningBudget:
+    seeds: tuple = (13001,13002,13003,13004,13005)
+    sampling: SamplingBudget = SamplingBudget()
+    control_points: int = 24
+    intervals: int = 32
+    max_wall_seconds: float = 1800.
+
+    def __post_init__(self):
+        object.__setattr__(self,'seeds',tuple(self.seeds))
+        if not self.seeds or len(set(self.seeds))!=len(self.seeds):raise ValueError('candidate seeds must be distinct')
+        if self.control_points<6 or self.intervals<1 or self.max_wall_seconds<=0:raise ValueError('invalid planning budget')
+        if 0<self.sampling.guide_steps<3:raise ValueError('main guidance must include at least two nonfinal steps')
+
+
+def boundary_codec(robot,snapshot,duration,n=24):
+    d=robot.restore(snapshot);q=robot.Bplus@d.qpos[robot.qpos_ids];v=robot.Bplus@d.qvel[robot.dof_ids]
+    # Declared baseline template: fixed initial q/v/a; terminal v/a zero,
+    # terminal joint position unconstrained. Dynamic a0 policy added with M6.
+    bc=[Boundary(0,k,tuple(range(17)),tuple(q if k==0 else v if k==1 else np.zeros(17))) for k in (0,1,2)]
+    bc += [Boundary(duration,k,tuple(range(17)),(0.,)*17) for k in (1,2)]
+    return BoundaryCodec(n,17,duration,bc)
+
+
+def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=()):
+    """All candidates remain in the denominator, including numerical failures."""
+    torch.set_num_threads(1);output=Path(output);output.mkdir(parents=True,exist_ok=True)
+    model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
+    if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
+    codec=boundary_codec(robot,initial,task.duration,budget.control_points)
+    if len(checkpoint['mean'])!=codec.free_dim:raise ValueError('CHECKPOINT_BOUNDARY_TEMPLATE_MISMATCH')
+    tree=DifferentiableTree(robot);prop=Propagator(tree,initial);geometry=Geometry(robot)
+    energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals)
+    if any(name not in energy.weights for name in disabled_guide_terms):raise ValueError('unknown ablation term')
+    for name in disabled_guide_terms:energy.weights[name]=0.
+    tokens=encode_condition(robot,initial,task,prop.H.numpy())
+    condition=normalize_condition(tokens[None],np.zeros((1,len(tokens)),bool),checkpoint,device)
+    start=time.perf_counter();records=[];valid=[]
+    manifest=dict(budget=asdict(budget),checkpoint=checkpoint_identity,robot_model_hash=robot.model_hash,
+                  robot_physical_hash=robot.physical_hash,scene_hash=robot.scene.identity,geometry_policy_hash=geometry.policy_hash,
+                  disabled_guide_terms=list(disabled_guide_terms),independent_validation_terms_disabled=[],cold_start=True,
+                  method='GUIDED_DIFFUSION' if budget.sampling.guide_steps else 'LEARNED_PRIOR_WITHOUT_GUIDANCE')
+    manifest['profile']=profile
+    manifest['profile_hash']=hashlib.sha256(json.dumps(profile,sort_keys=True).encode()).hexdigest()
+    manifest['initial_state_hash']=hashlib.sha256(initial.state.tobytes()).hexdigest()
+    atomic_json(output/'planning_manifest.json',manifest)
+    np.savez_compressed(output/'initial_state.npz',state=initial.state,mask=initial.mask,model_hash=initial.model_hash)
+    for index,seed in enumerate(budget.seeds):
+        folder=output/f'candidate_{index:03d}';folder.mkdir(exist_ok=False)
+        record=dict(index=index,seed=seed,status='STARTED',sampled=False,validated=False)
+        atomic_json(folder/'candidate.json',record)
+        if time.perf_counter()-start>=budget.max_wall_seconds:
+            record.update(status='NOT_RUN_BUDGET_EXHAUSTED');records.append(record);atomic_json(folder/'candidate.json',record);continue
+        try:
+            def observe(kind,value):
+                if kind=='initial':
+                    np.save(folder/'initial_noise.npy',value)
+                    record['initial_noise_hash']=hashlib.sha256(value.tobytes()).hexdigest()
+                elif kind=='before_step':
+                    np.savez_compressed(folder/'current_step.npz',input=value['input'],index=value['index'],noise_level=value['noise_level'])
+                else:
+                    arrays={k:v for k,v in value.items() if isinstance(v,np.ndarray)}
+                    np.savez_compressed(folder/f'step_{value["index"]:03d}.npz',**arrays)
+                    atomic_json(folder/f'step_{value["index"]:03d}.json',{k:v for k,v in value.items() if k not in arrays})
+            def checked_energy(z):
+                check_budget()
+                if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('PLANNING_WALL_BUDGET_EXHAUSTED')
+                terms=energy.evaluate(z);checked_energy.diagnostics=energy.last_diagnostics
+                return terms
+            actual_inputs=[]
+            hook=model.register_forward_pre_hook(lambda model,args:actual_inputs.append(args[0].detach().cpu().numpy().copy()))
+            try:
+                result=sample(model,condition,codec.free_dim,seed,budget.sampling,checked_energy,checkpoint['mean'],checkpoint['scale'],observer=observe,
+                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64))
+            finally:
+                hook.remove();record['observed_network_calls']=len(actual_inputs)
+                if actual_inputs:np.save(folder/'observed_network_inputs.npy',np.stack(actual_inputs))
+            if len(actual_inputs)!=budget.sampling.steps:raise RuntimeError('ACTUAL_NETWORK_CALL_COUNT_MISMATCH')
+            for i in range(1,len(actual_inputs)):
+                if not np.array_equal(actual_inputs[i][0],result['trace'][i-1]['output']):raise RuntimeError('NETWORK_DID_NOT_CONSUME_GUIDED_CHAIN')
+            candidate=Candidate(codec.decode(result['free']),task.duration,seed)
+            trace=result.pop('trace');trace_arrays={name:np.stack([row[name] for row in trace]) for name in ('input','clean','guided','output')}
+            np.savez_compressed(folder/'denoising.npz',**trace_arrays)
+            atomic_json(folder/'denoising.json',[{k:v for k,v in row.items() if k not in trace_arrays} for row in trace])
+            np.savez_compressed(folder/'candidate.npz',control=candidate.control,free=result['free'],duration=candidate.duration,seed=seed,
+                                initial_state=initial.state,mask=initial.mask,model_hash=initial.model_hash)
+            record.update(sampled=True,network_calls=result['network_calls'],initial_noise_hash=result['initial_noise_hash'],
+                          post_sampling_trajectory_repair_calls=result['post_sampling_trajectory_repair_calls'],identity=candidate.identity)
+            report=validate(candidate,initial,task,prop,codec,geometry,profile)
+            atomic_json(folder/'validation.json',report);record.update(validated=True,status=report['status'],validation=report)
+            if report['status']=='PLAN_VALID':
+                score=max(max(e['position_m']/.005,e['rotation_rad']/(np.pi/180)) for e in report['task_errors'])+report['max_nominal_torque_ratio']
+                record['selection_score']=score;valid.append((score,index,candidate))
+                # Save low-rate model prediction only; native execution is separate.
+                grid=np.unique(np.r_[np.linspace(0,task.duration,65),[p.time for p in task.poses]])
+                xs,vs=prop.native_rollout(codec,result['free'],64,grid)
+                np.savez_compressed(folder/'prediction.npz',time=grid,qpos=xs,qvel=vs,q=codec.evaluate(result['free'],grid),
+                                    qd=codec.evaluate(result['free'],grid,1),qdd=codec.evaluate(result['free'],grid,2))
+        except (ValueError,RuntimeError,np.linalg.LinAlgError) as error:
+            import traceback
+            (folder/'failure.txt').write_text(traceback.format_exc(),encoding='utf-8')
+            record.update(status='FAILED_NUMERICAL' if 'BUDGET' not in str(error) else 'INCOMPLETE_BUDGET',error=str(error))
+        record['elapsed_seconds']=time.perf_counter()-start;records.append(record);atomic_json(folder/'candidate.json',record)
+        atomic_json(output/'progress.json',dict(completed=len(records),requested=len(budget.seeds),valid=len(valid)))
+        print(json.dumps(dict(candidate=index,seed=seed,status=record['status'],elapsed_seconds=record['elapsed_seconds'])),flush=True)
+    valid.sort(key=lambda value:(value[0],value[1]))
+    selected=valid[0][2] if valid else None
+    result=dict(status='PLAN_VALID' if selected is not None else 'NO_VALID_CANDIDATE',requested_candidates=len(budget.seeds),
+                sampled=sum(r['sampled'] for r in records),valid=len(valid),records=records,selected_index=valid[0][1] if valid else None,
+                selection='lowest fixed normalized task error plus nominal torque ratio among read-only valid candidates',
+                wall_seconds=time.perf_counter()-start,repair_calls=0)
+    atomic_json(output/'planning_result.json',result)
+    return selected,result

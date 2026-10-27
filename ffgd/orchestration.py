@@ -30,7 +30,7 @@ def read_state(): return json.loads((ORCH/'state.json').read_text(encoding='utf-
 
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
-    tmp=path.with_suffix('.tmp')
+    tmp=path.with_name(path.name+'.'+uuid.uuid4().hex+'.tmp')
     tmp.write_text(json.dumps(value,indent=2,ensure_ascii=False,allow_nan=False),encoding='utf-8')
     os.replace(tmp,path)
 
@@ -38,6 +38,11 @@ def atomic_json(path,value):
 def event(kind,**details):
     with (ORCH/'events.jsonl').open('a',encoding='utf-8') as f:
         f.write(json.dumps(dict(time=utc(),kind=kind,**details),ensure_ascii=False)+'\n')
+
+
+def resource_event(kind,**details):
+    with (ORCH/'resource_ledger.jsonl').open('a',encoding='utf-8') as f:
+        f.write(json.dumps(dict(time=utc(),kind=kind,**details))+'\n')
 
 
 def source_hash():
@@ -78,6 +83,7 @@ def unit(name, callback, budget):
             for source in sorted(base.rglob(pattern)):
                 if source.is_file():archive.write(source,str(source.relative_to(ROOT)))
     atomic_json(path/'manifest.json',manifest)
+    resource_event('start',id=ident,process_identity=identity,budget=budget,resources=manifest['resources'])
     s=read_state();s['overall_status']='ACTIVE'
     s['workspace']['head']=manifest['git_head']
     if heavy:s['active_unit']=manifest;s['owned_processes']=[identity]
@@ -92,6 +98,9 @@ def unit(name, callback, budget):
         (path/'error.txt').write_text(traceback.format_exc(),encoding='utf-8')
         manifest['status']='FAILED_NEEDS_FIX';error=ex
     manifest.update(end=utc(),wall_seconds=time.perf_counter()-start,exit_code=0 if manifest['status']=='PASSED' else 1)
+    cpu=process.cpu_times();memory=process.memory_info()
+    resource_event('end',id=ident,status=manifest['status'],wall_seconds=manifest['wall_seconds'],cpu_user_seconds=cpu.user,
+                   cpu_system_seconds=cpu.system,rss_bytes=memory.rss,peak_rss_bytes=getattr(memory,'peak_wset',None))
     atomic_json(path/'manifest.json',manifest)
     with (ORCH/'work_units.jsonl').open('a',encoding='utf-8') as f:f.write(json.dumps(manifest)+'\n')
     event('work_unit_end',id=ident,status=manifest['status'])
