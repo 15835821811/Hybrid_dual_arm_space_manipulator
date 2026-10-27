@@ -92,37 +92,47 @@ def main(argv=None):
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('mass_rows_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=300,whole_path_gradient_jacobian_passes=4))
     if args.command=='plan':
-        from .problem_io import load_problem,planning_config
-        from .api import plan
         from pathlib import Path
         if not args.config or not args.task:p.error('plan requires --config and --task')
-        config,budget=planning_config(args.config)
+        # Discover only explicitly declared input files before installing the
+        # sentinel. Algorithm imports and robot/task loading stay inside it.
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        submitted=json.loads(Path(args.task).read_text(encoding='utf-8-sig'))
+        seeds=tuple(config['budget'].get('seeds',(13001,13002,13003,13004,13005)))
         def planning(path):
-            robot,snapshot,task,problem=load_problem(args.task)
-            (path/'submitted_problem.json').write_text(json.dumps(problem,indent=2),encoding='utf-8')
-            problem['initial']={'snapshot_file':'initial_state.npz'}
-            (path/'problem.json').write_text(json.dumps(problem,indent=2),encoding='utf-8')
-            profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
             from .architecture_guard import LegacySentinel
             from .orchestration import atomic_json
-            sentinel=LegacySentinel(allowed_data_reads=[config['checkpoint'],Path(config['checkpoint']).with_suffix('.identity.json')],output_directory=path)
+            allowed=[args.config,args.task,config['profile'],config['checkpoint'],Path(config['checkpoint']).with_suffix('.identity.json')]
+            if 'snapshot_file' in submitted.get('initial',{}):allowed.append(Path(args.task).parent/submitted['initial']['snapshot_file'])
+            sentinel=LegacySentinel(allowed_data_reads=allowed,output_directory=path)
             try:
                 with sentinel:
+                    from .problem_io import load_problem,planning_config
+                    from .api import plan
+                    loaded,budget=planning_config(args.config)
+                    if loaded!=config:raise ValueError('PLANNING_CONFIG_CHANGED_DURING_SETUP')
+                    robot,snapshot,task,problem=load_problem(args.task)
+                    if problem!=submitted:raise ValueError('PUBLIC_TASK_CHANGED_DURING_SETUP')
+                    atomic_json(path/'submitted_problem.json',problem)
+                    problem['initial']={'snapshot_file':'initial_state.npz'}
+                    atomic_json(path/'problem.json',problem)
+                    profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
                     candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'))
             except Exception as error:
                 if not (path/'planning_result.json').exists():
                     records=[]
-                    for index,seed in enumerate(budget.seeds):
+                    for index,seed in enumerate(seeds):
                         record_file=path/f'candidate_{index:03d}'/'candidate.json'
                         record=json.loads(record_file.read_text()) if record_file.exists() else dict(index=index,seed=seed,sampled=False,validated=False,status='NOT_RUN_EXPERIMENT_FAILURE')
                         if record['status']=='STARTED':record.update(status='INCOMPLETE_EXPERIMENT_FAILURE')
                         records.append(record)
-                    atomic_json(path/'planning_result.json',dict(status='EXPERIMENT_FAILED',requested_candidates=len(budget.seeds),records=records,
+                    atomic_json(path/'planning_result.json',dict(status='EXPERIMENT_FAILED',requested_candidates=len(seeds),records=records,
                                 sampled=sum(r['sampled'] for r in records),valid=0,selected_index=None,error=str(error)))
                 raise
             finally:atomic_json(path/'architecture_sentinel.json',sentinel.report())
             return dict(passed=candidate is not None,**result)
-        return unit('planning',planning,dict(max_wall_seconds=budget.max_wall_seconds+60,candidates=len(budget.seeds),steps=budget.sampling.steps))
+        return unit('planning',planning,dict(max_wall_seconds=config['budget'].get('max_wall_seconds',1800)+60,
+                    candidates=len(seeds),steps=config['budget'].get('sampling',{}).get('steps',60)))
     if args.command=='execute':
         from .execution_acceptance import execute_selected
         if not args.run:p.error('execute requires --run planning-directory')

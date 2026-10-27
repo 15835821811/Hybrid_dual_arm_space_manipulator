@@ -59,6 +59,8 @@ def audit(path,config):
                          candidates=candidates,unique_noise=len(set(noise_hashes))==len(noise_hashes),
                          runtime_sentinel_clear=not sentinel['forbidden_calls'] and sentinel['observed_ffgd_calls']>0,
                          file_audit_enforced=sentinel.get('file_audit_enforced',False),actual_methods_recorded=bool(sentinel.get('actual_methods')),
+                         public_input_loading_audited=any(m['module']=='ffgd.problem_io' and m['function']=='load_problem' for m in sentinel.get('actual_methods',[])),
+                         robot_loading_audited=any(m['module']=='ffgd.robot' and m['function']=='__init__' for m in sentinel.get('actual_methods',[])),
                          execution_called_during_planning=any(module in sentinel['modules'] for module in ('ffgd.execution','ffgd.execution_acceptance')),
                          denominator_complete=len(result['records'])==result['requested_candidates'],
                          independent_validation_terms_disabled=manifest['independent_validation_terms_disabled']))
@@ -113,7 +115,7 @@ def audit(path,config):
                                    distinct_plan_and_execution_reports=True))
     checked=[c for row in rows for c in row['candidates'] if c['checked']]
     gates={
-        'ARCH_01':bool(rows and contract and not contract['static_import_violations']) and all(x['runtime_sentinel_clear'] and x['file_audit_enforced'] and x['actual_methods_recorded'] for x in rows),
+        'ARCH_01':bool(rows and contract and not contract['static_import_violations']) and all(x['runtime_sentinel_clear'] and x['file_audit_enforced'] and x['actual_methods_recorded'] and x['public_input_loading_audited'] and x['robot_loading_audited'] for x in rows),
         'ARCH_02':bool(checked) and all(c['readonly'] for c in checked),
         'ARCH_03':bool(checked) and all(c['consumed'] and c['active_nonfinal_steps']>=2 and c['repair_calls']==0 for c in checked),
         'ARCH_04':bool(interventions and interventions['goal_effect'] and interventions['collision_effect']) and all(a['removed_only_guide_term'] and a['primitive_terms_unchanged'] for a in interventions['guide_term_ablations']) and all(all(v>1e-10 for v in c['state_intervention_effect']) for c in checked) and all(not r['independent_validation_terms_disabled'] for r in rows),

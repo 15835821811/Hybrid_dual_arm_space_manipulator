@@ -78,7 +78,10 @@ class LegacySentinel(importlib.abc.MetaPathFinder):
     def report(self):
         identities=[]
         for name in sorted(self.modules):
-            source=Path(sys.modules[name].__file__)
+            module=sys.modules.get(name);filename=getattr(module,'__file__',None)
+            if filename is None:
+                identities.append(dict(module=name,path=None,on_disk_source_sha256=None,source_status='UNAVAILABLE_OR_IMPORT_FAILED'));continue
+            source=Path(filename)
             identities.append(dict(module=name,path=str(source.resolve()),on_disk_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest()))
         return dict(forbidden_calls=self.blocked,observed_ffgd_calls=self.calls,modules=sorted(self.modules),
                     call_audit_backend=self.call_backend,

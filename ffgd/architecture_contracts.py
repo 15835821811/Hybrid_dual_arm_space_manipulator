@@ -19,7 +19,7 @@ from .costs import MultiSpaceEnergy
 
 def static_contract(robot,snapshot,task,codec):
     root=Path(__file__).parent
-    modules=['api','diffusion','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','execution']
+    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','execution']
     imports=[];violations=[];hashes={}
     for name in modules:
         source=root/(name+'.py');content=source.read_text(encoding='utf-8');hashes[name]=hashlib.sha256(source.read_bytes()).hexdigest()

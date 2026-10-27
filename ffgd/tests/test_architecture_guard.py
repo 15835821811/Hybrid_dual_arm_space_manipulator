@@ -64,3 +64,34 @@ def test_npz_creation_is_output_but_cannot_be_used_as_hidden_input(tmp_path):
         np.savez_compressed(path,x=np.ones(3))
         with pytest.raises(RuntimeError,match='UNDECLARED_PLANNER_DATA_READ'):np.load(path)
     assert len(guard.report()['created_outputs'])==1
+
+
+def test_main_guard_covers_public_input_loading_before_sampling(tmp_path,monkeypatch):
+    import json
+    import types
+    import ffgd.cli as cli
+    import ffgd.problem_io as problem_io
+    from ffgd.architecture_guard import ArchitectureViolation
+    legacy=types.ModuleType('ff_prior_forbidden_loader_fixture')
+    exec('def forbidden():\n    raise AssertionError("loader must not execute forbidden code")',legacy.__dict__)
+    monkeypatch.setattr(problem_io,'load_problem',lambda path:legacy.forbidden())
+    config=tmp_path/'config.json';task=tmp_path/'task.json';output=tmp_path/'run';output.mkdir()
+    config.write_text(json.dumps(dict(checkpoint=str(tmp_path/'weights.pt'),profile=str(tmp_path/'profile.json'),budget={'seeds':[71]})))
+    task.write_text(json.dumps({'initial':{}}))
+    monkeypatch.setattr(cli,'unit',lambda name,callback,budget:callback(output))
+    with pytest.raises(ArchitectureViolation,match='LEGACY_CALL_SENTINEL'):
+        cli.main(['plan','--config',str(config),'--task',str(task)])
+    report=json.loads((output/'architecture_sentinel.json').read_text())
+    result=json.loads((output/'planning_result.json').read_text())
+    assert report['forbidden_calls'] and result['sampled']==0 and result['requested_candidates']==1
+
+
+def test_guard_report_preserves_executed_code_after_module_import_failure():
+    import types
+    module=types.ModuleType('ffgd.unregistered_software_fixture')
+    exec('def function():\n    return 1',module.__dict__)
+    with LegacySentinel() as guard:assert module.function()==1
+    report=guard.report()
+    assert report['actual_methods'][0]['executed_code_sha256']
+    identity=next(row for row in report['module_identities'] if row['module']==module.__name__)
+    assert identity['source_status']=='UNAVAILABLE_OR_IMPORT_FAILED'
