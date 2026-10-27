@@ -1,6 +1,16 @@
 import numpy as np
+import pytest
 import mujoco
 from ffgd.robot import Robot
+from ffgd.contracts import Snapshot
+
+
+def test_partial_snapshot_cannot_silently_reset_velocity_and_controls():
+    r=Robot();d=r.new_data();d.qvel[:]=.01;d.ctrl[:]=.02
+    mask=int(mujoco.mjtState.mjSTATE_QPOS)
+    state=np.empty(mujoco.mj_stateSize(r.model,mask));mujoco.mj_getState(r.model,d,state,mask)
+    with pytest.raises(ValueError,match='incomplete integration snapshot'):
+        r.restore(Snapshot(r.model_hash,mask,state))
 
 
 def test_mapping_actual_limits_snapshot_and_forward_response():

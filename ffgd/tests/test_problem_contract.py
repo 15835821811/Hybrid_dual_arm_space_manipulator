@@ -1,6 +1,16 @@
 import json
 import pytest
 from ffgd.problem_io import load_problem
+import numpy as np
+from ffgd.contracts import PoseConstraint,BoxObstacle
+
+
+def test_rotation_contract_does_not_allow_numpy_default_relative_slack():
+    distorted=np.diag([1.+1e-6,1.,1.])
+    with pytest.raises(ValueError,match='SO'):
+        PoseConstraint(1.,0,[0,0,0],distorted)
+    with pytest.raises(ValueError,match='rotation'):
+        BoxObstacle([0,0,0],[1,1,1],distorted)
 
 
 @pytest.mark.parametrize('location',['root','task','scene','obstacle'])

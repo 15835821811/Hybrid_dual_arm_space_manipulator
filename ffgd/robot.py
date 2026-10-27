@@ -105,6 +105,7 @@ class Robot:
 
     def restore(self, snapshot):
         if snapshot.model_hash != self.model_hash: raise ValueError("snapshot model identity mismatch")
+        if snapshot.mask != int(mujoco.mjtState.mjSTATE_INTEGRATION): raise ValueError("incomplete integration snapshot")
         if snapshot.state.size != mujoco.mj_stateSize(self.model, snapshot.mask): raise ValueError("state size mismatch")
         d = mujoco.MjData(self.model)
         mujoco.mj_setState(self.model, d, snapshot.state.copy(), snapshot.mask)

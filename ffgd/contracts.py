@@ -58,7 +58,7 @@ class PoseConstraint:
         object.__setattr__(self,'rotation',immutable(self.rotation))
         if self.position.shape!=(3,) or self.rotation.shape!=(3,3) or self.tip not in (0,1):raise ValueError('invalid pose')
         if not np.isfinite([self.position_tolerance,self.rotation_tolerance,self.time]).all() or self.position_tolerance<=0 or self.rotation_tolerance<=0 or self.time<0:raise ValueError('invalid tolerance/time')
-        if not np.allclose(self.rotation.T@self.rotation,np.eye(3),atol=1e-10) or np.linalg.det(self.rotation)<0:raise ValueError('not SO(3)')
+        if not np.allclose(self.rotation.T@self.rotation,np.eye(3),atol=1e-10,rtol=0.) or np.linalg.det(self.rotation)<0:raise ValueError('not SO(3)')
 
 
 @dataclass(frozen=True)
@@ -83,7 +83,7 @@ class BoxObstacle:
     def __post_init__(self):
         for field in ('center','half_size','rotation'):object.__setattr__(self,field,immutable(getattr(self,field)))
         if self.center.shape!=(3,) or self.half_size.shape!=(3,) or np.any(self.half_size<=0):raise ValueError('invalid obstacle dimensions')
-        if self.rotation.shape!=(3,3) or not np.allclose(self.rotation.T@self.rotation,np.eye(3),atol=1e-10) or np.linalg.det(self.rotation)<0:raise ValueError('invalid obstacle rotation')
+        if self.rotation.shape!=(3,3) or not np.allclose(self.rotation.T@self.rotation,np.eye(3),atol=1e-10,rtol=0.) or np.linalg.det(self.rotation)<0:raise ValueError('invalid obstacle rotation')
 
     @property
     def identity(self):return array_hash(np.r_[self.center,self.half_size,self.rotation.ravel()])

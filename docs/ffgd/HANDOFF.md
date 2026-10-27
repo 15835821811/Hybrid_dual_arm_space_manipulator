@@ -178,3 +178,5 @@ V6 20261027T065037_planning_cac48b ended geometry-only REJECTED(-.000919343m), a
 V8原反例已启动20261027T075858_planning_e7658f，PID165984/create1793087938.3622732，核实真实身份后等待；未完成勿判通过。等待期间在ffgd.baselines实现C/D独立比较入口与严格能量/梯度/Jacobian上限，主入口哨兵禁止其调用，未修改主采样。4项预算/边界/隔离/报告软件测试通过；原生比较集成NOT_RUN，已准备comparison_c_smoke.json和comparison_d_smoke.json，仅集成小预算不算科研比较。编译等价配置compiled_equivalence_v8.json已准备NOT_RUN；一个重型worker，待V8后再运行。
 
 完整软件20261027T080753_software_8133f4通过44项。之后修复主方法与比较方法验收耗时越过墙钟上限后仍可能选择的计时缺口；保留物理validation但拒绝超预算选择。新增软件时间注入反例及基线测试4项通过，不算物理成功。V8仍使用启动快照，不能追认包含此修改。
+
+输入合同检查：任务/场景未知语义原已明确拒绝，无需重写。修复两项实际缺口：Robot.restore拒绝非完整mjSTATE_INTEGRATION快照，防止缺失速度/ctrl被默认清零；Pose/Box旋转正交检查明确rtol=0，避免默认1e-5相对松弛。8项适配/输入/原生中断控制重放测试通过，8个未改DEV配置仍合法；并非放宽验收或改变状态。完整回归继续。
