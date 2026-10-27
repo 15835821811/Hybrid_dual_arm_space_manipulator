@@ -47,15 +47,20 @@ def boundary_codec(robot,snapshot,duration,n=24):
     return BoundaryCodec(n,17,duration,bc)
 
 
-def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=()):
+def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None):
     """All candidates remain in the denominator, including numerical failures."""
     torch.set_num_threads(1);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
+    if checkpoint.get('update',0)<1 or checkpoint.get('training_config',{}).get('scope')=='SOFTWARE_TEST':raise ValueError('MAIN_PLANNER_REQUIRES_TRAINED_PRIOR')
+    if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
     codec=boundary_codec(robot,initial,task.duration,budget.control_points)
     if len(checkpoint['mean'])!=codec.free_dim:raise ValueError('CHECKPOINT_BOUNDARY_TEMPLATE_MISMATCH')
     tree=DifferentiableTree(robot);prop=Propagator(tree,initial);geometry=Geometry(robot)
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals)
+    if guide_weights is not None:
+        if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
+        energy.weights.update(guide_weights)
     if any(name not in energy.weights for name in disabled_guide_terms):raise ValueError('unknown ablation term')
     for name in disabled_guide_terms:energy.weights[name]=0.
     tokens=encode_condition(robot,initial,task,prop.H.numpy())
@@ -64,7 +69,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     manifest=dict(budget=asdict(budget),checkpoint=checkpoint_identity,robot_model_hash=robot.model_hash,
                   robot_physical_hash=robot.physical_hash,scene_hash=robot.scene.identity,geometry_policy_hash=geometry.policy_hash,
                   disabled_guide_terms=list(disabled_guide_terms),independent_validation_terms_disabled=[],cold_start=True,
-                  method='GUIDED_DIFFUSION' if budget.sampling.guide_steps else 'LEARNED_PRIOR_WITHOUT_GUIDANCE')
+                  guide_weights=energy.weights,
+                  method=('GUIDED_DIFFUSION_ABLATION' if disabled_guide_terms else 'GUIDED_DIFFUSION') if budget.sampling.guide_steps else 'LEARNED_PRIOR_WITHOUT_GUIDANCE')
     manifest['profile']=profile
     manifest['profile_hash']=hashlib.sha256(json.dumps(profile,sort_keys=True).encode()).hexdigest()
     manifest['initial_state_hash']=hashlib.sha256(initial.state.tobytes()).hexdigest()
@@ -77,6 +83,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
         if time.perf_counter()-start>=budget.max_wall_seconds:
             record.update(status='NOT_RUN_BUDGET_EXHAUSTED');records.append(record);atomic_json(folder/'candidate.json',record);continue
         try:
+            energy_calls=0
             def observe(kind,value):
                 if kind=='initial':
                     np.save(folder/'initial_noise.npy',value)
@@ -88,6 +95,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                     np.savez_compressed(folder/f'step_{value["index"]:03d}.npz',**arrays)
                     atomic_json(folder/f'step_{value["index"]:03d}.json',{k:v for k,v in value.items() if k not in arrays})
             def checked_energy(z):
+                nonlocal energy_calls
+                energy_calls+=1
                 check_budget()
                 if time.perf_counter()-start>budget.max_wall_seconds:raise RuntimeError('PLANNING_WALL_BUDGET_EXHAUSTED')
                 terms=energy.evaluate(z);checked_energy.diagnostics=energy.last_diagnostics
@@ -96,9 +105,10 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
             hook=model.register_forward_pre_hook(lambda model,args:actual_inputs.append(args[0].detach().cpu().numpy().copy()))
             try:
                 result=sample(model,condition,codec.free_dim,seed,budget.sampling,checked_energy,checkpoint['mean'],checkpoint['scale'],observer=observe,
-                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64))
+                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64),audit_inactive_energy=True)
             finally:
                 hook.remove();record['observed_network_calls']=len(actual_inputs)
+                record['physical_energy_evaluations']=energy_calls
                 if actual_inputs:np.save(folder/'observed_network_inputs.npy',np.stack(actual_inputs))
             if len(actual_inputs)!=budget.sampling.steps:raise RuntimeError('ACTUAL_NETWORK_CALL_COUNT_MISMATCH')
             for i in range(1,len(actual_inputs)):

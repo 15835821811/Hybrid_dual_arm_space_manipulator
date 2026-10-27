@@ -63,10 +63,16 @@ class Robot:
     @property
     def model_hash(self):
         if self._hash is None:
-            buf = np.empty(mujoco.mj_sizeModel(self.model), dtype=np.uint8)
-            mujoco.mj_saveModel(self.model, None, buf)
-            self._hash = hashlib.sha256(memoryview(buf)).hexdigest()
+            self._hash = self.compiled_hash()
         return self._hash
+
+    def compiled_hash(self):
+        buf=np.empty(mujoco.mj_sizeModel(self.model),dtype=np.uint8)
+        mujoco.mj_saveModel(self.model,None,buf)
+        return hashlib.sha256(memoryview(buf)).hexdigest()
+
+    def verify_identity(self):
+        if self.compiled_hash()!=self.model_hash:raise ValueError('NATIVE_MODEL_MUTATED_AFTER_SNAPSHOT')
 
     def new_data(self):
         d = mujoco.MjData(self.model)
@@ -85,7 +91,8 @@ class Robot:
                 if ancestor==self.base_body:bodies.append(b)
             h=hashlib.sha256(self.spec.source_bundle_sha256().encode())
             for a in (m.body_mass[bodies],m.body_inertia[bodies],m.body_pos[bodies],m.body_quat[bodies],m.body_ipos[bodies],m.body_iquat[bodies],
-                      m.dof_armature[self.dof_ids],m.dof_damping[self.dof_ids],m.jnt_range[self.joints],self.B,self.lower,self.upper,self.spec.torque_limits):
+                      m.dof_armature[self.dof_ids],m.dof_damping[self.dof_ids],m.jnt_range[self.joints],self.B,self.lower,self.upper,self.spec.torque_limits,
+                      self.spec.planner_velocity_limits,self.spec.planner_acceleration_limits):
                 h.update(np.ascontiguousarray(a).tobytes())
             self._physical_hash=h.hexdigest()
         return self._physical_hash

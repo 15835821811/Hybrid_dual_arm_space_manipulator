@@ -11,7 +11,7 @@ def main(argv=None):
     sub=p.add_subparsers(dest='command',required=True)
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space'],required=True);t.add_argument('--samples',type=int)
-    for name in ('data','train','learning-checks','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -37,6 +37,12 @@ def main(argv=None):
         if not args.config:p.error('learning-checks requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('learning_checks',lambda path:run(path,config),dict(max_wall_seconds=300,samples=5,steps=60))
+    if args.command=='architecture-audit':
+        from .architecture_audit import audit
+        from pathlib import Path
+        if not args.config:p.error('architecture-audit requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('architecture_audit',lambda path:audit(path,config),dict(max_wall_seconds=600))
     if args.command=='plan':
         from .problem_io import load_problem,planning_config
         from .api import plan
@@ -52,7 +58,7 @@ def main(argv=None):
             from .architecture_guard import LegacySentinel
             from .orchestration import atomic_json
             with LegacySentinel() as sentinel:
-                candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()))
+                candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'))
             atomic_json(path/'architecture_sentinel.json',sentinel.report())
             return dict(passed=candidate is not None,**result)
         return unit('planning',planning,dict(max_wall_seconds=budget.max_wall_seconds+60,candidates=len(budget.seeds),steps=budget.sampling.steps))
@@ -60,6 +66,14 @@ def main(argv=None):
         from .execution_acceptance import execute_selected
         if not args.run:p.error('execute requires --run planning-directory')
         return unit('selected_execution',lambda path:execute_selected(path,args.run),dict(max_wall_seconds=900))
+    if args.command=='validate':
+        from .artifact_checks import validate_saved
+        if not args.run:p.error('validate requires --run planning-directory; optional --unit candidate-index')
+        return unit('independent_validation',lambda path:validate_saved(path,args.run,args.unit),dict(max_wall_seconds=600))
+    if args.command=='replay':
+        from .artifact_checks import replay_saved
+        if not args.run:p.error('replay requires --run execution-directory')
+        return unit('independent_replay',lambda path:replay_saved(path,args.run),dict(max_wall_seconds=600))
     if args.command=='test':
         if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space') else 32
         if args.samples<1:p.error('samples must be positive')

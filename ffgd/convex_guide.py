@@ -47,6 +47,7 @@ class ConvexSupportGuide:
         # All eligible pairs participate in each broadphase. Pruning only where
         # the conservative lower bound certifies zero hinge at the stated cap.
         active=torch.nonzero(lower<cap).flatten()
+        self.last_query=dict(eligible_pairs=len(a),support_pairs=len(active),broadphase_only_pairs=len(a)-len(active))
         result=torch.full((len(a),),cap,dtype=P.dtype)
         if not len(active):return result+P.sum()*0
         aa=torch.as_tensor(a)[active];bb=torch.as_tensor(b)[active]

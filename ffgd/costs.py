@@ -28,11 +28,13 @@ class MultiSpaceEnergy:
     def evaluate(self,z,return_path=False):
         out=self.p.rollout(self.codec,z,grid=self.grid);tree=self.p.tree;r=self.p.robot
         task=z.sum()*0;collision=[];actuator=[];smooth=[];raw=[];minima=[]
+        support_pairs=0
         b,a=r.base_dofs,r.dof_ids
         for i,t in enumerate(self.grid):
             x,v=out['qpos'][i],out['velocity'][i]
             k=tree.kinematics(x,v)
             gaps=self.collision_guide.gaps(k);minima.append(gaps.min())
+            support_pairs+=self.collision_guide.last_query['support_pairs']
             collision.append(hinge((self.buffer-gaps)/self.buffer).mean())
             M=tree.mass(x,k);h=tree.inverse(x,v,torch.zeros_like(v),k)
             aa=tree.B@out['qdd'][i]
@@ -59,6 +61,8 @@ class MultiSpaceEnergy:
         terms=dict(task=task/len(self.task.poses),collision=integral(collision),joint=integral(joint),actuator=integral(actuator),smoothness=integral(smooth))
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
         self.last_diagnostics=dict(grid_points=len(self.grid),all_eligible_pairs=len(self.geometry.pairs),
+                                   support_pair_evaluations=support_pairs,broadphase_pair_evaluations=len(self.grid)*len(self.geometry.pairs),
+                                   mass_evaluations=3*len(self.grid)-1,
                                    minimum_proxy_gap=float(torch.stack(minima).min().detach()),
                                    maximum_raw_torque_ratio=float((torch.stack(raw).abs()/tensor(r.spec.torque_limits)).max().detach()))
         if return_path:return terms,dict(**out,raw_torque=torch.stack(raw),proxy_minimum=torch.stack(minima))

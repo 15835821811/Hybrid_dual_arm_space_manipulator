@@ -19,6 +19,7 @@ def run(path,config):
     torch.set_num_threads(1);device=config.get('device','cpu')
     model,checkpoint,identity=load_model(config['checkpoint'],device)
     other,_,_=load_model(config['checkpoint'],device)
+    torch.manual_seed(92342);unlearned=ConditionalDenoiser(**checkpoint['model_config']).to(device).eval()
     dataset=Path(config['dataset'])
     with np.load(dataset/'prior.npz') as stored:data={k:stored[k] for k in stored.files}
     ids=np.flatnonzero(~data['is_train'])[:5]
@@ -44,6 +45,10 @@ def run(path,config):
             active=(data['tokens'][item,:,3]>0)&(~data['padding'][item])
             changed['tokens'][0,active,9]+= .03/float(checkpoint['condition_scale'][9])
             conditioned=model(probe,t,changed)
+            alternate=ids[(index+1)%len(ids)]
+            shuffled=normalize_condition(data['tokens'][alternate:alternate+1],data['padding'][alternate:alternate+1],checkpoint,device)
+            scrambled=model(probe,t,shuffled)
+            no_learning=unlearned(probe,t,condition)
             original_bias=model.output.bias.detach().clone();model.output.bias.add_(.1)
             intervened=model(probe,t,condition);model.output.bias.copy_(original_bias)
         repeat=None
@@ -61,12 +66,14 @@ def run(path,config):
                  finite=bool(np.isfinite(C).all()),reload_prediction_error=float((prediction-loaded).abs().max()),
                  condition_intervention_norm=float(torch.linalg.vector_norm(prediction-conditioned)),
                  weight_intervention_norm=float(torch.linalg.vector_norm(prediction-intervened)),
+                 condition_shuffle_norm=float(torch.linalg.vector_norm(prediction-scrambled)),
+                 unlearned_prediction_difference=float(torch.linalg.vector_norm(prediction-no_learning)),
                  repeat_sampling_error=repeat,endpoint_position_errors_m=task_error,
                  basic_q17_bounds=bool(np.all(C>=r.lower)&np.all(C<=r.upper)),model_valid_status='NOT_RUN')
-        row['passed']=row['finite'] and error<1e-10 and row['reload_prediction_error']==0 and (repeat is None or repeat==0) and row['condition_intervention_norm']>1e-8 and row['weight_intervention_norm']>1e-8
+        row['passed']=row['finite'] and error<1e-10 and row['reload_prediction_error']==0 and (repeat is None or repeat==0) and all(row[k]>1e-8 for k in ('condition_intervention_norm','weight_intervention_norm','condition_shuffle_norm','unlearned_prediction_difference'))
         rows.append(row);outputs.append(result['free']);atomic_json(path/'progress.json',rows)
     variation=np.std(outputs,axis=0)
-    return dict(passed=all(x['passed'] for x in rows),checkpoint=identity,samples=rows,minimum_sample_coordinate_std=float(variation.min()),
+    return dict(passed=all(x['passed'] for x in rows) and float(variation.min())>1e-8,checkpoint=identity,samples=rows,minimum_sample_coordinate_std=float(variation.min()),
                 dataset_accepted=checkpoint['dataset_manifest']['accepted'],full_free_dim=len(checkpoint['mean']),
                 architecture_status='NOT_RUN',engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
                 scope='trained full-variable model, full-noise finite boundary decoding and dependency checks only')

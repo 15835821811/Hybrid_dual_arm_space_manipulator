@@ -12,7 +12,7 @@ M2: 256 native dynamics comparisons, 64 geometry-pressure cases, full energy
 and 323-variable gradients, 9 native executions/replays (21000 steps).
 One finite-difference feature switch classified separately; failed run unchanged.
 Execution calibration covers small 2-second trajectories, not diffusion or final tasks.
-Latest software regression: 14 passed in 20261027T040240_software_4da4d9.
+Latest software regression: 15 passed in 20261027T041257_software_6e5fa7.
 Includes exact optimizer/RNG interruption recovery in a two-update CPU software fixture.
 This fixture is not a learned pilot checkpoint.
 
@@ -31,5 +31,12 @@ Training, plan, selected execute and learning-checks CLI are implemented.
 Real training/learned plan has not run yet at this handoff revision.
 Eight configs/ffgd/dev_v1 tasks are frozen before training/planning outcomes.
 New plan/runtime sentinel/selected execution interfaces still require M3/M4 runs.
-Remaining CLI commands explicitly fail rather than claim completion.
+Independent validate/replay and a partial architecture-audit CLI are also implemented.
+The architecture audit intentionally leaves contract/order/execution-policy gates NOT_RUN
+until separate evidence exists. Optional compiled_physics.py is an untested performance
+experiment and is DISABLED in the production planner.
+Remaining benchmark/report/resume CLI commands explicitly fail rather than claim completion.
+A partial-pilot diagnosis is in orchestration/pilot_refinement_diagnosis.json:
+large-motion samples hit the spatial-refinement budget, not propagation divergence;
+these attempts remain excluded in this data run without gate changes.
 No promise of autonomous work after the current agent/session stops.

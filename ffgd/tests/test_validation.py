@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import numpy as np
 import torch
+import pytest
 from ffgd.robot import Robot
 from ffgd.physics import DifferentiableTree
 from ffgd.propagation import Propagator
@@ -30,3 +31,6 @@ def test_native_validator_readonly_and_rejects_changed_goal():
     rejected=validate(candidate,snapshot,changed,prop,codec,geometry,profile)
     assert rejected['status']=='REJECTED' and not rejected['gates']['task']
     assert rejected['input_unchanged']
+    r.model.opt.gravity[0]=.1
+    with pytest.raises(ValueError,match='MODEL_MUTATED'):
+        validate(candidate,snapshot,task,prop,codec,geometry,profile)

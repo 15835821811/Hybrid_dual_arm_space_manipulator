@@ -33,3 +33,18 @@ def test_full_dimension_and_condition_dependency():
     changed=model(x,t,dict(tokens=condition['tokens']+1))
     assert torch.linalg.vector_norm(y-changed)>1e-6
     small=model(x[:,:68],t,dict(tokens=condition['tokens'][:,:2]));assert small.shape==(1,68)
+
+
+def test_control_change_cap_and_complete_energy_audit():
+    torch.set_num_threads(1);torch.manual_seed(17)
+    model=ConditionalDenoiser(max_free=20,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32));seen=[]
+    def energy(x):return dict(total=(x-3).square().sum())
+    result=sample(model,condition,13,2,SamplingBudget(steps=5,guide_steps=3,max_control_change=.005),energy,
+                  control_jacobian=10*torch.eye(13,dtype=torch.float64),audit_inactive_energy=True,
+                  observer=lambda kind,value:seen.append(kind))
+    assert seen.count('initial')==1 and seen.count('before_step')==seen.count('completed_step')==5
+    for row in result['trace']:
+        assert row['energy_status']=='MEASURED'
+        assert np.max(abs(10*(row['guided']-row['clean'])))<=.005+1e-12
+        for update in row['updates']:assert update['accepted_maximum_control_change']<=.005+1e-12

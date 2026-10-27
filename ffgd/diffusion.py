@@ -25,7 +25,7 @@ class SamplingBudget:
         if self.guide_steps and (self.step_size<=0 or self.max_update_norm<=0 or self.max_control_change<=0):raise ValueError('invalid guidance scale')
 
 
-def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None):
+def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False):
     """One candidate, exactly the requested network calls; never adds seeds."""
     device=next(model.parameters()).device
     generator=torch.Generator(device=device).manual_seed(seed)
@@ -49,10 +49,17 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
         clean=a*x-s*v;original=clean.detach().cpu().double()
         guided=original.clone();updates=[]
         active=index>=budget.steps-budget.guide_steps
+        step_terms=None
+        if not active and audit_inactive_energy:
+            if energy is None:raise ValueError('missing energy for inactive-step audit')
+            with torch.no_grad():diagnostic=energy(mean+scale*guided)
+            if not all(torch.isfinite(v) for v in diagnostic.values()):raise ValueError('NONFINITE_ENERGY_AUDIT')
+            step_terms={name:float(value) for name,value in diagnostic.items()}
         if active:
             for update in range(budget.updates_per_step):
                 variable=guided.detach().requires_grad_()
                 terms=energy(mean+scale*variable)
+                if step_terms is None:step_terms={name:float(value.detach()) for name,value in terms.items()}
                 grad=torch.autograd.grad(terms['total'],variable)[0]
                 if not torch.isfinite(grad).all() or not torch.isfinite(terms['total']):raise ValueError('NONFINITE_GUIDANCE')
                 delta=budget.step_size*grad
@@ -71,7 +78,9 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                         guided=proposal;after=trial_value;accepted=True;chosen=step;break
                 updates.append(dict(gradient_norm=float(torch.linalg.vector_norm(grad)),before=before,after=after,accepted=accepted,
                                     line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
-                                    maximum_control_change=physical_change,diagnostics=diagnostics))
+                                    terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
+                                    proposed_maximum_control_change=physical_change,
+                                    accepted_maximum_control_change=physical_change*chosen if physical_change is not None else None,diagnostics=diagnostics))
         gc=guided.to(device=device,dtype=x.dtype)
         # Recompute noise from the same actual x_k, never mix old noise with guided clean.
         noise=(x-a*gc)/s
@@ -80,6 +89,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
         if not torch.isfinite(x).all():raise ValueError('NONFINITE_SAMPLE')
         trace.append(dict(index=index,noise_level=int(k),input=input_x.cpu().numpy(),clean=original.numpy(),guided=guided.detach().numpy(),
                           output=x.detach().cpu().numpy(),active=active,updates=updates,
+                          energies_before_guidance=step_terms,energy_status='MEASURED' if step_terms is not None else 'NOT_RUN',
                           decomposition_error=float(torch.max(abs(input_x-a*gc-s*noise)))))
         if observer:observer('completed_step',trace[-1])
     return dict(free=(mean+scale*x.detach().cpu().double()).numpy(),seed=seed,network_calls=calls,trace=trace,

@@ -18,6 +18,7 @@ def input_identity(candidate,snapshot,task):
 
 def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_intervals=2048):
     before=input_identity(candidate,snapshot,task);r=propagator.robot;m=r.model
+    r.verify_identity()
     failures=[];gates={};report=dict(status='INCOMPLETE_VALIDATION',input_hash=before,gates=gates)
     if candidate.duration!=task.duration or codec.duration!=task.duration:raise ValueError('duration identity mismatch')
     z=codec.encode(candidate.control)
@@ -33,11 +34,12 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
     spline=BSpline(knots(codec.n),C,3)
     gates['velocity']=bool(np.max(abs(spline.derivative(1).c)/candidate.duration/r.spec.planner_velocity_limits)<=1)
     gates['acceleration']=bool(np.max(abs(spline.derivative(2).c)/candidate.duration**2/r.spec.planner_acceleration_limits)<=1)
-    previous=None;converged=False;last=None
+    previous=None;converged=False;last=None;propagation_mass_calls=0
     intervals=32
     while intervals<=max_intervals:
         grid=np.unique(np.r_[np.linspace(0,candidate.duration,intervals+1),knots(codec.n)*candidate.duration,[p.time for p in task.poses]])
         xs,vs=propagator.native_rollout(codec,z,intervals,grid=grid)
+        propagation_mass_calls+=2*len(grid)-1
         d=mujoco.MjData(m);positions=[];rotations=[]
         for x in xs:
             d.qpos[:]=x;mujoco.mj_kinematics(m,d);positions.append(d.geom_xpos.copy());rotations.append(d.geom_xmat.reshape(-1,3,3).copy())
@@ -53,20 +55,24 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
             converged=True;break
         previous=(grid,P,R);intervals*=2
     gates['propagation_and_refinement']=converged
-    report.update(intervals=intervals,geometry_step_m=spatial_step,propagation_volume_error_m=error)
+    report.update(intervals=min(intervals,max_intervals),next_required_intervals=None if converged else intervals,geometry_step_m=spatial_step,propagation_volume_error_m=error,
+                  native_propagation_mass_calls=propagation_mass_calls)
     if not converged:
         assert before==input_identity(candidate,snapshot,task)
         report['input_unchanged']=True
+        r.verify_identity()
         return report
     grid,xs,vs=last;d=mujoco.MjData(m);min_clearance=10.;max_torque=0.;base_residual=0.;task_errors=[];momentum_linear=0.;momentum_angular=0.
     from .propagation import native_subtree_momentum
     accelerations=codec.evaluate(z,grid,2)
+    distance_queries=0
     for i,t in enumerate(grid):
         d.qpos[:]=xs[i];d.qvel[:]=vs[i];mujoco.mj_forward(m,d)
         momentum=native_subtree_momentum(r,d,forward=False)-propagator.H.numpy()
         momentum_linear=max(momentum_linear,float(np.linalg.norm(momentum[:3])))
         momentum_angular=max(momentum_angular,float(np.linalg.norm(momentum[3:])))
         scan=geometry.native_scan(d);min_clearance=min(min_clearance,scan['minimum'])
+        distance_queries+=scan['queries']
         M=r.mass(d);h=d.qfrc_bias-d.qfrc_passive;a,b=r.dof_ids,r.base_dofs
         aa=r.B@accelerations[i];ab=-np.linalg.solve(M[np.ix_(b,b)],M[np.ix_(b,a)]@aa+h[b])
         tau=M[np.ix_(a,b)]@ab+M[np.ix_(a,a)]@aa+h[a]
@@ -87,7 +93,9 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
                   max_nominal_torque_ratio=max_torque,base_residual=base_residual,task_errors=task_errors,
                   continuous_time_collision_proof=False,grid_points=len(grid),output_candidate_hash=candidate.identity)
     report.update(momentum_linear=momentum_linear,momentum_angular=momentum_angular)
+    report.update(native_geometry_distance_queries=distance_queries,native_actuation_mass_calls=len(grid))
     after=input_identity(candidate,snapshot,task)
     if before!=after:raise RuntimeError('VALIDATOR_MUTATED_INPUT')
     report['input_unchanged']=True
+    r.verify_identity()
     return report
