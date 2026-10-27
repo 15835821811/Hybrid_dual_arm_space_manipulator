@@ -15,6 +15,13 @@ from .orchestration import atomic_json,check_budget
 
 
 def run(path,config):
+    # Isolated diagnostic of the previous compiled-Jacobian stall. Keep this
+    # executor choice out of the main sampler until whole-path AD is verified.
+    with torch.jit.optimized_execution(config.get('jit_optimize',True)):
+        return _run(path,config)
+
+
+def _run(path,config):
     torch.set_num_threads(1);root=Path(config['planning_run']);folder=root/'candidate_000'
     manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
@@ -99,5 +106,6 @@ def run(path,config):
                 jacobian_batch_size=config.get('jacobian_batch_size',1),
                 stage=stage,metric_stage=metric_stage,
                 intervals=config.get('intervals',manifest['budget']['intervals']),mass_rows=config.get('mass_rows',False),
+                jit_optimize=config.get('jit_optimize',True),compiled_backend=config.get('compiled_backend',False),
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')
