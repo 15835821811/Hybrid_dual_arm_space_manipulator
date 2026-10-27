@@ -29,7 +29,7 @@ def main(argv=None):
         planning=json.loads(Path(config['planning_config']).read_text(encoding='utf-8-sig'))
         from .baselines.compare import run
         return unit('baseline_comparison',lambda path:run(path,config),dict(max_wall_seconds=planning['budget']['max_wall_seconds']+60,
-                    candidates=len(planning['budget']['seeds']),method=config['method']))
+                    candidates=len(planning['budget']['seeds']),method=config['method'],reserved_cpus=planning['budget'].get('cpu_threads',1)))
     if args.command=='doctor':
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
@@ -153,7 +153,7 @@ def main(argv=None):
             finally:atomic_json(path/'architecture_sentinel.json',sentinel.report())
             return dict(passed=candidate is not None,**result)
         return unit('planning',planning,dict(max_wall_seconds=config['budget'].get('max_wall_seconds',1800)+60,
-                    candidates=len(seeds),steps=config['budget'].get('sampling',{}).get('steps',60)))
+                    candidates=len(seeds),steps=config['budget'].get('sampling',{}).get('steps',60),reserved_cpus=config['budget'].get('cpu_threads',1)))
     if args.command=='execute':
         from .execution_acceptance import execute_selected
         from pathlib import Path

@@ -7,6 +7,7 @@ from dataclasses import dataclass,asdict
 import hashlib
 import json
 import time
+import os
 from pathlib import Path
 import numpy as np
 import torch
@@ -31,11 +32,14 @@ class PlanningBudget:
     control_points: int = 24
     intervals: int = 32
     max_wall_seconds: float = 1800.
+    cpu_threads: int = 1
 
     def __post_init__(self):
         object.__setattr__(self,'seeds',tuple(self.seeds))
         if not self.seeds or len(set(self.seeds))!=len(self.seeds):raise ValueError('candidate seeds must be distinct')
         if self.control_points<6 or self.intervals<1 or self.max_wall_seconds<=0:raise ValueError('invalid planning budget')
+        if type(self.cpu_threads) is not int or not 1<=self.cpu_threads<=min(8,max(1,(os.cpu_count() or 1)-1)):
+            raise ValueError('invalid bounded CPU thread budget')
         if 0<self.sampling.guide_steps<3:raise ValueError('main guidance must include at least two nonfinal steps')
 
 
@@ -50,7 +54,7 @@ def boundary_codec(robot,snapshot,duration,n=24):
 
 def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager',collision_aggregation='pair_mean',joint_peak_penalty=False):
     """All candidates remain in the denominator, including numerical failures."""
-    total_start=time.perf_counter();torch.set_num_threads(1);output=Path(output);output.mkdir(parents=True,exist_ok=True)
+    total_start=time.perf_counter();torch.set_num_threads(budget.cpu_threads);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
     if checkpoint.get('update',0)<1 or checkpoint.get('training_config',{}).get('scope')=='SOFTWARE_TEST':raise ValueError('MAIN_PLANNER_REQUIRES_TRAINED_PRIOR')
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')

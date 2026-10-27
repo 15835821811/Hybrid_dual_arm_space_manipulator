@@ -231,3 +231,5 @@ V10arm五候选20261027T100838_planning_731808全部模型有效，预选index3/
 原预选arm闭环子步回归20261027T105105_selected_execution_a019bf通过5000物理步/2500控制更新，角动量.000602296、线动量.000442036、间隙.008466339、raw力矩比.098189，全部冻结门通过，0安全干预/状态注入。单独重放20261027T105211_independent_replay_5ad625误差0。4项子步/完整初态/实际状态相关软件通过。DEV40固定输入预检40/40通过，manifest已冻结，20执行子集预选；仍是DEV局部扰动而非独立TEST，全部新增规划/执行NOT_RUN。当前free相关族执行及完整软件运行，核实state进程，完成后做same-V10两任务实际ARCH，再其余DEV。
 
 通用子步完整回归通过：free执行20261027T105237_selected_execution_3b6ac1为4000物理步/2000控制更新，P.000152715/L.000175313，全部门通过，独立重放20261027T105339_independent_replay_c21bf9误差0。完整56软件20261027T105247_software_b23aee通过；same-V10两组实际ARCH01-10审计20261027T105407_architecture_audit_bb6872通过，同时保留原失败arm执行行。M4仍RUNNING。下一动作既定有界CPU线程等价/吞吐诊断，随后irregular_times五候选，统一execute显式execution_substeps_v1；未完成项NOT_RUN。
+
+CPU对照20261027T105532_mass_rows_diagnostic_5a3a20通过：1/2/4/4/2/1线程整路径5项/gradient/J差<=5.6e-16，耗时7.195/4.219/3.546/3.525/4.217/5.634s。V11仅显式budget.cpu_threads=4(32核预留4)，A/C/D同字段，原数学预算/候选/门不改；17项预算/隔离相关软件通过。现irregular_times五候选20261027T105736_planning_549bb5运行，session97156；核实真实PID后继续。冻结配置新增限定Git属性防止clean checkout行尾转换改变hash，40任务及profile逐一checkout过滤字节hash验证通过；完整M8复现仍NOT_RUN。

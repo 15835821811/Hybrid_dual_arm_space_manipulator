@@ -85,6 +85,7 @@ def run(output,config):
     method=config['method']
     if method not in ('C_NONLEARNED','D_POST_OPTIMIZATION'):raise ValueError('comparison entry supports only explicit C/D baselines')
     planning,budget=planning_config(config['planning_config'])
+    torch.set_num_threads(budget.cpu_threads)
     if not budget.sampling.task_metric:raise ValueError('comparison requires the same task-metric contract')
     limits=config['physical_budget']
     expected=dict(energy_evaluations=budget.sampling.steps-budget.sampling.guide_steps+budget.sampling.guide_steps*budget.sampling.updates_per_step*(1+budget.sampling.line_trials),
