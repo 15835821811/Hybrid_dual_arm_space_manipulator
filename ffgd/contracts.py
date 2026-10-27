@@ -67,7 +67,9 @@ class TaskSpec:
     poses: tuple
 
     def __post_init__(self):
-        object.__setattr__(self,'poses',tuple(self.poses))
+        def semantic_key(p):
+            return (p.time,p.tip,tuple(p.position),tuple(p.rotation.ravel()),p.position_enabled,p.rotation_enabled,p.position_tolerance,p.rotation_tolerance)
+        object.__setattr__(self,'poses',tuple(sorted(self.poses,key=semantic_key)))
         if self.duration<=0 or not np.isfinite(self.duration) or not self.poses:raise ValueError('invalid task')
         if any(p.time>self.duration for p in self.poses):raise ValueError('task beyond duration')
 

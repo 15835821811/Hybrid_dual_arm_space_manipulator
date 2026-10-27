@@ -12,7 +12,7 @@ M2: 256 native dynamics comparisons, 64 geometry-pressure cases, full energy
 and 323-variable gradients, 9 native executions/replays (21000 steps).
 One finite-difference feature switch classified separately; failed run unchanged.
 Execution calibration covers small 2-second trajectories, not diffusion or final tasks.
-Latest software regression: 15 passed in 20261027T041257_software_6e5fa7.
+Latest software regression: 16 passed in 20261027T042907_software_94339f.
 Includes exact optimizer/RNG interruption recovery in a two-update CPU software fixture.
 This fixture is not a learned pilot checkpoint.
 
