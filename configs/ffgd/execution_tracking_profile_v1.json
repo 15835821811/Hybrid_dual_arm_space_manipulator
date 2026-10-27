@@ -1,0 +1,18 @@
+{
+  "schema": "ffgd_inherited_execution_tracking_v1",
+  "status": "FROZEN_BEFORE_M5",
+  "thresholds": {
+    "tracking_error_rad": 0.02,
+    "manifold_residual_rad": 0.02
+  },
+  "definitions": {
+    "tracking_error_rad": "max absolute Bplus*q67_actual minus planned q17 across all N+1 states",
+    "manifold_residual_rad": "max absolute q67_actual minus B*Bplus*q67_actual across all N+1 states"
+  },
+  "source_commit": "b0e34e75e94ec53f1cd0a9cde246d4c727a596ce",
+  "source_files": {
+    "ff_prior\\contracts.py": "a0fca6f4c4b39e49fa383a49852ea206bccbf39511045fbc094fa134d78171b1",
+    "ff_prior\\physical_audit.py": "720bb9cabbee9191b662c7b2a428bd0fe717e98e9695e2ffc70994329b42c2d1"
+  },
+  "scope": "Inherited position tracking/manifold acceptance only. Not a calibrated continuation prediction domain; no velocity-manifold threshold claimed. Existing frozen physical/numerical gates remain required. Old execution reports are not changed."
+}

@@ -164,7 +164,9 @@ def main(argv=None):
         from .artifact_checks import validate_saved,validate_execution_states
         if not args.run:p.error('validate requires --run planning-directory; optional --unit candidate-index')
         if args.unit=='actual-states':
-            return unit('execution_state_audit',lambda path:validate_execution_states(path,args.run),dict(max_wall_seconds=60,native_integration_steps=0))
+            from pathlib import Path
+            tracking_profile=json.loads(Path(args.config).read_text(encoding='utf-8-sig')) if args.config else None
+            return unit('execution_state_audit',lambda path:validate_execution_states(path,args.run,tracking_profile),dict(max_wall_seconds=60,native_integration_steps=0))
         return unit('independent_validation',lambda path:validate_saved(path,args.run,args.unit),dict(max_wall_seconds=600))
     if args.command=='replay':
         from .artifact_checks import replay_saved
