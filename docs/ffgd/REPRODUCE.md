@@ -35,7 +35,8 @@ $ffgdPython = (Resolve-Path .venv/Scripts/python.exe).Path
 首轮开发时序为8秒接近、24秒七航点与刚性持续卫星追踪；空间航点、七个球障碍及物理门不变。根初态全零速度；卫星在第二段接受配置中明确的2秒力脉冲再自由漂移，禁止注入目标速度。时序可依据实测另建版本，不能事后改判旧结果。
 
 ```powershell
-& $ffgdPython -m ffgd.cli plan --config configs/ffgd/plan_final_v2_approach.json --task configs/ffgd/final_v2/approach.json
+$approachConfig = '<本机设备和权重路径已核对的规划配置副本.json>'
+& $ffgdPython -m ffgd.cli plan --config $approachConfig --task configs/ffgd/final_v2/approach.json
 ```
 
 仅当该run的`planning_result.json`为`PLAN_VALID`且存在`selected_index`时，按原选中候选执行。以下变量须填写该次命令实际返回目录，不得指向旧演示：
