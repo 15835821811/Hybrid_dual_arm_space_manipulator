@@ -151,3 +151,50 @@ class Propagator:
                 vm=velocity(qm[i],qdm[i]);d.qpos[:]=origin
                 mujoco.mj_integratePos(m,d.qpos,vm,dt)
         return np.asarray(xs),np.asarray(vs)
+
+
+class FullStatePredictor:
+    """Contact-free closed-loop prediction, opt-in until path calibration passes.
+
+    Predicts the existing controller tracking the supplied reference. Neither
+    reference points nor actual states are corrected/projected. Both free
+    bodies and all 67 joint states evolve; every state depends on earlier inputs.
+    """
+    def __init__(self,tree,initial):
+        self.tree=tree;self.robot=r=tree.robot;d=r.restore(initial)
+        if np.any(d.xfrc_applied) or np.any(d.qfrc_applied):raise ValueError('UNSUPPORTED_EXTERNAL_WRENCH')
+        self.qpos=tensor(d.qpos);self.velocity=tensor(d.qvel)
+        self.initial_state=initial
+
+    def integrate(self,x,v,dt):
+        r=self.robot;y=x.clone()
+        y[r.qpos_ids]=x[r.qpos_ids]+dt*v[r.dof_ids]
+        for j,kind in enumerate(r.model.jnt_type):
+            if kind==int(mujoco.mjtJoint.mjJNT_FREE):
+                qa=int(r.model.jnt_qposadr[j]);va=int(r.model.jnt_dofadr[j])
+                y[qa:qa+7]=integrate_base(x[qa:qa+7],v[va:va+6],dt)
+        return y
+
+    def rollout(self,codec,z,physics_dt=.0005,control_substeps=4,duration=None):
+        if type(control_substeps) is not int or control_substeps<1:raise ValueError('INVALID_CONTROL_SUBSTEPS')
+        stop=codec.duration if duration is None else duration
+        steps=int(round(stop/physics_dt))
+        if physics_dt<=0 or stop<=0 or stop>codec.duration or abs(steps*physics_dt-stop)>1e-10:raise ValueError('INVALID_PREDICTION_GRID')
+        times=np.arange(steps+1)*physics_dt
+        q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
+        x=self.qpos;v=self.velocity;xs=[x];vs=[v];torques=[];raws=[]
+        for i in range(steps):
+            if i%16==0:
+                from .orchestration import check_budget
+                check_budget()
+            if i%control_substeps==0:
+                applied,raw,_,_=self.tree.tracking_command(x,v,q[i],qd[i],qdd[i])
+            a=self.tree.full_state_acceleration(x,v,applied)
+            xm=self.integrate(x,v,physics_dt/2);vm=v+a*(physics_dt/2)
+            am=self.tree.full_state_acceleration(xm,vm,applied)
+            x=self.integrate(x,vm,physics_dt);v=v+physics_dt*am
+            xs.append(x);vs.append(v);torques.append(applied);raws.append(raw)
+        return dict(time=times,qpos=torch.stack(xs),velocity=torch.stack(vs),
+                    applied_torque=torch.stack(torques),raw_torque=torch.stack(raws),
+                    control_updates=(steps+control_substeps-1)//control_substeps,
+                    scope='CONTACT_FREE_MIDPOINT_PREDICTION_NOT_NATIVE_EXECUTION')

@@ -14,7 +14,7 @@ def main(argv=None):
     t.add_argument('--planning-margins')
     t.add_argument('--free-coordinate-schema',choices=['physical_position_v1','duration_squared_v1'],default='physical_position_v1')
     t.add_argument('--task-objective',choices=['center_squared','tolerance_squared_hinge'],default='center_squared')
-    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','momentum-diagnostic','plan','validate','execute','replay','continue-state','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','full-state-diagnostic','momentum-diagnostic','plan','validate','execute','replay','continue-state','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -117,6 +117,12 @@ def main(argv=None):
         if not args.config:p.error('mass-rows-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
         return unit('mass_rows_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=300,whole_path_gradient_jacobian_passes=len(config.get('thread_counts',[1]*4)),reserved_cpus=max(config.get('thread_counts',[1]))))
+    if args.command=='full-state-diagnostic':
+        from pathlib import Path
+        from .calibration_fullstate import run
+        if not args.config:p.error('full-state-diagnostic requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('full_state_dynamics',lambda path:run(path,config),dict(max_wall_seconds=300))
     if args.command=='plan':
         from pathlib import Path
         if not args.config or not args.task:p.error('plan requires --config and --task')

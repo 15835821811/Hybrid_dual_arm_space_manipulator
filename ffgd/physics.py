@@ -170,3 +170,38 @@ class DifferentiableTree:
             tau=M[a[:,None],b]@ab+M[a[:,None],a]@aa+h[a]
             return k,tau
         return torch.vmap(node)(qpos,velocity,qdd)
+
+
+    def tracking_command(self,qpos,velocity,q,qd,qdd):
+        """Existing FF+PD evaluated on all actual coordinates, without projection.
+
+        The reference remains the diffusion-generated 17-axis trajectory. All
+        67 actual position/velocity errors contribute to motor demand. This is
+        a differentiable prediction of execution.command, not another planner.
+        """
+        r=self.robot;b,a=r.base_dofs,r.dof_ids
+        k=self.kinematics(qpos,velocity)
+        M=self.mass(qpos,k);h=self.inverse(qpos,velocity,torch.zeros_like(velocity),k)
+        aa=self.B@qdd
+        ab=-torch.linalg.solve(M[b[:,None],b],M[b[:,None],a]@aa+h[b])
+        ff=M[a[:,None],b]@ab+M[a[:,None],a]@aa+h[a]
+        raw=ff+tensor(r.spec.position_kp)*(self.B@q-qpos[r.qpos_ids])+tensor(r.spec.velocity_kd)*(self.B@qd-velocity[a])
+        limits=tensor(r.spec.torque_limits)
+        return torch.clamp(raw,-limits,limits),raw,M,h
+
+    def full_state_acceleration(self,qpos,velocity,torque):
+        """Contact-free full nv dynamics for held physical motor inputs.
+
+        Includes both free bodies, all 67 joints, armature and damping. Contact
+        or externally applied force requires an explicit extension; callers
+        must not certify this as a contact model. No 17-axis state projection.
+        """
+        k=self.kinematics(qpos,velocity)
+        M=self.mass(qpos,k);h=self.inverse(qpos,velocity,torch.zeros_like(velocity),k)
+        force=torch.zeros_like(velocity).index_copy(0,torch.as_tensor(self.robot.dof_ids,dtype=torch.long),torque)
+        return torch.linalg.solve(M,force-h)
+
+    def tracking_acceleration(self,qpos,velocity,q,qd,qdd):
+        applied,raw,M,h=self.tracking_command(qpos,velocity,q,qd,qdd)
+        force=torch.zeros_like(velocity).index_copy(0,torch.as_tensor(self.robot.dof_ids,dtype=torch.long),applied)
+        return torch.linalg.solve(M,force-h),applied,raw
