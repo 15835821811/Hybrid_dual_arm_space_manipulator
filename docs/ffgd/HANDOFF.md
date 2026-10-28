@@ -374,3 +374,7 @@ contact-free oracle软件初次8faaec失败原因是测试自行采用.02s边界
 27.5s完整数值6394f7通过：包含活跃task/collision，标量相对差<=3.57e-14，原生同离散方向4.85e-7，fine方向.00179033<.01，全部几何体与细接触前原生差.0302906mm<.4mm。合成零参考不满足真实目标仍REJECTED；只通过数值，不是最终场景成功。当前精确macro编译原反例session64348已运行；通过后立即plan_c2_hold_v3(60NN/18x3、原seed23001、新噪声、1ms微步/2ms控制/10ms矩阵刷新)，再moving_target_v1。任务/执行/硬门不变，不追加数值研究或优势测试。
 
 精确macro编译4a0cd0通过41.90s：两控制phase前向差0/局部梯度<=4.90e-16；完整原反例原生/细方向及几何误差保持通过。编译约1.48s，.8s任务forward2.58/backward4.93s；不据此声称匹配性能优势。现在进入实际C2v3新噪声，不再等待其他机制解释。
+
+实际C2v3已运行020508/session63230，进程身份{"pid": 161632, "host": "wangbingquan", "create_time": 1793169454.9298253, "command": ["C:\\Users\\admin\\AppData\\Roaming\\uv\\python\\cpython-3.10.19-windows-x86_64-none\\python.exe", "-X", "utf8", "-m", "ffgd.cli", "plan", "--config", "configs/ffgd/plan_c2_hold_v3.json", "--task", "configs/ffgd/tasks/actual_c2_hold.json"]}；HEAD4fe47105/source91d3dc06。60NN/54分布引导、同seed23001/自由357best权重，任务与实际原生.5ms不变。通过则原样execute+独立replay+C2链检查；后续同核心moving_target_v1，不再追加数值/优势前置实验。独立准备clean_20261028T064122快照及全新venv，uv固定27依赖安装session5310，目的可复现性smoke，不是最终M8交付通过。
+
+C2v3 020508完成0/1，556.85s，60NN/54实际梯度/0后修，所有门唯rigid interval姿态失败(.018082555rad at.2675s≈1.036deg)，continuum interval和双末端到点通过。全机guide->fine .0355942mm，actualacc.9882777倍。三次C2压力反例全保留，均未选择/执行；不再继续此压力例的预算/seed扫描，下一第一条5s moving_target_v1原配置任务（持续world hold+target-relative tracking）。根据本次实测预先将该5s单候选预算设5400s，任务/容差/时限不变，同weights/source/core。clean_20261028T064122新环境27精确依赖独立安装完成，smoke_result全过：源/包均来自新目录，robot hash76edfae2、best权重b0adbbac、357维新noise/12NN边界9.09e-12；仅环境/推理smoke，不是M8全流程。
