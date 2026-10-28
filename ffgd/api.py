@@ -35,6 +35,7 @@ class PlanningBudget:
     cpu_threads: int = 1
     boundary_origin: str = 'pivot_zero'
     prediction_dt: float = .002
+    mass_refresh_steps: int = 1
 
     def __post_init__(self):
         object.__setattr__(self,'seeds',tuple(self.seeds))
@@ -44,6 +45,8 @@ class PlanningBudget:
             raise ValueError('invalid bounded CPU thread budget')
         if self.boundary_origin not in ('pivot_zero','initial_position'):raise ValueError('unknown boundary coordinate origin')
         if self.prediction_dt not in (.0005,.001,.002,.004,.01):raise ValueError('unsupported declared prediction timestep')
+        if type(self.mass_refresh_steps) is not int or not 1<=self.mass_refresh_steps<=20:raise ValueError('invalid inertia refresh budget')
+        if self.mass_refresh_steps>1 and self.prediction_dt>.002:raise ValueError('inertia refresh requires stable control microstep')
         if 0<self.sampling.guide_steps<3:raise ValueError('main guidance must include at least two nonfinal steps')
 
 
@@ -89,14 +92,17 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     if physics_backend=='full_state':
         from .propagation import FullStatePropagation
-        prop=FullStatePropagation(tree,initial,physics_dt=budget.prediction_dt,target_force_pulses=task.target_force_pulses)
+        prop=FullStatePropagation(tree,initial,physics_dt=budget.prediction_dt,target_force_pulses=task.target_force_pulses,mass_refresh_steps=budget.mass_refresh_steps)
     else:prop=Propagator(tree,initial)
     if physics_backend!='full_state' and budget.prediction_dt!=.002:raise ValueError('PREDICTION_TIMESTEP_REQUIRES_FULL_STATE')
+    if physics_backend!='full_state' and budget.mass_refresh_steps!=1:raise ValueError('INERTIA_REFRESH_REQUIRES_FULL_STATE')
     compilation=None
     if compiled_full_step:
         if physics_backend!='full_state':raise ValueError('COMPILED_STEP_REQUIRES_FULL_STATE')
-        from .compiled_physics import compile_full_state_step
-        compilation=compile_full_state_step(prop.predictor,prop.dt,output)
+        from .compiled_physics import compile_full_state_step,compile_multirate
+        if budget.mass_refresh_steps>1:
+            compilation=compile_multirate(prop.predictor,prop.dt,round(prop.predicted_control_period/prop.dt),budget.mass_refresh_steps,round(task.duration/prop.dt),output)
+        else:compilation=compile_full_state_step(prop.predictor,prop.dt,output)
         compile_seconds=compilation['seconds']
     geometry=Geometry(robot)
     if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe','batched_full_path'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')

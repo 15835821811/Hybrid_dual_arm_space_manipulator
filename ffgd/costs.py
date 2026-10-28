@@ -215,8 +215,14 @@ class MultiSpaceEnergy:
                 index=min(int(np.floor(t/p.dt+1e-10)),len(p.last_native_prediction['raw'])-2)
                 feedback=p.last_native_prediction['raw'][index]
                 act[-1]+=h(abs(feedback)/(r.spec.torque_limits*self.torque_fraction)-1).mean()
-                d.ctrl[r.actuator_ids]=np.clip(feedback,-r.spec.torque_limits,r.spec.torque_limits);mujoco.mj_forward(m,d)
-                actual_q67.append(d.qpos[r.qpos_ids].copy());actual_v67.append(d.qvel[r.dof_ids].copy());actual_a67.append(d.qacc[r.dof_ids].copy())
+                # Compare the guide's declared contact-free equation. mj_forward
+                # qacc includes contact reactions for intermediate penetrating
+                # iterates; those belong to native execution, not this oracle.
+                from .forcing import generalized_forces
+                force=generalized_forces(r,self.task.target_force_pulses,np.array([t]))[0]
+                force[a]+=np.clip(feedback,-r.spec.torque_limits,r.spec.torque_limits)
+                acceleration=np.linalg.solve(M,force-bias)
+                actual_q67.append(d.qpos[r.qpos_ids].copy());actual_v67.append(d.qvel[r.dof_ids].copy());actual_a67.append(acceleration[a].copy())
             distances=self.collision_guide.numpy_gaps(d.geom_xpos[g.ids],d.geom_xmat[g.ids].reshape(-1,3,3))
             penalties=h((self.buffer-distances)/self.buffer)
             coll.append(penalties.mean()+(penalties.max() if self.collision_aggregation=='pair_mean_plus_max' else 0.))

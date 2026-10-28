@@ -5,7 +5,8 @@
   "intervals": 16,
   "required_active_constraints": 1,
   "max_wall_seconds": 300,
-  "hypothesis": "Numerical prototype only: refresh full M and quadratic velocity bias every10ms, preserve2ms state/FF+PD updates and full actual states. Original C2 failed candidate read-only for native FD and fine volume error; no main use before pass.",
-  "experimental_mass_refresh_steps": 5,
-  "refined_native_gradient": true
+  "hypothesis": "Numerical prototype only: refresh full M and quadratic velocity bias every10ms, preserve2ms state/FF+PD updates and full actual states. Original C2 failed candidate read-only for native FD and fine volume error; no main use before pass. Before launch, use1ms physical microstep with2ms held control and10ms matrix refresh, to reduce the known2ms-vs-.5ms integration discrepancy without increasing expensive matrix refresh count. All input task/limits and native acceptance unchanged.",
+  "experimental_mass_refresh_steps": 10,
+  "refined_native_gradient": true,
+  "prediction_dt": 0.001
 }

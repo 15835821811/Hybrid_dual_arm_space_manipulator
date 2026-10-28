@@ -56,3 +56,23 @@ def test_multirate_native_coefficients_and_forced_full_state():
         np.testing.assert_allclose(got[key].numpy(),native[key],atol=1e-10,rtol=1e-8)
     np.testing.assert_allclose(got['raw_torque'].numpy(),native['raw'][:-1],atol=1e-10,rtol=1e-8)
     np.testing.assert_array_equal(snapshot.state,before)
+
+
+def test_contact_free_oracle_never_disables_native_default_or_geometry():
+    from ffgd.contracts import SphereObstacle,SceneSpec
+    from ffgd.api import boundary_codec
+    from ffgd.full_state_validation import native_prediction
+    base=Robot();d=base.new_data();point=d.xpos[base.tips[0]].copy()
+    r=Robot(scene=SceneSpec(spheres=(SphereObstacle(point+[.015,.02,.01],.025),)))
+    initial=r.snapshot(r.new_data());before=initial.state.copy();identity=r.model_hash
+    codec=boundary_codec(r,initial,.2,n=8,origin='initial_position',terminal_policy='free');z=np.zeros(codec.free_dim)
+    physical=native_prediction(r,initial,codec,z,.0005)
+    oracle=native_prediction(r,initial,codec,z,.0005,contact_free=True)
+    assert not physical['contact_solver_disabled_for_guide_oracle']
+    assert oracle['contact_solver_disabled_for_guide_oracle']
+    assert physical['native_model_hash']!=oracle['native_model_hash']
+    assert physical['minimum_clearance']<0 and oracle['minimum_clearance']<0
+    assert np.max(abs(physical['velocity']))>1e-3 and np.max(abs(oracle['velocity']))<1e-8
+    np.testing.assert_array_equal(initial.state,before)
+    assert r.model_hash==identity
+    r.verify_identity()

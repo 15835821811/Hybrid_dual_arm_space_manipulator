@@ -179,6 +179,9 @@ class FullStatePredictor:
         return y
 
     def rollout(self,codec,z,physics_dt=.0005,control_substeps=4,duration=None,memory_efficient=False):
+        if getattr(self,'mass_refresh_steps',1)>1:
+            from .multirate import rollout
+            return rollout(self,codec,z,physics_dt,control_substeps,duration,memory_efficient,self.mass_refresh_steps)
         if type(control_substeps) is not int or control_substeps<1:raise ValueError('INVALID_CONTROL_SUBSTEPS')
         stop=codec.duration if duration is None else duration
         steps=int(round(stop/physics_dt))
@@ -271,16 +274,20 @@ class FullStateAdjoint(torch.autograd.Function):
 class FullStatePropagation:
     """Whole-state guide adapter; independent native integration is separate."""
     prediction_mode='full_state'
-    def __init__(self,tree,initial,physics_dt=.002,target_force_pulses=()):
+    def __init__(self,tree,initial,physics_dt=.002,target_force_pulses=(),mass_refresh_steps=1):
         self.tree=tree;self.robot=r=tree.robot;self.initial=initial
         d=r.restore(initial)
         self.qpos=tensor(d.qpos);self.initial_q=r.Bplus@d.qpos[r.qpos_ids]
         self.initial_v=r.Bplus@d.qvel[r.dof_ids];self.H=tensor(native_momentum(r,d))
         if physics_dt not in (.0005,.001,.002,.004,.01):raise ValueError('UNSUPPORTED_DECLARED_PREDICTION_TIMESTEP')
         self.dt=physics_dt
+        if type(mass_refresh_steps) is not int or not 1<=mass_refresh_steps<=20:raise ValueError('INVALID_INERTIA_REFRESH_BUDGET')
+        if mass_refresh_steps>1 and physics_dt>.002:raise ValueError('MULTIRATE_REQUIRES_STABLE_CONTROL_MICROSTEP')
+        self.mass_refresh_steps=mass_refresh_steps
         self.predicted_control_period=max(.002,physics_dt)
         self.target_force_pulses=tuple(target_force_pulses)
         self.predictor=FullStatePredictor(tree,initial,integrator='implicit_damping',target_force_pulses=self.target_force_pulses)
+        self.predictor.mass_refresh_steps=mass_refresh_steps
 
     def rollout(self,codec,z,intervals=32,check_boundary=True,grid=None):
         times=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
@@ -307,8 +314,12 @@ class FullStatePropagation:
                     feedback_raw_torque=raw,prediction_steps=len(full['time'])-1)
 
     def native_rollout(self,codec,z,intervals=32,grid=None):
-        from .full_state_validation import native_prediction
-        full=native_prediction(self.robot,self.initial,codec,z,self.dt,geometry=False,target_force_pulses=self.target_force_pulses)
+        if self.mass_refresh_steps>1:
+            from .multirate import native_prediction
+            full=native_prediction(self.robot,self.initial,codec,z,self.dt,refresh=self.mass_refresh_steps,substeps=round(self.predicted_control_period/self.dt),target_force_pulses=self.target_force_pulses)
+        else:
+            from .full_state_validation import native_prediction
+            full=native_prediction(self.robot,self.initial,codec,z,self.dt,geometry=False,target_force_pulses=self.target_force_pulses,contact_free=True)
         self.last_native_prediction=full
         grid=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
         coordinate=np.clip(grid/self.dt,0,len(full['qpos'])-1);left=np.floor(coordinate).astype(int);right=np.minimum(left+1,len(full['qpos'])-1);a=(coordinate-left)[:,None]

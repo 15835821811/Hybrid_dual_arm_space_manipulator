@@ -23,11 +23,17 @@ def native_command(r,d,q,v,a):
     return np.clip(raw,-r.spec.torque_limits,r.spec.torque_limits),raw,ff
 
 
-def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True,target_force_pulses=()):
+def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True,target_force_pulses=(),contact_free=False):
     r=Robot(physics_dt=dt,scene=robot.scene)
     original_dt=r.model.opt.timestep;r.model.opt.timestep=robot.model.opt.timestep
     if r.compiled_hash()!=robot.model_hash:raise ValueError('FULL_STATE_NATIVE_MODEL_CHANGED')
     r.model.opt.timestep=original_dt
+    if contact_free:
+        # Only an oracle for the explicitly contact-free differentiable guide.
+        # Actual fine predictions below never pass this option. Geometry is
+        # still present and queried; this is not candidate acceptance.
+        r.model.opt.disableflags|=int(mujoco.mjtDisableBit.mjDSBL_CONTACT)
+        r._hash=None
     snap=Snapshot(r.model_hash,initial.mask,initial.state);d=r.restore(snap)
     if np.any(d.qfrc_applied) or np.any(d.xfrc_applied):raise ValueError('UNSUPPORTED_EXTERNAL_WRENCH')
     count=int(round(codec.duration/dt));control_period=max(.002,dt);period=int(round(control_period/dt))
@@ -54,6 +60,7 @@ def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True,target_force_
     return dict(time=times,qpos=np.asarray(xs),velocity=np.asarray(vs),acceleration=np.asarray(acc),raw=np.asarray(raws),nominal=np.asarray(nominal),
                 minimum_clearance=min(gaps) if gaps else None,momentum=np.asarray(momentum),volumes=np.asarray(volumes),
                 base_residual=base_residual,native_model_hash=r.model_hash,initial_qpos_unchanged=np.array_equal(xs[0],robot.restore(initial).qpos),
+                contact_solver_disabled_for_guide_oracle=bool(contact_free),
                 initial_velocity_unchanged=np.array_equal(vs[0],robot.restore(initial).qvel))
 
 
@@ -78,7 +85,10 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
     gates['propagation_and_refinement']=err<=profile['prop_finite_volume_m'] and spatial<=.002
     # Guide discretization may be coarser than native execution, but its full
     # volume prediction must remain within the same frozen error allowance.
-    guide=native_prediction(r,snapshot,codec,z,prop.dt,target_force_pulses=task.target_force_pulses)
+    if getattr(prop,'mass_refresh_steps',1)>1:
+        from .multirate import native_prediction as multirate_native
+        guide=multirate_native(r,snapshot,codec,z,prop.dt,refresh=prop.mass_refresh_steps,substeps=round(prop.predicted_control_period/prop.dt),target_force_pulses=task.target_force_pulses,geometry=True)
+    else:guide=native_prediction(r,snapshot,codec,z,prop.dt,target_force_pulses=task.target_force_pulses,contact_free=True)
     indices=np.rint(guide['time']/.00025).astype(int)
     if np.max(abs(fine['time'][indices]-guide['time']))>1e-10:raise ValueError('GUIDE_REFINEMENT_GRID_MISMATCH')
     guide_delta=guide['volumes']-fine['volumes'][indices]
@@ -123,5 +133,6 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
                     actual_acceleration17=float(np.max(abs(full['acceleration'][:,r.dof_ids]@r.Bplus.T)/r.spec.planner_acceleration_limits))),
                 minimum_clearance=full['minimum_clearance'],momentum_linear=P,momentum_angular=L,propagation_volume_error_m=err,
                 guide_to_native_volume_error_m=guide_error,guide_physics_dt=prop.dt,guide_control_period=prop.predicted_control_period,
+                guide_mass_refresh_steps=getattr(prop,'mass_refresh_steps',1),
                 geometry_step_m=spatial,continuous_time_collision_proof=False,scope='INDEPENDENT_NATIVE_PREDICTION_NOT_EXECUTION',
                 native_steps=len(full['time'])+len(fine['time'])+len(guide['time'])-3)

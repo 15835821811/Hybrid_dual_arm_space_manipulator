@@ -362,3 +362,11 @@ C2/interval run526999已自然结束0/1，892.57s，只有task_intervals失败�
 区间峰值原反例只读数值05147f通过54.36s，标量差3.31e-14、原生方向差3.03e-8。新噪声原C2复验e6802e/session76001/PID187468/create1793166365.7913425/source7f435866/HEAD90486e27正在运行，24NN/18x3/seed23001，2ms预测不变。性能根因readonly线性化prediction_step_stability_root.json补入FF阻尼导数与保持控制：.5ms×4/1ms×2/2ms×1无不稳定模态，4ms/10ms分别51/59不稳定模态；先前漏FF导数的近似结果保留为superseded，不误判2ms不稳定。准备multirate.py仅数值原型，保留2ms微步/完整状态与AD，降低M/速度二次bias刷新频率；未接主链、未通过原生。软件dd878d通过refresh1对原完整步/伴随，以及refresh3对完整展开AD。下一先完成C2原生执行/重放，然后必要的原生精度校准，不称最终场景已启动。
 
 multirate原型34f17c两项软件/短原生系数回归通过11.86s：refresh1复现原完整步骤及保持输入梯度，refresh3伴随对完整展开AD一致；refresh5的.2s非零全状态+目标外力与独立MuJoCo质量/偏置系数、NumPy积分逐状态一致。仍未启用任何主采样。现有calibration_fullstate仅增加显式experimental_mass_refresh_steps诊断分支；预备multirate_counterexample_v1与multirate_long_v1，要求保留2ms微步/控制、全状态、细原生方向及所有几何体误差.4mm，不因提速放宽。当前C2主run e6802e不使用此模块，继续session76001。
+
+C2 e6802e完成0/1，1323.66s；24NN/54真实梯度，0后处理。所有位置已过：区间最大3.92748/4.50234mm；仍姿态.0179086/.0179693rad超1deg，task和interval门失败，其他全过，未执行。不是容差成功。24步schedule最后18引导从noise739开始，剩余低噪声修正不足；已预配置v3保持54梯度/seed23001，改60NN使引导集中末18个低噪声层（起点约288），尚NOT_RUN，不补seed。当前multirate_counterexample数值session72317已启动，微步1ms、控制2ms、M/bias刷新10ms；主链未接入。先验证原反例及27.5s完整数值再决定启用，开发压力例不阻断最终任务接口推进。
+
+multirate原反例8a2d4f数值完成后在结果JSON因numpy.bool_序列化FAILED45.15s，旧失败保留；已落盘原生标量差2.29e-14、细原生全几何体差.0295653mm<.4mm，但方向比较未成功落盘不追认。修正方向数值转Python float，正在同配置复验session16319；新增forward/backward用时记录用于判断优化是否值得启用，不改算法或物理门。
+
+multirate原反例复验8efe97通过45.15s：原生系数/梯度一致，fine方向相对差.00853695<.01，所有几何体差.0295653mm。长时域251f80失败209.23s（forward45.53/backward151.04）：task/collision标量对原生一致，但原生joint25711.56而AD为0。根因3495c6实测23.5714s有3接触/12约束，原生含接触加速度160.55倍，接触前方程.0556倍，差异由qfrc_constraint解释至4.62e-14。修正只读能量oracle按原生M/h求同一接触前方程；诊断/guide数值oracle显式contact_free并返回不同模型hash/标志；实际fine预测、执行、安全、几何非穿透门保持contacts启用。此前含接触对照失败不改判。这不是允许穿透计划。正在3项相关软件session54240和同27.5s复验session64489；main mass_refresh代码接口已接入但无主运行启用，先等数值与软件。
+
+contact-free oracle软件初次8faaec失败原因是测试自行采用.02s边界模板触发已有条件数拒绝，非接触实现；测试改用.2s有效模板，完整软件585842 97passed236.51s，包括接触默认仍启用、两oracle模型hash不同、全几何仍报告穿透、原机器人/初态未变。长时域6394f7/PID45280/create1793168735.1251523/session64489仍运行，修正后全部代价对原生相对差<=3.57e-14，fine方向/传播结果待完成。main参数mass_refresh_steps已显式贯穿plan/validate/execute/审计，但无新main run使用；校准入口去掉临时monkeypatch，直接调用同一生产适配。为降低正式长时域成本，新增exact macro trace编译（仅执行相同刷新近似的图），原反例compiled配置准备，尚NOT_RUN；不把97软件当新编译器或实际ARCH通过。

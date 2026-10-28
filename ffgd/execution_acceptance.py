@@ -123,7 +123,7 @@ def execute_selected(path,planning_directory,config=None):
     if candidate.identity!=planned['records'][index]['identity']:raise ValueError('SELECTED_CANDIDATE_HASH_CHANGED')
     codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     from .propagation import FullStatePropagation
-    prop=(FullStatePropagation(DifferentiableTree(r),snapshot,physics_dt=manifest['budget'].get('prediction_dt',.002),target_force_pulses=task.target_force_pulses) if manifest.get('physics_backend')=='full_state' else Propagator(DifferentiableTree(r),snapshot))
+    prop=(FullStatePropagation(DifferentiableTree(r),snapshot,physics_dt=manifest['budget'].get('prediction_dt',.002),mass_refresh_steps=manifest['budget'].get('mass_refresh_steps',1),target_force_pulses=task.target_force_pulses) if manifest.get('physics_backend')=='full_state' else Propagator(DifferentiableTree(r),snapshot))
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(path/'validation_before_execution.json',validation)
     if validation['status']!='PLAN_VALID':return dict(passed=False,status='PRE_EXECUTION_REJECTED',validation=validation)

@@ -1,5 +1,6 @@
 """Native full-state force/gradient calibration before planner integration."""
 import hashlib
+import time
 from pathlib import Path
 import numpy as np
 import torch
@@ -211,27 +212,15 @@ def full_energy_check(output,config):
     from .contracts import Candidate
     r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
     tree.use_batched_path_physics=True
-    prop=FullStatePropagation(tree,snapshot,physics_dt=config.get('prediction_dt',.002),target_force_pulses=task.target_force_pulses);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     refresh=config.get('experimental_mass_refresh_steps',1)
+    prop=FullStatePropagation(tree,snapshot,physics_dt=config.get('prediction_dt',.002),target_force_pulses=task.target_force_pulses,mass_refresh_steps=refresh);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     if refresh!=1:
-        from functools import partial
-        from .multirate import rollout as multirate_rollout,native_prediction as multirate_native
-        if config.get('compiled_full_step'):raise ValueError('EXPERIMENTAL_MULTIRATE_NOT_STEP_COMPILED')
-        prop.predictor.rollout=partial(multirate_rollout,prop.predictor,refresh=refresh)
-        exact_native=prop.native_rollout;micro_dt=prop.dt
-        def native_rollout(codec,z,intervals=32,grid=None):
-            # Fine native directions are always the original actual controller.
-            if prop.dt!=micro_dt:return exact_native(codec,z,intervals,grid)
-            full=multirate_native(r,snapshot,codec,z,dt=prop.dt,refresh=refresh,substeps=round(.002/prop.dt),target_force_pulses=task.target_force_pulses)
-            prop.last_native_prediction=full
-            grid=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
-            coordinate=np.clip(grid/prop.dt,0,len(full['qpos'])-1);left=np.floor(coordinate).astype(int);right=np.minimum(left+1,len(full['qpos'])-1);a=(coordinate-left)[:,None]
-            return full['qpos'][left]*(1-a)+full['qpos'][right]*a,full['velocity'][left]*(1-a)+full['velocity'][right]*a
-        prop.native_rollout=native_rollout
+        from .multirate import native_prediction as multirate_native
     compilation=None
     if config.get('compiled_full_step'):
-        from .compiled_physics import compile_full_state_step
-        compilation=compile_full_state_step(prop.predictor,prop.dt,output)
+        from .compiled_physics import compile_full_state_step,compile_multirate
+        if refresh>1:compilation=compile_multirate(prop.predictor,prop.dt,round(prop.predicted_control_period/prop.dt),refresh,round(task.duration/prop.dt),output)
+        else:compilation=compile_full_state_step(prop.predictor,prop.dt,output)
     energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=config.get('intervals',8),collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
     rng=np.random.default_rng(7141);z0=rng.normal(0,config.get('z_std',.0003),codec.free_dim)
     diagnostic_source=None
@@ -244,8 +233,13 @@ def full_energy_check(output,config):
             z0=codec.encode(saved['control'])
         if source.read_bytes()!=before:raise ValueError('DIAGNOSTIC_SOURCE_CHANGED')
         diagnostic_source=dict(path=str(source),sha256=hashlib.sha256(before).hexdigest(),scope='READONLY_COUNTEREXAMPLE_NOT_PLANNER_INPUT')
+    start=time.perf_counter()
     z=tensor(z0).requires_grad_(True);terms=energy.evaluate(z)
+    forward_seconds=time.perf_counter()-start
     g=torch.autograd.grad(terms['total'],z)[0].detach().numpy()
+    backward_seconds=time.perf_counter()-start-forward_seconds
+    atomic_json(output/'energy_timing.json',dict(phase='AD_DONE',forward_seconds=forward_seconds,backward_seconds=backward_seconds,
+                micro_dt=prop.dt,mass_refresh_steps=refresh,duration=task.duration))
     oracle=energy.native_evaluate(z0)
     values={k:float(v.detach()) for k,v in terms.items()}
     errors={k:abs(values[k]-oracle[k])/max(1.,abs(values[k]),abs(oracle[k])) for k in values}
@@ -258,18 +252,19 @@ def full_energy_check(output,config):
                     gradient_status='FAILED' if not np.all(np.isfinite(g)) else 'NATIVE_DIRECTION_NOT_RUN',
                     validator_status='NOT_RUN',scope='Failed numerical diagnostic; no planning or execution claim')
     direction=rng.normal(size=codec.free_dim);direction/=np.linalg.norm(direction);eps=1e-7
-    fd=(energy.native_evaluate(z0+eps*direction)['total']-energy.native_evaluate(z0-eps*direction)['total'])/(2*eps)
+    fd=float((energy.native_evaluate(z0+eps*direction)['total']-energy.native_evaluate(z0-eps*direction)['total'])/(2*eps))
     ad=float(g@direction);error=abs(ad-fd)/max(1.,abs(ad),abs(fd))
     refined_gradient=None
     if config.get('refined_native_gradient'):
-        original_dt=prop.dt
+        original_dt=prop.dt;original_refresh=prop.mass_refresh_steps
         try:
-            prop.dt=.0005
+            prop.dt=.0005;prop.mass_refresh_steps=1
             fine_plus=energy.native_evaluate(z0+eps*direction)['total']
             fine_minus=energy.native_evaluate(z0-eps*direction)['total']
-        finally:prop.dt=original_dt
-        fine_fd=(fine_plus-fine_minus)/(2*eps)
+        finally:prop.dt=original_dt;prop.mass_refresh_steps=original_refresh
+        fine_fd=float((fine_plus-fine_minus)/(2*eps))
         refined_gradient=dict(native_dt=.0005,ad=ad,native_fd=fine_fd,
+            contact_free_guide_oracle=True,
             signal_relative_error=abs(ad-fine_fd)/max(1e-8,abs(ad),abs(fine_fd)),
             passed=abs(ad-fine_fd)<=1e-7 or abs(ad-fine_fd)/max(1e-8,abs(ad),abs(fine_fd))<=.01)
     # Read-only native validation of a new synthetic reference, not a diffusion result.
@@ -281,7 +276,7 @@ def full_energy_check(output,config):
     if refresh!=1:
         from .full_state_validation import native_prediction
         coarse=multirate_native(r,snapshot,codec,z0,dt=prop.dt,refresh=refresh,substeps=round(.002/prop.dt),target_force_pulses=task.target_force_pulses)
-        fine=native_prediction(r,snapshot,codec,z0,.0005,geometry=False,target_force_pulses=task.target_force_pulses)
+        fine=native_prediction(r,snapshot,codec,z0,.0005,geometry=False,target_force_pulses=task.target_force_pulses,contact_free=True)
         da=r.new_data();db=r.new_data();multirate_error=0.
         for index,x in enumerate(coarse['qpos']):
             if index%64==0:check_budget()
@@ -290,7 +285,7 @@ def full_energy_check(output,config):
             delta_p=np.linalg.norm(da.geom_xpos-db.geom_xpos,axis=1)
             delta_r=np.linalg.norm((da.geom_xmat-db.geom_xmat)*r.model.geom_rbound[:,None],axis=1)
             multirate_error=max(multirate_error,float(np.max(delta_p+delta_r)))
-        atomic_json(output/'multirate_native_refinement.json',dict(mass_refresh_steps=refresh,micro_dt=prop.dt,control_period=.002,all_volume_error_m=multirate_error,passed=multirate_error<=profile['prop_finite_volume_m'],input='same nonzero diagnostic z',scope='Not diffusion or execution evidence'))
+        atomic_json(output/'multirate_native_refinement.json',dict(mass_refresh_steps=refresh,micro_dt=prop.dt,control_period=.002,all_volume_error_m=multirate_error,passed=multirate_error<=profile['prop_finite_volume_m'],input='same nonzero diagnostic z',scope='Contact-free guide numerical oracle only; physical contact, geometry and safety gates remain enabled in actual candidate validation/execution'))
     return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and checked['gates']['guide_to_native_propagation'] and (multirate_error is None or multirate_error<=profile['prop_finite_volume_m']) and (refined_gradient is None or refined_gradient['passed']) and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),diagnostic_source=diagnostic_source,compilation=compilation,prediction_dt=prop.dt,mass_refresh_steps=refresh,multirate_volume_error_m=multirate_error,refined_native_gradient=refined_gradient,guide_to_native_volume_error_m=checked['guide_to_native_volume_error_m'],active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
                 gradient=dict(ad=ad,native_fd=fd,relative_error=error),validator_status=checked['status'],
                 scope='Full-state cost/gradient integration and read-only validator smoke, not diffusion planning success')

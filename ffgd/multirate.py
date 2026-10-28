@@ -36,6 +36,11 @@ def macro_step(predictor,x,v,u,raw,q,qd,qdd,forces,dt,substeps,start):
     return tuple(torch.stack(values) for values in (xs,vs,us,rs))
 
 
+def _step(predictor,*args):
+    compiled=getattr(predictor,'compiled_macro_step',None)
+    return macro_step(predictor,*args) if compiled is None else compiled(*args)
+
+
 class MultirateAdjoint(torch.autograd.Function):
     """Recompute one bounded refresh block, retaining all earlier dependence."""
     @staticmethod
@@ -45,7 +50,7 @@ class MultirateAdjoint(torch.autograd.Function):
         xs=[x[None]];vs=[v[None]];us=[];rs=[]
         for first in range(0,len(q)-1,refresh):
             check_budget();last=min(first+refresh,len(q)-1)
-            out=macro_step(predictor,x,v,u,raw,q[first:last],qd[first:last],qdd[first:last],forces[first:last],dt,substeps,first)
+            out=_step(predictor,x,v,u,raw,q[first:last],qd[first:last],qdd[first:last],forces[first:last],dt,substeps,first)
             for rows,values in zip((xs,vs,us,rs),out):rows.append(values)
             x,v,u,raw=(values[-1] for values in out)
         result=tuple(torch.cat(rows) for rows in (xs,vs,us,rs))
@@ -66,7 +71,7 @@ class MultirateAdjoint(torch.autograd.Function):
                 inputs=[a.detach().requires_grad_() for a in
                         (xs[first],vs[first],us[first-1] if first else torch.zeros_like(us[0]),
                          rs[first-1] if first else torch.zeros_like(rs[0]),q[first:last],qd[first:last],qdd[first:last])]
-                out=macro_step(ctx.predictor,*inputs,forces[first:last],ctx.dt,ctx.substeps,first)
+                out=_step(ctx.predictor,*inputs,forces[first:last],ctx.dt,ctx.substeps,first)
                 weights=[gx[first+1:last+1].clone(),gv[first+1:last+1].clone(),gu[first:last].clone(),gr[first:last].clone()]
                 for weights_i,carry in zip(weights,adj):weights_i[-1]+=carry
                 gradients=torch.autograd.grad(out,inputs,grad_outputs=weights,allow_unused=True)
@@ -77,7 +82,9 @@ class MultirateAdjoint(torch.autograd.Function):
 
 def rollout(predictor,codec,z,physics_dt=.002,control_substeps=1,duration=None,memory_efficient=True,refresh=5):
     if type(refresh) is not int or not 1<=refresh<=20:raise ValueError('INVALID_INERTIA_REFRESH_BUDGET')
+    if type(control_substeps) is not int or control_substeps<1 or physics_dt<=0:raise ValueError('INVALID_MULTIRATE_MICROSTEP')
     stop=codec.duration if duration is None else duration
+    if not 0<stop<=codec.duration:raise ValueError('INVALID_MULTIRATE_DURATION')
     steps=int(round(stop/physics_dt))
     if steps<1 or abs(steps*physics_dt-stop)>1e-10:raise ValueError('INVALID_MULTIRATE_GRID')
     times=np.arange(steps+1)*physics_dt
@@ -91,7 +98,7 @@ def rollout(predictor,codec,z,physics_dt=.002,control_substeps=1,duration=None,m
                 scope='APPROXIMATE_CONTACT_FREE_FULL_STATE_PREDICTION_NOT_EXECUTION')
 
 
-def native_prediction(robot,initial,codec,z,dt=.002,refresh=5,substeps=1,target_force_pulses=()):
+def native_prediction(robot,initial,codec,z,dt=.002,refresh=5,substeps=1,target_force_pulses=(),geometry=False):
     """Independent NumPy/MuJoCo-coefficient oracle, not native execution.
 
     Native M, bias and integration are used. The deliberately frozen M/bias
@@ -105,7 +112,10 @@ def native_prediction(robot,initial,codec,z,dt=.002,refresh=5,substeps=1,target_
     times=np.arange(n+1)*dt;q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
     forces=generalized_forces(r,target_force_pulses,times[:-1]+dt/2)
     a,b=r.dof_ids,r.base_dofs;D=r.model.dof_damping
-    xs=[d.qpos.copy()];vs=[d.qvel.copy()];us=[];raws=[]
+    xs=[d.qpos.copy()];vs=[d.qvel.copy()];us=[];raws=[];volumes=[]
+    if geometry:
+        mujoco.mj_kinematics(r.model,d)
+        volumes.append(np.c_[d.geom_xpos,d.geom_xmat*r.model.geom_rbound[:,None]])
     for i in range(n):
         if i%64==0:check_budget()
         if i%refresh==0:
@@ -120,6 +130,9 @@ def native_prediction(robot,initial,codec,z,dt=.002,refresh=5,substeps=1,target_
         force=forces[i].copy();force[a]+=applied
         d.qvel[:]+=dt*(response@(force-h));mujoco.mj_integratePos(r.model,d.qpos,d.qvel,dt);d.time+=dt
         xs.append(d.qpos.copy());vs.append(d.qvel.copy());us.append(applied.copy());raws.append(raw.copy())
+        if geometry:
+            mujoco.mj_kinematics(r.model,d)
+            volumes.append(np.c_[d.geom_xpos,d.geom_xmat*r.model.geom_rbound[:,None]])
     return dict(time=times,qpos=np.asarray(xs),velocity=np.asarray(vs),raw=np.asarray(raws+[raws[-1]]),
-                applied_torque=np.asarray(us),mass_refresh_steps=refresh,
+                applied_torque=np.asarray(us),volumes=np.asarray(volumes),mass_refresh_steps=refresh,
                 scope='NATIVE_COEFFICIENT_NUMERICAL_ORACLE_NOT_EXECUTION')

@@ -85,3 +85,44 @@ def compile_full_state_step(predictor,dt,output=None):
     predictor.step=step
     return dict(seconds=time.perf_counter()-start,model_hash=r.model_hash,physics_dt=dt,
                 mode='EXACT_DISCRETE_GRAPH_COMPILE_NOT_MODEL_REDUCTION',jit_speculative_optimization=False,kernel_count=2,local_comparisons=comparisons)
+
+
+def compile_multirate(predictor,dt,substeps,refresh,total_steps,output=None):
+    """Compile the declared refresh approximation without changing any step."""
+    from .multirate import macro_step
+    from pathlib import Path
+    from .orchestration import atomic_json
+    r=predictor.robot;d=r.restore(predictor.initial_state)
+    x=tensor(d.qpos);v=tensor(d.qvel);u=tensor(d.ctrl[r.actuator_ids])
+    q=tensor(r.Bplus@d.qpos[r.qpos_ids]);qd=tensor(r.Bplus@d.qvel[r.dof_ids])
+    lengths=sorted({refresh,total_steps%refresh}-{0});kernels={};comparisons=[];start_time=time.perf_counter()
+    class Kernel(torch.nn.Module):
+        def __init__(self,phase):super().__init__();self.phase=phase
+        def forward(self,x,v,u,raw,q,qd,qdd,forces):
+            return macro_step(predictor,x,v,u,raw,q,qd,qdd,forces,dt,substeps,self.phase)
+    for length in lengths:
+        for phase in range(substeps):
+            sample=(x,v,u,u.clone(),q.repeat(length,1),qd.repeat(length,1),torch.zeros(length,17,dtype=x.dtype),torch.zeros(length,r.model.nv,dtype=x.dtype))
+            kernel=torch.jit.trace(Kernel(phase).eval(),sample,check_trace=False)
+            kernel=torch.jit.freeze(kernel.eval());kernels[length,phase]=kernel
+            if output is not None:torch.jit.save(kernel,str(Path(output)/f'macro_{length}_{phase}.pt'))
+            values=tuple(value+.001 if i else value for i,value in enumerate(sample))
+            def evaluate(compiled):
+                inputs=[value.detach().clone().requires_grad_() for value in values]
+                with torch.jit.optimized_execution(False):
+                    outputs=kernel(*inputs) if compiled else macro_step(predictor,*inputs,dt,substeps,phase)
+                loss=sum(value.square().sum() for value in outputs)
+                grads=torch.autograd.grad(loss,inputs,allow_unused=True)
+                return tuple(value.detach() for value in outputs),tuple(torch.zeros_like(a) if g is None else g.detach() for a,g in zip(inputs,grads))
+            expected,ge=evaluate(False);actual,ga=evaluate(True)
+            error=max(float((a-b).abs().max()) for a,b in zip(expected,actual))
+            derivative=max(float((a-b).abs().max())/max(1.,float(a.abs().max()),float(b.abs().max())) for a,b in zip(ge,ga))
+            comparisons.append(dict(length=length,phase=phase,forward_max_abs=error,gradient_max_relative=derivative))
+            if error>1e-9 or derivative>1e-8:raise ValueError('COMPILED_MULTIRATE_LOCAL_MISMATCH')
+            if output is not None:atomic_json(Path(output)/'compile_progress.json',dict(seconds=time.perf_counter()-start_time,local_comparisons=comparisons))
+    def compiled(x,v,u,raw,q,qd,qdd,forces,step_dt,control_substeps,first):
+        if step_dt!=dt or control_substeps!=substeps:raise ValueError('COMPILED_MULTIRATE_GRID_MISMATCH')
+        with torch.jit.optimized_execution(False):return kernels[len(q),first%substeps](x,v,u,raw,q,qd,qdd,forces)
+    predictor.compiled_macro_step=compiled
+    return dict(seconds=time.perf_counter()-start_time,model_hash=r.model_hash,physics_dt=dt,mass_refresh_steps=refresh,control_period=dt*substeps,
+                mode='EXACT_GRAPH_OF_DECLARED_INERTIA_REFRESH_APPROXIMATION',kernel_count=len(kernels),local_comparisons=comparisons)
