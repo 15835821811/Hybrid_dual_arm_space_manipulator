@@ -34,7 +34,10 @@ def run(path,config):
         prop=Propagator(tree,snapshot);T=float(data['duration'][item]);n=int(checkpoint['dataset_manifest']['control_points'])
         checkpoint=bind_free_coordinates(raw_checkpoint,T)
         bc=[Boundary(0,j,tuple(range(17)),tuple(prop.initial_q if j==0 else prop.initial_v if j==1 else np.zeros(17))) for j in (0,1,2)]
-        bc.extend(Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2));codec=BoundaryCodec(n,17,T,bc,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
+        policy=checkpoint['dataset_manifest'].get('terminal_policy','zero_derivatives')
+        if policy=='zero_derivatives':bc.extend(Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2))
+        elif policy!='free':raise ValueError('UNSUPPORTED_CHECKPOINT_TERMINAL_POLICY')
+        codec=BoundaryCodec(n,17,T,bc,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
         condition=normalize_condition(data['tokens'][item:item+1],data['padding'][item:item+1],checkpoint,device)
         result=sample(model,condition,codec.free_dim,seed,budget,mean=checkpoint['mean'],scale=checkpoint['scale'])
         C=codec.decode(result['free']);error=float(np.max(abs(codec.A@C.ravel()-codec.b)))

@@ -46,13 +46,13 @@ def merge_prior(path,config):
     sources=config['source_datasets']
     if len(sources)<2 or len(set(map(str,sources)))!=len(sources):raise ValueError('DISTINCT_PRIOR_SOURCES_REQUIRED')
     parents=[];batches=[];next_group=0;max_tokens=0;reference=None
-    keys=('model_hash','state_mask','control_points','free_dim','geometry_policy_hash','boundary_origin','profile','free_coordinate_schema')
+    keys=('model_hash','state_mask','control_points','free_dim','geometry_policy_hash','boundary_origin','profile','free_coordinate_schema','terminal_policy')
     for index,directory in enumerate(sources):
         check_budget();directory=Path(directory)
         manifest=json.loads((directory/'dataset_manifest.json').read_text(encoding='utf-8'))
         data_hash=hashlib.sha256((directory/'prior.npz').read_bytes()).hexdigest()
         if data_hash!=manifest['data_hash'] or manifest['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
-        defaults={'boundary_origin':'pivot_zero','free_coordinate_schema':'physical_position_v1'}
+        defaults={'boundary_origin':'pivot_zero','free_coordinate_schema':'physical_position_v1','terminal_policy':'zero_derivatives'}
         contract={k:manifest.get(k,defaults.get(k)) for k in keys}
         if any(v is None for v in contract.values()):raise ValueError('INCOMPLETE_PRIOR_CONTRACT')
         if reference is None:reference=contract
@@ -149,6 +149,40 @@ def reencode_duration_coordinates(path,config):
     return dict(passed=True,**manifest)
 
 
+def reencode_free_terminal(path,config):
+    """Reuse valid zero-start physical paths in the larger initial-only space.
+
+    This changes labels and removes endpoint derivative constraints; it does
+    not manufacture moving endpoints. New free-end examples are separate data.
+    """
+    torch.set_num_threads(1);source=Path(config['source_dataset'])
+    parent=json.loads((source/'dataset_manifest.json').read_text())
+    digest=hashlib.sha256((source/'prior.npz').read_bytes()).hexdigest()
+    if digest!=parent['data_hash'] or parent['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
+    with np.load(source/'prior.npz') as saved:arrays={k:saved[k] for k in saved.files}
+    C=arrays['control'];T=arrays['duration'];n=C.shape[1]
+    if C.shape[2]!=17 or not np.allclose(C[:,:3],C[:,0:1],atol=1e-10,rtol=0):raise ValueError('FREE_REENCODING_REQUIRES_ZERO_INITIAL_DERIVATIVES')
+    if not np.all(np.isfinite(T)&(T>0)):raise ValueError('INVALID_DURATION')
+    bc=[Boundary(0,k,tuple(range(17)),(0.,)*17) for k in (0,1,2)]
+    codec=BoundaryCodec(n,17,1.,bc,origin='initial_position')
+    physical=(C-C[:,0:1]).reshape(len(C),-1)@codec.N
+    decoded=(physical@codec.N.T).reshape(C.shape)+C[:,0:1]
+    error=float(np.max(abs(decoded-C)))
+    if error>1e-10:raise ValueError('FREE_REENCODING_CHANGED_PHYSICAL_PATH')
+    kept={k:hashlib.sha256(np.ascontiguousarray(v).tobytes()).hexdigest() for k,v in arrays.items() if k!='z'}
+    arrays['z']=physical/T[:,None]**2
+    np.savez_compressed(path/'prior.npz',**arrays)
+    manifest=dict(parent,schema='ffgd_prior_free_terminal_reencoding_v1',terminal_policy='free',free_dim=codec.free_dim,
+        boundary_origin='initial_position',free_coordinate_schema='duration_squared_v1',
+        parent_dataset=str(source.resolve()),parent_data_hash=digest,
+        parent_attempt_directory=parent.get('parent_attempt_directory',str((source/'attempts').resolve())),
+        dataset_path=str(path),data_hash=hashlib.sha256((path/'prior.npz').read_bytes()).hexdigest(),
+        maximum_decode_error=error,unchanged_array_hashes=kept,new_physical_trajectories=0,
+        physical_validation='Parent native validation inherited on identical physical arrays. No moving endpoint/initial velocity evidence is claimed by relabeling.')
+    atomic_json(path/'dataset_manifest.json',manifest)
+    return dict(passed=True,**manifest)
+
+
 def reencode_origin(path,config):
     """Relabel immutable model-prior paths in an invertible affine coordinate system.
 
@@ -209,6 +243,11 @@ def reencode_origin(path,config):
 
 
 def generate(path,config,resume=None):
+    terminal_policy=config.get('terminal_policy','zero_derivatives')
+    velocity_std=float(config.get('initial_velocity_std',0.))
+    coordinate_schema=config.get('free_coordinate_schema','physical_position_v1')
+    if terminal_policy not in ('zero_derivatives','free') or not np.isfinite(velocity_std) or velocity_std<0:raise ValueError('INVALID_PRIOR_BOUNDARY_DOMAIN')
+    if coordinate_schema not in ('physical_position_v1','duration_squared_v1'):raise ValueError('INVALID_PRIOR_COORDINATES')
     if resume is not None:
         path=Path(resume)
         if json.loads((path/'generation_config.json').read_text())!=config:raise ValueError('resume configuration mismatch')
@@ -232,18 +271,34 @@ def generate(path,config,resume=None):
         family_rng=np.random.default_rng(np.random.SeedSequence([config['seed'],group,2]))
         q0=sample_initial_position(r,config,group,family_rng)
         T=float(rng.choice(config['duration_choices']));d=r.new_data();d.qpos[r.qpos_ids]=r.B@q0
+        v0=np.zeros(17)
+        if velocity_std:
+            # General momentum-compatible initial states, independent of DEV
+            # goals or future trajectories. All proposed states remain in ledger.
+            v0=family_rng.normal(0,velocity_std,17);d.qvel[r.dof_ids]=r.B@v0
+            mujoco.mj_forward(m,d);M=r.mass(d);b,a=r.base_dofs,r.dof_ids
+            d.qvel[b]=-np.linalg.solve(M[np.ix_(b,b)],M[np.ix_(b,a)]@d.qvel[a])
+            mujoco.mj_forward(m,d)
         snapshot=r.snapshot(d);prop=Propagator(tree,snapshot)
         key=(group,T)
         if key not in cache:
             if len(cache)>4:cache.clear()
-            bc=[Boundary(0,j,tuple(range(17)),tuple(q0) if j==0 else (0.,)*17) for j in (0,1,2)]+[Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2)]
+            bc=[Boundary(0,j,tuple(range(17)),tuple(q0 if j==0 else v0 if j==1 else np.zeros(17))) for j in (0,1,2)]
+            if terminal_policy=='zero_derivatives':bc += [Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2)]
             cache[key]=BoundaryCodec(n,17,T,bc,origin=config.get('boundary_origin','pivot_zero'))
         codec=cache[key]
-        phase=np.linspace(0,1,n);delta=rng.normal(0,config['motion_scale'],17)
+        motion_factor=1.
+        if 'motion_time_scale' in config:
+            reference_time=float(config['motion_time_scale'])
+            if not np.isfinite(reference_time) or reference_time<=0:raise ValueError('INVALID_MOTION_TIME_SCALE')
+            motion_factor=min(1.,(T/reference_time)**2)
+        phase=np.linspace(0,1,n);delta=rng.normal(0,config['motion_scale']*motion_factor,17)
         C=q0+phase[:,None]*delta
-        C+=np.sin(np.pi*phase)[:,None]*rng.normal(0,config['motion_scale']*.4,17)
-        C+=rng.normal(0,config['high_frequency_control_std'],C.shape)
-        C[:3]=q0;C[-3:]=q0+delta
+        C+=np.sin(np.pi*phase)[:,None]*rng.normal(0,config['motion_scale']*.4*motion_factor,17)
+        C+=rng.normal(0,config['high_frequency_control_std']*motion_factor,C.shape)
+        C[:3]=q0
+        if terminal_policy=='zero_derivatives':C[-3:]=q0+delta
+        if velocity_std or terminal_policy=='free':C=codec.decode(codec.N.T@(C.ravel()-codec.offset))
         z=codec.encode(C);reason=None
         if np.any(C<r.lower) or np.any(C>r.upper):reason='Q17_BOUNDS'
         grid=np.unique(np.r_[np.linspace(0,T,config['intervals']+1),knots(n)*T,np.array([.25,.5,.75])*T])
@@ -271,10 +326,11 @@ def generate(path,config,resume=None):
         if reason is None:
             constraints=[poses[(T,0)],poses[(T,1)]]
             for t in rng.choice([.25*T,.5*T,.75*T],size=int(rng.integers(0,4)),replace=False):constraints.append(poses[(float(t),int(rng.integers(0,2)))])
-            task=TaskSpec(T,tuple(constraints));tokens=encode_condition(r,snapshot,task,prop.H.numpy())
+            task=TaskSpec(T,tuple(constraints),terminal_policy=terminal_policy);tokens=encode_condition(r,snapshot,task,prop.H.numpy())
             validation_report=validate(Candidate(C,T,attempt),snapshot,task,prop,codec,geometry,profile)
             if validation_report['status']!='PLAN_VALID':reason=validation_report['status']+':'+','.join(validation_report.get('failures',[]))
-        record=dict(attempt=attempt,group=group,split=split,accepted=reason is None,reason=reason,minimum_clearance=min_clearance,max_torque_ratio=max_torque,validation=validation_report)
+        record=dict(attempt=attempt,group=group,split=split,accepted=reason is None,reason=reason,minimum_clearance=min_clearance,max_torque_ratio=max_torque,validation=validation_report,
+                    attempt_z_coordinates='physical_position_v1',terminal_policy=terminal_policy)
         item=dict(z=z,control=C,initial_state=snapshot.state,tokens=tokens,duration=T)
         # Every proposed trajectory, including rejected inputs, is recoverable.
         with array_path.with_suffix('.tmp').open('wb') as f:np.savez_compressed(f,**item)
@@ -288,18 +344,20 @@ def generate(path,config,resume=None):
     if not accepted:return dict(passed=False,attempts=len(attempts),accepted=0,dataset_path=str(path))
     max_tokens=max(len(x['tokens']) for x in accepted);tokens=np.zeros((len(accepted),max_tokens,32),np.float32);padding=np.ones(tokens.shape[:2],bool)
     for i,x in enumerate(accepted):tokens[i,:len(x['tokens'])]=x['tokens'];padding[i,:len(x['tokens'])]=False
-    arrays=dict(z=np.stack([x['z'] for x in accepted]),control=np.stack([x['control'] for x in accepted]),
+    arrays=dict(z=np.stack([x['z']/(x['duration']**2 if coordinate_schema=='duration_squared_v1' else 1.) for x in accepted]),control=np.stack([x['control'] for x in accepted]),
                 initial_state=np.stack([x['initial_state'] for x in accepted]),tokens=tokens,padding=padding,
                 duration=np.array([x['duration'] for x in accepted]),is_train=np.array([x['split']=='TRAIN' for x in accepted]),
                 group=np.array([x['group'] for x in accepted]),attempt=np.array([x['attempt'] for x in accepted]))
     np.savez_compressed(path/'prior.npz',**arrays)
     manifest=dict(schema='ffgd_prior_v1',source_kind='FF_MODEL_PRIOR',attempts=len(attempts),accepted=len(accepted),
                   boundary_origin=config.get('boundary_origin','pivot_zero'),
+                  terminal_policy=terminal_policy,free_coordinate_schema=coordinate_schema,
                   train=int(arrays['is_train'].sum()),val=int((~arrays['is_train']).sum()),model_hash=r.model_hash,config=config,
                   data_hash=hashlib.sha256((path/'prior.npz').read_bytes()).hexdigest(),state_mask=snapshot.mask,
                   execution_verified=False,geometry_policy_hash=geometry.policy_hash,control_points=n,free_dim=int(arrays['z'].shape[1]),
                   dataset_path=str(path),profile=profile,reason_counts={reason:sum(str(x['reason'])==reason for x in attempts) for reason in sorted(set(str(x['reason']) for x in attempts))},
-                  limitations='native independently refined model-valid prior; zero velocity/momentum starts; not execution-verified or continuous collision proof')
+                  limitations='native independently refined model-valid prior; momentum-compatible joint/base velocity starts; not execution-verified or continuous collision proof',
+                  initial_velocity_std=velocity_std)
     manifest['initial_position_coverage']={split:dict(count=int(mask.sum()),
         minimum=arrays['tokens'][mask,0,5:22].min(0).tolist(),
         maximum=arrays['tokens'][mask,0,5:22].max(0).tolist())

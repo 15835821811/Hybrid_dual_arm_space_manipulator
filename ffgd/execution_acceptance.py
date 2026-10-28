@@ -116,7 +116,7 @@ def execute_selected(path,planning_directory,config=None):
     manifest=json.loads((planning_directory/'planning_manifest.json').read_text(encoding='utf-8'));profile=manifest['profile']
     with np.load(folder/'candidate.npz') as data:candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
     if candidate.identity!=planned['records'][index]['identity']:raise ValueError('SELECTED_CANDIDATE_HASH_CHANGED')
-    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start)
+    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     from .propagation import FullStatePropagation
     prop=(FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator)(DifferentiableTree(r),snapshot)
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)

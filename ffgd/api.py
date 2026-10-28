@@ -45,16 +45,18 @@ class PlanningBudget:
         if 0<self.sampling.guide_steps<3:raise ValueError('main guidance must include at least two nonfinal steps')
 
 
-def boundary_codec(robot,snapshot,duration,n=24,origin='pivot_zero',reference_start=None):
+def boundary_codec(robot,snapshot,duration,n=24,origin='pivot_zero',reference_start=None,terminal_policy='zero_derivatives'):
     d=robot.restore(snapshot);q=robot.Bplus@d.qpos[robot.qpos_ids];v=robot.Bplus@d.qvel[robot.dof_ids]
-    # Declared baseline template: fixed initial q/v/a; terminal v/a zero,
-    # terminal joint position unconstrained. Dynamic a0 policy added with M6.
+    # Actual initial state and controller reference memory are distinct.
+    # Terminal derivatives are free for tracking; no terminal joint answer.
     reference=np.stack((q,v,np.zeros(17))) if reference_start is None else np.asarray(reference_start)
     if reference.shape!=(3,17) or not np.isfinite(reference).all():raise ValueError('INVALID_REFERENCE_START')
     bc=[Boundary(0,k,tuple(range(17)),tuple(reference[k])) for k in (0,1,2)]
-    bc += [Boundary(duration,k,tuple(range(17)),(0.,)*17) for k in (1,2)]
+    if terminal_policy=='zero_derivatives':bc += [Boundary(duration,k,tuple(range(17)),(0.,)*17) for k in (1,2)]
+    elif terminal_policy!='free':raise ValueError('INVALID_TERMINAL_POLICY')
     codec=BoundaryCodec(n,17,duration,bc,origin=origin)
     codec.reference_start=reference.copy();codec.reference_from_control_memory=reference_start is not None
+    codec.terminal_policy=terminal_policy
     return codec
 
 
@@ -67,7 +69,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
     if (task.intervals or task.reference_start is not None) and physics_backend!='full_state':raise ValueError('TEMPORAL_OR_REFERENCE_MEMORY_REQUIRES_FULL_STATE_BACKEND')
-    codec=boundary_codec(robot,initial,task.duration,budget.control_points,origin=budget.boundary_origin,reference_start=task.reference_start)
+    if checkpoint['dataset_manifest'].get('terminal_policy','zero_derivatives')!=task.terminal_policy:raise ValueError('CHECKPOINT_TERMINAL_TEMPLATE_MISMATCH')
+    codec=boundary_codec(robot,initial,task.duration,budget.control_points,origin=budget.boundary_origin,reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     from .model_io import bind_free_coordinates
     checkpoint=bind_free_coordinates(checkpoint,task.duration)
     if len(checkpoint['mean'])!=codec.free_dim:raise ValueError('CHECKPOINT_BOUNDARY_TEMPLATE_MISMATCH')

@@ -103,7 +103,7 @@ def audit(path,config):
         from .model_io import bind_free_coordinates
         checkpoint=bind_free_coordinates(checkpoint,task.duration)
         with np.load(root/f'candidate_{index:03d}'/'denoising.npz') as d:z=checkpoint['mean']+checkpoint['scale']*d['clean'][step]
-        codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start);tree=DifferentiableTree(r);g=Geometry(r)
+        codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy);tree=DifferentiableTree(r);g=Geometry(r)
         from .architecture_contracts import static_contract,semantic_equivalence
         contract=static_contract(r,snapshot,task,codec)
         semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)

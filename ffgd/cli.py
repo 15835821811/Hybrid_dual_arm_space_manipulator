@@ -37,10 +37,13 @@ def main(argv=None):
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
     if args.command=='data':
-        from .data import generate,reencode_origin,merge_prior,reencode_duration_coordinates
+        from .data import generate,reencode_origin,merge_prior,reencode_duration_coordinates,reencode_free_terminal
         from pathlib import Path
         if not args.config:p.error('data requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        if config.get('operation')=='reencode_free_terminal':
+            if args.run:p.error('free-terminal reencoding does not support --run resume')
+            return unit('prior_free_terminal_reencoding',lambda path:reencode_free_terminal(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))
         if config.get('operation')=='reencode_duration_coordinates':
             if args.run:p.error('duration reencoding does not support --run resume')
             return unit('prior_duration_reencoding',lambda path:reencode_duration_coordinates(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))

@@ -86,6 +86,7 @@ class TaskSpec:
     poses: tuple
     intervals: tuple = ()
     reference_start: tuple | None = None
+    terminal_policy: str = 'zero_derivatives'
 
     def __post_init__(self):
         def semantic_key(p):
@@ -99,6 +100,8 @@ class TaskSpec:
         if self.duration<=0 or not np.isfinite(self.duration) or not (self.poses or self.intervals):raise ValueError('invalid task')
         if any(p.time>self.duration for p in self.poses):raise ValueError('task beyond duration')
         if any(p.end>self.duration for p in self.intervals):raise ValueError('interval beyond duration')
+        if self.terminal_policy not in ('zero_derivatives','free'):raise ValueError('invalid terminal derivative policy')
+        if any(p.frame=='target' for p in self.intervals) and self.terminal_policy!='free':raise ValueError('TARGET_TRACKING_REQUIRES_FREE_TERMINAL_DERIVATIVES')
 
 
 @dataclass(frozen=True)

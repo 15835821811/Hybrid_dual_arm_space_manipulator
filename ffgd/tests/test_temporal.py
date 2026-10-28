@@ -27,7 +27,7 @@ def test_relative_tracking_uses_actual_target_pose_and_predictive_tokens(robot):
     R=d.xmat[b].reshape(3,3);Rt=d.xmat[tip].reshape(3,3)
     offset=R.T@(d.xpos[tip]-d.xpos[b]);relative=R.T@Rt
     interval=PoseInterval(0.,.2,1,offset,relative,frame='target')
-    task=TaskSpec(.2,(),(interval,));target=r.model.joint(r.spec.target_free_joint_name);qa=int(target.qposadr[0]);va=int(target.dofadr[0])
+    task=TaskSpec(.2,(),(interval,),terminal_policy='free');target=r.model.joint(r.spec.target_free_joint_name);qa=int(target.qposadr[0]);va=int(target.dofadr[0])
     d.qvel[va]=.1;before=r.snapshot(d).state.copy();poses=condition_poses(r,r.snapshot(d),task)
     np.testing.assert_allclose(poses[-1].position-poses[0].position,[.02,0,0],atol=1e-12)
     np.testing.assert_array_equal(r.snapshot(d).state,before)
@@ -62,6 +62,6 @@ def test_irregular_timestamp_slerp_and_readonly(robot):
 
 def test_interval_metadata_is_validated_and_canonical():
     a=PoseInterval(.02,.1,0,[0,0,0],np.eye(3));b=PoseInterval(0,.2,1,[1,0,0],np.eye(3),frame='target')
-    assert TaskSpec(.2,(),(a,b)).intervals[0] is b
+    assert TaskSpec(.2,(),(a,b),terminal_policy='free').intervals[0] is b
     with pytest.raises(ValueError):TaskSpec(.1,(),(b,))
     with pytest.raises(ValueError):PoseInterval(0,.1,0,[0,0,0],np.eye(3),frame='scenario_specific')

@@ -26,7 +26,7 @@ def validate_saved(output,planning_directory,candidate_index=None):
         with np.load(folder/'candidate.npz') as data:c=Candidate(data['control'],float(data['duration']),int(data['seed']))
         record=json.loads((folder/'candidate.json').read_text(encoding='utf-8'))
         if c.identity!=record['identity']:raise ValueError('CANDIDATE_IDENTITY_MISMATCH')
-        codec=boundary_codec(r,snapshot,task.duration,len(c.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start);report=validate(c,snapshot,task,prop,codec,geometry,profile)
+        codec=boundary_codec(r,snapshot,task.duration,len(c.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy);report=validate(c,snapshot,task,prop,codec,geometry,profile)
         atomic_json(output/(folder.name+'.json'),report);rows.append(dict(candidate=folder.name,**report))
     return dict(passed=bool(rows) and all(x['status']=='PLAN_VALID' for x in rows),rows=rows,source=str(root),read_only=True,source_reports_modified=False)
 
@@ -109,7 +109,7 @@ def compare_tracking_prediction(output,execution_directory):
     if abs(elapsed-candidate.duration)<=1e-10:elapsed=candidate.duration
     times=np.linspace(0,elapsed,n+1)
     manifest=json.loads((planning/'planning_manifest.json').read_text(encoding='utf-8'))
-    codec=boundary_codec(r,snapshot,candidate.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start)
+    codec=boundary_codec(r,snapshot,candidate.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     prop=Propagator(DifferentiableTree(r),snapshot)
     xs,_=prop.native_rollout(codec,codec.encode(candidate.control),n,grid=times)
     position=np.zeros((n+1,2));rotation=np.zeros_like(position)

@@ -18,6 +18,7 @@ def input_identity(candidate,snapshot,task):
         from dataclasses import asdict
         value['intervals']=[dict(asdict(p),position=p.position.tolist(),rotation=p.rotation.tolist()) for p in task.intervals]
     if task.reference_start is not None:value['reference_start']=task.reference_start.tolist()
+    if task.terminal_policy!='zero_derivatives':value['terminal_policy']=task.terminal_policy
     return hashlib.sha256((candidate.identity+snapshot.model_hash+array_hash(snapshot.state)+json.dumps(value,sort_keys=True)).encode()).hexdigest()
 
 

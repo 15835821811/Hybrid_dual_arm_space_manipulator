@@ -211,7 +211,11 @@ def full_energy_check(output,config):
     from .contracts import Candidate
     r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
     tree.use_batched_path_physics=True
-    prop=FullStatePropagation(tree,snapshot);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start)
+    prop=FullStatePropagation(tree,snapshot);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
+    compilation=None
+    if config.get('compiled_full_step'):
+        from .compiled_physics import compile_full_state_step
+        compilation=compile_full_state_step(prop.predictor,prop.dt,output)
     energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=8,collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
     rng=np.random.default_rng(7141);z0=rng.normal(0,config.get('z_std',.0003),codec.free_dim)
     z=tensor(z0).requires_grad_(True);terms=energy.evaluate(z)
@@ -228,6 +232,6 @@ def full_energy_check(output,config):
     profile=__import__('json').loads(Path('configs/ffgd/numerical_profile_v1.json').read_text())
     checked=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(output/'native_validator_smoke.json',checked)
-    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
+    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),compilation=compilation,active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
                 gradient=dict(ad=ad,native_fd=fd,relative_error=error),validator_status=checked['status'],
                 scope='Full-state cost/gradient integration and read-only validator smoke, not diffusion planning success')
