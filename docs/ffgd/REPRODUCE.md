@@ -9,6 +9,7 @@
 ```powershell
 uv venv --python 3.10.19 .venv
 uv pip install --python .venv/Scripts/python.exe -r requirements-ffgd.lock
+$ffgdPython = (Resolve-Path .venv/Scripts/python.exe).Path
 ```
 
 需要保留`ffgd/`、`model_test/robot_model_spec_v5.py`、`model_test/angle_convention.py`、真实`dual_arm_space_robot_2026/`模型及全部网格、配置、MASTER和依赖锁。不得用简化替代模型冒充复现。模型目录的实际相对路径由`robot_model_spec_v5.py`指定。
@@ -20,29 +21,31 @@ uv pip install --python .venv/Scripts/python.exe -r requirements-ffgd.lock
 全新交付目录可以运行下列初始化命令；它不继承旧成功状态，并拒绝覆盖已有state。已有工程应使用`resume`，不要重新`init`。
 
 ```powershell
-.venv/Scripts/python.exe -m ffgd.cli init
-.venv/Scripts/python.exe -m ffgd.cli doctor
-.venv/Scripts/python.exe -m ffgd.cli resume
+& $ffgdPython -m ffgd.cli init
+& $ffgdPython -m ffgd.cli doctor
+& $ffgdPython -m ffgd.cli resume
 ```
 
 `doctor`本身不等于全部里程碑通过。`resume`核验MASTER、checkpoint与真实PID，返回接续动作，不会自动启动编码代理。现有独立环境证据`artifacts/ffgd/reproduction/clean_20261028T064122/smoke_result.json`仅证明依赖/模型/权重/新噪声推理smoke，不证明引导、执行或最终M8通过。
 
 ## 修订最终任务的实际命令
 
+以下命令复用上面设置的 `$ffgdPython`；在现有GPU环境可将它改为 `(Resolve-Path .venv-gpu/Scripts/python.exe).Path`。干净CPU环境须使用前述设置了CPU和本地权重路径的配置副本，不能直接照搬GPU配置。
+
 首轮开发时序为8秒接近、24秒七航点与刚性持续卫星追踪；空间航点、七个球障碍及物理门不变。根初态全零速度；卫星在第二段接受配置中明确的2秒力脉冲再自由漂移，禁止注入目标速度。时序可依据实测另建版本，不能事后改判旧结果。
 
 ```powershell
-.venv-gpu/Scripts/python.exe -m ffgd.cli plan --config configs/ffgd/plan_final_v2_approach.json --task configs/ffgd/final_v2/approach.json
+& $ffgdPython -m ffgd.cli plan --config configs/ffgd/plan_final_v2_approach.json --task configs/ffgd/final_v2/approach.json
 ```
 
 仅当该run的`planning_result.json`为`PLAN_VALID`且存在`selected_index`时，按原选中候选执行。以下变量须填写该次命令实际返回目录，不得指向旧演示：
 
 ```powershell
 $approachPlan = '<本次planning目录>'
-.venv-gpu/Scripts/python.exe -m ffgd.cli execute --run $approachPlan --config configs/ffgd/execution_substeps_v2.json
+& $ffgdPython -m ffgd.cli execute --run $approachPlan --config configs/ffgd/execution_substeps_v2.json
 $approachExecution = '<本次selected_execution目录>'
-.venv-gpu/Scripts/python.exe -m ffgd.cli replay --run $approachExecution
-.venv-gpu/Scripts/python.exe -m ffgd.cli continue-state --run $approachExecution --task configs/ffgd/final_v2/waypoints_tracking_template.json
+& $ffgdPython -m ffgd.cli replay --run $approachExecution
+& $ffgdPython -m ffgd.cli continue-state --run $approachExecution --task configs/ffgd/final_v2/waypoints_tracking_template.json
 ```
 
 `execute`再次只读验证原候选；实际物理步长0.5ms、控制周期2ms，安全逐步检查。`continue-state`要求执行通过，导出完整实际积分状态和原参考的局部q/v/a，场景不变；只导出局部边界，不把旧未来路径作为下一规划输入。
@@ -52,7 +55,7 @@ $approachExecution = '<本次selected_execution目录>'
 两段均完成后，在链检查配置中列明本次两个`execution_runs`和相应两个`replay_runs`，保持`require_uniform_planner_version: true`，调用：
 
 ```powershell
-.venv-gpu/Scripts/python.exe -m ffgd.cli validate-chain --config '<本次链检查配置.json>'
+& $ffgdPython -m ffgd.cli validate-chain --config '<本次链检查配置.json>'
 ```
 
 链检查覆盖实际状态字节、C2参考边界、绝对时钟、累计动量和重放绑定；最终任务覆盖还须核对本次任务文件，不能用两条无关短轨迹代替。架构审计需绑定这版实际采样及其原生执行，不能继承V16旧后端的架构通过。
