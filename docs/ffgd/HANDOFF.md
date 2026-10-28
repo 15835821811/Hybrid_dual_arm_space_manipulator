@@ -390,3 +390,11 @@ C2v3 020508完成0/1，556.85s，60NN/54实际梯度/0后修，所有门唯rigid
 2026-10-28原moving反例单步原生诊断cc9378通过48.19s，标量差1.21e-14：末步原coef.00705251与一半使代价177.496→465.490/192.367上升，四分之一步长降至148.827。通用修复rejection_backoff在既定更新预算内缩减被拒的有效步长（包含范数/控制量cap），不增加梯度、line_trials或末步恢复。a99419软件11passed2.13s，物理原反例与相关任务实际ARCH待运行。final_v2已配置8s接近+24s七点/刚性相对追踪，七点空间目标与7障碍原值保留，全零根速度核对通过；本地首次FK临时查询漏mj_forward后断言失败已记录并修正，不改模型/物理门。下一moving_target_v2原任务原seed新噪声回归，然后final_v2 approach；M7/M8未验。
 
 实际moving_target_v2已启动，run=20261028T084615_planning_5a515f，session18103，身份={"pid": 9676, "host": "wangbingquan", "create_time": 1793177175.454652, "command": ["C:\\Users\\admin\\AppData\\Roaming\\uv\\python\\cpython-3.10.19-windows-x86_64-none\\python.exe", "-X", "utf8", "-m", "ffgd.cli", "plan", "--config", "configs/ffgd/plan_moving_target_v2.json", "--task", "configs/ffgd/tasks/moving_target_v1.json"]}，HEADa9428c5a，source=e0491eb6ffec6a5a8300d5c0f85f5085de584bc95da58ff0e5743bd09ea2b828。同任务/seed24001/weights、60NN+54梯度，仅有效步长拒绝反馈修复。此刻核对进程身份存活，不重启；等待result后依真实验收执行/重放或继续通用修复。REPRODUCE.md已落真实CLI与明确待运行项，不是M8通过证据。
+
+final_v2输入兼容实测977ee4通过8.91s：两阶段模型/场景同hash，真实free357权重能消费各自条件并输出有限值；只是输入核对，不是规划或接续成功。初次临时probe db70d9因H0字段误用失败，改为生产prop.H后复验，未改核心。moving5a515f/session18103/PID9676仍存活，继续原worker，无新增seed。
+
+中断恢复：5a515f PID9676已不存在，session18103不可查询，manifest无终态；resume已标INTERRUPTED_RECOVERABLE。interruption.json记录49已完成步、1个中断尝试、无验收/选择/执行。原因未证实，不当作数值失败或成功。当前无其他FFGD python；用相同配置/seed新run重跑，独立隐藏进程保留日志。采样逐步恢复未实现/未验证，不能直接从旧中间轨迹接作新候选。
+
+新独立worker已启动并核对存活：20261028T114726_planning_66c8e8，身份{"pid": 45776, "host": "wangbingquan", "create_time": 1793188046.7520607, "command": ["C:\\Users\\admin\\AppData\\Roaming\\uv\\python\\cpython-3.10.19-windows-x86_64-none\\python.exe", "-u", "-X", "utf8", "-m", "ffgd.cli", "plan", "--config", "configs/ffgd/plan_moving_target_v2.json", "--task", "configs/ffgd/tasks/moving_target_v1.json"]}。启动与stdout/stderr路径见orchestration/current_worker_launch.json，不能用旧session18103等待新进程。等待真实result/manifest和PID；配置/seed/权重不变，中断旧49步不拼接。
+
+附加e9482b原生短回归通过：合成绝对起点8s、.2s力矩执行、局部0..0.1s卫星力脉冲按预期施加，冲量/做功/漂移检查及独立重放差0通过，0状态注入；只是时钟/外力接口，不是最终任务或真实阶段接续通过。下一等待新detached66c8e8结果，旧session无效。
