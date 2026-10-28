@@ -160,7 +160,9 @@ class FullStatePredictor:
     reference points nor actual states are corrected/projected. Both free
     bodies and all 67 joint states evolve; every state depends on earlier inputs.
     """
-    def __init__(self,tree,initial):
+    def __init__(self,tree,initial,integrator='midpoint'):
+        if integrator not in ('midpoint','implicit_damping'):raise ValueError('UNKNOWN_FULL_STATE_INTEGRATOR')
+        self.integrator=integrator
         self.tree=tree;self.robot=r=tree.robot;d=r.restore(initial)
         if np.any(d.xfrc_applied) or np.any(d.qfrc_applied):raise ValueError('UNSUPPORTED_EXTERNAL_WRENCH')
         self.qpos=tensor(d.qpos);self.velocity=tensor(d.qvel)
@@ -175,26 +177,87 @@ class FullStatePredictor:
                 y[qa:qa+7]=integrate_base(x[qa:qa+7],v[va:va+6],dt)
         return y
 
-    def rollout(self,codec,z,physics_dt=.0005,control_substeps=4,duration=None):
+    def rollout(self,codec,z,physics_dt=.0005,control_substeps=4,duration=None,memory_efficient=False):
         if type(control_substeps) is not int or control_substeps<1:raise ValueError('INVALID_CONTROL_SUBSTEPS')
         stop=codec.duration if duration is None else duration
         steps=int(round(stop/physics_dt))
         if physics_dt<=0 or stop<=0 or stop>codec.duration or abs(steps*physics_dt-stop)>1e-10:raise ValueError('INVALID_PREDICTION_GRID')
         times=np.arange(steps+1)*physics_dt
         q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
+        if memory_efficient:
+            xs,vs,torques,raws=FullStateAdjoint.apply(self.qpos,self.velocity,q,qd,qdd,self,physics_dt,control_substeps)
+            return dict(time=times,qpos=xs,velocity=vs,applied_torque=torques,raw_torque=raws,
+                        control_updates=(steps+control_substeps-1)//control_substeps,
+                        integrator=self.integrator,scope='CONTACT_FREE_FULL_STATE_PREDICTION_NOT_NATIVE_EXECUTION')
         x=self.qpos;v=self.velocity;xs=[x];vs=[v];torques=[];raws=[]
         for i in range(steps):
             if i%16==0:
                 from .orchestration import check_budget
                 check_budget()
-            if i%control_substeps==0:
-                applied,raw,_,_=self.tree.tracking_command(x,v,q[i],qd[i],qdd[i])
-            a=self.tree.full_state_acceleration(x,v,applied)
-            xm=self.integrate(x,v,physics_dt/2);vm=v+a*(physics_dt/2)
-            am=self.tree.full_state_acceleration(xm,vm,applied)
-            x=self.integrate(x,vm,physics_dt);v=v+physics_dt*am
+            if i==0:applied=torch.zeros(67,dtype=x.dtype);raw=applied
+            x,v,applied,raw=self.step(x,v,applied,raw,q[i],qd[i],qdd[i],physics_dt,i%control_substeps==0)
             xs.append(x);vs.append(v);torques.append(applied);raws.append(raw)
         return dict(time=times,qpos=torch.stack(xs),velocity=torch.stack(vs),
                     applied_torque=torch.stack(torques),raw_torque=torch.stack(raws),
                     control_updates=(steps+control_substeps-1)//control_substeps,
-                    scope='CONTACT_FREE_MIDPOINT_PREDICTION_NOT_NATIVE_EXECUTION')
+                    integrator=self.integrator,scope='CONTACT_FREE_FULL_STATE_PREDICTION_NOT_NATIVE_EXECUTION')
+
+
+    def step(self,x,v,applied,raw,q,qd,qdd,dt,update):
+        if self.integrator=='implicit_damping':
+            if update:applied,raw,M,h=self.tree.tracking_command(x,v,q,qd,qdd)
+            else:
+                k=self.tree.kinematics(x,v);M=self.tree.mass(x,k)
+                h=self.tree.inverse(x,v,torch.zeros_like(v),k)
+            force=torch.zeros_like(v).index_copy(0,torch.as_tensor(self.robot.dof_ids,dtype=torch.long),applied)
+            dv=dt*torch.linalg.solve(M+dt*torch.diag(self.tree.damping),force-h)
+            vn=v+dv
+            return self.integrate(x,vn,dt),vn,applied,raw
+        if update:applied,raw,_,_=self.tree.tracking_command(x,v,q,qd,qdd)
+        a=self.tree.full_state_acceleration(x,v,applied)
+        xm=self.integrate(x,v,dt/2);vm=v+a*(dt/2)
+        am=self.tree.full_state_acceleration(xm,vm,applied)
+        return self.integrate(x,vm,dt),v+dt*am,applied,raw
+
+
+class FullStateAdjoint(torch.autograd.Function):
+    """Exact first-order discrete adjoint of the implemented midpoint recurrence.
+
+    Save numeric states, not the full rigid-body autograd graph at every time.
+    Backward reconstructs one step, retaining held torque/raw demand as recurrent
+    state. This is not a continuous adjoint, detached-prefix approximation or FD.
+    """
+    @staticmethod
+    def forward(ctx,x0,v0,q,qd,qdd,predictor,dt,substeps):
+        x=x0;v=v0;u=torch.zeros(67,dtype=x.dtype);raw=u
+        xs=[x];vs=[v];us=[];raws=[]
+        for i in range(len(q)-1):
+            if i%16==0:
+                from .orchestration import check_budget
+                check_budget()
+            x,v,u,raw=predictor.step(x,v,u,raw,q[i],qd[i],qdd[i],dt,i%substeps==0)
+            xs.append(x);vs.append(v);us.append(u);raws.append(raw)
+        result=tuple(torch.stack(a) for a in (xs,vs,us,raws))
+        ctx.save_for_backward(*result,q,qd,qdd)
+        ctx.predictor=predictor;ctx.dt=dt;ctx.substeps=substeps
+        return result
+
+    @staticmethod
+    @torch.autograd.function.once_differentiable
+    def backward(ctx,gx,gv,gu,gr):
+        xs,vs,us,raws,q,qd,qdd=ctx.saved_tensors
+        ax=torch.zeros_like(xs[0]);av=torch.zeros_like(vs[0])
+        au=torch.zeros_like(us[0]);ar=torch.zeros_like(raws[0])
+        gq=torch.zeros_like(q);gqd=torch.zeros_like(qd);gqdd=torch.zeros_like(qdd)
+        for i in range(len(us)-1,-1,-1):
+            if i%16==0:
+                from .orchestration import check_budget
+                check_budget()
+            with torch.enable_grad():
+                values=[xs[i],vs[i],us[i-1] if i else torch.zeros_like(au),raws[i-1] if i else torch.zeros_like(ar),q[i],qd[i],qdd[i]]
+                inputs=[value.detach().requires_grad_(True) for value in values]
+                out=ctx.predictor.step(*inputs,ctx.dt,i%ctx.substeps==0)
+                gradients=torch.autograd.grad(out,inputs,(ax+gx[i+1],av+gv[i+1],au+gu[i],ar+gr[i]),allow_unused=True)
+            ax,av,au,ar,dq,dqd,dqdd=[torch.zeros_like(value) if grad is None else grad for value,grad in zip(values,gradients)]
+            gq[i]=dq;gqd[i]=dqd;gqdd[i]=dqdd
+        return ax+gx[0],av+gv[0],gq,gqd,gqdd,None,None,None

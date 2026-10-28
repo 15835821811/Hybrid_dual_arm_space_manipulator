@@ -122,7 +122,9 @@ def main(argv=None):
         from .calibration_fullstate import run
         if not args.config:p.error('full-state-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        return unit('full_state_dynamics',lambda path:run(path,config),dict(max_wall_seconds=300))
+        budget=config.get('max_wall_seconds',300)
+        if not isinstance(budget,(int,float)) or not 0<budget<=1800:p.error('full-state diagnostic budget must be in (0,1800] seconds')
+        return unit('full_state_dynamics',lambda path:run(path,config),dict(max_wall_seconds=budget))
     if args.command=='plan':
         from pathlib import Path
         if not args.config or not args.task:p.error('plan requires --config and --task')
