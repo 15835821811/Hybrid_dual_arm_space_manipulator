@@ -131,7 +131,11 @@ class MultiSpaceEnergy:
                     value=value+(hinge(e-task_fraction) if self.task_objective=='tolerance_squared_hinge' else e.square())
                 interval_values[j].append(value)
         for interval,indices,values in zip(self.task.intervals,self.interval_indices,interval_values):
-            task=task+torch.trapezoid(torch.stack(values),tensor(self.grid[indices]))/(interval.end-interval.start)
+            penalties=torch.stack(values)
+            # An interval requires every instant to satisfy the contract.
+            # Preserve integrated pressure but do not dilute a local violation
+            # with the rest of a long, already satisfactory hold.
+            task=task+torch.trapezoid(penalties,tensor(self.grid[indices]))/(interval.end-interval.start)+penalties.max()
         q,qd,qdd=out['q'],out['qd'],out['qdd']
         joint=hinge((tensor(r.lower)-q)/(tensor(r.upper-r.lower))).mean(-1)+hinge((q-tensor(r.upper))/tensor(r.upper-r.lower)).mean(-1)
         joint=joint+hinge(qd.abs()/tensor(r.spec.planner_velocity_limits)-derivative_fraction).mean(-1)+hinge(qdd.abs()/tensor(r.spec.planner_acceleration_limits)-derivative_fraction).mean(-1)
@@ -174,6 +178,7 @@ class MultiSpaceEnergy:
                                    collision_aggregation=self.collision_aggregation,
                                    joint_peak_penalty=self.joint_peak_penalty,
                                    task_objective=self.task_objective,planning_margins=dict(self.planning_margins),
+                                   interval_aggregation='time_mean_plus_max',
                                    support_pair_evaluations=support_pairs,broadphase_pair_evaluations=len(self.grid)*len(self.geometry.pairs),
                                    mass_evaluations=out.get('prediction_steps',0)+2*len(self.grid) if 'prediction_steps' in out else 3*len(self.grid)-1,
                                    mass_evaluation_scope='forward_only_excludes_AD_recomputation',
@@ -239,7 +244,7 @@ class MultiSpaceEnergy:
                     value+=h(e-task_fraction) if self.task_objective=='tolerance_squared_hinge' else e**2
                 interval_values[j].append(value)
         for interval,indices,values in zip(self.task.intervals,self.interval_indices,interval_values):
-            task+=np.trapz(values,self.grid[indices])/(interval.end-interval.start)
+            task+=np.trapz(values,self.grid[indices])/(interval.end-interval.start)+np.max(values)
         joint=h((r.lower-q)/(r.upper-r.lower)).mean(-1)+h((q-r.upper)/(r.upper-r.lower)).mean(-1)
         joint+=h(abs(qd)/r.spec.planner_velocity_limits-derivative_fraction).mean(-1)+h(abs(qdd)/r.spec.planner_acceleration_limits-derivative_fraction).mean(-1)
         limited=m.jnt_limited[r.joints].astype(bool);limits=m.jnt_range[r.joints][limited];qa=q@r.B.T

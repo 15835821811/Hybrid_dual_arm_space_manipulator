@@ -216,14 +216,31 @@ def full_energy_check(output,config):
     if config.get('compiled_full_step'):
         from .compiled_physics import compile_full_state_step
         compilation=compile_full_state_step(prop.predictor,prop.dt,output)
-    energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=8,collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
+    energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=config.get('intervals',8),collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
     rng=np.random.default_rng(7141);z0=rng.normal(0,config.get('z_std',.0003),codec.free_dim)
+    diagnostic_source=None
+    if config.get('diagnostic_candidate'):
+        # Diagnostic-only read of a counterexample. No result is returned to
+        # the planner, selected, executed, or written back to the source run.
+        source=Path(config['diagnostic_candidate']);before=source.read_bytes()
+        with np.load(source,allow_pickle=False) as saved:
+            if float(saved['duration'])!=task.duration or not np.array_equal(saved['initial_state'],snapshot.state):raise ValueError('DIAGNOSTIC_CANDIDATE_INPUT_MISMATCH')
+            z0=codec.encode(saved['control'])
+        if source.read_bytes()!=before:raise ValueError('DIAGNOSTIC_SOURCE_CHANGED')
+        diagnostic_source=dict(path=str(source),sha256=hashlib.sha256(before).hexdigest(),scope='READONLY_COUNTEREXAMPLE_NOT_PLANNER_INPUT')
     z=tensor(z0).requires_grad_(True);terms=energy.evaluate(z)
     g=torch.autograd.grad(terms['total'],z)[0].detach().numpy()
     oracle=energy.native_evaluate(z0)
     values={k:float(v.detach()) for k,v in terms.items()}
     errors={k:abs(values[k]-oracle[k])/max(1.,abs(values[k]),abs(oracle[k])) for k in values}
     atomic_json(output/'energy_progress.json',dict(values=values,native=oracle,relative_errors=errors))
+    if not np.all(np.isfinite(g)) or max(errors.values())>=1e-5:
+        np.savez_compressed(output/'failed_gradient.npz',z=z0,gradient=g)
+        return dict(passed=False,reason='NONFINITE_GRADIENT_OR_NATIVE_SCALAR_MISMATCH',
+                    finite_gradient=bool(np.all(np.isfinite(g))),values=values,native=oracle,relative_errors=errors,
+                    compilation=compilation,prediction_dt=prop.dt,diagnostic_source=diagnostic_source,
+                    gradient_status='FAILED' if not np.all(np.isfinite(g)) else 'NATIVE_DIRECTION_NOT_RUN',
+                    validator_status='NOT_RUN',scope='Failed numerical diagnostic; no planning or execution claim')
     direction=rng.normal(size=codec.free_dim);direction/=np.linalg.norm(direction);eps=1e-7
     fd=(energy.native_evaluate(z0+eps*direction)['total']-energy.native_evaluate(z0-eps*direction)['total'])/(2*eps)
     ad=float(g@direction);error=abs(ad-fd)/max(1.,abs(ad),abs(fd))
@@ -244,6 +261,6 @@ def full_energy_check(output,config):
     profile=__import__('json').loads(Path('configs/ffgd/numerical_profile_v1.json').read_text())
     checked=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(output/'native_validator_smoke.json',checked)
-    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and checked['gates']['guide_to_native_propagation'] and (refined_gradient is None or refined_gradient['passed']) and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),compilation=compilation,prediction_dt=prop.dt,refined_native_gradient=refined_gradient,guide_to_native_volume_error_m=checked['guide_to_native_volume_error_m'],active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
+    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and checked['gates']['guide_to_native_propagation'] and (refined_gradient is None or refined_gradient['passed']) and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),diagnostic_source=diagnostic_source,compilation=compilation,prediction_dt=prop.dt,refined_native_gradient=refined_gradient,guide_to_native_volume_error_m=checked['guide_to_native_volume_error_m'],active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
                 gradient=dict(ad=ad,native_fd=fd,relative_error=error),validator_status=checked['status'],
                 scope='Full-state cost/gradient integration and read-only validator smoke, not diffusion planning success')

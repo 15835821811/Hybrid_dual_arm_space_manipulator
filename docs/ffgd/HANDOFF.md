@@ -353,3 +353,8 @@ V3原接续反例20261028T042656_planning_87865e完成1/1 PLAN_VALID，24NN/36�
 
 自由终端pilot5ff88f完成256/388，旧2256+新增256合并80f4ae共2512/3495尝试；训练5113b0真实3000更新/53s，best SHA b0adbbacb143b3e30f707dd63e153dafa42b0ab0af1754ad10d89e537e281350；加载/条件/权重依赖ff810a五样本357维通过，不代表学习优势。全软件a3f8e9 94passed212.86s。midpoint force+free357+exact graph数值61e24e通过，guide对fine原生体积误差1.0807e-6m（合成零参考，非规划结果）。链检查768855按预期拒绝旧V16→V3：所有实际字节/绝对时间/累计动量通过，唯C2 reference缺失，不追认旧完整链。
 按最高优先级工程退出条件，M4/M5已有明确作用域证据，状态改PASSED并注明仅已验纵向切片；不是将8族或旧失败改判。最早依赖现在M6，当前free357真实C2+interval计划526999/PID112280/create1793164754.0618901/session53946/sourcea181550e/HEAD7fd71626，1candidate seed23001/24NN/18x2，guide2ms原生.5ms。通过则原样执行+独立重放+全链检查。显式prediction_dt数值选项已写代码，实际主链仍2ms；27.5s/10ms全状态/细原生FD诊断配置已准备NOT_RUN，不能声称新步长已通过。所有新步长候选额外要求guide→fine体积误差<=原.4mm，实际控制周期/物理门不改。M7/M8仍NOT_RUN。
+
+
+C2/interval run526999已自然结束0/1，892.57s，只有task_intervals失败：两tip最大位置6.4189995/6.0124461mm、姿态.01951857/.01956367rad；末端到点与其他21门全过，未选择/执行。最后两个引导均下降，剩余task代价.0742821，不能称已通过。发现interval代价仅时间均值会稀释局部违规；通用修正保留均值并加区间最大违规，与独立逐状态验收语义一致，不改变任务/物理门/采样职责。正在运行原源码长时域10ms数值d10a6b/PID127524/create1793165907.318616/session78463，snapshot源码a181550e；修正尚未进入该worker。后续先对修正原生数值复验，再按明确分布预算新噪声采样，旧失败保留；M6仍RUNNING、M7/M8NOT_RUN。
+
+10ms长时域d10a6b自然FAILED332s：AD/原生标量task差3.51%、total差6.40%，gradient产生nonfinite导致严格JSON拒绝nan；energy_progress和error完整保存，未启用主链。准备终止可选诊断时它已自然结束，未实际kill。诊断增加遇标量偏差/非有限梯度即明确失败并保存npz，避免末尾JSON掩盖数值机制。全软件f2678c 94passed210.61s（在该早停小修之前）；新interval peak原失败数值复验正在session34523，随后从新噪声重跑原C2任务，不扩seed。
