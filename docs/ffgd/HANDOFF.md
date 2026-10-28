@@ -349,3 +349,7 @@ V3原接续反例20261028T042656_planning_87865e完成1/1 PLAN_VALID，24NN/36�
 通用force协议已接入TaskSpec/预测/伴随/原生验收/实际执行/重放；只声明独立目标COM世界力，不注入速度，机器人controller不接任务。原公开2s/.04N峰值+27s coast与W7 world hold/rigid relative grasp配置已迁移，NOT_RUN。早期forced数值b4d4bf失败因诊断生成器在restore后未mj_forward读取了零xmat，修正生成器后07c092通过3个活跃约束和原生FD(relative5.98e-10)，并非扩散成功。该数值使用左端force；最新明确改为原协议midpoint input，原生ledger/重放/冲量测试66cb2b过，最新加入工作/角冲量账本待全软件与新数值。
 精确图加速b276d5在>360sCPU仍未返回局部检查，确认PID身份后停止该可选性能方案并保存termination/失败，不改主模型。禁用推测JIT优化后02acdd50.17s通过，局部两分支值0差/梯度<=1.99e-16，整路径原生FD6.61e-10；已显式opt-in编译选项，C2hold配置预定24NN/18x2和原seed23001，未启动。
 已有2000+256条物理数据分别在9a713f/06c6ca等价重编码到357自由变量，split/物理控制/历史3107尝试保留。新增有界pilot5ff88f/PID45444/create1793163931.9733365/session74196运行中；不是承诺未来后台训练。全软件正在运行。新free模板训练/实际C2interval规划/full_stateARCH/最终全链仍NOT_RUN。
+
+
+自由终端pilot5ff88f完成256/388，旧2256+新增256合并80f4ae共2512/3495尝试；训练5113b0真实3000更新/53s，best SHA b0adbbacb143b3e30f707dd63e153dafa42b0ab0af1754ad10d89e537e281350；加载/条件/权重依赖ff810a五样本357维通过，不代表学习优势。全软件a3f8e9 94passed212.86s。midpoint force+free357+exact graph数值61e24e通过，guide对fine原生体积误差1.0807e-6m（合成零参考，非规划结果）。链检查768855按预期拒绝旧V16→V3：所有实际字节/绝对时间/累计动量通过，唯C2 reference缺失，不追认旧完整链。
+按最高优先级工程退出条件，M4/M5已有明确作用域证据，状态改PASSED并注明仅已验纵向切片；不是将8族或旧失败改判。最早依赖现在M6，当前free357真实C2+interval计划526999/PID112280/create1793164754.0618901/session53946/sourcea181550e/HEAD7fd71626，1candidate seed23001/24NN/18x2，guide2ms原生.5ms。通过则原样执行+独立重放+全链检查。显式prediction_dt数值选项已写代码，实际主链仍2ms；27.5s/10ms全状态/细原生FD诊断配置已准备NOT_RUN，不能声称新步长已通过。所有新步长候选额外要求guide→fine体积误差<=原.4mm，实际控制周期/物理门不改。M7/M8仍NOT_RUN。
