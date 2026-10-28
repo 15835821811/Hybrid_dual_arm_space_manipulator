@@ -370,3 +370,7 @@ multirate原反例8a2d4f数值完成后在结果JSON因numpy.bool_序列化FAILE
 multirate原反例复验8efe97通过45.15s：原生系数/梯度一致，fine方向相对差.00853695<.01，所有几何体差.0295653mm。长时域251f80失败209.23s（forward45.53/backward151.04）：task/collision标量对原生一致，但原生joint25711.56而AD为0。根因3495c6实测23.5714s有3接触/12约束，原生含接触加速度160.55倍，接触前方程.0556倍，差异由qfrc_constraint解释至4.62e-14。修正只读能量oracle按原生M/h求同一接触前方程；诊断/guide数值oracle显式contact_free并返回不同模型hash/标志；实际fine预测、执行、安全、几何非穿透门保持contacts启用。此前含接触对照失败不改判。这不是允许穿透计划。正在3项相关软件session54240和同27.5s复验session64489；main mass_refresh代码接口已接入但无主运行启用，先等数值与软件。
 
 contact-free oracle软件初次8faaec失败原因是测试自行采用.02s边界模板触发已有条件数拒绝，非接触实现；测试改用.2s有效模板，完整软件585842 97passed236.51s，包括接触默认仍启用、两oracle模型hash不同、全几何仍报告穿透、原机器人/初态未变。长时域6394f7/PID45280/create1793168735.1251523/session64489仍运行，修正后全部代价对原生相对差<=3.57e-14，fine方向/传播结果待完成。main参数mass_refresh_steps已显式贯穿plan/validate/execute/审计，但无新main run使用；校准入口去掉临时monkeypatch，直接调用同一生产适配。为降低正式长时域成本，新增exact macro trace编译（仅执行相同刷新近似的图），原反例compiled配置准备，尚NOT_RUN；不把97软件当新编译器或实际ARCH通过。
+
+27.5s完整数值6394f7通过：包含活跃task/collision，标量相对差<=3.57e-14，原生同离散方向4.85e-7，fine方向.00179033<.01，全部几何体与细接触前原生差.0302906mm<.4mm。合成零参考不满足真实目标仍REJECTED；只通过数值，不是最终场景成功。当前精确macro编译原反例session64348已运行；通过后立即plan_c2_hold_v3(60NN/18x3、原seed23001、新噪声、1ms微步/2ms控制/10ms矩阵刷新)，再moving_target_v1。任务/执行/硬门不变，不追加数值研究或优势测试。
+
+精确macro编译4a0cd0通过41.90s：两控制phase前向差0/局部梯度<=4.90e-16；完整原反例原生/细方向及几何误差保持通过。编译约1.48s，.8s任务forward2.58/backward4.93s；不据此声称匹配性能优势。现在进入实际C2v3新噪声，不再等待其他机制解释。

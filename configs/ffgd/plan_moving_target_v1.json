@@ -11,9 +11,9 @@
     "intervals": 16,
     "max_wall_seconds": 3600,
     "sampling": {
-      "steps": 24,
+      "steps": 60,
       "guide_steps": 18,
-      "updates_per_step": 2,
+      "updates_per_step": 3,
       "line_trials": 2,
       "step_size": 2.0,
       "max_update_norm": 2.0,
@@ -26,9 +26,10 @@
     },
     "cpu_threads": 1,
     "boundary_origin": "initial_position",
-    "prediction_dt": 0.01
+    "prediction_dt": 0.001,
+    "mass_refresh_steps": 10
   },
-  "purpose": "Same core free357 moving-target engineering regression. Predeclared seed24001; guide10ms approximation only after full-state native numerical calibration. Execution remains.5ms/control2ms; no target velocity injection after root initialization. NOT_RUN.",
+  "purpose": "Generic5s moving target engineering task, first run NOT_RUN. Same core/free357 weights/numerics as C2v3:60NN,last18x3,1ms microstep,2ms held torque,10ms inertia refresh. Frozen task5mm/1deg and actual execution.5ms remain unchanged.",
   "physics_backend": "full_state",
   "evidence": [
     "20261027T044229_guidance_diagnostic_28d753",

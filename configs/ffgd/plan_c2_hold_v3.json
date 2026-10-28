@@ -26,9 +26,10 @@
     },
     "cpu_threads": 1,
     "boundary_origin": "initial_position",
-    "prediction_dt": 0.002
+    "prediction_dt": 0.001,
+    "mass_refresh_steps": 10
   },
-  "purpose": "Same C2 failure and seed23001. Keep54 distributed gradients, but use60DDIM steps so the last18 guided steps start at noise288 rather than739. Lower-noise schedule is generic; no additional seeds, no post-sampling recovery. Numerical backend setting will be declared separately only after calibration.",
+  "purpose": "Engineering original C2 failure regression: same seed23001/new noise/free357 weights;60NN/last18x3 gradients54, low-noise schedule. Calibrated1ms physical microsteps,2ms held control,10ms M/bias refresh, exact block compilation. No postrepair; tasks/actual.5ms execution/all hard gates unchanged. Enable only after compiled counterexample and long6394f7 calibration pass.",
   "physics_backend": "full_state",
   "evidence": [
     "20261027T044229_guidance_diagnostic_28d753",
