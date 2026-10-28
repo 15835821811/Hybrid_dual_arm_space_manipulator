@@ -19,6 +19,7 @@ def input_identity(candidate,snapshot,task):
         value['intervals']=[dict(asdict(p),position=p.position.tolist(),rotation=p.rotation.tolist()) for p in task.intervals]
     if task.reference_start is not None:value['reference_start']=task.reference_start.tolist()
     if task.terminal_policy!='zero_derivatives':value['terminal_policy']=task.terminal_policy
+    if getattr(task,'target_force_pulses',()):value['target_force_pulses']=[dict(start=p.start,end=p.end,peak_force=p.peak_force.tolist()) for p in task.target_force_pulses]
     return hashlib.sha256((candidate.identity+snapshot.model_hash+array_hash(snapshot.state)+json.dumps(value,sort_keys=True)).encode()).hexdigest()
 
 
@@ -46,7 +47,7 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
     if getattr(propagator,'prediction_mode',None)=='full_state':
         from .full_state_validation import validate_full_state
         return validate_full_state(candidate,snapshot,task,propagator,codec,geometry,profile)
-    if task.intervals or task.reference_start is not None:raise ValueError('TEMPORAL_OR_REFERENCE_MEMORY_REQUIRES_FULL_STATE_BACKEND')
+    if task.intervals or task.reference_start is not None or task.target_force_pulses:raise ValueError('TEMPORAL_OR_REFERENCE_MEMORY_REQUIRES_FULL_STATE_BACKEND')
     before=input_identity(candidate,snapshot,task);r=propagator.robot;m=r.model
     r.verify_identity()
     failures=[];gates={};report=dict(status='INCOMPLETE_VALIDATION',input_hash=before,gates=gates)

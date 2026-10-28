@@ -81,18 +81,35 @@ class PoseInterval:
 
 
 @dataclass(frozen=True)
+class ForcePulse:
+    """Known world-frame force at target COM; raised-cosine peak envelope.
+
+    This is task/environment data, never a joint path or tracking controller.
+    """
+    start: float
+    end: float
+    peak_force: np.ndarray
+
+    def __post_init__(self):
+        object.__setattr__(self,'peak_force',immutable(self.peak_force))
+        if not np.isfinite([self.start,self.end]).all() or self.start<0 or self.end<=self.start or self.peak_force.shape!=(3,):raise ValueError('invalid target force pulse')
+
+
+@dataclass(frozen=True)
 class TaskSpec:
     duration: float
     poses: tuple
     intervals: tuple = ()
     reference_start: tuple | None = None
     terminal_policy: str = 'zero_derivatives'
+    target_force_pulses: tuple = ()
 
     def __post_init__(self):
         def semantic_key(p):
             return (p.time,p.tip,tuple(p.position),tuple(p.rotation.ravel()),p.position_enabled,p.rotation_enabled,p.position_tolerance,p.rotation_tolerance)
         object.__setattr__(self,'poses',tuple(sorted(self.poses,key=semantic_key)))
         object.__setattr__(self,'intervals',tuple(sorted(self.intervals,key=lambda p:(p.start,p.end,p.tip,p.frame,tuple(p.position),tuple(p.rotation.ravel()),p.position_tolerance,p.rotation_tolerance,p.position_enabled,p.rotation_enabled))))
+        object.__setattr__(self,'target_force_pulses',tuple(sorted(self.target_force_pulses,key=lambda p:(p.start,p.end,tuple(p.peak_force)))))
         if self.reference_start is not None:
             ref=immutable(self.reference_start)
             if ref.shape!=(3,17):raise ValueError('reference_start requires q/v/a, each 17 coordinates')
@@ -100,6 +117,7 @@ class TaskSpec:
         if self.duration<=0 or not np.isfinite(self.duration) or not (self.poses or self.intervals):raise ValueError('invalid task')
         if any(p.time>self.duration for p in self.poses):raise ValueError('task beyond duration')
         if any(p.end>self.duration for p in self.intervals):raise ValueError('interval beyond duration')
+        if any(p.end>self.duration for p in self.target_force_pulses):raise ValueError('force pulse beyond duration')
         if self.terminal_policy not in ('zero_derivatives','free'):raise ValueError('invalid terminal derivative policy')
         if any(p.frame=='target' for p in self.intervals) and self.terminal_policy!='free':raise ValueError('TARGET_TRACKING_REQUIRES_FREE_TERMINAL_DERIVATIVES')
 

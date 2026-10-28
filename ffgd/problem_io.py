@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import numpy as np
 import mujoco
-from .contracts import BoxObstacle,SphereObstacle,SceneSpec,PoseConstraint,PoseInterval,TaskSpec,Snapshot
+from .contracts import BoxObstacle,SphereObstacle,SceneSpec,PoseConstraint,PoseInterval,ForcePulse,TaskSpec,Snapshot
 from .robot import Robot
 from .api import PlanningBudget
 from .diffusion import SamplingBudget
@@ -14,7 +14,7 @@ def load_problem(path):
     allowed={'schema','id','split','initial','task','scene','description'}
     if set(value)-allowed:raise ValueError('unknown public problem keys')
     if set(value.get('scene',{}))-{'boxes','spheres'}:raise ValueError('unknown scene keys')
-    if set(value['task'])-{'duration','poses','intervals','reference_start','terminal_policy'} or 'duration' not in value['task']:raise ValueError('unknown or missing task keys')
+    if set(value['task'])-{'duration','poses','intervals','reference_start','terminal_policy','target_force_pulses'} or 'duration' not in value['task']:raise ValueError('unknown or missing task keys')
     for box in value.get('scene',{}).get('boxes',[]):
         if set(box)-{'center','half_size','rotation'}:raise ValueError('unknown obstacle keys')
     for sphere in value.get('scene',{}).get('spheres',[]):
@@ -41,7 +41,8 @@ def load_problem(path):
             if abs(np.linalg.norm(d.qpos[adr:adr+4])-1)>1e-10:raise ValueError('nonunit initial quaternion')
         mujoco.mj_forward(r.model,d);snapshot=r.snapshot(d)
     t=value['task'];task=TaskSpec(float(t['duration']),tuple(PoseConstraint(**p) for p in t.get('poses',[])),
-                               tuple(PoseInterval(**p) for p in t.get('intervals',[])),t.get('reference_start'),t.get('terminal_policy','zero_derivatives'))
+                               tuple(PoseInterval(**p) for p in t.get('intervals',[])),t.get('reference_start'),t.get('terminal_policy','zero_derivatives'),
+                               tuple(ForcePulse(**p) for p in t.get('target_force_pulses',[])))
     return r,snapshot,task,value
 
 

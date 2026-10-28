@@ -14,7 +14,7 @@ def main(argv=None):
     t.add_argument('--planning-margins')
     t.add_argument('--free-coordinate-schema',choices=['physical_position_v1','duration_squared_v1'],default='physical_position_v1')
     t.add_argument('--task-objective',choices=['center_squared','tolerance_squared_hinge'],default='center_squared')
-    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','full-state-diagnostic','momentum-diagnostic','plan','validate','execute','replay','continue-state','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','full-state-diagnostic','momentum-diagnostic','plan','validate','execute','replay','validate-chain','continue-state','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -25,6 +25,12 @@ def main(argv=None):
     if args.command=='report':
         from .evidence_report import run
         return unit('evidence_report',run,dict(max_wall_seconds=30))
+    if args.command=='validate-chain':
+        from pathlib import Path
+        from .artifact_checks import inspect_chain
+        if not args.config:p.error('validate-chain requires --config')
+        config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        return unit('execution_state_audit',lambda path:inspect_chain(path,config),dict(max_wall_seconds=config.get('max_wall_seconds',600)))
     if args.command=='benchmark':
         from pathlib import Path
         if not args.config:p.error('benchmark requires an explicit comparison config')
@@ -154,7 +160,7 @@ def main(argv=None):
                     problem['initial']={'snapshot_file':'initial_state.npz'}
                     atomic_json(path/'problem.json',problem)
                     profile=json.loads(Path(config['profile']).read_text(encoding='utf-8-sig'))
-                    candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'),config.get('collision_aggregation','pair_mean'),config.get('joint_peak_penalty',False),config.get('task_objective','center_squared'),config.get('planning_margins'))
+                    candidate,result=plan(robot,snapshot,task,config['checkpoint'],budget,profile,path,config.get('device','cpu'),config.get('disabled_guide_terms',()),config.get('guide_weights'),config.get('physics_backend','eager'),config.get('collision_aggregation','pair_mean'),config.get('joint_peak_penalty',False),config.get('task_objective','center_squared'),config.get('planning_margins'),config.get('compiled_full_step',False))
             except Exception as error:
                 from .architecture_guard import ArchitectureViolation
                 result_file=path/'planning_result.json'

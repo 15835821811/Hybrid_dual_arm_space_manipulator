@@ -211,7 +211,7 @@ def full_energy_check(output,config):
     from .contracts import Candidate
     r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
     tree.use_batched_path_physics=True
-    prop=FullStatePropagation(tree,snapshot);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
+    prop=FullStatePropagation(tree,snapshot,target_force_pulses=task.target_force_pulses);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     compilation=None
     if config.get('compiled_full_step'):
         from .compiled_physics import compile_full_state_step

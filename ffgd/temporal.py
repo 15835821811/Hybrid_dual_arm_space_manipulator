@@ -57,7 +57,9 @@ def condition_poses(robot,snapshot,task):
             pos,rot=interval.position,interval.rotation
             if interval.frame=='target':
                 R=(R0*Rotation.from_rotvec(d.qvel[va+3:va+6]*time)).as_matrix()
-                pos=d.qpos[qa:qa+3]+d.qvel[va:va+3]*time+R@pos;rot=R@rot
+                from .forcing import target_displacement
+                displacement=target_displacement(robot,task.target_force_pulses,time)
+                pos=d.qpos[qa:qa+3]+d.qvel[va:va+3]*time+displacement+R@pos;rot=R@rot
             result.append(PoseConstraint(time,interval.tip,pos,rot,interval.position_tolerance,interval.rotation_tolerance,interval.position_enabled,interval.rotation_enabled))
     return tuple(sorted(result,key=lambda p:(p.time,p.tip,tuple(p.position),tuple(p.rotation.ravel()))))
 

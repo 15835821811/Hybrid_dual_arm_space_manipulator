@@ -41,9 +41,10 @@ def refine_physics(robot,snapshot,substeps):
     return refined,rebound
 
 
-def track(robot,snapshot,candidate,output,profile,control_substeps=1):
+def track(robot,snapshot,candidate,output,profile,control_substeps=1,target_force_pulses=()):
     from .propagation import native_momentum
     r=robot;m=r.model;data=r.restore(snapshot);geometry=Geometry(r);dt=m.opt.timestep
+    if target_force_pulses and (np.any(data.xfrc_applied) or np.any(data.qfrc_applied)):raise ValueError('UNDECLARED_INITIAL_FORCE_WITH_PROTOCOL')
     if type(control_substeps) is not int or control_substeps not in (1,2,4):raise ValueError('UNSUPPORTED_PHYSICS_SUBSTEPS')
     steps=int(round(candidate.duration/dt))
     if abs(steps*dt-candidate.duration)>1e-10:raise ValueError('duration is not integral native steps')
@@ -86,6 +87,9 @@ def track(robot,snapshot,candidate,output,profile,control_substeps=1):
         if np.any(q17<r.lower) or np.any(q17>r.upper):
             status='SAFETY_ABORT_PLANNER_JOINT';break
         if i==steps:break
+        if target_force_pulses:
+            from .forcing import apply_native_target_force
+            apply_native_target_force(r,data,target_force_pulses,(i+.5)*dt)
         if i%control_substeps==0:
             qd=basis(len(candidate.control),i*dt,candidate.duration,1)@candidate.control
             qdd=basis(len(candidate.control),i*dt,candidate.duration,2)@candidate.control
@@ -108,6 +112,7 @@ def track(robot,snapshot,candidate,output,profile,control_substeps=1):
                  min_clearance=float(min(clearance)),raw_torque_ratio=float(np.max(abs(bundle['raw_torque'])/r.spec.torque_limits)) if len(raws) else None,
                  clipped_control_steps=int(np.count_nonzero(np.any(abs(bundle['raw_torque'])>r.spec.torque_limits,axis=1))) if len(raws) else 0,
                  safety_abort=status.startswith('SAFETY_ABORT'),task_based_cartesian_assist=False,
+                 prescribed_target_force=bool(target_force_pulses),force_protocol='RAISED_COSINE_WORLD_FORCE_AT_TARGET_COM_MIDPOINT_INPUT' if target_force_pulses else None,
                  linear_momentum_residual=float(np.max(np.linalg.norm(bundle['momentum_residual'][:,:3],axis=1))),
                  angular_momentum_residual=float(np.max(np.linalg.norm(bundle['momentum_residual'][:,3:],axis=1))),
                  max_manifold_residual=float(np.max(abs(bundle['manifold_residual']))),max_joint_tracking=float(np.max(abs(bundle['tracking_q67']))))

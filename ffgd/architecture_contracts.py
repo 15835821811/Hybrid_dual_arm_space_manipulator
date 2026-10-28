@@ -19,7 +19,7 @@ from .costs import MultiSpaceEnergy
 
 def static_contract(robot,snapshot,task,codec):
     root=Path(__file__).parent
-    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','full_state_validation','temporal','execution']
+    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','full_state_validation','temporal','forcing','execution']
     imports=[];violations=[];hashes={}
     for name in modules:
         source=root/(name+'.py');content=source.read_text(encoding='utf-8');hashes[name]=hashlib.sha256(source.read_bytes()).hexdigest()
@@ -52,10 +52,11 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
     value['task']['poses'].reverse();value.setdefault('scene',{}).setdefault('boxes',[]).reverse()
     if 'spheres' in value['scene']:value['scene']['spheres'].reverse()
     if 'intervals' in value['task']:value['task']['intervals'].reverse()
+    if 'target_force_pulses' in value['task']:value['task']['target_force_pulses'].reverse()
     renamed=Path(output)/'renamed_reordered_problem.json';renamed.write_text(json.dumps(value,indent=2),encoding='utf-8')
     other,other_snapshot,other_task,_=load_problem(renamed)
     prop_type=FullStatePropagation if (manifest or {}).get('physics_backend')=='full_state' else Propagator
-    prop=prop_type(DifferentiableTree(robot),snapshot);other_prop=prop_type(DifferentiableTree(other),other_snapshot)
+    prop=prop_type(DifferentiableTree(robot),snapshot,**(dict(target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {}));other_prop=prop_type(DifferentiableTree(other),other_snapshot,**(dict(target_force_pulses=other_task.target_force_pulses) if prop_type is FullStatePropagation else {}))
     tokens=encode_condition(robot,snapshot,task,prop.H.numpy());other_tokens=encode_condition(other,other_snapshot,other_task,other_prop.H.numpy())
     equal_tokens=np.array_equal(tokens,other_tokens)
     from .model_io import bind_free_coordinates

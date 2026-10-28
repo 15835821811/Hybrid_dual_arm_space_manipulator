@@ -51,7 +51,8 @@ def audit(path,config):
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     expected_origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')
     expected_free_schema=checkpoint['dataset_manifest'].get('free_coordinate_schema','physical_position_v1')
-    rows=[];conditions=set();scene_hashes=set();pose_counts=set();selected_for_counterfactual=None
+    expected_terminal=checkpoint['dataset_manifest'].get('terminal_policy','zero_derivatives')
+    rows=[];conditions=set();scene_hashes=set();pose_counts=set();task_structures=set();selected_for_counterfactual=None
     for root in runs:
         result=json.loads((root/'planning_result.json').read_text(encoding='utf-8'))
         manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
@@ -59,6 +60,7 @@ def audit(path,config):
         unit_manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
         r,snapshot,task,problem=load_problem(root/'problem.json')
         pose_counts.add(len(task.poses));scene_hashes.add(manifest['scene_hash'])
+        task_structures.add((len(task.poses),len(task.intervals),tuple(sorted(p.frame for p in task.intervals)),len(task.target_force_pulses)))
         conditions.add(hashlib.sha256(json.dumps(problem['task'],sort_keys=True).encode()).hexdigest())
         candidates=[];noise_hashes=[]
         for record in result['records']:
@@ -86,6 +88,7 @@ def audit(path,config):
         rows.append(dict(run=str(root),sampling_source_hash=unit_manifest['source_hash'],physics_backend=manifest.get('physics_backend'),
                          checkpoint_identity_matches=manifest['checkpoint']['sha256']==identity['sha256'],
                          boundary_origin_matches=manifest['budget'].get('boundary_origin','pivot_zero')==expected_origin,
+                         terminal_policy_matches=task.terminal_policy==expected_terminal,
                          free_coordinate_schema_matches=manifest.get('free_coordinate_schema','physical_position_v1')==expected_free_schema,
                          candidates=candidates,unique_noise=len(set(noise_hashes))==len(noise_hashes),
                          runtime_sentinel_clear=not sentinel['forbidden_calls'] and sentinel['observed_ffgd_calls']>0,
@@ -109,7 +112,7 @@ def audit(path,config):
         semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)
         atomic_json(path/'contracts.json',dict(static=contract,semantic=semantic))
         prop_type=FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator
-        p=prop_type(tree,snapshot);base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
+        p=prop_type(tree,snapshot,**(dict(target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {}));base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
         changed=[]
         for item in task.poses:
             changed.append(PoseConstraint(item.time,item.tip,item.position+[0,.03,.02],item.rotation,item.position_tolerance,item.rotation_tolerance,item.position_enabled,item.rotation_enabled))
@@ -118,7 +121,7 @@ def audit(path,config):
         goal=MultiSpaceEnergy(p,codec,g,changed_task,manifest['budget']['intervals'])
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
-        obstacle=MultiSpaceEnergy(prop_type(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])
+        obstacle=MultiSpaceEnergy(prop_type(tree,r.snapshot(data),**(dict(target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {})),codec,g,task,manifest['budget']['intervals'])
         for energy in (base,goal,obstacle):
             energy.weights.update(manifest.get('guide_weights',{}))
             energy.collision_aggregation=manifest.get('collision_aggregation','pair_mean')
@@ -161,13 +164,13 @@ def audit(path,config):
         'ARCH_03':bool(checked) and all(c['consumed'] and c['active_nonfinal_steps']>=2 and c['repair_calls']==0 for c in checked),
         'ARCH_04':bool(interventions and interventions['goal_effect'] and interventions['collision_effect']) and all(a['removed_only_guide_term'] and a['primitive_terms_unchanged'] for a in interventions['guide_term_ablations']) and all(all(v>1e-10 for v in c['state_intervention_effect']) for c in checked) and all(not r['independent_validation_terms_disabled'] for r in rows),
         'ARCH_05':bool(checked) and all(c['noise_identity'] and c['network_calls']==c['requested_calls'] for c in checked) and all(row['unique_noise'] for row in rows),
-        'ARCH_06':learning['passed'] and learning['checkpoint']['sha256']==identity['sha256'] and all(row['checkpoint_identity_matches'] and row['boundary_origin_matches'] and row['free_coordinate_schema_matches'] for row in rows) and all(s['condition_shuffle_norm']>1e-8 and s['unlearned_prediction_difference']>1e-8 and s['weight_intervention_norm']>1e-8 for s in learning['samples']),
+        'ARCH_06':learning['passed'] and learning['checkpoint']['sha256']==identity['sha256'] and all(row['checkpoint_identity_matches'] and row['boundary_origin_matches'] and row['free_coordinate_schema_matches'] and row['terminal_policy_matches'] for row in rows) and all(s['condition_shuffle_norm']>1e-8 and s['unlearned_prediction_difference']>1e-8 and s['weight_intervention_norm']>1e-8 for s in learning['samples']),
         'ARCH_07':bool(contract and contract['passed']),
-        'ARCH_08':bool(semantic and semantic['passed']) and len(pose_counts)>=2,
+        'ARCH_08':bool(semantic and semantic['passed']) and len(task_structures)>=2,
         'ARCH_09':bool(rows) and all(row['denominator_complete'] for row in rows),
         'ARCH_10':bool(execution_rows and contract and contract['controller_reference_only']) and not any(row['execution_called_during_planning'] for row in rows) and all(e['model_plan_valid'] and e['safety_enabled'] and not e['cartesian_assist'] and e['independent_replay'] for e in execution_rows)}
     return dict(passed=all(value is True for value in gates.values()),gates=gates,runs=rows,interventions=interventions,
-                tested_task_conditions=len(conditions),tested_pose_counts=sorted(pose_counts),tested_scenes=len(scene_hashes),
+                tested_task_conditions=len(conditions),tested_pose_counts=sorted(pose_counts),tested_task_structures=sorted(task_structures),tested_scenes=len(scene_hashes),
                 architecture_status='ARCHITECTURE_PASSED' if all(value is True for value in gates.values()) else 'PARTIAL',
                 analysis_source_hash=source_hash(),engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
                 contracts=contract,semantic_equivalence=semantic,executions=execution_rows,

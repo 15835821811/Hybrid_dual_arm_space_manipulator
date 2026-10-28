@@ -60,7 +60,7 @@ def boundary_codec(robot,snapshot,duration,n=24,origin='pivot_zero',reference_st
     return codec
 
 
-def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager',collision_aggregation='pair_mean',joint_peak_penalty=False,task_objective='center_squared',planning_margins=None):
+def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',disabled_guide_terms=(),guide_weights=None,physics_backend='eager',collision_aggregation='pair_mean',joint_peak_penalty=False,task_objective='center_squared',planning_margins=None,compiled_full_step=False):
     """All candidates remain in the denominator, including numerical failures."""
     total_start=time.perf_counter();torch.set_num_threads(budget.cpu_threads);output=Path(output);output.mkdir(parents=True,exist_ok=True)
     model,checkpoint,checkpoint_identity=load_model(checkpoint_path,device)
@@ -68,7 +68,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     if checkpoint.get('update',0)<1 or checkpoint.get('training_config',{}).get('scope')=='SOFTWARE_TEST':raise ValueError('MAIN_PLANNER_REQUIRES_TRAINED_PRIOR')
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
-    if (task.intervals or task.reference_start is not None) and physics_backend!='full_state':raise ValueError('TEMPORAL_OR_REFERENCE_MEMORY_REQUIRES_FULL_STATE_BACKEND')
+    if (task.intervals or task.reference_start is not None or task.target_force_pulses) and physics_backend!='full_state':raise ValueError('TEMPORAL_OR_REFERENCE_MEMORY_REQUIRES_FULL_STATE_BACKEND')
     if checkpoint['dataset_manifest'].get('terminal_policy','zero_derivatives')!=task.terminal_policy:raise ValueError('CHECKPOINT_TERMINAL_TEMPLATE_MISMATCH')
     codec=boundary_codec(robot,initial,task.duration,budget.control_points,origin=budget.boundary_origin,reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     from .model_io import bind_free_coordinates
@@ -87,8 +87,14 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     if physics_backend=='full_state':
         from .propagation import FullStatePropagation
-        prop=FullStatePropagation(tree,initial)
+        prop=FullStatePropagation(tree,initial,target_force_pulses=task.target_force_pulses)
     else:prop=Propagator(tree,initial)
+    compilation=None
+    if compiled_full_step:
+        if physics_backend!='full_state':raise ValueError('COMPILED_STEP_REQUIRES_FULL_STATE')
+        from .compiled_physics import compile_full_state_step
+        compilation=compile_full_state_step(prop.predictor,prop.dt,output)
+        compile_seconds=compilation['seconds']
     geometry=Geometry(robot)
     if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe','batched_full_path'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric,collision_aggregation=collision_aggregation,joint_peak_penalty=joint_peak_penalty,task_objective=task_objective,planning_margins=planning_margins)
@@ -113,7 +119,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                   joint_peak_penalty=joint_peak_penalty,
                   task_objective=task_objective,planning_margins=dict(energy.planning_margins),
                   network_condition_schema=CONDITION_SCHEMA,external_scene_in_physics_and_validation=True,
-                  physics_backend=physics_backend,compile_seconds=compile_seconds,setup_wall_seconds=time.perf_counter()-total_start,
+                  physics_backend=physics_backend,compiled_full_step=bool(compiled_full_step),compilation=compilation,compile_seconds=compile_seconds,setup_wall_seconds=time.perf_counter()-total_start,
                   guidance_metric_condition=float(torch.linalg.cond(metric)),
                   method=('GUIDED_DIFFUSION_ABLATION' if disabled_guide_terms else 'GUIDED_DIFFUSION') if budget.sampling.guide_steps else 'LEARNED_PRIOR_WITHOUT_GUIDANCE')
     manifest['profile']=profile

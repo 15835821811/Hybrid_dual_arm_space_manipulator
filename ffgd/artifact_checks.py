@@ -13,11 +13,80 @@ from .execution import replay
 from .orchestration import atomic_json,check_budget
 
 
+def inspect_chain(output,config):
+    """Read-only all-state continuity and momentum about the single root origin.
+
+    Segment reports are necessary but cannot erase inherited momentum error.
+    The historical generalized/action-scaled diagnostic is reported separately.
+    This inspector does not run physics, select candidates or repair plans.
+    """
+    import hashlib
+    import mujoco
+    from .execution import refine_physics
+    from .trajectory import basis
+    from .propagation import native_subtree_momentum
+    sources=config['execution_runs'];replays=config['replay_runs']
+    if len(sources)!=len(replays) or not sources:raise ValueError('CHAIN_REQUIRES_MATCHED_EXECUTIONS_AND_REPLAYS')
+    rows=[];previous=None;root_H=None;root_time=None;root_model=None;root_profile=None
+    source_ids=set();weights=set();world_peaks=np.zeros(2);legacy_peaks=np.zeros(2);legacy_exchange=np.zeros(2)
+    for execution,replay_run in zip(sources,replays):
+        check_budget();root=Path(execution);provenance=json.loads((root/'provenance.json').read_text())
+        planned=Path(provenance['planning_directory']);manifest=json.loads((planned/'planning_manifest.json').read_text())
+        unit=json.loads((planned/'manifest.json').read_text());source_ids.add(unit['source_hash']);weights.add(manifest['checkpoint']['sha256'])
+        acceptance=json.loads((root/'acceptance.json').read_text());replay_result=json.loads((Path(replay_run)/'result.json').read_text())
+        if Path(replay_result['source']).resolve()!=root.resolve():raise ValueError('CHAIN_REPLAY_EXECUTION_MISMATCH')
+        r,snapshot,task,_=load_problem(planned/'problem.json');r,snapshot=refine_physics(r,snapshot,provenance['physics_substeps'])
+        result=json.loads((planned/'planning_result.json').read_text());index=result['selected_index']
+        with np.load(planned/f'candidate_{index:03d}'/'candidate.npz') as data:candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
+        if candidate.identity!=provenance['candidate_hash'] or result['records'][index]['identity']!=candidate.identity:raise ValueError('CHAIN_CANDIDATE_IDENTITY_MISMATCH')
+        with np.load(root/'execution.npz') as saved:bundle={k:saved[k] for k in saved.files}
+        if not np.array_equal(bundle['control_points'],candidate.control):raise ValueError('CHAIN_EXECUTED_DIFFERENT_REFERENCE')
+        d=r.restore(snapshot);start=float(d.time);mask=int(bundle['mask']);dt=float(bundle['physics_dt'])
+        if root_H is None:
+            root_H=native_subtree_momentum(r,d);root_time=start;root_model=r.model_hash;root_profile=manifest['profile']
+        same_contract=r.model_hash==root_model and manifest['profile']==root_profile
+        state_exact=np.array_equal(bundle['states'][0],snapshot.state)
+        continuity=True if previous is None else np.array_equal(bundle['states'][0],previous['state'])
+        reference_error=None
+        if previous is not None:
+            reference_error=None if task.reference_start is None else float(np.max(abs(task.reference_start-previous['reference'])))
+        time_error=0.;local_peaks=np.zeros(2)
+        for i,state in enumerate(bundle['states']):
+            if i%128==0:check_budget()
+            d=r.restore(Snapshot(r.model_hash,mask,state));H=native_subtree_momentum(r,d)
+            time_error=max(time_error,abs(float(d.time)-(start+i*dt)))
+            delta=H-root_H;peaks=np.array([np.linalg.norm(delta[:3]),np.linalg.norm(delta[3:])])
+            local_peaks=np.maximum(local_peaks,peaks);world_peaks=np.maximum(world_peaks,peaks)
+            M=r.mass(d);old=(M@d.qvel)[r.base_dofs];exchange=M[np.ix_(r.base_dofs,r.dof_ids)]@d.qvel[r.dof_ids]
+            legacy_peaks=np.maximum(legacy_peaks,[np.linalg.norm(old[:3]),np.linalg.norm(old[3:])])
+            legacy_exchange=np.maximum(legacy_exchange,[np.linalg.norm(exchange[:3]),np.linalg.norm(exchange[3:])])
+        end=float(d.time);complete=abs(len(bundle['ctrl'])*dt-task.duration)<=1e-10 and len(bundle['states'])==len(bundle['ctrl'])+1
+        boundary_time=previous is None or abs(start-previous['time'])<=1e-9
+        reference_ok=previous is None or reference_error is not None and reference_error<=1e-10
+        row_gates=dict(execution_valid=acceptance['status']=='EXECUTION_VALID',separate_replay=bool(replay_result['passed']),same_model_and_profile=same_contract,
+            exact_initial_state=state_exact,exact_actual_boundary=continuity,c2_reference_boundary=reference_ok,absolute_boundary_time=boundary_time,
+            complete_duration=complete,absolute_clock=time_error<=1e-9)
+        rows.append(dict(execution=str(root),replay=str(replay_run),planning=str(planned),candidate_hash=candidate.identity,start=start,end=end,
+            gates=row_gates,reference_boundary_max_error=reference_error,maximum_clock_error=time_error,root_momentum_peaks=local_peaks.tolist(),
+            execution_npz_sha256=hashlib.sha256((root/'execution.npz').read_bytes()).hexdigest()))
+        previous=dict(state=bundle['states'][-1].copy(),time=end,reference=np.stack([basis(len(candidate.control),candidate.duration,candidate.duration,k)@candidate.control for k in (0,1,2)]))
+    thresholds=np.array([root_profile['momentum_linear_kg_m_s'],root_profile['momentum_angular_kg_m2_s']])
+    gates=dict(segments_and_boundaries=all(all(x['gates'].values()) for x in rows),cumulative_world_momentum=bool(np.all(world_peaks<=thresholds)))
+    if config.get('require_uniform_planner_version',True):gates['uniform_planner_source_and_weights']=len(source_ids)==1 and len(weights)==1
+    legacy_threshold=1e-5+.002*legacy_exchange
+    return dict(passed=all(gates.values()),gates=gates,segments=rows,absolute_start=root_time,absolute_end=previous['time'],
+        cumulative_world_momentum_peaks=world_peaks.tolist(),world_momentum_thresholds=thresholds.tolist(),
+        historical_generalized_action_scaled=dict(passed=bool(np.all(legacy_peaks<=legacy_threshold)),peaks=legacy_peaks.tolist(),thresholds=legacy_threshold.tolist(),
+            scope='Historical zero-generalized-momentum criterion, separate from world momentum about root; no old result relabeling'),
+        source_hashes=sorted(source_ids),checkpoint_hashes=sorted(weights),readonly=True,source_reports_modified=False,
+        scope='All provided native states, exact actual and C2 boundaries, root momentum and independent replay bindings; final task coverage must also be checked')
+
+
 def validate_saved(output,planning_directory,candidate_index=None):
     root=Path(planning_directory);r,snapshot,task,problem=load_problem(root/'problem.json')
     manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'));profile=manifest['profile']
     from .propagation import FullStatePropagation
-    prop=(FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator)(DifferentiableTree(r),snapshot);geometry=Geometry(r);rows=[]
+    prop=(FullStatePropagation(DifferentiableTree(r),snapshot,target_force_pulses=task.target_force_pulses) if manifest.get('physics_backend')=='full_state' else Propagator(DifferentiableTree(r),snapshot));geometry=Geometry(r);rows=[]
     folders=[root/f'candidate_{int(candidate_index):03d}'] if candidate_index is not None else sorted(root.glob('candidate_*'))
     for folder in folders:
         check_budget()

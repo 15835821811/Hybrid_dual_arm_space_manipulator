@@ -46,23 +46,31 @@ def compile_full_state_step(predictor,dt,output=None):
     q=tensor(r.Bplus@d.qpos[r.qpos_ids]);qd=tensor(r.Bplus@d.qvel[r.dof_ids]);qdd=torch.zeros(17,dtype=x.dtype)
     class StepKernel(torch.nn.Module):
         def __init__(self,update):super().__init__();self.update=update
-        def forward(self,x,v,u,raw,q,qd,qdd):return original(x,v,u,raw,q,qd,qdd,dt,self.update)
+        def forward(self,x,v,u,raw,q,qd,qdd,external):return original(x,v,u,raw,q,qd,qdd,dt,self.update,external)
     start=time.perf_counter();kernels={}
     for update in (True,False):
-        kernel=torch.jit.trace(StepKernel(update).eval(),(x,v,u,u.clone(),q,qd,qdd),check_trace=False)
+        kernel=torch.jit.trace(StepKernel(update).eval(),(x,v,u,u.clone(),q,qd,qdd,torch.zeros_like(v)),check_trace=False)
         kernels[update]=torch.jit.freeze(kernel.eval())
         if output is not None:
             from pathlib import Path
             torch.jit.save(kernels[update],str(Path(output)/('step_update.pt' if update else 'step_hold.pt')))
-    def step(x,v,u,raw,q,qd,qdd,step_dt,update):
+    def step(x,v,u,raw,q,qd,qdd,step_dt,update,external=None):
         if step_dt!=dt:raise ValueError('COMPILED_STEP_TIMESTEP_MISMATCH')
-        return kernels[bool(update)](x,v,u,raw,q,qd,qdd)
+        if external is None:external=torch.zeros_like(v)
+        # Large traced robot graphs otherwise spend minutes in speculative JIT
+        # optimization before their first differentiated call. Interpret this
+        # exact traced graph; native and whole-path AD comparisons still apply.
+        with torch.jit.optimized_execution(False):
+            return kernels[bool(update)](x,v,u,raw,q,qd,qdd,external)
     comparisons=[]
     for update in (True,False):
         values=(x,v+.001,u+.02,u+.03,q+.002,qd+.001,qdd+.01)
+        external=torch.zeros_like(v)
+        from .forcing import target_indices
+        _,adr=target_indices(r);external[adr:adr+3]=tensor([.012,-.023,.034])
         def evaluate(function):
             inputs=[a.detach().clone().requires_grad_() for a in values]
-            outputs=function(*inputs,dt,update)
+            outputs=function(*inputs,dt,update,external)
             loss=sum(a.square().sum() for a in outputs)
             grads=torch.autograd.grad(loss,inputs,allow_unused=True)
             return tuple(a.detach() for a in outputs),tuple(torch.zeros_like(a) if b is None else b.detach() for a,b in zip(inputs,grads))
@@ -70,7 +78,10 @@ def compile_full_state_step(predictor,dt,output=None):
         forward=max(float((a-b).abs().max()) for a,b in zip(expected,actual))
         derivative=max(float((a-b).abs().max())/max(1.,float(a.abs().max()),float(b.abs().max())) for a,b in zip(ge,ga))
         comparisons.append(dict(update=update,forward_max_abs=forward,gradient_max_relative=derivative))
+        if output is not None:
+            from .orchestration import atomic_json
+            atomic_json(Path(output)/'compile_progress.json',dict(seconds=time.perf_counter()-start,local_comparisons=comparisons))
         if forward>1e-9 or derivative>1e-8:raise ValueError('COMPILED_FULL_STEP_LOCAL_CALIBRATION_FAILED')
     predictor.step=step
     return dict(seconds=time.perf_counter()-start,model_hash=r.model_hash,physics_dt=dt,
-                mode='EXACT_DISCRETE_GRAPH_COMPILE_NOT_MODEL_REDUCTION',kernel_count=2,local_comparisons=comparisons)
+                mode='EXACT_DISCRETE_GRAPH_COMPILE_NOT_MODEL_REDUCTION',jit_speculative_optimization=False,kernel_count=2,local_comparisons=comparisons)

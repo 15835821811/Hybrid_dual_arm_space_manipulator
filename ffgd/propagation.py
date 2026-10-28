@@ -160,13 +160,14 @@ class FullStatePredictor:
     reference points nor actual states are corrected/projected. Both free
     bodies and all 67 joint states evolve; every state depends on earlier inputs.
     """
-    def __init__(self,tree,initial,integrator='midpoint'):
+    def __init__(self,tree,initial,integrator='midpoint',target_force_pulses=()):
         if integrator not in ('midpoint','implicit_damping'):raise ValueError('UNKNOWN_FULL_STATE_INTEGRATOR')
         self.integrator=integrator
         self.tree=tree;self.robot=r=tree.robot;d=r.restore(initial)
         if np.any(d.xfrc_applied) or np.any(d.qfrc_applied):raise ValueError('UNSUPPORTED_EXTERNAL_WRENCH')
         self.qpos=tensor(d.qpos);self.velocity=tensor(d.qvel)
         self.initial_state=initial
+        self.target_force_pulses=tuple(target_force_pulses)
 
     def integrate(self,x,v,dt):
         r=self.robot;y=x.clone()
@@ -184,8 +185,10 @@ class FullStatePredictor:
         if physics_dt<=0 or stop<=0 or stop>codec.duration or abs(steps*physics_dt-stop)>1e-10:raise ValueError('INVALID_PREDICTION_GRID')
         times=np.arange(steps+1)*physics_dt
         q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
+        from .forcing import generalized_forces
+        forces=tensor(generalized_forces(self.robot,self.target_force_pulses,times[:-1]+physics_dt/2))
         if memory_efficient:
-            xs,vs,torques,raws=FullStateAdjoint.apply(self.qpos,self.velocity,q,qd,qdd,self,physics_dt,control_substeps)
+            xs,vs,torques,raws=FullStateAdjoint.apply(self.qpos,self.velocity,q,qd,qdd,forces,self,physics_dt,control_substeps)
             return dict(time=times,qpos=xs,velocity=vs,applied_torque=torques,raw_torque=raws,
                         control_updates=(steps+control_substeps-1)//control_substeps,
                         integrator=self.integrator,scope='CONTACT_FREE_FULL_STATE_PREDICTION_NOT_NATIVE_EXECUTION')
@@ -195,7 +198,7 @@ class FullStatePredictor:
                 from .orchestration import check_budget
                 check_budget()
             if i==0:applied=torch.zeros(67,dtype=x.dtype);raw=applied
-            x,v,applied,raw=self.step(x,v,applied,raw,q[i],qd[i],qdd[i],physics_dt,i%control_substeps==0)
+            x,v,applied,raw=self.step(x,v,applied,raw,q[i],qd[i],qdd[i],physics_dt,i%control_substeps==0,forces[i])
             xs.append(x);vs.append(v);torques.append(applied);raws.append(raw)
         return dict(time=times,qpos=torch.stack(xs),velocity=torch.stack(vs),
                     applied_torque=torch.stack(torques),raw_torque=torch.stack(raws),
@@ -203,17 +206,19 @@ class FullStatePredictor:
                     integrator=self.integrator,scope='CONTACT_FREE_FULL_STATE_PREDICTION_NOT_NATIVE_EXECUTION')
 
 
-    def step(self,x,v,applied,raw,q,qd,qdd,dt,update):
+    def step(self,x,v,applied,raw,q,qd,qdd,dt,update,external=None):
+        if external is None:external=torch.zeros_like(v)
         if self.integrator=='implicit_damping':
             if update:applied,raw,M,h=self.tree.tracking_command(x,v,q,qd,qdd)
             else:
                 k=self.tree.kinematics(x,v);M=self.tree.mass(x,k)
                 h=self.tree.inverse(x,v,torch.zeros_like(v),k)
             force=torch.zeros_like(v).index_copy(0,torch.as_tensor(self.robot.dof_ids,dtype=torch.long),applied)
-            dv=dt*torch.linalg.solve(M+dt*torch.diag(self.tree.damping),force-h)
+            dv=dt*torch.linalg.solve(M+dt*torch.diag(self.tree.damping),force+external-h)
             vn=v+dv
             return self.integrate(x,vn,dt),vn,applied,raw
         if update:applied,raw,_,_=self.tree.tracking_command(x,v,q,qd,qdd)
+        if self.target_force_pulses:raise ValueError('FORCED_PREDICTION_REQUIRES_IMPLICIT_DAMPING')
         a=self.tree.full_state_acceleration(x,v,applied)
         xm=self.integrate(x,v,dt/2);vm=v+a*(dt/2)
         am=self.tree.full_state_acceleration(xm,vm,applied)
@@ -228,24 +233,24 @@ class FullStateAdjoint(torch.autograd.Function):
     state. This is not a continuous adjoint, detached-prefix approximation or FD.
     """
     @staticmethod
-    def forward(ctx,x0,v0,q,qd,qdd,predictor,dt,substeps):
+    def forward(ctx,x0,v0,q,qd,qdd,forces,predictor,dt,substeps):
         x=x0;v=v0;u=torch.zeros(67,dtype=x.dtype);raw=u
         xs=[x];vs=[v];us=[];raws=[]
         for i in range(len(q)-1):
             if i%16==0:
                 from .orchestration import check_budget
                 check_budget()
-            x,v,u,raw=predictor.step(x,v,u,raw,q[i],qd[i],qdd[i],dt,i%substeps==0)
+            x,v,u,raw=predictor.step(x,v,u,raw,q[i],qd[i],qdd[i],dt,i%substeps==0,forces[i])
             xs.append(x);vs.append(v);us.append(u);raws.append(raw)
         result=tuple(torch.stack(a) for a in (xs,vs,us,raws))
-        ctx.save_for_backward(*result,q,qd,qdd)
+        ctx.save_for_backward(*result,q,qd,qdd,forces)
         ctx.predictor=predictor;ctx.dt=dt;ctx.substeps=substeps
         return result
 
     @staticmethod
     @torch.autograd.function.once_differentiable
     def backward(ctx,gx,gv,gu,gr):
-        xs,vs,us,raws,q,qd,qdd=ctx.saved_tensors
+        xs,vs,us,raws,q,qd,qdd,forces=ctx.saved_tensors
         ax=torch.zeros_like(xs[0]);av=torch.zeros_like(vs[0])
         au=torch.zeros_like(us[0]);ar=torch.zeros_like(raws[0])
         gq=torch.zeros_like(q);gqd=torch.zeros_like(qd);gqdd=torch.zeros_like(qdd)
@@ -256,23 +261,24 @@ class FullStateAdjoint(torch.autograd.Function):
             with torch.enable_grad():
                 values=[xs[i],vs[i],us[i-1] if i else torch.zeros_like(au),raws[i-1] if i else torch.zeros_like(ar),q[i],qd[i],qdd[i]]
                 inputs=[value.detach().requires_grad_(True) for value in values]
-                out=ctx.predictor.step(*inputs,ctx.dt,i%ctx.substeps==0)
+                out=ctx.predictor.step(*inputs,ctx.dt,i%ctx.substeps==0,forces[i])
                 gradients=torch.autograd.grad(out,inputs,(ax+gx[i+1],av+gv[i+1],au+gu[i],ar+gr[i]),allow_unused=True)
             ax,av,au,ar,dq,dqd,dqdd=[torch.zeros_like(value) if grad is None else grad for value,grad in zip(values,gradients)]
             gq[i]=dq;gqd[i]=dqd;gqdd[i]=dqdd
-        return ax+gx[0],av+gv[0],gq,gqd,gqdd,None,None,None
+        return ax+gx[0],av+gv[0],gq,gqd,gqdd,None,None,None,None
 
 
 class FullStatePropagation:
     """Whole-state guide adapter; independent native integration is separate."""
     prediction_mode='full_state'
-    def __init__(self,tree,initial,physics_dt=.002):
+    def __init__(self,tree,initial,physics_dt=.002,target_force_pulses=()):
         self.tree=tree;self.robot=r=tree.robot;self.initial=initial
         d=r.restore(initial)
         self.qpos=tensor(d.qpos);self.initial_q=r.Bplus@d.qpos[r.qpos_ids]
         self.initial_v=r.Bplus@d.qvel[r.dof_ids];self.H=tensor(native_momentum(r,d))
         self.dt=physics_dt
-        self.predictor=FullStatePredictor(tree,initial,integrator='implicit_damping')
+        self.target_force_pulses=tuple(target_force_pulses)
+        self.predictor=FullStatePredictor(tree,initial,integrator='implicit_damping',target_force_pulses=self.target_force_pulses)
 
     def rollout(self,codec,z,intervals=32,check_boundary=True,grid=None):
         times=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
@@ -290,7 +296,9 @@ class FullStatePropagation:
         v=full['velocity'][left]*(1-alpha)+full['velocity'][right]*alpha
         control_indices=np.minimum(left,len(full['raw_torque'])-1)
         raw=full['raw_torque'][control_indices];applied=full['applied_torque'][control_indices]
-        acceleration=torch.stack([self.tree.full_state_acceleration(xx,vv,uu) for xx,vv,uu in zip(x,v,applied)])
+        from .forcing import generalized_forces
+        forces=tensor(generalized_forces(self.robot,self.target_force_pulses,times))
+        acceleration=torch.stack([self.tree.full_state_acceleration(xx,vv,uu,ff) for xx,vv,uu,ff in zip(x,v,applied,forces)])
         r=self.robot
         return dict(time=times,q=q,qd=qd,qdd=qdd,qpos=x,velocity=v,
                     actual_q67=x[:,r.qpos_ids],actual_v67=v[:,r.dof_ids],actual_a67=acceleration[:,r.dof_ids],
@@ -298,7 +306,7 @@ class FullStatePropagation:
 
     def native_rollout(self,codec,z,intervals=32,grid=None):
         from .full_state_validation import native_prediction
-        full=native_prediction(self.robot,self.initial,codec,z,self.dt,geometry=False)
+        full=native_prediction(self.robot,self.initial,codec,z,self.dt,geometry=False,target_force_pulses=self.target_force_pulses)
         self.last_native_prediction=full
         grid=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
         coordinate=np.clip(grid/self.dt,0,len(full['qpos'])-1);left=np.floor(coordinate).astype(int);right=np.minimum(left+1,len(full['qpos'])-1);a=(coordinate-left)[:,None]

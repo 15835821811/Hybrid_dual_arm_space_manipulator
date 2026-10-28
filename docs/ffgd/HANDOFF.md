@@ -342,3 +342,10 @@ M6全状态接线：新增显式full_state backend，FullStatePropagation以2ms�
 区间+C2新版数值0210d3通过（原生FD相对6.6137e-10；合成零自由参考只读PLAN_VALID，不是扩散结果）。保持/目标相对区间按实际每个原生状态验收，非网格时刻用公开记录的插值括号和四元数slerp，不移动目标时刻；终端自由速度模板尚未实现，不能宣称完整运动追踪通过。最终2R5C静态/七点模板已原值迁移，原7球体初态间隙.008540645871636473与公开记录一致，只是配置/初态检查，M7 NOT_RUN。
 
 全软件20261028T042303_software_887474通过88项/199.90s（软件预算300s，非物理门）。HEADfadeda25后v3接续已启动20261028T042656_planning_87865e/session35541/PID28136/create1793161615.9421785/source492b6e7536abd84b543484a02933fcd896254e0d51df19928cb990a6cbd4a241。仍原真实初态/任务/seed23001，最坏actual坐标代价修正+joint权重3；等待候选，不重启。独立准备终端free模板357维（初始q/v/a固定，末端q/v/a51维满秩），目标相对追踪必须显式free，旧zero_derivatives权重不能加载此模板。已有2256物理路径计划从两个平坦父dataset精确重编码复用，另256上限544尝试的非零一致动量初态/自由末端pilot已预配置，尚未生成或训练。新边界/重编码/原合并/时序/单位软件16passed6.53s，不是物理训练或规划证据。
+
+
+V3原接续反例20261028T042656_planning_87865e完成1/1 PLAN_VALID，24NN/36实际梯度、0后修；原seed23001，source492b6e75。预选hash85336dc4原样执行20261028T045313_selected_execution_43a55c全部16门通过1600步/.8s，actual67加速度.9555985，双末端3.59958/3.07154mm，P1.24949e-5/L1.04504e-5，0安全干预/状态注入。独立重放20261028T045352_independent_replay_7ea9ac通过差0。此例尚未用C2 reference_start或interval/free终端；相关新任务/actualARCH仍NOT_RUN。当前精确图编译full_state_energy_compiled_v1已启动session26956，以原物理步长/全状态/梯度对照检查性能实现；未启用主链。后续复用2256物理数据重编码+有限自由末端/非零初速数据补充，最终场景未跑。
+
+通用force协议已接入TaskSpec/预测/伴随/原生验收/实际执行/重放；只声明独立目标COM世界力，不注入速度，机器人controller不接任务。原公开2s/.04N峰值+27s coast与W7 world hold/rigid relative grasp配置已迁移，NOT_RUN。早期forced数值b4d4bf失败因诊断生成器在restore后未mj_forward读取了零xmat，修正生成器后07c092通过3个活跃约束和原生FD(relative5.98e-10)，并非扩散成功。该数值使用左端force；最新明确改为原协议midpoint input，原生ledger/重放/冲量测试66cb2b过，最新加入工作/角冲量账本待全软件与新数值。
+精确图加速b276d5在>360sCPU仍未返回局部检查，确认PID身份后停止该可选性能方案并保存termination/失败，不改主模型。禁用推测JIT优化后02acdd50.17s通过，局部两分支值0差/梯度<=1.99e-16，整路径原生FD6.61e-10；已显式opt-in编译选项，C2hold配置预定24NN/18x2和原seed23001，未启动。
+已有2000+256条物理数据分别在9a713f/06c6ca等价重编码到357自由变量，split/物理控制/历史3107尝试保留。新增有界pilot5ff88f/PID45444/create1793163931.9733365/session74196运行中；不是承诺未来后台训练。全软件正在运行。新free模板训练/实际C2interval规划/full_stateARCH/最终全链仍NOT_RUN。

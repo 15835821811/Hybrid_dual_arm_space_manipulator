@@ -189,7 +189,7 @@ class DifferentiableTree:
         limits=tensor(r.spec.torque_limits)
         return torch.clamp(raw,-limits,limits),raw,M,h
 
-    def full_state_acceleration(self,qpos,velocity,torque):
+    def full_state_acceleration(self,qpos,velocity,torque,external=None):
         """Contact-free full nv dynamics for held physical motor inputs.
 
         Includes both free bodies, all 67 joints, armature and damping. Contact
@@ -199,6 +199,7 @@ class DifferentiableTree:
         k=self.kinematics(qpos,velocity)
         M=self.mass(qpos,k);h=self.inverse(qpos,velocity,torch.zeros_like(velocity),k)
         force=torch.zeros_like(velocity).index_copy(0,torch.as_tensor(self.robot.dof_ids,dtype=torch.long),torque)
+        if external is not None:force=force+external
         return torch.linalg.solve(M,force-h)
 
     def tracking_acceleration(self,qpos,velocity,q,qd,qdd):

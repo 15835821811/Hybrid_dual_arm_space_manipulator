@@ -37,9 +37,12 @@ def rotation_log(R,angle=None):
 class MultiSpaceEnergy:
     def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean',joint_peak_penalty=False,task_objective='center_squared',planning_margins=None):
         if codec.duration!=task.duration:raise ValueError('time contract mismatch')
+        def pulse_identity(items):return [(p.start,p.end,tuple(p.peak_force)) for p in items]
+        if pulse_identity(getattr(propagator,'target_force_pulses',()))!=pulse_identity(task.target_force_pulses):raise ValueError('PROPAGATOR_TASK_FORCE_MISMATCH')
         self.p,self.codec,self.geometry,self.task=propagator,codec,geometry,task
         self.grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[x.time for x in task.poses],
-                                 [t for x in task.intervals for t in (x.start,x.end)]])
+                                 [t for x in task.intervals for t in (x.start,x.end)],
+                                 [t for x in task.target_force_pulses for t in (x.start,(x.start+x.end)/2,x.end)]])
         self.interval_indices=[np.flatnonzero((self.grid>=x.start)&(self.grid<=x.end)) for x in task.intervals]
         self.task_count=len(task.poses)+len(task.intervals)
         if task.intervals and collect_task_residual:raise ValueError('INTERVAL_TASK_METRIC_NOT_IMPLEMENTED')

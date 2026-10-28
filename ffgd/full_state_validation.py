@@ -23,7 +23,7 @@ def native_command(r,d,q,v,a):
     return np.clip(raw,-r.spec.torque_limits,r.spec.torque_limits),raw,ff
 
 
-def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True):
+def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True,target_force_pulses=()):
     r=Robot(physics_dt=dt,scene=robot.scene)
     original_dt=r.model.opt.timestep;r.model.opt.timestep=robot.model.opt.timestep
     if r.compiled_hash()!=robot.model_hash:raise ValueError('FULL_STATE_NATIVE_MODEL_CHANGED')
@@ -40,6 +40,9 @@ def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True):
     applied=raw=ff=None;base_residual=0.
     for i in range(count+1):
         if i%64==0:check_budget()
+        if target_force_pulses:
+            from .forcing import apply_native_target_force
+            apply_native_target_force(r,d,target_force_pulses,(i+.5)*dt if i<count else i*dt)
         if i<count and i%period==0:applied,raw,ff=native_command(r,d,q[i],v[i],a[i])
         d.ctrl[r.actuator_ids]=applied;mujoco.mj_forward(r.model,d)
         xs.append(d.qpos.copy());vs.append(d.qvel.copy());acc.append(d.qacc.copy());raws.append(raw.copy());nominal.append(ff.copy())
@@ -68,7 +71,7 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
     spline=BSpline(knots(codec.n),C,3)
     gates['velocity']=np.max(abs(spline.derivative(1).c)/candidate.duration/r.spec.planner_velocity_limits)<=1
     gates['acceleration']=np.max(abs(spline.derivative(2).c)/candidate.duration**2/r.spec.planner_acceleration_limits)<=1
-    full=native_prediction(r,snapshot,codec,z,.0005);fine=native_prediction(r,snapshot,codec,z,.00025)
+    full=native_prediction(r,snapshot,codec,z,.0005,target_force_pulses=task.target_force_pulses);fine=native_prediction(r,snapshot,codec,z,.00025,target_force_pulses=task.target_force_pulses)
     delta=full['volumes']-fine['volumes'][::2];movement=np.diff(full['volumes'],axis=0)
     err=float(np.max(np.linalg.norm(delta[:,:,:3],axis=-1)+np.linalg.norm(delta[:,:,3:],axis=-1)))
     spatial=float(np.max(np.linalg.norm(movement[:,:,:3],axis=-1)+np.linalg.norm(movement[:,:,3:],axis=-1)))

@@ -89,9 +89,14 @@ def inspect_actual(robot,bundle,summary,task,profile,replay_report):
                independent_replay=replay_report['max_state_abs']<=profile['replay_state_atol'],
                native_state_only=summary['state_writes_after_restore']==0)
     gates.update(bounds['gates'])
+    force_report=None
+    if task.target_force_pulses:
+        from .forcing import inspect_target_inputs
+        force_report=inspect_target_inputs(r,bundle,task.target_force_pulses)
+        gates.update(force_report['gates'])
     if task.intervals:gates['task_intervals']=all(x['passed'] for x in interval_errors)
     return dict(status='EXECUTION_VALID' if all(gates.values()) else 'FAILED',gates=gates,task_errors=tasks,interval_errors=interval_errors,
-                replay=replay_report,state_bounds=bounds,safety_enabled=True,task_based_cartesian_assist=False,
+                replay=replay_report,state_bounds=bounds,force_protocol=force_report,safety_enabled=True,task_based_cartesian_assist=False,
                 safety_interventions=dict(clipped_control_steps=summary.get('clipped_control_steps'),safety_abort=summary.get('safety_abort')),
                 scope='timed poses plus every-native-state hold/target-relative tracking; no continuous-time proof')
 
@@ -118,7 +123,7 @@ def execute_selected(path,planning_directory,config=None):
     if candidate.identity!=planned['records'][index]['identity']:raise ValueError('SELECTED_CANDIDATE_HASH_CHANGED')
     codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     from .propagation import FullStatePropagation
-    prop=(FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator)(DifferentiableTree(r),snapshot)
+    prop=(FullStatePropagation(DifferentiableTree(r),snapshot,target_force_pulses=task.target_force_pulses) if manifest.get('physics_backend')=='full_state' else Propagator(DifferentiableTree(r),snapshot))
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(path/'validation_before_execution.json',validation)
     if validation['status']!='PLAN_VALID':return dict(passed=False,status='PRE_EXECUTION_REJECTED',validation=validation)
@@ -135,7 +140,7 @@ def execute_selected(path,planning_directory,config=None):
                                           planning_model_hash=planning_hash,execution_model_hash=r.model_hash,initial_state_bytes_unchanged=True,
                                           execution_tracking_profile=tracking_profile,
                                           method=manifest.get('method'),comparison_only=manifest.get('comparison_only',False)))
-    bundle,summary=track(r,snapshot,candidate,path,profile,control_substeps=substeps)
+    bundle,summary=track(r,snapshot,candidate,path,profile,control_substeps=substeps,target_force_pulses=task.target_force_pulses)
     if summary['status']=='RESOURCE_BUDGET_ABORT':
         actual=dict(status='INCOMPLETE_BUDGET',independent_replay='NOT_RUN',safety_enabled=True,task_based_cartesian_assist=False)
         atomic_json(path/'acceptance.json',actual)
