@@ -24,6 +24,8 @@ def run(output,config):
         training=data['tokens'][data['is_train']];padding=data['padding'][data['is_train']]
         scene_tokens=int(np.count_nonzero(training[...,4][~padding]))
     r,snapshot,task,problem=load_problem(config['problem']);codec=boundary_codec(r,snapshot,task.duration,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
+    from .model_io import bind_free_coordinates
+    checkpoint=bind_free_coordinates(checkpoint,task.duration)
     prop=Propagator(DifferentiableTree(r),snapshot);energy=MultiSpaceEnergy(prop,codec,Geometry(r),task)
     rows=[];samples={}
     for include_scene in (True,False):
@@ -67,6 +69,8 @@ def train_mean_factorial(output,config):
     original_state_hash=hashlib.sha256(snapshot.state.tobytes()).hexdigest()
     problem_hash=hashlib.sha256(Path(config['problem']).read_bytes()).hexdigest()
     codec=boundary_codec(r,snapshot,task.duration,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
+    from .model_io import bind_free_coordinates
+    checkpoint=bind_free_coordinates(checkpoint,task.duration)
     prop=Propagator(DifferentiableTree(r),snapshot)
     energy=MultiSpaceEnergy(prop,codec,Geometry(r),task)
     original=encode_condition(r,snapshot,task,prop.H.numpy())

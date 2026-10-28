@@ -63,6 +63,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     if checkpoint['dataset_manifest']['source_kind']!='FF_MODEL_PRIOR':raise ValueError('MAIN_PLANNER_DATA_CLASS_MISMATCH')
     if checkpoint['robot_physical_hash']!=robot.physical_hash:raise ValueError('PLANNING_ROBOT_CONTRACT_MISMATCH')
     codec=boundary_codec(robot,initial,task.duration,budget.control_points,origin=budget.boundary_origin)
+    from .model_io import bind_free_coordinates
+    checkpoint=bind_free_coordinates(checkpoint,task.duration)
     if len(checkpoint['mean'])!=codec.free_dim:raise ValueError('CHECKPOINT_BOUNDARY_TEMPLATE_MISMATCH')
     tree=DifferentiableTree(robot)
     compile_seconds=0.
@@ -88,6 +90,7 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     metric=acceleration_metric(codec,checkpoint['scale'],robot.spec.planner_acceleration_limits,energy.grid,budget.sampling.acceleration_metric_weight)
     start=total_start;records=[];valid=[]
     manifest=dict(budget=asdict(budget),checkpoint=checkpoint_identity,robot_model_hash=robot.model_hash,
+                  free_coordinate_schema=checkpoint['dataset_manifest'].get('free_coordinate_schema','physical_position_v1'),
                   candidate_scope='FIXED_SEED_DIAGNOSTIC' if len(budget.seeds)<5 else 'MULTI_NOISE_TASK_EVALUATION',
                   minimum_five_candidate_protocol_met=len(budget.seeds)>=5,
                   robot_physical_hash=robot.physical_hash,scene_hash=robot.scene.identity,geometry_policy_hash=geometry.policy_hash,

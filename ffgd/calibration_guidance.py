@@ -27,6 +27,8 @@ def _run(path,config):
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('DIAGNOSTIC_CHECKPOINT_MISMATCH')
     r,snapshot,task,problem=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
+    from .model_io import bind_free_coordinates
+    checkpoint=bind_free_coordinates(checkpoint,task.duration)
     tree=DifferentiableTree(r)
     tree.use_momentum_mass_rows=config.get('mass_rows',False)
     if config.get('compiled_backend'):

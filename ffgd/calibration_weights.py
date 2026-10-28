@@ -22,6 +22,8 @@ def run(output,config):
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('WEIGHT_DIAGNOSTIC_CHECKPOINT_MISMATCH')
     r,snapshot,task,_=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
+    from .model_io import bind_free_coordinates
+    checkpoint=bind_free_coordinates(checkpoint,task.duration)
     aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
     tree=DifferentiableTree(r);tree.use_momentum_mass_rows=manifest.get('physics_backend') in ('eager_mass_rows','batched_bodyframe','batched_full_path')
     tree.use_batched_bodyframe_momentum=manifest.get('physics_backend') in ('batched_bodyframe','batched_full_path')

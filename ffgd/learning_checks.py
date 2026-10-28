@@ -26,10 +26,13 @@ def run(path,config):
     ids=np.flatnonzero(~data['is_train'])[:5]
     if len(ids)<5:raise ValueError('five VAL conditions required')
     r=Robot();tree=DifferentiableTree(r);rows=[];outputs=[];budget=SamplingBudget(steps=60,guide_steps=0)
+    from .model_io import bind_free_coordinates
+    raw_checkpoint=checkpoint
     for index,item in enumerate(ids):
         check_budget();seed=54200+index
         snapshot=Snapshot(r.model_hash,int(checkpoint['dataset_manifest']['state_mask']),data['initial_state'][item])
         prop=Propagator(tree,snapshot);T=float(data['duration'][item]);n=int(checkpoint['dataset_manifest']['control_points'])
+        checkpoint=bind_free_coordinates(raw_checkpoint,T)
         bc=[Boundary(0,j,tuple(range(17)),tuple(prop.initial_q if j==0 else prop.initial_v if j==1 else np.zeros(17))) for j in (0,1,2)]
         bc.extend(Boundary(T,j,tuple(range(17)),(0.,)*17) for j in (1,2));codec=BoundaryCodec(n,17,T,bc,origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'))
         condition=normalize_condition(data['tokens'][item:item+1],data['padding'][item:item+1],checkpoint,device)
@@ -76,5 +79,6 @@ def run(path,config):
     variation=np.std(outputs,axis=0)
     return dict(passed=all(x['passed'] for x in rows) and float(variation.min())>1e-8,checkpoint=identity,samples=rows,minimum_sample_coordinate_std=float(variation.min()),
                 dataset_accepted=checkpoint['dataset_manifest']['accepted'],full_free_dim=len(checkpoint['mean']),boundary_origin=checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero'),
+                free_coordinate_schema=checkpoint['dataset_manifest'].get('free_coordinate_schema','physical_position_v1'),
                 architecture_status='NOT_RUN',engineering_status='NOT_RUN',learning_benefit_status='NOT_RUN',
                 scope='trained full-variable model, full-noise finite boundary decoding and dependency checks only')

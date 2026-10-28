@@ -98,6 +98,8 @@ def run(output,config):
         model,checkpoint,identity=load_model(planning['checkpoint'],planning.get('device','cpu'))
         if checkpoint['dataset_manifest'].get('boundary_origin','pivot_zero')!=budget.boundary_origin:raise ValueError('BOUNDARY_ORIGIN_MISMATCH')
         if checkpoint['robot_physical_hash']!=r.physical_hash or len(checkpoint['mean'])!=codec.free_dim:raise ValueError('BASELINE_MODEL_CONTRACT_MISMATCH')
+        from ..model_io import bind_free_coordinates
+        checkpoint=bind_free_coordinates(checkpoint,task.duration)
         mean_array=checkpoint['mean'];scale_array=checkpoint['scale']
     else:
         # C uses physical free coordinates, without reading a checkpoint or
@@ -127,6 +129,7 @@ def run(output,config):
     atomic_json(output/'planning_manifest.json',dict(method=method,comparison_only=True,budget=asdict(budget),physical_budget=limits,
         checkpoint=identity,shared_train_scaler=method=='D_POST_OPTIMIZATION',learned_network_used=method=='D_POST_OPTIMIZATION',profile=profile,
         free_coordinate_scaling='TRAIN_ONLY_DIAGONAL' if method=='D_POST_OPTIMIZATION' else 'PHYSICAL_ORTHONORMAL_FREE_COORDINATES',
+        free_coordinate_schema=checkpoint['dataset_manifest'].get('free_coordinate_schema','physical_position_v1') if method=='D_POST_OPTIMIZATION' else 'physical_position_v1',
         guide_weights=energy.weights,collision_aggregation=energy.collision_aggregation,joint_peak_penalty=energy.joint_peak_penalty,task_objective=energy.task_objective,planning_margins=dict(energy.planning_margins),physics_backend=planning.get('physics_backend','eager'),
         robot_model_hash=r.model_hash,robot_physical_hash=r.physical_hash,scene_hash=r.scene.identity,
         timing_includes_setup_and_network=True,learning_benefit_status='NOT_RUN'))

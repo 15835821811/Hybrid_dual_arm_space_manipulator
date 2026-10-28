@@ -55,6 +55,8 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
     prop=Propagator(DifferentiableTree(robot),snapshot);other_prop=Propagator(DifferentiableTree(other),other_snapshot)
     tokens=encode_condition(robot,snapshot,task,prop.H.numpy());other_tokens=encode_condition(other,other_snapshot,other_task,other_prop.H.numpy())
     equal_tokens=np.array_equal(tokens,other_tokens)
+    from .model_io import bind_free_coordinates
+    checkpoint=bind_free_coordinates(checkpoint,task.duration)
     mean=np.asarray(checkpoint['mean']);scale=np.asarray(checkpoint['scale']);x=torch.tensor((z-mean)/scale,dtype=torch.float32)[None]
     mask=np.zeros((1,len(tokens)),bool)
     with torch.no_grad():

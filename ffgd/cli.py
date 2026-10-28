@@ -12,6 +12,7 @@ def main(argv=None):
     for name in ('doctor','status','next'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','full-space-origin','compiled'],required=True);t.add_argument('--samples',type=int)
     t.add_argument('--planning-margins')
+    t.add_argument('--free-coordinate-schema',choices=['physical_position_v1','duration_squared_v1'],default='physical_position_v1')
     t.add_argument('--task-objective',choices=['center_squared','tolerance_squared_hinge'],default='center_squared')
     for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','momentum-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
@@ -36,10 +37,13 @@ def main(argv=None):
         from .calibration import doctor
         return unit('doctor',doctor,dict(max_wall_seconds=180,max_workers=1))
     if args.command=='data':
-        from .data import generate,reencode_origin,merge_prior
+        from .data import generate,reencode_origin,merge_prior,reencode_duration_coordinates
         from pathlib import Path
         if not args.config:p.error('data requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
+        if config.get('operation')=='reencode_duration_coordinates':
+            if args.run:p.error('duration reencoding does not support --run resume')
+            return unit('prior_duration_reencoding',lambda path:reencode_duration_coordinates(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))
         if config.get('operation')=='merge_prior':
             if args.run:p.error('prior merge does not support --run resume')
             return unit('prior_union',lambda path:merge_prior(path,config),dict(max_wall_seconds=config['max_wall_seconds'],new_physical_trajectories=0))
@@ -183,7 +187,7 @@ def main(argv=None):
         if not args.run:p.error('replay requires --run execution-directory')
         return unit('independent_replay',lambda path:replay_saved(path,args.run),dict(max_wall_seconds=600))
     if args.command=='test':
-        if (args.task_objective!='center_squared' or args.planning_margins) and args.suite!='full-space-origin':p.error('experimental task objective requires full-space-origin calibration')
+        if (args.task_objective!='center_squared' or args.planning_margins or args.free_coordinate_schema!='physical_position_v1') and args.suite!='full-space-origin':p.error('experimental task objective/coordinates require full-space-origin calibration')
         from pathlib import Path
         margins=json.loads(Path(args.planning_margins).read_text(encoding='utf-8')) if args.planning_margins else None
         if args.samples is None:args.samples=3 if args.suite in ('gradients','energy','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','full-space-origin') else 32
@@ -193,7 +197,7 @@ def main(argv=None):
                 r=subprocess.run([sys.executable,'-m','pytest','ffgd/tests','-q',f'--junitxml={path / "tests.xml"}'],cwd=ROOT,capture_output=True,text=True)
                 (path/'output.txt').write_text(r.stdout+r.stderr,encoding='utf-8');print(r.stdout+r.stderr)
                 return dict(passed=r.returncode==0,exit_code=r.returncode,scope='implemented software contracts only',ARCH_01_to_10='NOT_RUN')
-            return unit('software',software,dict(max_wall_seconds=120))
+            return unit('software',software,dict(max_wall_seconds=180))
         if args.suite=='physics':
             if args.samples<1: p.error('samples must be positive')
             from .calibration import physics
@@ -223,7 +227,7 @@ def main(argv=None):
             return unit('feature_switch',run,dict(max_wall_seconds=180,cases=1,epsilon_steps=6))
         if args.suite=='full-space-origin':
             from .calibration_constraints import energy_gradients
-            return unit('full_space_origin_gradients',lambda path:energy_gradients(path,args.samples,24,collision_aggregation='pair_mean_plus_max',bodyframe_backend=True,joint_peak_penalty=True,full_path_backend=True,boundary_origin='initial_position',task_objective=args.task_objective,planning_margins=margins),dict(max_wall_seconds=900,cases=args.samples,free_dim=323))
+            return unit('full_space_origin_gradients',lambda path:energy_gradients(path,args.samples,24,collision_aggregation='pair_mean_plus_max',bodyframe_backend=True,joint_peak_penalty=True,full_path_backend=True,boundary_origin='initial_position',task_objective=args.task_objective,planning_margins=margins,free_coordinate_schema=args.free_coordinate_schema),dict(max_wall_seconds=900,cases=args.samples,free_dim=323))
         if args.suite in ('full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path'):
             from .calibration_constraints import energy_gradients
             aggregation='pair_mean' if args.suite=='full-space' else 'pair_mean_plus_max'

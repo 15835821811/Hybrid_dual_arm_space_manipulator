@@ -46,13 +46,14 @@ def merge_prior(path,config):
     sources=config['source_datasets']
     if len(sources)<2 or len(set(map(str,sources)))!=len(sources):raise ValueError('DISTINCT_PRIOR_SOURCES_REQUIRED')
     parents=[];batches=[];next_group=0;max_tokens=0;reference=None
-    keys=('model_hash','state_mask','control_points','free_dim','geometry_policy_hash','boundary_origin','profile')
+    keys=('model_hash','state_mask','control_points','free_dim','geometry_policy_hash','boundary_origin','profile','free_coordinate_schema')
     for index,directory in enumerate(sources):
         check_budget();directory=Path(directory)
         manifest=json.loads((directory/'dataset_manifest.json').read_text(encoding='utf-8'))
         data_hash=hashlib.sha256((directory/'prior.npz').read_bytes()).hexdigest()
         if data_hash!=manifest['data_hash'] or manifest['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
-        contract={k:manifest.get(k,'pivot_zero' if k=='boundary_origin' else None) for k in keys}
+        defaults={'boundary_origin':'pivot_zero','free_coordinate_schema':'physical_position_v1'}
+        contract={k:manifest.get(k,defaults.get(k)) for k in keys}
         if any(v is None for v in contract.values()):raise ValueError('INCOMPLETE_PRIOR_CONTRACT')
         if reference is None:reference=contract
         if contract!=reference:raise ValueError('PRIOR_MERGE_CONTRACT_MISMATCH')
@@ -104,6 +105,50 @@ def merge_prior(path,config):
     return dict(passed=True,**manifest)
 
 
+def reencode_duration_coordinates(path,config):
+    """Invertible label-unit change on existing validated physical paths only."""
+    torch.set_num_threads(1)
+    source=Path(config['source_dataset'])
+    parent=json.loads((source/'dataset_manifest.json').read_text(encoding='utf-8'))
+    parent_hash=hashlib.sha256((source/'prior.npz').read_bytes()).hexdigest()
+    if parent_hash!=parent['data_hash'] or parent['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
+    if parent.get('free_coordinate_schema','physical_position_v1')!='physical_position_v1':raise ValueError('SOURCE_FREE_COORDINATES_NOT_PHYSICAL')
+    if parent.get('boundary_origin')!='initial_position':raise ValueError('DURATION_REENCODING_REQUIRES_INITIAL_ORIGIN')
+    with np.load(source/'prior.npz') as stored:arrays={k:stored[k] for k in stored.files}
+    preserved={k:hashlib.sha256(np.ascontiguousarray(v).tobytes()).hexdigest() for k,v in arrays.items() if k!='z'}
+    duration=arrays['duration'];old=arrays['z'];controls=arrays['control'];n=controls.shape[1]
+    if not np.all(np.isfinite(duration)&(duration>0)):raise ValueError('INVALID_DATASET_DURATION')
+    # Current forward-prior domain fixes zero endpoint derivatives. Reject a
+    # different template rather than silently changing its boundary offset.
+    if not np.allclose(controls[:,:3],controls[:,0:1],atol=1e-10,rtol=0) or not np.allclose(controls[:,-3:],controls[:,-1:],atol=1e-10,rtol=0):
+        raise ValueError('DURATION_REENCODING_BOUNDARY_TEMPLATE_MISMATCH')
+    labels=old/duration[:,None]**2;maximum=0.;source_error=0.
+    for T in np.unique(duration):
+        check_budget();ids=duration==T
+        bc=[Boundary(0,k,tuple(range(17)),(0.,)*17) for k in (0,1,2)]
+        bc += [Boundary(float(T),k,tuple(range(17)),(0.,)*17) for k in (1,2)]
+        codec=BoundaryCodec(n,17,float(T),bc,origin='initial_position')
+        if codec.free_dim!=old.shape[1]:raise ValueError('DURATION_REENCODING_FREE_SPACE_MISMATCH')
+        baseline=(old[ids]@codec.N.T).reshape(-1,n,17)+controls[ids,0:1]
+        decoded=((labels[ids]*T*T)@codec.N.T).reshape(-1,n,17)+controls[ids,0:1]
+        source_error=max(source_error,float(np.max(abs(baseline-controls[ids]))))
+        maximum=max(maximum,float(np.max(abs(decoded-controls[ids]))))
+    if max(maximum,source_error)>1e-10:raise ValueError('DURATION_REENCODING_PHYSICAL_PATH_MISMATCH')
+    arrays['z']=labels
+    for k,h in preserved.items():
+        if hashlib.sha256(np.ascontiguousarray(arrays[k]).tobytes()).hexdigest()!=h:raise ValueError('PHYSICAL_DATA_OR_SPLIT_CHANGED')
+    np.savez_compressed(path/'prior.npz',**arrays)
+    manifest=dict(parent,schema='ffgd_prior_duration_coordinates_v1',free_coordinate_schema='duration_squared_v1',
+        data_hash=hashlib.sha256((path/'prior.npz').read_bytes()).hexdigest(),dataset_path=str(path),
+        parent_dataset=str(source.resolve()),parent_data_hash=parent_hash,
+        parent_manifest_hash=hashlib.sha256((source/'dataset_manifest.json').read_bytes()).hexdigest(),
+        transformation_config=config,unchanged_array_hashes=preserved,maximum_decode_error=maximum,
+        original_decode_error=source_error,new_physical_trajectories=0,
+        physical_validation='Inherited parent native validation; all physical arrays and splits unchanged, only free-label units transformed')
+    atomic_json(path/'dataset_manifest.json',manifest)
+    return dict(passed=True,**manifest)
+
+
 def reencode_origin(path,config):
     """Relabel immutable model-prior paths in an invertible affine coordinate system.
 
@@ -119,6 +164,7 @@ def reencode_origin(path,config):
     parent_hash=hashlib.sha256((source/'prior.npz').read_bytes()).hexdigest()
     if parent_hash!=parent['data_hash'] or parent['source_kind']!='FF_MODEL_PRIOR':raise ValueError('SOURCE_DATASET_IDENTITY_MISMATCH')
     if parent.get('boundary_origin','pivot_zero')!='pivot_zero':raise ValueError('SOURCE_ORIGIN_NOT_SUPPORTED')
+    if parent.get('free_coordinate_schema','physical_position_v1')!='physical_position_v1':raise ValueError('SOURCE_FREE_COORDINATES_NOT_PHYSICAL')
     with np.load(source/'prior.npz') as z:arrays={k:z[k] for k in z.files}
     r=Robot()
     if r.model_hash!=parent['model_hash']:raise ValueError('REENCODING_MODEL_MISMATCH')
