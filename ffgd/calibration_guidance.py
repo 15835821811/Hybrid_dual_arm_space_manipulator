@@ -26,7 +26,7 @@ def _run(path,config):
     manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'))
     model,checkpoint,identity=load_model(config['checkpoint'],'cpu')
     if identity['sha256']!=manifest['checkpoint']['sha256']:raise ValueError('DIAGNOSTIC_CHECKPOINT_MISMATCH')
-    r,snapshot,task,problem=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'))
+    r,snapshot,task,problem=load_problem(root/'problem.json');codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     from .model_io import bind_free_coordinates
     checkpoint=bind_free_coordinates(checkpoint,task.duration)
     tree=DifferentiableTree(r)
@@ -36,7 +36,17 @@ def _run(path,config):
         compile_tree(tree)
     aggregation=config.get('collision_aggregation',manifest.get('collision_aggregation','pair_mean'))
     joint_peak=config.get('joint_peak_penalty',manifest.get('joint_peak_penalty',False))
-    p=Propagator(tree,snapshot);energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation,joint_peak_penalty=joint_peak,task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')),planning_margins=config.get('planning_margins',manifest.get('planning_margins')))
+    if manifest.get('physics_backend')=='full_state':
+        from .propagation import FullStatePropagation
+        from .compiled_physics import compile_full_state_step,compile_multirate
+        tree.use_batched_path_physics=True
+        refresh=manifest['budget'].get('mass_refresh_steps',1)
+        p=FullStatePropagation(tree,snapshot,physics_dt=manifest['budget'].get('prediction_dt',.002),target_force_pulses=task.target_force_pulses,mass_refresh_steps=refresh)
+        if config.get('compiled_full_step',False):
+            if refresh>1:compile_multirate(p.predictor,p.dt,round(p.predicted_control_period/p.dt),refresh,round(task.duration/p.dt),path)
+            else:compile_full_state_step(p.predictor,p.dt,path)
+    else:p=Propagator(tree,snapshot)
+    energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation,joint_peak_penalty=joint_peak,task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')),planning_margins=config.get('planning_margins',manifest.get('planning_margins')))
     energy.weights.update(manifest.get('guide_weights',{}))
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
@@ -78,6 +88,9 @@ def _run(path,config):
         jacobian_verified=value_error<1e-8 and max(row['relative_error'] for row in verification)<1e-5
         atomic_json(path/'jacobian_check.json',dict(passed=jacobian_verified,native_value_max_error=value_error,rows=verification))
     before={k:float(v.detach()) for k,v in terms.items()};rows=[];proposals=[]
+    native_before=energy.native_evaluate(checkpoint['mean']+checkpoint['scale']*clean)
+    scalar_relative=max(abs(native_before[k]-before[k])/max(1.,abs(native_before[k]),abs(before[k])) for k in before)
+    if scalar_relative>1e-6:raise ValueError('DIAGNOSTIC_NATIVE_ENERGY_MISMATCH')
     from .guidance_metric import acceleration_metric
     metric=acceleration_metric(codec,checkpoint['scale'],r.spec.planner_acceleration_limits,energy.grid,config.get('metric_weight',0))
     if J is not None:metric=metric+J.T@J
@@ -105,7 +118,7 @@ def _run(path,config):
         coupling.append(dict(step=i,clean_to_next_state_gain=gain,guide_reduction=row['updates'][-1]['before']-row['updates'][-1]['after'],
                              next_network_energy_increase=trace[i+1]['energies_before_guidance']['total']-row['updates'][-1]['after']))
     np.savez_compressed(path/'diagnostic_inputs.npz',original_clean=clean,gradient=gradient,one_step_proposals=np.asarray(proposals))
-    return dict(passed=jacobian_verified is not False,scope='bounded root-cause experiment, no plan returned or executed',source_run=str(root),before=before,gradient_norm=norm,jacobian_verified=jacobian_verified,
+    return dict(passed=jacobian_verified is not False,scope='bounded root-cause experiment, no plan returned or executed',source_run=str(root),before=before,native_before=native_before,native_scalar_relative_error=scalar_relative,gradient_norm=norm,jacobian_verified=jacobian_verified,
                 metric_weight=config.get('metric_weight',0),metric_condition=float(torch.linalg.cond(metric)),positive_descent_inner_product=float(gradient@direction),
                 task_metric=J is not None,task_jacobian_singular_values=torch.linalg.svdvals(J).tolist() if J is not None else None,
                 residual_energy_error=residual_energy_error,derivative_seconds=derivative_seconds,

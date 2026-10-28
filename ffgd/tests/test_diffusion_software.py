@@ -104,3 +104,27 @@ def test_polyak_cap_handles_nonzero_energy_floor_without_extra_line_trials():
             assert update['accepted'] and update['after']<update['before']
             assert update['step_coefficient']<=.25 and update['trials']<=2
     assert capped['network_calls']==4 and capped['post_sampling_trajectory_repair_calls']==0
+
+
+def test_rejected_effective_step_backs_off_within_fixed_budget():
+    # Nonzero energy floor reproduces the observed Polyak overshoot. A very
+    # large uncapped coefficient also checks backoff AFTER the trust caps.
+    torch.set_num_threads(1);torch.manual_seed(45)
+    model=ConditionalDenoiser(max_free=12,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32))
+    calls=[]
+    def energy(x):
+        calls.append(x.detach().clone())
+        return dict(total=10000.+.5*x.square().sum())
+    common=dict(steps=4,guide_steps=3,updates_per_step=3,line_trials=2,step_rule='polyak',step_size=2.,max_update_norm=100.)
+    result=sample(model,condition,8,23,SamplingBudget(**common,rejection_backoff=True),energy)
+    updates=[u for row in result['trace'] for u in row['updates']]
+    assert len(updates)==9 and len(calls)<=27
+    assert any(not u['accepted'] for u in updates) and any(u['accepted'] for u in updates)
+    for i,u in enumerate(updates[:-1]):
+        if not u['accepted']:
+            assert u['feedback_cap_after']==u['effective_step_coefficient']/4
+            assert updates[i+1]['step_coefficient']<=u['feedback_cap_after']
+    assert all(u['after']<=u['before'] and u['trials']<=2 for u in updates)
+    assert result['network_calls']==4 and result['post_sampling_trajectory_repair_calls']==0
+    for a,b in zip(result['trace'],result['trace'][1:]):np.testing.assert_array_equal(a['output'],b['input'])

@@ -23,6 +23,7 @@ class SamplingBudget:
     task_metric: bool = False
     jacobian_batch_size: int = 1
     max_step_coefficient: float | None = None
+    rejection_backoff: bool = False
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
@@ -31,6 +32,7 @@ class SamplingBudget:
         if self.step_rule not in ('constant','polyak') or self.acceleration_metric_weight<0:raise ValueError('invalid guidance rule/metric')
         if not 1<=self.jacobian_batch_size<=12:raise ValueError('invalid Jacobian VJP batch size')
         if self.max_step_coefficient is not None and (not np.isfinite(self.max_step_coefficient) or self.max_step_coefficient<=0):raise ValueError('invalid step coefficient cap')
+        if type(self.rejection_backoff) is not bool:raise ValueError('invalid rejection backoff')
 
 
 def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
@@ -48,6 +50,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
     if budget.guide_steps and energy is None:raise ValueError('missing physical energy')
     trace=[];calls=0
     metric_factor=None if metric is None else torch.linalg.cholesky(metric)
+    feedback_cap=None
     model.eval()
     for index,k in enumerate(schedule):
         input_x=x.detach().clone()
@@ -98,13 +101,17 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     coefficient*=max(float(terms['total'].detach()),0.)/max(directional_descent,1e-30)
                 uncapped_coefficient=coefficient
                 if budget.max_step_coefficient is not None:coefficient=min(coefficient,budget.max_step_coefficient)
+                if budget.rejection_backoff and feedback_cap is not None:coefficient=min(coefficient,feedback_cap)
                 delta=coefficient*direction
-                delta=delta*min(1.,budget.max_update_norm/max(float(torch.linalg.vector_norm(delta)),1e-30))
+                norm_factor=min(1.,budget.max_update_norm/max(float(torch.linalg.vector_norm(delta)),1e-30))
+                delta=delta*norm_factor
+                effective_coefficient=coefficient*norm_factor
                 before=float(terms['total'].detach());accepted=False;after=before;chosen=0.
                 physical_change=None
                 if control_jacobian is not None:
                     physical_change=float(torch.max(abs(control_jacobian@delta)))
                     factor=min(1.,budget.max_control_change/max(physical_change,1e-30));delta=delta*factor;physical_change*=factor
+                    effective_coefficient*=factor
                 diagnostics=dict(getattr(energy,'diagnostics',{}))
                 for trial in range(budget.line_trials):
                     step=2.**(-trial);proposal=(guided-step*delta).detach()
@@ -112,9 +119,20 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     trial_value=float(after_terms['total'])
                     if np.isfinite(trial_value) and trial_value<=before:
                         guided=proposal;after=trial_value;accepted=True;chosen=step;break
+                # Spend only the next ALREADY budgeted update on a smaller
+                # physical step instead of repeating an identical rejection.
+                # Carry the scalar within this candidate, never across seeds.
+                # Use the effective coefficient after both trust caps: merely
+                # halving the uncapped Polyak scale can repeat the same delta.
+                previous_feedback_cap=feedback_cap
+                if budget.rejection_backoff:
+                    if not accepted:feedback_cap=effective_coefficient*2.**(-budget.line_trials)
+                    elif feedback_cap is not None:feedback_cap=2.*effective_coefficient*chosen
                 updates.append(dict(gradient_norm=float(torch.linalg.vector_norm(grad)),before=before,after=after,accepted=accepted,
                                     preconditioned_gradient_norm=float(torch.linalg.vector_norm(direction)),directional_descent=directional_descent,step_coefficient=coefficient,step_rule=budget.step_rule,
                                     uncapped_step_coefficient=uncapped_coefficient,
+                                    effective_step_coefficient=effective_coefficient,
+                                    feedback_cap_before=previous_feedback_cap,feedback_cap_after=feedback_cap,
                                     line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
                                     terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
                                     proposed_maximum_control_change=physical_change,

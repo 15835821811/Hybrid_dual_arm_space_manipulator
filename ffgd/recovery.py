@@ -9,7 +9,7 @@ import platform
 import subprocess
 from pathlib import Path
 import psutil
-from .orchestration import ROOT,ORCH,read_state,atomic_json,event,utc
+from .orchestration import ROOT,ORCH,read_state,atomic_json,event,utc,repository_identity
 
 
 def live_identity(identity):
@@ -23,8 +23,9 @@ def live_identity(identity):
 def resume():
     s=read_state();active=s.get('active_unit');checks={};recovered=None
     checks['master_hash']=hashlib.sha256((ROOT/'docs/ffgd/MASTER.md').read_bytes()).hexdigest()==s['source_contract']['master_sha256']
-    checks['branch']=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()==s['workspace']['branch']
-    actual_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    identity=repository_identity(ROOT)
+    checks['branch']=identity['branch']==s['workspace']['branch']
+    actual_head=identity['head']
     if active:checks['worker_host']=active['process_identity']['host']==platform.node()
     checkpoint=s.get('latest_verified_checkpoint')
     checks['checkpoint_hash']=None if checkpoint is None else Path(checkpoint['path']).exists() and hashlib.sha256(Path(checkpoint['path']).read_bytes()).hexdigest()==checkpoint['sha256']

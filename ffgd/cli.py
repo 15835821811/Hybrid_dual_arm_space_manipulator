@@ -9,7 +9,7 @@ from .orchestration import ROOT,read_state,unit
 def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m ffgd.cli')
     sub=p.add_subparsers(dest='command',required=True)
-    for name in ('doctor','status','next'):sub.add_parser(name)
+    for name in ('doctor','status','next','init'):sub.add_parser(name)
     t=sub.add_parser('test');t.add_argument('--suite',choices=['architecture','physics','gradients','geometry','energy','execution','momentum','distance-precision','convex','feature-switch','full-space','full-space-peak','full-space-bodyframe','full-space-joint-peak','full-space-batched-path','full-space-origin','compiled'],required=True);t.add_argument('--samples',type=int)
     t.add_argument('--planning-margins')
     t.add_argument('--free-coordinate-schema',choices=['physical_position_v1','duration_squared_v1'],default='physical_position_v1')
@@ -17,6 +17,9 @@ def main(argv=None):
     for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','full-state-diagnostic','momentum-diagnostic','plan','validate','execute','replay','validate-chain','continue-state','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
+    if args.command=='init':
+        from .orchestration import initialize
+        print(json.dumps(initialize(),indent=2,ensure_ascii=False));return 0
     if args.command in ('status','next'):
         s=read_state();print(json.dumps(s if args.command=='status' else s['next_action'],indent=2,ensure_ascii=False));return 0
     if args.command=='resume':

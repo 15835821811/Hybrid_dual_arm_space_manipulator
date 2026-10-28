@@ -28,6 +28,39 @@ def utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()
 def read_state(): return json.loads((ORCH/'state.json').read_text(encoding='utf-8-sig'))
 
 
+def repository_identity(root=ROOT):
+    """Do not mistake an enclosing repository for a standalone source bundle."""
+    try:
+        top=Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],cwd=root,text=True,stderr=subprocess.DEVNULL).strip()).resolve()
+        if top!=Path(root).resolve():return dict(kind='SOURCE_BUNDLE',head=None,branch=None)
+        head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True,stderr=subprocess.DEVNULL).strip()
+        branch=subprocess.check_output(['git','branch','--show-current'],cwd=root,text=True,stderr=subprocess.DEVNULL).strip()
+        return dict(kind='GIT_CHECKOUT',head=head,branch=branch)
+    except (subprocess.CalledProcessError,FileNotFoundError):return dict(kind='SOURCE_BUNDLE',head=None,branch=None)
+
+
+def initialize():
+    """Bootstrap a fresh delivery only; never reset an existing work ledger."""
+    path=ORCH/'state.json'
+    if path.exists():raise FileExistsError('FFGD_STATE_ALREADY_EXISTS_USE_RESUME')
+    master=ROOT/'docs/ffgd/MASTER.md'
+    if not master.is_file():raise FileNotFoundError('DELIVERY_MASTER_MISSING')
+    identity=repository_identity(ROOT)
+    state=dict(schema='ffgd_long_running_state_v1',template_only=False,goal_id='free_floating_guided_diffusion_core',
+        overall_status='NOT_STARTED',architecture_status='NOT_RUN',engineering_status='NOT_STARTED',learning_benefit_status='NOT_RUN',current_milestone='M0',
+        workspace=dict(path=str(ROOT),branch=identity['branch'],head=identity['head'],kind=identity['kind'],user_changes_reviewed=False),
+        source_contract=dict(master_sha256=hashlib.sha256(master.read_bytes()).hexdigest()),
+        milestones={f'M{i}':dict(status='NOT_STARTED' if i==0 else 'NOT_RUN',evidence=[],open_failures=[]) for i in range(9)},
+        active_unit=None,owned_processes=[],latest_verified_checkpoint=None,external_blockers=[],completion_evidence=None,
+        next_action='Run doctor, verify declared assets/config/checkpoint, then the explicit engineering commands. No milestone is pre-certified.',
+        last_update_utc=utc())
+    ORCH.mkdir(parents=True,exist_ok=True)
+    # Exclusive creation protects against concurrent initializers as well.
+    with path.open('x',encoding='utf-8') as stream:json.dump(state,stream,indent=2,ensure_ascii=False)
+    event('initialized_fresh_delivery',repository=identity,stages='NOT_STARTED_OR_NOT_RUN')
+    return dict(initialized=True,state=str(path),repository=identity,existing_state_modified=False)
+
+
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     tmp=path.with_name(path.name+'.'+uuid.uuid4().hex+'.tmp')
@@ -72,7 +105,7 @@ def unit(name, callback, budget):
     path=ROOT/'artifacts/ffgd/runs'/ident; path.mkdir(parents=True)
     manifest=dict(id=ident, status='RUNNING',start=utc(),pid=os.getpid(),host=platform.node(),
                   process_identity=identity,command=[sys.executable,'-m','ffgd.cli',*sys.argv[1:]],source_hash=source_hash(),budget=budget)
-    manifest['git_head']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    manifest['repository']=repository_identity(ROOT);manifest['git_head']=manifest['repository']['head']
     memory=psutil.virtual_memory();disk=shutil.disk_usage(ROOT)
     manifest['resources']=dict(available_ram=memory.available,max_rss=int(.8*memory.available),free_disk=disk.free,logical_cpus=os.cpu_count(),reserved_cpus=budget.get('reserved_cpus',1))
     if disk.free<10*1024**3:
