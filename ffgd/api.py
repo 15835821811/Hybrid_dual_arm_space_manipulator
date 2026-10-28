@@ -75,8 +75,13 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     elif physics_backend in ('batched_bodyframe','batched_full_path'):
         tree.use_momentum_mass_rows=True;tree.use_batched_bodyframe_momentum=True
         tree.use_batched_path_physics=physics_backend=='batched_full_path'
+    elif physics_backend=='full_state':tree.use_batched_path_physics=True
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
-    prop=Propagator(tree,initial);geometry=Geometry(robot)
+    if physics_backend=='full_state':
+        from .propagation import FullStatePropagation
+        prop=FullStatePropagation(tree,initial)
+    else:prop=Propagator(tree,initial)
+    geometry=Geometry(robot)
     if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe','batched_full_path'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric,collision_aggregation=collision_aggregation,joint_peak_penalty=joint_peak_penalty,task_objective=task_objective,planning_margins=planning_margins)
     if guide_weights is not None:

@@ -261,3 +261,44 @@ class FullStateAdjoint(torch.autograd.Function):
             ax,av,au,ar,dq,dqd,dqdd=[torch.zeros_like(value) if grad is None else grad for value,grad in zip(values,gradients)]
             gq[i]=dq;gqd[i]=dqd;gqdd[i]=dqdd
         return ax+gx[0],av+gv[0],gq,gqd,gqdd,None,None,None
+
+
+class FullStatePropagation:
+    """Whole-state guide adapter; independent native integration is separate."""
+    prediction_mode='full_state'
+    def __init__(self,tree,initial,physics_dt=.002):
+        self.tree=tree;self.robot=r=tree.robot;self.initial=initial
+        d=r.restore(initial)
+        self.qpos=tensor(d.qpos);self.initial_q=r.Bplus@d.qpos[r.qpos_ids]
+        self.initial_v=r.Bplus@d.qvel[r.dof_ids];self.H=tensor(native_momentum(r,d))
+        self.dt=physics_dt
+        self.predictor=FullStatePredictor(tree,initial,integrator='implicit_damping')
+
+    def rollout(self,codec,z,intervals=32,check_boundary=True,grid=None):
+        times=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
+        q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
+        if check_boundary and (np.max(abs(q[0].detach().numpy()-self.initial_q))>1e-10 or np.max(abs(qd[0].detach().numpy()-self.initial_v))>1e-10):raise ValueError('REFERENCE_INITIAL_BOUNDARY_MISMATCH')
+        substeps=int(round(.002/self.dt))
+        full=self.predictor.rollout(codec,z,physics_dt=self.dt,control_substeps=substeps,memory_efficient=True)
+        # Geometry/kinematics at off-grid spline knots use linear state sampling;
+        # task times remain unchanged. Quaternion normalization occurs in FK.
+        coordinate=np.clip(times/self.dt,0,len(full['time'])-1)
+        left=np.floor(coordinate).astype(int);right=np.minimum(left+1,len(full['time'])-1)
+        alpha=tensor(coordinate-left)[:,None]
+        x=full['qpos'][left]*(1-alpha)+full['qpos'][right]*alpha
+        v=full['velocity'][left]*(1-alpha)+full['velocity'][right]*alpha
+        control_indices=np.minimum(left,len(full['raw_torque'])-1)
+        raw=full['raw_torque'][control_indices];applied=full['applied_torque'][control_indices]
+        acceleration=torch.stack([self.tree.full_state_acceleration(xx,vv,uu) for xx,vv,uu in zip(x,v,applied)])
+        r=self.robot
+        return dict(time=times,q=q,qd=qd,qdd=qdd,qpos=x,velocity=v,
+                    actual_q67=x[:,r.qpos_ids],actual_v67=v[:,r.dof_ids],actual_a67=acceleration[:,r.dof_ids],
+                    feedback_raw_torque=raw,prediction_steps=len(full['time'])-1)
+
+    def native_rollout(self,codec,z,intervals=32,grid=None):
+        from .full_state_validation import native_prediction
+        full=native_prediction(self.robot,self.initial,codec,z,self.dt,geometry=False)
+        self.last_native_prediction=full
+        grid=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
+        coordinate=np.clip(grid/self.dt,0,len(full['qpos'])-1);left=np.floor(coordinate).astype(int);right=np.minimum(left+1,len(full['qpos'])-1);a=(coordinate-left)[:,None]
+        return full['qpos'][left]*(1-a)+full['qpos'][right]*a,full['velocity'][left]*(1-a)+full['velocity'][right]*a

@@ -13,7 +13,7 @@ from .problem_io import load_problem
 from .model_io import load_model
 from .api import boundary_codec
 from .physics import DifferentiableTree,tensor
-from .propagation import Propagator
+from .propagation import Propagator,FullStatePropagation
 from .geometry import Geometry
 from .costs import MultiSpaceEnergy
 from .contracts import TaskSpec,PoseConstraint
@@ -108,14 +108,15 @@ def audit(path,config):
         contract=static_contract(r,snapshot,task,codec)
         semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)
         atomic_json(path/'contracts.json',dict(static=contract,semantic=semantic))
-        p=Propagator(tree,snapshot);base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
+        prop_type=FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator
+        p=prop_type(tree,snapshot);base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
         changed=[]
         for item in task.poses:
             changed.append(PoseConstraint(item.time,item.tip,item.position+[0,.03,.02],item.rotation,item.position_tolerance,item.rotation_tolerance,item.position_enabled,item.rotation_enabled))
         goal=MultiSpaceEnergy(p,codec,g,TaskSpec(task.duration,tuple(changed)),manifest['budget']['intervals'])
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
-        obstacle=MultiSpaceEnergy(Propagator(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])
+        obstacle=MultiSpaceEnergy(prop_type(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])
         for energy in (base,goal,obstacle):
             energy.weights.update(manifest.get('guide_weights',{}))
             energy.collision_aggregation=manifest.get('collision_aggregation','pair_mean')

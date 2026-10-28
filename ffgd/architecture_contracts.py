@@ -12,14 +12,14 @@ from .problem_io import load_problem
 from .conditioning import encode_condition
 from .model_io import normalize_condition
 from .physics import DifferentiableTree,tensor
-from .propagation import Propagator
+from .propagation import Propagator,FullStatePropagation
 from .geometry import Geometry
 from .costs import MultiSpaceEnergy
 
 
 def static_contract(robot,snapshot,task,codec):
     root=Path(__file__).parent
-    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','execution']
+    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','full_state_validation','execution']
     imports=[];violations=[];hashes={}
     for name in modules:
         source=root/(name+'.py');content=source.read_text(encoding='utf-8');hashes[name]=hashlib.sha256(source.read_bytes()).hexdigest()
@@ -52,7 +52,8 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
     value['task']['poses'].reverse();value.setdefault('scene',{}).setdefault('boxes',[]).reverse()
     renamed=Path(output)/'renamed_reordered_problem.json';renamed.write_text(json.dumps(value,indent=2),encoding='utf-8')
     other,other_snapshot,other_task,_=load_problem(renamed)
-    prop=Propagator(DifferentiableTree(robot),snapshot);other_prop=Propagator(DifferentiableTree(other),other_snapshot)
+    prop_type=FullStatePropagation if (manifest or {}).get('physics_backend')=='full_state' else Propagator
+    prop=prop_type(DifferentiableTree(robot),snapshot);other_prop=prop_type(DifferentiableTree(other),other_snapshot)
     tokens=encode_condition(robot,snapshot,task,prop.H.numpy());other_tokens=encode_condition(other,other_snapshot,other_task,other_prop.H.numpy())
     equal_tokens=np.array_equal(tokens,other_tokens)
     from .model_io import bind_free_coordinates

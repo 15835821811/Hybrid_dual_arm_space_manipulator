@@ -31,6 +31,9 @@ def selection_score(report,task):
 
 
 def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_intervals=2048):
+    if getattr(propagator,'prediction_mode',None)=='full_state':
+        from .full_state_validation import validate_full_state
+        return validate_full_state(candidate,snapshot,task,propagator,codec,geometry,profile)
     before=input_identity(candidate,snapshot,task);r=propagator.robot;m=r.model
     r.verify_identity()
     failures=[];gates={};report=dict(status='INCOMPLETE_VALIDATION',input_hash=before,gates=gates)

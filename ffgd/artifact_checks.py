@@ -16,7 +16,8 @@ from .orchestration import atomic_json,check_budget
 def validate_saved(output,planning_directory,candidate_index=None):
     root=Path(planning_directory);r,snapshot,task,problem=load_problem(root/'problem.json')
     manifest=json.loads((root/'planning_manifest.json').read_text(encoding='utf-8'));profile=manifest['profile']
-    prop=Propagator(DifferentiableTree(r),snapshot);geometry=Geometry(r);rows=[]
+    from .propagation import FullStatePropagation
+    prop=(FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator)(DifferentiableTree(r),snapshot);geometry=Geometry(r);rows=[]
     folders=[root/f'candidate_{int(candidate_index):03d}'] if candidate_index is not None else sorted(root.glob('candidate_*'))
     for folder in folders:
         check_budget()

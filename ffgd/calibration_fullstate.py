@@ -13,6 +13,7 @@ from .orchestration import atomic_json,check_budget
 def run(output,config):
     torch.set_num_threads(1)
     if 'native_refinement_run' in config:return refine_native_adjoint(output,config)
+    if config.get('full_energy'):return full_energy_check(output,config)
     r,snapshot,_,_=load_problem(config['problem'])
     original=r.restore(snapshot);tree=DifferentiableTree(r)
     rng=np.random.default_rng(8127);rows=[]
@@ -199,3 +200,34 @@ def refine_native_adjoint(output,config):
         atomic_json(output/'progress.json',dict(rows=rows))
     return dict(passed=all(row['signal_relative_error']<.1 and row['sign_agrees'] for row in rows[-2:]),rows=rows,
                 source_adjoint_run=str(root),source_gradient_reused=True,scope='Native integration refinement; original coarse absolute-tolerance PASS is not full gradient certification')
+
+
+def full_energy_check(output,config):
+    from .api import boundary_codec
+    from .propagation import FullStatePropagation
+    from .geometry import Geometry
+    from .costs import MultiSpaceEnergy
+    from .validation import validate
+    from .contracts import Candidate
+    r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
+    tree.use_batched_path_physics=True
+    prop=FullStatePropagation(tree,snapshot);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position')
+    energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=8,collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
+    rng=np.random.default_rng(7141);z0=rng.normal(0,config.get('z_std',.0003),codec.free_dim)
+    z=tensor(z0).requires_grad_(True);terms=energy.evaluate(z)
+    g=torch.autograd.grad(terms['total'],z)[0].detach().numpy()
+    oracle=energy.native_evaluate(z0)
+    values={k:float(v.detach()) for k,v in terms.items()}
+    errors={k:abs(values[k]-oracle[k])/max(1.,abs(values[k]),abs(oracle[k])) for k in values}
+    atomic_json(output/'energy_progress.json',dict(values=values,native=oracle,relative_errors=errors))
+    direction=rng.normal(size=codec.free_dim);direction/=np.linalg.norm(direction);eps=1e-7
+    fd=(energy.native_evaluate(z0+eps*direction)['total']-energy.native_evaluate(z0-eps*direction)['total'])/(2*eps)
+    ad=float(g@direction);error=abs(ad-fd)/max(1.,abs(ad),abs(fd))
+    # Read-only native validation of a new synthetic reference, not a diffusion result.
+    candidate=Candidate(codec.decode(np.zeros(codec.free_dim)),task.duration,0)
+    profile=__import__('json').loads(Path('configs/ffgd/numerical_profile_v1.json').read_text())
+    checked=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
+    atomic_json(output/'native_validator_smoke.json',checked)
+    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
+                gradient=dict(ad=ad,native_fd=fd,relative_error=error),validator_status=checked['status'],
+                scope='Full-state cost/gradient integration and read-only validator smoke, not diffusion planning success')
