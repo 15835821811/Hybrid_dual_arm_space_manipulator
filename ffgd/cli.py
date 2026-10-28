@@ -14,7 +14,7 @@ def main(argv=None):
     t.add_argument('--planning-margins')
     t.add_argument('--free-coordinate-schema',choices=['physical_position_v1','duration_squared_v1'],default='physical_position_v1')
     t.add_argument('--task-objective',choices=['center_squared','tolerance_squared_hinge'],default='center_squared')
-    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','momentum-diagnostic','plan','validate','execute','replay','benchmark','report','resume'):
+    for name in ('data','train','learning-checks','architecture-audit','architecture-io','guidance-diagnostic','condition-diagnostic','weight-diagnostic','guard-diagnostic','collision-diagnostic','mass-rows-diagnostic','momentum-diagnostic','plan','validate','execute','replay','continue-state','benchmark','report','resume'):
         s=sub.add_parser(name);s.add_argument('--config');s.add_argument('--run');s.add_argument('--task');s.add_argument('--unit')
     args=p.parse_args(argv)
     if args.command in ('status','next'):
@@ -166,6 +166,11 @@ def main(argv=None):
             return dict(passed=candidate is not None,**result)
         return unit('planning',planning,dict(max_wall_seconds=config['budget'].get('max_wall_seconds',1800)+60,
                     candidates=len(seeds),steps=config['budget'].get('sampling',{}).get('steps',60),reserved_cpus=config['budget'].get('cpu_threads',1)))
+    if args.command=='continue-state':
+        from .problem_io import export_continuation
+        if not args.run or not args.task:p.error('continue-state requires --run execution-directory and --task next-public-task')
+        index=-1 if args.unit is None else int(args.unit)
+        return unit('continuation_state',lambda path:export_continuation(path,args.run,args.task,index),dict(max_wall_seconds=60))
     if args.command=='execute':
         from .execution_acceptance import execute_selected
         from pathlib import Path

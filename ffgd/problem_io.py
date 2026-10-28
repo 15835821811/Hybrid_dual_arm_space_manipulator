@@ -45,3 +45,60 @@ def planning_config(path):
     config=json.loads(Path(path).read_text(encoding='utf-8-sig'))
     values=dict(config['budget']);values['sampling']=SamplingBudget(**values.get('sampling',{}))
     return config,PlanningBudget(**values)
+
+
+def export_continuation(output, execution_directory, task_file, state_index=-1):
+    """Export actual integration state, never a projected/planned joint state.
+
+    The next public task supplies only goals/time/scene; its initial is replaced
+    explicitly with the recorded state. Current FF+PD is memoryless at control
+    update boundaries. Mid-hold handoffs are refused, not silently rescheduled.
+    This export does not assert that the reduced planner supports the state.
+    """
+    import hashlib
+    from .execution import refine_physics
+    from .orchestration import atomic_json
+    root=Path(execution_directory);output=Path(output)
+    provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
+    acceptance=json.loads((root/'acceptance.json').read_text(encoding='utf-8'))
+    summary=json.loads((root/'execution.json').read_text(encoding='utf-8'))
+    if summary['controller']!='floating_ff_torque_pd_v1':raise ValueError('CONTINUATION_CONTROLLER_MEMORY_UNSUPPORTED')
+    if acceptance['status']!='EXECUTION_VALID':raise ValueError('CONTINUATION_SOURCE_NOT_ACCEPTED')
+    planning=Path(provenance['planning_directory'])
+    robot,initial,_,_=load_problem(planning/'problem.json')
+    native,_=refine_physics(robot,initial,provenance['physics_substeps'])
+    if native.model_hash!=provenance['execution_model_hash']:raise ValueError('CONTINUATION_MODEL_MISMATCH')
+    target_robot,_,_,problem=load_problem(task_file)
+    if target_robot.model_hash!=robot.model_hash:raise ValueError('CONTINUATION_SCENE_OR_MODEL_CHANGED')
+    data_path=root/'execution.npz'
+    with np.load(data_path,allow_pickle=False) as saved:
+        count=len(saved['states']);index=state_index if state_index>=0 else count+state_index
+        if index<0 or index>=count:raise ValueError('CONTINUATION_STATE_INDEX_OUT_OF_RANGE')
+        substeps=int(saved['control_substeps'])
+        if index%substeps:raise ValueError('CONTINUATION_REQUIRES_CONTROL_UPDATE_BOUNDARY')
+        state=saved['states'][index].copy();mask=int(saved['mask'])
+    snap=Snapshot(native.model_hash,mask,state);actual=native.restore(snap)
+    # The only model change is the existing validated integration timestep
+    # refinement. Rebinding back to its parent does not alter any state byte.
+    rebound=Snapshot(robot.model_hash,mask,state)
+    restored=robot.restore(rebound)
+    np.testing.assert_array_equal(robot.snapshot(restored).state,state)
+    low=actual.qpos[native.qpos_ids];vel=actual.qvel[native.dof_ids]
+    q_res=float(np.max(abs(low-native.B@(native.Bplus@low))))
+    v_res=float(np.max(abs(vel-native.B@(native.Bplus@vel))))
+    output.mkdir(parents=True,exist_ok=True)
+    np.savez_compressed(output/'initial_state.npz',state=state,mask=mask,model_hash=robot.model_hash)
+    problem['initial']={'snapshot_file':'initial_state.npz'}
+    atomic_json(output/'problem.json',problem)
+    result=dict(passed=True,scope='EXACT_STATE_HANDOFF_ONLY_NOT_PLANNING_OR_EXECUTION',
+        source_execution=str(root.resolve()),source_execution_sha256=hashlib.sha256(data_path.read_bytes()).hexdigest(),
+        state_index=index,state_sha256=hashlib.sha256(state.tobytes()).hexdigest(),
+        planning_model_hash=robot.model_hash,execution_model_hash=native.model_hash,
+        state_bytes_unchanged=True,actual_time=float(actual.time),
+        controller='floating_ff_torque_pd_v1',controller_memory='STATELESS_AT_CONTROL_UPDATE_BOUNDARY',
+        held_ctrl_in_full_state=True,control_phase=0,base_velocity=actual.qvel[native.base_dofs].tolist(),
+        planner_velocity=(native.Bplus@vel).tolist(),position_manifold_residual=q_res,velocity_manifold_residual=v_res,
+        reduced_planner_domain='SUPPORTED_MANIFOLD' if max(q_res,v_res)<=1e-10 else 'REQUIRES_FULL_STATE_PREDICTION',
+        next_planning_status='NOT_RUN',native_states_modified=False)
+    atomic_json(output/'continuation_provenance.json',result)
+    return result
