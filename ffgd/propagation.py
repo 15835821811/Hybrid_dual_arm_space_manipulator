@@ -276,7 +276,9 @@ class FullStatePropagation:
         d=r.restore(initial)
         self.qpos=tensor(d.qpos);self.initial_q=r.Bplus@d.qpos[r.qpos_ids]
         self.initial_v=r.Bplus@d.qvel[r.dof_ids];self.H=tensor(native_momentum(r,d))
+        if physics_dt not in (.0005,.001,.002,.004,.01):raise ValueError('UNSUPPORTED_DECLARED_PREDICTION_TIMESTEP')
         self.dt=physics_dt
+        self.predicted_control_period=max(.002,physics_dt)
         self.target_force_pulses=tuple(target_force_pulses)
         self.predictor=FullStatePredictor(tree,initial,integrator='implicit_damping',target_force_pulses=self.target_force_pulses)
 
@@ -285,7 +287,7 @@ class FullStatePropagation:
         q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
         reference=getattr(codec,'reference_start',np.stack((self.initial_q,self.initial_v,np.zeros(17))))
         if check_boundary and (np.max(abs(q[0].detach().numpy()-reference[0]))>1e-10 or np.max(abs(qd[0].detach().numpy()-reference[1]))>1e-10):raise ValueError('REFERENCE_INITIAL_BOUNDARY_MISMATCH')
-        substeps=int(round(.002/self.dt))
+        substeps=int(round(self.predicted_control_period/self.dt))
         full=self.predictor.rollout(codec,z,physics_dt=self.dt,control_substeps=substeps,memory_efficient=True)
         # Geometry/kinematics at off-grid spline knots use linear state sampling;
         # task times remain unchanged. Quaternion normalization occurs in FK.

@@ -1,6 +1,6 @@
 {
   "schema": "ffgd_planning_budget_v1",
-  "checkpoint": "E:/ffgd-core/artifacts/ffgd/runs/20261027T162010_training_fedd0a/best.pt",
+  "checkpoint": "E:/ffgd-core/artifacts/ffgd/runs/20261028T051522_training_5113b0/best.pt",
   "profile": "configs/ffgd/numerical_profile_v1.json",
   "device": "cuda",
   "budget": {
@@ -25,9 +25,10 @@
       "max_step_coefficient": null
     },
     "cpu_threads": 1,
-    "boundary_origin": "initial_position"
+    "boundary_origin": "initial_position",
+    "prediction_dt": 0.002
   },
-  "purpose": "Related C2+hold engineering regression. Same24NN/18x2 physical guidance, trainedV16 weights, one predeclared seed23001. Actual initial state and C2 reference local memory remain distinct. No task/gate relaxation. Exact discrete graph enabled explicitly after native scalar and whole-path AD comparison02acdd; model/state/dt unchanged.",
+  "purpose": "Engineering C2+world hold regression using full357 free-terminal prior5113b0 (2512real validated prior paths). Same24NN/18x2 guidance and originalseed23001. Guide2ms exact compiled graph, actual execution.5ms/control2ms; unchanged physical gates. No trajectory reuse.",
   "physics_backend": "full_state",
   "evidence": [
     "20261027T044229_guidance_diagnostic_28d753",

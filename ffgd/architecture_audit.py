@@ -112,7 +112,7 @@ def audit(path,config):
         semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)
         atomic_json(path/'contracts.json',dict(static=contract,semantic=semantic))
         prop_type=FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator
-        p=prop_type(tree,snapshot,**(dict(target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {}));base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
+        p=prop_type(tree,snapshot,**(dict(physics_dt=manifest['budget'].get('prediction_dt',.002),target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {}));base=MultiSpaceEnergy(p,codec,g,task,manifest['budget']['intervals'])
         changed=[]
         for item in task.poses:
             changed.append(PoseConstraint(item.time,item.tip,item.position+[0,.03,.02],item.rotation,item.position_tolerance,item.rotation_tolerance,item.position_enabled,item.rotation_enabled))
@@ -121,7 +121,7 @@ def audit(path,config):
         goal=MultiSpaceEnergy(p,codec,g,changed_task,manifest['budget']['intervals'])
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
-        obstacle=MultiSpaceEnergy(prop_type(tree,r.snapshot(data),**(dict(target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {})),codec,g,task,manifest['budget']['intervals'])
+        obstacle=MultiSpaceEnergy(prop_type(tree,r.snapshot(data),**(dict(physics_dt=manifest['budget'].get('prediction_dt',.002),target_force_pulses=task.target_force_pulses) if prop_type is FullStatePropagation else {})),codec,g,task,manifest['budget']['intervals'])
         for energy in (base,goal,obstacle):
             energy.weights.update(manifest.get('guide_weights',{}))
             energy.collision_aggregation=manifest.get('collision_aggregation','pair_mean')

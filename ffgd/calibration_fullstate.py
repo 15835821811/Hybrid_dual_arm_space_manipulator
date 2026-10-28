@@ -211,7 +211,7 @@ def full_energy_check(output,config):
     from .contracts import Candidate
     r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
     tree.use_batched_path_physics=True
-    prop=FullStatePropagation(tree,snapshot,target_force_pulses=task.target_force_pulses);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
+    prop=FullStatePropagation(tree,snapshot,physics_dt=config.get('prediction_dt',.002),target_force_pulses=task.target_force_pulses);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
     compilation=None
     if config.get('compiled_full_step'):
         from .compiled_physics import compile_full_state_step
@@ -227,11 +227,23 @@ def full_energy_check(output,config):
     direction=rng.normal(size=codec.free_dim);direction/=np.linalg.norm(direction);eps=1e-7
     fd=(energy.native_evaluate(z0+eps*direction)['total']-energy.native_evaluate(z0-eps*direction)['total'])/(2*eps)
     ad=float(g@direction);error=abs(ad-fd)/max(1.,abs(ad),abs(fd))
+    refined_gradient=None
+    if config.get('refined_native_gradient'):
+        original_dt=prop.dt
+        try:
+            prop.dt=.0005
+            fine_plus=energy.native_evaluate(z0+eps*direction)['total']
+            fine_minus=energy.native_evaluate(z0-eps*direction)['total']
+        finally:prop.dt=original_dt
+        fine_fd=(fine_plus-fine_minus)/(2*eps)
+        refined_gradient=dict(native_dt=.0005,ad=ad,native_fd=fine_fd,
+            signal_relative_error=abs(ad-fine_fd)/max(1e-8,abs(ad),abs(fine_fd)),
+            passed=abs(ad-fine_fd)<=1e-7 or abs(ad-fine_fd)/max(1e-8,abs(ad),abs(fine_fd))<=.01)
     # Read-only native validation of a new synthetic reference, not a diffusion result.
     candidate=Candidate(codec.decode(np.zeros(codec.free_dim)),task.duration,0)
     profile=__import__('json').loads(Path('configs/ffgd/numerical_profile_v1.json').read_text())
     checked=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(output/'native_validator_smoke.json',checked)
-    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),compilation=compilation,active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
+    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and checked['gates']['guide_to_native_propagation'] and (refined_gradient is None or refined_gradient['passed']) and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),compilation=compilation,prediction_dt=prop.dt,refined_native_gradient=refined_gradient,guide_to_native_volume_error_m=checked['guide_to_native_volume_error_m'],active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
                 gradient=dict(ad=ad,native_fd=fd,relative_error=error),validator_status=checked['status'],
                 scope='Full-state cost/gradient integration and read-only validator smoke, not diffusion planning success')

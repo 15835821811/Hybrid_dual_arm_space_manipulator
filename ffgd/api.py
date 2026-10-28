@@ -34,6 +34,7 @@ class PlanningBudget:
     max_wall_seconds: float = 1800.
     cpu_threads: int = 1
     boundary_origin: str = 'pivot_zero'
+    prediction_dt: float = .002
 
     def __post_init__(self):
         object.__setattr__(self,'seeds',tuple(self.seeds))
@@ -42,6 +43,7 @@ class PlanningBudget:
         if type(self.cpu_threads) is not int or not 1<=self.cpu_threads<=min(8,max(1,(os.cpu_count() or 1)-1)):
             raise ValueError('invalid bounded CPU thread budget')
         if self.boundary_origin not in ('pivot_zero','initial_position'):raise ValueError('unknown boundary coordinate origin')
+        if self.prediction_dt not in (.0005,.001,.002,.004,.01):raise ValueError('unsupported declared prediction timestep')
         if 0<self.sampling.guide_steps<3:raise ValueError('main guidance must include at least two nonfinal steps')
 
 
@@ -87,8 +89,9 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     elif physics_backend!='eager':raise ValueError('unknown physics backend')
     if physics_backend=='full_state':
         from .propagation import FullStatePropagation
-        prop=FullStatePropagation(tree,initial,target_force_pulses=task.target_force_pulses)
+        prop=FullStatePropagation(tree,initial,physics_dt=budget.prediction_dt,target_force_pulses=task.target_force_pulses)
     else:prop=Propagator(tree,initial)
+    if physics_backend!='full_state' and budget.prediction_dt!=.002:raise ValueError('PREDICTION_TIMESTEP_REQUIRES_FULL_STATE')
     compilation=None
     if compiled_full_step:
         if physics_backend!='full_state':raise ValueError('COMPILED_STEP_REQUIRES_FULL_STATE')

@@ -30,8 +30,8 @@ def native_prediction(robot,initial,codec,z,dt=.0005,geometry=True,target_force_
     r.model.opt.timestep=original_dt
     snap=Snapshot(r.model_hash,initial.mask,initial.state);d=r.restore(snap)
     if np.any(d.qfrc_applied) or np.any(d.xfrc_applied):raise ValueError('UNSUPPORTED_EXTERNAL_WRENCH')
-    count=int(round(codec.duration/dt));period=int(round(.002/dt))
-    if abs(count*dt-codec.duration)>1e-10 or period<1 or abs(period*dt-.002)>1e-10:raise ValueError('NATIVE_GRID_MISMATCH')
+    count=int(round(codec.duration/dt));control_period=max(.002,dt);period=int(round(control_period/dt))
+    if abs(count*dt-codec.duration)>1e-10 or period<1 or abs(period*dt-control_period)>1e-10:raise ValueError('NATIVE_GRID_MISMATCH')
     from .geometry import Geometry
     g=Geometry(r) if geometry else None
     times=np.arange(count+1)*dt;q=codec.evaluate(z,times);v=codec.evaluate(z,times,1);a=codec.evaluate(z,times,2)
@@ -76,6 +76,14 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
     err=float(np.max(np.linalg.norm(delta[:,:,:3],axis=-1)+np.linalg.norm(delta[:,:,3:],axis=-1)))
     spatial=float(np.max(np.linalg.norm(movement[:,:,:3],axis=-1)+np.linalg.norm(movement[:,:,3:],axis=-1)))
     gates['propagation_and_refinement']=err<=profile['prop_finite_volume_m'] and spatial<=.002
+    # Guide discretization may be coarser than native execution, but its full
+    # volume prediction must remain within the same frozen error allowance.
+    guide=native_prediction(r,snapshot,codec,z,prop.dt,target_force_pulses=task.target_force_pulses)
+    indices=np.rint(guide['time']/.00025).astype(int)
+    if np.max(abs(fine['time'][indices]-guide['time']))>1e-10:raise ValueError('GUIDE_REFINEMENT_GRID_MISMATCH')
+    guide_delta=guide['volumes']-fine['volumes'][indices]
+    guide_error=float(np.max(np.linalg.norm(guide_delta[:,:,:3],axis=-1)+np.linalg.norm(guide_delta[:,:,3:],axis=-1)))
+    gates['guide_to_native_propagation']=guide_error<=profile['prop_finite_volume_m']
     gates['exact_initial_state']=full['initial_qpos_unchanged'] and full['initial_velocity_unchanged']
     q67=full['qpos'][:,r.qpos_ids];q17=q67@r.Bplus.T
     gates['actual_q17']=bool(np.all(q17>=r.lower) and np.all(q17<=r.upper))
@@ -114,5 +122,6 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
                     actual_velocity17=float(np.max(abs(full['velocity'][:,r.dof_ids]@r.Bplus.T)/r.spec.planner_velocity_limits)),
                     actual_acceleration17=float(np.max(abs(full['acceleration'][:,r.dof_ids]@r.Bplus.T)/r.spec.planner_acceleration_limits))),
                 minimum_clearance=full['minimum_clearance'],momentum_linear=P,momentum_angular=L,propagation_volume_error_m=err,
+                guide_to_native_volume_error_m=guide_error,guide_physics_dt=prop.dt,guide_control_period=prop.predicted_control_period,
                 geometry_step_m=spatial,continuous_time_collision_proof=False,scope='INDEPENDENT_NATIVE_PREDICTION_NOT_EXECUTION',
-                native_steps=len(full['time'])+len(fine['time'])-2)
+                native_steps=len(full['time'])+len(fine['time'])+len(guide['time'])-3)
