@@ -398,3 +398,5 @@ final_v2输入兼容实测977ee4通过8.91s：两阶段模型/场景同hash，�
 新独立worker已启动并核对存活：20261028T114726_planning_66c8e8，身份{"pid": 45776, "host": "wangbingquan", "create_time": 1793188046.7520607, "command": ["C:\\Users\\admin\\AppData\\Roaming\\uv\\python\\cpython-3.10.19-windows-x86_64-none\\python.exe", "-u", "-X", "utf8", "-m", "ffgd.cli", "plan", "--config", "configs/ffgd/plan_moving_target_v2.json", "--task", "configs/ffgd/tasks/moving_target_v1.json"]}。启动与stdout/stderr路径见orchestration/current_worker_launch.json，不能用旧session18103等待新进程。等待真实result/manifest和PID；配置/seed/权重不变，中断旧49步不拼接。
 
 附加e9482b原生短回归通过：合成绝对起点8s、.2s力矩执行、局部0..0.1s卫星力脉冲按预期施加，冲量/做功/漂移检查及独立重放差0通过，0状态注入；只是时钟/外力接口，不是最终任务或真实阶段接续通过。下一等待新detached66c8e8结果，旧session无效。
+
+final_v2第二阶段首版规划配置plan_final_v2_waypoints_tracking.json已事先声明：seed25002、60NN/54分布梯度、预算14400s（依据5s2235s外推，需按8s实测重新评估），要求新接近实际状态与C2导出，仍NOT_RUN。复现核实旧clean的torch2.6.0+cpu且CUDA不可用；REPRODUCE明确复现配置副本device=cpu、checkpoint本地路径或另验证CUDA，旧clean缺docs/config不当作完整交付。两阶段场景/时钟/参考边界静态核对未发现已证实不兼容，真实链仍NOT_RUN。当前回归20261028T114726_planning_66c8e8 PID身份存活=True，已完成44步。

@@ -15,7 +15,7 @@ uv pip install --python .venv/Scripts/python.exe -r requirements-ffgd.lock
 
 当前有效free357权重：`artifacts/ffgd/runs/20261028T051522_training_5113b0/best.pt`，同目录`best.identity.json`必需；SHA256为`b0adbbacb143b3e30f707dd63e153dafa42b0ab0af1754ad10d89e537e281350`。该模型来自真实2512条物理先验数据/3495次尝试，3000次训练更新。模型与scaler身份由加载器核验。数据满足需求时复用，不要求重新训练来证明流程完整。
 
-迁移到另一目录时，只在**新的复现配置副本**内将checkpoint路径改为实际文件路径，记录副本和hash；不得修改旧run的配置或报告。现有规划配置含工作区绝对checkpoint路径，尚不能宣称开箱即用的最终便携交付。
+迁移到另一目录时，只在**新的复现配置副本**内将checkpoint路径改为实际文件路径，记录副本和hash；不得修改旧run的配置或报告。已有`clean_20261028T064122`安装的是`torch 2.6.0+cpu`，CUDA不可用，而原配置的`device`是`cuda`。使用该类CPU环境时，还须在复现配置副本中显式设置`"device": "cpu"`，用该环境的Python执行命令；或独立安装并验证匹配的CUDA版PyTorch后保留`cuda`。CPU运行耗时及预算须另行实测。现有规划配置含工作区绝对checkpoint路径，尚不能宣称开箱即用的最终便携交付。
 
 全新交付目录可以运行下列初始化命令；它不继承旧成功状态，并拒绝覆盖已有state。已有工程应使用`resume`，不要重新`init`。
 
@@ -47,7 +47,7 @@ $approachExecution = '<本次selected_execution目录>'
 
 `execute`再次只读验证原候选；实际物理步长0.5ms、控制周期2ms，安全逐步检查。`continue-state`要求执行通过，导出完整实际积分状态和原参考的局部q/v/a，场景不变；只导出局部边界，不把旧未来路径作为下一规划输入。
 
-第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。其正式规划预算须根据第一段实测在启动前保存；目前第二段规划配置和实际运行均为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。
+第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。首版规划配置为`configs/ffgd/plan_final_v2_waypoints_tracking.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。
 
 两段均完成后，在链检查配置中列明本次两个`execution_runs`和相应两个`replay_runs`，保持`require_uniform_planner_version: true`，调用：
 
