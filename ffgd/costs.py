@@ -38,7 +38,11 @@ class MultiSpaceEnergy:
     def __init__(self,propagator,codec,geometry,task,intervals=32,buffer=.002,torque_fraction=.8,collect_task_residual=False,collision_aggregation='pair_mean',joint_peak_penalty=False,task_objective='center_squared',planning_margins=None):
         if codec.duration!=task.duration:raise ValueError('time contract mismatch')
         self.p,self.codec,self.geometry,self.task=propagator,codec,geometry,task
-        self.grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[x.time for x in task.poses]])
+        self.grid=np.unique(np.r_[np.linspace(0,task.duration,intervals+1),knots(codec.n)*task.duration,[x.time for x in task.poses],
+                                 [t for x in task.intervals for t in (x.start,x.end)]])
+        self.interval_indices=[np.flatnonzero((self.grid>=x.start)&(self.grid<=x.end)) for x in task.intervals]
+        self.task_count=len(task.poses)+len(task.intervals)
+        if task.intervals and collect_task_residual:raise ValueError('INTERVAL_TASK_METRIC_NOT_IMPLEMENTED')
         self.buffer,self.torque_fraction=buffer,torque_fraction
         self.weights=dict(task=1.,collision=1.,joint=1.,actuator=1.,smoothness=1e-3)
         self.collision_guide=ConvexSupportGuide(geometry)
@@ -63,7 +67,9 @@ class MultiSpaceEnergy:
         out=self.p.rollout(self.codec,z,grid=self.grid);tree=self.p.tree;r=self.p.robot
         task=z.sum()*0;collision=[];actuator=[];smooth=[];raw=[];minima=[]
         support_pairs=0
-        task_residuals=[]
+        task_residuals=[];interval_values=[[] for _ in self.task.intervals]
+        from .temporal import target_body
+        target_id=target_body(r) if self.task.intervals else None
         task_fraction=self.planning_margins['task_tolerance_fraction']
         derivative_fraction=self.planning_margins['derivative_limit_fraction']
         b,a=r.base_dofs,r.dof_ids
@@ -105,6 +111,24 @@ class MultiSpaceEnergy:
                     normalized=angle/target.rotation_tolerance
                     task=task+(hinge(normalized-task_fraction) if self.task_objective=='tolerance_squared_hinge' else normalized**2)
                     if self.collect_task_residual:task_residuals.append(rotation_log(R,angle)/target.rotation_tolerance)
+            for j,interval in enumerate(self.task.intervals):
+                if not interval.start<=t<=interval.end:continue
+                goal_p=tensor(interval.position);goal_r=tensor(interval.rotation)
+                if interval.frame=='target':
+                    goal_p=k['position'][target_id]+k['rotation'][target_id]@goal_p
+                    goal_r=k['rotation'][target_id]@goal_r
+                body=r.tips[interval.tip];pos=k['position'][body];rot=k['rotation'][body]
+                if interval.tip==0:pos=pos+rot@tensor([.0475,0,0])
+                value=z.sum()*0
+                if interval.position_enabled:
+                    e=torch.linalg.vector_norm(pos-goal_p)/interval.position_tolerance
+                    value=value+(hinge(e-task_fraction) if self.task_objective=='tolerance_squared_hinge' else e.square())
+                if interval.rotation_enabled:
+                    e=rotation_angle(goal_r.T@rot)/interval.rotation_tolerance
+                    value=value+(hinge(e-task_fraction) if self.task_objective=='tolerance_squared_hinge' else e.square())
+                interval_values[j].append(value)
+        for interval,indices,values in zip(self.task.intervals,self.interval_indices,interval_values):
+            task=task+torch.trapezoid(torch.stack(values),tensor(self.grid[indices]))/(interval.end-interval.start)
         q,qd,qdd=out['q'],out['qd'],out['qdd']
         joint=hinge((tensor(r.lower)-q)/(tensor(r.upper-r.lower))).mean(-1)+hinge((q-tensor(r.upper))/tensor(r.upper-r.lower)).mean(-1)
         joint=joint+hinge(qd.abs()/tensor(r.spec.planner_velocity_limits)-derivative_fraction).mean(-1)+hinge(qdd.abs()/tensor(r.spec.planner_acceleration_limits)-derivative_fraction).mean(-1)
@@ -113,18 +137,24 @@ class MultiSpaceEnergy:
         if limited.any():
             span=tensor(limits[:,1]-limits[:,0]);actual=qa[:,limited]
             joint=joint+hinge((tensor(limits[:,0])-actual)/span).mean(-1)+hinge((actual-tensor(limits[:,1]))/span).mean(-1)
-        actual_violation=None
+        actual_violation=None;actual_peaks=[]
         if 'actual_q67' in out:
             aq=out['actual_q67']@tensor(r.Bplus.T)
             actual_violation=hinge((tensor(r.lower)-aq)/tensor(r.upper-r.lower)).mean(-1)+hinge((aq-tensor(r.upper))/tensor(r.upper-r.lower)).mean(-1)
             av=out['actual_v67'];aa=out['actual_a67']
             actual_violation=actual_violation+hinge(av.abs()/tensor(abs(r.B)@r.spec.planner_velocity_limits)-derivative_fraction).mean(-1)+hinge(aa.abs()/tensor(abs(r.B)@r.spec.planner_acceleration_limits)-derivative_fraction).mean(-1)
+            actual_peaks=[hinge((tensor(r.lower)-aq)/tensor(r.upper-r.lower)).max(),hinge((aq-tensor(r.upper))/tensor(r.upper-r.lower)).max(),
+                hinge(av.abs()/tensor(abs(r.B)@r.spec.planner_velocity_limits)-derivative_fraction).max(),
+                hinge(aa.abs()/tensor(abs(r.B)@r.spec.planner_acceleration_limits)-derivative_fraction).max(),
+                hinge((av@tensor(r.Bplus.T)).abs()/tensor(r.spec.planner_velocity_limits)-derivative_fraction).max(),
+                hinge((aa@tensor(r.Bplus.T)).abs()/tensor(r.spec.planner_acceleration_limits)-derivative_fraction).max()]
             if limited.any():
                 actual_violation=actual_violation+hinge((tensor(limits[:,0])-out['actual_q67'][:,limited])/span).mean(-1)+hinge((out['actual_q67'][:,limited]-tensor(limits[:,1]))/span).mean(-1)
+                actual_peaks.extend([hinge((tensor(limits[:,0])-out['actual_q67'][:,limited])/span).max(),hinge((out['actual_q67'][:,limited]-tensor(limits[:,1]))/span).max()])
             joint=joint+actual_violation
         time=tensor(self.grid)
         def integral(values):return torch.trapezoid(torch.stack(values) if isinstance(values,list) else values,time)/self.task.duration
-        terms=dict(task=task/len(self.task.poses),collision=integral(collision),joint=integral(joint),actuator=integral(actuator),smoothness=integral(smooth))
+        terms=dict(task=task/self.task_count,collision=integral(collision),joint=integral(joint),actuator=integral(actuator),smoothness=integral(smooth))
         if self.joint_peak_penalty:
             # Keep the original time average, but do not let one violated
             # joint/knot vanish among safe coordinates or a long duration.
@@ -134,7 +164,7 @@ class MultiSpaceEnergy:
                    hinge(qdd.abs()/tensor(r.spec.planner_acceleration_limits)-derivative_fraction).max()]
             if limited.any():peaks.extend([hinge((tensor(limits[:,0])-actual)/span).max(),hinge((actual-tensor(limits[:,1]))/span).max()])
             terms['joint']=terms['joint']+torch.stack(peaks).max()
-            if actual_violation is not None:terms['joint']=terms['joint']+actual_violation.max()
+            if actual_violation is not None:terms['joint']=terms['joint']+torch.stack(actual_peaks).max()
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
         self.last_task_residual=(torch.cat(task_residuals)*np.sqrt(self.weights['task']/len(self.task.poses))) if task_residuals else None
         self.last_diagnostics=dict(grid_points=len(self.grid),all_eligible_pairs=len(self.geometry.pairs),
@@ -160,6 +190,9 @@ class MultiSpaceEnergy:
         xs,vs=p.native_rollout(self.codec,z,len(self.grid)-1,grid=self.grid)
         q=self.codec.evaluate(z,self.grid);qd=self.codec.evaluate(z,self.grid,1);qdd=self.codec.evaluate(z,self.grid,2)
         task=0.;coll=[];act=[];actual_q67=[];actual_v67=[];actual_a67=[];a,b=r.dof_ids,r.base_dofs;d=mujoco.MjData(m)
+        interval_values=[[] for _ in self.task.intervals]
+        from .temporal import target_body,world_goal
+        target_id=target_body(r) if self.task.intervals else None
         full_state=getattr(p,'prediction_mode',None)=='full_state'
         task_fraction=self.planning_margins['task_tolerance_fraction']
         derivative_fraction=self.planning_margins['derivative_limit_fraction']
@@ -189,27 +222,49 @@ class MultiSpaceEnergy:
                 if target.rotation_enabled:
                     normalized=Rotation.from_matrix(target.rotation.T@R).magnitude()/target.rotation_tolerance
                     task+=h(normalized-task_fraction) if self.task_objective=='tolerance_squared_hinge' else normalized**2
+            for j,interval in enumerate(self.task.intervals):
+                if not interval.start<=t<=interval.end:continue
+                goal_p,goal_r=world_goal(interval,d.xpos,d.xmat.reshape(-1,3,3),target_id)
+                body=r.tips[interval.tip];rot=d.xmat[body].reshape(3,3);pos=d.xpos[body].copy()
+                if interval.tip==0:pos+=rot@np.array([.0475,0,0])
+                value=0.
+                if interval.position_enabled:
+                    e=np.linalg.norm(pos-goal_p)/interval.position_tolerance
+                    value+=h(e-task_fraction) if self.task_objective=='tolerance_squared_hinge' else e**2
+                if interval.rotation_enabled:
+                    e=Rotation.from_matrix(goal_r.T@rot).magnitude()/interval.rotation_tolerance
+                    value+=h(e-task_fraction) if self.task_objective=='tolerance_squared_hinge' else e**2
+                interval_values[j].append(value)
+        for interval,indices,values in zip(self.task.intervals,self.interval_indices,interval_values):
+            task+=np.trapz(values,self.grid[indices])/(interval.end-interval.start)
         joint=h((r.lower-q)/(r.upper-r.lower)).mean(-1)+h((q-r.upper)/(r.upper-r.lower)).mean(-1)
         joint+=h(abs(qd)/r.spec.planner_velocity_limits-derivative_fraction).mean(-1)+h(abs(qdd)/r.spec.planner_acceleration_limits-derivative_fraction).mean(-1)
         limited=m.jnt_limited[r.joints].astype(bool);limits=m.jnt_range[r.joints][limited];qa=q@r.B.T
         if limited.any():
             span=limits[:,1]-limits[:,0];actual=qa[:,limited]
             joint+=h((limits[:,0]-actual)/span).mean(-1)+h((actual-limits[:,1])/span).mean(-1)
-        actual_violation=None
+        actual_violation=None;actual_peaks=[]
         if full_state:
             aq67=np.asarray(actual_q67);aq=aq67@r.Bplus.T;av=np.asarray(actual_v67);aa=np.asarray(actual_a67)
             actual_violation=h((r.lower-aq)/(r.upper-r.lower)).mean(-1)+h((aq-r.upper)/(r.upper-r.lower)).mean(-1)
             actual_violation+=h(abs(av)/(abs(r.B)@r.spec.planner_velocity_limits)-derivative_fraction).mean(-1)+h(abs(aa)/(abs(r.B)@r.spec.planner_acceleration_limits)-derivative_fraction).mean(-1)
-            if limited.any():actual_violation+=h((limits[:,0]-aq67[:,limited])/span).mean(-1)+h((aq67[:,limited]-limits[:,1])/span).mean(-1)
+            actual_peaks=[h((r.lower-aq)/(r.upper-r.lower)).max(),h((aq-r.upper)/(r.upper-r.lower)).max(),
+                h(abs(av)/(abs(r.B)@r.spec.planner_velocity_limits)-derivative_fraction).max(),
+                h(abs(aa)/(abs(r.B)@r.spec.planner_acceleration_limits)-derivative_fraction).max(),
+                h(abs(av@r.Bplus.T)/r.spec.planner_velocity_limits-derivative_fraction).max(),
+                h(abs(aa@r.Bplus.T)/r.spec.planner_acceleration_limits-derivative_fraction).max()]
+            if limited.any():
+                actual_violation+=h((limits[:,0]-aq67[:,limited])/span).mean(-1)+h((aq67[:,limited]-limits[:,1])/span).mean(-1)
+                actual_peaks.extend([h((limits[:,0]-aq67[:,limited])/span).max(),h((aq67[:,limited]-limits[:,1])/span).max()])
             joint+=actual_violation
         def integral(v):return float(np.trapz(v,self.grid)/self.task.duration)
-        terms=dict(task=task/len(self.task.poses),collision=integral(coll),joint=integral(joint),actuator=integral(act),smoothness=integral((qdd**2).mean(-1)))
+        terms=dict(task=task/self.task_count,collision=integral(coll),joint=integral(joint),actuator=integral(act),smoothness=integral((qdd**2).mean(-1)))
         if self.joint_peak_penalty:
             peaks=[np.max(h((r.lower-q)/(r.upper-r.lower))),np.max(h((q-r.upper)/(r.upper-r.lower))),
                    np.max(h(abs(qd)/r.spec.planner_velocity_limits-derivative_fraction)),np.max(h(abs(qdd)/r.spec.planner_acceleration_limits-derivative_fraction))]
             if limited.any():peaks.extend([np.max(h((limits[:,0]-actual)/span)),np.max(h((actual-limits[:,1])/span))])
             terms['joint']+=max(peaks)
-            if actual_violation is not None:terms['joint']+=float(np.max(actual_violation))
+            if actual_violation is not None:terms['joint']+=float(max(actual_peaks))
         terms['total']=sum(self.weights[k]*v for k,v in terms.items())
         return terms
 

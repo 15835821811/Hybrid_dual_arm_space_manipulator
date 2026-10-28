@@ -277,7 +277,8 @@ class FullStatePropagation:
     def rollout(self,codec,z,intervals=32,check_boundary=True,grid=None):
         times=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
         q=codec.evaluate(z,times);qd=codec.evaluate(z,times,1);qdd=codec.evaluate(z,times,2)
-        if check_boundary and (np.max(abs(q[0].detach().numpy()-self.initial_q))>1e-10 or np.max(abs(qd[0].detach().numpy()-self.initial_v))>1e-10):raise ValueError('REFERENCE_INITIAL_BOUNDARY_MISMATCH')
+        reference=getattr(codec,'reference_start',np.stack((self.initial_q,self.initial_v,np.zeros(17))))
+        if check_boundary and (np.max(abs(q[0].detach().numpy()-reference[0]))>1e-10 or np.max(abs(qd[0].detach().numpy()-reference[1]))>1e-10):raise ValueError('REFERENCE_INITIAL_BOUNDARY_MISMATCH')
         substeps=int(round(.002/self.dt))
         full=self.predictor.rollout(codec,z,physics_dt=self.dt,control_substeps=substeps,memory_efficient=True)
         # Geometry/kinematics at off-grid spline knots use linear state sampling;

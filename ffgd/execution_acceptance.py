@@ -65,19 +65,22 @@ def inspect_state_bounds(robot,bundle,profile=None):
 
 def inspect_actual(robot,bundle,summary,task,profile,replay_report):
     r=robot;m=r.model;dt=m.opt.timestep;tasks=[];states=bundle['states'];n=len(bundle['ctrl'])
+    from .temporal import interpolate_qpos,inspect_intervals
+    times=np.arange(len(states))*dt
+    qpos=np.stack([r.restore(Snapshot(r.model_hash,int(bundle['mask']),s)).qpos.copy() for s in states])
     for target in task.poses:
-        index=int(round(target.time/dt))
-        if abs(index*dt-target.time)>1e-10:
-            tasks.append(dict(time=target.time,tip=target.tip,passed=False,reason='TASK_TIME_NOT_ON_NATIVE_GRID'));continue
-        if index>=len(states):
+        if target.time>times[-1]:
             tasks.append(dict(time=target.time,tip=target.tip,passed=False,reason='EXECUTION_DID_NOT_REACH_TIME'));continue
-        d=r.restore(Snapshot(r.model_hash,int(bundle['mask']),states[index]));mujoco.mj_forward(m,d)
+        d=mujoco.MjData(m);d.qpos[:],bracket=interpolate_qpos(r,times,qpos,target.time);mujoco.mj_kinematics(m,d)
         body=r.tips[target.tip];R=d.xmat[body].reshape(3,3).copy();pos=d.xpos[body].copy()
         if target.tip==0:pos+=R@np.array([.0475,0,0])
         pe=float(np.linalg.norm(pos-target.position));re=float(Rotation.from_matrix(target.rotation.T@R).magnitude())
-        tasks.append(dict(time=target.time,tip=target.tip,position_m=pe,rotation_rad=re,
+        tasks.append(dict(time=target.time,tip=target.tip,position_m=pe,rotation_rad=re,interpolation_bracket_s=bracket,
                           passed=(not target.position_enabled or pe<=target.position_tolerance) and (not target.rotation_enabled or re<=target.rotation_tolerance)))
     bounds=inspect_state_bounds(r,bundle,profile)
+    interval_errors=[]
+    if task.intervals:
+        interval_errors=inspect_intervals(r,task,times,qpos)
     gates=dict(native_completion=summary['status']=='FINISHED' and n==summary['planned_steps'],task=all(t['passed'] for t in tasks),
                physical_geometry=summary['min_clearance']>=profile['physical_geometry_clearance_m'],
                raw_torque=summary['raw_torque_ratio'] is not None and summary['raw_torque_ratio']<=1.,
@@ -86,10 +89,11 @@ def inspect_actual(robot,bundle,summary,task,profile,replay_report):
                independent_replay=replay_report['max_state_abs']<=profile['replay_state_atol'],
                native_state_only=summary['state_writes_after_restore']==0)
     gates.update(bounds['gates'])
-    return dict(status='EXECUTION_VALID' if all(gates.values()) else 'FAILED',gates=gates,task_errors=tasks,
+    if task.intervals:gates['task_intervals']=all(x['passed'] for x in interval_errors)
+    return dict(status='EXECUTION_VALID' if all(gates.values()) else 'FAILED',gates=gates,task_errors=tasks,interval_errors=interval_errors,
                 replay=replay_report,state_bounds=bounds,safety_enabled=True,task_based_cartesian_assist=False,
                 safety_interventions=dict(clipped_control_steps=summary.get('clipped_control_steps'),safety_abort=summary.get('safety_abort')),
-                scope='discrete timed poses; continuous hold/tracking not yet supported')
+                scope='timed poses plus every-native-state hold/target-relative tracking; no continuous-time proof')
 
 
 def execute_selected(path,planning_directory,config=None):
@@ -112,7 +116,7 @@ def execute_selected(path,planning_directory,config=None):
     manifest=json.loads((planning_directory/'planning_manifest.json').read_text(encoding='utf-8'));profile=manifest['profile']
     with np.load(folder/'candidate.npz') as data:candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
     if candidate.identity!=planned['records'][index]['identity']:raise ValueError('SELECTED_CANDIDATE_HASH_CHANGED')
-    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'))
+    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start)
     from .propagation import FullStatePropagation
     prop=(FullStatePropagation if manifest.get('physics_backend')=='full_state' else Propagator)(DifferentiableTree(r),snapshot)
     validation=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)

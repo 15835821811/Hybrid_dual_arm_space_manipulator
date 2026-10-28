@@ -42,6 +42,9 @@ class Robot:
             q=Rotation.from_matrix(box.rotation.copy()).as_quat()
             body=s.worldbody.add_body(name=f'ffgd_obstacle_{i}',pos=box.center,quat=q[[3,0,1,2]])
             body.add_geom(name=f'ffgd_obstacle_geom_{i}',type=mujoco.mjtGeom.mjGEOM_BOX,size=box.half_size,contype=1,conaffinity=1,rgba=[.6,.3,.2,1.])
+        for i,sphere in enumerate(self.scene.spheres,len(self.scene.boxes)):
+            body=s.worldbody.add_body(name=f'ffgd_obstacle_{i}',pos=sphere.center)
+            body.add_geom(name=f'ffgd_obstacle_geom_{i}',type=mujoco.mjtGeom.mjGEOM_SPHERE,size=[sphere.radius,0,0],contype=1,conaffinity=1,rgba=[.6,.3,.2,1.])
         self.model = m = s.compile()
         self.joints = np.array([m.joint(n).id for n in self.spec.low_level_joint_names])
         self.qpos_ids = m.jnt_qposadr[self.joints].copy()

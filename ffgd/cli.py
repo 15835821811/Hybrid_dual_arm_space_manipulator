@@ -210,7 +210,7 @@ def main(argv=None):
                 r=subprocess.run([sys.executable,'-m','pytest','ffgd/tests','-q',f'--junitxml={path / "tests.xml"}'],cwd=ROOT,capture_output=True,text=True)
                 (path/'output.txt').write_text(r.stdout+r.stderr,encoding='utf-8');print(r.stdout+r.stderr)
                 return dict(passed=r.returncode==0,exit_code=r.returncode,scope='implemented software contracts only',ARCH_01_to_10='NOT_RUN')
-            return unit('software',software,dict(max_wall_seconds=180))
+            return unit('software',software,dict(max_wall_seconds=300))
         if args.suite=='physics':
             if args.samples<1: p.error('samples must be positive')
             from .calibration import physics

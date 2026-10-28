@@ -211,7 +211,7 @@ def full_energy_check(output,config):
     from .contracts import Candidate
     r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
     tree.use_batched_path_physics=True
-    prop=FullStatePropagation(tree,snapshot);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position')
+    prop=FullStatePropagation(tree,snapshot);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start)
     energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=8,collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
     rng=np.random.default_rng(7141);z0=rng.normal(0,config.get('z_std',.0003),codec.free_dim)
     z=tensor(z0).requires_grad_(True);terms=energy.evaluate(z)

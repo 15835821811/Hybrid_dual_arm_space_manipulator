@@ -19,7 +19,7 @@ from .costs import MultiSpaceEnergy
 
 def static_contract(robot,snapshot,task,codec):
     root=Path(__file__).parent
-    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','full_state_validation','execution']
+    modules=['api','robot','diffusion','guidance_metric','model','model_io','conditioning','problem_io','costs','physics','propagation','geometry','convex_guide','validation','full_state_validation','temporal','execution']
     imports=[];violations=[];hashes={}
     for name in modules:
         source=root/(name+'.py');content=source.read_text(encoding='utf-8');hashes[name]=hashlib.sha256(source.read_bytes()).hexdigest()
@@ -50,6 +50,8 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
     value['initial']={'snapshot_file':str((source_run/'initial_state.npz').resolve())}
     value['id']='arbitrary_metadata_renaming';value['description']='Semantic equivalence check; no solver input.'
     value['task']['poses'].reverse();value.setdefault('scene',{}).setdefault('boxes',[]).reverse()
+    if 'spheres' in value['scene']:value['scene']['spheres'].reverse()
+    if 'intervals' in value['task']:value['task']['intervals'].reverse()
     renamed=Path(output)/'renamed_reordered_problem.json';renamed.write_text(json.dumps(value,indent=2),encoding='utf-8')
     other,other_snapshot,other_task,_=load_problem(renamed)
     prop_type=FullStatePropagation if (manifest or {}).get('physics_backend')=='full_state' else Propagator
@@ -66,7 +68,7 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
         manifest={} if manifest is None else manifest
         intervals=manifest.get('budget',{}).get('intervals',32)
         energy=MultiSpaceEnergy(prop,codec,Geometry(robot),task,intervals)
-        other_codec=api.boundary_codec(other,other_snapshot,other_task.duration,codec.n,origin=codec.origin)
+        other_codec=api.boundary_codec(other,other_snapshot,other_task.duration,codec.n,origin=codec.origin,reference_start=other_task.reference_start)
         alternate=MultiSpaceEnergy(other_prop,other_codec,Geometry(other),other_task,intervals)
         for objective in (energy,alternate):
             objective.weights.update(manifest.get('guide_weights',{}))
@@ -81,4 +83,4 @@ def semantic_equivalence(output,source_run,robot,snapshot,task,codec,z,checkpoin
     return dict(passed=same_model and same_state and equal_tokens and energy_error==0 and network_error==0,
                 same_model=same_model,same_state=same_state,identical_condition_tokens=equal_tokens,
                 maximum_energy_error=energy_error,maximum_network_error=network_error,source_run=str(source_run),
-                metadata_not_passed_to_solver=True,perturbed_fields=['filename','id','description','pose_order','box_order'])
+                metadata_not_passed_to_solver=True,perturbed_fields=['filename','id','description','pose_order','box_order','sphere_order'])

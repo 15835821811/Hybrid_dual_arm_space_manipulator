@@ -36,6 +36,9 @@ class Geometry:
             elif typ==int(mujoco.mjtGeom.mjGEOM_BOX):
                 c=np.zeros(3);h=m.geom_size[g].copy()
                 coverage.append(dict(geom=int(g),vertices=8,max_outside=0.))
+            elif typ==int(mujoco.mjtGeom.mjGEOM_SPHERE):
+                c=np.zeros(3);h=np.full(3,m.geom_size[g,0])
+                coverage.append(dict(geom=int(g),analytic_shape='sphere',radius=float(m.geom_size[g,0]),max_outside=0.))
             else:raise NotImplementedError(f'geom type {typ} has no calibrated guide')
             center.append(c);half.append(h)
         self.offset=self.geom_pos+(self.rot@tensor(center)[:,:,None]).squeeze(-1)

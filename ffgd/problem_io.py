@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import numpy as np
 import mujoco
-from .contracts import BoxObstacle,SceneSpec,PoseConstraint,TaskSpec,Snapshot
+from .contracts import BoxObstacle,SphereObstacle,SceneSpec,PoseConstraint,PoseInterval,TaskSpec,Snapshot
 from .robot import Robot
 from .api import PlanningBudget
 from .diffusion import SamplingBudget
@@ -13,11 +13,14 @@ def load_problem(path):
     path=Path(path);value=json.loads(path.read_text(encoding='utf-8-sig'))
     allowed={'schema','id','split','initial','task','scene','description'}
     if set(value)-allowed:raise ValueError('unknown public problem keys')
-    if set(value.get('scene',{}))-{'boxes'}:raise ValueError('unknown scene keys')
-    if set(value['task'])!={'duration','poses'}:raise ValueError('unknown or missing task keys')
+    if set(value.get('scene',{}))-{'boxes','spheres'}:raise ValueError('unknown scene keys')
+    if set(value['task'])-{'duration','poses','intervals','reference_start'} or 'duration' not in value['task']:raise ValueError('unknown or missing task keys')
     for box in value.get('scene',{}).get('boxes',[]):
         if set(box)-{'center','half_size','rotation'}:raise ValueError('unknown obstacle keys')
-    scene=SceneSpec(tuple(BoxObstacle(b['center'],b['half_size'],b.get('rotation',np.eye(3))) for b in value.get('scene',{}).get('boxes',[])))
+    for sphere in value.get('scene',{}).get('spheres',[]):
+        if set(sphere)!={'center','radius'}:raise ValueError('unknown or missing sphere keys')
+    scene=SceneSpec(tuple(BoxObstacle(b['center'],b['half_size'],b.get('rotation',np.eye(3))) for b in value.get('scene',{}).get('boxes',[])),
+                    tuple(SphereObstacle(s['center'],s['radius']) for s in value.get('scene',{}).get('spheres',[])))
     r=Robot(scene=scene);d=r.new_data();initial=value['initial']
     if set(initial)-{'q17','v17','base_pose','base_velocity','target_pose','target_velocity','snapshot_file'}:raise ValueError('unknown initial-state keys')
     if 'snapshot_file' in initial:
@@ -37,7 +40,8 @@ def load_problem(path):
         for adr in (r.base_qpos[3],qa+3):
             if abs(np.linalg.norm(d.qpos[adr:adr+4])-1)>1e-10:raise ValueError('nonunit initial quaternion')
         mujoco.mj_forward(r.model,d);snapshot=r.snapshot(d)
-    t=value['task'];task=TaskSpec(float(t['duration']),tuple(PoseConstraint(**p) for p in t['poses']))
+    t=value['task'];task=TaskSpec(float(t['duration']),tuple(PoseConstraint(**p) for p in t.get('poses',[])),
+                               tuple(PoseInterval(**p) for p in t.get('intervals',[])),t.get('reference_start'))
     return r,snapshot,task,value
 
 
@@ -86,9 +90,24 @@ def export_continuation(output, execution_directory, task_file, state_index=-1):
     low=actual.qpos[native.qpos_ids];vel=actual.qvel[native.dof_ids]
     q_res=float(np.max(abs(low-native.B@(native.Bplus@low))))
     v_res=float(np.max(abs(vel-native.B@(native.Bplus@vel))))
+    problem['initial']={'snapshot_file':'initial_state.npz'}
+    # Only the previous reference's local C2 boundary is controller memory.
+    # Never expose its future/path controls to the new planner.
+    from .trajectory import basis
+    from .contracts import Candidate
+    planned=json.loads((planning/'planning_result.json').read_text(encoding='utf-8'))
+    folder=planning/f"candidate_{planned['selected_index']:03d}"
+    with np.load(folder/'candidate.npz',allow_pickle=False) as saved:
+        candidate=Candidate(saved['control'],float(saved['duration']),int(saved['seed']))
+    if candidate.identity!=provenance['candidate_hash']:raise ValueError('CONTINUATION_REFERENCE_IDENTITY_CHANGED')
+    local_time=index*native.model.opt.timestep
+    if abs(actual.time-(robot.restore(initial).time+local_time))>1e-8:raise ValueError('CONTINUATION_ABSOLUTE_TIME_MISMATCH')
+    if local_time>candidate.duration+1e-10:raise ValueError('CONTINUATION_REFERENCE_EXPIRED')
+    local_time=min(local_time,candidate.duration)
+    reference=np.stack([basis(len(candidate.control),local_time,candidate.duration,k)@candidate.control for k in (0,1,2)])
+    problem['task']['reference_start']=reference.tolist()
     output.mkdir(parents=True,exist_ok=True)
     np.savez_compressed(output/'initial_state.npz',state=state,mask=mask,model_hash=robot.model_hash)
-    problem['initial']={'snapshot_file':'initial_state.npz'}
     atomic_json(output/'problem.json',problem)
     result=dict(passed=True,scope='EXACT_STATE_HANDOFF_ONLY_NOT_PLANNING_OR_EXECUTION',
         source_execution=str(root.resolve()),source_execution_sha256=hashlib.sha256(data_path.read_bytes()).hexdigest(),
@@ -97,6 +116,9 @@ def export_continuation(output, execution_directory, task_file, state_index=-1):
         state_bytes_unchanged=True,actual_time=float(actual.time),
         controller='floating_ff_torque_pd_v1',controller_memory='STATELESS_AT_CONTROL_UPDATE_BOUNDARY',
         held_ctrl_in_full_state=True,control_phase=0,base_velocity=actual.qvel[native.base_dofs].tolist(),
+        reference_boundary='C2_FROM_PREVIOUS_SELECTED_PLAN',reference_candidate_hash=candidate.identity,
+        reference_start=reference.tolist(),reference_actual_position_error=float(np.max(abs(reference[0]-native.Bplus@low))),
+        reference_actual_velocity_error=float(np.max(abs(reference[1]-native.Bplus@vel))),
         planner_velocity=(native.Bplus@vel).tolist(),position_manifold_residual=q_res,velocity_manifold_residual=v_res,
         reduced_planner_domain='SUPPORTED_MANIFOLD' if max(q_res,v_res)<=1e-10 else 'REQUIRES_FULL_STATE_PREDICTION',
         next_planning_status='NOT_RUN',native_states_modified=False)

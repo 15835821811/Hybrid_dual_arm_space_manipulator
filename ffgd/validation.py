@@ -13,7 +13,12 @@ def input_identity(candidate,snapshot,task):
     records=[dict(time=p.time,tip=p.tip,position=p.position.tolist(),rotation=p.rotation.tolist(),
                   position_tolerance=p.position_tolerance,rotation_tolerance=p.rotation_tolerance,
                   position_enabled=p.position_enabled,rotation_enabled=p.rotation_enabled) for p in task.poses]
-    return hashlib.sha256((candidate.identity+snapshot.model_hash+array_hash(snapshot.state)+json.dumps(dict(duration=task.duration,poses=records),sort_keys=True)).encode()).hexdigest()
+    value=dict(duration=task.duration,poses=records)
+    if task.intervals:
+        from dataclasses import asdict
+        value['intervals']=[dict(asdict(p),position=p.position.tolist(),rotation=p.rotation.tolist()) for p in task.intervals]
+    if task.reference_start is not None:value['reference_start']=task.reference_start.tolist()
+    return hashlib.sha256((candidate.identity+snapshot.model_hash+array_hash(snapshot.state)+json.dumps(value,sort_keys=True)).encode()).hexdigest()
 
 
 def selection_score(report,task):
@@ -27,6 +32,12 @@ def selection_score(report,task):
             raise ValueError('SELECTION_TASK_REPORT_MISMATCH')
         if target.position_enabled:normalized.append(error['position_m']/target.position_tolerance)
         if target.rotation_enabled:normalized.append(error['rotation_rad']/target.rotation_tolerance)
+    intervals=report.get('interval_errors',[])
+    if len(intervals)!=len(task.intervals):raise ValueError('SELECTION_REQUIRES_COMPLETE_INTERVAL_REPORT')
+    for error,target in zip(intervals,task.intervals):
+        if not error['passed'] or error['start']!=target.start or error['end']!=target.end or error['tip']!=target.tip or error['frame']!=target.frame:raise ValueError('SELECTION_INTERVAL_REPORT_MISMATCH')
+        if target.position_enabled:normalized.append(error['maximum_position_m']/target.position_tolerance)
+        if target.rotation_enabled:normalized.append(error['maximum_rotation_rad']/target.rotation_tolerance)
     return max(normalized,default=0.)+report['max_nominal_torque_ratio']
 
 
@@ -34,6 +45,7 @@ def validate(candidate,snapshot,task,propagator,codec,geometry,profile,max_inter
     if getattr(propagator,'prediction_mode',None)=='full_state':
         from .full_state_validation import validate_full_state
         return validate_full_state(candidate,snapshot,task,propagator,codec,geometry,profile)
+    if task.intervals or task.reference_start is not None:raise ValueError('TEMPORAL_OR_REFERENCE_MEMORY_REQUIRES_FULL_STATE_BACKEND')
     before=input_identity(candidate,snapshot,task);r=propagator.robot;m=r.model
     r.verify_identity()
     failures=[];gates={};report=dict(status='INCOMPLETE_VALIDATION',input_hash=before,gates=gates)

@@ -12,7 +12,17 @@ def source(tmp_path):
     task=ROOT/'configs/ffgd/dev_v1/short_duration_torque.json'
     robot,snapshot,_,problem=load_problem(task)
     planning=tmp_path/'planning';planning.mkdir()
+    start=robot.restore(snapshot);start.time=1.232;snapshot=robot.snapshot(start)
+    np.savez(planning/'initial_state.npz',state=snapshot.state,mask=snapshot.mask,model_hash=snapshot.model_hash)
+    problem['initial']={'snapshot_file':'initial_state.npz'}
     (planning/'problem.json').write_text(json.dumps(problem))
+    from ffgd.api import boundary_codec
+    from ffgd.contracts import Candidate
+    codec=boundary_codec(robot,snapshot,.8,origin='initial_position')
+    candidate=Candidate(codec.decode(np.zeros(codec.free_dim)),.8,1)
+    (planning/'candidate_000').mkdir()
+    np.savez(planning/'candidate_000/candidate.npz',control=candidate.control,duration=.8,seed=1)
+    (planning/'planning_result.json').write_text('{"selected_index":0}')
     native,_=refine_physics(robot,snapshot,4)
     d=native.new_data();d.time=1.234
     d.qvel[native.base_dofs]=[.01,.02,.03,.04,.05,.06]
@@ -21,7 +31,7 @@ def source(tmp_path):
     d.ctrl[:]=np.linspace(-.01,.01,native.model.nu)
     actual=native.snapshot(d)
     run=tmp_path/'execution';run.mkdir()
-    (run/'provenance.json').write_text(json.dumps(dict(planning_directory=str(planning),physics_substeps=4,execution_model_hash=native.model_hash)))
+    (run/'provenance.json').write_text(json.dumps(dict(planning_directory=str(planning),physics_substeps=4,execution_model_hash=native.model_hash,candidate_hash=candidate.identity)))
     (run/'execution.json').write_text(json.dumps(dict(controller='floating_ff_torque_pd_v1')))
     (run/'acceptance.json').write_text(json.dumps(dict(status='EXECUTION_VALID',scope='SYNTHETIC_IO_TEST_ONLY')))
     np.savez(run/'execution.npz',states=np.stack([actual.state]*5),mask=actual.mask,control_substeps=4)
@@ -36,6 +46,8 @@ def test_exact_actual_state_and_memory_roundtrip(tmp_path):
     assert result['actual_time']==1.234
     assert result['next_planning_status']=='NOT_RUN'
     assert result['base_velocity']==[.01,.02,.03,.04,.05,.06]
+    assert result['reference_boundary']=='C2_FROM_PREVIOUS_SELECTED_PLAN'
+    assert result['reference_actual_velocity_error']>0
 
 def test_mid_hold_handoff_is_not_silently_reset(tmp_path):
     task,run,_=source(tmp_path)

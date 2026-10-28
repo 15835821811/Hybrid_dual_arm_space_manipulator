@@ -103,7 +103,7 @@ def audit(path,config):
         from .model_io import bind_free_coordinates
         checkpoint=bind_free_coordinates(checkpoint,task.duration)
         with np.load(root/f'candidate_{index:03d}'/'denoising.npz') as d:z=checkpoint['mean']+checkpoint['scale']*d['clean'][step]
-        codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'));tree=DifferentiableTree(r);g=Geometry(r)
+        codec=boundary_codec(r,snapshot,task.duration,manifest['budget']['control_points'],origin=manifest['budget'].get('boundary_origin','pivot_zero'),reference_start=task.reference_start);tree=DifferentiableTree(r);g=Geometry(r)
         from .architecture_contracts import static_contract,semantic_equivalence
         contract=static_contract(r,snapshot,task,codec)
         semantic=semantic_equivalence(path,root,r,snapshot,task,codec,z,checkpoint,model,manifest)
@@ -113,7 +113,9 @@ def audit(path,config):
         changed=[]
         for item in task.poses:
             changed.append(PoseConstraint(item.time,item.tip,item.position+[0,.03,.02],item.rotation,item.position_tolerance,item.rotation_tolerance,item.position_enabled,item.rotation_enabled))
-        goal=MultiSpaceEnergy(p,codec,g,TaskSpec(task.duration,tuple(changed)),manifest['budget']['intervals'])
+        from dataclasses import replace
+        changed_task=replace(task,poses=tuple(changed),intervals=tuple(replace(item,position=item.position+[0,.03,.02]) for item in task.intervals))
+        goal=MultiSpaceEnergy(p,codec,g,changed_task,manifest['budget']['intervals'])
         data=r.restore(snapshot);mujoco.mj_forward(r.model,data);target=int(r.model.joint(r.spec.target_free_joint_name).qposadr[0])
         data.qpos[target:target+3]=data.xpos[r.tips[0]]+[.15,.01,.01]
         obstacle=MultiSpaceEnergy(prop_type(tree,r.snapshot(data)),codec,g,task,manifest['budget']['intervals'])

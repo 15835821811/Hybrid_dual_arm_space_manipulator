@@ -59,7 +59,8 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
     before=input_identity(candidate,snapshot,task);r=prop.robot;r.verify_identity()
     if candidate.duration!=task.duration or codec.duration!=task.duration:raise ValueError('DURATION_MISMATCH')
     z=codec.encode(candidate.control);C=candidate.control
-    gates=dict(initial_boundary=np.max(abs(codec.evaluate(z,0)-prop.initial_q))<=1e-10 and np.max(abs(codec.evaluate(z,0,1)-prop.initial_v))<=1e-10,
+    reference=getattr(codec,'reference_start',np.stack((prop.initial_q,prop.initial_v,np.zeros(17))))
+    gates=dict(initial_boundary=np.max(abs(codec.evaluate(z,0)-reference[0]))<=1e-10 and np.max(abs(codec.evaluate(z,0,1)-reference[1]))<=1e-10,
                boundary=np.max(abs(codec.A@C.ravel()-codec.b))<=1e-10,
                q17=bool(np.all(C>=r.lower) and np.all(C<=r.upper)))
     limited=r.model.jnt_limited[r.joints].astype(bool);limits=r.model.jnt_range[r.joints][limited];c67=C@r.B.T
@@ -87,20 +88,28 @@ def validate_full_state(candidate,snapshot,task,prop,codec,geometry,profile):
     P=float(np.max(np.linalg.norm(full['momentum'][:,:3],axis=1)));L=float(np.max(np.linalg.norm(full['momentum'][:,3:],axis=1)))
     gates['world_momentum']=P<=profile['momentum_linear_kg_m_s'] and L<=profile['momentum_angular_kg_m2_s']
     errors=[];d=r.new_data()
+    from .temporal import interpolate_qpos,inspect_intervals
     for target in task.poses:
-        index=int(round(target.time/.0005))
-        if abs(index*.0005-target.time)>1e-10:raise ValueError('TASK_TIME_NOT_ON_NATIVE_GRID')
-        d.qpos[:]=full['qpos'][index];mujoco.mj_kinematics(r.model,d)
+        d.qpos[:],bracket=interpolate_qpos(r,full['time'],full['qpos'],target.time)
+        mujoco.mj_kinematics(r.model,d)
         body=r.tips[target.tip];R=d.xmat[body].reshape(3,3);pos=d.xpos[body].copy()
         if target.tip==0:pos+=R@np.array([.0475,0,0])
         pe=float(np.linalg.norm(pos-target.position));re=float(Rotation.from_matrix(target.rotation.T@R).magnitude())
-        errors.append(dict(time=target.time,tip=target.tip,position_m=pe,rotation_rad=re,passed=(not target.position_enabled or pe<=target.position_tolerance) and (not target.rotation_enabled or re<=target.rotation_tolerance)))
+        errors.append(dict(time=target.time,tip=target.tip,position_m=pe,rotation_rad=re,interpolation_bracket_s=bracket,passed=(not target.position_enabled or pe<=target.position_tolerance) and (not target.rotation_enabled or re<=target.rotation_tolerance)))
     gates['task']=all(x['passed'] for x in errors)
+    interval_errors=inspect_intervals(r,task,full['time'],full['qpos'])
+    if task.intervals:gates['task_intervals']=all(x['passed'] for x in interval_errors)
     gates={k:bool(v) for k,v in gates.items()};failures=[k for k,v in gates.items() if not v]
     if before!=input_identity(candidate,snapshot,task):raise RuntimeError('VALIDATOR_MUTATED_INPUT')
     r.verify_identity()
     return dict(status='PLAN_VALID' if not failures else 'REJECTED',gates=gates,failures=failures,input_hash=before,input_unchanged=True,
-                output_candidate_hash=candidate.identity,task_errors=errors,max_nominal_torque_ratio=tau,max_raw_torque_ratio=raw,
+                output_candidate_hash=candidate.identity,task_errors=errors,interval_errors=interval_errors,max_nominal_torque_ratio=tau,max_raw_torque_ratio=raw,
+                derivative_maxima=dict(reference_velocity=float(np.max(abs(spline.derivative(1).c)/candidate.duration/r.spec.planner_velocity_limits)),
+                    reference_acceleration=float(np.max(abs(spline.derivative(2).c)/candidate.duration**2/r.spec.planner_acceleration_limits)),
+                    actual_velocity67=float(np.max(abs(full['velocity'][:,r.dof_ids])/(abs(r.B)@r.spec.planner_velocity_limits))),
+                    actual_acceleration67=float(np.max(abs(full['acceleration'][:,r.dof_ids])/(abs(r.B)@r.spec.planner_acceleration_limits))),
+                    actual_velocity17=float(np.max(abs(full['velocity'][:,r.dof_ids]@r.Bplus.T)/r.spec.planner_velocity_limits)),
+                    actual_acceleration17=float(np.max(abs(full['acceleration'][:,r.dof_ids]@r.Bplus.T)/r.spec.planner_acceleration_limits))),
                 minimum_clearance=full['minimum_clearance'],momentum_linear=P,momentum_angular=L,propagation_volume_error_m=err,
                 geometry_step_m=spatial,continuous_time_collision_proof=False,scope='INDEPENDENT_NATIVE_PREDICTION_NOT_EXECUTION',
                 native_steps=len(full['time'])+len(fine['time'])-2)

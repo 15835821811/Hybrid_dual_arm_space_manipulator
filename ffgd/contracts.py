@@ -62,16 +62,43 @@ class PoseConstraint:
 
 
 @dataclass(frozen=True)
+class PoseInterval:
+    start: float
+    end: float
+    tip: int
+    position: np.ndarray
+    rotation: np.ndarray
+    frame: str = 'world'
+    position_tolerance: float = .005
+    rotation_tolerance: float = np.pi/180
+    position_enabled: bool = True
+    rotation_enabled: bool = True
+
+    def __post_init__(self):
+        pose=PoseConstraint(self.start,self.tip,self.position,self.rotation,self.position_tolerance,self.rotation_tolerance,self.position_enabled,self.rotation_enabled)
+        object.__setattr__(self,'position',pose.position);object.__setattr__(self,'rotation',pose.rotation)
+        if not np.isfinite(self.end) or self.end<=self.start or self.frame not in ('world','target'):raise ValueError('invalid pose interval')
+
+
+@dataclass(frozen=True)
 class TaskSpec:
     duration: float
     poses: tuple
+    intervals: tuple = ()
+    reference_start: tuple | None = None
 
     def __post_init__(self):
         def semantic_key(p):
             return (p.time,p.tip,tuple(p.position),tuple(p.rotation.ravel()),p.position_enabled,p.rotation_enabled,p.position_tolerance,p.rotation_tolerance)
         object.__setattr__(self,'poses',tuple(sorted(self.poses,key=semantic_key)))
-        if self.duration<=0 or not np.isfinite(self.duration) or not self.poses:raise ValueError('invalid task')
+        object.__setattr__(self,'intervals',tuple(sorted(self.intervals,key=lambda p:(p.start,p.end,p.tip,p.frame,tuple(p.position),tuple(p.rotation.ravel()),p.position_tolerance,p.rotation_tolerance,p.position_enabled,p.rotation_enabled))))
+        if self.reference_start is not None:
+            ref=immutable(self.reference_start)
+            if ref.shape!=(3,17):raise ValueError('reference_start requires q/v/a, each 17 coordinates')
+            object.__setattr__(self,'reference_start',ref)
+        if self.duration<=0 or not np.isfinite(self.duration) or not (self.poses or self.intervals):raise ValueError('invalid task')
         if any(p.time>self.duration for p in self.poses):raise ValueError('task beyond duration')
+        if any(p.end>self.duration for p in self.intervals):raise ValueError('interval beyond duration')
 
 
 @dataclass(frozen=True)
@@ -90,11 +117,30 @@ class BoxObstacle:
 
 
 @dataclass(frozen=True)
+class SphereObstacle:
+    center: np.ndarray
+    radius: float
+
+    def __post_init__(self):
+        object.__setattr__(self,'center',immutable(self.center))
+        if self.center.shape!=(3,) or not np.isfinite(self.radius) or self.radius<=0:raise ValueError('invalid sphere')
+
+    @property
+    def identity(self):return array_hash(np.r_[self.center,self.radius])
+
+
+@dataclass(frozen=True)
 class SceneSpec:
     boxes: tuple = ()
+    spheres: tuple = ()
 
     def __post_init__(self):
         object.__setattr__(self,'boxes',tuple(sorted(self.boxes,key=lambda box:box.identity)))
+        object.__setattr__(self,'spheres',tuple(sorted(self.spheres,key=lambda sphere:sphere.identity)))
 
     @property
-    def identity(self):return hashlib.sha256(''.join(b.identity for b in self.boxes).encode()).hexdigest()
+    def identity(self):
+        # Preserve historical box-only identities exactly.
+        value=''.join(b.identity for b in self.boxes)
+        if self.spheres:value+='spheres:'+''.join(s.identity for s in self.spheres)
+        return hashlib.sha256(value.encode()).hexdigest()
