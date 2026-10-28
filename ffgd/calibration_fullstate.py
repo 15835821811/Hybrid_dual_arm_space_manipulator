@@ -212,6 +212,22 @@ def full_energy_check(output,config):
     r,snapshot,task,_=load_problem(config['problem']);tree=DifferentiableTree(r)
     tree.use_batched_path_physics=True
     prop=FullStatePropagation(tree,snapshot,physics_dt=config.get('prediction_dt',.002),target_force_pulses=task.target_force_pulses);codec=boundary_codec(r,snapshot,task.duration,origin='initial_position',reference_start=task.reference_start,terminal_policy=task.terminal_policy)
+    refresh=config.get('experimental_mass_refresh_steps',1)
+    if refresh!=1:
+        from functools import partial
+        from .multirate import rollout as multirate_rollout,native_prediction as multirate_native
+        if config.get('compiled_full_step'):raise ValueError('EXPERIMENTAL_MULTIRATE_NOT_STEP_COMPILED')
+        prop.predictor.rollout=partial(multirate_rollout,prop.predictor,refresh=refresh)
+        exact_native=prop.native_rollout;micro_dt=prop.dt
+        def native_rollout(codec,z,intervals=32,grid=None):
+            # Fine native directions are always the original actual controller.
+            if prop.dt!=micro_dt:return exact_native(codec,z,intervals,grid)
+            full=multirate_native(r,snapshot,codec,z,dt=prop.dt,refresh=refresh,substeps=round(.002/prop.dt),target_force_pulses=task.target_force_pulses)
+            prop.last_native_prediction=full
+            grid=np.linspace(0,codec.duration,intervals+1) if grid is None else np.asarray(grid)
+            coordinate=np.clip(grid/prop.dt,0,len(full['qpos'])-1);left=np.floor(coordinate).astype(int);right=np.minimum(left+1,len(full['qpos'])-1);a=(coordinate-left)[:,None]
+            return full['qpos'][left]*(1-a)+full['qpos'][right]*a,full['velocity'][left]*(1-a)+full['velocity'][right]*a
+        prop.native_rollout=native_rollout
     compilation=None
     if config.get('compiled_full_step'):
         from .compiled_physics import compile_full_state_step
@@ -261,6 +277,20 @@ def full_energy_check(output,config):
     profile=__import__('json').loads(Path('configs/ffgd/numerical_profile_v1.json').read_text())
     checked=validate(candidate,snapshot,task,prop,codec,Geometry(r),profile)
     atomic_json(output/'native_validator_smoke.json',checked)
-    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and checked['gates']['guide_to_native_propagation'] and (refined_gradient is None or refined_gradient['passed']) and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),diagnostic_source=diagnostic_source,compilation=compilation,prediction_dt=prop.dt,refined_native_gradient=refined_gradient,guide_to_native_volume_error_m=checked['guide_to_native_volume_error_m'],active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
+    multirate_error=None
+    if refresh!=1:
+        from .full_state_validation import native_prediction
+        coarse=multirate_native(r,snapshot,codec,z0,dt=prop.dt,refresh=refresh,substeps=round(.002/prop.dt),target_force_pulses=task.target_force_pulses)
+        fine=native_prediction(r,snapshot,codec,z0,.0005,geometry=False,target_force_pulses=task.target_force_pulses)
+        da=r.new_data();db=r.new_data();multirate_error=0.
+        for index,x in enumerate(coarse['qpos']):
+            if index%64==0:check_budget()
+            da.qpos[:]=x;db.qpos[:]=fine['qpos'][round(coarse['time'][index]/.0005)]
+            mujoco.mj_kinematics(r.model,da);mujoco.mj_kinematics(r.model,db)
+            delta_p=np.linalg.norm(da.geom_xpos-db.geom_xpos,axis=1)
+            delta_r=np.linalg.norm((da.geom_xmat-db.geom_xmat)*r.model.geom_rbound[:,None],axis=1)
+            multirate_error=max(multirate_error,float(np.max(delta_p+delta_r)))
+        atomic_json(output/'multirate_native_refinement.json',dict(mass_refresh_steps=refresh,micro_dt=prop.dt,control_period=.002,all_volume_error_m=multirate_error,passed=multirate_error<=profile['prop_finite_volume_m'],input='same nonzero diagnostic z',scope='Not diffusion or execution evidence'))
+    return dict(passed=max(errors.values())<1e-5 and error<2e-4 and checked['input_unchanged'] and checked['gates']['guide_to_native_propagation'] and (multirate_error is None or multirate_error<=profile['prop_finite_volume_m']) and (refined_gradient is None or refined_gradient['passed']) and sum(values[k]>1e-10 for k in ('task','collision','joint','actuator'))>=config.get('required_active_constraints',0),diagnostic_source=diagnostic_source,compilation=compilation,prediction_dt=prop.dt,mass_refresh_steps=refresh,multirate_volume_error_m=multirate_error,refined_native_gradient=refined_gradient,guide_to_native_volume_error_m=checked['guide_to_native_volume_error_m'],active_constraints=[k for k in ('task','collision','joint','actuator') if values[k]>1e-10],values=values,native=oracle,relative_errors=errors,
                 gradient=dict(ad=ad,native_fd=fd,relative_error=error),validator_status=checked['status'],
                 scope='Full-state cost/gradient integration and read-only validator smoke, not diffusion planning success')

@@ -358,3 +358,7 @@ V3原接续反例20261028T042656_planning_87865e完成1/1 PLAN_VALID，24NN/36�
 C2/interval run526999已自然结束0/1，892.57s，只有task_intervals失败：两tip最大位置6.4189995/6.0124461mm、姿态.01951857/.01956367rad；末端到点与其他21门全过，未选择/执行。最后两个引导均下降，剩余task代价.0742821，不能称已通过。发现interval代价仅时间均值会稀释局部违规；通用修正保留均值并加区间最大违规，与独立逐状态验收语义一致，不改变任务/物理门/采样职责。正在运行原源码长时域10ms数值d10a6b/PID127524/create1793165907.318616/session78463，snapshot源码a181550e；修正尚未进入该worker。后续先对修正原生数值复验，再按明确分布预算新噪声采样，旧失败保留；M6仍RUNNING、M7/M8NOT_RUN。
 
 10ms长时域d10a6b自然FAILED332s：AD/原生标量task差3.51%、total差6.40%，gradient产生nonfinite导致严格JSON拒绝nan；energy_progress和error完整保存，未启用主链。准备终止可选诊断时它已自然结束，未实际kill。诊断增加遇标量偏差/非有限梯度即明确失败并保存npz，避免末尾JSON掩盖数值机制。全软件f2678c 94passed210.61s（在该早停小修之前）；新interval peak原失败数值复验正在session34523，随后从新噪声重跑原C2任务，不扩seed。
+
+区间峰值原反例只读数值05147f通过54.36s，标量差3.31e-14、原生方向差3.03e-8。新噪声原C2复验e6802e/session76001/PID187468/create1793166365.7913425/source7f435866/HEAD90486e27正在运行，24NN/18x3/seed23001，2ms预测不变。性能根因readonly线性化prediction_step_stability_root.json补入FF阻尼导数与保持控制：.5ms×4/1ms×2/2ms×1无不稳定模态，4ms/10ms分别51/59不稳定模态；先前漏FF导数的近似结果保留为superseded，不误判2ms不稳定。准备multirate.py仅数值原型，保留2ms微步/完整状态与AD，降低M/速度二次bias刷新频率；未接主链、未通过原生。软件dd878d通过refresh1对原完整步/伴随，以及refresh3对完整展开AD。下一先完成C2原生执行/重放，然后必要的原生精度校准，不称最终场景已启动。
+
+multirate原型34f17c两项软件/短原生系数回归通过11.86s：refresh1复现原完整步骤及保持输入梯度，refresh3伴随对完整展开AD一致；refresh5的.2s非零全状态+目标外力与独立MuJoCo质量/偏置系数、NumPy积分逐状态一致。仍未启用任何主采样。现有calibration_fullstate仅增加显式experimental_mass_refresh_steps诊断分支；预备multirate_counterexample_v1与multirate_long_v1，要求保留2ms微步/控制、全状态、细原生方向及所有几何体误差.4mm，不因提速放宽。当前C2主run e6802e不使用此模块，继续session76001。
