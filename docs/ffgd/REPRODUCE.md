@@ -34,6 +34,8 @@ $ffgdPython = (Resolve-Path .venv/Scripts/python.exe).Path
 
 首轮开发时序为8秒接近、24秒七航点与刚性持续卫星追踪；空间航点、七个球障碍及物理门不变。根初态全零速度；卫星在第二段接受配置中明确的2秒力脉冲再自由漂移，禁止注入目标速度。时序可依据实测另建版本，不能事后改判旧结果。
 
+2026-10-29恢复后的接近配置为`configs/ffgd/plan_final_v2_approach_retained_noise.json`；其采样、权重、物理和代价设置与原运动任务回归相同，显式使用MASTER第6.2节的`retain_network_noise`。下列本机配置副本从此文件生成。该公式修改的完整物理回归尚未完成，最终场景仍NOT_RUN。
+
 ```powershell
 $approachConfig = '<本机设备和权重路径已核对的规划配置副本.json>'
 & $ffgdPython -m ffgd.cli plan --config $approachConfig --task configs/ffgd/final_v2/approach.json
@@ -51,7 +53,7 @@ $approachExecution = '<本次selected_execution目录>'
 
 `execute`再次只读验证原候选；实际物理步长0.5ms、控制周期2ms，安全逐步检查。`continue-state`要求执行通过，导出完整实际积分状态和原参考的局部q/v/a，场景不变；只导出局部边界，不把旧未来路径作为下一规划输入。
 
-第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。首版规划配置为`configs/ffgd/plan_final_v2_waypoints_tracking.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。
+第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。当前预声明配置为`configs/ffgd/plan_final_v2_waypoints_tracking_retained_noise.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。旧两段配置保留，不当作新公式已运行证据。
 
 两段均完成后，在链检查配置中列明本次两个`execution_runs`和相应两个`replay_runs`，保持`require_uniform_planner_version: true`，调用：
 
@@ -65,6 +67,7 @@ $approachExecution = '<本次selected_execution目录>'
 
 - 旧V16预选执行/重放通过仍有效，但不是新free357/完整状态最终链的验收。
 - C2短时保持和首次5秒运动目标失败保留；未选中的候选不得执行。
+- 用户2026-10-29接受约1.036°的短时C2偏差用于开发推进，记ACCEPTED_FOR_DEVELOPMENT_WITH_RESIDUAL；该例原1°严格判定及未执行不改写，不再阻塞最终集成。重大误差及安全/物理约束不在此授权范围。
 - 当前multirate的旧`mass_evaluations`计数按微步计入，未折算矩阵刷新间隔，会高估刷新次数。原日志不改写；不能用该计数宣称匹配物理调用预算优势。墙钟、网络调用与梯度次数单列。
 - 最终两段全链、其必要复验、完整干净环境执行与独立重放仍为`NOT_RUN`。完成后才能据真实证据替换本页的待运行状态。
 - Diffusion相对优势、广泛泛化与论文级统计：`NOT_RUN／未评估`。
