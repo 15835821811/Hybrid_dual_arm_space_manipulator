@@ -13,6 +13,7 @@ from .orchestration import atomic_json,check_budget
 
 def run(output,config):
     torch.set_num_threads(1)
+    if 'interval_grid_run' in config:return interval_grid_check(output,config)
     if 'contact_counterfactual_run' in config:return contact_counterfactual(output,config)
     if 'native_refinement_run' in config:return refine_native_adjoint(output,config)
     if config.get('full_energy'):return full_energy_check(output,config)
@@ -72,6 +73,49 @@ def run(output,config):
                 controller='floating_ff_torque_pd_v1',projection_calls=0)
     atomic_json(output/'full_state_calibration.json',result)
     return result
+
+
+def interval_grid_check(output,config):
+    """Read-only grid coverage on one recorded rejection; never repair it."""
+    import json
+    from types import SimpleNamespace
+    from .contracts import Candidate
+    from .api import boundary_codec
+    from .full_state_validation import native_prediction
+    from .costs import MultiSpaceEnergy
+    from .geometry import Geometry
+    from .temporal import inspect_intervals,interpolate_qpos
+    root=Path(config['interval_grid_run']);folder=root/'candidate_000'
+    manifest=json.loads((root/'planning_manifest.json').read_text())
+    record=json.loads((folder/'candidate.json').read_text())
+    before=(folder/'candidate.npz').read_bytes()
+    with np.load(folder/'candidate.npz') as data:
+        candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
+    if candidate.identity!=record['identity']:raise ValueError('CANDIDATE_IDENTITY_MISMATCH')
+    counts=config['grid_intervals']
+    if not counts or any(type(n) is not int or not 1<=n<=1024 for n in counts):raise ValueError('INVALID_GRID_PROBE_BUDGET')
+    r,snapshot,task,_=load_problem(root/'problem.json')
+    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),
+                         reference_start=task.reference_start,terminal_policy=task.terminal_policy)
+    full=native_prediction(r,snapshot,codec,codec.encode(candidate.control),.0005,geometry=False,target_force_pulses=task.target_force_pulses)
+    exact=inspect_intervals(r,task,full['time'],full['qpos'])
+    old=record['validation']['interval_errors']
+    error=max(abs(a[k]-b[k]) for a,b in zip(exact,old) for k in ('maximum_position_m','maximum_rotation_rad'))
+    prop=SimpleNamespace(target_force_pulses=task.target_force_pulses)
+    rows=[]
+    for count in counts:
+        check_budget()
+        energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=count)
+        states=np.asarray([interpolate_qpos(r,full['time'],full['qpos'],t)[0] for t in energy.grid])
+        sparse=inspect_intervals(r,task,energy.grid,states)
+        rows.append(dict(intervals=count,grid=energy.grid.tolist(),interval_errors=sparse,
+                         position_peak_missed_m=[a['maximum_position_m']-b['maximum_position_m'] for a,b in zip(exact,sparse)]))
+        atomic_json(output/'grid_progress.json',dict(native_intervals=exact,rows=rows))
+    unchanged=before==(folder/'candidate.npz').read_bytes() and candidate.identity==record['identity']
+    return dict(passed=error<1e-10 and unchanged,scope='READ_ONLY_INTERVAL_GRID_DIAGNOSTIC_NOT_ACCEPTANCE',
+                source_run=str(root),candidate_identity=candidate.identity,native_reproduction_error=error,
+                native_intervals=exact,rows=rows,native_rollouts=1,native_steps=len(full['time'])-1,
+                candidate_unchanged=unchanged,main_candidate_count_added=0,execution='NOT_RUN')
 
 
 def contact_counterfactual(output,config):
