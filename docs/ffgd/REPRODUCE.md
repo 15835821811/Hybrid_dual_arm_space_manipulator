@@ -75,6 +75,18 @@ $approachExecution = '<本次selected_execution目录>'
 
 `artifacts/ffgd/media/smoke_video_20261029T1153`已用历史0.8秒真实记录验证1601行、两视角、源哈希不变，并将所有mj_step入口替换为报错函数以确认零物理步进；初次字体失败保留在`smoke_video_20261029T1150`。该结果仅验证媒体工具，不是本版任务成功。最终组合场景媒体、科学图表及完整叠加信息尚待实际最终执行，不能据此标M8完成。交付打包时必须包含scripts目录，其独立生成器hash写入media_manifest。
 
+导出时增加`--geometry-pairs`会在每个保存状态只读重查最近几何对，要求重查间隙与原记录差≤1e-10；不调用物理步进。位姿请求误差另输出`pose_errors.csv`，保留插值时间括号和未覆盖请求。`full_export_20261029T1159`已核对原43a55c全部1601状态：几何差0、位姿误差与原acceptance逐值相等。
+
+绘图入口`scripts/ffgd_plot_media.py`只读取导出CSV，不导入仿真器。可在独立环境安装`scripts/requirements-media-lock.txt`，不改变规划依赖；输出三组PNG/SVG（任务/几何、q17/q67/跟踪、力矩/基座/动量），使用全部采样点，输出目录必须新建：
+
+```powershell
+uv venv artifacts/ffgd/media_runtime/.venv --python $ffgdPython
+uv pip install --python artifacts/ffgd/media_runtime/.venv/Scripts/python.exe -r scripts/requirements-media-lock.txt
+artifacts/ffgd/media_runtime/.venv/Scripts/python.exe scripts/ffgd_plot_media.py --media '<上述媒体目录>' --output '<新的图表目录>'
+```
+
+已在`plots_20261029T1204`检查三组实际图表；只是工具与旧执行记录的可视化核对，未增加新任务成功或重放证据。最终组合场景完整视频叠加及交付仍待完成。
+
 - 旧V16预选执行/重放通过仍有效，但不是新free357/完整状态最终链的验收。
 - C2短时保持和首次5秒运动目标失败保留；未选中的候选不得执行。
 - 用户2026-10-29接受约1.036°的短时C2偏差用于开发推进，记ACCEPTED_FOR_DEVELOPMENT_WITH_RESIDUAL；该例原1°严格判定及未执行不改写，不再阻塞最终集成。重大误差及安全/物理约束不在此授权范围。

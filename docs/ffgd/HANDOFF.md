@@ -443,3 +443,6 @@ ba9efd完整回归完成2206.43s，0/1。刚性最大位置29.4737mm（此前51.
 
 
 2026-10-29 11:50 UTC: 当前224733 PID40184/create/cmd仍一致，47/60完整步、15梯度15接受，核心hash仍523a74ab，无候选最终验收。同步新增独立scripts/ffgd_export_media.py，只读保存执行记录；历史43a55c的0.8秒1601状态CSV、两个640x480视频、源hash不变验证通过(smoke_video_20261029T1153)，禁止所有mj_step入口的检查通过。首次Windows字体配置失败保留(smoke_video_20261029T1150)，改用已安装字体后复验。未重跑物理，未宣称新任务/重放通过；最终科学图表/完整叠加信息仍未完成。REPRODUCE已指向当前bounded_peak两阶段配置并给只读媒体命令；打包需包含scripts，其hash独立记录，规划source_hash不含此目录。继续原worker，通过则原候选执行/重放/同源C2接续。
+
+
+2026-10-29 12:02 UTC: 224733 PID40184真实身份仍正常，51/60步、27梯度，源码仍523a74ab，无最终结果。继续同一候选，无新seed/新规划。只读媒体扩展pose_errors.csv及可选每实际帧geometry_pairs重查；full_export_20261029T1159的1601状态与原43a55c间隙差0、位姿误差与原acceptance精确相等，全部mj_step入口禁用时导出通过。独立media_runtime环境安装12项锁定依赖，scripts/ffgd_plot_media.py不导入仿真器，全部1601采样生成三组PNG/SVG并目视检查(plots_20261029T1204)。该工作只补交付工具，未改主采样或旧验收；最终任务视频完整叠加、实际组合链和干净复现仍未完成。

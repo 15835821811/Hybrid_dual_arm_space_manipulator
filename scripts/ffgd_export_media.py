@@ -21,7 +21,7 @@ from scipy.spatial.transform import Rotation
 from ffgd.problem_io import load_problem
 from ffgd.execution import refine_physics
 from ffgd.trajectory import basis
-from ffgd.temporal import target_body, world_goal
+from ffgd.temporal import target_body, world_goal, interpolate_qpos
 
 
 def digest(path):
@@ -36,7 +36,7 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
-def export(execution, output, fps=15, ffmpeg=None, videos=False):
+def export(execution, output, fps=15, ffmpeg=None, videos=False, geometry_pairs=False):
     execution, output = Path(execution).resolve(), Path(output).resolve()
     if output == execution or execution in output.parents:
         raise ValueError('OUTPUT_MUST_BE_OUTSIDE_SOURCE_EXECUTION')
@@ -95,7 +95,7 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False):
     with (output / 'native_samples.csv').open('w', newline='', encoding='utf-8') as stream, (output / 'interval_errors.csv').open('w', newline='', encoding='utf-8') as intervals:
         writer, iw = csv.writer(stream), csv.writer(intervals)
         writer.writerow(headers)
-        iw.writerow(['native_index', 'local_time_s', 'interval_index', 'tip', 'frame', 'position_error_m', 'rotation_error_rad', 'position_enabled', 'rotation_enabled'])
+        iw.writerow(['native_index', 'local_time_s', 'interval_index', 'tip', 'frame', 'position_error_m', 'rotation_error_rad', 'position_enabled', 'rotation_enabled', 'position_tolerance_m', 'rotation_tolerance_rad', 'goal_x_m', 'goal_y_m', 'goal_z_m'])
         for i, t in enumerate(times):
             restore(i)
             positions, rotations = tips()
@@ -115,7 +115,41 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False):
                 if interval.start <= t <= interval.end:
                     P, R = world_goal(interval, data.xpos, data.xmat.reshape(-1, 3, 3), target_body(r))
                     iw.writerow([i, t, j, interval.tip, interval.frame, np.linalg.norm(positions[interval.tip] - P),
-                                 Rotation.from_matrix(R.T @ rotations[interval.tip]).magnitude(), interval.position_enabled, interval.rotation_enabled])
+                                 Rotation.from_matrix(R.T @ rotations[interval.tip]).magnitude(), interval.position_enabled, interval.rotation_enabled,
+                                 interval.position_tolerance, interval.rotation_tolerance, *P])
+    with (output / 'pose_errors.csv').open('w', newline='', encoding='utf-8') as stream:
+        writer = csv.writer(stream)
+        writer.writerow(['local_time_s', 'pose_index', 'tip', 'position_error_m', 'rotation_error_rad', 'position_enabled', 'rotation_enabled', 'position_tolerance_m', 'rotation_tolerance_rad', 'interpolation_bracket_s', 'covered'])
+        for j, pose in enumerate(task.poses):
+            if pose.time > times[-1]:
+                writer.writerow([pose.time, j, pose.tip, '', '', pose.position_enabled, pose.rotation_enabled, pose.position_tolerance, pose.rotation_tolerance, '', False])
+                continue
+            right = min(int(np.searchsorted(times, pose.time)), count - 1)
+            left = max(0, right - 1)
+            qpos = np.array([restore(i).qpos.copy() for i in (left, right)])
+            data.qpos[:], bracket = interpolate_qpos(r, times[[left, right]], qpos, pose.time)
+            mujoco.mj_kinematics(r.model, data)
+            positions, rotations = tips()
+            writer.writerow([pose.time, j, pose.tip, np.linalg.norm(positions[pose.tip] - pose.position),
+                             Rotation.from_matrix(pose.rotation.T @ rotations[pose.tip]).magnitude(), pose.position_enabled, pose.rotation_enabled,
+                             pose.position_tolerance, pose.rotation_tolerance, bracket, True])
+    pair_report = dict(status='NOT_RUN')
+    if geometry_pairs:
+        from ffgd.geometry import Geometry
+        geometry = Geometry(r)
+        error = 0.
+        with (output / 'geometry_pairs.csv').open('w', newline='', encoding='utf-8') as stream:
+            writer = csv.writer(stream)
+            writer.writerow(['native_index', 'local_time_s', 'clearance_m', 'geom_a', 'geom_b', 'name_a', 'name_b', 'native_queries', 'capped'])
+            for i, t in enumerate(times):
+                scan = geometry.native_scan(restore(i))
+                error = max(error, abs(scan['minimum'] - float(saved['clearance'][i])))
+                a, b = scan['pair'] if scan['pair'] is not None else (-1, -1)
+                names_pair = [mujoco.mj_id2name(r.model, mujoco.mjtObj.mjOBJ_GEOM, k) if k >= 0 else '' for k in (a, b)]
+                writer.writerow([i, t, scan['minimum'], a, b, *names_pair, scan['queries'], scan['capped']])
+        if error > 1e-10:
+            raise ValueError('DISPLAY_GEOMETRY_DIFFERS_FROM_SAVED_CLEARANCE')
+        pair_report = dict(status='SAVED_STATE_REQUERY_COMPLETE', maximum_saved_clearance_difference=error, policy_hash=geometry.policy_hash)
     video_records = []
     if videos:
         executable = ffmpeg or shutil.which('ffmpeg')
@@ -172,7 +206,7 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False):
                   task_poses='source_task.json; no interpolated hidden path', source_execution_status=summary['status'],
                   source_acceptance_status=read_json(execution / 'acceptance.json')['status'],
                   source_method=provenance['method'], source_candidate_hash=summary['candidate_hash'],
-                  source_planning_manifest=read_json(planning / 'manifest.json'), videos=video_records,
+                  source_planning_manifest=read_json(planning / 'manifest.json'), videos=video_records, geometry_pair_export=pair_report,
                   generator_sha256=digest(Path(__file__)))
     (output / 'media_manifest.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
     return dict(output=str(output), states=count, videos=len(video_records), source_unchanged=True, new_physics_steps=0)
@@ -185,5 +219,6 @@ if __name__ == '__main__':
     parser.add_argument('--videos', action='store_true')
     parser.add_argument('--fps', type=int, default=15)
     parser.add_argument('--ffmpeg')
+    parser.add_argument('--geometry-pairs', action='store_true', help='Re-query geometry on each saved state; no physics stepping')
     args = parser.parse_args()
-    print(json.dumps(export(args.execution, args.output, args.fps, args.ffmpeg, args.videos), indent=2))
+    print(json.dumps(export(args.execution, args.output, args.fps, args.ffmpeg, args.videos, args.geometry_pairs), indent=2))
