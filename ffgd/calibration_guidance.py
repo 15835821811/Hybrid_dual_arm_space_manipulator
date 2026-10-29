@@ -14,6 +14,16 @@ from .costs import MultiSpaceEnergy
 from .orchestration import atomic_json,check_budget
 
 
+def _recorded_transport(manifest,row):
+    """Resolve declared source policy; old traces predate the explicit field."""
+    declared=manifest['budget']['sampling'].get('guidance_transport','reconstruct_noise')
+    if declared not in ('reconstruct_noise','retain_network_noise'):
+        raise ValueError('UNKNOWN_RECORDED_GUIDANCE_TRANSPORT')
+    recorded=row.get('guidance_transport',declared)
+    if recorded!=declared:raise ValueError('TRACE_GUIDANCE_TRANSPORT_MISMATCH')
+    return recorded
+
+
 def run(path,config):
     # Isolated diagnostic of the previous compiled-Jacobian stall. Keep this
     # executor choice out of the main sampler until whole-path AD is verified.
@@ -116,8 +126,10 @@ def _run(path,config):
     trace=json.loads((folder/'denoising.json').read_text(encoding='utf-8'));alpha=np.cumprod(1-np.linspace(.0001,.02,1000));coupling=[]
     for i,row in enumerate(trace[:-1]):
         if not row['active']:continue
-        k=row['noise_level'];nextk=trace[i+1]['noise_level'];gain=float(np.sqrt(alpha[nextk])-np.sqrt(1-alpha[nextk])*np.sqrt(alpha[k]/(1-alpha[k])))
-        coupling.append(dict(step=i,clean_to_next_state_gain=gain,guide_reduction=row['updates'][-1]['before']-row['updates'][-1]['after'],
+        k=row['noise_level'];nextk=trace[i+1]['noise_level'];transport=_recorded_transport(manifest,row)
+        gain=float(np.sqrt(alpha[nextk]))
+        if transport=='reconstruct_noise':gain-=float(np.sqrt(1-alpha[nextk])*np.sqrt(alpha[k]/(1-alpha[k])))
+        coupling.append(dict(step=i,guidance_transport=transport,clean_to_next_state_gain=gain,guide_reduction=row['updates'][-1]['before']-row['updates'][-1]['after'],
                              next_network_energy_increase=trace[i+1]['energies_before_guidance']['total']-row['updates'][-1]['after']))
     np.savez_compressed(path/'diagnostic_inputs.npz',original_clean=clean,gradient=gradient,one_step_proposals=np.asarray(proposals))
     return dict(passed=jacobian_verified is not False,scope='bounded root-cause experiment, no plan returned or executed',source_run=str(root),before=before,native_before=native_before,native_scalar_relative_error=scalar_relative,gradient_norm=norm,jacobian_verified=jacobian_verified,
@@ -152,6 +164,8 @@ def transition_check(path,folder,config,manifest,model,checkpoint,robot,snapshot
     rows=[];outputs={}
     for i in config['transition_steps']:
         if not 0<=i<len(trace)-1 or not trace[i]['active']:raise ValueError('TRANSITION_REQUIRES_NONFINAL_GUIDED_STEP')
+        transport=_recorded_transport(manifest,trace[i])
+        source_prediction='reconstruct_from_guided' if transport=='reconstruct_noise' else 'retain_network_noise'
         k=trace[i]['noise_level'];nextk=trace[i+1]['noise_level']
         a=float(alpha[k].sqrt());s=float((1-alpha[k]).sqrt())
         an=float(alpha[nextk].sqrt());sn=float((1-alpha[nextk]).sqrt())
@@ -168,13 +182,13 @@ def transition_check(path,folder,config,manifest,model,checkpoint,robot,snapshot
                 saved_output_max_difference=float(np.max(abs(output.numpy()-arrays['output'][i]))),
                 saved_next_clean_max_difference=float(np.max(abs(next_clean-arrays['clean'][i+1]))))
             outputs[f'{i}_{mode}_state']=output.numpy();outputs[f'{i}_{mode}_next_clean']=next_clean
-        rows.append(dict(step=i,noise_level=k,next_noise_level=nextk,
+        rows.append(dict(step=i,noise_level=k,next_noise_level=nextk,guidance_transport=transport,source_prediction=source_prediction,
             reconstructed_gain=an-sn*a/s,retained_noise_gain=an,
             guided_energy=trace[i]['updates'][-1]['after'],predictions=predictions))
         atomic_json(path/'transition_progress.json',rows)
     np.savez_compressed(path/'transition_counterfactuals.npz',**outputs)
-    reproduced=all(row['predictions']['reconstruct_from_guided']['saved_output_max_difference']<2e-6 and
-                   row['predictions']['reconstruct_from_guided']['saved_next_clean_max_difference']<2e-5 for row in rows)
+    reproduced=all(row['predictions'][row['source_prediction']]['saved_output_max_difference']<2e-6 and
+                   row['predictions'][row['source_prediction']]['saved_next_clean_max_difference']<2e-5 for row in rows)
     return dict(passed=reproduced,scope='READONLY_SINGLE_TRANSITION_ROOT_CAUSE; no candidate returned, no optimization/execution',
                 source_run=str(folder.parent),same_checkpoint=True,next_network_calls=2*len(rows),rows=rows,
                 main_candidate_count_added=0,acceptance_changed=False)
