@@ -48,3 +48,5 @@
   coverage is a later milestone, not inferred from a small pilot.
 
 - 2026-10-29: Preserved final approach0ebf8d rejected with known unsafe geometry/derivatives. Adopt optional bounded quadratic second trial (7f62c6 native decrease) and optional collision time peak (beca9b contact-domain contrast;9d51c0 scalar/AD subchecks), inside existing denoising budget. Legacy defaults remain; no acceptance/execution change.9d51c0 composite remains FAILED at0.418mm versus0.4mm on unsafe reference. New moving/final configs require actual sampling and execution regression before any full architecture or engineering claim.
+
+- 2026-10-29: After final224733 rejection, task-only instantaneous curvature probe865ce0 is rejected; combined task/support-gap SPD metric f34524 gives native435.216→222.684 without a candidate. Admit optional instantaneous_multispace ONLY for new-noise regression, refreshing inside each guided step from its current full-state prediction. Exact whole-path gradient and readonly gates unchanged; no diagnostic path input. Added local FK/momentum/geometry FD and network-consumption tests pass. Full engineering remains incomplete.

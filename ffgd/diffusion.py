@@ -26,6 +26,7 @@ class SamplingBudget:
     rejection_backoff: bool = False
     guidance_transport: str = 'reconstruct_noise'
     line_rule: str = 'halving'
+    local_metric: str = 'none'
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
@@ -37,6 +38,8 @@ class SamplingBudget:
         if type(self.rejection_backoff) is not bool:raise ValueError('invalid rejection backoff')
         if self.guidance_transport not in ('reconstruct_noise','retain_network_noise'):raise ValueError('invalid guidance transport')
         if self.line_rule not in ('halving','quadratic_rejection'):raise ValueError('invalid bounded line rule')
+        if self.local_metric not in ('none','instantaneous_multispace'):raise ValueError('invalid local guidance metric')
+        if self.task_metric and self.local_metric!='none':raise ValueError('select one task curvature implementation')
 
 
 def rejected_trial_scale(before,after,directional_delta,scale,rule):
@@ -55,7 +58,7 @@ def rejected_trial_scale(before,after,directional_delta,scale,rule):
     return float(np.clip(proposed,.05*scale,.5*scale))
 
 
-def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
+def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None,metric_callback=None):
     """One candidate, exactly the requested network calls; never adds seeds."""
     device=next(model.parameters()).device
     generator=torch.Generator(device=device).manual_seed(seed)
@@ -68,6 +71,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
     scale=torch.ones(free_dim,dtype=torch.float64) if scale is None else torch.as_tensor(scale,dtype=torch.float64)
     if mean.shape!=(free_dim,) or scale.shape!=(free_dim,) or bool((scale<=0).any()):raise ValueError('invalid reversible scaler')
     if budget.guide_steps and energy is None:raise ValueError('missing physical energy')
+    if budget.local_metric!='none' and metric_callback is None:raise ValueError('missing declared local metric callback')
     trace=[];calls=0
     metric_factor=None if metric is None else torch.linalg.cholesky(metric)
     feedback_cap=None
@@ -90,10 +94,19 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
         if active:
             step_metric_factor=metric_factor
             metric_diagnostics=None
+            local_metric_diagnostics=None
             for update in range(budget.updates_per_step):
                 variable=guided.detach().requires_grad_()
                 terms=energy(mean+scale*variable)
                 if step_terms is None:step_terms={name:float(value.detach()) for name,value in terms.items()}
+                if budget.local_metric!='none' and update==0:
+                    import time
+                    metric_start=time.perf_counter()
+                    addition,local_metric_diagnostics=metric_callback()
+                    if addition.shape!=(free_dim,free_dim) or not torch.isfinite(addition).all():raise ValueError('INVALID_LOCAL_METRIC')
+                    base_metric=torch.eye(free_dim,dtype=variable.dtype) if metric is None else metric
+                    step_metric_factor=torch.linalg.cholesky(base_metric+addition)
+                    local_metric_diagnostics=dict(local_metric_diagnostics,refresh_step=index,refresh_update=0,seconds=time.perf_counter()-metric_start)
                 if budget.task_metric and update==0:
                     # Refresh at every guided noise level, reuse only within its
                     # bounded (at most three) updates. Full physical gradient is
@@ -164,6 +177,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                                     proposed_maximum_control_change=physical_change,
                                     accepted_maximum_control_change=physical_change*chosen if physical_change is not None else None,diagnostics=diagnostics))
                 updates[-1]['task_metric']=metric_diagnostics
+                updates[-1]['local_metric']=local_metric_diagnostics
         gc=guided.to(device=device,dtype=x.dtype)
         # Explicit guided DDIM intervention: retain the current network noise
         # estimate so changing clean is not simultaneously cancelled in noise.

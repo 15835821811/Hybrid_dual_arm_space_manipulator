@@ -92,7 +92,8 @@ def main(argv=None):
         from pathlib import Path
         if not args.config:p.error('guidance-diagnostic requires --config')
         config=json.loads(Path(args.config).read_text(encoding='utf-8-sig'))
-        diagnostic_budget=(dict(full_energy_gradients=2,native_energy_calls=5) if config.get('direction_probe') else
+        diagnostic_budget=(dict(full_energy_gradients=1,native_energy_calls=5,metric_native_rollouts=1) if config.get('direction_probe') and config.get('instantaneous_task_metric_probe') else
+                           dict(full_energy_gradients=2,native_energy_calls=5) if config.get('direction_probe') else
                            dict(transition_checks=len(config['transition_steps']),next_network_calls=2*len(config['transition_steps']))
                            if config.get('transition_steps') else dict(one_step_rays=len(config.get('coefficients',config.get('lengths',[.1,.25,.5,1.,2.])))))
         return unit('guidance_diagnostic',lambda path:run(path,config),dict(max_wall_seconds=180,**diagnostic_budget))

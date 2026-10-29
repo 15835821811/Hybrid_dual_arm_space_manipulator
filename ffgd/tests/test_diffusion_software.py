@@ -206,3 +206,27 @@ def test_quadratic_failed_trial_backoff_uses_last_actual_scale():
             assert u['feedback_cap_after']==u['effective_step_coefficient']*u['trial_evaluations'][-1]['scale']*.5
             assert updates[i+1]['step_coefficient']<=u['feedback_cap_after']
         assert len(u['trial_evaluations'])<=2
+
+
+def test_local_metric_refresh_is_inside_denoising_and_preserves_next_network_input():
+    torch.set_num_threads(1);torch.manual_seed(61)
+    model=ConditionalDenoiser(max_free=12,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32));current=[];refresh=[];observed=[]
+    def energy(x):
+        if torch.is_grad_enabled():current.append(x.detach().clone())
+        return dict(total=.5*(x*torch.arange(1.,9.)).square().sum())
+    def metric():
+        refresh.append(current[-1].clone())
+        return torch.diag(torch.arange(1.,9.,dtype=torch.float64).square()),dict(native_pose_states=0,collision_rows=0)
+    hook=model.register_forward_pre_hook(lambda m,args:observed.append(args[0][0].detach().numpy().copy()))
+    budget=SamplingBudget(steps=5,guide_steps=3,updates_per_step=3,step_size=.1,max_update_norm=1.,local_metric='instantaneous_multispace',guidance_transport='retain_network_noise')
+    result=sample(model,condition,8,56,budget,energy,metric_callback=metric);hook.remove()
+    assert len(refresh)==3 and len(current)==9 and result['network_calls']==5
+    assert result['post_sampling_trajectory_repair_calls']==0
+    for i in range(4):np.testing.assert_array_equal(result['trace'][i]['output'],observed[i+1])
+    for j,row in enumerate(result['trace'][2:]):
+        np.testing.assert_array_equal(refresh[j].numpy(),row['clean'])
+        assert all(u['local_metric']['refresh_step']==j+2 and u['local_metric']['refresh_update']==0 for u in row['updates'])
+    import pytest
+    with pytest.raises(ValueError,match='one task curvature'):SamplingBudget(task_metric=True,local_metric='instantaneous_multispace')
+    with pytest.raises(ValueError,match='missing declared'):sample(model,condition,8,56,budget,energy)

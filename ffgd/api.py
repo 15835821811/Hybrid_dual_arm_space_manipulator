@@ -107,6 +107,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
     geometry=Geometry(robot)
     if budget.sampling.task_metric and physics_backend not in ('eager','eager_mass_rows','batched_bodyframe','batched_full_path'):raise ValueError('TASK_JACOBIAN_REQUIRES_CALIBRATED_BACKEND')
     energy=MultiSpaceEnergy(prop,codec,geometry,task,intervals=budget.intervals,collect_task_residual=budget.sampling.task_metric,collision_aggregation=collision_aggregation,joint_peak_penalty=joint_peak_penalty,task_objective=task_objective,planning_margins=planning_margins)
+    if budget.sampling.local_metric!='none' and physics_backend!='full_state':raise ValueError('LOCAL_METRIC_REQUIRES_CALIBRATED_FULL_STATE_BACKEND')
+    energy.capture_metric_state=budget.sampling.local_metric!='none'
     if guide_weights is not None:
         if set(guide_weights)!=set(energy.weights) or any(not np.isfinite(v) or v<=0 for v in guide_weights.values()):raise ValueError('provide positive weights for all five physical energy terms')
         energy.weights.update(guide_weights)
@@ -146,7 +148,8 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
         try:
             energy_calls=0
             query_counters=dict(completed_energy_evaluations=0,mass_evaluations=0,support_pair_evaluations=0,broadphase_pair_evaluations=0,
-                                full_energy_gradients=0,task_jacobian_rows=0,autograd_engine_calls=0)
+                                full_energy_gradients=0,task_jacobian_rows=0,autograd_engine_calls=0,
+                                local_metric_native_states=0,local_metric_collision_gradient_calls=0)
             def observe(kind,value):
                 if kind=='initial':
                     np.save(folder/'initial_noise.npy',value)
@@ -158,6 +161,10 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                     if updates and updates[0].get('task_metric'):
                         rows=updates[0]['task_metric']['residual_dimension'];query_counters['task_jacobian_rows']+=rows
                         query_counters['autograd_engine_calls']+=int(np.ceil(rows/budget.sampling.jacobian_batch_size))
+                    if updates and updates[0].get('local_metric'):
+                        local=updates[0]['local_metric']
+                        query_counters['local_metric_native_states']+=local['native_pose_states']
+                        query_counters['local_metric_collision_gradient_calls']+=local['collision_rows']
                     arrays={k:v for k,v in value.items() if isinstance(v,np.ndarray)}
                     np.savez_compressed(folder/f'step_{value["index"]:03d}.npz',**arrays)
                     atomic_json(folder/f'step_{value["index"]:03d}.json',{k:v for k,v in value.items() if k not in arrays})
@@ -171,11 +178,17 @@ def plan(robot,initial,task,checkpoint_path,budget,profile,output,device='cpu',d
                 query_counters['completed_energy_evaluations']+=1
                 for key in ('mass_evaluations','support_pair_evaluations','broadphase_pair_evaluations'):query_counters[key]+=energy.last_diagnostics[key]
                 return terms
+            def local_metric():
+                from .guidance_metric import instantaneous_task_metric
+                return instantaneous_task_metric(robot,codec,checkpoint['scale'],task,energy.grid,energy.last_metric_qpos,
+                    task_weight=energy.weights['task'],task_fraction=energy.planning_margins['task_tolerance_fraction'],task_objective=energy.task_objective,
+                    geometry=geometry,collision_weight=energy.weights['collision'],buffer=energy.buffer,collision_aggregation=energy.collision_aggregation)
             actual_inputs=[]
             hook=model.register_forward_pre_hook(lambda model,args:actual_inputs.append(args[0].detach().cpu().numpy().copy()))
             try:
                 result=sample(model,condition,codec.free_dim,seed,budget.sampling,checked_energy,checkpoint['mean'],checkpoint['scale'],observer=observe,
-                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64),audit_inactive_energy=True,metric=metric)
+                              control_jacobian=torch.tensor(codec.N*checkpoint['scale'][None,:],dtype=torch.float64),audit_inactive_energy=True,metric=metric,
+                              metric_callback=local_metric if budget.sampling.local_metric!='none' else None)
             finally:
                 hook.remove();record['observed_network_calls']=len(actual_inputs)
                 record['physical_energy_evaluations']=energy_calls

@@ -215,8 +215,9 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
     All diagnostic proposals stay here; the planner never reads this output.
     """
     from .guidance_metric import acceleration_metric
+    instantaneous = config.get('instantaneous_task_metric_probe',False)
     with np.load(folder/'denoising.npz') as data:
-        points=[tensor(data['clean'][-1]),tensor(data['guided'][-1])]
+        points=([tensor(data['guided'][-1])] if instantaneous else [tensor(data['clean'][-1]),tensor(data['guided'][-1])])
     mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);values=[];gradients=[]
     for i,point in enumerate(points):
         check_budget();x=point.clone().requires_grad_();terms=energy.evaluate(mean+scale*x)
@@ -228,11 +229,26 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
     metric=acceleration_metric(codec,checkpoint['scale'],robot.spec.planner_acceleration_limits,energy.grid,sampling.get('acceleration_metric_weight',0))
     factor=torch.linalg.cholesky(metric);current=points[-1];g=gradients[-1]
     base=torch.cholesky_solve(g[:,None],factor).squeeze(1)
-    secant,applied,curvature=_one_secant_direction(factor,g,points[1]-points[0],gradients[1]-gradients[0])
+    metric_diagnostics=None;metric_rollouts=0
+    if instantaneous:
+        from .guidance_metric import instantaneous_task_metric
+        xs,_=energy.p.native_rollout(codec,(mean+scale*current).numpy(),grid=energy.grid)
+        metric_rollouts=1
+        addition,metric_diagnostics=instantaneous_task_metric(robot,codec,checkpoint['scale'],energy.task,energy.grid,xs,
+            task_weight=energy.weights['task'],task_fraction=energy.planning_margins['task_tolerance_fraction'],task_objective=energy.task_objective,
+            geometry=energy.geometry if config.get('metric_collision',False) else None,collision_weight=energy.weights['collision'],
+            buffer=energy.buffer,collision_aggregation=energy.collision_aggregation)
+        local=metric+addition;local_factor=torch.linalg.cholesky(local)
+        modified=torch.cholesky_solve(g[:,None],local_factor).squeeze(1)
+        metric_diagnostics.update(metric_condition=float(torch.linalg.cond(local)),minimum_eigenvalue=float(torch.linalg.eigvalsh(local).min()))
+        directions=(('base_metric',base),('instantaneous_task_metric',modified));applied=False;curvature=None
+    else:
+        secant,applied,curvature=_one_secant_direction(factor,g,points[1]-points[0],gradients[1]-gradients[0])
+        directions=(('base_metric',base),('one_secant',secant))
     native_before=energy.native_evaluate((mean+scale*current).numpy())
     relative=max(abs(native_before[k]-values[-1][k])/max(1.,abs(native_before[k]),abs(values[-1][k])) for k in native_before)
     jacobian=tensor(codec.N*checkpoint['scale'][None,:]);rows=[];saved={}
-    for name,direction in (('base_metric',base),('one_secant',secant)):
+    for name,direction in directions:
         descent=float(g@direction)
         if not np.isfinite(descent) or descent<=0:raise ValueError('NON_DESCENT_DIRECTION_PROBE')
         coefficient=sampling['step_size']*max(values[-1]['total'],0.)/descent
@@ -255,11 +271,12 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
         rows.append(dict(method=name,directional_descent=descent,step_coefficient=coefficient,
                          proposed_control_change=float(torch.max(abs(jacobian@delta))),rays=rays,
                          line_rule=line_rule,stop_on_accept=stop_on_accept))
-        atomic_json(path/'direction_progress.json',dict(completed_gradients=2,rows=rows))
-    np.savez_compressed(path/'direction_probe_arrays.npz',previous=points[0].numpy(),current=current.numpy(),
-                        previous_gradient=gradients[0].numpy(),current_gradient=g.numpy(),**saved)
-    return dict(passed=relative<1e-6,scope='READONLY_TWO_GRADIENT_DIRECTION_DIAGNOSTIC; no optimization chain/candidate/execution',
+        atomic_json(path/'direction_progress.json',dict(completed_gradients=len(gradients),rows=rows))
+    if len(points)>1:saved.update(previous=points[0].numpy(),previous_gradient=gradients[0].numpy())
+    np.savez_compressed(path/'direction_probe_arrays.npz',current=current.numpy(),current_gradient=g.numpy(),**saved)
+    return dict(passed=relative<1e-6,scope='READONLY_BOUNDED_DIRECTION_DIAGNOSTIC; no optimization chain/candidate/execution',
                 source_run=str(folder.parent),native_scalar_relative_error=relative,states=values,native_before=native_before,
-                secant_applied=applied,secant_curvature=curvature,gradient_cosine=float(gradients[0]@g/(torch.linalg.vector_norm(gradients[0])*torch.linalg.vector_norm(g))),
-                rows=rows,full_energy_gradients=2,native_energy_calls=1+sum(len(r['rays']) for r in rows),
+                secant_applied=applied,secant_curvature=curvature,gradient_cosine=(float(gradients[0]@g/(torch.linalg.vector_norm(gradients[0])*torch.linalg.vector_norm(g))) if len(gradients)>1 else None),
+                rows=rows,full_energy_gradients=len(gradients),native_energy_calls=1+sum(len(r['rays']) for r in rows),
+                metric_native_rollouts=metric_rollouts,metric_diagnostics=metric_diagnostics,
                 main_candidate_count_added=0,acceptance_changed=False)

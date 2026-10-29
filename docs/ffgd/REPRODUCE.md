@@ -36,7 +36,7 @@ $ffgdPython = (Resolve-Path .venv/Scripts/python.exe).Path
 
 首轮开发时序为8秒接近、24秒七航点与刚性持续卫星追踪；空间航点、七个球障碍及物理门不变。根初态全零速度；卫星在第二段接受配置中明确的2秒力脉冲再自由漂移，禁止注入目标速度。时序可依据实测另建版本，不能事后改判旧结果。
 
-2026-10-29当前接近配置为`configs/ffgd/plan_final_v2_approach_bounded_peak.json`；显式使用MASTER第6.2节的`retain_network_noise`、有界二次拒绝试探和碰撞时间峰值项。下列本机配置副本从此文件生成。旧retained_noise配置及其失败保留；当前224733尚在运行，最终完整场景仍未通过。
+2026-10-29当前预声明接近配置为`configs/ffgd/plan_final_v2_approach_local_metric.json`；显式使用MASTER第6.2节的`retain_network_noise`、有界二次拒绝试探、碰撞时间峰值项和去噪内局部多空间SPD预条件。下列本机配置副本从此文件生成。旧retained_noise配置及其失败保留；224733已失败，当前新配置尚待完整实际采样/执行验证，最终完整场景仍未通过。
 
 ```powershell
 $approachConfig = '<本机设备和权重路径已核对的规划配置副本.json>'
@@ -55,7 +55,7 @@ $approachExecution = '<本次selected_execution目录>'
 
 `execute`再次只读验证原候选；实际物理步长0.5ms、控制周期2ms，安全逐步检查。`continue-state`要求执行通过，导出完整实际积分状态和原参考的局部q/v/a，场景不变；只导出局部边界，不把旧未来路径作为下一规划输入。
 
-第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。当前预声明配置为`configs/ffgd/plan_final_v2_waypoints_tracking_bounded_peak.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。旧两段配置保留，不当作新公式已运行证据。
+第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。当前预声明配置为`configs/ffgd/plan_final_v2_waypoints_tracking_local_metric.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。旧两段配置保留，不当作新公式已运行证据。
 
 两段均完成后，在链检查配置中列明本次两个`execution_runs`和相应两个`replay_runs`，保持`require_uniform_planner_version: true`，调用：
 

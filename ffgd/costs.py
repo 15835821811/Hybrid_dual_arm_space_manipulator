@@ -68,6 +68,8 @@ class MultiSpaceEnergy:
 
     def evaluate(self,z,return_path=False):
         out=self.p.rollout(self.codec,z,grid=self.grid);tree=self.p.tree;r=self.p.robot
+        if getattr(self,'capture_metric_state',False) and torch.is_grad_enabled():
+            self.last_metric_qpos=out['qpos'].detach().cpu().numpy().copy()
         task=z.sum()*0;collision=[];actuator=[];smooth=[];raw=[];minima=[]
         support_pairs=0
         task_residuals=[];interval_values=[[] for _ in self.task.intervals]
