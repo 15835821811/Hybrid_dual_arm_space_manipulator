@@ -240,14 +240,21 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
         delta=coefficient*direction
         delta*=min(1.,sampling['max_update_norm']/max(float(torch.linalg.vector_norm(delta)),1e-30))
         delta*=min(1.,sampling['max_control_change']/max(float(torch.max(abs(jacobian@delta))),1e-30))
-        rays=[]
+        rays=[];trial_scale=1.
+        line_rule=config.get('direction_line_rule','halving')
+        stop_on_accept=config.get('direction_stop_on_accept',False)
+        from .diffusion import rejected_trial_scale
         for trial in range(sampling['line_trials']):
-            check_budget();proposal=current-2.**(-trial)*delta
+            check_budget();proposal=current-trial_scale*delta
             native=energy.native_evaluate((mean+scale*proposal).numpy())
-            rays.append(dict(line_scale=2.**(-trial),energies=native,accepted=native['total']<=native_before['total']))
+            accepted=bool(native['total']<=native_before['total'])
+            rays.append(dict(line_scale=trial_scale,energies=native,accepted=accepted))
             saved[f'{name}_{trial}']=proposal.numpy()
+            if accepted and stop_on_accept:break
+            trial_scale=rejected_trial_scale(native_before['total'],native['total'],float(g@delta),trial_scale,line_rule)
         rows.append(dict(method=name,directional_descent=descent,step_coefficient=coefficient,
-                         proposed_control_change=float(torch.max(abs(jacobian@delta))),rays=rays))
+                         proposed_control_change=float(torch.max(abs(jacobian@delta))),rays=rays,
+                         line_rule=line_rule,stop_on_accept=stop_on_accept))
         atomic_json(path/'direction_progress.json',dict(completed_gradients=2,rows=rows))
     np.savez_compressed(path/'direction_probe_arrays.npz',previous=points[0].numpy(),current=current.numpy(),
                         previous_gradient=gradients[0].numpy(),current_gradient=g.numpy(),**saved)
