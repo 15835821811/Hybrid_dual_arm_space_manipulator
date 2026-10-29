@@ -60,6 +60,8 @@ def _run(path,config):
     energy.weights.update(manifest.get('guide_weights',{}))
     if config.get('transition_steps'):
         return transition_check(path,folder,config,manifest,model,checkpoint,r,snapshot,task,p,energy)
+    if config.get('direction_probe'):
+        return direction_check(path,folder,config,manifest,checkpoint,codec,r,energy)
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
     if stage!=metric_stage and config.get('verify_jacobian'):raise ValueError('Jacobian verification requires same diagnostic and metric input')
@@ -191,4 +193,66 @@ def transition_check(path,folder,config,manifest,model,checkpoint,robot,snapshot
                    row['predictions'][row['source_prediction']]['saved_next_clean_max_difference']<2e-5 for row in rows)
     return dict(passed=reproduced,scope='READONLY_SINGLE_TRANSITION_ROOT_CAUSE; no candidate returned, no optimization/execution',
                 source_run=str(folder.parent),same_checkpoint=True,next_network_calls=2*len(rows),rows=rows,
+                main_candidate_count_added=0,acceptance_changed=False)
+
+
+def _one_secant_direction(factor,gradient,displacement,gradient_change):
+    """Diagnostic inverse-BFGS action with the existing SPD base metric."""
+    base=torch.cholesky_solve(gradient[:,None],factor).squeeze(1)
+    curvature=float(displacement@gradient_change)
+    threshold=1e-8*float(torch.linalg.vector_norm(displacement)*torch.linalg.vector_norm(gradient_change))
+    if not np.isfinite(curvature) or curvature<=max(threshold,1e-20):return base,False,curvature
+    rho=1./curvature;alpha=rho*(displacement@gradient)
+    q=gradient-alpha*gradient_change
+    r=torch.cholesky_solve(q[:,None],factor).squeeze(1)
+    return r+displacement*(alpha-rho*(gradient_change@r)),True,curvature
+
+
+def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
+    """Two recorded states, two gradients, bounded native rays; never a plan.
+
+    Tests local curvature/scaling as a cause of repeated small/rejected steps.
+    All diagnostic proposals stay here; the planner never reads this output.
+    """
+    from .guidance_metric import acceleration_metric
+    with np.load(folder/'denoising.npz') as data:
+        points=[tensor(data['clean'][-1]),tensor(data['guided'][-1])]
+    mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);values=[];gradients=[]
+    for i,point in enumerate(points):
+        check_budget();x=point.clone().requires_grad_();terms=energy.evaluate(mean+scale*x)
+        gradient=torch.autograd.grad(terms['total'],x)[0].detach()
+        if not torch.isfinite(gradient).all():raise ValueError('NONFINITE_DIRECTION_PROBE')
+        values.append({k:float(v.detach()) for k,v in terms.items()});gradients.append(gradient)
+        atomic_json(path/'direction_progress.json',dict(completed_gradients=i+1,energy=values[-1]))
+    sampling=manifest['budget']['sampling']
+    metric=acceleration_metric(codec,checkpoint['scale'],robot.spec.planner_acceleration_limits,energy.grid,sampling.get('acceleration_metric_weight',0))
+    factor=torch.linalg.cholesky(metric);current=points[-1];g=gradients[-1]
+    base=torch.cholesky_solve(g[:,None],factor).squeeze(1)
+    secant,applied,curvature=_one_secant_direction(factor,g,points[1]-points[0],gradients[1]-gradients[0])
+    native_before=energy.native_evaluate((mean+scale*current).numpy())
+    relative=max(abs(native_before[k]-values[-1][k])/max(1.,abs(native_before[k]),abs(values[-1][k])) for k in native_before)
+    jacobian=tensor(codec.N*checkpoint['scale'][None,:]);rows=[];saved={}
+    for name,direction in (('base_metric',base),('one_secant',secant)):
+        descent=float(g@direction)
+        if not np.isfinite(descent) or descent<=0:raise ValueError('NON_DESCENT_DIRECTION_PROBE')
+        coefficient=sampling['step_size']*max(values[-1]['total'],0.)/descent
+        if sampling.get('max_step_coefficient') is not None:coefficient=min(coefficient,sampling['max_step_coefficient'])
+        delta=coefficient*direction
+        delta*=min(1.,sampling['max_update_norm']/max(float(torch.linalg.vector_norm(delta)),1e-30))
+        delta*=min(1.,sampling['max_control_change']/max(float(torch.max(abs(jacobian@delta))),1e-30))
+        rays=[]
+        for trial in range(sampling['line_trials']):
+            check_budget();proposal=current-2.**(-trial)*delta
+            native=energy.native_evaluate((mean+scale*proposal).numpy())
+            rays.append(dict(line_scale=2.**(-trial),energies=native,accepted=native['total']<=native_before['total']))
+            saved[f'{name}_{trial}']=proposal.numpy()
+        rows.append(dict(method=name,directional_descent=descent,step_coefficient=coefficient,
+                         proposed_control_change=float(torch.max(abs(jacobian@delta))),rays=rays))
+        atomic_json(path/'direction_progress.json',dict(completed_gradients=2,rows=rows))
+    np.savez_compressed(path/'direction_probe_arrays.npz',previous=points[0].numpy(),current=current.numpy(),
+                        previous_gradient=gradients[0].numpy(),current_gradient=g.numpy(),**saved)
+    return dict(passed=relative<1e-6,scope='READONLY_TWO_GRADIENT_DIRECTION_DIAGNOSTIC; no optimization chain/candidate/execution',
+                source_run=str(folder.parent),native_scalar_relative_error=relative,states=values,native_before=native_before,
+                secant_applied=applied,secant_curvature=curvature,gradient_cosine=float(gradients[0]@g/(torch.linalg.vector_norm(gradients[0])*torch.linalg.vector_norm(g))),
+                rows=rows,full_energy_gradients=2,native_energy_calls=1+sum(len(r['rays']) for r in rows),
                 main_candidate_count_added=0,acceptance_changed=False)

@@ -61,10 +61,20 @@ def initialize():
     return dict(initialized=True,state=str(path),repository=identity,existing_state_modified=False)
 
 
+def _json_scalar(value):
+    # Numerical reports legitimately contain NumPy scalars. Preserve strict
+    # finite JSON and reject arrays (large evidence belongs in compressed NPZ).
+    import numpy as np
+    if isinstance(value,np.bool_):return bool(value)
+    if isinstance(value,np.integer):return int(value)
+    if isinstance(value,np.floating):return float(value)
+    raise TypeError(f'Object of type {type(value).__name__} is not JSON serializable')
+
+
 def atomic_json(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     tmp=path.with_name(path.name+'.'+uuid.uuid4().hex+'.tmp')
-    tmp.write_text(json.dumps(value,indent=2,ensure_ascii=False,allow_nan=False),encoding='utf-8')
+    tmp.write_text(json.dumps(value,indent=2,ensure_ascii=False,allow_nan=False,default=_json_scalar),encoding='utf-8')
     os.replace(tmp,path)
 
 

@@ -3,6 +3,22 @@ import psutil
 from ffgd.recovery import live_identity
 
 
+def test_atomic_json_numeric_scalars_preserve_finite_evidence(tmp_path):
+    import json
+    import numpy as np
+    import pytest
+    from ffgd.orchestration import atomic_json
+    path=tmp_path/'result.json'
+    atomic_json(path,dict(passed=np.bool_(False),count=np.int32(17),values=[np.float32(.5),np.int64(2**60)]))
+    assert json.loads(path.read_text())==dict(passed=False,count=17,values=[.5,2**60])
+    saved=path.read_bytes()
+    for value in (np.float32(np.nan),np.float64(np.inf),np.longdouble(-np.inf)):
+        with pytest.raises(ValueError):atomic_json(path,dict(value=value))
+        assert path.read_bytes()==saved
+    with pytest.raises(TypeError):atomic_json(path,dict(large_array=np.ones(3)))
+    assert path.read_bytes()==saved
+
+
 def test_process_identity_requires_pid_creation_time_host_and_command():
     p=psutil.Process();identity=dict(pid=p.pid,create_time=p.create_time(),host=platform.node(),command=p.cmdline())
     assert live_identity(identity)

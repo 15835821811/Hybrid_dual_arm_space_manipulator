@@ -410,3 +410,7 @@ final_v2第二阶段首版规划配置plan_final_v2_waypoints_tracking.json已�
 2026-10-29用户恢复实施并接受1.036deg小偏差作为开发推进成功：020508记录ACCEPTED_FOR_DEVELOPMENT_WITH_RESIDUAL，原1deg严格失败与未执行保留，取消该压力例的前置阻塞。七条架构规则已核对保留，MASTER/AGENTS增加当前有界工程单元，明确第6.2两种采样传递公式及待验证状态。核对无遗留FFGD进程，best权重SHA b0adbbac不变。诊断兼容性已修：按源manifest/trace策略选择复现模式及实际传递增益，拒绝身份冲突；08f134共24软件测试通过7.05s，涵盖两策略实际下一NN、只读源数据与禁止模块。新主采样/原生执行/最新ARCH仍待运行。下一按原moving_v3配置新噪声重跑，保留de6032用户中断32步，不伪称断点恢复。
 
 当前真实worker 20261029T083557_planning_ba9efd PID 39408，create_time 1793262957.5347166，source 652573446961dd4ea7ed8c1eae80e0f7b6790844dc399ef97d200e136ccec416，日志见current_worker_launch.json。最新HEADcb18fc8d仅新增两份final retained_noise预声明配置和复现说明；运行中采样代码未改，worker使用其source.zip快照。两最终配置与moving在权重/物理/代价/采样上逐项一致，最终run仍NOT_RUN。两最终段启动后必须保持相同source/weights，continue-state输出到artifacts，不编辑源码/配置跨段拼成功。MASTER新哈希经用户授权同步到state，保留旧哈希事件。
+
+ba9efd完整回归完成2206.43s，0/1。刚性最大位置29.4737mm（此前51.0401mm）、旋转.104861rad约6.008deg；实际67加速度1.338841倍，位置/姿态/导数门失败，未执行。60真实NN/54梯度/176能量/0后修、17个非末步修正、实际NN输入逐值接续、禁止入口零调用、验收只读已核对，完整相关任务/执行ARCH仍待完成。旧1.036deg开发接受不覆盖本次显著误差。最后task主导而joint约.3；后期系数反复回退，下一有限方向/曲率反例诊断，不盲增seed。首次附加记录因numpy int32 JSON序列化失败，转Python int后保存，原run未变。
+
+方向诊断cd4db2因NumPy bool序列化失败61.73s，原记录保留；公共atomic_json支持数值标量，仍拒绝NaN/Inf及数组，77135c相关8测试通过1.68s。复验4d98ca通过66.97s仅指独立标量一致(3.95e-14)：两梯度、一对曲率割线、每方向2个原生试探，所有试探都未下降（当前32.52，原方向最小58.09、单割线38.12）。这不足以接入单割线方向，主采样代码未增加该方案。诊断用未继承历史反馈cap的同一Polyak/trust预算，不冒称精确复现下一主引导步。依据用户“不让压力任务无限阻塞最终开发”，下一启动final_v2真实根初态8s接近，seed25001、同retained_noise核心、7200s一候选；保留5s失败，最终第二段真实追踪仍必须通过。M7进入开发RUNNING，不是通过。

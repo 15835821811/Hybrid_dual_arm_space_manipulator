@@ -46,3 +46,18 @@ def test_old_trace_default_and_mismatched_policy_rejection():
                             dict(guidance_transport='reconstruct_noise'))
     with pytest.raises(ValueError,match='UNKNOWN'):
         _recorded_transport(dict(budget=dict(sampling=dict(guidance_transport='unregistered'))),{})
+
+
+def test_diagnostic_secant_action_preserves_spd_and_secant_equation():
+    from ffgd.calibration_guidance import _one_secant_direction
+    torch.manual_seed(75);a=torch.randn(9,9,dtype=torch.float64)
+    h=a.T@a+torch.eye(9,dtype=torch.float64);s=torch.randn(9,dtype=torch.float64);y=h@s
+    base=torch.diag(torch.linspace(1,20,9,dtype=torch.float64));factor=torch.linalg.cholesky(base)
+    # Secant equation and positive descent verify mathematical behavior.
+    result,applied,_=_one_secant_direction(factor,y,s,y)
+    assert applied;torch.testing.assert_close(result,s,rtol=1e-12,atol=1e-12)
+    for _ in range(3):
+        g=torch.randn(9,dtype=torch.float64);d,applied,_=_one_secant_direction(factor,g,s,y)
+        assert applied and g@d>0
+    rejected,applied,_=_one_secant_direction(factor,y,s,-y)
+    assert not applied;torch.testing.assert_close(rejected,torch.linalg.solve(base,y))
