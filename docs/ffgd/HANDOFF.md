@@ -400,3 +400,5 @@ final_v2输入兼容实测977ee4通过8.91s：两阶段模型/场景同hash，�
 附加e9482b原生短回归通过：合成绝对起点8s、.2s力矩执行、局部0..0.1s卫星力脉冲按预期施加，冲量/做功/漂移检查及独立重放差0通过，0状态注入；只是时钟/外力接口，不是最终任务或真实阶段接续通过。下一等待新detached66c8e8结果，旧session无效。
 
 final_v2第二阶段首版规划配置plan_final_v2_waypoints_tracking.json已事先声明：seed25002、60NN/54分布梯度、预算14400s（依据5s2235s外推，需按8s实测重新评估），要求新接近实际状态与C2导出，仍NOT_RUN。复现核实旧clean的torch2.6.0+cpu且CUDA不可用；REPRODUCE明确复现配置副本device=cpu、checkpoint本地路径或另验证CUDA，旧clean缺docs/config不当作完整交付。两阶段场景/时钟/参考边界静态核对未发现已证实不兼容，真实链仍NOT_RUN。当前回归20261028T114726_planning_66c8e8 PID身份存活=True，已完成44步。
+
+2026-10-29恢复：moving66c8e8完成0/1，1857.08s；回退修复将rigid最大位置62.244mm降为51.040mm但actualacc1.321349倍，task/interval未过，无选择/执行。所有60NN/54梯度/0后修保留。最小根因9d3702读取原失败两个非末步，仅4次实际下一NN和独立原生能量：step42引导传递系数原.0570，保留当前网络noise后.6829；下一NN后代价3353.53对674.109。step55原535.468对233.472。旧状态重现误差<2.4e-7，下一clean CPU/GPU差<1.7e-6。实现显式guidance_transport=retain_network_noise，历史默认保持reconstruct_noise；不是主职责变更，仍从新噪声/真实权重/分布引导，禁止诊断轨迹进入主链。4dd823软件21passed7.06s（下一真实NN输入、传递代数、无引导等价、禁止模块哨兵）；实际新主采样/ARCH/相关任务与最终执行仍待验证。下一同seed同预算moving_v3，不增加末步优化。

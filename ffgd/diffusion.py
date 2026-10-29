@@ -24,6 +24,7 @@ class SamplingBudget:
     jacobian_batch_size: int = 1
     max_step_coefficient: float | None = None
     rejection_backoff: bool = False
+    guidance_transport: str = 'reconstruct_noise'
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
@@ -33,6 +34,7 @@ class SamplingBudget:
         if not 1<=self.jacobian_batch_size<=12:raise ValueError('invalid Jacobian VJP batch size')
         if self.max_step_coefficient is not None and (not np.isfinite(self.max_step_coefficient) or self.max_step_coefficient<=0):raise ValueError('invalid step coefficient cap')
         if type(self.rejection_backoff) is not bool:raise ValueError('invalid rejection backoff')
+        if self.guidance_transport not in ('reconstruct_noise','retain_network_noise'):raise ValueError('invalid guidance transport')
 
 
 def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
@@ -139,15 +141,23 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                                     accepted_maximum_control_change=physical_change*chosen if physical_change is not None else None,diagnostics=diagnostics))
                 updates[-1]['task_metric']=metric_diagnostics
         gc=guided.to(device=device,dtype=x.dtype)
-        # Recompute noise from the same actual x_k, never mix old noise with guided clean.
-        noise=(x-a*gc)/s
+        # Explicit guided DDIM intervention: retain the current network noise
+        # estimate so changing clean is not simultaneously cancelled in noise.
+        # Historical reconstruction remains an explicit compatibility policy.
+        # Both consume fresh x_k and current network output; neither restores
+        # a historical path, optimizes after sampling, or adds network calls.
+        decomposition_clean=clean if budget.guidance_transport=='retain_network_noise' else gc
+        noise=(x-a*decomposition_clean)/s
         next_alpha=float(alpha[schedule[index+1]]) if index+1<len(schedule) else 1.
         x=(next_alpha**.5)*gc+((1-next_alpha)**.5)*noise
         if not torch.isfinite(x).all():raise ValueError('NONFINITE_SAMPLE')
         trace.append(dict(index=index,noise_level=int(k),input=input_x.cpu().numpy(),clean=original.numpy(),guided=guided.detach().numpy(),
                           output=x.detach().cpu().numpy(),active=active,updates=updates,
                           energies_before_guidance=step_terms,energy_status='MEASURED' if step_terms is not None else 'NOT_RUN',
-                          decomposition_error=float(torch.max(abs(input_x-a*gc-s*noise)))))
+                          guidance_transport=budget.guidance_transport,
+                          decomposition_reference='network_clean' if budget.guidance_transport=='retain_network_noise' else 'guided_clean',
+                          clean_to_next_state_gain=next_alpha**.5 if budget.guidance_transport=='retain_network_noise' else next_alpha**.5-(1-next_alpha)**.5*a/s,
+                          decomposition_error=float(torch.max(abs(input_x-a*decomposition_clean-s*noise)))))
         if observer:observer('completed_step',trace[-1])
     return dict(free=(mean+scale*x.detach().cpu().double()).numpy(),seed=seed,network_calls=calls,trace=trace,
                 post_sampling_trajectory_repair_calls=0,initial_noise_hash=hashlib.sha256(trace[0]['input'].tobytes()).hexdigest())

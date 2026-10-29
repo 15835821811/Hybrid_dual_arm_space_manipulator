@@ -128,3 +128,25 @@ def test_rejected_effective_step_backs_off_within_fixed_budget():
     assert all(u['after']<=u['before'] and u['trials']<=2 for u in updates)
     assert result['network_calls']==4 and result['post_sampling_trajectory_repair_calls']==0
     for a,b in zip(result['trace'],result['trace'][1:]):np.testing.assert_array_equal(a['output'],b['input'])
+
+
+def test_retained_network_noise_transports_guidance_into_next_actual_network():
+    torch.set_num_threads(1);torch.manual_seed(72)
+    model=ConditionalDenoiser(max_free=20,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32));inputs=[]
+    hook=model.register_forward_pre_hook(lambda m,args:inputs.append(args[0][0].detach().numpy().copy()))
+    def energy(x):return dict(total=(x-.3).square().mean())
+    result=sample(model,condition,13,11,SamplingBudget(steps=8,guide_steps=5,guidance_transport='retain_network_noise'),energy)
+    hook.remove();alpha=np.cumprod(1-np.linspace(.0001,.02,1000))
+    assert len(inputs)==8 and result['post_sampling_trajectory_repair_calls']==0
+    for i,row in enumerate(result['trace']):
+        np.testing.assert_array_equal(inputs[i],row['input'])
+        k=row['noise_level'];a=np.sqrt(alpha[k]);s=np.sqrt(1-alpha[k])
+        an=1. if i==7 else np.sqrt(alpha[result['trace'][i+1]['noise_level']]);sn=np.sqrt(1-an*an)
+        nominal=an*row['clean']+sn*(row['input']-a*row['clean'])/s
+        np.testing.assert_allclose(row['output']-nominal,an*(row['guided']-row['clean']),atol=6e-7,rtol=1e-5)
+        assert row['decomposition_reference']=='network_clean' and row['decomposition_error']<1e-6
+        if i<7:np.testing.assert_array_equal(row['output'],inputs[i+1])
+    plain=sample(model,condition,13,11,SamplingBudget(steps=8,guide_steps=0))
+    retained=sample(model,condition,13,11,SamplingBudget(steps=8,guide_steps=0,guidance_transport='retain_network_noise'))
+    np.testing.assert_array_equal(plain['free'],retained['free'])

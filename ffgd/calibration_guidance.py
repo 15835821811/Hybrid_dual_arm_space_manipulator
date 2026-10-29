@@ -48,6 +48,8 @@ def _run(path,config):
     else:p=Propagator(tree,snapshot)
     energy=MultiSpaceEnergy(p,codec,Geometry(r),task,config.get('intervals',manifest['budget']['intervals']),collect_task_residual=config.get('task_metric',False),collision_aggregation=aggregation,joint_peak_penalty=joint_peak,task_objective=config.get('task_objective',manifest.get('task_objective','center_squared')),planning_margins=config.get('planning_margins',manifest.get('planning_margins')))
     energy.weights.update(manifest.get('guide_weights',{}))
+    if config.get('transition_steps'):
+        return transition_check(path,folder,config,manifest,model,checkpoint,r,snapshot,task,p,energy)
     stage=config.get('stage','clean');metric_stage=config.get('metric_stage',stage)
     if stage not in ('clean','guided') or metric_stage not in ('clean','guided'):raise ValueError('invalid saved diagnostic stage')
     if stage!=metric_stage and config.get('verify_jacobian'):raise ValueError('Jacobian verification requires same diagnostic and metric input')
@@ -131,3 +133,48 @@ def _run(path,config):
                 task_objective=energy.task_objective,metric_uses_raw_pose_residual=True,
                 one_step_rays=rows,denoising_coupling=coupling,main_candidate_count_added=0,
                 finding='Quantify the physical-step cap and the exact DDIM clean-to-next-state gain; acceptance gates are unchanged.')
+
+
+def transition_check(path,folder,config,manifest,model,checkpoint,robot,snapshot,task,prop,energy):
+    """Single-transition counterfactuals only, never a repaired candidate.
+
+    Compare cancelling the clean correction inside reconstructed noise with
+    retaining the network's noise estimate. Both feed the actual next network.
+    No optimization, path selection or execution occurs in this diagnostic.
+    """
+    from .conditioning import encode_condition
+    from .model_io import normalize_condition
+    tokens=encode_condition(robot,snapshot,task,prop.H.numpy())
+    condition=normalize_condition(tokens[None],np.zeros((1,len(tokens)),bool),checkpoint,'cpu')
+    alpha=torch.cumprod(1-torch.linspace(.0001,.02,1000,dtype=torch.float64),0)
+    trace=json.loads((folder/'denoising.json').read_text(encoding='utf-8'))
+    with np.load(folder/'denoising.npz') as saved:arrays={k:saved[k].copy() for k in saved.files}
+    rows=[];outputs={}
+    for i in config['transition_steps']:
+        if not 0<=i<len(trace)-1 or not trace[i]['active']:raise ValueError('TRANSITION_REQUIRES_NONFINAL_GUIDED_STEP')
+        k=trace[i]['noise_level'];nextk=trace[i+1]['noise_level']
+        a=float(alpha[k].sqrt());s=float((1-alpha[k]).sqrt())
+        an=float(alpha[nextk].sqrt());sn=float((1-alpha[nextk]).sqrt())
+        x=torch.tensor(arrays['input'][i],dtype=torch.float32)
+        clean=torch.tensor(arrays['clean'][i],dtype=torch.float32)
+        guided=torch.tensor(arrays['guided'][i],dtype=torch.float32)
+        predictions={};nominal=an*clean+sn*(x-a*clean)/s
+        for mode,noise_clean in (('reconstruct_from_guided',guided),('retain_network_noise',clean)):
+            check_budget();output=an*guided+sn*(x-a*noise_clean)/s
+            with torch.no_grad():v=model(output[None],torch.tensor([nextk]),condition)[0]
+            next_clean=(an*output-sn*v).double().numpy()
+            values=energy.native_evaluate(checkpoint['mean']+checkpoint['scale']*next_clean)
+            predictions[mode]=dict(next_clean_energy=values,state_intervention_norm=float(torch.linalg.vector_norm(output-nominal)),
+                saved_output_max_difference=float(np.max(abs(output.numpy()-arrays['output'][i]))),
+                saved_next_clean_max_difference=float(np.max(abs(next_clean-arrays['clean'][i+1]))))
+            outputs[f'{i}_{mode}_state']=output.numpy();outputs[f'{i}_{mode}_next_clean']=next_clean
+        rows.append(dict(step=i,noise_level=k,next_noise_level=nextk,
+            reconstructed_gain=an-sn*a/s,retained_noise_gain=an,
+            guided_energy=trace[i]['updates'][-1]['after'],predictions=predictions))
+        atomic_json(path/'transition_progress.json',rows)
+    np.savez_compressed(path/'transition_counterfactuals.npz',**outputs)
+    reproduced=all(row['predictions']['reconstruct_from_guided']['saved_output_max_difference']<2e-6 and
+                   row['predictions']['reconstruct_from_guided']['saved_next_clean_max_difference']<2e-5 for row in rows)
+    return dict(passed=reproduced,scope='READONLY_SINGLE_TRANSITION_ROOT_CAUSE; no candidate returned, no optimization/execution',
+                source_run=str(folder.parent),same_checkpoint=True,next_network_calls=2*len(rows),rows=rows,
+                main_candidate_count_added=0,acceptance_changed=False)
