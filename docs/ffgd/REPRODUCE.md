@@ -93,3 +93,5 @@ artifacts/ffgd/media_runtime/.venv/Scripts/python.exe scripts/ffgd_plot_media.py
 - 当前multirate的旧`mass_evaluations`计数按微步计入，未折算矩阵刷新间隔，会高估刷新次数。原日志不改写；不能用该计数宣称匹配物理调用预算优势。墙钟、网络调用与梯度次数单列。
 - 最终两段全链、其必要复验、完整干净环境执行与独立重放仍为`NOT_RUN`。完成后才能据真实证据替换本页的待运行状态。
 - Diffusion相对优势、广泛泛化与论文级统计：`NOT_RUN／未评估`。
+
+视频导出同时生成`video_telemetry.ass`及`video_frame_indices.csv`，叠加保存状态的任务/参考/实际/间隙/力矩/动量/安全和方法身份。需要ffmpeg包含libass；显示使用安装字体，不复制字体。相机和灯光仅用于只读渲染，记录在媒体manifest，绝非独立重放。

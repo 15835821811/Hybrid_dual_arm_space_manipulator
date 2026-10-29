@@ -46,7 +46,8 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False, geometry_pairs=
     summary = read_json(execution / 'execution.json')
     planning = Path(provenance['planning_directory']).resolve()
     sources = [execution / p for p in ('execution.npz', 'execution.json', 'provenance.json', 'acceptance.json')]
-    sources += [planning / 'problem.json', planning / 'manifest.json']
+    sources += [planning / 'problem.json', planning / 'manifest.json', planning / 'planning_manifest.json']
+    planning_manifest = read_json(planning / 'planning_manifest.json')
     original = {str(p): digest(p) for p in sources}
     robot, initial, task, public = load_problem(planning / 'problem.json')
     r, _ = refine_physics(robot, initial, provenance['physics_substeps'])
@@ -159,9 +160,79 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False, geometry_pairs=
         np.savetxt(output / 'video_frame_indices.csv', np.c_[np.arange(len(indices)), indices, times[indices]],
                    delimiter=',', header='video_frame,native_index,local_time_s', comments='')
         width, height = 640, 480
+        panel_width = 480
+        def ass_time(frame):
+            # Floor boundaries so every encoded frame uses its own record.
+            cs = int(frame * 100 // fps)
+            return f'{cs // 360000}:{cs // 6000 % 60:02d}:{cs // 100 % 60:02d}.{cs % 100:02d}'
+        def ass_text(value):
+            return str(value).replace('\\', '/').replace('{', '(').replace('}', ')').replace('\n', ' ')[:64]
+        telemetry = output / 'video_telemetry.ass'
+        with telemetry.open('w', encoding='utf-8') as stream:
+            stream.write(f'[Script Info]\nScriptType: v4.00+\nPlayResX: {width+panel_width}\nPlayResY: {height}\n'
+                         '[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n'
+                         'Style: Telemetry,Arial,14,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1\n'
+                         '[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n')
+            for frame, i in enumerate(indices):
+                restore(int(i)); positions, rotations = tips(); t = times[i]
+                reference = basis(len(C), float(t), duration, 0) @ C
+                tracking = np.max(abs(r.Bplus @ data.qpos[r.qpos_ids] - reference))
+                p, angular = np.linalg.norm(saved['momentum_residual'][i, :3]), np.linalg.norm(saved['momentum_residual'][i, 3:])
+                lines = [f"Method: {provenance['method']}", execution.name,
+                         f"t={t:.4f}s  absolute={data.time:.4f}s  frame={int(i)}",
+                         f"Clearance: {1000*saved['clearance'][i]:.3f} mm",
+                         f"Max |actual q17 - reference|: {np.degrees(tracking):.4f} deg",
+                         f"Momentum residual |P|={p:.3e} kg m/s",
+                         f"Momentum residual |L|={angular:.3e} kg m2/s"]
+                if i < count-1:
+                    raw = np.max(abs(saved['raw_torque'][i]) / r.spec.torque_limits)
+                    applied = np.max(abs(saved['ctrl'][i][r.actuator_ids]) / r.spec.torque_limits)
+                    clipped = bool(np.any(abs(saved['raw_torque'][i]) > r.spec.torque_limits))
+                    lines += [f'Raw/applied torque ratios: {raw:.4f} / {applied:.4f}', f'Torque clipping at this sample: {clipped}']
+                else:
+                    lines += ['Terminal saved state: no command applied', 'Torque clipping: N/A at terminal state']
+                for tip, name in enumerate(('C', 'R')):
+                    lines.append(f"{name} actual XYZ m: " + ', '.join(f'{x:.4f}' for x in positions[tip]))
+                    active = [g for g in task.intervals if g.tip==tip and g.start<=t<=g.end]
+                    for g in active:
+                        P, R = world_goal(g, data.xpos, data.xmat.reshape(-1,3,3), target_body(r))
+                        pe = 1000*np.linalg.norm(positions[tip]-P)
+                        re = np.degrees(Rotation.from_matrix(R.T@rotations[tip]).magnitude())
+                        lines += [f"{name} interval goal m: " + ', '.join(f'{x:.4f}' for x in P),
+                                  f'{name} interval errors: {pe:.3f} mm / {re:.3f} deg']
+                    if not active:
+                        upcoming = [g for g in task.poses if g.tip==tip and g.time>=t]
+                        if upcoming:
+                            g = min(upcoming, key=lambda g:g.time)
+                            lines.append(f'{name} next public pose @{g.time:.3f}s: ' + ', '.join(f'{x:.3f}' for x in g.position))
+                lines += [f"Recorded execution: {summary['status']}",
+                          f"Recorded safety abort: {summary['safety_abort']}",
+                          f"Recorded Cartesian assist: {summary['task_based_cartesian_assist']}",
+                          f"Recorded clipped samples: {summary['clipped_control_steps']}",
+                          f"Source acceptance: {read_json(execution/'acceptance.json')['status']}",
+                          'Weights: ' + planning_manifest['checkpoint']['sha256'][:16],
+                          'Candidate: ' + summary['candidate_hash'][:16],
+                          'DISPLAY ONLY - NOT INDEPENDENT REPLAY']
+                text = r'{\pos(656,8)}' + r'\N'.join(ass_text(line) for line in lines)
+                stream.write(f'Dialogue: 0,{ass_time(frame)},{ass_time(frame+1)},Telemetry,,0,0,0,,{text}\n')
         camera = mujoco.MjvCamera()
-        camera.lookat[:] = r.model.stat.center
-        camera.distance = max(2., 2.5 * r.model.stat.extent)
+        option = mujoco.MjvOption()
+        visible = np.flatnonzero((r.model.geom_type != mujoco.mjtGeom.mjGEOM_PLANE)
+                                 & (r.model.geom_rgba[:, 3] > 0)
+                                 & np.asarray(option.geomgroup)[r.model.geom_group].astype(bool))
+        if not len(visible):
+            raise ValueError('NO_VISIBLE_GEOMETRY_FOR_CAMERA')
+        lower, upper = np.full(3, np.inf), np.full(3, -np.inf)
+        for i in indices:
+            restore(int(i))
+            radius = r.model.geom_rbound[visible, None]
+            lower = np.minimum(lower, np.min(data.geom_xpos[visible]-radius, axis=0))
+            upper = np.maximum(upper, np.max(data.geom_xpos[visible]+radius, axis=0))
+        camera.lookat[:] = (lower+upper)/2
+        corners = np.array([[x,y,z] for x in (lower[0],upper[0]) for y in (lower[1],upper[1]) for z in (lower[2],upper[2])]) - camera.lookat
+        # Display-only illumination; no physical model/state stepping.
+        r.model.vis.headlight.ambient[:] = .4
+        r.model.vis.headlight.diffuse[:] = .8
         renderer = mujoco.Renderer(r.model, height=height, width=width)
         # Windows ffmpeg often ships without fontconfig; use the installed
         # font explicitly, without copying it into the delivery bundle.
@@ -170,12 +241,21 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False, geometry_pairs=
         try:
             for label, azimuth, elevation in [('overview', 135, -30), ('opposite', -45, -20)]:
                 camera.azimuth, camera.elevation = azimuth, elevation
+                az, el = np.radians([azimuth, elevation])
+                view = np.array([np.cos(el)*np.cos(az), np.cos(el)*np.sin(az), np.sin(el)])
+                right = np.array([-np.sin(az), np.cos(az), 0.])
+                up = np.cross(view, right)
+                tangent = np.tan(np.radians(r.model.vis.global_.fovy)/2)
+                camera.distance = 1.1*max(np.max(corners@view+abs(corners@right)/(tangent*width/height)),
+                                          np.max(corners@view+abs(corners@up)/tangent), .1)
                 target = output / f'actual_{label}.mp4'
                 command = [str(executable), '-hide_banner', '-loglevel', 'error', '-n', '-f', 'rawvideo', '-pixel_format', 'rgb24',
                            '-video_size', f'{width}x{height}', '-framerate', str(fps), '-i', '-', '-an', '-c:v', 'libx264', '-threads', '1',
-                           '-pix_fmt', 'yuv420p', '-vf', 'drawtext=' + font_option + 'text=SAVED ACTUAL STATES - NOT REPLAY:fontcolor=white:box=1:boxcolor=black:x=8:y=8', str(target)]
+                           '-pix_fmt', 'yuv420p', '-vf', f'pad={width+panel_width}:{height}:0:0:color=0x111827,'
+                           + 'drawtext=' + font_option + 'text=SAVED ACTUAL STATES - NOT REPLAY:fontcolor=white:box=1:boxcolor=black:x=8:y=8,'
+                           + 'ass=video_telemetry.ass', str(target)]
                 with (output / f'{label}_ffmpeg.log').open('wb') as log:
-                    process = subprocess.Popen(command, stdin=subprocess.PIPE, stderr=log, stdout=subprocess.DEVNULL)
+                    process = subprocess.Popen(command, stdin=subprocess.PIPE, stderr=log, stdout=subprocess.DEVNULL, cwd=output)
                     try:
                         for i in indices:
                             restore(int(i))
@@ -193,7 +273,10 @@ def export(execution, output, fps=15, ffmpeg=None, videos=False, geometry_pairs=
                         if process.poll() is None:
                             process.kill()
                             process.wait()
-                video_records.append(dict(file=target.name, frames=len(indices), fps=fps, actual_state_frames_only=True))
+                video_records.append(dict(file=target.name, frames=len(indices), fps=fps, actual_state_frames_only=True,
+                                          telemetry='video_telemetry.ass', width=width+panel_width, height=height,
+                                          camera=dict(lookat=camera.lookat.tolist(),distance=camera.distance,azimuth=azimuth,elevation=elevation),
+                                          render_only_headlight=dict(ambient=.4,diffuse=.8)))
         finally:
             renderer.close()
     after = {str(p): digest(p) for p in sources}
