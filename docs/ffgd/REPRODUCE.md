@@ -28,6 +28,8 @@ $ffgdPython = (Resolve-Path .venv/Scripts/python.exe).Path
 
 `doctor`本身不等于全部里程碑通过。`resume`核验MASTER、checkpoint与真实PID，返回接续动作，不会自动启动编码代理。现有独立环境证据`artifacts/ffgd/reproduction/clean_20261028T064122/smoke_result.json`仅证明依赖/模型/权重/新噪声推理smoke，不证明引导、执行或最终M8通过。
 
+2026-10-29补充：`artifacts/ffgd/reproduction/final_prepare_20261029T094532`已从接近段0ebf8d的冻结源码准备，源码SHA为`8b30307d44bdf7cc4a2c5a9691d27eabfddc6ea5c0978bc266aa127d6b798bce`。模型资源、权重及identity已校验，独立venv安装27个锁定依赖，29项软件合同通过。该环境为CPU版；明确的新配置为`configs/ffgd/reproduction_approach_cpu.json`与`reproduction_waypoints_tracking_cpu.json`，使用相对`weights/best.pt`。快照/环境/配置证据分别见目录内`snapshot_manifest.json`、`environment_result.json`、`portable_configuration.json`。新状态未继承旧PASS；完整物理规划、执行、接续、重放仍NOT_RUN。当前主运行尚未合格，不能把此准备目录称为最终成功交付；若核心随后修改，应按新实际源码另建快照，不能混用。
+
 ## 修订最终任务的实际命令
 
 以下命令复用上面设置的 `$ffgdPython`；在现有GPU环境可将它改为 `(Resolve-Path .venv-gpu/Scripts/python.exe).Path`。干净CPU环境须使用前述设置了CPU和本地权重路径的配置副本，不能直接照搬GPU配置。
