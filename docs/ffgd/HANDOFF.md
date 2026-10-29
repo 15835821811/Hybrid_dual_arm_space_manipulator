@@ -430,3 +430,5 @@ ba9efd完整回归完成2206.43s，0/1。刚性最大位置29.4737mm（此前51.
 2026-10-29 10:43 UTC已实际启动`20261029T104336_planning_0b9794`（moving_target_v4），真实PID37052/create1793270616.1063695，launcher27000不是worker；完整命令和日志见current_worker_launch.json及manifest。源码97ef1f9f95edf2bea6ee25a9fe807c6a5ead356f0aa758190c9305a61c4a7e26，HEAD5c2b539c，原best权重b0adbbac。1候选seed24001重新RNG生成、60NN54梯度最多两次试探、候选5400s/封装5460s，不读取失败/成功路径。已核验PID/create/cmd/source一致。接续先等该真实worker，核心冻结；通过才原候选执行和重放，再最终bounded_peak接近与真实C2接续。M6/M7仍RUNNING，最终24s和完整M8 NOT_RUN；不是已完成或已通过最新核心。
 
 2026-10-29 10:52 UTC: 0b9794仍在真实PID37052，身份/源码/权重核对正常，已44/60步。只读前缀观察确认同seed新RNG初始噪声相同、引导前索引29的实际采样输入相同；已完成的索引42/43三次更新最终代价与旧ba9efd逐项相同，目前尚未触发小于0.5的新插值试探，不能把早期下降归因于修复。见本run prefix_observation.json；继续原worker，未增加seed，未改运行核心，尚未最终验收。
+
+2026-10-29 11:01 UTC: 0b9794真实PID37052再次核验，49/60步；已21次梯度，21次接受，15次实际插值，均在两次试探和0.16控制点变化限内。索引44新总代价125.516对旧142.770，局部机制确有变化，不是最终成功或学习优势。见本run partial_bounded_guidance_observation.json；完整实际NN输入审计、独立终验、执行/重放仍待完成。继续原worker和预算，不重启、不增seed。
