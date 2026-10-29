@@ -50,7 +50,7 @@ class MultiSpaceEnergy:
         self.weights=dict(task=1.,collision=1.,joint=1.,actuator=1.,smoothness=1e-3)
         self.collision_guide=ConvexSupportGuide(geometry)
         self.collect_task_residual=collect_task_residual;self.last_task_residual=None
-        if collision_aggregation not in ('pair_mean','pair_mean_plus_max'):raise ValueError('unknown collision aggregation')
+        if collision_aggregation not in ('pair_mean','pair_mean_plus_max','pair_mean_plus_max_time_peak'):raise ValueError('unknown collision aggregation')
         self.collision_aggregation=collision_aggregation
         self.joint_peak_penalty=joint_peak_penalty
         if task_objective not in ('center_squared','tolerance_squared_hinge'):raise ValueError('unknown task objective')
@@ -87,7 +87,7 @@ class MultiSpaceEnergy:
             penalties=hinge((self.buffer-gaps)/self.buffer)
             # Time-normalized mean plus worst-pair pressure cannot dilute a
             # local violation by adding thousands of safe geometry pairs.
-            collision.append(penalties.mean()+(penalties.max() if self.collision_aggregation=='pair_mean_plus_max' else 0.))
+            collision.append(penalties.mean()+(penalties.max() if self.collision_aggregation!='pair_mean' else 0.))
             if batched is None:
                 M=tree.mass(x,k);h=tree.inverse(x,v,torch.zeros_like(v),k)
                 aa=tree.B@out['qdd'][i]
@@ -162,6 +162,10 @@ class MultiSpaceEnergy:
         time=tensor(self.grid)
         def integral(values):return torch.trapezoid(torch.stack(values) if isinstance(values,list) else values,time)/self.task.duration
         terms=dict(task=task/self.task_count,collision=integral(collision),joint=integral(joint),actuator=integral(actuator),smoothness=integral(smooth))
+        if self.collision_aggregation=='pair_mean_plus_max_time_peak':
+            # Collision freedom is required throughout the path. A brief deep
+            # penetration must not vanish in a long otherwise safe interval.
+            terms['collision']=terms['collision']+torch.stack(collision).max()
         if self.joint_peak_penalty:
             # Keep the original time average, but do not let one violated
             # joint/knot vanish among safe coordinates or a long duration.
@@ -225,7 +229,7 @@ class MultiSpaceEnergy:
                 actual_q67.append(d.qpos[r.qpos_ids].copy());actual_v67.append(d.qvel[r.dof_ids].copy());actual_a67.append(acceleration[a].copy())
             distances=self.collision_guide.numpy_gaps(d.geom_xpos[g.ids],d.geom_xmat[g.ids].reshape(-1,3,3))
             penalties=h((self.buffer-distances)/self.buffer)
-            coll.append(penalties.mean()+(penalties.max() if self.collision_aggregation=='pair_mean_plus_max' else 0.))
+            coll.append(penalties.mean()+(penalties.max() if self.collision_aggregation!='pair_mean' else 0.))
             for target in self.task.poses:
                 if t!=target.time:continue
                 body=r.tips[target.tip];R=d.xmat[body].reshape(3,3);pos=d.xpos[body].copy()
@@ -273,6 +277,7 @@ class MultiSpaceEnergy:
             joint+=actual_violation
         def integral(v):return float(np.trapz(v,self.grid)/self.task.duration)
         terms=dict(task=task/self.task_count,collision=integral(coll),joint=integral(joint),actuator=integral(act),smoothness=integral((qdd**2).mean(-1)))
+        if self.collision_aggregation=='pair_mean_plus_max_time_peak':terms['collision']+=float(np.max(coll))
         if self.joint_peak_penalty:
             peaks=[np.max(h((r.lower-q)/(r.upper-r.lower))),np.max(h((q-r.upper)/(r.upper-r.lower))),
                    np.max(h(abs(qd)/r.spec.planner_velocity_limits-derivative_fraction)),np.max(h(abs(qdd)/r.spec.planner_acceleration_limits-derivative_fraction))]

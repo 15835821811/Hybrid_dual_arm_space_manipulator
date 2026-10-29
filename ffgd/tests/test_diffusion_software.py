@@ -150,3 +150,59 @@ def test_retained_network_noise_transports_guidance_into_next_actual_network():
     plain=sample(model,condition,13,11,SamplingBudget(steps=8,guide_steps=0))
     retained=sample(model,condition,13,11,SamplingBudget(steps=8,guide_steps=0,guidance_transport='retain_network_noise'))
     np.testing.assert_array_equal(plain['free'],retained['free'])
+
+
+def test_quadratic_rejection_uses_two_trials_and_later_network_consumes_result():
+    # An exact convex quadratic has a known line minimum. With a tenfold
+    # overshoot, both legacy trials fail; interpolation reaches that minimum.
+    # This is a numerical/software fixture, not a learned physical plan.
+    torch.set_num_threads(1);torch.manual_seed(84)
+    model=ConditionalDenoiser(max_free=12,hidden=16,layers=1,heads=2)
+    condition=dict(tokens=torch.zeros(1,3,32));energy_calls=[];network_inputs=[]
+    def energy(x):
+        energy_calls.append(x.detach().clone())
+        return dict(total=.5*x.square().sum())
+    common=dict(steps=4,guide_steps=3,step_size=10.,max_update_norm=100.,guidance_transport='retain_network_noise')
+    old=sample(model,condition,8,34,SamplingBudget(**common),energy)
+    assert all(not u['accepted'] for row in old['trace'] for u in row['updates'])
+    energy_calls.clear()
+    hook=model.register_forward_pre_hook(lambda m,args:network_inputs.append(args[0][0].detach().numpy().copy()))
+    new=sample(model,condition,8,34,SamplingBudget(**common,line_rule='quadratic_rejection'),energy)
+    hook.remove()
+    assert new['network_calls']==4 and new['post_sampling_trajectory_repair_calls']==0
+    assert len(energy_calls)==9
+    for row in new['trace']:
+        for u in row['updates']:
+            assert u['accepted'] and u['trials']==2 and abs(u['line_scale']-.1)<1e-12
+            assert u['after']<1e-20 and u['trial_evaluations'][0]['energy']>u['before']
+    for i in range(3):np.testing.assert_array_equal(new['trace'][i]['output'],network_inputs[i+1])
+    assert not np.array_equal(old['trace'][2]['input'],new['trace'][2]['input'])
+
+
+def test_quadratic_trial_bounds_and_invalid_observation_fallback():
+    import pytest
+    from ffgd.diffusion import rejected_trial_scale
+    # Values from the preserved physical counterexample, not new evidence.
+    scale=rejected_trial_scale(32.52371179203436,180.78006536058697,65.04742358406973,1.,'quadratic_rejection')
+    assert abs(scale-.15247602375443928)<1e-14
+    assert rejected_trial_scale(1.,1e20,2.,1.,'quadratic_rejection')==.05
+    for after in (float('nan'),float('inf')):
+        assert rejected_trial_scale(1.,after,2.,.5,'quadratic_rejection')==.25
+    assert rejected_trial_scale(1.,2.,0.,1.,'quadratic_rejection')==.5
+    with pytest.raises(ValueError):SamplingBudget(line_rule='unbounded_search')
+
+
+def test_quadratic_failed_trial_backoff_uses_last_actual_scale():
+    torch.set_num_threads(1);torch.manual_seed(45)
+    model=ConditionalDenoiser(max_free=12,hidden=16,layers=1,heads=2)
+    def energy(x):return dict(total=10000.+.5*x.square().sum())
+    budget=SamplingBudget(steps=4,guide_steps=3,updates_per_step=3,line_rule='quadratic_rejection',
+                          step_rule='polyak',step_size=2.,max_update_norm=100.,rejection_backoff=True)
+    result=sample(model,dict(tokens=torch.zeros(1,3,32)),8,23,budget,energy)
+    updates=[u for row in result['trace'] for u in row['updates']]
+    assert any(not u['accepted'] for u in updates)
+    for i,u in enumerate(updates[:-1]):
+        if not u['accepted']:
+            assert u['feedback_cap_after']==u['effective_step_coefficient']*u['trial_evaluations'][-1]['scale']*.5
+            assert updates[i+1]['step_coefficient']<=u['feedback_cap_after']
+        assert len(u['trial_evaluations'])<=2

@@ -46,3 +46,5 @@
   path passes the independent native refined validator. All rejected controls
   and identities are retained. Higher-dimensional and nonzero-start training
   coverage is a later milestone, not inferred from a small pilot.
+
+- 2026-10-29: Preserved final approach0ebf8d rejected with known unsafe geometry/derivatives. Adopt optional bounded quadratic second trial (7f62c6 native decrease) and optional collision time peak (beca9b contact-domain contrast;9d51c0 scalar/AD subchecks), inside existing denoising budget. Legacy defaults remain; no acceptance/execution change.9d51c0 composite remains FAILED at0.418mm versus0.4mm on unsafe reference. New moving/final configs require actual sampling and execution regression before any full architecture or engineering claim.

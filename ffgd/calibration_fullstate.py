@@ -13,6 +13,7 @@ from .orchestration import atomic_json,check_budget
 
 def run(output,config):
     torch.set_num_threads(1)
+    if 'contact_counterfactual_run' in config:return contact_counterfactual(output,config)
     if 'native_refinement_run' in config:return refine_native_adjoint(output,config)
     if config.get('full_energy'):return full_energy_check(output,config)
     r,snapshot,_,_=load_problem(config['problem'])
@@ -71,6 +72,52 @@ def run(output,config):
                 controller='floating_ff_torque_pd_v1',projection_calls=0)
     atomic_json(output/'full_state_calibration.json',result)
     return result
+
+
+def contact_counterfactual(output,config):
+    """Isolated contact-domain diagnosis; never selects or executes a plan."""
+    import json
+    from .contracts import Candidate
+    from .api import boundary_codec
+    from .full_state_validation import native_prediction
+    from .multirate import native_prediction as guide_prediction
+    root=Path(config['contact_counterfactual_run']);folder=root/'candidate_000'
+    manifest=json.loads((root/'planning_manifest.json').read_text())
+    record=json.loads((folder/'candidate.json').read_text())
+    with np.load(folder/'candidate.npz') as data:
+        candidate=Candidate(data['control'],float(data['duration']),int(data['seed']))
+    if candidate.identity!=record['identity']:raise ValueError('CANDIDATE_IDENTITY_MISMATCH')
+    r,snapshot,task,_=load_problem(root/'problem.json')
+    codec=boundary_codec(r,snapshot,task.duration,len(candidate.control),origin=manifest['budget'].get('boundary_origin','pivot_zero'),
+                         reference_start=task.reference_start,terminal_policy=task.terminal_policy)
+    z=codec.encode(candidate.control)
+    enabled=native_prediction(r,snapshot,codec,z,.0005,target_force_pulses=task.target_force_pulses)
+    atomic_json(output/'contact_progress.json',dict(contact_enabled_complete=True))
+    disabled=native_prediction(r,snapshot,codec,z,.0005,target_force_pulses=task.target_force_pulses,contact_free=True)
+    guide=guide_prediction(r,snapshot,codec,z,manifest['budget']['prediction_dt'],refresh=manifest['budget']['mass_refresh_steps'],
+                           substeps=round(.002/manifest['budget']['prediction_dt']),target_force_pulses=task.target_force_pulses,geometry=True)
+    def volume_difference(a,b):
+        d=a-b
+        return np.max(np.linalg.norm(d[:,:,:3],axis=-1)+np.linalg.norm(d[:,:,3:],axis=-1),axis=1)
+    contact_difference=volume_difference(enabled['volumes'],disabled['volumes'])
+    indices=np.rint(guide['time']/.0005).astype(int)
+    if np.max(abs(disabled['time'][indices]-guide['time']))>1e-10:raise ValueError('CONTACT_DIAGNOSTIC_GRID_MISMATCH')
+    contact_free_guide_error=volume_difference(guide['volumes'],disabled['volumes'][indices])
+    reproduction_error=abs(enabled['minimum_clearance']-record['validation']['minimum_clearance'])
+    np.savez_compressed(output/'contact_volume_comparison.npz',time=enabled['time'],contact_difference=contact_difference,
+                        guide_time=guide['time'],contact_free_guide_error=contact_free_guide_error)
+    def metrics(value):
+        return dict(minimum_clearance=value['minimum_clearance'],
+                    maximum_acceleration67_ratio=float(np.max(abs(value['acceleration'][:,r.dof_ids])/(abs(r.B)@r.spec.planner_acceleration_limits))),
+                    linear_momentum_change=float(np.max(np.linalg.norm(value['momentum'][:,:3],axis=1))),
+                    angular_momentum_change=float(np.max(np.linalg.norm(value['momentum'][:,3:],axis=1))))
+    return dict(passed=reproduction_error<1e-10,scope='DIAGNOSTIC_CONTACT_COUNTERFACTUAL_ONLY; candidate remains rejected, no acceptance/execution',
+                source_run=str(root),candidate_identity=candidate.identity,original_clearance_reproduction_error=reproduction_error,
+                contact_enabled=metrics(enabled),contact_disabled_oracle=metrics(disabled),
+                contact_switch_volume_difference_m=float(np.max(contact_difference)),
+                contact_free_guide_volume_error_m=float(np.max(contact_free_guide_error)),
+                actual_initial_state_preserved=bool(enabled['initial_qpos_unchanged'] and enabled['initial_velocity_unchanged'] and disabled['initial_qpos_unchanged'] and disabled['initial_velocity_unchanged']),
+                candidate_unchanged=candidate.identity==record['identity'],main_candidate_count_added=0,execution='NOT_RUN')
 
 
 def check_path(r,snapshot,tree,output,path_duration=.02):
@@ -221,7 +268,8 @@ def full_energy_check(output,config):
         from .compiled_physics import compile_full_state_step,compile_multirate
         if refresh>1:compilation=compile_multirate(prop.predictor,prop.dt,round(prop.predicted_control_period/prop.dt),refresh,round(task.duration/prop.dt),output)
         else:compilation=compile_full_state_step(prop.predictor,prop.dt,output)
-    energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=config.get('intervals',8),collision_aggregation='pair_mean_plus_max',joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
+    energy=MultiSpaceEnergy(prop,codec,Geometry(r),task,intervals=config.get('intervals',8),collision_aggregation=config.get('collision_aggregation','pair_mean_plus_max'),joint_peak_penalty=True,task_objective='tolerance_squared_hinge',planning_margins=dict(task_tolerance_fraction=.8,derivative_limit_fraction=.95))
+    energy.weights.update(config.get('guide_weights',{}))
     rng=np.random.default_rng(7141);z0=rng.normal(0,config.get('z_std',.0003),codec.free_dim)
     diagnostic_source=None
     if config.get('diagnostic_candidate'):

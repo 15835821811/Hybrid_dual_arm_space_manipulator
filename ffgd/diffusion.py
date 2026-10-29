@@ -25,6 +25,7 @@ class SamplingBudget:
     max_step_coefficient: float | None = None
     rejection_backoff: bool = False
     guidance_transport: str = 'reconstruct_noise'
+    line_rule: str = 'halving'
 
     def __post_init__(self):
         if not 1<=self.steps<=1000 or not 0<=self.guide_steps<=self.steps:raise ValueError('invalid DDIM schedule')
@@ -35,6 +36,23 @@ class SamplingBudget:
         if self.max_step_coefficient is not None and (not np.isfinite(self.max_step_coefficient) or self.max_step_coefficient<=0):raise ValueError('invalid step coefficient cap')
         if type(self.rejection_backoff) is not bool:raise ValueError('invalid rejection backoff')
         if self.guidance_transport not in ('reconstruct_noise','retain_network_noise'):raise ValueError('invalid guidance transport')
+        if self.line_rule not in ('halving','quadratic_rejection'):raise ValueError('invalid bounded line rule')
+
+
+def rejected_trial_scale(before,after,directional_delta,scale,rule):
+    """Choose the next already-budgeted trial; never evaluates an energy.
+
+    E(s) is approximated by E(0)-s*g.delta+c*s*s. Only a rejected
+    observation is used, and the next trial is at most half as large.
+    Native energy acceptance remains authoritative for nonsmooth costs.
+    """
+    if rule=='halving':return scale*.5
+    if rule!='quadratic_rejection':raise ValueError('invalid bounded line rule')
+    denominator=2*(after-before+scale*directional_delta)
+    if not np.isfinite(denominator) or not np.isfinite(directional_delta) or directional_delta<=0 or denominator<=0:
+        return scale*.5
+    proposed=directional_delta*scale*scale/denominator
+    return float(np.clip(proposed,.05*scale,.5*scale))
 
 
 def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None,observer=None,control_jacobian=None,audit_inactive_energy=False,metric=None):
@@ -115,12 +133,17 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                     factor=min(1.,budget.max_control_change/max(physical_change,1e-30));delta=delta*factor;physical_change*=factor
                     effective_coefficient*=factor
                 diagnostics=dict(getattr(energy,'diagnostics',{}))
+                step=1.;trial_evaluations=[]
+                directional_delta=float(grad@delta)
                 for trial in range(budget.line_trials):
-                    step=2.**(-trial);proposal=(guided-step*delta).detach()
+                    proposal=(guided-step*delta).detach()
                     with torch.no_grad():after_terms=energy(mean+scale*proposal)
                     trial_value=float(after_terms['total'])
+                    trial_evaluations.append(dict(scale=step,energy=trial_value if np.isfinite(trial_value) else None))
                     if np.isfinite(trial_value) and trial_value<=before:
                         guided=proposal;after=trial_value;accepted=True;chosen=step;break
+                    if trial+1<budget.line_trials:
+                        step=rejected_trial_scale(before,trial_value,directional_delta,step,budget.line_rule)
                 # Spend only the next ALREADY budgeted update on a smaller
                 # physical step instead of repeating an identical rejection.
                 # Carry the scalar within this candidate, never across seeds.
@@ -128,13 +151,14 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                 # halving the uncapped Polyak scale can repeat the same delta.
                 previous_feedback_cap=feedback_cap
                 if budget.rejection_backoff:
-                    if not accepted:feedback_cap=effective_coefficient*2.**(-budget.line_trials)
+                    if not accepted:feedback_cap=effective_coefficient*step*.5
                     elif feedback_cap is not None:feedback_cap=2.*effective_coefficient*chosen
                 updates.append(dict(gradient_norm=float(torch.linalg.vector_norm(grad)),before=before,after=after,accepted=accepted,
                                     preconditioned_gradient_norm=float(torch.linalg.vector_norm(direction)),directional_descent=directional_descent,step_coefficient=coefficient,step_rule=budget.step_rule,
                                     uncapped_step_coefficient=uncapped_coefficient,
                                     effective_step_coefficient=effective_coefficient,
                                     feedback_cap_before=previous_feedback_cap,feedback_cap_after=feedback_cap,
+                                    line_rule=budget.line_rule,trial_evaluations=trial_evaluations,
                                     line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
                                     terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
                                     proposed_maximum_control_change=physical_change,
