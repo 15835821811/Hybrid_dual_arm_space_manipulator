@@ -1,0 +1,544 @@
+{
+  "schema": "ffgd_long_running_state_v1",
+  "template_only": false,
+  "goal_id": "free_floating_guided_diffusion_core",
+  "master_version": "1.1",
+  "overall_status": "ACTIVE",
+  "architecture_status": "ARCHITECTURE_PASSED_SCOPED",
+  "engineering_status": "ENGINEERING_PARTIAL",
+  "learning_benefit_status": "NOT_RUN",
+  "current_milestone": "M6",
+  "workspace": {
+    "path": "E:\\ffgd-core",
+    "branch": "codex/ffgd-core-rebuild",
+    "head": "d71951a6e69be0d5aa1dcb921ec1788d664b5afe",
+    "user_changes_reviewed": true
+  },
+  "source_contract": {
+    "expected_baseline_commit": "b0e34e75e94ec53f1cd0a9cde246d4c727a596ce",
+    "expected_reference_commit": "900d781ba63f0123dff95e49a76d51cb49a74803",
+    "actual_verified_commit": "b0e34e75e94ec53f1cd0a9cde246d4c727a596ce",
+    "master_sha256": "97fc0c35653def3d744e83c1b906023722c7d5ce21d65499a85b76a231e88981",
+    "robot_model_hash": "76edfae2ce103d0191dbbf7911abfc5d3de0bedd06725ffb86361a596830ca19",
+    "acceptance_profile_hash": "9139d976545727b2590504e232d628e620a455a5637f4036d761e954b3cdc035",
+    "dataset_manifest_hash": "4c0238b4f2064301e4929d851faef38a5130a2548ecd2a3b38cc8455f6e4193e",
+    "checkpoint_hash": "b80ce0d14e2c95bde6191f7f0e0a0ecd8b65c8c19f5883b0b889dcb8eccfbf0f"
+  },
+  "milestones": {
+    "M0": {
+      "name": "隔离、最小入口和状态落盘",
+      "status": "PASSED",
+      "evidence": [
+        "artifacts/ffgd/runs/20261027T025027_doctor_c96544/result.json",
+        "artifacts/ffgd/runs/20261027T025501_software_ae533b/result.json"
+      ],
+      "open_failures": []
+    },
+    "M1": {
+      "name": "统一样条与物理适配",
+      "status": "PASSED",
+      "evidence": [
+        "artifacts/ffgd/runs/20261027T025119_physics_ca4228/result.json",
+        "artifacts/ffgd/runs/20261027T025126_physics_84f11f/result.json",
+        "artifacts/ffgd/runs/20261027T025501_software_ae533b/result.json"
+      ],
+      "open_failures": []
+    },
+    "M2": {
+      "name": "自由漂浮传播、几何、执行器与梯度",
+      "status": "PASSED",
+      "evidence": [
+        "artifacts/ffgd/runs/20261027T025237_path_gradients_cc9ca3/result.json",
+        "artifacts/ffgd/runs/20261027T033151_convex_geometry_af5fca/result.json",
+        "artifacts/ffgd/runs/20261027T033159_physics_e962a9/result.json",
+        "artifacts/ffgd/runs/20261027T033340_full_space_gradients_19122a/result.json",
+        "artifacts/ffgd/runs/20261027T033224_feature_switch_6611ad/result.json",
+        "artifacts/ffgd/runs/20261027T030408_execution_calibration_969dae/result.json",
+        "artifacts/ffgd/runs/20261027T032918_momentum_sweep_e68770/result.json"
+      ],
+      "open_failures": [],
+      "limitations": [
+        "Piecewise support switching classified separately; prior failed runs unchanged.",
+        "Native execution calibrated for 2 seconds; final long horizon NOT_RUN.",
+        "Main architecture and learning benefits NOT_RUN."
+      ]
+    },
+    "M3": {
+      "name": "先验数据与完整变量模型",
+      "status": "PASSED",
+      "evidence": [
+        "artifacts/ffgd/runs/20261027T034523_prior_data_d6601f/result.json",
+        "artifacts/ffgd/orchestration/pilot_data_audit.json",
+        "artifacts/ffgd/runs/20261027T043312_training_711731/result.json",
+        "artifacts/ffgd/runs/20261027T043411_learning_checks_85441c/result.json",
+        "artifacts/ffgd/runs/20261028T050513_prior_free_terminal_reencoding_9a713f/result.json",
+        "artifacts/ffgd/runs/20261028T050526_prior_free_terminal_reencoding_06c6ca/result.json",
+        "artifacts/ffgd/runs/20261028T050533_prior_data_5ff88f/result.json",
+        "artifacts/ffgd/runs/20261028T051508_prior_union_80f4ae/result.json",
+        "artifacts/ffgd/runs/20261028T051522_training_5113b0/result.json",
+        "artifacts/ffgd/runs/20261028T051728_learning_checks_ff810a/result.json"
+      ],
+      "open_failures": [],
+      "limitations": [
+        "Zero initial velocity/momentum prior only.",
+        "Five generated samples are finite and boundary-valid, not model/execute-valid.",
+        "No learning-benefit claim."
+      ]
+    },
+    "M4": {
+      "name": "去噪内引导纵向跑通",
+      "status": "PASSED",
+      "evidence": [
+        "artifacts/ffgd/runs/20261027T043505_planning_7df1ee/result.json",
+        "artifacts/ffgd/runs/20261027T044229_guidance_diagnostic_28d753/result.json",
+        "artifacts/ffgd/runs/20261027T044506_guidance_diagnostic_dcf601/result.json",
+        "artifacts/ffgd/runs/20261027T045128_planning_5746f7/result.json",
+        "artifacts/ffgd/runs/20261027T050930_guidance_diagnostic_79094a/result.json",
+        "artifacts/ffgd/runs/20261027T051107_guidance_diagnostic_3f0055/result.json",
+        "artifacts/ffgd/runs/20261027T051345_planning_cb9d2e/result.json",
+        "artifacts/ffgd/runs/20261027T053343_selected_execution_312958/result.json",
+        "artifacts/ffgd/runs/20261027T053742_planning_228010/result.json",
+        "artifacts/ffgd/runs/20261027T055742_condition_diagnostic_e0c337/result.json",
+        "artifacts/ffgd/runs/20261027T055956_planning_f9149f/result.json",
+        "artifacts/ffgd/runs/20261027T062126_weight_diagnostic_9b75c6/result.json",
+        "artifacts/ffgd/runs/20261027T062443_planning_00217f/result.json",
+        "artifacts\\ffgd\\runs\\20261027T065037_planning_cac48b\\result.json",
+        "artifacts/ffgd/runs/20261027T071559_planning_e540d2/result.json",
+        "artifacts\\ffgd\\runs\\20261027T075858_planning_e7658f\\result.json",
+        "artifacts/ffgd/runs/20261027T083007_selected_execution_77b070/result.json",
+        "artifacts/ffgd/runs/20261027T083042_independent_replay_07157e/result.json",
+        "artifacts/ffgd/runs/20261027T083755_planning_bb2f7d/result.json",
+        "artifacts/ffgd/runs/20261027T093309_selected_execution_d939b2/result.json",
+        "artifacts/ffgd/runs/20261027T093337_independent_replay_d7e6e3/result.json",
+        "artifacts/ffgd/runs/20261027T093404_architecture_audit_b07e65/result.json",
+        "artifacts\\ffgd\\runs\\20261027T094234_planning_05f840\\result.json",
+        "artifacts/ffgd/runs/20261027T100509_selected_execution_1565d6/result.json",
+        "artifacts/ffgd/runs/20261027T100542_independent_replay_624a29/result.json",
+        "artifacts\\ffgd\\runs\\20261027T100610_architecture_audit_140e42\\result.json",
+        "artifacts/ffgd/runs/20261027T100838_planning_731808/result.json",
+        "artifacts/ffgd/runs/20261027T103912_selected_execution_ab3916/result.json",
+        "artifacts/ffgd/runs/20261027T104825_recorded_momentum_sweep_899ed2/result.json",
+        "artifacts/ffgd/runs/20261027T105105_selected_execution_a019bf/result.json",
+        "artifacts/ffgd/runs/20261027T105211_independent_replay_5ad625/result.json",
+        "artifacts/ffgd/runs/20261027T105237_selected_execution_3b6ac1/result.json",
+        "artifacts/ffgd/runs/20261027T105339_independent_replay_c21bf9/result.json",
+        "artifacts/ffgd/runs/20261027T105247_software_b23aee/result.json",
+        "artifacts/ffgd/runs/20261027T105407_architecture_audit_bb6872/result.json",
+        "artifacts/ffgd/runs/20261027T110627_execution_state_audit_5482b3/result.json",
+        "artifacts/ffgd/runs/20261027T110655_execution_state_audit_6cb3e9/result.json",
+        "artifacts/ffgd/runs/20261027T110750_software_65c1d3/result.json",
+        "artifacts/ffgd/runs/20261027T105736_planning_549bb5/result.json",
+        "artifacts/ffgd/runs/20261027T111424_selected_execution_b21476/result.json",
+        "artifacts/ffgd/runs/20261027T111523_independent_replay_5b3709/result.json",
+        "artifacts/ffgd/runs/20261027T111602_architecture_audit_0c4a23/result.json",
+        "artifacts/ffgd/runs/20261027T112424_planning_e1f024/result.json",
+        "artifacts/ffgd/runs/20261027T113942_selected_execution_027c77/result.json",
+        "artifacts/ffgd/runs/20261027T114113_planning_dbc8a6/result.json",
+        "artifacts/ffgd/runs/20261027T114040_independent_replay_a52a31/result.json",
+        "artifacts/ffgd/runs/20261027T115503_full_space_origin_gradients_45aaa2/result.json",
+        "artifacts/ffgd/runs/20261027T115635_prior_coordinate_reencoding_18ffb0/result.json",
+        "artifacts/ffgd/runs/20261027T115809_training_8a676d/result.json",
+        "artifacts/ffgd/runs/20261027T120402_learning_checks_78a82a/result.json",
+        "artifacts/ffgd/runs/20261027T120415_software_e10c24/result.json",
+        "artifacts/ffgd/runs/20261027T120606_planning_16cb1e/result.json",
+        "artifacts/ffgd/runs/20261027T121913_selected_execution_48654d/result.json",
+        "artifacts/ffgd/runs/20261027T122025_independent_replay_0dff50/result.json",
+        "artifacts/ffgd/runs/20261027T121955_software_b62fa7/result.json",
+        "artifacts/ffgd/runs/20261027T122105_full_space_origin_gradients_b7b403/result.json",
+        "artifacts/ffgd/runs/20261027T122155_weight_diagnostic_488a7e/result.json",
+        "artifacts/ffgd/runs/20261027T122220_weight_diagnostic_fbbed5/result.json",
+        "artifacts/ffgd/runs/20261027T122247_planning_e794e8/result.json",
+        "artifacts/ffgd/runs/20261027T123810_selected_execution_6deed0/result.json",
+        "artifacts/ffgd/runs/20261027T123935_independent_replay_5ac07e/result.json",
+        "artifacts/ffgd/runs/20261027T124032_architecture_audit_9c6108/result.json",
+        "artifacts/ffgd/runs/20261027T124216_planning_8c7545/result.json",
+        "artifacts/ffgd/runs/20261027T130015_selected_execution_ce28dc/result.json",
+        "artifacts/ffgd/runs/20261027T130249_independent_replay_776ee9/result.json",
+        "artifacts/ffgd/runs/20261027T130529_weight_diagnostic_4f9c77/result.json",
+        "artifacts/ffgd/runs/20261027T130544_weight_diagnostic_c46076/result.json",
+        "artifacts/ffgd/runs/20261027T130559_weight_diagnostic_0d09de/result.json",
+        "artifacts/ffgd/runs/20261027T130614_weight_diagnostic_59cabf/result.json",
+        "artifacts/ffgd/runs/20261027T131027_software_8f1eec/result.json",
+        "artifacts/ffgd/runs/20261027T131344_planning_78937d/result.json",
+        "artifacts/ffgd/runs/20261027T132934_selected_execution_f49355/result.json",
+        "artifacts/ffgd/runs/20261027T133109_independent_replay_00ad17/result.json",
+        "artifacts/ffgd/runs/20261027T133635_tracking_prediction_diagnostic_100572/result.json",
+        "artifacts/ffgd/runs/20261027T133702_tracking_prediction_diagnostic_1286c0/result.json",
+        "artifacts/ffgd/runs/20261027T133752_planning_7a6ebb/result.json",
+        "artifacts/ffgd/runs/20261027T135039_selected_execution_487e77/result.json",
+        "artifacts/ffgd/runs/20261027T135132_independent_replay_dfb9a6/result.json",
+        "artifacts/ffgd/runs/20261027T135325_tracking_prediction_diagnostic_18eb38/result.json",
+        "artifacts/ffgd/runs/20261027T135702_full_space_origin_gradients_5d22d7/result.json",
+        "artifacts/ffgd/runs/20261027T135804_weight_diagnostic_5a91c3/result.json",
+        "artifacts/ffgd/runs/20261027T135845_weight_diagnostic_0d5add/result.json",
+        "artifacts/ffgd/runs/20261027T135917_software_ea6c71/result.json",
+        "artifacts/ffgd/runs/20261027T140125_planning_b0cc7b/result.json",
+        "artifacts/ffgd/runs/20261027T141416_selected_execution_46f897/result.json",
+        "artifacts/ffgd/runs/20261027T141509_independent_replay_f09881/result.json",
+        "artifacts/ffgd/runs/20261027T141558_planning_36d59f/result.json",
+        "artifacts/ffgd/runs/20261027T143149_selected_execution_64e7a9/result.json",
+        "artifacts/ffgd/runs/20261027T143242_independent_replay_81e07b/result.json",
+        "artifacts/ffgd/runs/20261027T143328_planning_228638/result.json",
+        "artifacts/ffgd/runs/20261027T144854_selected_execution_212958/result.json",
+        "artifacts/ffgd/runs/20261027T145012_independent_replay_485f8a/result.json",
+        "artifacts/ffgd/runs/20261027T145038_architecture_audit_de6117/result.json",
+        "artifacts/ffgd/runs/20261027T145309_planning_a62c3f/result.json",
+        "artifacts/ffgd/runs/20261027T150639_condition_diagnostic_bfccd4/result.json",
+        "artifacts/ffgd/runs/20261027T150930_prior_data_370e36/result.json",
+        "artifacts/ffgd/runs/20261027T151826_prior_union_ebd703/result.json",
+        "artifacts/ffgd/runs/20261027T151842_training_36420a/result.json",
+        "artifacts/ffgd/runs/20261027T151955_learning_checks_a95d91/result.json",
+        "artifacts/ffgd/runs/20261027T152007_condition_diagnostic_43fa42/result.json",
+        "artifacts/ffgd/runs/20261027T152015_software_958b56/result.json",
+        "artifacts/ffgd/runs/20261027T152229_planning_257148/result.json",
+        "artifacts/ffgd/runs/20261027T153625_selected_execution_1044aa/result.json",
+        "artifacts/ffgd/runs/20261027T153729_independent_replay_a76701/result.json",
+        "artifacts/ffgd/runs/20261027T153948_recorded_momentum_sweep_9c96ac/result.json",
+        "artifacts/ffgd/runs/20261027T154120_selected_execution_2152c2/result.json",
+        "artifacts/ffgd/runs/20261027T154256_independent_replay_88e91f/result.json",
+        "artifacts/ffgd/runs/20261027T154403_planning_9f40ca/result.json",
+        "artifacts/ffgd/runs/20261027T160001_selected_execution_77fa6e/result.json",
+        "artifacts/ffgd/runs/20261027T160144_independent_replay_ae83ef/result.json",
+        "artifacts/ffgd/runs/20261027T160231_architecture_audit_fe270c/result.json",
+        "artifacts/ffgd/runs/20261027T160408_planning_0f6da0/result.json",
+        "artifacts/ffgd/runs/20261027T161856_prior_duration_reencoding_7ba525/result.json",
+        "artifacts/ffgd/runs/20261027T162010_training_fedd0a/result.json",
+        "artifacts/ffgd/runs/20261028T011712_learning_checks_7058b2/result.json",
+        "artifacts/ffgd/runs/20261028T011729_software_d84167/result.json",
+        "artifacts/ffgd/runs/20261028T012029_full_space_origin_gradients_d849ec/result.json",
+        "artifacts/ffgd/runs/20261028T012307_planning_26fc92/result.json",
+        "artifacts/ffgd/runs/20261028T012307_planning_26fc92/result.json",
+        "artifacts/ffgd/runs/20261028T025519_selected_execution_697534/result.json",
+        "artifacts/ffgd/runs/20261028T025546_independent_replay_31793d/result.json"
+      ],
+      "open_failures": [
+        "20261027T043505_planning_7df1ee: world target failed; all other independent candidate gates passed.",
+        "20261027T045128_planning_5746f7: task only failed; positions improved to .033/.0277 m but rotations .1946/.1294 rad.",
+        "20261027T053742_planning_228010: velocity/acceleration false and geometry-step refinement incomplete(.00470m at2048); untrained scene-token condition mismatch identified, not relabeled.",
+        "20261027T055956_planning_f9149f: task and all other native gates passed; geometry rejected at -0.006507m. No execution.",
+        "20261027T062443_planning_00217f: geometry only rejected at -0.002715845m; all other gates passed; no execution.",
+        "20261027T065037_planning_cac48b: geometry only rejected at -0.000919343m; all other native gates passed; all last-step updates accepted; no execution.",
+        "20261027T071559_planning_e540d2: geometry-only rejection at -0.000530125m, worst time2.265625 already present in64-interval guide; no execution.",
+        "V9 free_translation: seeds13003/13004/13005 rejected solely acceleration; 2/5 valid, all five retained. No failed candidate executed.",
+        "V10 free candidate2 seed13003 acceleration remains1.05207457 (V9 1.57960176), other gates pass; no post-repair or execution, fixed group continues.",
+        "V10 arm selected candidate3 seed13004: native angular momentum residual0.00120103994 exceeds unchanged0.001; all other execution gates pass; no alternate candidate execution.",
+        "V11 rigid_body_box candidate2 seed13003 acceleration-only rejection, peak ratio 1.0088395342496166; all other model gates passed. Fixed group continues, no execution or repair of rejected candidate.",
+        "V11 continuum_near_limit: all five fixed seeds INCOMPLETE_VALIDATION with velocity/acceleration false and geometry refinement above allowed step at2048. No candidate selected or executed. Initial-origin/prior root experiment now active.",
+        "V12 continuum_near_limit fixed five: 2/5 PLAN_VALID; c0 q17 violated, c1/c2 acceleration violated; all other gates passed for these rejected candidates. No post repair or failed candidate execution. Original V11 0/5 remains unchanged.",
+        "V12 arm_body_box 2/5 valid, down from V10 5/5; rejected indices0/1/2 acceleration ratios1.0002262886/1.0152537541/1.0142841516. All other gates passed; no post repair or execution of rejects. Selected index3 native execution pending.",
+        "V13 arm fixed group4/5: candidate2 seed13003 rejected acceleration and task (tip0 final rotation .017529041497rad > .01745329252); all five retained, no repair or failed execution.",
+        "V13 continuum_near_limit fixed group4/5: candidate0 q17 still violated. Preselected candidate1 executed5000 steps but task5.00097191mm and actual acceleration1.000704/1.001167 failed; separate replay0. No alternate execution, no gate change, no relabel.",
+        "V14 continuum_near_limit fixed5: c0 remains q17 rejected; other4 model-valid. Preselected same seed13002 now native all16 gates/replay pass. Original V13 execution failure remains failed.",
+        "V14 rigid_near_limit: fixed five all INCOMPLETE_VALIDATION, velocity/acceleration false and geometry step above .002m at2048. No selected/executed candidate. TRAIN initial q10 only about +/-.1 versus task2.9rad; same-noise initial-token TRAIN-mean diagnostic lowers no-guide acceleration2.0141 to.5010 but is not an allowed main-method fix.",
+        "V15 rigid fixed5: 3/5 valid; c3 tip1 position.0051248997m rejected, c4 acceleration/refinement rejected(.00238677m at2048). Preselected c1 seed13002 completed5000 native steps but linear/angular momentum.001233548/.001008648 > .001 gates; other14 gates true, no interventions. Independent replay0. No alternate selection or failure relabel.",
+        "V15 short_duration_torque .8s: all5 fixed candidates REJECTED,0 executed. First candidate acceleration sampled7.18417x, nominal torque1.25848x and rigid rotation.029rad failed; original task and all failures unchanged. TRAIN durations4/5 only; inverseT^2 derivative scaling verified.",
+        "V16 original .8s fixed5 completed2/5 PLAN_VALID: c2 seed13003 acceleration rejected; c3/c4 seeds13004/13005 acceleration and task rejected. Frozen selection index1 seed13002; native execution/replay and V16 actualARCH remain NOT_RUN. No postrepair or added seeds."
+      ],
+      "limitations": [
+        "V14 same-source/same-config three-task regression has14/15 model-valid candidates and3 selected native executions/replays passed; ARCH01-10 passed on all15 including rejection. This is not full original8 or DEV40 coverage.",
+        "Rigid near-limit and two short-duration original families still NOT_RUN before next launch; V14 free/rigid-box and the full40 also remain pending. Earlier versions are not pooled as a single final-version success.",
+        "M5-M8 stage gates and learning benefit remain NOT_RUN. Continuous hold, moving target, nonzero actual-state continuation, final83.5s chain and clean-environment research protocol are incomplete.",
+        "V15 rigid3/5 and arm5/5 model-valid, both preselected .5ms native/replay pass; actualARCHfe270c scoped pass. Old1ms rigid execution remains failed. Short-duration families and uniformDEV40 NOT_RUN; V14 success cannot be pooled into V15 totals."
+      ],
+      "pass_scope": "Engineering vertical slice: V14 same-source near-limit/arm-body-obstacle/irregular actual ARCH audit de6117 and preselected native/replays; V16 short-duration extension. Does not certify later M6 full_state/free-terminal extensions or final scenes."
+    },
+    "M5": {
+      "name": "物理闭环与归因初检",
+      "status": "PASSED",
+      "evidence": [
+        "artifacts/ffgd/runs/20261028T025519_selected_execution_697534/result.json",
+        "artifacts/ffgd/runs/20261028T025546_independent_replay_31793d/result.json",
+        "artifacts/ffgd/runs/20261028T030006_selected_execution_198261/result.json",
+        "artifacts/ffgd/runs/20261028T030153_independent_replay_71ba38/result.json"
+      ],
+      "open_failures": [],
+      "pass_scope": "Preselected torque-only native executions and separate input replays passed all frozen gates; V16 short/irregular plus full-state original continuation43a55c/7ea9ac. Final long-chain and C2 remain M6/M7."
+    },
+    "M6": {
+      "name": "通用任务、非零初态与计划接续",
+      "status": "RUNNING",
+      "evidence": [
+        "artifacts/ffgd/runs/20261028T030357_continuation_state_f2e9af/result.json",
+        "artifacts/ffgd/runs/20261028T030922_full_state_dynamics_4866b7/result.json",
+        "artifacts/ffgd/runs/20261028T031142_full_state_dynamics_187ee8/result.json",
+        "artifacts/ffgd/runs/20261028T031249_full_state_dynamics_0f31ca/result.json",
+        "artifacts/ffgd/runs/20261028T031820_full_state_dynamics_c5f451/result.json",
+        "artifacts/ffgd/runs/20261028T031900_full_state_dynamics_d4d17c/result.json",
+        "artifacts/ffgd/runs/20261028T032414_full_state_dynamics_a22af6/result.json",
+        "artifacts/ffgd/runs/20261028T032626_full_state_dynamics_37bd07/result.json",
+        "artifacts/ffgd/runs/20261028T032706_full_state_dynamics_4e3d08/result.json",
+        "artifacts/ffgd/runs/20261028T033638_full_state_dynamics_0a4fa2/result.json",
+        "artifacts/ffgd/runs/20261028T034057_full_state_dynamics_f51229/result.json",
+        "artifacts/ffgd/runs/20261028T042656_planning_87865e/result.json",
+        "artifacts/ffgd/runs/20261028T045313_selected_execution_43a55c/result.json",
+        "artifacts/ffgd/runs/20261028T045352_independent_replay_7ea9ac/result.json",
+        "artifacts/ffgd/runs/20261028T045421_full_state_dynamics_b276d5",
+        "artifacts/ffgd/runs/20261028T050145_full_state_dynamics_02acdd",
+        "artifacts/ffgd/runs/20261028T050259_full_state_dynamics_b4d4bf",
+        "artifacts/ffgd/runs/20261028T050328_full_state_dynamics_07c092",
+        "artifacts/ffgd/runs/20261028T050851_software_a3f8e9/result.json",
+        "artifacts/ffgd/runs/20261028T051134_execution_state_audit_768855/result.json",
+        "artifacts/ffgd/runs/20261028T051809_full_state_dynamics_61e24e/result.json",
+        "artifacts/ffgd/runs/20261028T065032_planning_1eaaf7/result.json",
+        "artifacts/ffgd/runs/20261028T114806_software_e9482b/result.json",
+        "artifacts\\ffgd\\runs\\20261029T083557_planning_ba9efd\\result.json",
+        "artifacts/ffgd/runs/20261029T125000_planning_f1c756/result.json",
+        "artifacts/ffgd/runs/20261029T132846_full_state_dynamics_f42417/result.json",
+        "artifacts/ffgd/runs/20261029T133200_full_state_dynamics_db3144/result.json",
+        "artifacts/ffgd/runs/20261029T133537_planning_f1e9ed/result.json",
+        "artifacts/ffgd/runs/20261030T011908_guidance_diagnostic_6c31d5/result.json"
+      ],
+      "open_failures": [
+        "C2 short-hold526999/e6802e/020508 rejected, not executed. Latest020508 only rigid interval rotation.018082555rad at.2675s; other gates pass. Preserve all3attempts; no seed expansion. Move forward with original5s moving target, then original final task continuation.",
+        "New free357/full-state actual architecture and complete C2 chain pending.",
+        "Moving1eaaf7: 0/1, max rigid tracking62.244mm, actual acceleration1.328624x; no execution. Last5gradient updates rejected, repeated unchanged proposals. Diagnose finite step-size bracket, not extra seeds.",
+        "moving5a515f interrupted after 49 denoising steps; PID/session absent, no candidate validation or execution; preserve interrupted attempt and restart identical declared configuration.",
+        "moving66c8e8 completed0/1 after60NN/54gradients; backoff improved rigidmax62.244mm to51.040mm but actualacc1.321349x, task/interval still failed. No selected or executed candidate. Interrupted5a515f remains separate.",
+        "moving ba9efd retained-noise:0/1, rigidmax29.474mm,rotation6.008deg,actualacc1.338841x;60NN54gradients,0postrepair. Improved positioning, still invalid/no execution. Diagnose convergence/constraint scaling before new main retry.",
+        "f1c756 moving_v5:0/1; all dynamics/geometry/actuator/discrete task gates pass, continuous positions13.5267mm/5.7001mm exceed5mm. No execution. f42417 proves coarse temporal grid misses6.6465mm peak; db3144 dense-grid whole-path AD validated. Next new-noise moving_v6 uses64 generic intervals, same60NN54gradients/task/weights/seed/budget.",
+        "f1e9ed moving_v6:0/1; continuous positions10.94635mm/6.31605mm exceed5mm, all other gate groups pass. No execution/replay. End-point error is visible on dense grid; stale cross-network feedback cap verified by6c31d5. Fix passed40 software tests; full original-task new-noise rerun remains pending while final-task integration gets priority."
+      ],
+      "historical_open_failures": [
+        "Exact actual-state transfer implemented; propagated full-state continuation NOT_RUN. Actual q67/v67 residuals5.956838e-7/1.329662e-5 exceed existing reduced predictor domain1e-10. Must implement full-state prediction, not project/reset state or relax domain check."
+      ]
+    },
+    "M7": {
+      "name": "修订双臂接近—不规则航点与持续卫星追踪全链",
+      "status": "RUNNING",
+      "evidence": [],
+      "open_failures": []
+    },
+    "M8": {
+      "name": "工程干净环境复现与交付；比较研究非阻塞",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "open_failures": []
+    }
+  },
+  "active_unit": null,
+  "owned_processes": [],
+  "latest_verified_checkpoint": {
+    "path": "E:\\ffgd-core\\artifacts\\ffgd\\runs\\20261028T051522_training_5113b0\\last.pt",
+    "sha256": "7b4324be7c2e081fd8cd9e1297f4d4afa2f5d966abf3e37dcfc90d80df97dd94",
+    "update": 3000
+  },
+  "latest_verified_command": [
+    "E:\\ffgd-core\\.venv-gpu\\Scripts\\python.exe",
+    "-m",
+    "ffgd.cli",
+    "plan",
+    "--config",
+    "configs/ffgd/plan_final_v2_approach_step_feedback.json",
+    "--task",
+    "configs/ffgd/final_v2/approach.json"
+  ],
+  "next_action": "Diagnose final approach degradation using preserved denoising trace; no valid candidate to execute. Five-second pressure test remains nonblocking. Final24s continuation and M8 remain NOT_RUN.",
+  "external_blockers": [],
+  "resource_ledger_path": "artifacts/ffgd/orchestration/resource_ledger.jsonl",
+  "last_event_sequence": 0,
+  "last_update_utc": "2026-10-30T02:24:44.590186+00:00",
+  "completion_evidence": null,
+  "architecture_evidence": {
+    "run": "artifacts/ffgd/runs/20261028T030239_architecture_audit_bccf4c",
+    "scope": "V16 actual ARCH01-10 passed on short and irregular tasks, six candidates including three rejected, two preselected native executions. Engineering identity evidence, not learning advantage.",
+    "pending_status": "NOT_RUN",
+    "pending_requirements": "Actual full_state sampling chain and candidate-bound native execution/replay; historical V16 reduced-state audit remains scoped history."
+  },
+  "baseline_integration": {
+    "scope": "INTEGRATION_SMOKE_NOT_RESEARCH: one free task, one candidate, 8 guide intervals, 3 network steps for D, 3 post gradients for C/D. Not matched to the main 60-step DEV result.",
+    "C": {
+      "planning": "20261027T111809_baseline_comparison_0eff1a",
+      "execution": "20261027T112016_selected_execution_b16c34",
+      "replay": "20261027T112105_independent_replay_60b0fb"
+    },
+    "D": {
+      "planning": "20261027T111903_baseline_comparison_01586a",
+      "execution": "20261027T112151_selected_execution_353319",
+      "replay": "20261027T112329_independent_replay_8a294a"
+    }
+  },
+  "engineering_priority_override": {
+    "date": "2026-10-28",
+    "objective": "ENGINEERING_FULL_PIPELINE",
+    "research_blocking": false,
+    "nonblocking": [
+      "DEV40",
+      "all_candidates_pass",
+      "baseline_comparison",
+      "multi_training_seed",
+      "learning_advantage"
+    ],
+    "physical_and_final_task_gates": "Physical gates unchanged; final task scope/timing superseded by user two-stage revision 2026-10-28"
+  },
+  "current_engineering_work": "Final revised root approach development with existing retained-noise core; moving pressure failure remains open, no secant method admitted.",
+  "current_model": {
+    "checkpoint": "artifacts/ffgd/runs/20261028T051522_training_5113b0/best.pt",
+    "sha256": "b0adbbacb143b3e30f707dd63e153dafa42b0ab0af1754ad10d89e537e281350",
+    "free_dim": 357,
+    "terminal_policy": "free",
+    "dataset": "20261028T051508_prior_union_80f4ae",
+    "accepted": 2512,
+    "attempts": 3495,
+    "learning_benefit": "NOT_RUN"
+  },
+  "clean_environment_smoke": "artifacts/ffgd/reproduction/clean_20261028T064122/smoke_result.json",
+  "task_definition_review": {
+    "evidence": "artifacts/ffgd/orchestration/initial_frame_audit_20261028.json",
+    "initial_frame_check": "VERIFIED_CURRENT_PROJECT_HOME",
+    "continuum_at_fixed_goal": true,
+    "rigid_position_gap_m": 0.3364078172256546,
+    "rigid_surface_frame": "end_effector_r",
+    "inherited_27_second_phase": "NOT_A_CONFIRMED_CURRENT_USER_REQUIREMENT",
+    "final_v1_scope": "HISTORICAL_SCENE_MIGRATION_PENDING_TASK_SEMANTICS",
+    "old_results": "UNCHANGED",
+    "next_action": "Use verified final_v2 root approach8s then inherited-state waypoints/tracking24s; timing is declared development version, not fixed requirement.",
+    "final_v2": "artifacts/ffgd/orchestration/final_v2_task_definition.json"
+  },
+  "task_scope_revision": {
+    "date": "2026-10-28",
+    "authority": "USER_EXPLICIT_OVERRIDE",
+    "phases": [
+      "approach",
+      "irregular_waypoints_with_rigid_target_tracking"
+    ],
+    "fixed_27s_approach": false,
+    "fixed_83_5s_total": false,
+    "extra_satellite_demo_required": false,
+    "research_blocking": false,
+    "root_state_audit": "artifacts/ffgd/orchestration/initial_frame_audit_20261028.json",
+    "completion": "Full revised native continuous chain, exact actual/C2 handoff, independent replay and clean reproduction; NOT_RUN until evidence"
+  },
+  "final_v2_waypoints_budget": {
+    "config": "configs/ffgd/plan_final_v2_waypoints_tracking.json",
+    "status": "NOT_RUN",
+    "budget_seconds": 14400,
+    "seed": 25002,
+    "note": "Before actual run re-evaluate after observed approach cost; full actual snapshot/C2 required."
+  },
+  "paused_unit": "20261029T080001_planning_de6032",
+  "last_pause": {
+    "status": "INTERRUPTED_BY_USER",
+    "time": "2026-10-29T08:02:33.846907+00:00",
+    "reason": "User explicitly requested pause",
+    "process_identity": {
+      "pid": 33896,
+      "host": "wangbingquan",
+      "create_time": 1793260801.1008468,
+      "command": [
+        "C:\\Users\\admin\\AppData\\Roaming\\uv\\python\\cpython-3.10.19-windows-x86_64-none\\python.exe",
+        "-u",
+        "-X",
+        "utf8",
+        "-m",
+        "ffgd.cli",
+        "plan",
+        "--config",
+        "configs/ffgd/plan_moving_target_v3.json",
+        "--task",
+        "configs/ffgd/tasks/moving_target_v1.json"
+      ]
+    },
+    "process_stopped": true,
+    "complete_step_count": 32,
+    "last_complete_step": 31,
+    "acceptance": "NOT_RUN",
+    "execution": "NOT_RUN",
+    "replay": "NOT_RUN",
+    "sampling_resume_supported": false,
+    "all_partial_artifacts_retained": true
+  },
+  "development_dispositions": {
+    "20261028T063735_planning_020508": {
+      "status": "ACCEPTED_FOR_DEVELOPMENT_WITH_RESIDUAL",
+      "authorization": "User 2026-10-29 accepts approx1.036deg vs1deg as development progress; preserve original strict verdict",
+      "blocking": false,
+      "historical_result_modified": false,
+      "execution": "NOT_RUN"
+    }
+  },
+  "training_coverage_observation": {
+    "checkpoint": "b0adbbacb143b3e30f707dd63e153dafa42b0ab0af1754ad10d89e537e281350",
+    "train_duration_counts": {
+      "1.2": 33,
+      "4": 666,
+      "5": 1219,
+      "12": 46,
+      "27.5": 46
+    },
+    "train_pose_token_counts": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "final_pose_token_counts": [
+      8,
+      13
+    ],
+    "finding": "8s/24s inside TRAIN duration range; task token cardinality/time patterns extend TRAIN. Causality NOT_ESTABLISHED; do not automatically retrain or change current run."
+  },
+  "latest_reproduction_preparation": {
+    "directory": "E:\\ffgd-core\\artifacts\\ffgd\\reproduction\\final_prepare_20261029T094532",
+    "source_hash": "8b30307d44bdf7cc4a2c5a9691d27eabfddc6ea5c0978bc266aa127d6b798bce",
+    "environment": "INSTALLED_FRESH",
+    "software_run": "20261029T094948_software_de8701",
+    "software_tests_passed": 29,
+    "planning": "NOT_RUN",
+    "native_execution": "NOT_RUN",
+    "independent_replay": "NOT_RUN",
+    "full_final_chain": "NOT_RUN",
+    "device": "cpu"
+  },
+  "latest_final_approach_failure": {
+    "run": "20261030T012359_planning_de64e7",
+    "valid": 0,
+    "requested": 1,
+    "continuum_max_position_m": 0.5023079185795171,
+    "rigid_max_position_m": 0.4144349890982996,
+    "actual_acceleration67_ratio": 56.75447441404009,
+    "minimum_clearance_m": -0.0013151034947154136,
+    "execution": "NOT_RUN",
+    "replay": "NOT_RUN"
+  },
+  "latest_core_repair": {
+    "source_hash": "9cc17ac5b7be7431dd23f550d9ebde6799bdcd68d6ed4b7d68bad65de9d54272",
+    "mechanism": "Scope rejection feedback to current denoising step; fresh network state and metric do not inherit stale cap",
+    "diagnostics": [
+      "20261030T011908_guidance_diagnostic_6c31d5"
+    ],
+    "software": [
+      "20261030T012133_software_c75e13"
+    ],
+    "architecture_responsibilities_changed": false,
+    "actual_sampling_regression": "NOT_RUN",
+    "execution": "NOT_RUN",
+    "next_task": "Final original8s approach, then actual+C2 continuation if valid. Moving5s full fresh regression remains pending; do not make it an infinite integration prerequisite."
+  },
+  "latest_moving_regression_failure": {
+    "run": "20261029T133537_planning_f1e9ed",
+    "valid": 0,
+    "requested": 1,
+    "source_hash": "f7eefdb6a3f0f85475096833cc792200074c3deb73854db36df0f5a510e4aaec",
+    "failures": [
+      "task_intervals"
+    ],
+    "continuum_max_position_m": 0.01094635026682107,
+    "rigid_max_position_m": 0.0063160523709212164,
+    "actual_acceleration67_ratio": 0.8097317704995598,
+    "execution": "NOT_RUN",
+    "replay": "NOT_RUN",
+    "root_evidence": "Final steps inherited rejection cap from previous network state. One-gradient native diagnostic6c31d5 exactly reproduces3.314->3.050 versus reset3.314->0.921."
+  },
+  "latest_media_export_check": {
+    "directory": "artifacts/ffgd/media/telemetry_fit_20261029T134827",
+    "source_execution": "20261028T045313_selected_execution_43a55c",
+    "scope": "Historical0.8s saved-state display only, not new execution/replay or final scenario",
+    "saved_states": 1601,
+    "videos": 2,
+    "physics_step_entrypoints_disabled": true,
+    "source_unchanged": true,
+    "new_physics_steps": 0,
+    "visual_check": "Both1120x480views inspected; task/reference/actual/clearance/torque/momentum/safety/source identity visible",
+    "final_scenario_media": "NOT_RUN"
+  }
+}

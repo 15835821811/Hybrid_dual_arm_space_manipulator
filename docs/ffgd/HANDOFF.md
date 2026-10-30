@@ -481,3 +481,6 @@ f42417只读1次原生传播12.183s，精确复现原反例：16份网格(38点)
 01:23:59 UTC已实际启动最终接近 `20261030T012359_planning_de64e7`，worker PID33484/create1793323439.3660007，launcher43940不是worker；日志worker_20261030T092359.stdout/stderr.log。源码9cc17ac5b7be7431dd23f550d9ebde6799bdcd68d6ed4b7d68bad65de9d54272，HEADd71951a6e69be0d5aa1dcb921ec1788d664b5afe，best权重b0adbbac重新核验。原final_v2/approach、seed25001新RNG、64份网格/60NN54梯度/7200s；真实PID/create/cmd/source均已核对。保持核心冻结，当前无终验结果；不因观察工具过期而重启。若选中则execute(execution_substeps_v2)→replay→continue-state原24s模板→同源waypoints_tracking_step_feedback。M6原5s完整新噪声复验仍待进行，未隐去失败或标阶段完成。
 
 2026-10-30 01:46:57 UTC核对：de64e7真实PID33484/create/cmd存活，47/60步，核心9cc17ac5未变，尚未终验。当前引导任务/碰撞/关节惩罚仍非零，不能提前宣称可执行。用户再次明确通过后直接execute→replay→完整实际+C2接续24秒任务；5秒压力复验非阻塞，已同步MASTER/AGENTS/state，不得重新设为最终流程前置。
+
+
+2026-10-30 GitHub独立快照：de64e7已终验FAILED_NEEDS_FIX，0/1，无选中候选。连续体/刚性最大位置误差502.308/414.435mm，实际67路加速度56.754倍，最小间隙-1.315mm。未执行、未重放、未进入24秒接续。60次网络、54次梯度、159次能量、零后置修复，验收只读。当前配置明显退步，不作为有效升级。去噪前42步无引导，碰撞惩罚先于引导增长是待验证机制线索，不是已确认根因。下一做有限根因诊断再修改通用核心；5秒压力非阻塞。完整结果见docs/ffgd/evidence/20261030T012359_planning_de64e7/result.json。GitHub快照不包含本地大型训练权重、数据集及全部原始运行产物，不能宣称完整可复现交付。

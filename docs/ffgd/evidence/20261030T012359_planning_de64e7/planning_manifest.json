@@ -1,0 +1,109 @@
+{
+  "budget": {
+    "seeds": [
+      25001
+    ],
+    "sampling": {
+      "steps": 60,
+      "guide_steps": 18,
+      "updates_per_step": 3,
+      "line_trials": 2,
+      "step_size": 2.0,
+      "max_update_norm": 2.0,
+      "max_control_change": 0.16,
+      "step_rule": "polyak",
+      "acceleration_metric_weight": 1000.0,
+      "task_metric": false,
+      "jacobian_batch_size": 4,
+      "max_step_coefficient": null,
+      "rejection_backoff": true,
+      "guidance_transport": "retain_network_noise",
+      "line_rule": "quadratic_rejection",
+      "local_metric": "instantaneous_multispace"
+    },
+    "control_points": 24,
+    "intervals": 64,
+    "max_wall_seconds": 7200,
+    "cpu_threads": 1,
+    "boundary_origin": "initial_position",
+    "prediction_dt": 0.001,
+    "mass_refresh_steps": 10
+  },
+  "checkpoint": {
+    "sha256": "b0adbbacb143b3e30f707dd63e153dafa42b0ab0af1754ad10d89e537e281350",
+    "update": 3000,
+    "dataset_hash": "fb6088a81ca46843129e9c382208588468dbdf36f2c390286b9fffc3fbc4f2d9"
+  },
+  "robot_model_hash": "964f619d7c624988d5f1221c62fdd516cfa1284317dbc20ee973bd7acf35e7c9",
+  "free_coordinate_schema": "duration_squared_v1",
+  "candidate_scope": "FIXED_SEED_DIAGNOSTIC",
+  "minimum_five_candidate_protocol_met": false,
+  "robot_physical_hash": "8559ea8e7d98e2e52b4db99b28e2e28c3f565888b5511786640dba2e96fdb722",
+  "scene_hash": "cc457a320307e6826671a7afc67b3cc36f7ef22bd188c164d190ffdf1a9af24f",
+  "geometry_policy_hash": "98d51bf65fa355511eca0ca6bc79f1248d00c0384ae93c69f02aae5886dff794",
+  "disabled_guide_terms": [],
+  "independent_validation_terms_disabled": [],
+  "cold_start": true,
+  "guide_weights": {
+    "task": 1.0,
+    "collision": 1.0,
+    "joint": 3.0,
+    "actuator": 1.0,
+    "smoothness": 0.001
+  },
+  "collision_aggregation": "pair_mean_plus_max_time_peak",
+  "joint_peak_penalty": true,
+  "task_objective": "tolerance_squared_hinge",
+  "planning_margins": {
+    "task_tolerance_fraction": 0.8,
+    "derivative_limit_fraction": 0.95
+  },
+  "network_condition_schema": "initial_state_timed_poses_v1_scene_in_physics",
+  "external_scene_in_physics_and_validation": true,
+  "physics_backend": "full_state",
+  "compiled_full_step": true,
+  "compilation": {
+    "seconds": 1.7038197999936529,
+    "model_hash": "964f619d7c624988d5f1221c62fdd516cfa1284317dbc20ee973bd7acf35e7c9",
+    "physics_dt": 0.001,
+    "mass_refresh_steps": 10,
+    "control_period": 0.002,
+    "mode": "EXACT_GRAPH_OF_DECLARED_INERTIA_REFRESH_APPROXIMATION",
+    "kernel_count": 2,
+    "local_comparisons": [
+      {
+        "length": 10,
+        "phase": 0,
+        "forward_max_abs": 0.0,
+        "gradient_max_relative": 2.7137925756484286e-16
+      },
+      {
+        "length": 10,
+        "phase": 1,
+        "forward_max_abs": 0.0,
+        "gradient_max_relative": 1.8125940621445022e-16
+      }
+    ]
+  },
+  "compile_seconds": 1.7038197999936529,
+  "setup_wall_seconds": 2.2026943000091705,
+  "guidance_metric_condition": 305.9237256643786,
+  "method": "GUIDED_DIFFUSION",
+  "profile": {
+    "schema": "ffgd_numerical_calibration_v1",
+    "status": "FROZEN_BEFORE_EXECUTION_CALIBRATION",
+    "scope": "DEV calibration, no robot external force, no contact, duration up to 5 seconds",
+    "prop_position_m": 0.001,
+    "prop_rotation_rad": 0.003490658503988659,
+    "prop_finite_volume_m": 0.0004,
+    "momentum_linear_kg_m_s": 0.001,
+    "momentum_angular_kg_m2_s": 0.001,
+    "replay_state_atol": 1e-10,
+    "physical_geometry_clearance_m": 0.0,
+    "position_m": 0.005,
+    "rotation_rad": 0.017453292519943295,
+    "rationale": "Propagation uses 20 percent of inherited 5 mm / 1 degree gates; volume uses 20 percent of initial 2 mm guide buffer. Momentum budgets are absolute (not action-scaled): at 300 kg base mass and about 37 kg m^2 base inertia, over 5 s they correspond to roughly 17 um translation and 0.008 degrees rotation, below propagation budgets. This is a declared numeric calibration requirement, not a hardware guarantee."
+  },
+  "profile_hash": "f2617e57c8f371948dced400c736a3cfa05215ca0191d9a8f4aa532467dfc75d",
+  "initial_state_hash": "02e16a58032c73ab51e4ebdfef43a4f76122e9f85e235c822566179343644c52"
+}
