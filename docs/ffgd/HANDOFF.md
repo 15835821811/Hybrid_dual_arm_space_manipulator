@@ -477,3 +477,5 @@ f42417只读1次原生传播12.183s，精确复现原反例：16份网格(38点)
 6c31d5一次原反例step58 clean整路径梯度、3原生能量及1局部metric状态传播，51.552s：标量误差3.88e-14，旧携带cap0.01535884精确复现3.314093→3.050475；相同方向重置cap得到0.368028、首试探3.314093→0.921092，控制点变化0.009867rad，仍在原信赖域及最多两试探内。不是修复候选或执行结果。通用修正将feedback_cap放在每次新网络更新后的物理子问题内初始化，步内拒绝回退/全部预算保留，无新优化器或场景分支。c75e13受影响采样/诊断/局部metric/时序/架构40项通过28.22s，源码9cc17ac5b7be7431dd23f550d9ebde6799bdcd68d6ed4b7d68bad65de9d54272。
 
 已预声明final两份step_feedback及moving_v7配置，任务/权重/seed/64网格/60NN54梯度/墙钟预算均保持。下一优先启动最终8s接近段，避免原5s压力例成为无限前置；原5s新噪声完整复验仍待进行，不隐去其失败。通过接近才原候选执行/重放/完整实际+C2进入24s追踪，同一源码和权重；最终全链/M8仍未完成。
+
+01:23:59 UTC已实际启动最终接近 `20261030T012359_planning_de64e7`，worker PID33484/create1793323439.3660007，launcher43940不是worker；日志worker_20261030T092359.stdout/stderr.log。源码9cc17ac5b7be7431dd23f550d9ebde6799bdcd68d6ed4b7d68bad65de9d54272，HEADd71951a6e69be0d5aa1dcb921ec1788d664b5afe，best权重b0adbbac重新核验。原final_v2/approach、seed25001新RNG、64份网格/60NN54梯度/7200s；真实PID/create/cmd/source均已核对。保持核心冻结，当前无终验结果；不因观察工具过期而重启。若选中则execute(execution_substeps_v2)→replay→continue-state原24s模板→同源waypoints_tracking_step_feedback。M6原5s完整新噪声复验仍待进行，未隐去失败或标阶段完成。
