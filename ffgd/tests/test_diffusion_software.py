@@ -121,10 +121,13 @@ def test_rejected_effective_step_backs_off_within_fixed_budget():
     updates=[u for row in result['trace'] for u in row['updates']]
     assert len(updates)==9 and len(calls)<=27
     assert any(not u['accepted'] for u in updates) and any(u['accepted'] for u in updates)
-    for i,u in enumerate(updates[:-1]):
-        if not u['accepted']:
-            assert u['feedback_cap_after']==u['effective_step_coefficient']/4
-            assert updates[i+1]['step_coefficient']<=u['feedback_cap_after']
+    for row in result['trace']:
+        if not row['updates']:continue
+        assert row['updates'][0]['feedback_cap_before'] is None
+        for u,v in zip(row['updates'],row['updates'][1:]):
+            if not u['accepted']:
+                assert u['feedback_cap_after']==u['effective_step_coefficient']/4
+                assert v['step_coefficient']<=u['feedback_cap_after']
     assert all(u['after']<=u['before'] and u['trials']<=2 for u in updates)
     assert result['network_calls']==4 and result['post_sampling_trajectory_repair_calls']==0
     for a,b in zip(result['trace'],result['trace'][1:]):np.testing.assert_array_equal(a['output'],b['input'])
@@ -201,11 +204,17 @@ def test_quadratic_failed_trial_backoff_uses_last_actual_scale():
     result=sample(model,dict(tokens=torch.zeros(1,3,32)),8,23,budget,energy)
     updates=[u for row in result['trace'] for u in row['updates']]
     assert any(not u['accepted'] for u in updates)
-    for i,u in enumerate(updates[:-1]):
-        if not u['accepted']:
-            assert u['feedback_cap_after']==u['effective_step_coefficient']*u['trial_evaluations'][-1]['scale']*.5
-            assert updates[i+1]['step_coefficient']<=u['feedback_cap_after']
-        assert len(u['trial_evaluations'])<=2
+    assert any(row['updates'] and row['updates'][-1]['feedback_cap_after'] is not None for row in result['trace'][:-1])
+    for row in result['trace']:
+        if not row['updates']:continue
+        first=row['updates'][0]
+        assert first['feedback_cap_before'] is None
+        assert first['step_coefficient']==first['uncapped_step_coefficient']
+        for u,v in zip(row['updates'],row['updates'][1:]):
+            if not u['accepted']:
+                assert u['feedback_cap_after']==u['effective_step_coefficient']*u['trial_evaluations'][-1]['scale']*.5
+                assert v['step_coefficient']<=u['feedback_cap_after']
+    assert all(len(u['trial_evaluations'])<=2 for u in updates)
 
 
 def test_local_metric_refresh_is_inside_denoising_and_preserves_next_network_input():

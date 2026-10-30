@@ -36,7 +36,7 @@ $ffgdPython = (Resolve-Path .venv/Scripts/python.exe).Path
 
 首轮开发时序为8秒接近、24秒七航点与刚性持续卫星追踪；空间航点、七个球障碍及物理门不变。根初态全零速度；卫星在第二段接受配置中明确的2秒力脉冲再自由漂移，禁止注入目标速度。时序可依据实测另建版本，不能事后改判旧结果。
 
-2026-10-29当前预声明接近配置为`configs/ffgd/plan_final_v2_approach_dense_metric.json`；显式使用MASTER第6.2节的`retain_network_noise`、有界二次拒绝试探、碰撞时间峰值项、去噪内局部多空间SPD预条件及64份通用时间网格。下列本机配置副本从此文件生成。旧retained_noise配置及其失败保留；224733已失败；f1c756最新5s仅连续区间位置未过，f42417原生对照证实16份网格漏峰，64份配置仍须新噪声回归和实际执行验证，最终完整场景仍未通过。
+2026-10-29当前预声明接近配置为`configs/ffgd/plan_final_v2_approach_step_feedback.json`；显式使用MASTER第6.2节的`retain_network_noise`、有界二次拒绝试探、碰撞时间峰值项、去噪内局部多空间SPD预条件及64份通用时间网格。下列本机配置副本从此文件生成。旧retained_noise配置及其失败保留；224733已失败；f1c756最新5s仅连续区间位置未过，f42417原生对照证实16份网格漏峰，64份配置仍须新噪声回归和实际执行验证，最终完整场景仍未通过。
 
 ```powershell
 $approachConfig = '<本机设备和权重路径已核对的规划配置副本.json>'
@@ -55,7 +55,7 @@ $approachExecution = '<本次selected_execution目录>'
 
 `execute`再次只读验证原候选；实际物理步长0.5ms、控制周期2ms，安全逐步检查。`continue-state`要求执行通过，导出完整实际积分状态和原参考的局部q/v/a，场景不变；只导出局部边界，不把旧未来路径作为下一规划输入。
 
-第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。当前预声明配置为`configs/ffgd/plan_final_v2_waypoints_tracking_dense_metric.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。旧两段配置保留，不当作新公式已运行证据。
+第二段只能使用上述`continue-state`返回目录中的`problem.json`，不能直接将模板根初态当作接续。当前预声明配置为`configs/ffgd/plan_final_v2_waypoints_tracking_step_feedback.json`，单候选、14400秒预估预算；其依据较短任务的实测外推，必须根据第一段实测检查是否合理，新版本在运行前记录。第二段实际运行仍为`NOT_RUN`。之后沿用同一`plan → execute → replay`入口，保留所有失败。旧两段配置保留，不当作新公式已运行证据。
 
 两段均完成后，在链检查配置中列明本次两个`execution_runs`和相应两个`replay_runs`，保持`require_uniform_planner_version: true`，调用：
 
@@ -95,3 +95,5 @@ artifacts/ffgd/media_runtime/.venv/Scripts/python.exe scripts/ffgd_plot_media.py
 - Diffusion相对优势、广泛泛化与论文级统计：`NOT_RUN／未评估`。
 
 视频导出同时生成`video_telemetry.ass`及`video_frame_indices.csv`，叠加保存状态的任务/参考/实际/间隙/力矩/动量/安全和方法身份。需要ffmpeg包含libass；显示使用安装字体，不复制字体。相机和灯光仅用于只读渲染，记录在媒体manifest，绝非独立重放。
+
+2026-10-30最新源码将拒绝反馈限于当前去噪步，避免新网络状态继承陈旧步长上限；原生有界对照6c31d5及软件c75e13支持该修复，最终step_feedback配置尚须实际全链验收。5s/f1e9ed失败保留，不能拿交付工具检查替代工程完成。

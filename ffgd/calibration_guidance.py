@@ -216,8 +216,10 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
     """
     from .guidance_metric import acceleration_metric
     instantaneous = config.get('instantaneous_task_metric_probe',False)
+    probe_step=config.get('probe_step',-1);probe_stage=config.get('probe_stage','guided')
+    if type(probe_step) is not int or probe_stage not in ('clean','guided'):raise ValueError('INVALID_DIRECTION_PROBE_INPUT')
     with np.load(folder/'denoising.npz') as data:
-        points=([tensor(data['guided'][-1])] if instantaneous else [tensor(data['clean'][-1]),tensor(data['guided'][-1])])
+        points=([tensor(data[probe_stage][probe_step])] if instantaneous else [tensor(data['clean'][-1]),tensor(data['guided'][-1])])
     mean=tensor(checkpoint['mean']);scale=tensor(checkpoint['scale']);values=[];gradients=[]
     for i,point in enumerate(points):
         check_budget();x=point.clone().requires_grad_();terms=energy.evaluate(mean+scale*x)
@@ -245,6 +247,13 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
     else:
         secant,applied,curvature=_one_secant_direction(factor,g,points[1]-points[0],gradients[1]-gradients[0])
         directions=(('base_metric',base),('one_secant',secant))
+    recorded_cap=None
+    if config.get('compare_recorded_feedback_cap',False):
+        if not instantaneous or probe_stage!='clean':raise ValueError('FEEDBACK_PROBE_REQUIRES_CURRENT_CLEAN_METRIC')
+        recorded=json.loads((folder/'denoising.json').read_text())[probe_step]
+        recorded_cap=recorded['updates'][0]['feedback_cap_before']
+        if recorded_cap is None or not np.isfinite(recorded_cap) or recorded_cap<=0:raise ValueError('NO_RECORDED_FEEDBACK_CAP')
+        directions=(('carried_feedback_cap',modified),('reset_at_network_update',modified))
     native_before=energy.native_evaluate((mean+scale*current).numpy())
     relative=max(abs(native_before[k]-values[-1][k])/max(1.,abs(native_before[k]),abs(values[-1][k])) for k in native_before)
     jacobian=tensor(codec.N*checkpoint['scale'][None,:]);rows=[];saved={}
@@ -253,6 +262,7 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
         if not np.isfinite(descent) or descent<=0:raise ValueError('NON_DESCENT_DIRECTION_PROBE')
         coefficient=sampling['step_size']*max(values[-1]['total'],0.)/descent
         if sampling.get('max_step_coefficient') is not None:coefficient=min(coefficient,sampling['max_step_coefficient'])
+        if name=='carried_feedback_cap':coefficient=min(coefficient,recorded_cap)
         delta=coefficient*direction
         delta*=min(1.,sampling['max_update_norm']/max(float(torch.linalg.vector_norm(delta)),1e-30))
         delta*=min(1.,sampling['max_control_change']/max(float(torch.max(abs(jacobian@delta))),1e-30))
@@ -275,6 +285,7 @@ def direction_check(path,folder,config,manifest,checkpoint,codec,robot,energy):
     if len(points)>1:saved.update(previous=points[0].numpy(),previous_gradient=gradients[0].numpy())
     np.savez_compressed(path/'direction_probe_arrays.npz',current=current.numpy(),current_gradient=g.numpy(),**saved)
     return dict(passed=relative<1e-6,scope='READONLY_BOUNDED_DIRECTION_DIAGNOSTIC; no optimization chain/candidate/execution',
+                probe_step=probe_step,probe_stage=probe_stage,recorded_feedback_cap=recorded_cap,
                 source_run=str(folder.parent),native_scalar_relative_error=relative,states=values,native_before=native_before,
                 secant_applied=applied,secant_curvature=curvature,gradient_cosine=(float(gradients[0]@g/(torch.linalg.vector_norm(gradients[0])*torch.linalg.vector_norm(g))) if len(gradients)>1 else None),
                 rows=rows,full_energy_gradients=len(gradients),native_energy_calls=1+sum(len(r['rays']) for r in rows),

@@ -74,7 +74,6 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
     if budget.local_metric!='none' and metric_callback is None:raise ValueError('missing declared local metric callback')
     trace=[];calls=0
     metric_factor=None if metric is None else torch.linalg.cholesky(metric)
-    feedback_cap=None
     model.eval()
     for index,k in enumerate(schedule):
         input_x=x.detach().clone()
@@ -92,6 +91,12 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
             if not all(torch.isfinite(v) for v in diagnostic.values()):raise ValueError('NONFINITE_ENERGY_AUDIT')
             step_terms={name:float(value) for name,value in diagnostic.items()}
         if active:
+            # A rejection bound belongs to this physical subproblem. The next
+            # network update changes the clean state and refreshes its metric;
+            # carrying a stale cap across it can consume the remaining budget
+            # merely recovering a previous step size. Keep backoff within the
+            # current step, with the same trust caps and bounded native trials.
+            feedback_cap=None
             step_metric_factor=metric_factor
             metric_diagnostics=None
             local_metric_diagnostics=None
@@ -171,6 +176,7 @@ def sample(model,condition,free_dim,seed,budget,energy=None,mean=None,scale=None
                                     uncapped_step_coefficient=uncapped_coefficient,
                                     effective_step_coefficient=effective_coefficient,
                                     feedback_cap_before=previous_feedback_cap,feedback_cap_after=feedback_cap,
+                                    feedback_scope='current_denoising_step',
                                     line_rule=budget.line_rule,trial_evaluations=trial_evaluations,
                                     line_scale=chosen,trials=trial+1,terms={n:float(value.detach()) for n,value in terms.items()},
                                     terms_after={n:float(value.detach()) for n,value in (after_terms if accepted else terms).items()},
